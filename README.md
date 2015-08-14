@@ -1,2 +1,2 @@
-# bridje-framework
+# Bridje Framework
 www.bridje.org
