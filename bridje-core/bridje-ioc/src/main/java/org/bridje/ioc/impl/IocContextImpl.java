@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.annotations.IocContext;
 
-public class IocContextImpl implements IocContext
+class IocContextImpl implements IocContext
 {
     private static final Logger LOG = Logger.getLogger(IocContextImpl.class.getName());
     
