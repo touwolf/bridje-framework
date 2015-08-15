@@ -4,6 +4,8 @@ package org.bridje.ioc.impl;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -54,32 +56,39 @@ public class IocContextImpl implements IocContext
     @SuppressWarnings("UseSpecificCatch")
     private <T> T instantiate(Class<T> cls)
     {
-        //TODO: see how to create components that receive other components in the constructor.
         try
         {
             Constructor<?> defConstructor = null;
             Constructor<?>[] constructors = cls.getDeclaredConstructors();
+            List parameters = new LinkedList();
             for (Constructor<?> constructor : constructors)
             {
-                if (constructor.getParameterTypes().length == 0)
-                {
-                    constructor.setAccessible(true);
-                    defConstructor = constructor;
-                    break;
+                //If it is not constructor by default we try to create components in the constructor how parameters.
+                if (constructor.getParameterTypes().length != 0)
+                {                    
+                    Class<?>[] parameterTypes = constructor.getParameterTypes();
+                    parameters = new LinkedList();
+                    for (Class<?> parameterType : parameterTypes) 
+                    {
+                        if(!componensClasses.contains(parameterType))
+                        {
+                            parameters = new LinkedList();
+                            continue;
+                        }
+                        
+                        parameters.add(find(parameterType));
+                    }   
                 }
-                
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
-                for (Class<?> parameterType : parameterTypes) 
-                {
-                    Object find = find(parameterType);
-                }               
+                constructor.setAccessible(true);
+                defConstructor = constructor;
+                break;
             }
             if (defConstructor == null)
             {
                 LOG.log(Level.WARNING, "Couldn't find a default constructor for {0}", cls.getName());
                 return null;
             }
-            return (T)defConstructor.newInstance();
+            return parameters.isEmpty() ? (T)defConstructor.newInstance() : (T)defConstructor.newInstance(parameters.toArray());
         }
         catch (InstantiationException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
         {
