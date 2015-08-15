@@ -59,11 +59,21 @@ class ClassList implements Iterable<Class>
     
     public Class getFirst()
     {
+        if(isEmpty())
+        {
+            return null;
+        }
+        
         return list.get(0);
     }
 
     public Class get(int index)
     {
+        if(index > list.size())
+        {
+            return null;
+        }
+        
         return list.get(index);
     }
     
@@ -99,7 +109,7 @@ class ClassList implements Iterable<Class>
             {
                 String clsName = (String)key;
                 String compScope = (String)value;
-                if(compScope.equalsIgnoreCase(scope))
+                if(null != compScope && compScope.equalsIgnoreCase(scope))
                 {
                     try
                     {

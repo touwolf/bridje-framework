@@ -52,7 +52,7 @@ public class IocContextImpl implements IocContext
     }
     
     @SuppressWarnings("UseSpecificCatch")
-    private static <T> T instantiate(Class<T> cls)
+    private <T> T instantiate(Class<T> cls)
     {
         //TODO: see how to create components that receive other components in the constructor.
         try
@@ -65,7 +65,14 @@ public class IocContextImpl implements IocContext
                 {
                     constructor.setAccessible(true);
                     defConstructor = constructor;
+                    break;
                 }
+                
+                Class<?>[] parameterTypes = constructor.getParameterTypes();
+                for (Class<?> parameterType : parameterTypes) 
+                {
+                    Object find = find(parameterType);
+                }               
             }
             if (defConstructor == null)
             {
