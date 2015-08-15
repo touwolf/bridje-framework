@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 public @interface Component
 {
     /**
-     * Defines de scope of component.
+     * Defines the scope of component.
      * 
      * @return String that represents the scope of the component.
      */

@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.annotations.IocContext;
 
@@ -68,7 +69,7 @@ public class IocContextImpl implements IocContext
             }
             if (defConstructor == null)
             {
-                LOG.warning("Could'n not find a default constructor for " + cls.getName());
+                LOG.log(Level.WARNING, "Couldn't find a default constructor for {0}", cls.getName());
                 return null;
             }
             return (T)defConstructor.newInstance();

@@ -92,5 +92,4 @@ public class ContextAnnotProcessor extends AbstractProcessor
         writer.append("\n");
         writer.flush();
     }
-
 }
