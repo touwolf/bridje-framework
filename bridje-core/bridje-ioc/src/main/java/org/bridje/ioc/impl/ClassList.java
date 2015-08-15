@@ -69,7 +69,7 @@ class ClassList implements Iterable<Class>
 
     public Class get(int index)
     {
-        if(index > list.size())
+        if(index >= list.size())
         {
             return null;
         }
