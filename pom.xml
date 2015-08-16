@@ -28,6 +28,15 @@
         <tag>HEAD</tag>
     </scm>
 
+    <developers>
+        <developer>
+            <name>Gilberto Vento</name>
+            <id>gilbertovento</id>
+            <email>gilberto.vento@gmail.com</email>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
     <build>
         <extensions>
             <extension>
