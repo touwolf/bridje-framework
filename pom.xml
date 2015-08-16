@@ -35,6 +35,12 @@
             <email>gilberto.vento@gmail.com</email>
             <timezone>-5</timezone>
         </developer>
+        <developer>
+            <name>Alejandro Ferrandiz</name>
+            <id>gorums</id>
+            <email>gorumlabmatcom@gmail.com</email>
+            <timezone>-5</timezone>
+        </developer>
     </developers>
 
     <build>
