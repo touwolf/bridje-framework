@@ -19,7 +19,9 @@
 
     <modules>
         <module>bridje-core</module>
+        <!--
         <module>bridje-tools</module>
+        -->
     </modules>
 
     <scm>
