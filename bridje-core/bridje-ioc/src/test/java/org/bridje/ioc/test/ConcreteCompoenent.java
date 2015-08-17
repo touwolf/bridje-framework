@@ -16,7 +16,17 @@
 
 package org.bridje.ioc.test;
 
-public interface SomeService
+import org.bridje.ioc.annotations.Component;
+import org.bridje.ioc.annotations.Inject;
+
+@Component
+public class ConcreteCompoenent extends AbstractComponent
 {
-    
+    @Inject
+    private SomeService[] services;
+
+    public SomeService[] getServices()
+    {
+        return services;
+    }
 }

@@ -33,16 +33,7 @@ class ServiceMap
             List<Class> services = findServices(component);
             for (Class service : services)
             {
-                List<Class> components = map.get(service);
-                if(components == null)
-                {
-                    components = new LinkedList<>();
-                    map.put(service, components);
-                }
-                if(!components.contains(component))
-                {
-                    components.add(component);
-                }
+                addComponentToService(service, component);
             }
         }
     }
@@ -56,6 +47,11 @@ class ServiceMap
         }
         return lst.get(0);
     }
+
+    public <T> boolean exists(Class<T> service)
+    {
+        return map.containsKey(service);
+    }
     
     public ClassList findAll(Class service)
     {
@@ -66,29 +62,48 @@ class ServiceMap
     {
         List<Class> result = new LinkedList<>();
         result.add(component);
-        Class supClass = component.getSuperclass();
-        while(supClass != null && supClass != Object.class)
-        {
-            if(!result.contains(supClass))
-            {
-                result.add(supClass);
-            }
-            supClass = component.getSuperclass();
-        }
-        fillServices(component, result);
+        fillServicesSuperClasses(component, result);
+        fillServicesIntefaces(component, result);
         return result;
     }
     
-    private void fillServices(Class cls, List<Class> result)
+    private void fillServicesSuperClasses(Class component, List<Class> servicesList)
+    {
+        Class supClass = component.getSuperclass();
+        while(supClass != null && supClass != Object.class)
+        {
+            if(!servicesList.contains(supClass))
+            {
+                servicesList.add(supClass);
+            }
+            supClass = supClass.getSuperclass();
+        }
+    }
+    
+    private void fillServicesIntefaces(Class cls, List<Class> servicesList)
     {
         Class[] interfaces = cls.getInterfaces();
         for (Class ifc : interfaces)
         {
-            if(!result.contains(ifc))
+            if(!servicesList.contains(ifc))
             {
-                result.add(ifc);
+                servicesList.add(ifc);
             }
-            fillServices(ifc, result);
+            fillServicesIntefaces(ifc, servicesList);
+        }
+    }
+    
+    private void addComponentToService(Class service, Class component)
+    {
+        List<Class> components = map.get(service);
+        if(components == null)
+        {
+            components = new LinkedList<>();
+            map.put(service, components);
+        }
+        if(!components.contains(component))
+        {
+            components.add(component);
         }
     }
 }

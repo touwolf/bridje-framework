@@ -14,9 +14,25 @@
  * limitations under the License.
  */
 
-package org.bridje.ioc.test;
+package org.bridje.ioc;
 
-public interface SomeService
+import org.bridje.ioc.impl.IocContextFactory;
+
+public class Ioc
 {
-    
+    private static IocContext context;
+
+    private Ioc()
+    {
+        
+    }
+
+    public static IocContext context()
+    {
+        if(context == null)
+        {
+            context = IocContextFactory.createApplicationContext();
+        }
+        return context;
+    }
 }

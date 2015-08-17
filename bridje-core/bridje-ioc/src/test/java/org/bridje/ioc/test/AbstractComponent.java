@@ -16,7 +16,15 @@
 
 package org.bridje.ioc.test;
 
-public interface SomeService
+import org.bridje.ioc.annotations.Inject;
+
+public abstract class AbstractComponent
 {
-    
+    @Inject
+    private DummyComponent dummyComponent;
+
+    public DummyComponent getDummyComponent()
+    {
+        return dummyComponent;
+    }
 }

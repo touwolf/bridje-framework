@@ -1,5 +1,5 @@
 
-package org.bridje.ioc.annotations;
+package org.bridje.ioc;
 
 /**
  * Represents a context in witch components are managed.
@@ -10,6 +10,10 @@ package org.bridje.ioc.annotations;
 public interface IocContext
 {
     <T> T find(Class<T> service);
+    
+    <T> T[] findAll(Class<T> service);
 
+    boolean exists(Class service);
+    
     boolean existsComponent(Class component);
 }

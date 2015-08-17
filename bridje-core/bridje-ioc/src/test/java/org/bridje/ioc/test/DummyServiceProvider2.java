@@ -16,7 +16,10 @@
 
 package org.bridje.ioc.test;
 
-public interface SomeService
+import org.bridje.ioc.annotations.Component;
+
+@Component
+public class DummyServiceProvider2 implements SomeService
 {
     
 }

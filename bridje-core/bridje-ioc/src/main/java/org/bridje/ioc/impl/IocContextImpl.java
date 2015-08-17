@@ -2,8 +2,12 @@
 package org.bridje.ioc.impl;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
-import org.bridje.ioc.annotations.IocContext;
+import org.bridje.ioc.IocContext;
 
 class IocContextImpl implements IocContext
 {
@@ -23,9 +27,9 @@ class IocContextImpl implements IocContext
     {
         this.scope = scope;
         componentCreator = new ComponentCreator(this);
-        componensClasses = ClassList.loadFromClassPath(scope);
+        componensClasses = new ClassList(ClassList.loadFromClassPath(scope), new ClassList(this.getClass()));
         serviceMap = new ServiceMap(componensClasses);
-        container = new IocContainer(this, componentCreator);
+        container = new IocContainer(componentCreator, Arrays.asList(new Object[]{this}));
     }
 
     @Override
@@ -38,10 +42,34 @@ class IocContextImpl implements IocContext
         }
         return null;
     }
+    
+
+    @Override
+    public <T> T[] findAll(Class<T> service)
+    {
+        ClassList components = serviceMap.findAll(service);
+        if(components != null)
+        {
+            List resultList = new LinkedList();
+            for (Class component : components)
+            {
+                resultList.add(find(component));
+            }
+            T[] result = (T[])Array.newInstance(service, components.size());
+            return (T[])resultList.toArray(result);
+        }
+        return null;
+    }
 
     @Override
     public boolean existsComponent(Class cls)
     {
         return componensClasses.contains(cls);
+    }
+
+    @Override
+    public boolean exists(Class cls)
+    {
+        return serviceMap.exists(cls);
     }
 }

@@ -2,8 +2,12 @@
 package org.bridje.ioc.impl;
 
 import java.io.IOException;
+import org.bridje.ioc.Ioc;
+import org.bridje.ioc.IocContext;
+import org.bridje.ioc.test.ConcreteCompoenent;
 import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
+import org.bridje.ioc.test.DummyServiceProvider2;
 import org.bridje.ioc.test.DummyWithParamsComponent;
 import org.bridje.ioc.test.SomeService;
 import org.junit.After;
@@ -43,7 +47,7 @@ public class IocContextImplTest
     @Test
     public void testFind() throws IOException
     {
-        IocContextImpl instance = new IocContextImpl("APPLICATION");
+        IocContext instance = Ioc.context();
         DummyComponent result = instance.find(DummyComponent.class);
         assertNotNull(result);
     }
@@ -51,17 +55,36 @@ public class IocContextImplTest
     @Test
     public void testFindWithConstructor() throws IOException
     {
-        IocContextImpl instance = new IocContextImpl("APPLICATION");
+        IocContext instance = Ioc.context();
         DummyWithParamsComponent result = instance.find(DummyWithParamsComponent.class);
         assertNotNull(result);
+        assertNotNull(result.getDummyComponent());
+        assertEquals(result.getDummyComponent(), instance.find(DummyComponent.class));
     }
     
     @Test
     public void testFindByService() throws IOException
     {
-        IocContextImpl instance = new IocContextImpl("APPLICATION");
+        IocContext instance = Ioc.context();
         SomeService result = instance.find(SomeService.class);
         assertNotNull(result);
         assertTrue(result instanceof DummyServiceProvider);
+
+        SomeService[] resultArr = instance.findAll(SomeService.class);
+        assertNotNull(resultArr);
+        assertEquals(2, resultArr.length);
+        assertTrue(resultArr[0] instanceof DummyServiceProvider);
+        assertTrue(resultArr[1] instanceof DummyServiceProvider2);
+    }
+    
+    @Test
+    public void testInjectAndHerarchy() throws IOException
+    {
+        IocContext instance = Ioc.context();
+        ConcreteCompoenent conComp = instance.find(ConcreteCompoenent.class);
+        assertNotNull(conComp.getDummyComponent());
+        assertNotNull(conComp.getServices());
+        assertTrue(conComp.getServices()[0] instanceof DummyServiceProvider);
+        assertTrue(conComp.getServices()[1] instanceof DummyServiceProvider2);
     }
 }

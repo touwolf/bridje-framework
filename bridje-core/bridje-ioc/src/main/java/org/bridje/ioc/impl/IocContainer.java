@@ -16,35 +16,37 @@
 
 package org.bridje.ioc.impl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.bridje.ioc.annotations.IocContext;
 
 class IocContainer
 {
     private final Map<Class, Object> components;
 
-    private IocContext context;
+    private final ComponentCreator creator;
 
-    private ComponentCreator creator;
-
-    public IocContainer(IocContext context, ComponentCreator creator)
+    public IocContainer(ComponentCreator creator, List instances)
     {
         this.components = new ConcurrentHashMap<>();
-        this.context = context;
         this.creator = creator;
+        for (Object instance : instances)
+        {
+            components.put(instance.getClass(), instance);
+            creator.injectDependencies(instance.getClass(), instance);
+        }
     }
-    
+
     public boolean contains(Class cls)
     {
         return components.containsKey(cls);
     }
-    
+
     public <T> T get(Class<T> cls)
     {
         return (T)components.get(cls);
     }
-    
+
     public <T> T create(Class<T> cls)
     {
         if(components.containsKey(cls))
@@ -59,6 +61,7 @@ class IocContainer
                 return null;
             }
             components.put(cls, obj);
+            creator.injectDependencies(cls, obj);
             return obj;
         }
     }

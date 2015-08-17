@@ -14,9 +14,31 @@
  * limitations under the License.
  */
 
-package org.bridje.ioc.test;
+package org.bridje.ioc.impl;
 
-public interface SomeService
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.bridje.ioc.IocContext;
+
+public class IocContextFactory
 {
+    private static final Logger LOG = Logger.getLogger(IocContextFactory.class.getName());
+
+    private IocContextFactory()
+    {
+    }
     
+    public static IocContext createApplicationContext()
+    {
+        try
+        {
+            return new IocContextImpl("APPLICATION");
+        }
+        catch(IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
 }

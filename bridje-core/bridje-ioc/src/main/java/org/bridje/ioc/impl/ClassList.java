@@ -124,4 +124,9 @@ class ClassList implements Iterable<Class>
         }
         return new ClassList(clsList);
     }
+
+    public int size()
+    {
+        return list.size();
+    }
 }
