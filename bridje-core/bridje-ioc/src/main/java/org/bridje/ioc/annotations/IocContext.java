@@ -9,5 +9,7 @@ package org.bridje.ioc.annotations;
  */
 public interface IocContext
 {
-    <T> T find(Class<T> cls);
+    <T> T find(Class<T> service);
+
+    boolean existsComponent(Class component);
 }
