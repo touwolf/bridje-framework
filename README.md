@@ -8,4 +8,4 @@ Using the Core Api we are going to buid a framework Web and ORM to general propo
 Bridje IoC
 --
 
-This is the main Api and the base of the other Apis, all the Api dependens of IoC.
+This is the main Api and the base of the other Apis, whole the Api dependens of IoC.
