@@ -10,6 +10,10 @@
     <name>Bridje (Parent)</name>
     <description>Parent Maven Project for Bridje Framework</description>
     <url>http://www.bridje.org</url>
+    <organization>
+        <name>Bridje Framework</name>
+        <url>http://www.bridje.org</url>
+    </organization>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
