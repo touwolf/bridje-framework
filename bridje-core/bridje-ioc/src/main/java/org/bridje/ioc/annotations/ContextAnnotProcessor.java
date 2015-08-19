@@ -22,6 +22,8 @@ import javax.tools.StandardLocation;
 
 /**
  * Annotations processor for the {@see org.bridje.ioc.annotations.Component} annotation.
+ * 
+ * @author gilberto
  */
 @SupportedAnnotationTypes("org.bridje.ioc.annotations.Component")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -40,11 +42,13 @@ public class ContextAnnotProcessor extends AbstractProcessor
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
     {
+        //Creating necesary objects for annotations procesing.
         super.init(processingEnv);
         Messager messager = processingEnv.getMessager();
         try
         {
             filer = processingEnv.getFiler();
+            //Creating output file
             fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", COMPONENTS_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
@@ -63,11 +67,13 @@ public class ContextAnnotProcessor extends AbstractProcessor
         {
             for (TypeElement typeElement : annotations)
             {
+                //Find all @Component marked classes
                 Set<? extends Element> ann = roundEnv.getElementsAnnotatedWith(typeElement);
                 for (Element element : ann)
                 {
                     if (element.getKind() == ElementKind.CLASS)
                     {
+                        //Get the @Component annotation for the current element.
                         Component annot = element.getAnnotation(Component.class);
                         String clsName = element.toString();
                         String scope = annot.scope();
@@ -84,6 +90,13 @@ public class ContextAnnotProcessor extends AbstractProcessor
         return false;
     }
 
+    /**
+     * This method appends class=scope to the output file.
+     * 
+     * @param clsName The full class name of the component to append
+     * @param scope The scope of the component
+     * @throws IOException If any IO error prevents the writing.
+     */
     private void appendClass(String clsName, String scope) throws IOException
     {
         writer.append(clsName);

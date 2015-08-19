@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 /**
  * Mark a class as a component so it can be managed by the API.
  * 
+ * This annotation mark any class as an IoC component. if scope
+ * of the component is no specified it will be an application scoped component.
+ * 
+ * @author gilberto
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

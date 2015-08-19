@@ -18,15 +18,30 @@ package org.bridje.ioc;
 
 import org.bridje.ioc.impl.IocContextFactory;
 
+/**
+ * Facade for the Bridje IoC API.
+ * this class provides the method context() which will
+ * deliver the IocContext for the application scope.
+ * 
+ * @author gilberto
+ */
 public class Ioc
 {
     private static IocContext context;
 
+    /**
+     * Private constructor so this objecto cannot be instantiated.
+     */
     private Ioc()
     {
         
     }
 
+    /**
+     * This method returns the IocContext for the application scope.
+     * 
+     * @return An object providing de IocContext for the application scope.
+     */
     public static IocContext context()
     {
         if(context == null)
