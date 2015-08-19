@@ -1,9 +1,9 @@
 # Bridje Framework [![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
 www.bridje.org
 
-We are going to build different Java APIs named Core, like inversion of control and injection of dependency Api (Bridje IoC), virtual file system Api (Bridje VFS), Sql Api (Bridje Sql), template Api (Bridje Tpl), etc.
+We are going to build different Java APIs named Core, like inversion of control and injection of dependency Api (*Bridje IoC*), virtual file system Api (*Bridje VFS*), Sql Api (*Bridje Sql*), template Api (*Bridje Tpl*), etc.
 
-Using the Core Api we are going to buid a framework Web and ORM to general proposite.
+Using the Core Api we are going to buid a **Web Framework** and **ORM** to general proposite.
 
 Bridje IoC
 --
