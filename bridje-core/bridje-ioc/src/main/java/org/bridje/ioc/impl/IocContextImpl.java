@@ -35,19 +35,18 @@ class IocContextImpl implements IocContext
     @Override
     public <T> T find(Class<T> service)
     {
-        Class<? extends T> component = serviceMap.findOne(service);
+        Class<? extends T> component = serviceMap.findOne(new ServiceInfo(service, null));
         if(component != null)
         {
             return container.create(component);
         }
         return null;
     }
-    
 
     @Override
     public <T> T[] findAll(Class<T> service)
     {
-        ClassList components = serviceMap.findAll(service);
+        ClassList components = serviceMap.findAll(new ServiceInfo(service, null));
         if(components != null)
         {
             List resultList = new LinkedList();
@@ -68,8 +67,36 @@ class IocContextImpl implements IocContext
     }
 
     @Override
-    public boolean exists(Class cls)
+    public boolean exists(Class service)
     {
-        return serviceMap.exists(cls);
+        return serviceMap.exists(new ServiceInfo(service, null));
+    }
+
+    @Override
+    public <T> T find(Class<T> service, Class[] params)
+    {
+        Class<? extends T> component = serviceMap.findOne(new ServiceInfo(service, params));
+        if(component != null)
+        {
+            return container.create(component);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T[] findAll(Class<T> service, Class[] params)
+    {
+        ClassList components = serviceMap.findAll(new ServiceInfo(service, null));
+        if(components != null)
+        {
+            List resultList = new LinkedList();
+            for (Class component : components)
+            {
+                resultList.add(find(component));
+            }
+            T[] result = (T[])Array.newInstance(service, components.size());
+            return (T[])resultList.toArray(result);
+        }
+        return null;
     }
 }

@@ -17,7 +17,7 @@ public interface IocContext
 {
     /**
      * This method finds the highest priority component that provides the 
-     * given services.
+     * given service.
      * 
      * @param <T> The generic type of the class of the service that this method 
      * should find.
@@ -27,6 +27,8 @@ public interface IocContext
      * provided, or null if no component provides this services in the context.
      */
     <T> T find(Class<T> service);
+    
+    <T> T find(Class<T> service, Class[] params);
     
     /**
      * This method finds all the components that provides the given service.
@@ -39,6 +41,8 @@ public interface IocContext
      * provided, or an empty array if no component provides this services in the context.
      */
     <T> T[] findAll(Class<T> service);
+
+    <T> T[] findAll(Class<T> service, Class[] params);
 
     /**
      * This method finds if a service is provided by a least one component in the 

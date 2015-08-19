@@ -9,6 +9,8 @@ import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
 import org.bridje.ioc.test.DummyServiceProvider2;
 import org.bridje.ioc.test.DummyWithParamsComponent;
+import org.bridje.ioc.test.GenericComponent;
+import org.bridje.ioc.test.GenericInjectComponent;
 import org.bridje.ioc.test.SomeService;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -28,17 +30,17 @@ public class IocContextImplTest
     public static void setUpClass()
     {
     }
-    
+
     @AfterClass
     public static void tearDownClass()
     {
     }
-    
+
     @Before
     public void setUp()
     {
     }
-    
+
     @After
     public void tearDown()
     {
@@ -51,7 +53,7 @@ public class IocContextImplTest
         DummyComponent result = instance.find(DummyComponent.class);
         assertNotNull(result);
     }
-    
+
     @Test
     public void testFindWithConstructor() throws IOException
     {
@@ -76,7 +78,7 @@ public class IocContextImplTest
         assertTrue(resultArr[0] instanceof DummyServiceProvider);
         assertTrue(resultArr[1] instanceof DummyServiceProvider2);
     }
-    
+
     @Test
     public void testInjectAndHerarchy() throws IOException
     {
@@ -86,5 +88,16 @@ public class IocContextImplTest
         assertNotNull(conComp.getServices());
         assertTrue(conComp.getServices()[0] instanceof DummyServiceProvider);
         assertTrue(conComp.getServices()[1] instanceof DummyServiceProvider2);
+    }
+
+    @Test
+    public void testInjectGeneric() throws IOException
+    {
+        IocContext instance = Ioc.context();
+        GenericInjectComponent giComp = instance.find(GenericInjectComponent.class);
+        assertNotNull(giComp);
+        assertNotNull(giComp.getGsOfStr());
+        assertNull(giComp.getGsOfObject());
+        assertTrue(giComp.getGsOfStr() instanceof GenericComponent);
     }
 }

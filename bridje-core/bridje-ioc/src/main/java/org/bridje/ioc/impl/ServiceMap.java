@@ -16,6 +16,7 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,22 +24,22 @@ import java.util.Map;
 
 class ServiceMap
 {
-    private final Map<Class, List<Class>> map;
+    private final Map<ServiceInfo, List<Class>> map;
 
     public ServiceMap(ClassList list)
     {
         map = new LinkedHashMap<>();
         for (Class component : list)
         {
-            List<Class> services = findServices(component);
-            for (Class service : services)
+            List<ServiceInfo> services = findServices(component);
+            for (ServiceInfo service : services)
             {
                 addComponentToService(service, component);
             }
         }
     }
     
-    public <T> Class<? extends T> findOne(Class<T> service)
+    public <T> Class<? extends T> findOne(ServiceInfo service)
     {
         List<Class> lst = map.get(service);
         if(lst == null || lst.isEmpty())
@@ -48,52 +49,54 @@ class ServiceMap
         return lst.get(0);
     }
 
-    public <T> boolean exists(Class<T> service)
+    public <T> boolean exists(ServiceInfo service)
     {
         return map.containsKey(service);
     }
     
-    public ClassList findAll(Class service)
+    public ClassList findAll(ServiceInfo service)
     {
         return new ClassList(map.get(service));
     }
 
-    private List<Class> findServices(Class component)
+    private List<ServiceInfo> findServices(Class component)
     {
-        List<Class> result = new LinkedList<>();
-        result.add(component);
+        List<ServiceInfo> result = new LinkedList<>();
+        result.add(new ServiceInfo(component, null));
         fillServicesSuperClasses(component, result);
         fillServicesIntefaces(component, result);
         return result;
     }
     
-    private void fillServicesSuperClasses(Class component, List<Class> servicesList)
+    private void fillServicesSuperClasses(Class component, List<ServiceInfo> servicesList)
     {
-        Class supClass = component.getSuperclass();
+        Type supClass = component.getGenericSuperclass();
         while(supClass != null && supClass != Object.class)
         {
-            if(!servicesList.contains(supClass))
+            ServiceInfo serviceInf = ServiceInfo.createServiceInf(supClass);
+            if(!servicesList.contains(serviceInf))
             {
-                servicesList.add(supClass);
+                servicesList.add(serviceInf);
             }
-            supClass = supClass.getSuperclass();
+            supClass = serviceInf.getMainClass().getGenericSuperclass();
         }
     }
     
-    private void fillServicesIntefaces(Class cls, List<Class> servicesList)
+    private void fillServicesIntefaces(Class cls, List<ServiceInfo> servicesList)
     {
-        Class[] interfaces = cls.getInterfaces();
-        for (Class ifc : interfaces)
+        Type[] interfaces = cls.getGenericInterfaces();
+        for (Type ifc : interfaces)
         {
-            if(!servicesList.contains(ifc))
+            ServiceInfo serviceInf = ServiceInfo.createServiceInf(ifc);
+            if(!servicesList.contains(serviceInf))
             {
-                servicesList.add(ifc);
+                servicesList.add(serviceInf);
             }
-            fillServicesIntefaces(ifc, servicesList);
+            fillServicesIntefaces(serviceInf.getMainClass(), servicesList);
         }
     }
-    
-    private void addComponentToService(Class service, Class component)
+
+    private void addComponentToService(ServiceInfo service, Class component)
     {
         List<Class> components = map.get(service);
         if(components == null)

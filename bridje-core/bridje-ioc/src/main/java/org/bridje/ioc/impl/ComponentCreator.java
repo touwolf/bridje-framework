@@ -19,6 +19,7 @@ package org.bridje.ioc.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -134,16 +135,18 @@ class ComponentCreator
     
     public void injectDependency(Class cls, Object obj, Field field)
     {
-        Class<?> service = field.getType();
+        Type service = field.getGenericType();
         Object componentObj = null;
-        if(service.isArray())
+        if(service instanceof Class && ((Class)service).isArray())
         {
-            service = service.getComponentType();
-            componentObj = context.findAll(service);
+            service = ((Class)service).getComponentType();
+            ServiceInfo serviceInf = ServiceInfo.createServiceInf(service);
+            componentObj = context.findAll(serviceInf.getMainClass(), serviceInf.getParamClasess());
         }
         else
         {
-            componentObj = context.find(service);
+            ServiceInfo serviceInf = ServiceInfo.createServiceInf(service);
+            componentObj = context.find(serviceInf.getMainClass(), serviceInf.getParamClasess());
         }
         try
         {
