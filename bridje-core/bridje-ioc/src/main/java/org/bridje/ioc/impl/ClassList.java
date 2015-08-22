@@ -29,7 +29,10 @@ class ClassList implements Iterable<Class<?>>
     public ClassList(Collection<Class<?>> classes)
     {
         this();
-        list.addAll(classes);
+        if(classes != null)
+        {
+            list.addAll(classes);
+        }
     }
     
     public ClassList(Class<?>... classes)

@@ -16,6 +16,7 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 /**
@@ -25,6 +26,20 @@ import java.lang.reflect.Type;
 public class ClassUtils
 {
 
+    public static Type findTypeFromArray(Type supClass)
+    {
+        if(supClass instanceof GenericArrayType)
+        {
+            Type rawType = ((GenericArrayType)supClass).getGenericComponentType();
+            return rawType;
+        }
+        else if(supClass instanceof Class)
+        {
+            return ((Class)supClass).getComponentType();
+        }
+        return null;
+    }
+    
     public static Class findClassFromType(Type supClass)
     {
         if(supClass instanceof Class)

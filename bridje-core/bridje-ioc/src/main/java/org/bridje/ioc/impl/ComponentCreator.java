@@ -56,7 +56,7 @@ class ComponentCreator
             }
             if(constructor == null)
             {
-                LOG.log(Level.WARNING, "Couldn't find a default constructor for {0}", cls.getName());
+                LOG.log(Level.WARNING, "Couldn't find a default constructor for {}", cls.getName());
                 return null;
             }
             constructor.setAccessible(true);
@@ -89,15 +89,29 @@ class ComponentCreator
         {
             //If it is not constructor by default we try to create components in the constructor how parameters.
             if (constructor.getParameterTypes().length != 0)
-            {                    
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
+            {
+                Parameter[] parameters = constructor.getParameters();
                 boolean allExists = true;
-                for (Class<?> parameterType : parameterTypes)
+                for (Parameter parameter : parameters)
                 {
-                    if(!context.exists(parameterType))
+                    if(parameter.getType().isArray())
                     {
-                        allExists = false;
-                        break;
+                        Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
+                        Class resultCls = ClassUtils.findClassFromType(arrType);
+                        if(context.findAllGeneric(arrType, resultCls) == null)
+                        {
+                            allExists = false;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
+                        if(context.findGeneric(parameter.getParameterizedType(), resultCls) == null)
+                        {
+                            allExists = false;
+                            break;
+                        }
                     }
                 }
                 if(allExists)
@@ -127,8 +141,17 @@ class ComponentCreator
         Parameter[] parameters = constructor.getParameters();
         for (Parameter parameter : parameters)
         {
-            Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
-            instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
+            if(parameter.getType().isArray())
+            {
+                Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
+                Class resultCls = ClassUtils.findClassFromType(arrType);
+                instances.add(context.findAllGeneric(arrType, resultCls));
+            }
+            else
+            {
+                Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
+                instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
+            }
         }
         return instances.toArray();
     }
