@@ -15,24 +15,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.annotations.ContextAnnotProcessor;
 
-class ClassList implements Iterable<Class>
+class ClassList implements Iterable<Class<?>>
 {
     private static final Logger LOG = Logger.getLogger(ContextAnnotProcessor.class.getName());
 
-    private final List<Class> list;
+    private final List<Class<?>> list;
 
     private ClassList()
     {
         list = new ArrayList<>();
     }
     
-    public ClassList(Collection<Class> classes)
+    public ClassList(Collection<Class<?>> classes)
     {
         this();
         list.addAll(classes);
     }
     
-    public ClassList(Class... classes)
+    public ClassList(Class<?>... classes)
     {
         this(Arrays.asList(classes));
     }
@@ -88,7 +88,7 @@ class ClassList implements Iterable<Class>
     }
 
     @Override
-    public Iterator<Class> iterator()
+    public Iterator<Class<?>> iterator()
     {
         return list.iterator();
     }
@@ -96,7 +96,7 @@ class ClassList implements Iterable<Class>
     public static ClassList loadFromClassPath(String scope) throws IOException
     {
         Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ContextAnnotProcessor.COMPONENTS_RESOURCE_FILE);
-        List<Class> clsList = new ArrayList<>();
+        List<Class<?>> clsList = new ArrayList<>();
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

@@ -19,6 +19,7 @@ package org.bridje.ioc.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.annotations.Inject;
 import org.bridje.ioc.IocContext;
+import org.bridje.ioc.annotations.Construct;
 
 class ComponentCreator
 {
@@ -43,10 +45,14 @@ class ComponentCreator
     {
         try
         {
-            Constructor<?> constructor = findConstructorWithParameters(cls);
+            Constructor<?> constructor = findConstructorWithAnnotation(cls);
             if(constructor == null)
             {
-                constructor = findDefaultConstructor(cls);
+                constructor = findConstructorWithParameters(cls);
+                if(constructor == null)
+                {
+                    constructor = findDefaultConstructor(cls);
+                }
             }
             if(constructor == null)
             {
@@ -60,6 +66,19 @@ class ComponentCreator
         catch (InstantiationException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
         {
             LOG.warning(ex.getMessage());
+        }
+        return null;
+    }
+    
+    private Constructor<?> findConstructorWithAnnotation(Class cls)
+    {
+        for (Constructor<?> constructor : cls.getDeclaredConstructors())
+        {
+            Construct constructAnnot = constructor.getAnnotation(Construct.class);
+            if (constructAnnot != null)
+            {                    
+                return constructor;
+            }
         }
         return null;
     }
@@ -105,10 +124,11 @@ class ComponentCreator
     private Object[] findParameters(Constructor<?> constructor)
     {
         List<Object> instances = new LinkedList<>();
-        Class<?>[] parameterTypes = constructor.getParameterTypes();
-        for (Class<?> parameterType : parameterTypes)
+        Parameter[] parameters = constructor.getParameters();
+        for (Parameter parameter : parameters)
         {
-            instances.add(context.find(parameterType));
+            Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
+            instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
         }
         return instances.toArray();
     }
@@ -137,16 +157,16 @@ class ComponentCreator
     {
         Type service = field.getGenericType();
         Object componentObj = null;
-        if(service instanceof Class && ((Class)service).isArray())
+        Class serviceCls = ClassUtils.findClassFromType(service);
+        if(service instanceof Class && serviceCls.isArray())
         {
-            service = ((Class)service).getComponentType();
-            ServiceInfo serviceInf = ServiceInfo.createServiceInf(service);
-            componentObj = context.findAll(serviceInf.getMainClass(), serviceInf.getParamClasess());
+            service = serviceCls.getComponentType();
+            serviceCls = ClassUtils.findClassFromType(service);
+            componentObj = context.findAllGeneric(service, serviceCls);
         }
         else
         {
-            ServiceInfo serviceInf = ServiceInfo.createServiceInf(service);
-            componentObj = context.find(serviceInf.getMainClass(), serviceInf.getParamClasess());
+            componentObj = context.findGeneric(service, serviceCls);
         }
         try
         {

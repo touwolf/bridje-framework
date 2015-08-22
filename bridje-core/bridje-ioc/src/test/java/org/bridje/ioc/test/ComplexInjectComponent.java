@@ -19,35 +19,13 @@ package org.bridje.ioc.test;
 import java.util.List;
 import java.util.Map;
 import org.bridje.ioc.annotations.Component;
-import org.bridje.ioc.annotations.Inject;
 
+/**
+ *
+ * @author Gilberto
+ */
 @Component
-public class GenericInjectComponent
+public class ComplexInjectComponent implements GenericService<Map<String,List<Integer>>>
 {
-    //TODO test for array injection of generic services.
-    private GenericService<String>[] gsOfStrArr;
-
-    @Inject
-    private GenericService<String> gsOfStr;
-
-    @Inject
-    private GenericService<Object> gsOfObject;
     
-    @Inject
-    private GenericService<Map<String,List<Integer>>> complexInject;
-
-    public GenericService<String> getGsOfStr()
-    {
-        return gsOfStr;
-    }
-
-    public GenericService<Object> getGsOfObject()
-    {
-        return gsOfObject;
-    }
-
-    public GenericService<Map<String, List<Integer>>> getComplexInject()
-    {
-        return complexInject;
-    }
 }

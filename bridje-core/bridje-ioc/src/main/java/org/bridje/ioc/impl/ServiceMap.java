@@ -17,91 +17,122 @@
 package org.bridje.ioc.impl;
 
 import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bridje.ioc.annotations.Priority;
 
 class ServiceMap
 {
-    private final Map<ServiceInfo, List<Class>> map;
+    private final Map<Type, List<Class<?>>> map;
 
     public ServiceMap(ClassList list)
     {
-        map = new LinkedHashMap<>();
+        map = new HashMap<>();
         for (Class component : list)
         {
-            List<ServiceInfo> services = findServices(component);
-            for (ServiceInfo service : services)
+            List<Type> services = findServices(component);
+            for (Type service : services)
             {
                 addComponentToService(service, component);
             }
         }
+        for (List<Class<?>> value : map.values())
+        {
+            Collections.sort(value, (Class<?> c1, Class<?> c2) ->
+            {
+                Priority a1 = c1.getAnnotation(Priority.class);
+                Priority a2 = c2.getAnnotation(Priority.class);
+                int v1 = Integer.MAX_VALUE;
+                int v2 = Integer.MAX_VALUE;
+                if(a1 != null)
+                {
+                    v1 = a1.value();
+                }
+                if(a2 != null)
+                {
+                    v2 = a2.value();
+                }
+                return v1 - v2;
+            });
+        }
     }
-    
-    public <T> Class<? extends T> findOne(ServiceInfo service)
+
+    public <T> Class<? extends T> findOne(Type service)
     {
-        List<Class> lst = map.get(service);
+        List<Class<?>> lst = map.get(service);
         if(lst == null || lst.isEmpty())
         {
             return null;
         }
-        return lst.get(0);
+        return (Class)lst.get(0);
     }
 
-    public <T> boolean exists(ServiceInfo service)
+    public <T> boolean exists(Type service)
     {
         return map.containsKey(service);
     }
-    
-    public ClassList findAll(ServiceInfo service)
+
+    public ClassList findAll(Type service)
     {
         return new ClassList(map.get(service));
     }
 
-    private List<ServiceInfo> findServices(Class component)
+    private List<Type> findServices(Class<?> component)
     {
-        List<ServiceInfo> result = new LinkedList<>();
-        result.add(new ServiceInfo(component, null));
+        List<Type> result = new ArrayList<>();
+        result.add(component);
         fillServicesSuperClasses(component, result);
         fillServicesIntefaces(component, result);
         return result;
     }
-    
-    private void fillServicesSuperClasses(Class component, List<ServiceInfo> servicesList)
+
+    private void fillServicesSuperClasses(Class<?> component, List<Type> servicesList)
     {
         Type supClass = component.getGenericSuperclass();
         while(supClass != null && supClass != Object.class)
         {
-            ServiceInfo serviceInf = ServiceInfo.createServiceInf(supClass);
-            if(!servicesList.contains(serviceInf))
+            if(!servicesList.contains(supClass))
             {
-                servicesList.add(serviceInf);
+                servicesList.add(supClass);
             }
-            supClass = serviceInf.getMainClass().getGenericSuperclass();
+            Class cls = ClassUtils.findClassFromType(supClass);
+            if(cls != null)
+            {
+                supClass = cls.getGenericSuperclass();
+            }
+            else
+            {
+                supClass = null;
+            }
         }
     }
     
-    private void fillServicesIntefaces(Class cls, List<ServiceInfo> servicesList)
+    private void fillServicesIntefaces(Class<?> cls, List<Type> servicesList)
     {
         Type[] interfaces = cls.getGenericInterfaces();
         for (Type ifc : interfaces)
         {
-            ServiceInfo serviceInf = ServiceInfo.createServiceInf(ifc);
-            if(!servicesList.contains(serviceInf))
+            if(!servicesList.contains(ifc))
             {
-                servicesList.add(serviceInf);
+                servicesList.add(ifc);
             }
-            fillServicesIntefaces(serviceInf.getMainClass(), servicesList);
+            Class icfCls = ClassUtils.findClassFromType(ifc);
+            if(icfCls != null)
+            {
+                fillServicesIntefaces(icfCls, servicesList);
+            }
         }
     }
 
-    private void addComponentToService(ServiceInfo service, Class component)
+    private void addComponentToService(Type service, Class<?> component)
     {
-        List<Class> components = map.get(service);
+        List<Class<?>> components = map.get(service);
         if(components == null)
         {
-            components = new LinkedList<>();
+            components = new ArrayList<>();
             map.put(service, components);
         }
         if(!components.contains(component))

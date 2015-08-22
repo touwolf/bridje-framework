@@ -1,6 +1,7 @@
 
 package org.bridje.ioc;
 
+import java.lang.reflect.Type;
 /**
  * Represents a context in witch components are managed.
  * This interfaz is mean to be use (not for implementation), 
@@ -28,7 +29,7 @@ public interface IocContext
      */
     <T> T find(Class<T> service);
     
-    <T> T find(Class<T> service, Class[] params);
+    <T> T findGeneric(Type service, Class<T> resultCls);
     
     /**
      * This method finds all the components that provides the given service.
@@ -42,7 +43,7 @@ public interface IocContext
      */
     <T> T[] findAll(Class<T> service);
 
-    <T> T[] findAll(Class<T> service, Class[] params);
+    <T> T[] findAllGeneric(Type service, Class<T> resultCls);
 
     /**
      * This method finds if a service is provided by a least one component in the 

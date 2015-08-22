@@ -3,10 +3,12 @@ package org.bridje.ioc.impl;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import static javafx.scene.input.KeyCode.T;
 import org.bridje.ioc.IocContext;
 
 class IocContextImpl implements IocContext
@@ -35,7 +37,7 @@ class IocContextImpl implements IocContext
     @Override
     public <T> T find(Class<T> service)
     {
-        Class<? extends T> component = serviceMap.findOne(new ServiceInfo(service, null));
+        Class<? extends T> component = serviceMap.findOne(service);
         if(component != null)
         {
             return container.create(component);
@@ -46,7 +48,7 @@ class IocContextImpl implements IocContext
     @Override
     public <T> T[] findAll(Class<T> service)
     {
-        ClassList components = serviceMap.findAll(new ServiceInfo(service, null));
+        ClassList components = serviceMap.findAll(service);
         if(components != null)
         {
             List resultList = new LinkedList();
@@ -69,24 +71,24 @@ class IocContextImpl implements IocContext
     @Override
     public boolean exists(Class service)
     {
-        return serviceMap.exists(new ServiceInfo(service, null));
+        return serviceMap.exists(service);
     }
 
     @Override
-    public <T> T find(Class<T> service, Class[] params)
+    public <T> T findGeneric(Type service, Class<T> resultCls)
     {
-        Class<? extends T> component = serviceMap.findOne(new ServiceInfo(service, params));
+        Class component = serviceMap.findOne(service);
         if(component != null)
         {
-            return container.create(component);
+            return (T)container.create(component);
         }
         return null;
     }
 
     @Override
-    public <T> T[] findAll(Class<T> service, Class[] params)
+    public <T> T[] findAllGeneric(Type service, Class<T> resultClass)
     {
-        ClassList components = serviceMap.findAll(new ServiceInfo(service, null));
+        ClassList components = serviceMap.findAll(service);
         if(components != null)
         {
             List resultList = new LinkedList();
@@ -94,7 +96,7 @@ class IocContextImpl implements IocContext
             {
                 resultList.add(find(component));
             }
-            T[] result = (T[])Array.newInstance(service, components.size());
+            T[] result = (T[])Array.newInstance(resultClass, components.size());
             return (T[])resultList.toArray(result);
         }
         return null;
