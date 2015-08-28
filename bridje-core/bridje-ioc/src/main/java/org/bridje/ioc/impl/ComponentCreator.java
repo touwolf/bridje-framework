@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Bridje.org.
+ * Copyright 2015 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,10 @@ import org.bridje.ioc.annotations.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Construct;
 
+/**
+ * 
+ * @author gilberto
+ */
 class ComponentCreator
 {
     private static final Logger LOG = Logger.getLogger(ComponentCreator.class.getName());

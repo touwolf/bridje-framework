@@ -1,7 +1,23 @@
+/*
+ * Copyright 2015 Bridje Framework.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.bridje.ioc;
 
 import java.lang.reflect.Type;
+
 /**
  * Represents a context in witch components are managed.
  * This interfaz is mean to be use (not for implementation), 
@@ -29,6 +45,18 @@ public interface IocContext
      */
     <T> T find(Class<T> service);
     
+    /**
+     * This method finds the highest priority component that provides the 
+     * given generic service.
+     * 
+     * @param <T> The generic type of the class of the service that this method 
+     * should return.
+     * @param service The java.​lang.​reflect.Type that represents the service that this method
+     * must find.
+     * @param resultCls The expexted return class of this method.
+     * @return An object that extends or implement the service provided, 
+     * or null if no component provides this services in the context.
+     */
     <T> T findGeneric(Type service, Class<T> resultCls);
     
     /**
@@ -43,6 +71,17 @@ public interface IocContext
      */
     <T> T[] findAll(Class<T> service);
 
+    /**
+     * This method finds all the components that provides the given generic service.
+     * 
+     * @param <T> The generic type of the class of the service that this method 
+     * should find.
+     * @param service The class that represents the service that this method
+     * must find.
+     * @param resultCls The expexted return class of this method.
+     * @return An array of objects who extends or implement the service provided,
+     * or an empty array if no component provides this services in the context.
+     */
     <T> T[] findAllGeneric(Type service, Class<T> resultCls);
 
     /**

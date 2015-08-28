@@ -21,6 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.IocContext;
 
+/**
+ * 
+ * @author gilberto
+ */
 public class IocContextFactory
 {
     private static final Logger LOG = Logger.getLogger(IocContextFactory.class.getName());

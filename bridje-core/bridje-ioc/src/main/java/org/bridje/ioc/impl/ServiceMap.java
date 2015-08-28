@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 import org.bridje.ioc.annotations.Priority;
 
+/**
+ * 
+ * @author gilberto
+ */
 class ServiceMap
 {
     private final Map<Type, List<Class<?>>> map;
