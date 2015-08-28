@@ -30,7 +30,7 @@
                 <artifactId>maven-processor-plugin</artifactId>
                 <configuration>
                     <processors>
-                        <processor>org.bridje.ioc.annotations.ContextAnnotProcessor</processor>
+                        <processor>org.bridje.ioc.annotations.ComponentAnnotProcessor</processor>
                     </processors>
                 </configuration>
                 <executions>

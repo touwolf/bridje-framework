@@ -29,11 +29,34 @@ public class IocContextFactory
 {
     private static final Logger LOG = Logger.getLogger(IocContextFactory.class.getName());
 
+    /**
+     * Internal holder for the single APPLICATION scoped IocContext instance.
+     */
+    private static IocContext context;
+
+    /**
+     * Private constructor so this object cannot be instantiated.
+     */
     private IocContextFactory()
     {
+        
+    }
+
+    /**
+     * This method returns the IocContext for the application scope.
+     * 
+     * @return An object providing de IocContext for the application scope.
+     */
+    public static IocContext context()
+    {
+        if(context == null)
+        {
+            context = createApplicationContext();
+        }
+        return context;
     }
     
-    public static IocContext createApplicationContext()
+    private static IocContext createApplicationContext()
     {
         try
         {

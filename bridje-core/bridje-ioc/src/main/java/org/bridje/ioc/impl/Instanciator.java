@@ -33,13 +33,13 @@ import org.bridje.ioc.annotations.Construct;
  * 
  * @author gilberto
  */
-class ComponentCreator
+class Instanciator
 {
-    private static final Logger LOG = Logger.getLogger(ComponentCreator.class.getName());
+    private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());
 
     private final IocContext context;
 
-    public ComponentCreator(IocContext context)
+    public Instanciator(IocContext context)
     {
         this.context = context;
     }

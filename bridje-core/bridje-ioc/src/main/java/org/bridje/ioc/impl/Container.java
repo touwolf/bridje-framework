@@ -24,16 +24,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author gilberto
  */
-class IocContainer
+class Container
 {
     private final Map<Class, Object> components;
 
-    private final ComponentCreator creator;
+    private final Instanciator instanciator;
 
-    public IocContainer(ComponentCreator creator, List instances)
+    public Container(Instanciator creator, List instances)
     {
         this.components = new ConcurrentHashMap<>();
-        this.creator = creator;
+        this.instanciator = creator;
         for (Object instance : instances)
         {
             components.put(instance.getClass(), instance);
@@ -59,13 +59,13 @@ class IocContainer
         }
         else
         {
-            T obj = creator.instantiate(cls);
+            T obj = instanciator.instantiate(cls);
             if(obj == null)
             {
                 return null;
             }
             components.put(cls, obj);
-            creator.injectDependencies(cls, obj);
+            instanciator.injectDependencies(cls, obj);
             return obj;
         }
     }

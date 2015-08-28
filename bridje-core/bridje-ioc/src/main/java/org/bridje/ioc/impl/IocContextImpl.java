@@ -19,8 +19,8 @@ package org.bridje.ioc.impl;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.bridje.ioc.IocContext;
@@ -35,21 +35,22 @@ class IocContextImpl implements IocContext
     
     private final String scope;
 
-    private final ClassList componensClasses;
+    private final ClassSet classSet;
 
-    private final ComponentCreator componentCreator;
+    private final Instanciator creator;
     
     private final ServiceMap serviceMap;
     
-    private final IocContainer container;
+    private final Container container;
 
     public IocContextImpl(String scope) throws IOException
     {
         this.scope = scope;
-        componentCreator = new ComponentCreator(this);
-        componensClasses = new ClassList(ClassList.loadFromClassPath(scope), new ClassList(this.getClass()));
-        serviceMap = new ServiceMap(componensClasses);
-        container = new IocContainer(componentCreator, Arrays.asList(new Object[]{this}));
+        creator = new Instanciator(this);
+        ClassSet pcc = new ClassSet(this.getClass());
+        classSet = new ClassSet(ClassSet.findByScope(scope), pcc);
+        serviceMap = new ServiceMap(ServiceMap.findByScope(scope), pcc);
+        container = new Container(creator, Arrays.asList(new Object[]{this}));
     }
 
     @Override
@@ -66,10 +67,10 @@ class IocContextImpl implements IocContext
     @Override
     public <T> T[] findAll(Class<T> service)
     {
-        ClassList components = serviceMap.findAll(service);
+        List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
-            List resultList = new LinkedList();
+            ArrayList resultList = new ArrayList(components.size());
             for (Class component : components)
             {
                 resultList.add(find(component));
@@ -83,7 +84,7 @@ class IocContextImpl implements IocContext
     @Override
     public boolean existsComponent(Class cls)
     {
-        return componensClasses.contains(cls);
+        return classSet.contains(cls);
     }
 
     @Override
@@ -106,11 +107,11 @@ class IocContextImpl implements IocContext
     @Override
     public <T> T[] findAllGeneric(Type service, Class<T> resultClass)
     {
-        ClassList components = serviceMap.findAll(service);
+        List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
-            List resultList = new LinkedList();
-            for (Class component : components)
+            List resultList = new ArrayList(components.size());
+            for (Class<?> component : components)
             {
                 resultList.add(find(component));
             }

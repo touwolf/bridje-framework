@@ -42,7 +42,7 @@ import javax.tools.StandardLocation;
  */
 @SupportedAnnotationTypes("org.bridje.ioc.annotations.Component")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class ContextAnnotProcessor extends AbstractProcessor
+public class ComponentAnnotProcessor extends AbstractProcessor
 {
     private Filer filer;
 
@@ -50,7 +50,7 @@ public class ContextAnnotProcessor extends AbstractProcessor
 
     private Writer writer;
 
-    private static final Logger LOG = Logger.getLogger(ContextAnnotProcessor.class.getName());
+    private static final Logger LOG = Logger.getLogger(ComponentAnnotProcessor.class.getName());
 
     public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/components.properties";
     

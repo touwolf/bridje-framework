@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bridje.ioc.annotations.Priority;
 
 /**
@@ -30,37 +31,31 @@ import org.bridje.ioc.annotations.Priority;
  */
 class ServiceMap
 {
+    private static Map<String, ServiceMap> serviceMapCache;
+
     private final Map<Type, List<Class<?>>> map;
 
-    public ServiceMap(ClassList list)
+    public ServiceMap(ServiceMap baseMap, ClassSet list)
     {
         map = new HashMap<>();
-        for (Class component : list)
+        if(baseMap != null)
         {
-            List<Type> services = findServices(component);
-            for (Type service : services)
+            map.putAll(baseMap.map);
+        }
+        if(list != null)
+        {
+            for (Class component : list)
             {
-                addComponentToService(service, component);
+                List<Type> services = findServices(component);
+                for (Type service : services)
+                {
+                    addComponentToService(service, component);
+                }
             }
         }
         for (List<Class<?>> value : map.values())
         {
-            Collections.sort(value, (Class<?> c1, Class<?> c2) ->
-            {
-                Priority a1 = c1.getAnnotation(Priority.class);
-                Priority a2 = c2.getAnnotation(Priority.class);
-                int v1 = Integer.MAX_VALUE;
-                int v2 = Integer.MAX_VALUE;
-                if(a1 != null)
-                {
-                    v1 = a1.value();
-                }
-                if(a2 != null)
-                {
-                    v2 = a2.value();
-                }
-                return v1 - v2;
-            });
+            sort(value);
         }
     }
 
@@ -79,11 +74,31 @@ class ServiceMap
         return map.containsKey(service);
     }
 
-    public ClassList findAll(Type service)
+    public List<Class<?>> findAll(Type service)
     {
-        return new ClassList(map.get(service));
+        return Collections.unmodifiableList(map.get(service));
     }
 
+    public static ServiceMap findByScope(String scope)
+    {
+        if(serviceMapCache == null)
+        {
+            serviceMapCache = new ConcurrentHashMap<>();
+        }
+        if(!serviceMapCache.containsKey(scope))
+        {
+            ClassSet classSet = ClassSet.findByScope(scope);
+            if(classSet != null)
+            {
+                ServiceMap result = new ServiceMap(null, classSet);
+                serviceMapCache.put(scope, result);
+                return result;
+            }
+            return null;
+        }
+        return serviceMapCache.get(scope);
+    }
+    
     private List<Type> findServices(Class<?> component)
     {
         List<Type> result = new ArrayList<>();
@@ -143,5 +158,25 @@ class ServiceMap
         {
             components.add(component);
         }
+    }
+
+    private void sort(List<Class<?>> value)
+    {
+        Collections.sort(value, (Class<?> c1, Class<?> c2) ->
+        {
+            Priority a1 = c1.getAnnotation(Priority.class);
+            Priority a2 = c2.getAnnotation(Priority.class);
+            int v1 = Integer.MAX_VALUE;
+            int v2 = Integer.MAX_VALUE;
+            if(a1 != null)
+            {
+                v1 = a1.value();
+            }
+            if(a2 != null)
+            {
+                v2 = a2.value();
+            }
+            return v1 - v2;
+        });
     }
 }

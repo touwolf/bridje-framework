@@ -17,7 +17,6 @@
 package org.bridje.ioc;
 
 import org.bridje.ioc.impl.IocContextFactory;
-
 /**
  * Facade for the Bridje IoC API.
  * this class provides the method context() which will
@@ -49,7 +48,7 @@ public class Ioc
     {
         if(context == null)
         {
-            context = IocContextFactory.createApplicationContext();
+            context = IocContextFactory.context();
         }
         return context;
     }
