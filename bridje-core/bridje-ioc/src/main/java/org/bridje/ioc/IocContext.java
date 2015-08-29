@@ -26,7 +26,7 @@ import java.util.Collection;
  * in the scope that it manages.
  * 
  * An implementetion of this interface can be obtained via the Ioc interface
- * or by injecting {@see org.bridje.ioc.annotations.Inject} it in any component
+ * or by injecting {@link org.bridje.ioc.annotations.Inject} it in any component
  * you whant.
  * 
  * @author gilberto
@@ -103,23 +103,28 @@ public interface IocContext
     boolean existsComponent(Class component);
     
     /**
+     * The parent of this context.
      * 
-     * @return 
+     * @return The IocContext instance representing the parent of this context,
+     * or null if this context has no parent.
      */
     IocContext getParent();
     
     /**
+     * Create a child IocContext of this context.
      * 
-     * @param scope
-     * @return 
+     * @param scope The scope of the new context.
+     * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope);
     
     /**
+     * Create a child IocContext of this context.
      * 
-     * @param scope
-     * @param instances
-     * @return 
+     * @param scope The scope of the new context.
+     * @param instances A collection of objects that will be components of the 
+     * new context.
+     * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Collection instances);
 }

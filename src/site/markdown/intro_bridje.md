@@ -1,0 +1,3 @@
+Welcome to Bridje
+=====================
+Bridje is a Java framework ....

@@ -34,8 +34,9 @@ import java.lang.annotation.Target;
 public @interface Priority
 {
     /**
+     * The priority of the component.
      * 
-     * @return 
+     * @return An intenger witch represents the priority of the component.
      */
     int value() default Integer.MAX_VALUE;
 }

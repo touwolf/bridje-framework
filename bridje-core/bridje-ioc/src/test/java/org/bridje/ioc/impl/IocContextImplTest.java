@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.test.ComplexInjectComponent;
-import org.bridje.ioc.test.ConcreteCompoenent;
+import org.bridje.ioc.test.ConcreteComponent;
 import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
 import org.bridje.ioc.test.DummyServiceProvider2;
@@ -96,7 +96,7 @@ public class IocContextImplTest
     public void testInjectAndHerarchy() throws IOException
     {
         IocContext instance = Ioc.context();
-        ConcreteCompoenent conComp = instance.find(ConcreteCompoenent.class);
+        ConcreteComponent conComp = instance.find(ConcreteComponent.class);
         assertNotNull(conComp.getDummyComponent());
         assertNotNull(conComp.getServices());
         assertTrue(conComp.getServices()[0] instanceof DummyServiceProvider);

@@ -36,7 +36,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 /**
- * Annotations processor for the {@see org.bridje.ioc.annotations.Component} annotation.
+ * Annotations processor for the {@link Component} annotation.
  * 
  * @author gilberto
  */

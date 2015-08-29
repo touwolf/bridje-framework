@@ -47,9 +47,6 @@ class ClassSet implements Iterable<Class<?>>
     
     private static Map<String,String> propFilesCache;
 
-    /**
-     * 
-     */
     private final Set<Class<?>> clsSet;
 
     /**
@@ -84,10 +81,6 @@ class ClassSet implements Iterable<Class<?>>
         this(asList(classes));
     }
 
-    /**
-     * 
-     * @param lsts 
-     */
     public ClassSet(ClassSet... lsts)
     {
         this();
@@ -103,40 +96,22 @@ class ClassSet implements Iterable<Class<?>>
         }
     }
     
-    /**
-     * 
-     * @param cls
-     * @return 
-     */
     public boolean contains(Class cls)
     {
         return clsSet.contains(cls);
     }
     
-    /**
-     * 
-     * @return 
-     */
     public boolean isEmpty()
     {
         return clsSet.isEmpty();
     }
 
-    /**
-     * 
-     * @return 
-     */
     @Override
     public Iterator<Class<?>> iterator()
     {
         return clsSet.iterator();
     }
     
-    /**
-     * 
-     * @param scope
-     * @return 
-     */
     public static ClassSet findByScope(String scope)
     {
         if(classSetCache == null)
@@ -163,12 +138,6 @@ class ClassSet implements Iterable<Class<?>>
         return null;
     }
     
-    /**
-     * 
-     * @param scope
-     * @return
-     * @throws IOException 
-     */
     private static ClassSet loadFromClassPath(String scope) throws IOException
     {
         Set<Class<?>> clsList = new HashSet<>();
@@ -222,21 +191,12 @@ class ClassSet implements Iterable<Class<?>>
         }
         return result;
     }
-    
-    /**
-     * 
-     * @return 
-     */
+
     public int size()
     {
         return clsSet.size();
     }
     
-    /**
-     * 
-     * @param clss
-     * @return 
-     */
     private static Collection<Class<?>> asList(Class<?>... clss)
     {
         if(clss == null || clss.length == 0)

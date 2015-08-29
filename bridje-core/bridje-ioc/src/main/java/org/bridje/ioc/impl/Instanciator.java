@@ -29,10 +29,6 @@ import org.bridje.ioc.annotations.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Construct;
 
-/**
- * 
- * @author gilberto
- */
 class Instanciator
 {
     private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());

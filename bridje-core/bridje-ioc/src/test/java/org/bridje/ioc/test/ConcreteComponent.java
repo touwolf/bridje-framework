@@ -20,7 +20,7 @@ import org.bridje.ioc.annotations.Component;
 import org.bridje.ioc.annotations.Inject;
 
 @Component
-public class ConcreteCompoenent extends AbstractComponent
+public class ConcreteComponent extends AbstractComponent
 {
     @Inject
     private SomeService[] services;

@@ -25,10 +25,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bridje.ioc.annotations.Priority;
 
-/**
- * 
- * @author gilberto
- */
 class ServiceMap
 {
     private static Map<String, ServiceMap> serviceMapCache;
