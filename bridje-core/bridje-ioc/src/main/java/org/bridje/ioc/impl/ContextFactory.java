@@ -25,9 +25,9 @@ import org.bridje.ioc.IocContext;
  * 
  * @author gilberto
  */
-public class IocContextFactory
+public class ContextFactory
 {
-    private static final Logger LOG = Logger.getLogger(IocContextFactory.class.getName());
+    private static final Logger LOG = Logger.getLogger(ContextFactory.class.getName());
 
     /**
      * Internal holder for the single APPLICATION scoped IocContext instance.
@@ -37,7 +37,7 @@ public class IocContextFactory
     /**
      * Private constructor so this object cannot be instantiated.
      */
-    private IocContextFactory()
+    private ContextFactory()
     {
         
     }
@@ -60,7 +60,7 @@ public class IocContextFactory
     {
         try
         {
-            return new IocContextImpl("APPLICATION");
+            return new ContextImpl();
         }
         catch(IOException ex)
         {

@@ -17,16 +17,29 @@
 package org.bridje.ioc.impl;
 
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  *
- * @author Gilberto
+ * @author gilberto
  */
 public class ClassUtils
 {
 
+    public static Type findParameterType(Parameter param)
+    {
+        if(param.getType().isArray())
+        {
+            return findTypeFromArray(param.getParameterizedType());
+        }
+        return param.getParameterizedType();
+    }
+    
     public static Type findTypeFromArray(Type supClass)
     {
         if(supClass instanceof GenericArrayType)
@@ -57,4 +70,14 @@ public class ClassUtils
         }
         return null;
     }    
+
+    public static Collection<Class<?>> findClasses(Collection instances)
+    {
+        List<Class<?>> arrList = new ArrayList();
+        for (Object instance : instances)
+        {
+            instances.add(instance.getClass());
+        }
+        return arrList;
+    }
 }

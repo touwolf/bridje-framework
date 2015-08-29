@@ -16,7 +16,7 @@
 
 package org.bridje.ioc;
 
-import org.bridje.ioc.impl.IocContextFactory;
+import org.bridje.ioc.impl.ContextFactory;
 /**
  * Facade for the Bridje IoC API.
  * this class provides the method context() which will
@@ -27,16 +27,10 @@ import org.bridje.ioc.impl.IocContextFactory;
 public class Ioc
 {
     /**
-     * Internal holder for the single APPLICATION scoped IocContext instance.
-     */
-    private static IocContext context;
-
-    /**
      * Private constructor so this object cannot be instantiated.
      */
     private Ioc()
     {
-        
     }
 
     /**
@@ -46,10 +40,6 @@ public class Ioc
      */
     public static IocContext context()
     {
-        if(context == null)
-        {
-            context = IocContextFactory.context();
-        }
-        return context;
+        return ContextFactory.context();
     }
 }

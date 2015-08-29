@@ -49,21 +49,11 @@ class Instanciator
     {
         try
         {
-            Constructor<?> constructor = findConstructorWithAnnotation(cls);
+            Constructor<?> constructor = findConstructor(cls);
             if(constructor == null)
             {
-                constructor = findConstructorWithParameters(cls);
-                if(constructor == null)
-                {
-                    constructor = findDefaultConstructor(cls);
-                }
-            }
-            if(constructor == null)
-            {
-                LOG.log(Level.WARNING, "Couldn't find a default constructor for {}", cls.getName());
                 return null;
             }
-            constructor.setAccessible(true);
             Object[] parameters = findParameters(constructor);
             return parameters.length == 0 ? (T)constructor.newInstance() : (T)constructor.newInstance(parameters);
         }
@@ -72,92 +62,6 @@ class Instanciator
             LOG.warning(ex.getMessage());
         }
         return null;
-    }
-    
-    private Constructor<?> findConstructorWithAnnotation(Class cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            Construct constructAnnot = constructor.getAnnotation(Construct.class);
-            if (constructAnnot != null)
-            {                    
-                return constructor;
-            }
-        }
-        return null;
-    }
-
-    private Constructor<?> findConstructorWithParameters(Class cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            //If it is not constructor by default we try to create components in the constructor how parameters.
-            if (constructor.getParameterTypes().length != 0)
-            {
-                Parameter[] parameters = constructor.getParameters();
-                boolean allExists = true;
-                for (Parameter parameter : parameters)
-                {
-                    if(parameter.getType().isArray())
-                    {
-                        Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
-                        Class resultCls = ClassUtils.findClassFromType(arrType);
-                        if(context.findAllGeneric(arrType, resultCls) == null)
-                        {
-                            allExists = false;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
-                        if(context.findGeneric(parameter.getParameterizedType(), resultCls) == null)
-                        {
-                            allExists = false;
-                            break;
-                        }
-                    }
-                }
-                if(allExists)
-                {
-                    return constructor;
-                }
-            }
-        }
-        return null;
-    }
-
-    private <T> Constructor<?> findDefaultConstructor(Class<T> cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            if (constructor.getParameterTypes().length == 0)
-            {
-                return constructor;
-            }
-        }
-        return null;
-    }
-
-    private Object[] findParameters(Constructor<?> constructor)
-    {
-        List<Object> instances = new LinkedList<>();
-        Parameter[] parameters = constructor.getParameters();
-        for (Parameter parameter : parameters)
-        {
-            if(parameter.getType().isArray())
-            {
-                Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
-                Class resultCls = ClassUtils.findClassFromType(arrType);
-                instances.add(context.findAllGeneric(arrType, resultCls));
-            }
-            else
-            {
-                Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
-                instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
-            }
-        }
-        return instances.toArray();
     }
 
     public void injectDependencies(Class cls, Object obj)
@@ -204,5 +108,102 @@ class Instanciator
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    }
+    
+    private <T> Constructor<?> findConstructor(Class<T> cls)
+    {
+        Constructor<?> constructor = findConstructorWithAnnotation(cls);
+        if(constructor == null)
+        {
+            constructor = findConstructorWithParameters(cls);
+            if(constructor == null)
+            {
+                constructor = findDefaultConstructor(cls);
+            }
+        }
+        if(constructor == null)
+        {
+            LOG.log(Level.WARNING, "Couldn't find a default constructor for {}", cls.getName());
+            return null;
+        }
+        constructor.setAccessible(true);
+        return constructor;
+    }
+    
+    private Constructor<?> findConstructorWithAnnotation(Class cls)
+    {
+        for (Constructor<?> constructor : cls.getDeclaredConstructors())
+        {
+            Construct constructAnnot = constructor.getAnnotation(Construct.class);
+            if (constructAnnot != null)
+            {                    
+                return constructor;
+            }
+        }
+        return null;
+    }
+
+    private Constructor<?> findConstructorWithParameters(Class cls)
+    {
+        for (Constructor<?> constructor : cls.getDeclaredConstructors())
+        {
+            //If it is not the default constructor we find out if we can create de component by injecting all his parameters.
+            if (constructor.getParameterTypes().length != 0)
+            {
+                if(allParametersExists(constructor.getParameters()))
+                {
+                    return constructor;
+                }
+            }
+        }
+        return null;
+    }
+
+    private <T> Constructor<?> findDefaultConstructor(Class<T> cls)
+    {
+        for (Constructor<?> constructor : cls.getDeclaredConstructors())
+        {
+            if (constructor.getParameterTypes().length == 0)
+            {
+                return constructor;
+            }
+        }
+        return null;
+    }
+
+    private Object[] findParameters(Constructor<?> constructor)
+    {
+        List<Object> instances = new LinkedList<>();
+        Parameter[] parameters = constructor.getParameters();
+        for (Parameter parameter : parameters)
+        {
+            if(parameter.getType().isArray())
+            {
+                Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
+                Class resultCls = ClassUtils.findClassFromType(arrType);
+                instances.add(context.findAllGeneric(arrType, resultCls));
+            }
+            else
+            {
+                Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
+                instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
+            }
+        }
+        return instances.toArray();
+    }
+
+    private boolean allParametersExists(Parameter[] parameters)
+    {
+        boolean allExists = true;
+        for (Parameter parameter : parameters)
+        {
+            Type paramType = ClassUtils.findParameterType(parameter);
+            if(!context.exists(paramType))
+            {
+                allExists = false;
+                break;
+            }
+        }
+        return allExists;
     }
 }

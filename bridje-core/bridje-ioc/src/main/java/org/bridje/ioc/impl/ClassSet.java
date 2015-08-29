@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -44,6 +45,8 @@ class ClassSet implements Iterable<Class<?>>
 
     private static Map<String,ClassSet> classSetCache;
     
+    private static Map<String,String> propFilesCache;
+
     /**
      * 
      */
@@ -140,24 +143,24 @@ class ClassSet implements Iterable<Class<?>>
         {
             classSetCache = new ConcurrentHashMap<>();
         }
-        if(!classSetCache.containsKey(scope))
+        if(classSetCache.containsKey(scope))
         {
-            try
+            return classSetCache.get(scope);
+        }
+        try
+        {
+            ClassSet result = loadFromClassPath(scope);
+            if(result != null)
             {
-                ClassSet result = loadFromClassPath(scope);
-                if(result != null)
-                {
-                    classSetCache.put(scope, result);
-                }
+                classSetCache.put(scope, result);
                 return result;
             }
-            catch(Exception ex)
-            {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-            return null;
         }
-        return classSetCache.get(scope);
+        catch(Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
     }
     
     /**
@@ -168,8 +171,40 @@ class ClassSet implements Iterable<Class<?>>
      */
     private static ClassSet loadFromClassPath(String scope) throws IOException
     {
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ComponentAnnotProcessor.COMPONENTS_RESOURCE_FILE);
         Set<Class<?>> clsList = new HashSet<>();
+        //An instance of IocContextImpl is always a component in every scope.
+        clsList.add(ContextImpl.class);
+        if(propFilesCache == null)
+        {
+            propFilesCache = loadPropFilesCache();
+        }
+        for (Map.Entry<String, String> entrySet : propFilesCache.entrySet())
+        {
+            String clsName = entrySet.getKey();
+            String compScope = entrySet.getValue();
+            if(null != compScope && compScope.equalsIgnoreCase(scope))
+            {
+                try
+                {
+                    clsList.add(Class.forName(clsName));
+                }
+                catch (ClassNotFoundException ex)
+                {
+                    LOG.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if(clsList.isEmpty())
+        {
+            return null;
+        }
+        return new ClassSet(clsList);
+    }
+
+    private static Map<String, String> loadPropFilesCache() throws IOException
+    {
+        Map<String, String> result = new HashMap<>();
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ComponentAnnotProcessor.COMPONENTS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();
@@ -182,26 +217,12 @@ class ClassSet implements Iterable<Class<?>>
             {
                 String clsName = (String)key;
                 String compScope = (String)value;
-                if(null != compScope && compScope.equalsIgnoreCase(scope))
-                {
-                    try
-                    {
-                        clsList.add(Class.forName(clsName));
-                    }
-                    catch (ClassNotFoundException ex)
-                    {
-                        LOG.log(Level.SEVERE, null, ex);
-                    }
-                }
+                result.put(clsName, compScope);
             });
         }
-        if(clsList.isEmpty())
-        {
-            return null;
-        }
-        return new ClassSet(clsList);
+        return result;
     }
-
+    
     /**
      * 
      * @return 

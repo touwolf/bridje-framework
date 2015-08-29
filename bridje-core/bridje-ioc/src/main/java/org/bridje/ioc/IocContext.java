@@ -17,6 +17,7 @@
 package org.bridje.ioc;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * Represents a context in witch components are managed.
@@ -88,10 +89,10 @@ public interface IocContext
      * This method finds if a service is provided by a least one component in the 
      * context.
      * 
-     * @param service The class of the service to look for.
+     * @param service The type of the service to look for.
      * @return true A least one component provides this service, false otherwise.
      */
-    boolean exists(Class service);
+    boolean exists(Type service);
     
     /**
      * This method finds if the given class is a component of the context.
@@ -100,4 +101,25 @@ public interface IocContext
      * @return true This class represents a component of the context, false otherwise.
      */
     boolean existsComponent(Class component);
+    
+    /**
+     * 
+     * @return 
+     */
+    IocContext getParent();
+    
+    /**
+     * 
+     * @param scope
+     * @return 
+     */
+    IocContext createChild(String scope);
+    
+    /**
+     * 
+     * @param scope
+     * @param instances
+     * @return 
+     */
+    IocContext createChild(String scope, Collection instances);
 }
