@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <github.global.server>github</github.global.server>
     </properties>
 
     <modules>
@@ -119,13 +120,16 @@
                 <version>0.12</version>
                 <configuration>
                     <message>Creating site for ${project.version}</message>
+                    <path>bridje-framework</path>
+                    <merge>false</merge>
+                    <force>true</force>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>site</goal>
                         </goals>
-                        <phase>site</phase>
+                        <phase>site-deploy</phase>
                     </execution>
                 </executions>
             </plugin>
