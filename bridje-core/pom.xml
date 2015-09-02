@@ -19,5 +19,6 @@
 
     <modules>
         <module>bridje-ioc</module>
+        <module>bridje-vfs</module>
     </modules>
 </project>
