@@ -17,8 +17,10 @@
 package org.bridje.ioc.test;
 
 import org.bridje.ioc.annotations.Component;
+import org.bridje.ioc.annotations.Priority;
 
 @Component
+@Priority(value = 1)
 public class DummyServiceProvider implements SomeService
 {
     

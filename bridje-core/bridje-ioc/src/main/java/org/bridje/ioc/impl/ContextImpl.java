@@ -277,6 +277,11 @@ class ContextImpl implements IocContext
 
     private <T> Class<? extends T> findRegisterService(Class<T> service) 
     {
+        if(null == registers)
+        {
+            return null;
+        }
+        
         for (Register register : registers) 
         {
             if(register.getService() == service)
