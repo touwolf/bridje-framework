@@ -1,7 +1,2 @@
-/bridje-core/bridje-ioc/target/
-/target/
-/bridje-core/target/
-/bridje-core/bridje-ioc - copia/target/
-/bridje-core/bridje-sql/target/
-*.class
+**/target/**
 *.class
