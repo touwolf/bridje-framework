@@ -30,7 +30,7 @@ public class ServiceRegister
     
     public Register implementBy(Class<?> component)
     {
-        if(!(component.isInstance(service)))
+        if(!(component.isAssignableFrom(service)))
         {
             throw new ClassCastException();
         }
