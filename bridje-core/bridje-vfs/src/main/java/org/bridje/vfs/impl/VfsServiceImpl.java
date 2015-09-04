@@ -120,7 +120,6 @@ class VfsServiceImpl implements VfsService
         currentFolder.addFolder(new PhysicalFolder(source, mountPath, new Path(mountName)));
     }
 
-
     @Override
     public void travel(VirtualFileVisitor visitor)
     {
