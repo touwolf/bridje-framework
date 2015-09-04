@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ class ContextImpl implements IocContext
     
     private final IocContext parent;
 
+    private List<Register> registers;
+    
     public ContextImpl() throws IOException
     {
         this("APPLICATION");
@@ -197,7 +200,13 @@ class ContextImpl implements IocContext
 
     private <T> T findInternal(Class<T> service)
     {
-        Class<? extends T> component = serviceMap.findOne(service);
+        Class<? extends T> component = findRegisterService(service);
+        if(component != null)
+        {
+            return container.create(component);
+        }
+        
+        component = serviceMap.findOne(service);
         if(component != null)
         {
             return container.create(component);
@@ -252,6 +261,30 @@ class ContextImpl implements IocContext
             T[] result = (T[])Array.newInstance(resultClass, components.size());
             return (T[])resultList.toArray(result);
         }
+        return null;
+    }
+
+    @Override
+    public void register(Register... registers) 
+    {
+        if(null == this.registers)
+        {
+            this.registers = new LinkedList<>();
+        }
+        
+        this.registers.addAll(Arrays.asList(registers));
+    }
+
+    private <T> Class<? extends T> findRegisterService(Class<T> service) 
+    {
+        for (Register register : registers) 
+        {
+            if(register.getService() == service)
+            {
+                return (Class<T>)register.getComponent();
+            }
+        }
+        
         return null;
     }
 }

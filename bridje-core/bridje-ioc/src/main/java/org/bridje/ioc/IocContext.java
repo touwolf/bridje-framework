@@ -18,6 +18,7 @@ package org.bridje.ioc;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import org.bridje.ioc.impl.Register;
 
 /**
  * Represents a context in witch components are managed.
@@ -127,4 +128,11 @@ public interface IocContext
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Collection instances);
+
+    /**
+     * Register services implement by especific components
+     * 
+     * @param register A list of register, linking services and components
+     */
+    void register(Register... register);
 }

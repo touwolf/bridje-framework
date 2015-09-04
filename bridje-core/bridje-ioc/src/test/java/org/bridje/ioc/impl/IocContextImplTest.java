@@ -129,4 +129,19 @@ public class IocContextImplTest
         assertTrue(instance.find(PriorityService.class) instanceof PriorityComp3);
         
     }
+    
+    @Test
+    public void testDefineService() throws IOException
+    {
+        IocContext instance = Ioc.context();
+        
+        instance.register(Service.
+                forThis(SomeService.class).
+                implementBy(DummyServiceProvider2.class)
+        );
+        SomeService service = instance.find(SomeService.class);
+        
+        assertTrue(service instanceof DummyServiceProvider2);
+        
+    }
 }
