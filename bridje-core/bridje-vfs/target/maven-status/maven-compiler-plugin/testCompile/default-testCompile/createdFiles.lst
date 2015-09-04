@@ -1,6 +1,0 @@
-org\bridje\vfs\PathTest.class
-org\bridje\vfs\VfsServiceTest.class
-org\bridje\vfs\SystemFsProvider.class
-org\bridje\vfs\TestVfsMountConfig.class
-org\bridje\vfs\FileVfsSource.class
-BRIDJE-INF\ioc\components.properties
