@@ -55,17 +55,22 @@ class ContextImpl implements IocContext
         this("APPLICATION");
     }
     
-    private ContextImpl(String scope) throws IOException
+    public ContextImpl(Register... register) throws IOException
     {
-        this(scope, null, null);
+        this("APPLICATION", null, register);
     }
     
-    private ContextImpl(String scope, Collection instances) throws IOException
+    private ContextImpl(String scope, Register... register) throws IOException
     {
-        this(scope, instances, null);
+        this(scope, null, null, register);
+    }
+    
+    private ContextImpl(String scope, Collection instances, Register... register) throws IOException
+    {
+        this(scope, instances, null, register);
     }
 
-    private ContextImpl(String scope, Collection instances, IocContext parent) throws IOException
+    private ContextImpl(String scope, Collection instances, IocContext parent, Register... register) throws IOException
     {
         this.scope = scope;
         this.parent = parent;
@@ -82,6 +87,7 @@ class ContextImpl implements IocContext
             serviceMap = ServiceMap.findByScope(scope);
         }
         container = new Container(creator, Arrays.asList(new Object[]{this}));
+        register(register);
     }
 
     @Override
@@ -179,17 +185,17 @@ class ContextImpl implements IocContext
     }
 
     @Override
-    public IocContext createChild(String scope)
+    public IocContext createChild(String scope, Register... registers)
     {
-        return createChild(scope, null);
+        return createChild(scope, null, registers);
     }
 
     @Override
-    public IocContext createChild(String scope, Collection instances)
+    public IocContext createChild(String scope, Collection instances, Register... registers)
     {
         try
         {
-            return new ContextImpl(scope, instances, this);
+            return new ContextImpl(scope, instances, this, registers);
         }
         catch(Exception ex)
         {
@@ -264,8 +270,7 @@ class ContextImpl implements IocContext
         return null;
     }
 
-    @Override
-    public void register(Register... registers) 
+    private void register(Register... registers) 
     {
         if(null == this.registers)
         {

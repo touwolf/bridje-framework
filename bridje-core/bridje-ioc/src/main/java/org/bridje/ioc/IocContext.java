@@ -110,14 +110,15 @@ public interface IocContext
      * or null if this context has no parent.
      */
     IocContext getParent();
-    
+
     /**
      * Create a child IocContext of this context.
      * 
      * @param scope The scope of the new context.
+     * @param register
      * @return The new IocContext instance created as child of this context.
      */
-    IocContext createChild(String scope);
+    IocContext createChild(String scope, Register... register);
     
     /**
      * Create a child IocContext of this context.
@@ -125,14 +126,8 @@ public interface IocContext
      * @param scope The scope of the new context.
      * @param instances A collection of objects that will be components of the 
      * new context.
+     * @param register
      * @return The new IocContext instance created as child of this context.
      */
-    IocContext createChild(String scope, Collection instances);
-
-    /**
-     * Register services implement by especific components
-     * 
-     * @param register A list of register, linking services and components
-     */
-    void register(Register... register);
+    IocContext createChild(String scope, Collection instances, Register... register);
 }

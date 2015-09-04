@@ -41,22 +41,30 @@ public class ContextFactory
     /**
      * This method returns the IocContext for the application scope.
      * 
+     * @param register
      * @return An object providing de IocContext for the application scope.
      */
-    public static IocContext context()
+    public static IocContext context(Register... register)
     {
         if(context == null)
         {
-            context = createApplicationContext();
+            context = createApplicationContext(register);
+        }
+        else
+        {
+            if(register != null && register.length > 0)
+            {
+                throw new IllegalStateException("The APPLICATION Context is already created.");
+            }
         }
         return context;
     }
     
-    private static IocContext createApplicationContext()
+    private static IocContext createApplicationContext(Register... register)
     {
         try
         {
-            return new ContextImpl();
+            return new ContextImpl(register);
         }
         catch(IOException ex)
         {

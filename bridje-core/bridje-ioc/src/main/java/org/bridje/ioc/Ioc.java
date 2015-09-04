@@ -17,6 +17,7 @@
 package org.bridje.ioc;
 
 import org.bridje.ioc.impl.ContextFactory;
+import org.bridje.ioc.impl.Register;
 /**
  * Facade for the Bridje IoC API.
  * this class provides the method context() which will
@@ -36,10 +37,11 @@ public class Ioc
     /**
      * This method returns the IocContext for the application scope.
      * 
+     * @param registers
      * @return An object providing de IocContext for the application scope.
      */
-    public static IocContext context()
+    public static IocContext context(Register... registers)
     {
-        return ContextFactory.context();
+        return ContextFactory.context(registers);
     }
 }

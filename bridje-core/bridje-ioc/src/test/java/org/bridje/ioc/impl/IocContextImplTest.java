@@ -6,6 +6,8 @@ import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.test.ComplexInjectComponent;
 import org.bridje.ioc.test.ConcreteComponent;
+import org.bridje.ioc.test.DefaultComponent2;
+import org.bridje.ioc.test.DefaultService;
 import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
 import org.bridje.ioc.test.DummyServiceProvider2;
@@ -36,6 +38,9 @@ public class IocContextImplTest
     @BeforeClass
     public static void setUpClass()
     {
+        Ioc.context(Service.
+                forThis(DefaultService.class).
+                implementBy(DefaultComponent2.class));
     }
 
     @AfterClass
@@ -83,7 +88,7 @@ public class IocContextImplTest
         IocContext instance = Ioc.context();
         SomeService result = instance.find(SomeService.class);
         assertNotNull(result);
-        //assertTrue(result instanceof DummyServiceProvider);
+        assertTrue(result instanceof DummyServiceProvider);
 
         SomeService[] resultArr = instance.findAll(SomeService.class);
         assertNotNull(resultArr);
@@ -134,14 +139,9 @@ public class IocContextImplTest
     public void testDefineService() throws IOException
     {
         IocContext instance = Ioc.context();
-        
-        instance.register(Service.
-                forThis(SomeService.class).
-                implementBy(DummyServiceProvider2.class)
-        );
-        SomeService service = instance.find(SomeService.class);
-        
-        assertTrue(service instanceof DummyServiceProvider2);
-        
+
+        DefaultService service = instance.find(DefaultService.class);
+
+        assertTrue(service instanceof DefaultComponent2);
     }
 }
