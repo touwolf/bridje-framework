@@ -72,7 +72,12 @@ class ServiceMap
 
     public List<Class<?>> findAll(Type service)
     {
-        return Collections.unmodifiableList(map.get(service));
+        List<Class<?>> result = map.get(service);
+        if(result == null)
+        {
+            return null;
+        }
+        return Collections.unmodifiableList(result);
     }
 
     public static ServiceMap findByScope(String scope)

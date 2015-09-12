@@ -19,6 +19,7 @@ package org.bridje.ioc.impl;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -28,6 +29,7 @@ import java.util.logging.Logger;
 import org.bridje.ioc.annotations.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Construct;
+import org.bridje.ioc.annotations.PostConstruct;
 
 class Instanciator
 {
@@ -58,6 +60,26 @@ class Instanciator
             LOG.warning(ex.getMessage());
         }
         return null;
+    }
+    
+    public void callPostConstruct(Class cls, Object obj)
+    {
+        Method[] declaredMethods = cls.getDeclaredMethods();
+        for (Method declaredMethod : declaredMethods)
+        {
+            PostConstruct annotation = declaredMethod.getAnnotation(PostConstruct.class);
+            if(annotation != null)
+            {
+                try
+                {
+                    declaredMethod.invoke(obj);
+                }
+                catch(Exception ex)
+                {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
     }
 
     public void injectDependencies(Class cls, Object obj)

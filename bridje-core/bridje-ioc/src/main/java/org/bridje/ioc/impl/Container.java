@@ -62,6 +62,7 @@ class Container
             }
             components.put(cls, obj);
             instanciator.injectDependencies(cls, obj);
+            instanciator.callPostConstruct(cls, obj);
             return obj;
         }
     }
