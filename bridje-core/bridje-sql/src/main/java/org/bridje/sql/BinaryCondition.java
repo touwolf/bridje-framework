@@ -18,15 +18,15 @@ package org.bridje.sql;
 
 import java.io.StringWriter;
 
-class ConditionImpl implements Condition
+class BinaryCondition implements Condition
 {
     private Operand rightOperand;
     
-    private String operator;
+    private SQLOperator operator;
     
     private Operand leftOperand;
 
-    public ConditionImpl(Operand leftOperand, String operator, Operand rightOperand)
+    public BinaryCondition(Operand leftOperand, SQLOperator operator, Operand rightOperand)
     {
         this.rightOperand = rightOperand;
         this.operator = operator;
@@ -43,12 +43,12 @@ class ConditionImpl implements Condition
         this.rightOperand = rightOperand;
     }
 
-    public String getOperator()
+    public SQLOperator getOperator()
     {
         return operator;
     }
 
-    public void setOperator(String operator)
+    public void setOperator(SQLOperator operator)
     {
         this.operator = operator;
     }
@@ -66,40 +66,30 @@ class ConditionImpl implements Condition
     @Override
     public Condition and(Condition condition)
     {
-        return new ConditionImpl(this, "AND", condition);
+        return new BinaryCondition(this, SQLOperator.AND, condition);
     }
 
     @Override
     public Condition or(Condition condition)
     {
-        return new ConditionImpl(this, "OR", condition);
+        return new BinaryCondition(this, SQLOperator.OR, condition);
     }
 
     @Override
     public Condition not()
     {
-        return new ConditionImpl(null, "NOT", this);
+        return new UnaryCondition(SQLOperator.NOT, this);
     }
 
     @Override
     public void writeSQL(StringWriter sw)
     {
         sw.append("(");
-        if(operator.equalsIgnoreCase("NOT"))
-        {
-            sw.append(" ");
-            sw.append(operator);
-            sw.append(" ");
-            writeOperand(sw, rightOperand);
-        }
-        else
-        {
-            writeOperand(sw, leftOperand);
-            sw.append(" ");
-            sw.append(operator);
-            sw.append(" ");
-            writeOperand(sw, rightOperand);
-        }
+        writeOperand(sw, leftOperand);
+        sw.append(" ");
+        sw.append(operator.toString());
+        sw.append(" ");
+        writeOperand(sw, rightOperand);
         sw.append(")");
     }
 

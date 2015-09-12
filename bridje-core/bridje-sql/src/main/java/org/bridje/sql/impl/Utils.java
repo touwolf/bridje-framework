@@ -14,28 +14,31 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.impl;
 
 import java.io.StringWriter;
+import static java.lang.Thread.State.values;
+import java.util.List;
+import org.bridje.sql.Literal;
+import org.bridje.sql.SQLExpression;
 
-class OrderExpressionImpl implements OrderExpression
+/**
+ *
+ * @author Gilberto
+ */
+public class Utils
 {
-    private Column column;
-    
-    private String orderType;
-
-    public OrderExpressionImpl(Column column, String orderType)
+    public static void joinExpressions(StringWriter sw, List<? extends SQLExpression> expressions)
     {
-        this.column = column;
-        this.orderType = orderType;
+        boolean isFirst = true;
+        for (SQLExpression literal : expressions)
+        {
+            if(!isFirst)
+            {
+                sw.append(", ");
+            }
+            literal.writeSQL(sw);
+            isFirst = false;
+        }
     }
-    
-    @Override
-    public void writeSQL(StringWriter sw)
-    {
-        column.writeSQL(sw);
-        sw.write(" ");
-        sw.write(orderType);
-    }
-    
 }

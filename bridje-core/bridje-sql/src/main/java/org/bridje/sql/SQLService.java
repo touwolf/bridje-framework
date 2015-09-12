@@ -19,6 +19,12 @@ package org.bridje.sql;
 public interface SQLService
 {
     FromStep select(ColumnExpresion... selectExp);
+
+    InsertSetStep insertInto(Table table);
     
+    UpdateSetStep update(TableExpression from);
     
+    DeleteFromStep delete(Table table);
+    
+    DeleteFromStep delete();
 }

@@ -16,11 +16,7 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+public interface SelectWhereStep extends GroupByStep
 {
-    /**
-     * Returns the string representing the SQL query of this object.
-     * @return A String representing the SQL query of this object.
-     */
-    String getSQL();
+    GroupByStep where(Condition condition);
 }

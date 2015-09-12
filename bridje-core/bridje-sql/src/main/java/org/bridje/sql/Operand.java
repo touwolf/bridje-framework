@@ -20,7 +20,7 @@ package org.bridje.sql;
  *
  * @author Gilberto
  */
-public interface Operand extends SQLObject
+public interface Operand extends SQLExpression
 {
     
 }

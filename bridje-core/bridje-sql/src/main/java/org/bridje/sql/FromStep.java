@@ -18,5 +18,5 @@ package org.bridje.sql;
 
 public interface FromStep extends SQLQuery
 {
-    WhereStep from(TableExpression table);
+    SelectWhereStep from(TableExpression table);
 }

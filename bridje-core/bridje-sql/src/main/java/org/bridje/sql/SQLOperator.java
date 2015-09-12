@@ -16,11 +16,32 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+/**
+ *
+ * @author Gilberto
+ */
+public enum SQLOperator
 {
-    /**
-     * Returns the string representing the SQL query of this object.
-     * @return A String representing the SQL query of this object.
-     */
-    String getSQL();
+    IS("IS"),
+    EQ("="),
+    GT(">"),
+    GE(">="),
+    LT("<"),
+    LE("<="),
+    AND("AND"),
+    OR("OR"),
+    NOT("NOT");
+    
+    private String value;
+
+    private SQLOperator(String value)
+    {
+        this.value = value;
+    }
+
+    @Override
+    public String toString()
+    {
+        return value;
+    }
 }

@@ -17,6 +17,7 @@
 package org.bridje.sql;
 
 import java.io.StringWriter;
+
 /**
  *
  * @author Gilberto
@@ -33,31 +34,31 @@ public class Literal implements ColumnExpresion
     @Override
     public Condition eq(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "=", exp);
+        return new BinaryCondition(this, SQLOperator.EQ, exp);
     }
 
     @Override
     public Condition gt(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, ">", exp);
+        return new BinaryCondition(this, SQLOperator.GT, exp);
     }
 
     @Override
     public Condition ge(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, ">=", exp);
+        return new BinaryCondition(this, SQLOperator.GE, exp);
     }
 
     @Override
     public Condition lt(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "<", exp);
+        return new BinaryCondition(this, SQLOperator.LT, exp);
     }
 
     @Override
     public Condition le(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "<=", exp);
+        return new BinaryCondition(this, SQLOperator.LE, exp);
     }
 
     @Override

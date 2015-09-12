@@ -18,17 +18,44 @@ package org.bridje.sql.impl;
 
 import org.bridje.ioc.annotations.Component;
 import org.bridje.sql.ColumnExpresion;
+import org.bridje.sql.DeleteFromStep;
 import org.bridje.sql.FromStep;
+import org.bridje.sql.InsertSetStep;
 import org.bridje.sql.SQLService;
+import org.bridje.sql.Table;
+import org.bridje.sql.TableExpression;
+import org.bridje.sql.UpdateSetStep;
 
 @Component
 class SQLServiceImpl implements SQLService
 {
-
     @Override
     public FromStep select(ColumnExpresion... selectExp)
     {
-        return new SQLQueryImpl(selectExp);
+        return new SelectSQLQueryImpl(selectExp);
     }
-    
+
+    @Override
+    public InsertSetStep insertInto(Table table)
+    {
+        return new InsertSQLQueryImpl(table);
+    }
+
+    @Override
+    public UpdateSetStep update(TableExpression from)
+    {
+        return new UpdateSQLQueryImpl(from);
+    }
+
+    @Override
+    public DeleteFromStep delete(Table table)
+    {
+        return new DeleteSQLQueryImpl(table);
+    }
+
+    @Override
+    public DeleteFromStep delete()
+    {
+        return new DeleteSQLQueryImpl();
+    }
 }

@@ -16,11 +16,7 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+public interface UpdateWhereStep
 {
-    /**
-     * Returns the string representing the SQL query of this object.
-     * @return A String representing the SQL query of this object.
-     */
-    String getSQL();
+    SQLQuery where(Condition condition);
 }

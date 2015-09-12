@@ -16,11 +16,11 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+/**
+ *
+ * @author Gilberto
+ */
+public interface UpdateSetStep extends UpdateWhereStep
 {
-    /**
-     * Returns the string representing the SQL query of this object.
-     * @return A String representing the SQL query of this object.
-     */
-    String getSQL();
+    UpdateSetStep set(Column column, ColumnExpresion value);
 }

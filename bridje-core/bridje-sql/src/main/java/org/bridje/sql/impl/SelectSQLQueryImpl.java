@@ -17,6 +17,7 @@
 package org.bridje.sql.impl;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import org.bridje.sql.ColumnExpresion;
 import org.bridje.sql.Condition;
 import org.bridje.sql.FromStep;
@@ -26,9 +27,9 @@ import org.bridje.sql.OrderExpression;
 import org.bridje.sql.OrderStep;
 import org.bridje.sql.SQLQuery;
 import org.bridje.sql.TableExpression;
-import org.bridje.sql.WhereStep;
+import org.bridje.sql.SelectWhereStep;
 
-class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQuery
+class SelectSQLQueryImpl implements FromStep, SelectWhereStep, GroupByStep, HavingStep, SQLQuery
 {
     private ColumnExpresion[] select;
 
@@ -42,7 +43,7 @@ class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQ
     
     private OrderExpression[] orderBy;
 
-    public SQLQueryImpl(ColumnExpresion[] select)
+    public SelectSQLQueryImpl(ColumnExpresion[] select)
     {
         this.select = select;
     }
@@ -80,7 +81,7 @@ class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQ
     }
     
     @Override
-    public WhereStep from(TableExpression table)
+    public SelectWhereStep from(TableExpression table)
     {
         this.from = table;
         return this;
@@ -117,16 +118,7 @@ class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQ
     private void writeSelect(StringWriter sw)
     {
         sw.append("SELECT ");
-        boolean isFirst = true;
-        for (ColumnExpresion selectCol : select)
-        {
-            if(!isFirst)
-            {
-                sw.write(", ");
-            }
-            selectCol.writeSQL(sw);
-            isFirst = false;
-        }
+        Utils.joinExpressions(sw, Arrays.asList(select));
     }
 
     private void writeFrom(StringWriter sw)
@@ -144,16 +136,7 @@ class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQ
     private void writeGroupBy(StringWriter sw)
     {
         sw.append("\nGROUP BY ");
-        boolean isFirst = true;
-        for (OrderExpression groupCol : groupBy)
-        {
-            if(!isFirst)
-            {
-                sw.write(", ");
-            }
-            groupCol.writeSQL(sw);
-            isFirst = false;
-        }
+        Utils.joinExpressions(sw, Arrays.asList(groupBy));
     }
 
     private void writeHaving(StringWriter sw)
@@ -165,15 +148,6 @@ class SQLQueryImpl implements FromStep, WhereStep, GroupByStep, HavingStep, SQLQ
     private void writeOrderBy(StringWriter sw)
     {
         sw.append("\nORDER BY ");
-        boolean isFirst = true;
-        for (OrderExpression orderCol : orderBy)
-        {
-            if(!isFirst)
-            {
-                sw.write(", ");
-            }
-            orderCol.writeSQL(sw);
-            isFirst = false;
-        }
+        Utils.joinExpressions(sw, Arrays.asList(orderBy));
     }
 }

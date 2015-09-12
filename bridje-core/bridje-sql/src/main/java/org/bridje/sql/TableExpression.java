@@ -16,7 +16,7 @@
 
 package org.bridje.sql;
 
-public interface TableExpression extends SQLObject
+public interface TableExpression extends SQLExpression
 {
     OnStep innerJoin(TableExpression exp);
 }

@@ -17,6 +17,7 @@
 package org.bridje.sql;
 
 import java.io.StringWriter;
+
 public class Column implements ColumnExpresion
 {
     private final Table table;
@@ -28,65 +29,65 @@ public class Column implements ColumnExpresion
         this.table = table;
         this.name = name;
     }
-    
+
     public Table getTable()
     {
         return table;
     }
-    
+
     public String getName()
     {
         return name;
     }
-    
+
     public Condition isNull()
     {
-        return new ConditionImpl(this, "IS", null);
+        return new BinaryCondition(this, SQLOperator.IS, null);
     }
 
     public Condition isNotNull()
     {
-        return new ConditionImpl(this, "IS", null).not();
+        return new BinaryCondition(this, SQLOperator.IS, null).not();
     }
-    
+
     public OrderExpression asc()
     {
-        return new OrderExpressionImpl(this, "ASC");
+        return new OrderExpression(this, "ASC");
     }
 
     public OrderExpression desc()
     {
-        return new OrderExpressionImpl(this, "DESC");
+        return new OrderExpression(this, "DESC");
     }
 
     @Override
     public Condition eq(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "=", exp);
+        return new BinaryCondition(this, SQLOperator.EQ, exp);
     }
 
     @Override
     public Condition gt(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, ">", exp);
+        return new BinaryCondition(this, SQLOperator.GT, exp);
     }
 
     @Override
     public Condition ge(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, ">=", exp);
+        return new BinaryCondition(this, SQLOperator.GE, exp);
     }
 
     @Override
     public Condition lt(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "<", exp);
+        return new BinaryCondition(this, SQLOperator.LT, exp);
     }
 
     @Override
     public Condition le(ColumnExpresion exp)
     {
-        return new ConditionImpl(this, "<=", exp);
+        return new BinaryCondition(this, SQLOperator.LE, exp);
     }
 
     @Override

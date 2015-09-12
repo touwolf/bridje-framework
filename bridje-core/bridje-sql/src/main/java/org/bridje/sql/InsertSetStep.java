@@ -16,11 +16,11 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+/**
+ *
+ * @author Gilberto
+ */
+public interface InsertSetStep extends SQLQuery
 {
-    /**
-     * Returns the string representing the SQL query of this object.
-     * @return A String representing the SQL query of this object.
-     */
-    String getSQL();
+    InsertSetStep set(Column column, Literal value);
 }

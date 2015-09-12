@@ -16,7 +16,11 @@
 
 package org.bridje.sql;
 
-public interface WhereStep extends GroupByStep
+/**
+ *
+ * @author Gilberto
+ */
+public interface DeleteFromStep
 {
-    GroupByStep where(Condition condition);
+    UpdateWhereStep from(TableExpression from);
 }

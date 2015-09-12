@@ -18,7 +18,7 @@ package org.bridje.sql;
 
 import java.io.StringWriter;
 
-public interface SQLObject
+public interface SQLExpression
 {
     void writeSQL(StringWriter sw);
 }

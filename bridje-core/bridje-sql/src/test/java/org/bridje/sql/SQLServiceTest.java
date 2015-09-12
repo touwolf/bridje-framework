@@ -68,25 +68,30 @@ public class SQLServiceTest
                 .having(id.isNull())
                 .orderBy(userId.desc())
                 .getSQL());
-        /*
-        sqlServ.select(name, numb1)
-                .from(users
-                        .innerJoin(groups).on(id.eq(userId)))
-                .where(id.gt(numb0).or(userId.isNull()))
-                .orderBy(userId.desc());
 
-        sqlServ.select(name, numb1)
-                .from(users
-                        .innerJoin(groups).on(id.eq(userId)))
-                .where(id.gt(numb0).or(userId.isNull()))
-                .groupBy(id.desc())
-                .orderBy(userId.desc());
+        System.out.println("--------------------------------------");
+        System.out.println(sqlServ.insertInto(users)
+                                    .set(name, numb0)
+                                    .set(userId, numb1)
+                                    .getSQL());
 
-        sqlServ.select(name, numb1)
-                .from(users
-                        .innerJoin(groups).on(id.eq(userId)))
-                .orderBy(userId.desc())
-                .getSQL();
-        */
+        System.out.println("--------------------------------------");
+        System.out.println(sqlServ.update(groups)
+                .set(name, numb0)
+                .set(userId, numb1)
+                .where(name.eq(name))
+                .getSQL());
+        
+        System.out.println("--------------------------------------");
+        System.out.println(sqlServ.delete()
+                .from(groups)
+                .where(name.eq(name))
+                .getSQL());
+        
+        System.out.println("--------------------------------------");
+        System.out.println(sqlServ.delete(groups)
+                .from(groups.innerJoin(users).on(id.eq(userId)))
+                .where(name.eq(name))
+                .getSQL());
     }
 }

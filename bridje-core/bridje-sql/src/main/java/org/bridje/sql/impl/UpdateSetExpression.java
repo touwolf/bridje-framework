@@ -1,8 +1,3 @@
-
-package org.bridje.sql;
-
-import java.io.StringWriter;
-
 /*
  * Copyright 2015 Bridje Framework.
  *
@@ -19,33 +14,37 @@ import java.io.StringWriter;
  * limitations under the License.
  */
 
-public class OrderExpression implements SQLExpression
-{
-    private final Column column;
-    
-    private final String orderType;
+package org.bridje.sql.impl;
 
-    public OrderExpression(Column column, String orderType)
+import java.io.StringWriter;
+import org.bridje.sql.Column;
+import org.bridje.sql.ColumnExpresion;
+import org.bridje.sql.SQLExpression;
+import org.bridje.sql.SQLOperator;
+
+/**
+ *
+ * @author Gilberto
+ */
+public class UpdateSetExpression implements SQLExpression
+{
+    private Column column;
+    
+    private ColumnExpresion value;
+
+    public UpdateSetExpression(Column column, ColumnExpresion value)
     {
         this.column = column;
-        this.orderType = orderType;
+        this.value = value;
     }
-    
+
     @Override
     public void writeSQL(StringWriter sw)
     {
         column.writeSQL(sw);
-        sw.write(" ");
-        sw.write(orderType);
-    }
-
-    public Column getColumn()
-    {
-        return column;
-    }
-
-    public String getOrderType()
-    {
-        return orderType;
+        sw.append(" ");
+        sw.append(SQLOperator.EQ.toString());
+        sw.append(" ");
+        value.writeSQL(sw);
     }
 }
