@@ -22,5 +22,6 @@
         <module>bridje-vfs</module>
         <module>bridje-sql</module>
         <module>bridje-tpl</module>
+        <module>bridje-cli</module>
     </modules>
 </project>

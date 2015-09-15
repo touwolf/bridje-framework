@@ -18,6 +18,8 @@ package org.bridje.ioc.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +33,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.AnnotMethodNavigator;
+import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.annotations.ComponentAnnotProcessor;
 
 /**
@@ -39,7 +43,7 @@ import org.bridje.ioc.annotations.ComponentAnnotProcessor;
  * 
  * @author gilberto
  */
-class ClassSet implements Iterable<Class<?>>
+class ClassSet implements Iterable<Class<?>>, ClassRepository
 {
     private static final Logger LOG = Logger.getLogger(ComponentAnnotProcessor.class.getName());
 
@@ -204,5 +208,22 @@ class ClassSet implements Iterable<Class<?>>
             return null;
         }
         return Arrays.asList(clss);
+    }
+
+    @Override
+    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator)
+    {
+        for (Class<?> cls : this)
+        {
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method method : methods)
+            {
+                A annInst = method.getAnnotation(annotation);
+                if(annInst != null)
+                {
+                    navigator.accept(method, cls, annInst);
+                }
+            }
+        }
     }
 }

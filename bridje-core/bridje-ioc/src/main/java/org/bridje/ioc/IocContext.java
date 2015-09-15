@@ -130,4 +130,6 @@ public interface IocContext
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Collection instances, Register... register);
+    
+    ClassRepository getClassRepository();
 }

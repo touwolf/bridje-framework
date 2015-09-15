@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.IocContext;
 
 /**
@@ -296,5 +297,11 @@ class ContextImpl implements IocContext
         }
         
         return null;
+    }
+
+    @Override
+    public ClassRepository getClassRepository()
+    {
+        return classSet;
     }
 }
