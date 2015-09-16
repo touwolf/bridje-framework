@@ -16,18 +16,18 @@
 
 package org.bridje.cli;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.bridje.ioc.annotations.Component;
 
 /**
  *
  * @author Gilberto
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Command
+@Component
+public class TestCommands
 {
-    String value();
+    @Command("test")
+    public void test(@Option("a") boolean a, @Option("e") boolean e, @Option("i") boolean i, @Argument String arg1, @Argument String arg2)
+    {
+        System.out.println(String.format("a: %b, e: %b, i: %b, arg1: %s, arg2: %s", a, e, i, arg1, arg2));
+    }
 }

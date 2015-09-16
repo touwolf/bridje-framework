@@ -26,9 +26,9 @@ public class CommandInfo
 
     private final String[] options;
 
-    private final int arguments;
+    private final String[] arguments;
 
-    public CommandInfo(String name, String[] options, int arguments)
+    public CommandInfo(String name, String[] options, String[] arguments)
     {
         this.name = name;
         this.options = options;
@@ -45,8 +45,20 @@ public class CommandInfo
         return options;
     }
 
-    public int getArguments()
+    public String[] getArguments()
     {
         return arguments;
+    }
+
+    public boolean hasOption(String value)
+    {
+        for (String option : options)
+        {
+            if(option.equalsIgnoreCase(value))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * @author Gilberto
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.PARAMETER)
 public @interface Option
 {
     String value();

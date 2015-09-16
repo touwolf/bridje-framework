@@ -16,18 +16,20 @@
 
 package org.bridje.cli;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.bridje.ioc.annotations.Component;
 
 /**
  *
  * @author Gilberto
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Command
+@Component
+public class CommandParserImpl implements CommandParser
 {
-    String value();
+
+    @Override
+    public CommandInfo parse(String[] args)
+    {
+        return new CommandInfo(args[0], new String[] { args[1], args[2], args[3] }, new String[] { args[4], args[5] });
+    }
+    
 }

@@ -19,13 +19,19 @@ package org.bridje.cli.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.cli.Argument;
 import org.bridje.cli.CliService;
 import org.bridje.cli.Command;
 import org.bridje.cli.CommandInfo;
 import org.bridje.cli.CommandParser;
+import org.bridje.cli.Option;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Component;
@@ -52,6 +58,7 @@ public class CliServiceImpl implements CliService
     @PostConstruct
     public void init()
     {
+        commands = new HashMap<>();
         context.getClassRepository()
                 .navigateAnnotMethods(Command.class, 
                         (Method method, Class component, Command annotation) ->
@@ -86,11 +93,30 @@ public class CliServiceImpl implements CliService
     {
         Object[] result = new Object[method.getParameterCount()];
         Parameter[] parameters = method.getParameters();
-        for (Parameter parameter : parameters)
+        List<String> argumentsValues = new LinkedList<>(Arrays.asList(cmd.getArguments()));
+        for (int i = 0; i < parameters.length; i++)
         {
-            //TODO
+            Parameter parameter = parameters[i];
+            result[i] = findParameter(parameter, cmd, argumentsValues);
         }
         return result;
+    }
+
+    private Object findParameter(Parameter parameter, CommandInfo cmd, List<String> argumentsValues)
+    {
+        Option option = parameter.getAnnotation(Option.class);
+        Argument argument = parameter.getAnnotation(Argument.class);
+        if(option != null)
+        {
+            return cmd.hasOption(option.value());
+        }
+        else if(argument != null)
+        {
+            String arg = argumentsValues.get(0);
+            argumentsValues.remove(0);
+            return arg;
+        }
+        return null;
     }
     
 }
