@@ -14,41 +14,35 @@
  * limitations under the License.
  */
 
-package org.bridje.cli.impl;
+package org.bridje.cast;
 
-import java.lang.reflect.Method;
+import org.bridje.ioc.annotations.Component;
 
 /**
  *
  * @author Gilberto
  */
-class CommandMethodInfo
+@Component
+public class StringToIntCastProvider implements CastProvider<Integer>
 {
-    private final String name;
+
+    @Override
+    public Class<?>[] getSrcClasses()
+    {
+        return new Class<?>[] { String.class };
+    }
+
+    @Override
+    public Class<Integer> getDestClass()
+    {
+        return Integer.class;
+    }
+
+    @Override
+    public Integer cast(Object object)
+    {
+        String str = (String)object;
+        return Integer.valueOf(str);
+    }
     
-    private final Method method;
-    
-    private final Object component;
-
-    public CommandMethodInfo(String name, Method method, Object component)
-    {
-        this.name = name;
-        this.method = method;
-        this.component = component;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public Method getMethod()
-    {
-        return method;
-    }
-
-    public Object getComponent()
-    {
-        return component;
-    }
 }

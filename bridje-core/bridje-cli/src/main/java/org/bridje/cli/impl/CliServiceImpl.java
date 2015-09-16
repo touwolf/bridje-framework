@@ -43,7 +43,7 @@ import org.bridje.ioc.annotations.PostConstruct;
  * @author Gilberto
  */
 @Component
-public class CliServiceImpl implements CliService
+class CliServiceImpl implements CliService
 {
     private static final Logger LOG = Logger.getLogger(CliServiceImpl.class.getName());
 

@@ -23,5 +23,6 @@
         <module>bridje-sql</module>
         <module>bridje-tpl</module>
         <module>bridje-cli</module>
+        <module>bridje-cast</module>
     </modules>
 </project>

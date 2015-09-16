@@ -119,6 +119,7 @@ class ServiceMap
                 servicesList.add(supClass);
             }
             Class cls = ClassUtils.findClassFromType(supClass);
+            servicesList.add(cls);
             if(cls != null)
             {
                 supClass = cls.getGenericSuperclass();
@@ -140,6 +141,7 @@ class ServiceMap
                 servicesList.add(ifc);
             }
             Class icfCls = ClassUtils.findClassFromType(ifc);
+            servicesList.add(icfCls);
             if(icfCls != null)
             {
                 fillServicesIntefaces(icfCls, servicesList);

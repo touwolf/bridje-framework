@@ -14,41 +14,18 @@
  * limitations under the License.
  */
 
-package org.bridje.cli.impl;
-
-import java.lang.reflect.Method;
+package org.bridje.cast;
 
 /**
  *
  * @author Gilberto
+ * @param <T>
  */
-class CommandMethodInfo
+public interface CastProvider<T>
 {
-    private final String name;
+    Class<?>[] getSrcClasses();
     
-    private final Method method;
-    
-    private final Object component;
+    Class<T> getDestClass();
 
-    public CommandMethodInfo(String name, Method method, Object component)
-    {
-        this.name = name;
-        this.method = method;
-        this.component = component;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public Method getMethod()
-    {
-        return method;
-    }
-
-    public Object getComponent()
-    {
-        return component;
-    }
+    T cast(Object object);
 }

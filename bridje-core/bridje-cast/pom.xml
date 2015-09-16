@@ -6,11 +6,11 @@
         <artifactId>bridje-core-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>bridje-cli</artifactId>
+    <artifactId>bridje-cast</artifactId>
     <packaging>jar</packaging>
     
-    <name>Bridje CLI</name>
-    <description>Bridje Command Line Inteface API</description>
+    <name>Bridje Cast</name>
+    <description>Bridje Casting and Convertion API</description>
     <url>http://www.bridje.org</url>
 
     <build>
@@ -34,4 +34,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+</project>
 </project>
