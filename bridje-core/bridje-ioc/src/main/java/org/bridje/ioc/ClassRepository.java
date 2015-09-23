@@ -24,5 +24,27 @@ import java.lang.annotation.Annotation;
  */
 public interface ClassRepository
 {
+    /**
+     * 
+     * @param <A>
+     * @param annotation
+     * @param navigator 
+     */
     public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator);
+    
+    /**
+     * 
+     * @param <A>
+     * @param annotation
+     * @param navigator 
+     */
+    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator);
+    
+    /**
+     * 
+     * @param <A>
+     * @param annotation
+     * @param navigator 
+     */
+    public <A extends Annotation> void navigateAnnotClasses(A annotation, AnnotClassNavigator<A> navigator);
 }

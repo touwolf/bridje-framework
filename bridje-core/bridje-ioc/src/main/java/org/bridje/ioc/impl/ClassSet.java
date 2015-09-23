@@ -1,6 +1,9 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
+ * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
+ * Gilberto Vento (gilberto.vento[at]gmail.com)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +22,7 @@ package org.bridje.ioc.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
@@ -33,6 +37,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.AnnotClassNavigator;
+import org.bridje.ioc.AnnotFieldNavigator;
 import org.bridje.ioc.AnnotMethodNavigator;
 import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.annotations.ComponentAnnotProcessor;
@@ -41,7 +47,6 @@ import org.bridje.ioc.annotations.ComponentAnnotProcessor;
  * This class represents a set of classes, his propouse is to serve as a container
  * for all the class that are to be managed by an IocContext instance.
  * 
- * @author gilberto
  */
 class ClassSet implements Iterable<Class<?>>, ClassRepository
 {
@@ -225,5 +230,39 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
                 }
             }
         }
+    }
+
+    @Override
+    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator) 
+    {
+        for (Class<?> cls : this)
+        {
+            Field[] fields = cls.getDeclaredFields();
+            for (Field field : fields)
+            {
+                A annInst = field.getAnnotation(annotation);
+                if(annInst != null)
+                {
+                    navigator.accept(field, cls, annInst);
+                }
+            }
+        }
+    }    
+
+    @Override
+    public <A extends Annotation> void navigateAnnotClasses(A annotation, AnnotClassNavigator<A> navigator)
+    {
+        for (Class<?> cls : this)
+        {
+            Annotation[] annotations = cls.getAnnotations();        
+            for (Annotation annot : annotations)
+            {
+                if(annotation == annot)
+                {
+                    navigator.accept(cls, annotation);
+                    break;
+                }
+            }
+        }    
     }
 }
