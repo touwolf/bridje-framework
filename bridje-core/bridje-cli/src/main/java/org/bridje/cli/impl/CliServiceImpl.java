@@ -73,7 +73,7 @@ class CliServiceImpl implements CliService
     public void execute(String[] args)
     {
         CommandInfo cmd = parser.parse(args);
-        CommandMethodInfo inf = commands.get(cmd.getName());
+        CommandMethodInfo inf = commands == null ? null : commands.get(cmd.getName());
         if(inf != null)
         {
             Method method = inf.getMethod();
