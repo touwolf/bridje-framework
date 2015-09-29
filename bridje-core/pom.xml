@@ -24,5 +24,6 @@
         <module>bridje-tpl</module>
         <module>bridje-cli</module>
         <module>bridje-cast</module>
+        <module>bridje-web</module>
     </modules>
 </project>
