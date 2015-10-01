@@ -131,5 +131,12 @@ public interface IocContext
      */
     IocContext createChild(String scope, Collection instances, Register... register);
     
+    /**
+     * Obtains the class repository associated with this context.
+     * that allows to find classes, fields and methods of the components 
+     * in this context.
+     * 
+     * @return A ClassRepository instance 
+     */
     ClassRepository getClassRepository();
 }

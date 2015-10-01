@@ -27,6 +27,9 @@ import java.lang.annotation.Annotation;
 public interface ClassRepository
 {
     /**
+     * Navigates through all methods of all component classes registred 
+     * in this repository, that are annotated with the given annotation.
+     * This includes superclasses methods.
      * 
      * @param <A>
      * @param annotation
@@ -35,6 +38,9 @@ public interface ClassRepository
     public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator);
     
     /**
+     * Navigates through all fields of all component classes registred 
+     * in this repository, that are annotated with the given annotation.
+     * This includes superclasses fields.
      * 
      * @param <A>
      * @param annotation
@@ -43,6 +49,9 @@ public interface ClassRepository
     public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator);
     
     /**
+     * Navigates through all component classes registred 
+     * in this repository, that are annotated with the given annotation.
+     * This includes superclasses fields.
      * 
      * @param <A>
      * @param annotation
