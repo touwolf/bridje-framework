@@ -16,11 +16,12 @@
 
 package org.bridje.cli;
 
+import org.bridje.cli.exceptions.InvalidCliCommandException;
 /**
  *
  * @author Gilberto
  */
 public interface CommandParser
 {
-    CommandInfo parse(String[] args);
+    CommandInfo parse(String[] args) throws InvalidCliCommandException;
 }

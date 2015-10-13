@@ -16,6 +16,7 @@
 
 package org.bridje.cli;
 
+import org.bridje.cli.exceptions.InvalidCliCommandException;
 import org.bridje.ioc.annotations.Component;
 
 /**
@@ -27,7 +28,7 @@ public class CommandParserImpl implements CommandParser
 {
 
     @Override
-    public CommandInfo parse(String[] args)
+    public CommandInfo parse(String[] args) throws InvalidCliCommandException
     {
         return new CommandInfo(args[0], new String[] { args[1], args[2], args[3] }, new String[] { args[4], args[5] });
     }

@@ -32,6 +32,9 @@ import org.bridje.cli.Command;
 import org.bridje.cli.CommandInfo;
 import org.bridje.cli.CommandParser;
 import org.bridje.cli.Option;
+import org.bridje.cli.exceptions.InvalidCliCommandException;
+import org.bridje.cli.exceptions.NoCliParserException;
+import org.bridje.cli.exceptions.NoSuchCommandException;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Component;
@@ -70,8 +73,12 @@ class CliServiceImpl implements CliService
     }
     
     @Override
-    public void execute(String[] args)
+    public void execute(String[] args) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException
     {
+        if(parser == null)
+        {
+            throw new NoCliParserException();
+        }
         CommandInfo cmd = parser.parse(args);
         CommandMethodInfo inf = commands == null ? null : commands.get(cmd.getName());
         if(inf != null)
@@ -86,6 +93,10 @@ class CliServiceImpl implements CliService
             {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
+        }
+        else
+        {
+            throw new NoSuchCommandException(cmd.getName());
         }
     }
 

@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package org.bridje.cli;
-
-import org.bridje.cli.exceptions.InvalidCliCommandException;
-import org.bridje.cli.exceptions.NoCliParserException;
-import org.bridje.cli.exceptions.NoSuchCommandException;
+package org.bridje.cli.exceptions;
 
 /**
  *
- * @author Gilberto
+ * @author gilberto
  */
-public interface CliService
+public class NoCliParserException extends Exception
 {
-    void execute(String[] args) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException;
+    public NoCliParserException()
+    {
+        super("No command line parser is available.");
+    }
 }

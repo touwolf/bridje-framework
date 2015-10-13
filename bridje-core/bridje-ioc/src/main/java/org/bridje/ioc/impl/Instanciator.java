@@ -72,6 +72,7 @@ class Instanciator
             {
                 try
                 {
+                    declaredMethod.setAccessible(true);
                     declaredMethod.invoke(obj);
                 }
                 catch(Exception ex)

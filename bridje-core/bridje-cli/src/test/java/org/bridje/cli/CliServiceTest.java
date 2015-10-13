@@ -16,6 +16,9 @@
 
 package org.bridje.cli;
 
+import org.bridje.cli.exceptions.InvalidCliCommandException;
+import org.bridje.cli.exceptions.NoCliParserException;
+import org.bridje.cli.exceptions.NoSuchCommandException;
 import org.bridje.ioc.Ioc;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -57,9 +60,10 @@ public class CliServiceTest
 
     /**
      * Test of execute method, of class CliService.
+     * @throws org.bridje.cli.exceptions.NoCliParserException
      */
     @Test
-    public void testExecute()
+    public void testExecute() throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException
     {
         CliService cliServ = Ioc.context().find(CliService.class);
         // test -aei argument1 argument2

@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package org.bridje.cli;
-
-import org.bridje.cli.exceptions.InvalidCliCommandException;
-import org.bridje.cli.exceptions.NoCliParserException;
-import org.bridje.cli.exceptions.NoSuchCommandException;
+package org.bridje.cli.exceptions;
 
 /**
  *
- * @author Gilberto
+ * @author gilberto
  */
-public interface CliService
+public class NoSuchCommandException extends Exception
 {
-    void execute(String[] args) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException;
+    private final String command;
+
+    public NoSuchCommandException(String command)
+    {
+        super("The command " + command + " is not recognized.");
+        this.command = command;
+    }
+
+    public String getCommand()
+    {
+        return command;
+    }
 }
