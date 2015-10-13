@@ -121,7 +121,7 @@ class CliServiceImpl implements CliService
         {
             return cmd.hasOption(option.value());
         }
-        else if(argument != null)
+        else if(argument != null && argumentsValues.size() > 0)
         {
             String arg = argumentsValues.get(0);
             argumentsValues.remove(0);

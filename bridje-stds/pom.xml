@@ -9,22 +9,15 @@
     </parent>
 
     <groupId>org.bridje</groupId>
-    <artifactId>bridje-core-parent</artifactId>
+    <artifactId>bridje-stds-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Bridje Core (Parent)</name>
-    <description>Parent Maven Project for Bridje Framework Core APIs</description>
-	<url>http://www.bridje.org</url>
-
+    <name>Bridje Stds (Parent)</name>
+    <description>Parent Maven Project for Bridje Framework Standards Impls</description>
+    <url>http://www.bridje.org</url>
     <modules>
-        <module>bridje-ioc</module>
-        <module>bridje-vfs</module>
-        <module>bridje-sql</module>
-        <module>bridje-tpl</module>
-        <module>bridje-cli</module>
-        <module>bridje-cast</module>
-        <module>bridje-web</module>
-        <module>bridje-procs</module>
+        <module>bridje-postfix-cli</module>
+        <module>bridje-boot-cmds</module>
     </modules>
 </project>
