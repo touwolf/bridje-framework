@@ -41,13 +41,8 @@ class WebManagerImpl implements WebManager
     public void proccess(WebRequest req, WebResponse resp)
     {
         IocContext reqContext = context.createChild("WEBREQUEST");
-        for (WebRequestHandler handler : handlersList)
-        {
-            if(handler.proccess(req, resp, reqContext))
-            {
-                return;
-            }
-        }
+        WebRequestChainImpl chain = new WebRequestChainImpl(req, resp, reqContext, handlersList);
+        chain.procced();
     }
     
 }

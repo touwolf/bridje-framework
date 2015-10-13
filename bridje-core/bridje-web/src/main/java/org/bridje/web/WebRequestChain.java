@@ -16,11 +16,19 @@
 
 package org.bridje.web;
 
+import org.bridje.ioc.IocContext;
+
 /**
  *
- * @author Gilberto
+ * @author gilberto
  */
-public interface WebRequestHandler
+public interface WebRequestChain
 {
-    Object proccess(WebRequestChain chain);
-}
+    public WebRequest getRequest();
+
+    public WebResponse getResponse();
+
+    IocContext getRequestContext();
+
+    public Object procced();
+}       

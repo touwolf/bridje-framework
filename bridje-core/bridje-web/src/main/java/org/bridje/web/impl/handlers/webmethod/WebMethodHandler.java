@@ -14,45 +14,36 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl;
+package org.bridje.web.impl.handlers.webmethod;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.annotations.Component;
-import org.bridje.ioc.annotations.Inject;
-import org.bridje.web.WebRequest;
+import org.bridje.ioc.annotations.Priority;
+import org.bridje.web.WebRequestChain;
 import org.bridje.web.WebRequestHandler;
-import org.bridje.web.WebResponse;
-import org.bridje.web.WebResultHandler;
 
 /**
  *
  * @author Gilberto
  */
 @Component
+@Priority(950)
 class WebMethodHandler implements WebRequestHandler
 {
     private static final Logger LOG = Logger.getLogger(WebMethodHandler.class.getName());
 
     private WebMethodNode rootNode;
-    
-    @Inject
-    private WebResultHandler[] resultHandlers;
-    
-    private Map<Class<?>, WebResultHandler<?>> resultHandlersMap;
 
     @Override
-    public boolean proccess(WebRequest req, WebResponse resp, IocContext reqContext)
+    public Object proccess(WebRequestChain chain)
     {
         if(rootNode == null)
         {
-            rootNode = WebMethodNode.createWebMethodsTree(reqContext);
+            rootNode = WebMethodNode.createWebMethodsTree(chain.getRequestContext());
         }
-        String requestedPath = req.getRequestedPath();
+        String requestedPath = chain.getRequest().getRequestedPath();
         requestedPath = WebMethodNode.removeSlashes(requestedPath);
         String[] splitPath = requestedPath.split("//");
         WebMethodNode currNode = rootNode;
@@ -69,46 +60,18 @@ class WebMethodHandler implements WebRequestHandler
         WebMethodInf webMethodInf = currNode.getWebMethods().get(lastPathMember);
         if(webMethodInf == null)
         {
-            return false;
+            return chain.procced();
         }
-        Object compObj = reqContext.find(webMethodInf.getCompClass());
+        Object compObj = chain.getRequestContext().find(webMethodInf.getCompClass());
         try
         {
             webMethodInf.getMethod().setAccessible(true);
-            Object result = webMethodInf.getMethod().invoke(compObj);
-            if(result != null)
-            {
-                WebResultHandler resultHandler = getResultHandlersMap().get(result.getClass());
-                if(resultHandler != null)
-                {
-                    resultHandler.handle(result, resp, reqContext);
-                }
-                else
-                {
-                    LOG.log(Level.SEVERE, "No result handler for the class %s was found", result.getClass().getName());
-                }
-            }
+            return webMethodInf.getMethod().invoke(compObj);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
-        return true;
-    }
-
-    public Map<Class<?>, WebResultHandler<?>> getResultHandlersMap()
-    {
-        if(resultHandlersMap == null)
-        {
-            resultHandlersMap = new HashMap<>();
-            if(resultHandlers != null)
-            {
-                for (WebResultHandler resultHandler : resultHandlers)
-                {
-                    resultHandlersMap.put(resultHandler.getHandledClass(), resultHandler);
-                }
-            }
-        }
-        return resultHandlersMap;
+        return null;
     }
 }
