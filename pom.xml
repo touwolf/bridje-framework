@@ -28,6 +28,7 @@
         <module>bridje-tools</module>
         -->
         <module>bridje-stds</module>
+        <module>bridje-intg</module>
     </modules>
 
     <scm>
