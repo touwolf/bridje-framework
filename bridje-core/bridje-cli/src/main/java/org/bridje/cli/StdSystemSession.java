@@ -16,12 +16,31 @@
 
 package org.bridje.cli;
 
-import org.bridje.cli.exceptions.InvalidCliCommandException;
+import java.io.InputStream;
+import java.io.PrintStream;
 /**
  *
- * @author Gilberto
+ * @author gilberto
  */
-public interface CommandParser
+public class StdSystemSession implements CliSession
 {
-    CommandInfo parse(String command, CliSession session) throws InvalidCliCommandException;
+
+    @Override
+    public InputStream getIn()
+    {
+        return System.in;
+    }
+
+    @Override
+    public PrintStream getOut()
+    {
+        return System.out;
+    }
+
+    @Override
+    public PrintStream getErr()
+    {
+        return System.err;
+    }
+    
 }

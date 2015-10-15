@@ -28,8 +28,9 @@ public class CommandParserImpl implements CommandParser
 {
 
     @Override
-    public CommandInfo parse(String[] args) throws InvalidCliCommandException
+    public CommandInfo parse(String command, CliSession session) throws InvalidCliCommandException
     {
+        String[] args = command.split(" ");
         return new CommandInfo(args[0], new String[] { args[1], args[2], args[3] }, new String[] { args[4], args[5] });
     }
     

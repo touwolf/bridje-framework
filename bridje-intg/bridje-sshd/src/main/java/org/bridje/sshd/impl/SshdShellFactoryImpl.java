@@ -30,7 +30,7 @@ public class SshdShellFactoryImpl implements SshdShellFactory
     @Override
     public Command create()
     {
-        return new SshdCliShell();
+        return new SshdShellCommand();
     }
     
 }

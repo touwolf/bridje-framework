@@ -28,10 +28,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.cli.Argument;
 import org.bridje.cli.CliService;
+import org.bridje.cli.CliSession;
 import org.bridje.cli.Command;
 import org.bridje.cli.CommandInfo;
 import org.bridje.cli.CommandParser;
 import org.bridje.cli.Option;
+import org.bridje.cli.StdSystemSession;
 import org.bridje.cli.exceptions.InvalidCliCommandException;
 import org.bridje.cli.exceptions.NoCliParserException;
 import org.bridje.cli.exceptions.NoSuchCommandException;
@@ -73,18 +75,22 @@ class CliServiceImpl implements CliService
     }
     
     @Override
-    public void execute(String[] args) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException
+    public void execute(String command, CliSession session) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException
     {
+        if(session == null)
+        {
+            session = new StdSystemSession();
+        }
         if(parser == null)
         {
             throw new NoCliParserException();
         }
-        CommandInfo cmd = parser.parse(args);
+        CommandInfo cmd = parser.parse(command, session);
         CommandMethodInfo inf = commands == null ? null : commands.get(cmd.getName());
         if(inf != null)
         {
             Method method = inf.getMethod();
-            Object[] parameters = findParameters(method, cmd);
+            Object[] parameters = findParameters(method, cmd, session);
             try
             {
                 method.invoke(inf.getComponent(), parameters);
@@ -100,7 +106,7 @@ class CliServiceImpl implements CliService
         }
     }
 
-    private Object[] findParameters(Method method, CommandInfo cmd)
+    private Object[] findParameters(Method method, CommandInfo cmd, CliSession session)
     {
         Object[] result = new Object[method.getParameterCount()];
         Parameter[] parameters = method.getParameters();
@@ -108,13 +114,17 @@ class CliServiceImpl implements CliService
         for (int i = 0; i < parameters.length; i++)
         {
             Parameter parameter = parameters[i];
-            result[i] = findParameter(parameter, cmd, argumentsValues);
+            result[i] = findParameter(parameter, cmd, argumentsValues, session);
         }
         return result;
     }
 
-    private Object findParameter(Parameter parameter, CommandInfo cmd, List<String> argumentsValues)
+    private Object findParameter(Parameter parameter, CommandInfo cmd, List<String> argumentsValues, CliSession session)
     {
+        if(parameter.getType() == CliSession.class)
+        {
+            return session;
+        }
         Option option = parameter.getAnnotation(Option.class);
         Argument argument = parameter.getAnnotation(Argument.class);
         if(option != null)

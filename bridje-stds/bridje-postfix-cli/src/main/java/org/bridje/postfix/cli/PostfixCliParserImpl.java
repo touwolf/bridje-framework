@@ -18,6 +18,7 @@ package org.bridje.postfix.cli;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bridje.cli.CliSession;
 import org.bridje.cli.CommandInfo;
 import org.bridje.cli.CommandParser;
 import org.bridje.cli.exceptions.InvalidCliCommandException;
@@ -32,8 +33,9 @@ public class PostfixCliParserImpl implements CommandParser
 {
 
     @Override
-    public CommandInfo parse(String[] args) throws InvalidCliCommandException
+    public CommandInfo parse(String command, CliSession session) throws InvalidCliCommandException
     {
+        String[] args = command.split(" ");
         if(args == null || args.length == 0)
         {
             throw new InvalidCliCommandException(null);

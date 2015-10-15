@@ -69,7 +69,7 @@ public class CliServiceTest
         // test -aei argument1 argument2
         // or
         // test -a -e -i argument1 argument2
-        cliServ.execute(new String[] { "test", "a", "e", "i", "argument1", "argument2" });
-        cliServ.execute(new String[] { "test", "a", "e", "o", "argument1", "argument2" });
+        cliServ.execute("test a e i argument1 argument2", null);
+        cliServ.execute("test a e o argument1 argument2", null);
     }
 }

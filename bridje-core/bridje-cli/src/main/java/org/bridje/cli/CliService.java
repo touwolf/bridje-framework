@@ -26,5 +26,5 @@ import org.bridje.cli.exceptions.NoSuchCommandException;
  */
 public interface CliService
 {
-    void execute(String[] args) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException;
+    void execute(String command, CliSession session) throws NoCliParserException, InvalidCliCommandException, NoSuchCommandException;
 }
