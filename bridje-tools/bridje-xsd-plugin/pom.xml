@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <name>bridje-xsd-plugin</name>
+    <name>Bridje XSD Plugin</name>
     <description>Maven plugin for XSD generation from JAXB classes</description>
 
     <build>

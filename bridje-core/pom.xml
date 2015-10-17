@@ -26,5 +26,6 @@
         <module>bridje-cast</module>
         <module>bridje-web</module>
         <module>bridje-procs</module>
+        <module>bridje-aas</module>
     </modules>
 </project>
