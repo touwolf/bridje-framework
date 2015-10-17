@@ -6,11 +6,11 @@
         <artifactId>bridje-stds-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>bridje-postfix-cli</artifactId>
+    <artifactId>bridje-posix-cli</artifactId>
     <packaging>jar</packaging>
     
-    <name>Bridje Postfix CLI</name>
-    <description>Bridje Postfix CLI minimalist impl</description>
+    <name>Bridje Posix CLI</name>
+    <description>Bridje Posix CLI minimalist impl</description>
     <url>http://www.bridje.org</url>
 
     <build>

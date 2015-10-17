@@ -16,4 +16,7 @@
     <name>Bridje Tools (Parent)</name>
     <description>Parent Maven Project for Bridje Framework Tools</description>
     <url>http://www.bridje.org</url>
+    <modules>
+        <module>bridje-xsd-plugin</module>
+    </modules>
 </project>

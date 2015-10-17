@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.postfix.cli;
+package org.bridje.posix.cli;
 
 import java.util.ArrayList;
 import java.util.List;

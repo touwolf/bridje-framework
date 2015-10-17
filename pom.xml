@@ -29,6 +29,7 @@
         -->
         <module>bridje-stds</module>
         <module>bridje-intg</module>
+        <module>bridje-tools</module>
     </modules>
 
     <scm>
