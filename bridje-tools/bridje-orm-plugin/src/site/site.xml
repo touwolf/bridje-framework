@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<project name="${project.name}">
+    <!--
+    <version position="none"/>
+    <publishDate position="none"/>
+    -->
+
+    <bannerLeft>
+        <name>Dentro del IoC</name>
+        <!--
+        <src>http://maven.apache.org/images/apache-maven-project-2.png</src>
+        <href>http://maven.apache.org/</href>
+        -->
+    </bannerLeft>
+    
+    <!--
+    <bannerRight>
+        <src>http://maven.apache.org/images/maven-logo-2.gif</src>
+    </bannerRight>
+    -->
+
+    <body> 
+        <menu name="El Plugin de Maven para Bridje">
+            <item name="Generando código Java" href="${project.url}/intro.html" />  
+        </menu>
+        <menu ref="modules" inherit="top" />
+        <menu ref="reports" inherit="top" />
+        <menu ref="parent" inherit="top" />
+    </body>
+    
+    <custom>
+      <project>
+        <description>${project.description}</description> 
+      </project>
+    </custom>
+</project>
