@@ -28,5 +28,6 @@
         <module>bridje-procs</module>
         <module>bridje-aas</module>
         <module>bridje-core-all</module>
+        <module>bridje-dm</module>
     </modules>
 </project>
