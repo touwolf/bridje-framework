@@ -27,6 +27,7 @@
     </modules>
 
     <scm>
+        <url>https://github.com/bridje/bridje-framework</url>
         <connection>scm:git:https://github.com/bridje/bridje-framework.git</connection>
         <developerConnection>scm:git:https://github.com/bridje/bridje-framework.git</developerConnection>
         <tag>HEAD</tag>
