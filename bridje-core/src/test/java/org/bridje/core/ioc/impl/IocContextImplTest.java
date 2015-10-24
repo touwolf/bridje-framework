@@ -1,7 +1,6 @@
 
 package org.bridje.core.ioc.impl;
 
-import org.bridje.core.ioc.impl.Service;
 import java.io.IOException;
 import org.bridje.core.ioc.Ioc;
 import org.bridje.core.ioc.IocContext;
@@ -31,15 +30,15 @@ import static org.junit.Assert.*;
 
 public class IocContextImplTest
 {
-    
+
     public IocContextImplTest()
     {
     }
-    
+
     @BeforeClass
     public static void setUpClass()
     {
-        Ioc.context(Service.
+        Ioc.init(Service.
                 forThis(DefaultService.class).
                 implementBy(DefaultComponent2.class));
     }
@@ -75,14 +74,14 @@ public class IocContextImplTest
         assertNotNull(result);
         assertNotNull(result.getDummyComponent());
         assertEquals(result.getDummyComponent(), instance.find(DummyComponent.class));
-        
+
         DummyWithAnnotatedConstruct result1 = instance.find(DummyWithAnnotatedConstruct.class);
         assertNotNull(result1);
         assertNotNull(result1.getComplexInject());
         assertEquals(result1.getComplexInject(), instance.find(ComplexInjectComponent.class));
         assertNull(result1.getDummyComponent());
     }
-    
+
     @Test
     public void testFindByService() throws IOException
     {
@@ -121,7 +120,7 @@ public class IocContextImplTest
         assertNotNull(giComp.getComplexInject());
         assertTrue(giComp.getComplexInject() instanceof ComplexInjectComponent);
     }
-    
+
     @Test
     public void testPriority() throws IOException
     {
@@ -131,11 +130,11 @@ public class IocContextImplTest
         assertTrue(prorityArr[1] instanceof PriorityComp1);
         assertTrue(prorityArr[2] instanceof PriorityComp4);
         assertTrue(prorityArr[3] instanceof PriorityComp2);
-        
+
         assertTrue(instance.find(PriorityService.class) instanceof PriorityComp3);
-        
+
     }
-    
+
     @Test
     public void testDefineService() throws IOException
     {

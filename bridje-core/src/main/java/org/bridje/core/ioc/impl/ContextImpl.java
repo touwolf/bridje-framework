@@ -29,10 +29,6 @@ import java.util.logging.Logger;
 import org.bridje.core.ioc.ClassRepository;
 import org.bridje.core.ioc.IocContext;
 
-/**
- * 
- * @author gilberto
- */
 class ContextImpl implements IocContext
 {
     private static final Logger LOG = Logger.getLogger(ContextImpl.class.getName());

@@ -15,15 +15,11 @@
  */
 package org.bridje.core.ioc.impl;
 
-/**
- *
- * @author gorums
- */
 public class Register
 {
-    private Class<?> service;
+    private final Class<?> service;
     
-    private Class<?> component;
+    private final Class<?> component;
 
     public Register(Class<?> service, Class<?> component)
     {

@@ -20,12 +20,23 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- *
- * @author Gilberto
- * @param <A>
+ * Functional interface used by {@link ClassRepository} for navigating annotated 
+ * methods in the inversion of control context.
+ * <p>
+ * @param <A> The annotation that the methods must have in orther to be accept by
+ *            the navigator.
  */
 @FunctionalInterface
 public interface AnnotMethodNavigator<A extends Annotation>
 {
+    /**
+     * This method is call when ever a method in a component if found to have the
+     * given annotation.
+     * <p>
+     * @param method     The method been found.
+     * @param component  The class of the component that contains the found
+     *                   method.
+     * @param annotation The instance of the annotation of the method.
+     */
     void accept(Method method, Class component, A annotation);
 }

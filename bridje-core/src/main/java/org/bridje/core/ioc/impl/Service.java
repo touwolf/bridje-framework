@@ -15,10 +15,6 @@
  */
 package org.bridje.core.ioc.impl;
 
-/**
- *
- * @author gorums
- */
 public class Service 
 {    
     public static ServiceRegister forThis(Class<?> service)

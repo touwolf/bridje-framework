@@ -37,8 +37,6 @@ import javax.tools.StandardLocation;
 
 /**
  * Annotations processor for the {@link Component} annotation.
- * 
- * @author gilberto
  */
 @SupportedAnnotationTypes("org.bridje.core.ioc.annotations.Component")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -53,7 +51,7 @@ public class ComponentAnnotProcessor extends AbstractProcessor
     private static final Logger LOG = Logger.getLogger(ComponentAnnotProcessor.class.getName());
 
     public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/components.properties";
-    
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
     {
@@ -107,9 +105,10 @@ public class ComponentAnnotProcessor extends AbstractProcessor
 
     /**
      * This method appends class=scope to the output file.
-     * 
+     * <p>
      * @param clsName The full class name of the component to append
-     * @param scope The scope of the component
+     * @param scope   The scope of the component
+     * <p>
      * @throws IOException If any IO error prevents the writing.
      */
     private void appendClass(String clsName, String scope) throws IOException

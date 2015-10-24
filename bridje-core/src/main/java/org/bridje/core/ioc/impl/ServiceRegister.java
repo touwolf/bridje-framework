@@ -15,13 +15,9 @@
  */
 package org.bridje.core.ioc.impl;
 
-/**
- *
- * @author gorums
- */
 public class ServiceRegister 
 {
-    private Class<?> service;
+    private final Class<?> service;
     
     public ServiceRegister(Class<?> service)
     {

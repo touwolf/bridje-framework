@@ -22,40 +22,50 @@ package org.bridje.core.ioc;
 import java.lang.annotation.Annotation;
 
 /**
- *
+ * Represents the collection of classes being used by {@link IoCContext} to create
+ * and manage components.
  */
 public interface ClassRepository
 {
     /**
-     * Navigates through all methods of all component classes registred 
-     * in this repository, that are annotated with the given annotation.
-     * This includes superclasses methods.
-     * 
-     * @param <A>
-     * @param annotation
-     * @param navigator 
+     * Navigates through all methods of all component classes registred in this
+     * repository, that are annotated with the given annotation. This includes
+     * superclasses methods.
+     * <p>
+     * @param <A>        The type of the annotation methods must be annotated
+     *                   with.
+     * @param annotation The type of the annotation methods must be annotated
+     *                   with.
+     * @param navigator  Callback functional interface that handles the
+     *                   annotated method.
      */
     public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator);
-    
+
     /**
-     * Navigates through all fields of all component classes registred 
-     * in this repository, that are annotated with the given annotation.
-     * This includes superclasses fields.
-     * 
-     * @param <A>
-     * @param annotation
-     * @param navigator 
+     * Navigates through all fields of all component classes registred in this
+     * repository, that are annotated with the given annotation. This includes
+     * superclasses fields.
+     * <p>
+     * @param <A>        The type of the annotation fields must be annotated
+     *                   with.
+     * @param annotation The type of the annotation fields must be annotated
+     *                   with.
+     * @param navigator  Callback functional interface that handles the
+     *                   annotated field.
      */
     public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator);
-    
+
     /**
-     * Navigates through all component classes registred 
-     * in this repository, that are annotated with the given annotation.
-     * This includes superclasses fields.
-     * 
-     * @param <A>
-     * @param annotation
-     * @param navigator 
+     * Navigates through all component classes registred in this repository,
+     * that are annotated with the given annotation. This includes superclasses
+     * fields.
+     * <p>
+     * @param <A>        The type of the annotation classes must be annotated
+     *                   with.
+     * @param annotation The type of the annotation classes must be annotated
+     *                   with.
+     * @param navigator  Callback functional interface that handles the
+     *                   annotated class.
      */
     public <A extends Annotation> void navigateAnnotClasses(A annotation, AnnotClassNavigator<A> navigator);
 }

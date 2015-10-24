@@ -21,11 +21,24 @@ package org.bridje.core.ioc;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-/** 
- * @param <A>
+/**
+ * Functional interface used by {@link ClassRepository} for navigating annotated 
+ * fields in the inversion of control context.
+ * <p>
+ * @param <A> The annotation that the fields must have in orther to be accept by
+ *            the navigator.
  */
 @FunctionalInterface
 public interface AnnotFieldNavigator<A extends Annotation>
 {
+    /**
+     * This method is call when ever a field in a component if found to have the
+     * given annotation.
+     * <p>
+     * @param field      The field been found.
+     * @param component  The class of the component that contains the found
+     *                   field.
+     * @param annotation The instance of the annotation of the field.
+     */
     void accept(Field field, Class component, A annotation);
 }

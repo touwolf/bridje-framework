@@ -22,12 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation specify that the field on witch is declared is
- * a component dependency, the container will find (any/all) component that 
- * provides the service and inject the instance of it in this field.
- * Cannot be use in static fields, but it may be use in parent classes of components.
- * 
- * @author gilberto
+ * This annotation specify that the field on witch is declared is a component
+ * dependency, the container will find (any/all) component that provides the
+ * service and inject the instance of it in this field. Cannot be use in static
+ * fields, but it may be use in parent classes of components.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

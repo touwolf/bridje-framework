@@ -23,11 +23,9 @@ import java.lang.annotation.Target;
 
 /**
  * Mark a class as a component so it can be managed by the API.
- * 
- * This annotation mark any class as an IoC component. if scope
- * of the component is no specified it will be an application scoped component.
- * 
- * @author gilberto
+ * <p>
+ * This annotation mark any class as an IoC component. if scope of the component
+ * is no specified it will be an application scoped component.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -35,17 +33,17 @@ public @interface Component
 {
     /**
      * Defines the scope of component.
-     * 
+     * <p>
      * @return String that represents the scope of the component.
      */
     String scope() default "APPLICATION";
 
     /**
      * If the component must be instantiate eager or lazy
-     * 
-     * @return true the component will be instantiated eager, 
-     * the default is false witch means that the component will be instantiated
-     * lazy the first time some one request it.
+     * <p>
+     * @return true the component will be instantiated eager, the default is
+     *         false witch means that the component will be instantiated lazy
+     *         the first time some one request it.
      */
     boolean instantiate() default false;
 }

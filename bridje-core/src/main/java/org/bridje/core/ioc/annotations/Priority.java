@@ -22,12 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the priority of the component in a way that
- * the small values are the highest priority component.
- * The container will use this annotation to find out the default 
- * implementation (the one with highest priority) for the given service.
- * 
- * @author gilberto
+ * Defines the priority of the component in a way that the small values are the
+ * highest priority component. The container will use this annotation to find
+ * out the default implementation (the one with highest priority) for the given
+ * service.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -35,7 +33,7 @@ public @interface Priority
 {
     /**
      * The priority of the component.
-     * 
+     * <p>
      * @return An intenger witch represents the priority of the component.
      */
     int value() default Integer.MAX_VALUE;

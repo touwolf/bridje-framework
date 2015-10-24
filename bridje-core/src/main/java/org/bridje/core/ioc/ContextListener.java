@@ -15,12 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.bridje.core.ioc;
 
 /**
- *
+ * A listener for the {@link IocContext}. This interfaz is mean to be
+ * implemented in order for the container to be call his method upon the evens
+ * that take place on the {@link IocContext}
+ * <p>
+ * TODO: Implement commons events listeners of the IocContext
  */
-public class ContextListener 
+public class ContextListener
 {
-    
+
 }

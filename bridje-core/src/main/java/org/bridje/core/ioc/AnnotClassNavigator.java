@@ -20,11 +20,22 @@ package org.bridje.core.ioc;
 
 import java.lang.annotation.Annotation;
 
-/** 
- * @param <A>
+/**
+ * Functional interface used by {@link ClassRepository} for navigating annotated 
+ * classes in the inversion of control context.
+ * <p>
+ * @param <A> The annotation that classes must have in orther to be accept by
+ *            the navigator.
  */
 @FunctionalInterface
 public interface AnnotClassNavigator<A extends Annotation>
 {
+    /**
+     * This method is call when ever a class if found to have the given
+     * annotation.
+     * <p>
+     * @param component  The class of the component found.
+     * @param annotation The instance of the annotation of the component.
+     */
     void accept(Class component, A annotation);
 }
