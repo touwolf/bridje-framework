@@ -8,10 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.bridje</groupId>
     <artifactId>bridje-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
     <name>Bridje Core</name>
     <description>Bridje Core API</description>
