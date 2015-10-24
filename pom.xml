@@ -103,10 +103,9 @@
                     <version>2.7</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <configuration>
-                        <passphrase>${gpg.passphrase}</passphrase>
-                    </configuration>
+                    <version>1.6</version>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>
