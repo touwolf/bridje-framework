@@ -4,8 +4,8 @@
 
     <groupId>org.bridje</groupId>
     <artifactId>bridje-parent</artifactId>
-    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <name>Bridje (Parent)</name>
     <description>Parent Maven Project for Bridje Framework</description>
