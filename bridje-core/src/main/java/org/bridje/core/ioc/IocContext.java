@@ -28,7 +28,6 @@ import org.bridje.core.ioc.impl.Register;
  * An implementetion of this interface can be obtained via the Ioc interface or
  * by injecting {@link org.bridje.core.ioc.annotations.Inject} it in any
  * component you whant.
- * <p>
  */
 public interface IocContext
 {
