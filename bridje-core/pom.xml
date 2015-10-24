@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -9,25 +9,56 @@
     </parent>
 
     <groupId>org.bridje</groupId>
-    <artifactId>bridje-core-parent</artifactId>
+    <artifactId>bridje-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <name>Bridje Core (Parent)</name>
-    <description>Parent Maven Project for Bridje Framework Core APIs</description>
-	<url>http://www.bridje.org</url>
+    <name>Bridje Core</name>
+    <description>Bridje Core API</description>
+    <url>http://www.bridje.org</url>
 
-    <modules>
-        <module>bridje-ioc</module>
-        <module>bridje-vfs</module>
-        <module>bridje-sql</module>
-        <module>bridje-tpl</module>
-        <module>bridje-cli</module>
-        <module>bridje-cast</module>
-        <module>bridje-web</module>
-        <module>bridje-procs</module>
-        <module>bridje-aas</module>
-        <module>bridje-core-all</module>
-        <module>bridje-dm</module>
-    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <configuration>
+                    <processors>
+                        <processor>org.bridje.core.ioc.annotations.ComponentAnnotProcessor</processor>
+                    </processors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>process-test</id>
+                        <goals>
+                            <goal>process-test</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
