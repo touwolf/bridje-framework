@@ -10,6 +10,8 @@
     <name>Bridje (Parent)</name>
     <description>Parent Maven Project for Bridje Framework</description>
     <url>http://www.bridje.org</url>
+
+    <inceptionYear>2015</inceptionYear>
     <organization>
         <name>Bridje Framework</name>
         <url>http://www.bridje.org</url>
@@ -19,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <github.global.server>github</github.global.server>
     </properties>
 
     <modules>
@@ -32,6 +33,11 @@
         <developerConnection>scm:git:https://github.com/bridje/bridje-framework.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
+    
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/bridje/bridje-framework/issues</url>
+    </issueManagement>
 
     <distributionManagement>
         <repository>
@@ -84,7 +90,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>2.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.bsc.maven</groupId>
@@ -95,6 +101,25 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jarsigner-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <id>sign</id>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <keystore>/path/to/the/keystore</keystore>
+                        <alias>Alias name</alias>
+                        <storepass>Store password</storepass>
+                        <keypass>Key password</keypass>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
