@@ -1,38 +1,42 @@
-# Bridje Framework [![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
-www.bridje.org
+[![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
 
-We are going to build different Java APIs named Core, like inversion of control and injection of dependency API (*Bridje IoC*), virtual file system API (*Bridje VFS*), Sql API (*Bridje Sql*), template API (*Bridje Tpl*), etc.
+Introduction
+============
 
-Using the Core API we are going to buid a **Web Framework** and **ORM** to general proposite.
+This package contains the Bridje Java Applications Framework. A project providing Java API for building Fast, Roboust Java Aplications with Maven.
+The project is licensed under the Apache License:
 
-Bridje IoC
---
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-This is the main API and the base of the other APIs, all the API dependens of IoC. In Java you instance a **class** using the keyword **new**, with this API you dont have to use **new** any more, it's the idea. *Bridje IoC* are goning to instences the classes with you need for you.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-```java
-ConcreteComponent conComp = Ioc.context().find(ConcreteComponent.class);
-```
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
-ConcreteCompoenent is an **interface** and *IoC Bridje* resolve the implementation class for you.
+Dependencies
+============
 
-You need annotate the implementation class with **@Component**
+The project libraries can be use without dependencies.
 
-```java
-@Component
-public class ConcreteComponentImpl implements ConcreteComponent
-{
-    
-}
-```
+Installation and Usage
+======================
 
-You can review more feature on the wiki.
+Bridje Core library is availables on the Maven Central Repository
 
-Bridje VFS
---
+    <dependencies>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-core</artifactId>
+            <version>0.0.1-2</version>
+        </dependency>
+    </dependencies>
 
-Bridje Sql
---
+About the Project
+=================
 
-Bridje Tpl
---
+The project provides a set of tools for creating Java Applications.
