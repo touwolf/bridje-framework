@@ -22,7 +22,7 @@ package org.bridje.core.ioc;
 import java.lang.annotation.Annotation;
 
 /**
- * Represents the collection of classes being used by {@link IoCContext} to create
+ * Represents the collection of classes being used by {@link IocContext} to create
  * and manage components.
  */
 public interface ClassRepository
