@@ -55,15 +55,35 @@ class Container
         }
         else
         {
+            invokePreCreateListener(cls);
             T obj = instanciator.instantiate(cls);
             if(obj == null)
             {
                 return null;
             }
             components.put(cls, obj);
+            
+            invokePreInitListener(cls);
             instanciator.injectDependencies(cls, obj);
+            
+            invokePostInitListener(cls);
             instanciator.callPostConstruct(cls, obj);
             return obj;
         }
+    }
+
+    private <T> void invokePreCreateListener(Class<T> cls)
+    {
+        instanciator.invokePreCreateListener(cls);
+    }
+
+    private <T> void invokePreInitListener(Class<T> cls)
+    {
+        instanciator.invokePreInitListener(cls);
+    }
+
+    private <T> void invokePostInitListener(Class<T> cls)
+    {
+        instanciator.invokePostInitListener(cls);
     }
 }

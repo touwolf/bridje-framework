@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.core.ioc.ContextListener;
 import org.bridje.core.ioc.annotations.Inject;
 import org.bridje.core.ioc.IocContext;
 import org.bridje.core.ioc.annotations.Construct;
@@ -224,5 +225,20 @@ class Instanciator
             }
         }
         return allExists;
+    }
+
+    protected <T> void invokePreInitListener(Class<T> cls)
+    {
+        
+    }
+
+    protected <T> void invokePreCreateListener(Class<T> cls)
+    {
+        
+    }
+
+    protected <T> void invokePostInitListener(Class<T> cls)
+    {
+        
     }
 }
