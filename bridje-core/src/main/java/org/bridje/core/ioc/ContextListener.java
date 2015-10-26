@@ -23,9 +23,22 @@ package org.bridje.core.ioc;
  * implemented in order for the container to be call his method upon the evens
  * that take place on the {@link IocContext}
  * <p>
- * TODO: Implement commons events listeners of the IocContext
  */
-public class ContextListener
+public interface ContextListener
 {
-
+    /**
+     * Will be called before a component is created
+     */
+    void preCreateComponent();
+    
+    /**
+     * Will be called after the component has been instantiate and before
+     * injecting the components dependencies
+     */
+    void preInitComponent();
+    
+    /**
+     * Will be called after the components dependencies injection.
+     */
+    void postInitComponent();
 }
