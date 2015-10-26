@@ -21,6 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,9 +39,11 @@ class Instanciator
 
     private final IocContext context;
 
+    private ContextListener[] contextListeners;
+    
     public Instanciator(IocContext context)
     {
-        this.context = context;
+        this.context = context;        
     }
 
     @SuppressWarnings("UseSpecificCatch")
@@ -227,18 +230,92 @@ class Instanciator
         return allExists;
     }
 
-    protected <T> void invokePreInitListener(Class<T> cls)
+    private void initContextListeners()
     {
-        
+        if(null == contextListeners)
+        {
+            contextListeners = context.findAll(ContextListener.class);
+        }
     }
 
     protected <T> void invokePreCreateListener(Class<T> cls)
     {
-        
+        if(ContextListener.class.isAssignableFrom(cls))
+        {
+            return;
+        }
+       
+        initContextListeners();
+        if(null != contextListeners)
+        {
+            for (ContextListener contextListener : contextListeners)
+            {
+                //find the generic parameter type of ContextListener, 
+                //example ContexListener<Integer> -> type = java.lang.Integer
+                Type type = (((ParameterizedType)(contextListener.getClass()
+                                .getGenericInterfaces())[0])
+                                .getActualTypeArguments())[0];
+                
+                if(type.getTypeName().equals(Object.class.getTypeName()) || 
+                   type.getTypeName().equals(cls.getTypeName()))
+                {
+                    contextListener.preCreateComponent(cls);
+                }               
+            }
+        }
     }
 
+    protected <T> void invokePreInitListener(Class<T> cls)
+    {
+        if(ContextListener.class.isAssignableFrom(cls))
+        {
+            return;
+        }
+        
+        initContextListeners();
+        if(null != contextListeners)
+        {
+            for (ContextListener contextListener : contextListeners)
+            {
+                //find the generic parameter type of ContextListener, 
+                //example ContexListener<Integer> -> type = java.lang.Integer
+                Type type = (((ParameterizedType)(contextListener.getClass()
+                                .getGenericInterfaces())[0])
+                                .getActualTypeArguments())[0];
+                
+                if(type.getTypeName().equals(Object.class.getTypeName()) || 
+                   type.getTypeName().equals(cls.getTypeName()))
+                {
+                    contextListener.preInitComponent(cls);
+                }       
+            }
+        }
+    }
+    
     protected <T> void invokePostInitListener(Class<T> cls)
     {
+        if(ContextListener.class.isAssignableFrom(cls))
+        {
+            return;
+        }
         
+        initContextListeners();
+        if(null != contextListeners)
+        {
+            for (ContextListener contextListener : contextListeners)
+            {
+                //find the generic parameter type of ContextListener, 
+                //example ContexListener<Integer> -> type = java.lang.Integer
+                Type type = (((ParameterizedType)(contextListener.getClass()
+                                .getGenericInterfaces())[0])
+                                .getActualTypeArguments())[0];
+                
+                if(type.getTypeName().equals(Object.class.getTypeName()) || 
+                   type.getTypeName().equals(cls.getTypeName()))
+                {
+                    contextListener.postInitComponent(cls);
+                }      
+            }
+        }
     }
 }
