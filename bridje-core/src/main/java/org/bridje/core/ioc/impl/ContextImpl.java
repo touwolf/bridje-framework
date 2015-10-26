@@ -45,6 +45,9 @@ class ContextImpl implements IocContext
     
     private final IocContext parent;
 
+    /**
+     * Register componets manualy
+     */
     private List<Register> registers;
     
     public ContextImpl() throws IOException

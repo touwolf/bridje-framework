@@ -23,6 +23,11 @@ package org.bridje.core.ioc;
  * implemented in order for the container to be call his method upon the evens
  * that take place on the {@link IocContext}
  * <p>
+ * The context listener will be any component that implements the interface
+ * ContextListener, the framework must search all ContextListener implementations
+ * via the standard way of components resolution and call the 3 methods of the
+ * interface in the propper place.
+ * <p>
  */
 public interface ContextListener
 {
