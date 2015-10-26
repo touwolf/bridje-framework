@@ -24,18 +24,18 @@ public class ContextListenerDummy implements ContextListener<DummyComponent>
     @Override
     public void preCreateComponent(Class<DummyComponent> clazz)
     {
-        System.out.println("preCreate: " + clazz.getName());
+        System.out.println("This method is called only when DummyComponent is preCreate");
     }
 
     @Override
     public void preInitComponent(Class<DummyComponent> clazz)
     {
-        System.out.println("preInit: " + clazz.getName());
+        System.out.println("This method is called only when DummyComponent is preInit");
     }
 
     @Override
     public void postInitComponent(Class<DummyComponent> clazz)
     {
-        System.out.println("postInit: " + clazz.getName());
+        System.out.println("This method is called only when DummyComponent is postInit");
     }    
 }
