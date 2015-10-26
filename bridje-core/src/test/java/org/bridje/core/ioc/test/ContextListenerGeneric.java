@@ -24,18 +24,18 @@ public class ContextListenerGeneric implements ContextListener<Object>
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
-        System.out.println("preCreate: " + clazz.getName());
+        System.out.println("General method called for all the components preCreate: " + clazz.getName());
     }
 
     @Override
     public void preInitComponent(Class<Object> clazz)
     {
-        System.out.println("preInit: " + clazz.getName());
+        System.out.println("General method called for all the components  preInit: " + clazz.getName());
     }
 
     @Override
     public void postInitComponent(Class<Object> clazz)
     {
-        System.out.println("postInit: " + clazz.getName());
+        System.out.println("General method called for all the components  postInit: " + clazz.getName());
     }    
 }
