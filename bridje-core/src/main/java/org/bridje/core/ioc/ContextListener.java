@@ -28,22 +28,73 @@ package org.bridje.core.ioc;
  * via the standard way of components resolution and call the 3 methods of the
  * interface in the propper place.
  * <p>
+ * @param <T> Component class like you want listener
+ * 
+ * <code>
+ * @Component 
+ * class MyContextListener implement ContextListener<MyComponent>
+ * {
+ *      public void preCreateComponent(Class<MyComponent> component)
+ *      {
+ *          //only is call when MyComponent is pre create
+ *      }
+ * 
+ *      public void preInitComponent(Class<MyComponent> component)
+ *      {
+ *          //only is call when MyComponent is pre init
+ *      }
+ * 
+ *      public void postInitComponent(Class<MyComponent> component)
+ *      {
+ *          //only is call when MyComponent is post init
+ *      } 
+ * } 
+ * </code>
+ * 
+ * Is you want to listener all the components use Object
+ * 
+ * <code>
+ * @Component 
+ * class MyContextListener implement ContextListener<Object>
+ * {
+ *      public void preCreateComponent(Class<Object> component)
+ *      {
+ *          //is call for each component pre create
+ *      }
+ * 
+ *      public void preInitComponent(Class<Object> component)
+ *      {
+ *          //is call for each component pre init
+ *      }
+ * 
+ *      public void postInitComponent(Class<Object> component)
+ *      {
+ *          //is call for each component post init
+ *      } 
+ * } 
+ * </code>
  */
-public interface ContextListener
+public interface ContextListener<T>
 {
     /**
      * Will be called before a component is created
+     * 
+     * @param clazz Component pre create
      */
-    void preCreateComponent();
+    void preCreateComponent(Class<T> clazz);
     
     /**
      * Will be called after the component has been instantiate and before
      * injecting the components dependencies
+     * 
+     * @param clazz Component pre init
      */
-    void preInitComponent();
+    void preInitComponent(Class<T> clazz);
     
     /**
      * Will be called after the components dependencies injection.
+     * 
+     * @param clazz Component post init
      */
-    void postInitComponent();
+    void postInitComponent(Class<T> clazz);
 }
