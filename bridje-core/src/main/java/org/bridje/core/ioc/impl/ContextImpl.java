@@ -86,7 +86,13 @@ class ContextImpl implements IocContext
             classSet = ClassSet.findByScope(scope);
             serviceMap = ServiceMap.findByScope(scope);
         }
-        container = new Container(creator, Arrays.asList(new Object[]{this}));
+        List allInstances = new ArrayList(instances != null ? instances.size() + 1 : 1);
+        allInstances.add(this);
+        if(instances != null)
+        {
+            allInstances.addAll(instances);
+        }
+        container = new Container(creator, allInstances);
         register(register);
     }
 

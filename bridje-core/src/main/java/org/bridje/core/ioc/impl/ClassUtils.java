@@ -72,7 +72,7 @@ public class ClassUtils
         List<Class<?>> arrList = new ArrayList();
         for (Object instance : instances)
         {
-            instances.add(instance.getClass());
+            arrList.add(instance.getClass());
         }
         return arrList;
     }
