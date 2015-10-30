@@ -1,4 +1,5 @@
 language: java
 jdk:
   - oraclejdk8
-script mvn -Dgpg.skip=true test
+
+script: mvn -Dgpg.skip=true test
