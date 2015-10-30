@@ -17,11 +17,34 @@
 package org.bridje.core.tls;
 
 /**
- *
+ * This service allows you to execute an action with a group of data objects
+ * that will be available in the thread.
  */
 public interface TlsService
 {
+    /**
+     * This method puts all the data objects on the internal thread
+     * local storage an executes the {@link TlsAction}.
+     * <p>
+     * @param <T>    The type of the resulting object for the action.
+     * @param action The action to be executed.
+     * @param data   The data that must be available for the action.
+     * <p>
+     * @return The object returned by the {@link TlsAction#execute()} method.
+     * <p>
+     * @throws Exception If {@link TlsAction#execute()} throw an exception.
+     */
     <T> T doAs(TlsAction<T> action, Object... data) throws Exception;
 
+    /**
+     * Get the last object of the cls Class that was put in the thread local
+     * storage.
+     * <p>
+     * @param <T> The type of the object to look for.
+     * @param cls The class of the object to look for.
+     * <p>
+     * @return The last object of the cls Class that was put in the thread local
+     *         storage, or null if none can be found.
+     */
     <T> T get(Class<T> cls);
 }

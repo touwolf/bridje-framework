@@ -21,13 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author Gilberto
- */
 class ThreadLocalStorage
 {
     private ThreadLocal<Map<Class,List<Object>>> threadLocalStorage;
+
+    public ThreadLocalStorage()
+    {
+        threadLocalStorage = new ThreadLocal<>();
+    }
 
     public <T> T get(Class<T> cls)
     {

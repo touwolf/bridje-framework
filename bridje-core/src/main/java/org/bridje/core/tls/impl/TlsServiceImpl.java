@@ -16,19 +16,20 @@
 
 package org.bridje.core.tls.impl;
 
-import java.util.Map;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.tls.TlsAction;
 import org.bridje.core.tls.TlsService;
 
-/**
- *
- */
 @Component
 class TlsServiceImpl implements TlsService
 {
-    private ThreadLocalStorage threadLocalStorage;
+    private final ThreadLocalStorage threadLocalStorage;
 
+    public TlsServiceImpl()
+    {
+        threadLocalStorage = new ThreadLocalStorage();
+    }
+    
     @Override
     public <T> T doAs(TlsAction<T> action, Object... data) throws Exception
     {
