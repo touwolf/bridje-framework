@@ -70,6 +70,24 @@ class ServiceMap
         return (Class)lst.get(0);
     }
 
+    public <T> Class<? extends T> findOne(Type service, int priority)
+    {
+        List<Class<?>> lst = map.get(service);
+        if(lst == null || lst.isEmpty())
+        {
+            return null;
+        }
+        for (Class<?> cls : lst)
+        {
+            int v1 = ClassUtils.findPriority(cls);
+            if(v1 > priority || v1 == Integer.MAX_VALUE)
+            {
+                return (Class)cls;
+            }
+        }
+        return null;
+    }
+    
     public <T> boolean exists(Type service)
     {
         return map.containsKey(service);
@@ -177,19 +195,10 @@ class ServiceMap
     {
         Collections.sort(value, (Class<?> c1, Class<?> c2) ->
         {
-            Priority a1 = c1.getAnnotation(Priority.class);
-            Priority a2 = c2.getAnnotation(Priority.class);
-            int v1 = Integer.MAX_VALUE;
-            int v2 = Integer.MAX_VALUE;
-            if(a1 != null)
-            {
-                v1 = a1.value();
-            }
-            if(a2 != null)
-            {
-                v2 = a2.value();
-            }
+            int v1 = ClassUtils.findPriority(c1);
+            int v2 = ClassUtils.findPriority(c2);
             return v1 - v2;
         });
     }
+
 }

@@ -62,6 +62,42 @@ public interface IocContext
     <T> T findGeneric(Type service, Class<T> resultCls);
 
     /**
+     * This method finds the component that provides the given service with less
+     * priority thant the priority param.
+     * <p>
+     * @param <T>      The generic type of the class of the service that this
+     *                 method should find.
+     * @param service  The class that represents the service that this method
+     *                 must find.
+     * <p>
+     * @param priority The given component must have a priority value greater
+     *                 than this param.
+     * <p>
+     * @return An object that extends or implement the class of the service
+     *         provided, or null if no component provides this services in the
+     *         context.
+     */
+    <T> T findNext(Class<T> service, int priority);
+
+    /**
+     * This method finds the component that provides the given generic service
+     * with less priority thant the priority param.
+     * <p>
+     * @param <T>       The generic type of the class of the service that this
+     *                  method should return.
+     * @param service   The java.​lang.​reflect.Type that represents the service
+     *                  that this method must find.
+     * @param resultCls The expexted return class of this method.
+     * <p>
+     * @param priority  The given component must have a priority value greater
+     *                  than this param.
+     * <p>
+     * @return An object that extends or implement the service provided, or null
+     *         if no component provides this services in the context.
+     */
+    <T> T findNextGeneric(Type service, Class<T> resultCls, int priority);
+
+    /**
      * This method finds all the components that provides the given service.
      * <p>
      * @param <T>     The generic type of the class of the service that this
@@ -124,8 +160,7 @@ public interface IocContext
      * Create a child IocContext of this context.
      * <p>
      * @param scope    The scope of the new context.
-     * @param register
-     * <p>
+     * @param register <p>
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Register... register);
@@ -136,8 +171,7 @@ public interface IocContext
      * @param scope     The scope of the new context.
      * @param instances A collection of objects that will be components of the
      *                  new context.
-     * @param register
-     * <p>
+     * @param register <p>
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Collection instances, Register... register);

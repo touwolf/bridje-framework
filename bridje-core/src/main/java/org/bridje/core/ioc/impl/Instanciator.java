@@ -31,6 +31,7 @@ import org.bridje.core.ioc.ContextListener;
 import org.bridje.core.ioc.annotations.Inject;
 import org.bridje.core.ioc.IocContext;
 import org.bridje.core.ioc.annotations.Construct;
+import org.bridje.core.ioc.annotations.InjectNext;
 import org.bridje.core.ioc.annotations.PostConstruct;
 
 class Instanciator
@@ -96,11 +97,15 @@ class Instanciator
         for (Field declaredField : declaredFields)
         {
             Inject annotation = declaredField.getAnnotation(Inject.class);
-            if(annotation == null)
+            if(annotation != null)
             {
-                continue;
+                injectDependency(cls, obj, declaredField, null);
             }
-            injectDependency(cls, obj, declaredField);
+            InjectNext annotationNext = declaredField.getAnnotation(InjectNext.class);
+            if(annotationNext != null)
+            {
+                injectDependency(cls, obj, declaredField, ClassUtils.findPriority(cls));
+            }
         }
 
         Class supClass = cls.getSuperclass();
@@ -110,7 +115,7 @@ class Instanciator
         }
     }
     
-    public void injectDependency(Class cls, Object obj, Field field)
+    public void injectDependency(Class cls, Object obj, Field field, Integer priority)
     {
         Type service = field.getGenericType();
         Object componentObj = null;
@@ -123,7 +128,14 @@ class Instanciator
         }
         else
         {
-            componentObj = context.findGeneric(service, serviceCls);
+            if(priority == null)
+            {
+                componentObj = context.findGeneric(service, serviceCls);
+            }
+            else
+            {
+                componentObj = context.findNextGeneric(service, serviceCls, ClassUtils.findPriority(cls));
+            }
         }
         try
         {

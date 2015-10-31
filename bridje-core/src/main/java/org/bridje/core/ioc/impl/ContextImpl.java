@@ -110,21 +110,6 @@ class ContextImpl implements IocContext
         }
         return null;
     }
-    
-    @Override
-    public <T> T[] findAll(Class<T> service)
-    {
-        T[] result = findAllInternal(service);
-        if(result != null)
-        {
-            return result;
-        }
-        if(parent != null)
-        {
-            return parent.findAll(service);
-        }
-        return null;
-    }
 
     @Override
     public <T> T findGeneric(Type service, Class<T> resultCls)
@@ -137,6 +122,42 @@ class ContextImpl implements IocContext
         if(parent != null)
         {
             return parent.findGeneric(service, resultCls);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T findNext(Class<T> service, int priority)
+    {
+        return findNextGeneric(service, service, priority);
+    }
+
+    @Override
+    public <T> T findNextGeneric(Type service, Class<T> resultCls, int priority)
+    {
+        T result = findNextGenericInternal(service, resultCls, priority);
+        if(result != null)
+        {
+            return result;
+        }
+        if(parent != null)
+        {
+            return parent.findNextGeneric(service, resultCls, priority);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T[] findAll(Class<T> service)
+    {
+        T[] result = findAllInternal(service);
+        if(result != null)
+        {
+            return result;
+        }
+        if(parent != null)
+        {
+            return parent.findAll(service);
         }
         return null;
     }
@@ -226,6 +247,26 @@ class ContextImpl implements IocContext
         return null;
     }
 
+    private <T> T findGenericInternal(Type service, Class<T> resultCls)
+    {
+        Class component = serviceMap.findOne(service);
+        if(component != null)
+        {
+            return (T)container.create(component);
+        }
+        return null;
+    }
+
+    private <T> T findNextGenericInternal(Type service, Class<T> resultCls, int priority)
+    {
+        Class component = serviceMap.findOne(service, priority);
+        if(component != null)
+        {
+            return (T)container.create(component);
+        }
+        return null;
+    }
+    
     private <T> T[] findAllInternal(Class<T> service)
     {
         List<Class<?>> components = serviceMap.findAll(service);
@@ -242,16 +283,6 @@ class ContextImpl implements IocContext
             }
             T[] result = (T[])Array.newInstance(service, components.size());
             return (T[])resultList.toArray(result);
-        }
-        return null;
-    }
-
-    private <T> T findGenericInternal(Type service, Class<T> resultCls)
-    {
-        Class component = serviceMap.findOne(service);
-        if(component != null)
-        {
-            return (T)container.create(component);
         }
         return null;
     }

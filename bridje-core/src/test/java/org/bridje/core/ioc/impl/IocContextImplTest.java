@@ -16,6 +16,7 @@ import org.bridje.core.ioc.test.DummyWithParamsComponent;
 import org.bridje.core.ioc.test.GenericComponent;
 import org.bridje.core.ioc.test.GenericInjectComponent;
 import org.bridje.core.ioc.test.SomeService;
+import org.bridje.core.ioc.test.chain.ChainTest;
 import org.bridje.core.ioc.test.priority.PriorityComp1;
 import org.bridje.core.ioc.test.priority.PriorityComp2;
 import org.bridje.core.ioc.test.priority.PriorityComp3;
@@ -143,5 +144,15 @@ public class IocContextImplTest
         DefaultService service = instance.find(DefaultService.class);
 
         assertTrue(service instanceof DefaultComponent2);
+    }
+
+    @Test
+    public void testChain() throws IOException
+    {
+        IocContext instance = Ioc.context();
+
+        ChainTest chainTest = instance.find(ChainTest.class);
+
+        assertEquals("Wrong Chain", "1 2 3", chainTest.execute());
     }
 }

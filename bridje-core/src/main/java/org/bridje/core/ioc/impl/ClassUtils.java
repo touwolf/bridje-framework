@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.bridje.core.ioc.annotations.Priority;
 
 public class ClassUtils
 {
@@ -75,5 +76,16 @@ public class ClassUtils
             arrList.add(instance.getClass());
         }
         return arrList;
+    }
+
+    public static int findPriority(Class<?> cls)
+    {
+        Priority a1 = cls.getAnnotation(Priority.class);
+        int v1 = Integer.MAX_VALUE;
+        if(a1 != null)
+        {
+            v1 = a1.value();
+        }
+        return v1;
     }
 }
