@@ -74,7 +74,6 @@ class ContextImpl implements IocContext
     {
         this.scope = scope;
         this.parent = parent;
-        creator = new Instanciator(this);
         if(instances != null && !instances.isEmpty())
         {
             ClassSet instancesClassSet = new ClassSet(ClassUtils.findClasses(instances));
@@ -86,6 +85,7 @@ class ContextImpl implements IocContext
             classSet = ClassSet.findByScope(scope);
             serviceMap = ServiceMap.findByScope(scope);
         }
+        creator = new Instanciator(this, serviceMap);
         List allInstances = new ArrayList(instances != null ? instances.size() + 1 : 1);
         allInstances.add(this);
         if(instances != null)

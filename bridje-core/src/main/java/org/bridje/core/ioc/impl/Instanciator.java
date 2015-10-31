@@ -38,12 +38,15 @@ class Instanciator
     private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());
 
     private final IocContext context;
+    
+    private final ServiceMap serviceMap;
 
     private ContextListener[] contextListeners;
     
-    public Instanciator(IocContext context)
+    public Instanciator(IocContext context, ServiceMap serviceMap)
     {
-        this.context = context;        
+        this.context = context;
+        this.serviceMap = serviceMap;
     }
 
     @SuppressWarnings("UseSpecificCatch")
@@ -252,20 +255,31 @@ class Instanciator
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
-                Type type = (((ParameterizedType)(contextListener.getClass()
-                                .getGenericInterfaces())[0])
-                                .getActualTypeArguments())[0];
-                
-                if(type.getTypeName().equals(Object.class.getTypeName()) || 
-                   type.getTypeName().equals(cls.getTypeName()))
+                Type type = findGenericType(contextListener.getClass());
+                if(type.equals(Object.class))
                 {
                     contextListener.preCreateComponent(cls);
-                }               
+                }
+                else
+                {
+                    List<Type> services = serviceMap.getServices(cls);
+                    if(services != null)
+                    {
+                        for (Type service : services)
+                        {
+                            if(type.equals(service))
+                            {
+                                contextListener.preCreateComponent(cls);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    protected <T> void invokePreInitListener(Class<T> cls)
+    public <T> void invokePreInitListener(Class<T> cls, Object instance)
     {
         if(ContextListener.class.isAssignableFrom(cls))
         {
@@ -279,20 +293,31 @@ class Instanciator
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
-                Type type = (((ParameterizedType)(contextListener.getClass()
-                                .getGenericInterfaces())[0])
-                                .getActualTypeArguments())[0];
-                
-                if(type.getTypeName().equals(Object.class.getTypeName()) || 
-                   type.getTypeName().equals(cls.getTypeName()))
+                Type type = findGenericType(contextListener.getClass());
+                if(type.equals(Object.class))
                 {
-                    contextListener.preInitComponent(cls);
-                }       
+                    contextListener.preInitComponent(cls, instance);
+                }
+                else
+                {
+                    List<Type> services = serviceMap.getServices(cls);
+                    if(services != null)
+                    {
+                        for (Type service : services)
+                        {
+                            if(type.equals(service))
+                            {
+                                contextListener.preInitComponent(cls, instance);
+                                break;
+                            }
+                        }
+                    }
+                }      
             }
         }
     }
     
-    protected <T> void invokePostInitListener(Class<T> cls)
+    public <T> void invokePostInitListener(Class<T> cls, Object instance)
     {
         if(ContextListener.class.isAssignableFrom(cls))
         {
@@ -306,16 +331,35 @@ class Instanciator
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
-                Type type = (((ParameterizedType)(contextListener.getClass()
-                                .getGenericInterfaces())[0])
-                                .getActualTypeArguments())[0];
-                
-                if(type.getTypeName().equals(Object.class.getTypeName()) || 
-                   type.getTypeName().equals(cls.getTypeName()))
+                Type type = findGenericType(contextListener.getClass());
+                if(type.equals(Object.class))
                 {
-                    contextListener.postInitComponent(cls);
+                    contextListener.postInitComponent(cls, instance);
+                }
+                else
+                {
+                    List<Type> services = serviceMap.getServices(cls);
+                    if(services != null)
+                    {
+                        for (Type service : services)
+                        {
+                            if(type.equals(service))
+                            {
+                                contextListener.postInitComponent(cls, instance);
+                                break;
+                            }
+                        }
+                    }
                 }      
             }
         }
+    }
+
+    private Type findGenericType(Class<? extends ContextListener> clazz)
+    {
+        Type type = (((ParameterizedType)(clazz
+                        .getGenericInterfaces())[0])
+                        .getActualTypeArguments())[0];
+        return type;
     }
 }

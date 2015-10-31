@@ -79,7 +79,7 @@ public interface ContextListener<T>
     /**
      * Will be called before a component is created
      * 
-     * @param clazz Component pre create
+     * @param clazz The component class
      */
     void preCreateComponent(Class<T> clazz);
     
@@ -87,14 +87,16 @@ public interface ContextListener<T>
      * Will be called after the component has been instantiate and before
      * injecting the components dependencies
      * 
-     * @param clazz Component pre init
+     * @param clazz The component class
+     * @param instance The component instance
      */
-    void preInitComponent(Class<T> clazz);
+    void preInitComponent(Class<T> clazz, T instance);
     
     /**
      * Will be called after the components dependencies injection.
      * 
-     * @param clazz Component post init
+     * @param clazz The component class
+     * @param instance The component instance
      */
-    void postInitComponent(Class<T> clazz);
+    void postInitComponent(Class<T> clazz, T instance);
 }

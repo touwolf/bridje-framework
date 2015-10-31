@@ -30,19 +30,24 @@ class ServiceMap
     private static Map<String, ServiceMap> serviceMapCache;
 
     private final Map<Type, List<Class<?>>> map;
+    
+    private final Map<Class<?>, List<Type>> compMap;
 
     public ServiceMap(ServiceMap baseMap, ClassSet list)
     {
         map = new HashMap<>();
+        compMap = new HashMap<>();
         if(baseMap != null)
         {
             map.putAll(baseMap.map);
+            compMap.putAll(baseMap.compMap);
         }
         if(list != null)
         {
             for (Class component : list)
             {
                 List<Type> services = findServices(component);
+                compMap.put(component, services);
                 for (Type service : services)
                 {
                     addComponentToService(service, component);
@@ -98,6 +103,11 @@ class ServiceMap
             return null;
         }
         return serviceMapCache.get(scope);
+    }
+    
+    public List<Type> getServices(Class<?> component)
+    {
+        return compMap.get(component);
     }
     
     private List<Type> findServices(Class<?> component)
