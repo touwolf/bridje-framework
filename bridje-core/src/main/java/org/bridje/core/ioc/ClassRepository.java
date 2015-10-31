@@ -34,7 +34,7 @@ public interface ClassRepository
      * <p>
      * @param <A>        The type of the annotation methods must be annotated
      *                   with.
-     * @param annotation The type of the annotation methods must be annotated
+     * @param annotation The class of the annotation methods must be annotated
      *                   with.
      * @param navigator  Callback functional interface that handles the
      *                   annotated method.
@@ -48,7 +48,7 @@ public interface ClassRepository
      * <p>
      * @param <A>        The type of the annotation fields must be annotated
      *                   with.
-     * @param annotation The type of the annotation fields must be annotated
+     * @param annotation The class of the annotation fields must be annotated
      *                   with.
      * @param navigator  Callback functional interface that handles the
      *                   annotated field.
@@ -62,10 +62,10 @@ public interface ClassRepository
      * <p>
      * @param <A>        The type of the annotation classes must be annotated
      *                   with.
-     * @param annotation The type of the annotation classes must be annotated
+     * @param annotation The class of the annotation classes must be annotated
      *                   with.
      * @param navigator  Callback functional interface that handles the
      *                   annotated class.
      */
-    public <A extends Annotation> void navigateAnnotClasses(A annotation, AnnotClassNavigator<A> navigator);
+    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, AnnotClassNavigator<A> navigator);
 }

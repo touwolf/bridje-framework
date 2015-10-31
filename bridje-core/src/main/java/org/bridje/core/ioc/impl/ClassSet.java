@@ -250,18 +250,15 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }    
 
     @Override
-    public <A extends Annotation> void navigateAnnotClasses(A annotation, AnnotClassNavigator<A> navigator)
+    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, AnnotClassNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
-            Annotation[] annotations = cls.getAnnotations();        
-            for (Annotation annot : annotations)
+            A annot = cls.getAnnotation(annotation);        
+            if(annot != null)
             {
-                if(annotation == annot)
-                {
-                    navigator.accept(cls, annotation);
-                    break;
-                }
+                navigator.accept(cls, annot);
+                break;
             }
         }    
     }
