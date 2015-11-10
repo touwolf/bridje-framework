@@ -25,6 +25,7 @@
 
     <modules>
         <module>bridje-core</module>
+        <module>bridje-maven-plugin</module>
     </modules>
 
     <scm>
