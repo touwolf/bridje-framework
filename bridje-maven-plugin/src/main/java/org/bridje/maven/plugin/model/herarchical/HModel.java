@@ -17,12 +17,17 @@
 package org.bridje.maven.plugin.model.herarchical;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "hierarchy")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HierarchicalModel
+public class HModel
 {
     @XmlAttribute(name = "name")
     private String name;
@@ -39,11 +44,24 @@ public class HierarchicalModel
     @XmlAttribute(name = "package")
     private String packageName;
 
-    public static HierarchicalModel loadModel(File source) throws JAXBException
+    @XmlElementWrapper(name = "entitys")
+    @XmlElements(
     {
-        JAXBContext ctx = JAXBContext.newInstance(HierarchicalModel.class);
+        @XmlElement(name = "entity", type = HEntity.class)
+    })
+    private List<HEntity> entitys;
+            
+    public static HModel loadModel(File source) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HModel.class);
         Unmarshaller unmarsh = ctx.createUnmarshaller();
-        return (HierarchicalModel)unmarsh.unmarshal(source);
+        return (HModel)unmarsh.unmarshal(source);
+    }
+
+    public static void generateSchema(File target) throws JAXBException, IOException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HModel.class);
+        ctx.generateSchema(new OutputResolver(target));
     }
 
     public String getName()
@@ -64,5 +82,15 @@ public class HierarchicalModel
     public void setPackage(String packageName)
     {
         this.packageName = packageName;
+    }
+
+    public List<HEntity> getEntitys()
+    {
+        return entitys;
+    }
+
+    public void setEntitys(List<HEntity> entitys)
+    {
+        this.entitys = entitys;
     }
 }

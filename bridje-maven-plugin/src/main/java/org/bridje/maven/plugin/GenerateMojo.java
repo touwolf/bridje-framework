@@ -16,10 +16,13 @@
 
 package org.bridje.maven.plugin;
 
-import org.bridje.maven.plugin.model.herarchical.HierarchicalModel;
+import org.bridje.maven.plugin.model.herarchical.HModel;
 import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,6 +30,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.bridje.maven.plugin.model.herarchical.HEntity;
 
 /**
  *
@@ -54,11 +58,16 @@ public class GenerateMojo extends AbstractMojo
         try
         {
             FileGenerator generator = new FileGenerator(target);
-            HierarchicalModel model = HierarchicalModel.loadModel(getSource());
+            HModel model = HModel.loadModel(getSource());
             
             if(model != null)
             {
-                generator.generateFile(model, "HierarchicalModel.java.ftl", model.getPackage().replaceAll("[\\.]", "/") + "/" + model.getName() + ".java");
+                List<GenerateFileData> toGenerate = createFilesToGenerate(model);
+                for (GenerateFileData fData : toGenerate)
+                {
+                    getLog().info("Generating: " + fData.getDest());
+                    generator.generateFile(fData);
+                }
 
                 project.addCompileSourceRoot(target.getPath());
             }
@@ -88,5 +97,26 @@ public class GenerateMojo extends AbstractMojo
     public void setTarget(File target)
     {
         this.target = target;
+    }
+
+    private List<GenerateFileData> createFilesToGenerate(HModel model)
+    {
+        List<GenerateFileData> result = new ArrayList<>();
+        result.add(createGenerateFileData(model, "HierarchicalModel", model.getName(), model.getPackage()));
+        List<HEntity> entitys = model.getEntitys();
+        if(entitys != null)
+        {
+            for (HEntity entity : entitys)
+            {
+                result.add(createGenerateFileData(entity, "HierarchicalEntity", entity.getName(), model.getPackage()));
+            }
+        }
+        return result;
+    }
+
+    private GenerateFileData createGenerateFileData(Object data, String tpl, String name, String pack)
+    {
+        String path = pack.replaceAll("[\\.]", "/") + "/" + name + ".java";
+        return new GenerateFileData(data, tpl + ".java.ftl", path);
     }
 }

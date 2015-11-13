@@ -39,12 +39,12 @@ public class FileGenerator
         this.targetDir = targetDir;
     }
 
-    public void generateFile(Object data, String tplName, String dest) throws FileNotFoundException, TemplateException, IOException
+    public void generateFile(GenerateFileData toGenerate) throws FileNotFoundException, TemplateException, IOException
     {
         Configuration cfg = new Configuration(Configuration.getVersion());
         cfg.setClassForTemplateLoading(getClass(), "/META-INF/templates");
-        Template template = cfg.getTemplate(tplName);
-        File fileToGenerate = new File(targetDir.getPath() + "/" + dest);
+        Template template = cfg.getTemplate(toGenerate.getTplName());
+        File fileToGenerate = new File(targetDir.getPath() + "/" + toGenerate.getDest());
         if (fileToGenerate.exists())
         {
             if (!fileToGenerate.delete())
@@ -54,14 +54,17 @@ public class FileGenerator
         }
         else
         {
-            if (!fileToGenerate.getParentFile().getAbsoluteFile().mkdirs())
+            if(!fileToGenerate.getParentFile().exists())
             {
-                throw new IOException(String.format("No se pudo crear la carpeta del archivo \"%s\"", fileToGenerate.getAbsoluteFile()));
+                if (!fileToGenerate.getParentFile().getAbsoluteFile().mkdirs())
+                {
+                    throw new IOException(String.format("No se pudo crear la carpeta del archivo \"%s\"", fileToGenerate.getAbsoluteFile()));
+                }
             }
         }
         try (OutputStreamWriter streamWriter = new OutputStreamWriter(new FileOutputStream(fileToGenerate), StandardCharsets.UTF_8))
         {
-            template.process(data, streamWriter);
+            template.process(toGenerate.getData(), streamWriter);
         }
     }
 }
