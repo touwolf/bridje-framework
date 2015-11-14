@@ -16,19 +16,58 @@
 
 package org.bridje.maven.plugin.model.herarchical;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
  *
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HStringField extends HBasicField
+public class HListField extends HField
 {
+    @XmlAttribute(name = "of")
+    private String of;
+
+    @XmlElements(
+    {
+        @XmlElement(name = "element", type = HListElement.class)
+    })
+    private List<HListElement> elements;
+
+    public String getOf()
+    {
+        return of;
+    }
+
+    public void setOf(String of)
+    {
+        this.of = of;
+    }
+
+    public List<HListElement> getElements()
+    {
+        return elements;
+    }
+
+    public void setElements(List<HListElement> elements)
+    {
+        this.elements = elements;
+    }
+
     @Override
     public String getJavaType()
     {
-        return "String";
+        return "java.util.List<" + of + ">";
+    }
+
+    @Override
+    public boolean getIsList()
+    {
+        return true;
     }
 }

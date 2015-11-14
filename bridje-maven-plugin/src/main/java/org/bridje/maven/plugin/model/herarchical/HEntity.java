@@ -16,13 +16,9 @@
 
 package org.bridje.maven.plugin.model.herarchical;
 
-import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -30,30 +26,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntity
+public class HEntity extends HEntityBase
 {
     @XmlTransient
     private HModel model;
 
-    @XmlAttribute(name = "name")
-    private String name;
-
-    @XmlElements(
-    {
-        @XmlElement(name = "string", type = HStringField.class)
-    })
-    private List<HFieldType> fields;
-
-    public List<HFieldType> getFields()
-    {
-        return fields;
-    }
-
-    public void setFields(List<HFieldType> fields)
-    {
-        this.fields = fields;
-    }
-    
     public HModel getModel()
     {
         return model;
@@ -63,17 +40,7 @@ public class HEntity
     {
         this.model = model;
     }
-    
-    public String getName()
-    {
-        return name;
-    }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-    
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
         setModel((HModel)parent);

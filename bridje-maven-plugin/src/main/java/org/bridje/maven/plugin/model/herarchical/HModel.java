@@ -36,11 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "hierarchy")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HModel
+public class HModel extends HEntityBase
 {
-    @XmlAttribute(name = "name")
-    private String name;
-
     @XmlAttribute(name = "package")
     private String packageName;
 
@@ -62,16 +59,6 @@ public class HModel
     {
         JAXBContext ctx = JAXBContext.newInstance(HModel.class);
         ctx.generateSchema(new OutputResolver(target));
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
     }
 
     public String getPackage()

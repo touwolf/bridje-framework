@@ -30,20 +30,26 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class HField
 {
     @XmlTransient
-    private HEntity entity;
+    private HEntityBase entity;
     
     @XmlAttribute(name = "name")
     private String name;
     
-    @XmlAttribute(name = "type")
-    private HFieldType type;
+    @XmlAttribute
+    private boolean required;
+    
+    @XmlAttribute
+    private boolean readonly;
 
-    public HEntity getEntity()
+    @XmlAttribute(name = "transient")
+    private boolean isTransient;
+    
+    public HEntityBase getEntity()
     {
         return entity;
     }
 
-    public void setEntity(HEntity entity)
+    public void setEntity(HEntityBase entity)
     {
         this.entity = entity;
     }
@@ -58,20 +64,42 @@ public abstract class HField
         this.name = name;
     }
 
-    public HFieldType getType()
-    {
-        return type;
-    }
-
-    public void setType(HFieldType type)
-    {
-        this.type = type;
-    }
-
     public abstract String getJavaType();
+    
+    public abstract boolean getIsList();
     
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
-        setEntity((HEntity)parent);
+        setEntity((HEntityBase)parent);
+    }
+
+    public boolean isRequired()
+    {
+        return required;
+    }
+
+    public void setRequired(boolean required)
+    {
+        this.required = required;
+    }
+
+    public boolean isReadonly()
+    {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly)
+    {
+        this.readonly = readonly;
+    }
+
+    public boolean getTransient()
+    {
+        return isTransient;
+    }
+
+    public void setTransient(boolean isTransient)
+    {
+        this.isTransient = isTransient;
     }
 }

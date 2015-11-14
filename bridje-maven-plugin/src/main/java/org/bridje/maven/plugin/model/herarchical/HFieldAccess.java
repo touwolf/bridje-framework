@@ -20,7 +20,7 @@ package org.bridje.maven.plugin.model.herarchical;
  *
  * @author Gilberto
  */
-public enum HFieldType
+public enum HFieldAccess
 {
     ELEMENT,
     ATTRIBUTE;
