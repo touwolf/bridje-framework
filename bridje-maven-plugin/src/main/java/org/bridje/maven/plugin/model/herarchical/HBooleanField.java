@@ -16,15 +16,19 @@
 
 package org.bridje.maven.plugin.model.herarchical;
 
-import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
  * @author Gilberto
  */
-@XmlEnum
-public enum HFieldAccess
+@XmlAccessorType(XmlAccessType.FIELD)
+public class HBooleanField extends HBasicField
 {
-    ELEMENT,
-    ATTRIBUTE;
+    @Override
+    public String getJavaType()
+    {
+        return "Boolean";
+    }
 }

@@ -1,4 +1,5 @@
 <#macro entityContent>
+    <#if fields??>
     <#list fields as f>
     <#if f.transient>
     @XmlTransient
@@ -27,4 +28,5 @@
     }
 
     </#list>
+    </#if>
 </#macro>

@@ -17,44 +17,33 @@
 package org.bridje.maven.plugin.model.herarchical;
 
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntityBase
+public class HEnum
 {
-    @XmlAttribute(name = "name")
-    private String name;
+    @XmlTransient
+    private HModel model;
 
-    @XmlAttribute(name = "extends")
-    private String extendsFrom;
+    @XmlAttribute
+    private String name;
     
     @XmlElements(
     {
-        @XmlElement(name = "string", type = HStringField.class),
-        @XmlElement(name = "list", type = HListField.class),
-        @XmlElement(name = "enum", type = HEnumField.class),
-        @XmlElement(name = "boolean", type = HBooleanField.class)
+        @XmlElement(name = "value", type = HEnumValue.class)
     })
-    private List<HFieldAccess> fields;
+    private List<HEnumValue> values;
 
-    public List<HFieldAccess> getFields()
-    {
-        return fields;
-    }
-
-    public void setFields(List<HFieldAccess> fields)
-    {
-        this.fields = fields;
-    }
-        
     public String getName()
     {
         return name;
@@ -65,13 +54,28 @@ public class HEntityBase
         this.name = name;
     }
 
-    public String getExtends()
+    public HModel getModel()
     {
-        return extendsFrom;
+        return model;
     }
 
-    public void setExtends(String extendsFrom)
+    public void setModel(HModel model)
     {
-        this.extendsFrom = extendsFrom;
+        this.model = model;
+    }
+
+    public List<HEnumValue> getValues()
+    {
+        return values;
+    }
+
+    public void setValues(List<HEnumValue> values)
+    {
+        this.values = values;
+    }
+    
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        setModel((HModel)parent);
     }
 }

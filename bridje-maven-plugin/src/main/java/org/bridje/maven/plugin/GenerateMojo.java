@@ -31,6 +31,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.bridje.maven.plugin.model.herarchical.HEntity;
+import org.bridje.maven.plugin.model.herarchical.HEnum;
 
 /**
  *
@@ -104,11 +105,19 @@ public class GenerateMojo extends AbstractMojo
         List<GenerateFileData> result = new ArrayList<>();
         result.add(createGenerateFileData(model, "HierarchicalModel", model.getName(), model.getPackage()));
         List<HEntity> entitys = model.getEntitys();
+        List<HEnum> enums = model.getEnums();
         if(entitys != null)
         {
             for (HEntity entity : entitys)
             {
                 result.add(createGenerateFileData(entity, "HierarchicalEntity", entity.getName(), model.getPackage()));
+            }
+        }
+        if(enums != null)
+        {
+            for (HEnum en : enums)
+            {
+                result.add(createGenerateFileData(en, "HierarchicalEnum", en.getName(), model.getPackage()));
             }
         }
         return result;

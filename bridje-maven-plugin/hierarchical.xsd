@@ -14,6 +14,13 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
+          <xs:element name="enums" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="enum" type="tns:hEnum" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
         </xs:sequence>
         <xs:attribute name="package" type="xs:string"/>
       </xs:extension>
@@ -25,6 +32,8 @@
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="string" type="tns:hStringField"/>
         <xs:element name="list" type="tns:hListField"/>
+        <xs:element name="enum" type="tns:hEnumField"/>
+        <xs:element name="boolean" type="tns:hBooleanField"/>
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string"/>
@@ -78,6 +87,35 @@
   <xs:complexType name="hListElement">
     <xs:sequence/>
     <xs:attribute name="type" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="hEnumField">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicField">
+        <xs:sequence/>
+        <xs:attribute name="type" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hBooleanField">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicField">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hEnum">
+    <xs:sequence>
+      <xs:element name="value" type="tns:hEnumValue" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="hEnumValue">
+    <xs:sequence/>
     <xs:attribute name="name" type="xs:string"/>
   </xs:complexType>
 

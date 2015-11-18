@@ -16,15 +16,33 @@
 
 package org.bridje.maven.plugin.model.herarchical;
 
-import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  *
  * @author Gilberto
  */
-@XmlEnum
-public enum HFieldAccess
+@XmlAccessorType(XmlAccessType.FIELD)
+public class HEnumField extends HBasicField
 {
-    ELEMENT,
-    ATTRIBUTE;
+    @XmlAttribute(name = "type")
+    private String type;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+    
+    @Override
+    public String getJavaType()
+    {
+        return type;
+    }
 }

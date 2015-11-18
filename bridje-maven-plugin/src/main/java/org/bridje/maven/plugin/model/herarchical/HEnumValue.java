@@ -16,45 +16,25 @@
 
 package org.bridje.maven.plugin.model.herarchical;
 
-import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntityBase
+public class HEnumValue
 {
-    @XmlAttribute(name = "name")
+    @XmlTransient
+    private HEnum parent;
+
+    @XmlAttribute
     private String name;
 
-    @XmlAttribute(name = "extends")
-    private String extendsFrom;
-    
-    @XmlElements(
-    {
-        @XmlElement(name = "string", type = HStringField.class),
-        @XmlElement(name = "list", type = HListField.class),
-        @XmlElement(name = "enum", type = HEnumField.class),
-        @XmlElement(name = "boolean", type = HBooleanField.class)
-    })
-    private List<HFieldAccess> fields;
-
-    public List<HFieldAccess> getFields()
-    {
-        return fields;
-    }
-
-    public void setFields(List<HFieldAccess> fields)
-    {
-        this.fields = fields;
-    }
-        
     public String getName()
     {
         return name;
@@ -65,13 +45,18 @@ public class HEntityBase
         this.name = name;
     }
 
-    public String getExtends()
+    public HEnum getParent()
     {
-        return extendsFrom;
+        return parent;
     }
 
-    public void setExtends(String extendsFrom)
+    public void setParent(HEnum parent)
     {
-        this.extendsFrom = extendsFrom;
+        this.parent = parent;
+    }
+
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        setParent((HEnum)parent);
     }
 }

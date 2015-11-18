@@ -47,6 +47,13 @@ public class HModel extends HEntityBase
         @XmlElement(name = "entity", type = HEntity.class)
     })
     private List<HEntity> entitys;
+    
+    @XmlElementWrapper(name = "enums")
+    @XmlElements(
+    {
+        @XmlElement(name = "enum", type = HEnum.class)
+    })    
+    private List<HEnum> enums;
             
     public static HModel loadModel(File source) throws JAXBException
     {
@@ -79,5 +86,15 @@ public class HModel extends HEntityBase
     public void setEntitys(List<HEntity> entitys)
     {
         this.entitys = entitys;
+    }
+
+    public List<HEnum> getEnums()
+    {
+        return enums;
+    }
+
+    public void setEnums(List<HEnum> enums)
+    {
+        this.enums = enums;
     }
 }
