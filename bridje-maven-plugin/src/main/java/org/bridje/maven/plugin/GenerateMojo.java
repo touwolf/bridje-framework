@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.JAXBException;
+import org.apache.maven.model.License;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -71,6 +72,11 @@ public class GenerateMojo extends AbstractMojo
                 }
 
                 project.addCompileSourceRoot(target.getPath());
+                for (Object l : project.getLicenses())
+                {
+                    org.apache.maven.model.License lis = (License)l;
+                    getLog().info(lis.getName());
+                }
             }
         }
         catch(JAXBException | TemplateException | IOException ex)

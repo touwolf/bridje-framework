@@ -13,18 +13,33 @@
     <#elseif f.access == "ATTRIBUTE" >
     @XmlAttribute
     </#if>
-    private ${f.javaType} ${f.name};
+    private ${f.javaType} ${f.name}<#if !f.isNullable && f.defaultValue??> = ${f.defaultValueExp}</#if>;
     
     </#list>
     <#list fields as f>
     public ${f.javaType} get${f.name?cap_first}()
     {
+        <#if f.isNullable && f.defaultValue??>
+        if(this.${f.name} == null)
+        {
+            this.${f.name} = ${f.defaultValueExp};
+        }
+        </#if>
         return this.${f.name};
     }
 
     <#if !f.readonly>public </#if>void set${f.name?cap_first}(${f.javaType} ${f.name})
     {
         this.${f.name} = ${f.name};
+    }
+
+    </#list>
+    </#if>
+    <#if calcFields??>
+    <#list calcFields as cf>
+    public ${cf.type} get${cf.name?cap_first}()
+    {
+        ${cf.expression}
     }
 
     </#list>

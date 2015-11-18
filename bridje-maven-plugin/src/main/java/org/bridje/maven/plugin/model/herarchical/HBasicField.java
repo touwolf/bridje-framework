@@ -19,12 +19,14 @@ package org.bridje.maven.plugin.model.herarchical;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlTransient
 public abstract class HBasicField extends HField
 {
     @XmlAttribute(name = "access")

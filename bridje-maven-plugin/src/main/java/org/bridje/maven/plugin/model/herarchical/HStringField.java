@@ -18,6 +18,7 @@ package org.bridje.maven.plugin.model.herarchical;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  *
@@ -26,9 +27,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HStringField extends HBasicField
 {
+    @XmlAttribute(name = "default")
+    private String defaultValue;
+    
     @Override
     public String getJavaType()
     {
         return "String";
+    }
+
+    public String getDefaultValueExp()
+    {
+        return "\"" + defaultValue + "\"";
+    }
+    
+    public String getDefaultValue()
+    {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 }

@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlTransient
 public abstract class HField
 {
     @XmlTransient
@@ -101,5 +102,22 @@ public abstract class HField
     public void setTransient(boolean isTransient)
     {
         this.isTransient = isTransient;
+    }
+    
+    public boolean getIsNullable()
+    {
+        switch(getJavaType())
+        {
+            case "boolean":
+            case "char":
+            case "byte":
+            case "short":
+            case "int":
+            case "long":
+            case "float":
+            case "double":
+                return false;
+        }
+        return true;
     }
 }

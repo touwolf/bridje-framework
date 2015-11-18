@@ -45,6 +45,13 @@ public class HEntityBase
     })
     private List<HFieldAccess> fields;
 
+    @XmlElements(
+    {
+        @XmlElement(name = "calc", type = HCalcField.class)
+    })
+    private List<HCalcField> calcFields;
+
+    
     public List<HFieldAccess> getFields()
     {
         return fields;
@@ -73,5 +80,15 @@ public class HEntityBase
     public void setExtends(String extendsFrom)
     {
         this.extendsFrom = extendsFrom;
+    }
+
+    public List<HCalcField> getCalcFields()
+    {
+        return calcFields;
+    }
+
+    public void setCalcFields(List<HCalcField> calcFields)
+    {
+        this.calcFields = calcFields;
     }
 }

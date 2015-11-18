@@ -19,43 +19,51 @@ package org.bridje.maven.plugin.model.herarchical;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  *
  * @author Gilberto
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HBooleanField extends HBasicField
+public class HCalcField
 {
-    @XmlAttribute(name = "default")
-    private Boolean defaultValue;
-
-    @Override
-    public String getJavaType()
-    {
-        if(this.isRequired())
-        {
-            return "boolean";
-        }
-        return "Boolean";
-    }
-
-    public String getDefaultValueExp()
-    {
-        if(defaultValue == null)
-        {
-            return null;
-        }
-        return String.valueOf(defaultValue);
-    }
+    @XmlAttribute(name = "name")
+    private String name;
     
-    public Boolean getDefaultValue()
+    @XmlValue
+    private String expression;
+
+    @XmlAttribute(name = "type")
+    private String type;
+
+    public String getExpression()
     {
-        return defaultValue;
+        return expression;
     }
 
-    public void setDefaultValue(Boolean defaultValue)
+    public void setExpression(String expression)
     {
-        this.defaultValue = defaultValue;
+        this.expression = expression;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 }
