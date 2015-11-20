@@ -36,6 +36,9 @@ public class HEntityBase
     @XmlAttribute(name = "extends")
     private String extendsFrom;
     
+    @XmlAttribute(name = "customizable")
+    private Boolean customizable;
+    
     @XmlElements(
     {
         @XmlElement(name = "string", type = HStringField.class),
@@ -44,13 +47,6 @@ public class HEntityBase
         @XmlElement(name = "boolean", type = HBooleanField.class)
     })
     private List<HFieldAccess> fields;
-
-    @XmlElements(
-    {
-        @XmlElement(name = "calc", type = HCalcField.class)
-    })
-    private List<HCalcField> calcFields;
-
     
     public List<HFieldAccess> getFields()
     {
@@ -82,13 +78,17 @@ public class HEntityBase
         this.extendsFrom = extendsFrom;
     }
 
-    public List<HCalcField> getCalcFields()
+    public Boolean getCustomizable()
     {
-        return calcFields;
+        if(customizable == null)
+        {
+            return false;
+        }
+        return customizable;
     }
 
-    public void setCalcFields(List<HCalcField> calcFields)
+    public void setCustomizable(Boolean customizable)
     {
-        this.calcFields = calcFields;
+        this.customizable = customizable;
     }
 }

@@ -35,13 +35,4 @@
 
     </#list>
     </#if>
-    <#if calcFields??>
-    <#list calcFields as cf>
-    public ${cf.type} get${cf.name?cap_first}()
-    {
-        ${cf.expression}
-    }
-
-    </#list>
-    </#if>
 </#macro>

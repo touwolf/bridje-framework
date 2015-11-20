@@ -33,10 +33,13 @@ import java.nio.charset.StandardCharsets;
 public class FileGenerator
 {
     private final File targetDir;
+    
+    private boolean override;
 
-    public FileGenerator(File targetDir)
+    public FileGenerator(File targetDir, boolean override)
     {
         this.targetDir = targetDir;
+        this.override = override;
     }
 
     public void generateFile(GenerateFileData toGenerate) throws FileNotFoundException, TemplateException, IOException
@@ -47,6 +50,10 @@ public class FileGenerator
         File fileToGenerate = new File(targetDir.getPath() + "/" + toGenerate.getDest());
         if (fileToGenerate.exists())
         {
+            if(!override)
+            {
+                return;
+            }
             if (!fileToGenerate.delete())
             {
                 throw new IOException(String.format("No se pudo eliminar el archivo \"%s\" existente", fileToGenerate.getAbsoluteFile()));

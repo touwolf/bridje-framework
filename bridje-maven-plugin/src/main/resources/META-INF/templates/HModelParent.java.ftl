@@ -18,8 +18,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  */
+<#if !customizable>
 @XmlRootElement
-public class ${name}
+</#if>
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ${name}<#if customizable >Parent</#if><#if extends??> extends ${extends}</#if>
 {
     <@entityContent />
             

@@ -35,10 +35,10 @@
         <xs:element name="enum" type="tns:hEnumField"/>
         <xs:element name="boolean" type="tns:hBooleanField"/>
       </xs:choice>
-      <xs:element name="calc" type="tns:hCalcField" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string"/>
     <xs:attribute name="extends" type="xs:string"/>
+    <xs:attribute name="customizable" type="xs:boolean"/>
   </xs:complexType>
 
   <xs:complexType name="hEntity">
@@ -94,15 +94,6 @@
     <xs:attribute name="transient" type="xs:boolean" use="required"/>
     <xs:attribute name="access" type="tns:hFieldAccess"/>
     <xs:attribute name="default" type="xs:boolean"/>
-  </xs:complexType>
-
-  <xs:complexType name="hCalcField">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute name="name" type="xs:string"/>
-        <xs:attribute name="type" type="xs:string"/>
-      </xs:extension>
-    </xs:simpleContent>
   </xs:complexType>
 
   <xs:complexType name="hEnum">

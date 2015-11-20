@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElements;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ${name}<#if extends??> extends ${extends}</#if>
+public class ${name}<#if customizable >Parent</#if><#if extends??> extends ${extends}</#if>
 {
     <@entityContent />
 }
