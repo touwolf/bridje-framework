@@ -2,20 +2,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" targetNamespace="http://www.bridje.org/schemas/hirarchical" xmlns:tns="http://www.bridje.org/schemas/hirarchical" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+    <xs:element name="${name?uncap_first}" type="tns:${name?uncap_first}"/>
+
+    <xs:complexType name="${name?uncap_first}">
+        <#if extends??>
+        <xs:complexContent>
+            <xs:extension base="tns:${extends?uncap_first}">
+                <@xmlFields fields=fields![] indent=2 />
+            </xs:extension>
+        </xs:complexContent>
+        <#else>
+        <@xmlFields fields![] />
+        </#if>
+    </xs:complexType>
+
     <#list entitys as entity>
     <xs:complexType name="${entity.name?uncap_first}">
-        <xs:sequence>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="string" type="tns:hStringField"/>
-            <xs:element name="list" type="tns:hListField"/>
-            <xs:element name="enum" type="tns:hEnumField"/>
-            <xs:element name="boolean" type="tns:hBooleanField"/>
-          </xs:choice>
-        </xs:sequence>
-        <xs:attribute name="name" type="xs:string"/>
-        <xs:attribute name="extends" type="xs:string"/>
-        <xs:attribute name="customizable" type="xs:boolean"/>
+        <#if entity.extends??>
+        <xs:complexContent>
+            <xs:extension base="tns:${entity.extends?uncap_first}">
+                <@xmlFields fields=entity.fields![] indent=2 />
+            </xs:extension>
+        </xs:complexContent>
+        <#else>
+        <@xmlFields entity.fields![] />
+        </#if>
     </xs:complexType>
-    </#list>
 
+    </#list>
+    <#list enums![] as enum>
+    <xs:simpleType name="${enum.name?uncap_first}">
+        <xs:restriction base="xs:string">
+            <#list enum.values as value>
+            <xs:enumeration value="${value.name}"/>
+            </#list>
+        </xs:restriction>
+    </xs:simpleType>
+
+    </#list>
 </xs:schema>

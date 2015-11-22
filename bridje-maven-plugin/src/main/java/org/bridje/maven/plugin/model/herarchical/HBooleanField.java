@@ -58,4 +58,10 @@ public class HBooleanField extends HBasicField
     {
         this.defaultValue = defaultValue;
     }
+
+    @Override
+    public String getXmlType()
+    {
+        return "boolean";
+    }
 }

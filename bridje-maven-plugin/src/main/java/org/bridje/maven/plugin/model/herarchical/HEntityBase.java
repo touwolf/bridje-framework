@@ -46,14 +46,14 @@ public class HEntityBase
         @XmlElement(name = "enum", type = HEnumField.class),
         @XmlElement(name = "boolean", type = HBooleanField.class)
     })
-    private List<HFieldAccess> fields;
+    private List<HField> fields;
     
-    public List<HFieldAccess> getFields()
+    public List<HField> getFields()
     {
         return fields;
     }
 
-    public void setFields(List<HFieldAccess> fields)
+    public void setFields(List<HField> fields)
     {
         this.fields = fields;
     }

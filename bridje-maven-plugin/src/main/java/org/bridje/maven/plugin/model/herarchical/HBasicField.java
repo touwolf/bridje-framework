@@ -47,4 +47,6 @@ public abstract class HBasicField extends HField
     {
         this.access = access;
     }
+
+    public abstract String getXmlType();
 }

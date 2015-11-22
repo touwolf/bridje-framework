@@ -45,4 +45,10 @@ public class HEnumField extends HBasicField
     {
         return type;
     }
+
+    @Override
+    public String getXmlType()
+    {
+        return "enum";
+    }
 }

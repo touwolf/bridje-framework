@@ -40,6 +40,9 @@ public class HModel extends HEntityBase
 {
     @XmlAttribute(name = "package")
     private String packageName;
+    
+    @XmlAttribute(name = "namespace")
+    private String namespace;
 
     @XmlElementWrapper(name = "entitys")
     @XmlElements(
@@ -96,5 +99,15 @@ public class HModel extends HEntityBase
     public void setEnums(List<HEnum> enums)
     {
         this.enums = enums;
+    }
+
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
     }
 }

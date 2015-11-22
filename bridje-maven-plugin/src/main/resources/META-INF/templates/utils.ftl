@@ -36,3 +36,27 @@
     </#list>
     </#if>
 </#macro>
+
+<#macro xmlFields fields indent=0>
+    <#local spc>${""?left_pad(indent * 4)}</#local>
+    <#list fields as field>
+    <#if field.isList>
+        ${spc}<xs:sequence>
+            ${spc}<xs:element name="${field.name}" minOccurs="0">
+                ${spc}<xs:complexType>
+                    ${spc}<xs:sequence>
+                        <#list field.elements![] as element >
+                        ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}" minOccurs="0" maxOccurs="unbounded"/>
+                        </#list>
+                    ${spc}</xs:sequence>
+                ${spc}</xs:complexType>
+            ${spc}</xs:element>
+        ${spc}</xs:sequence>
+    </#if>
+    </#list>
+    <#list fields as field>
+    <#if field.access?? && field.access == "ATTRIBUTE">
+        ${spc}<xs:attribute name="${field.name}" type="xs:${field.xmlType}"/>
+    </#if>
+    </#list>
+</#macro>

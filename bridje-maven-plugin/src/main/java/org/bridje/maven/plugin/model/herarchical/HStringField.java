@@ -50,4 +50,10 @@ public class HStringField extends HBasicField
     {
         this.defaultValue = defaultValue;
     }
+
+    @Override
+    public String getXmlType()
+    {
+        return "string";
+    }
 }
