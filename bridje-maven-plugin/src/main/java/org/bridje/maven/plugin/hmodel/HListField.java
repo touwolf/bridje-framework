@@ -14,48 +14,59 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
-import javax.xml.bind.Unmarshaller;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
- * A value definition for one enumerator type.
+ * A field that contains a list of elements.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEnumValue
+public class HListField extends HField
 {
-    @XmlTransient
-    private HEnum parent;
+    @XmlAttribute(name = "of")
+    private String of;
 
-    @XmlAttribute
-    private String name;
-
-    public String getName()
+    @XmlElements(
     {
-        return name;
+        @XmlElement(name = "element", type = HListElement.class)
+    })
+    private List<HListElement> elements;
+
+    public String getOf()
+    {
+        return of;
     }
 
-    public void setName(String name)
+    public void setOf(String of)
     {
-        this.name = name;
+        this.of = of;
     }
 
-    public HEnum getParent()
+    public List<HListElement> getElements()
     {
-        return parent;
+        return elements;
     }
 
-    public void setParent(HEnum parent)
+    public void setElements(List<HListElement> elements)
     {
-        this.parent = parent;
+        this.elements = elements;
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    @Override
+    public String getJavaType()
     {
-        setParent((HEnum)parent);
+        return "java.util.List<" + of + ">";
+    }
+
+    @Override
+    public boolean getIsList()
+    {
+        return true;
     }
 }

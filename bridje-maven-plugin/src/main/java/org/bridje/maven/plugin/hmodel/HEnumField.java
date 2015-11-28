@@ -14,59 +14,40 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 
 /**
- * A field that contains a list of elements.
+ * A field that holds an enumerator value.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HListField extends HField
+public class HEnumField extends HBasicField
 {
-    @XmlAttribute(name = "of")
-    private String of;
+    @XmlAttribute(name = "type")
+    private String type;
 
-    @XmlElements(
+    public String getType()
     {
-        @XmlElement(name = "element", type = HListElement.class)
-    })
-    private List<HListElement> elements;
-
-    public String getOf()
-    {
-        return of;
+        return type;
     }
 
-    public void setOf(String of)
+    public void setType(String type)
     {
-        this.of = of;
+        this.type = type;
     }
-
-    public List<HListElement> getElements()
-    {
-        return elements;
-    }
-
-    public void setElements(List<HListElement> elements)
-    {
-        this.elements = elements;
-    }
-
+    
     @Override
     public String getJavaType()
     {
-        return "java.util.List<" + of + ">";
+        return type;
     }
 
     @Override
-    public boolean getIsList()
+    public String getXmlType()
     {
-        return true;
+        return "enum";
     }
 }

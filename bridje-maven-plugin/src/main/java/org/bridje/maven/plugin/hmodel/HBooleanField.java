@@ -14,38 +14,46 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * A field of type String
+ * A boolean field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HStringField extends HBasicField
+public class HBooleanField extends HBasicField
 {
     @XmlAttribute(name = "default")
-    private String defaultValue;
-    
+    private Boolean defaultValue;
+
     @Override
     public String getJavaType()
     {
-        return "String";
+        if(this.isRequired())
+        {
+            return "boolean";
+        }
+        return "Boolean";
     }
 
     public String getDefaultValueExp()
     {
-        return "\"" + defaultValue + "\"";
+        if(defaultValue == null)
+        {
+            return null;
+        }
+        return String.valueOf(defaultValue);
     }
     
-    public String getDefaultValue()
+    public Boolean getDefaultValue()
     {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValue)
+    public void setDefaultValue(Boolean defaultValue)
     {
         this.defaultValue = defaultValue;
     }
@@ -53,6 +61,6 @@ public class HStringField extends HBasicField
     @Override
     public String getXmlType()
     {
-        return "string";
+        return "boolean";
     }
 }

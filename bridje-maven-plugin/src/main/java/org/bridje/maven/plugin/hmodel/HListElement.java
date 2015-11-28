@@ -14,38 +14,41 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Base class for all navite fields like HStringField, HBooleanField, etc...
+ * An element of a HListField
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
-public abstract class HBasicField extends HField
+public class HListElement
 {
-    @XmlAttribute(name = "access")
-    private HFieldAccess access;
+    @XmlAttribute(name = "type")
+    private String type;
 
-    @Override
-    public boolean getIsList()
-    {
-        return false;
-    }
+    @XmlAttribute(name = "name")
+    private String name;
     
-    public HFieldAccess getAccess()
+    public String getType()
     {
-        return access;
+        return type;
     }
 
-    public void setAccess(HFieldAccess access)
+    public void setType(String type)
     {
-        this.access = access;
+        this.type = type;
     }
 
-    public abstract String getXmlType();
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
-import org.bridje.maven.plugin.model.hierarchical.HModel;
+import org.bridje.maven.plugin.hmodel.HModel;
 import java.io.File;
 import java.util.List;
 import org.junit.After;

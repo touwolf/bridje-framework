@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
 import java.io.File;
 import java.io.IOException;

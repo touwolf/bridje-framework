@@ -14,21 +14,44 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
+import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * This class represents an element into the hierarchy.
+ * This class defines an enumerator to be use in the hierarchy.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntity extends HEntityBase
+public class HEnum
 {
     @XmlTransient
     private HModel model;
+
+    @XmlAttribute
+    private String name;
+    
+    @XmlElements(
+    {
+        @XmlElement(name = "value", type = HEnumValue.class)
+    })
+    private List<HEnumValue> values;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     public HModel getModel()
     {
@@ -40,6 +63,16 @@ public class HEntity extends HEntityBase
         this.model = model;
     }
 
+    public List<HEnumValue> getValues()
+    {
+        return values;
+    }
+
+    public void setValues(List<HEnumValue> values)
+    {
+        this.values = values;
+    }
+    
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
         setModel((HModel)parent);

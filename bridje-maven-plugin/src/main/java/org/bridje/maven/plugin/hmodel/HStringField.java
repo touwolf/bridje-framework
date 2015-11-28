@@ -14,40 +14,45 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * A field that holds an enumerator value.
+ * A field of type String
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEnumField extends HBasicField
+public class HStringField extends HBasicField
 {
-    @XmlAttribute(name = "type")
-    private String type;
-
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
-    }
+    @XmlAttribute(name = "default")
+    private String defaultValue;
     
     @Override
     public String getJavaType()
     {
-        return type;
+        return "String";
+    }
+
+    public String getDefaultValueExp()
+    {
+        return "\"" + defaultValue + "\"";
+    }
+    
+    public String getDefaultValue()
+    {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 
     @Override
     public String getXmlType()
     {
-        return "enum";
+        return "string";
     }
 }

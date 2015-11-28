@@ -14,33 +14,25 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * An element of a HListField
+ * A value definition for one enumerator type.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HListElement
+public class HEnumValue
 {
-    @XmlAttribute(name = "type")
-    private String type;
+    @XmlTransient
+    private HEnum parent;
 
-    @XmlAttribute(name = "name")
+    @XmlAttribute
     private String name;
-    
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
-    }
 
     public String getName()
     {
@@ -50,5 +42,20 @@ public class HListElement
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public HEnum getParent()
+    {
+        return parent;
+    }
+
+    public void setParent(HEnum parent)
+    {
+        this.parent = parent;
+    }
+
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        setParent((HEnum)parent);
     }
 }

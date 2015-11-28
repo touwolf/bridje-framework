@@ -14,35 +14,49 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.hierarchical;
+package org.bridje.maven.plugin.hmodel;
 
 import java.util.List;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * This class defines an enumerator to be use in the hierarchy.
+ * Base class for all entity like classes link HModel and HEntity.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEnum
+public class HEntityBase
 {
-    @XmlTransient
-    private HModel model;
-
-    @XmlAttribute
+    @XmlAttribute(name = "name")
     private String name;
+
+    @XmlAttribute(name = "extends")
+    private String extendsFrom;
+    
+    @XmlAttribute(name = "customizable")
+    private Boolean customizable;
     
     @XmlElements(
     {
-        @XmlElement(name = "value", type = HEnumValue.class)
+        @XmlElement(name = "string", type = HStringField.class),
+        @XmlElement(name = "list", type = HListField.class),
+        @XmlElement(name = "enum", type = HEnumField.class),
+        @XmlElement(name = "boolean", type = HBooleanField.class)
     })
-    private List<HEnumValue> values;
+    private List<HField> fields;
+    
+    public List<HField> getFields()
+    {
+        return fields;
+    }
 
+    public void setFields(List<HField> fields)
+    {
+        this.fields = fields;
+    }
+        
     public String getName()
     {
         return name;
@@ -53,28 +67,27 @@ public class HEnum
         this.name = name;
     }
 
-    public HModel getModel()
+    public String getExtends()
     {
-        return model;
+        return extendsFrom;
     }
 
-    public void setModel(HModel model)
+    public void setExtends(String extendsFrom)
     {
-        this.model = model;
+        this.extendsFrom = extendsFrom;
     }
 
-    public List<HEnumValue> getValues()
+    public Boolean getCustomizable()
     {
-        return values;
+        if(customizable == null)
+        {
+            return false;
+        }
+        return customizable;
     }
 
-    public void setValues(List<HEnumValue> values)
+    public void setCustomizable(Boolean customizable)
     {
-        this.values = values;
-    }
-    
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
-    {
-        setModel((HModel)parent);
+        this.customizable = customizable;
     }
 }
