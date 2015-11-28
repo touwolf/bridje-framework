@@ -15,6 +15,18 @@ import javax.xml.bind.Unmarshaller;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEntity extends HEntityData
 {
+    private HParentField parent;
+
+    public HParentField getParent()
+    {
+        return parent;
+    }
+
+    public void setParent(HParentField parent)
+    {
+        this.parent = parent;
+    }
+
     @XmlTransient
     private HModel model;
 
