@@ -15,7 +15,7 @@
  */
 package org.bridje.maven.plugin;
 
-import org.bridje.maven.plugin.model.herarchical.HModel;
+import org.bridje.maven.plugin.model.hierarchical.HModel;
 import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +29,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.bridje.maven.plugin.model.herarchical.HEntity;
-import org.bridje.maven.plugin.model.herarchical.HEntityBase;
-import org.bridje.maven.plugin.model.herarchical.HEnum;
+import org.bridje.maven.plugin.model.hierarchical.HEntity;
+import org.bridje.maven.plugin.model.hierarchical.HEntityBase;
+import org.bridje.maven.plugin.model.hierarchical.HEnum;
 
 /**
  * This is the maven mojo for generate hierarchy classes for the given model.
