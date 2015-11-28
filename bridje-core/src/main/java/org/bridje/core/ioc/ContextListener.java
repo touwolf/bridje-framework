@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bridje.core.ioc;
 
 /**
@@ -24,79 +23,81 @@ package org.bridje.core.ioc;
  * that take place on the {@link IocContext}
  * <p>
  * The context listener will be any component that implements the interface
- * ContextListener, the framework must search all ContextListener implementations
- * via the standard way of components resolution and call the 3 methods of the
- * interface in the propper place.
+ * ContextListener, the framework must search all ContextListener
+ * implementations via the standard way of components resolution and call the 3
+ * methods of the interface in the propper place.
  * <p>
  * @param <T> Component class that you want listen.
- * 
- * <code>
- * &#64;Component 
+ *
+ * <b>EXAMPLES</b>
+ * <pre>
+ * <code>&#64;Component
  * class MyContextListener implement ContextListener&lt;MyComponent&gt;
  * {
  *      public void preCreateComponent(Class&lt;MyComponent&gt;; component)
  *      {
  *          //only is call when MyComponent is pre create
  *      }
- * 
+ *
  *      public void preInitComponent(Class&lt;MyComponent&gt; component)
  *      {
  *          //only is call when MyComponent is pre init
  *      }
- * 
+ *
  *      public void postInitComponent(Class&lt;MyComponent&gt; component)
  *      {
  *          //only is call when MyComponent is post init
- *      } 
- * } 
- * </code>
- * 
+ *      }
+ * }</code>
+ * </pre>
+ *
  * If you want to listen to all components use Object
- * 
- * <code>
- * &#64;Component 
+ *
+ * <pre>
+ * <code>&#64;Component
  * class MyContextListener implement ContextListener&lt;Object&gt;
  * {
  *      public void preCreateComponent(Class&lt;Object&gt; component)
  *      {
  *          //is call for each component pre create
  *      }
- * 
+ *
  *      public void preInitComponent(Class&lt;Object&gt; component)
  *      {
  *          //is call for each component pre init
  *      }
- * 
+ *
  *      public void postInitComponent(Class&lt;Object&gt; component)
  *      {
  *          //is call for each component post init
- *      } 
- * } 
- * </code>
+ *      }
+ * }</code>
+ * </pre>
  */
 public interface ContextListener<T>
 {
     /**
      * Will be called before a component is created
-     * 
+     *
      * @param clazz The component class
      */
     void preCreateComponent(Class<T> clazz);
-    
+
     /**
      * Will be called after the component has been instantiate and before
      * injecting the components dependencies
-     * 
-     * @param clazz The component class
+     *
+     * @param clazz    The component class
      * @param instance The component instance
      */
     void preInitComponent(Class<T> clazz, T instance);
-    
+
     /**
      * Will be called after the components dependencies injection.
-     * 
-     * @param clazz The component class
+     *
+     * @param clazz    The component class
      * @param instance The component instance
      */
     void postInitComponent(Class<T> clazz, T instance);
+
 }

@@ -37,9 +37,8 @@ import org.bridje.maven.plugin.hmodel.HEnum;
  * This is the maven mojo for generate hierarchy classes for the given model.
  * <p>
  * <b>EXAMPLE</b>
- * <p>
- * <code>
- *  <pre>&lt;plugin&gt;
+ * <pre>
+ * <code>&lt;plugin&gt;
  *      &lt;groupId&gt;org.bridje&lt;/groupId&gt;
  *      &lt;artifactId&gt;bridje-maven-plugin&lt;/artifactId&gt;
  *      &lt;version&gt;0.0.3-SNAPSHOT&lt;/version&gt;
@@ -52,8 +51,8 @@ import org.bridje.maven.plugin.hmodel.HEnum;
  *              &lt;phase&gt;generate-sources&lt;/phase&gt;
  *          &lt;/execution&gt;
  *      &lt;/executions&gt;
- *  &lt;/plugin&gt;</pre>
- * <code>
+ *  &lt;/plugin&gt;</code>
+ * </pre>
  */
 @Mojo(name = "generate-hierarchy")
 public class GenerateMojo extends AbstractMojo

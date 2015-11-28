@@ -29,11 +29,10 @@ import java.nio.charset.StandardCharsets;
  * Utility class for files generation with freemarker.
  * <p>
  * <b>EXAMPLE</b>
- * <p>
- * <code>
- * <pre>FileGenerator generator = new FileGenerator(new File("myDir"), true);
- * generator.generateFile(new GenerateFileData(new HashMap(), "sometpl.ftl", "MyClass.java"));</pre>
- * </code>
+ * <pre>
+ * <code>FileGenerator generator = new FileGenerator(new File("myDir"), true);
+ * generator.generateFile(new GenerateFileData(new HashMap(), "sometpl.ftl", "MyClass.java"));</code>
+ * </pre>
  */
 public class FileGenerator
 {
