@@ -13,23 +13,19 @@ import javax.xml.bind.Unmarshaller;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntity extends HEntityData
+public abstract class HBooleanFieldBase extends HBasicField
 {
-    @XmlTransient
-    private HModel model;
-
-    public HModel getModel()
+    @XmlAttribute
+    private Boolean defaultValue;
+    
+    public Boolean getDefaultValue()
     {
-        return model;
+        return this.defaultValue;
     }
 
-    public void setModel(HModel model)
+    public void setDefaultValue(Boolean defaultValue)
     {
-        this.model = model;
+        this.defaultValue = defaultValue;
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
-    {
-        setModel((HModel)parent);
-    }
 }

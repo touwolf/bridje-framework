@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.bridje.maven.plugin.hmodel.HEntity;
-import org.bridje.maven.plugin.hmodel.HEntityBase;
+import org.bridje.maven.plugin.hmodel.HEntityData;
 import org.bridje.maven.plugin.hmodel.HEnum;
 
 /**
@@ -147,21 +147,21 @@ public class GenerateMojo extends AbstractMojo
     private List<GenerateFileData> createFilesToGenerate(HModel model)
     {
         List<GenerateFileData> result = new ArrayList<>();
-        result.add(createGenerateFileData(model, "HModelParent.java", findGenFileName(model) + ".java", model.getPackage()));
+        result.add(createGenerateFileData(model, "HModelBase.java", findGenFileName(model) + ".java", model.getPackageName()));
         List<HEntity> entitys = model.getEntitys();
         List<HEnum> enums = model.getEnums();
         if (entitys != null)
         {
             for (HEntity entity : entitys)
             {
-                result.add(createGenerateFileData(entity, "HEntityParent.java", findGenFileName(entity) + ".java", model.getPackage()));
+                result.add(createGenerateFileData(entity, "HEntityBase.java", findGenFileName(entity) + ".java", model.getPackageName()));
             }
         }
         if (enums != null)
         {
             for (HEnum en : enums)
             {
-                result.add(createGenerateFileData(en, "HEnum.java", en.getName() + ".java", model.getPackage()));
+                result.add(createGenerateFileData(en, "HEnum.java", en.getName() + ".java", model.getPackageName()));
             }
         }
         return result;
@@ -173,12 +173,12 @@ public class GenerateMojo extends AbstractMojo
         return new GenerateFileData(data, tpl + ".ftl", path);
     }
 
-    private String findGenFileName(HEntityBase entity)
+    private String findGenFileName(HEntityData entity)
     {
         String entityName = entity.getName();
         if (entity.getCustomizable())
         {
-            entityName = entity.getName() + "Parent";
+            entityName = entity.getName() + "Base";
         }
         return entityName;
     }
@@ -188,7 +188,7 @@ public class GenerateMojo extends AbstractMojo
         List<GenerateFileData> result = new ArrayList<>();
         if (model.getCustomizable())
         {
-            result.add(createGenerateFileData(model, "HModel.java", model.getName() + ".java", model.getPackage()));
+            result.add(createGenerateFileData(model, "HModel.java", model.getName() + ".java", model.getPackageName()));
         }
         List<HEntity> entitys = model.getEntitys();
         List<HEnum> enums = model.getEnums();
@@ -198,7 +198,7 @@ public class GenerateMojo extends AbstractMojo
             {
                 if (entity.getCustomizable())
                 {
-                    result.add(createGenerateFileData(entity, "HEntity.java", entity.getName() + ".java", model.getPackage()));
+                    result.add(createGenerateFileData(entity, "HEntity.java", entity.getName() + ".java", model.getPackageName()));
                 }
             }
         }

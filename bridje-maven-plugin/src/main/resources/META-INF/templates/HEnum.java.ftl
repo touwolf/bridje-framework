@@ -1,6 +1,6 @@
 <#include "utils.ftl" />
 
-package ${model.package};
+package ${model.packageName};
 
 import javax.xml.bind.annotation.XmlEnum;
 

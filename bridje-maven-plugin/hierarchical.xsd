@@ -35,6 +35,7 @@
         <xs:element name="list" type="tns:hListField"/>
         <xs:element name="enum" type="tns:hEnumField"/>
         <xs:element name="boolean" type="tns:hBooleanField"/>
+        <xs:element name="element" type="tns:hElementField"/>
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string"/>
@@ -45,9 +46,17 @@
   <xs:complexType name="hEntity">
     <xs:complexContent>
       <xs:extension base="tns:hEntityBase">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element name="parent" type="tns:hParentField" minOccurs="0"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hParentField">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="hStringField">
@@ -95,6 +104,15 @@
     <xs:attribute name="transient" type="xs:boolean" use="required"/>
     <xs:attribute name="access" type="tns:hFieldAccess"/>
     <xs:attribute name="default" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:complexType name="hElementField">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="required" type="xs:boolean" use="required"/>
+    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
+    <xs:attribute name="transient" type="xs:boolean" use="required"/>
+    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="hEnum">

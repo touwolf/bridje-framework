@@ -13,23 +13,19 @@ import javax.xml.bind.Unmarshaller;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntity extends HEntityData
+public abstract class HBasicFieldBase extends HField
 {
-    @XmlTransient
-    private HModel model;
-
-    public HModel getModel()
+    @XmlAttribute
+    private HFieldAccess access;
+    
+    public HFieldAccess getAccess()
     {
-        return model;
+        return this.access;
     }
 
-    public void setModel(HModel model)
+    public void setAccess(HFieldAccess access)
     {
-        this.model = model;
+        this.access = access;
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
-    {
-        setModel((HModel)parent);
-    }
 }

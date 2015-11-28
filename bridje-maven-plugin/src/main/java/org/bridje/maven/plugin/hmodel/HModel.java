@@ -1,61 +1,74 @@
-/*
- * Copyright 2015 Bridje Framework.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.bridje.maven.plugin.hmodel;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Root class for the hierarchical model.
+ * 
  */
 @XmlRootElement(name = "hierarchy")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HModel extends HEntityBase
+public class HModel extends HEntityData
 {
-    @XmlAttribute(name = "package")
+    @XmlAttribute
     private String packageName;
     
-    @XmlAttribute(name = "namespace")
-    private String namespace;
-
     @XmlElementWrapper(name = "entitys")
     @XmlElements(
     {
         @XmlElement(name = "entity", type = HEntity.class)
     })
-    private List<HEntity> entitys;
+    private java.util.List<HEntity> entitys;
     
     @XmlElementWrapper(name = "enums")
     @XmlElements(
     {
         @XmlElement(name = "enum", type = HEnum.class)
-    })    
-    private List<HEnum> enums;
+    })
+    private java.util.List<HEnum> enums;
+    
+    public String getPackageName()
+    {
+        return this.packageName;
+    }
+
+    public void setPackageName(String packageName)
+    {
+        this.packageName = packageName;
+    }
+
+    public java.util.List<HEntity> getEntitys()
+    {
+        return this.entitys;
+    }
+
+    public void setEntitys(java.util.List<HEntity> entitys)
+    {
+        this.entitys = entitys;
+    }
+
+    public java.util.List<HEnum> getEnums()
+    {
+        return this.enums;
+    }
+
+    public void setEnums(java.util.List<HEnum> enums)
+    {
+        this.enums = enums;
+    }
+
             
     public static HModel loadModel(File source) throws JAXBException
     {
@@ -67,46 +80,6 @@ public class HModel extends HEntityBase
     public static void generateSchema(File target) throws JAXBException, IOException
     {
         JAXBContext ctx = JAXBContext.newInstance(HModel.class);
-        ctx.generateSchema(new OutputResolver(target));
-    }
-
-    public String getPackage()
-    {
-        return packageName;
-    }
-
-    public void setPackage(String packageName)
-    {
-        this.packageName = packageName;
-    }
-
-    public List<HEntity> getEntitys()
-    {
-        return entitys;
-    }
-
-    public void setEntitys(List<HEntity> entitys)
-    {
-        this.entitys = entitys;
-    }
-
-    public List<HEnum> getEnums()
-    {
-        return enums;
-    }
-
-    public void setEnums(List<HEnum> enums)
-    {
-        this.enums = enums;
-    }
-
-    public String getNamespace()
-    {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace)
-    {
-        this.namespace = namespace;
+        //ctx.generateSchema(new OutputResolver(target));
     }
 }

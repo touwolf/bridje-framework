@@ -1,23 +1,26 @@
 <#macro entityContent>
     <#if fields??>
     <#list fields as f>
-    <#if f.transient>
+    <#if f.isTransient?? && f.isTransient>
     @XmlTransient
-    <#elseif f.isList >
+    <#elseif f.isList?? && f.isList >
+    <#if f.wrapper?? && f.wrapper >
+    @XmlElementWrapper(name = "${f.name}")
+    </#if>
     @XmlElements(
     {
         <#list f.elements as e>
         @XmlElement(name = "${e.name}", type = ${e.type}.class)<#sep>, </#sep>
         </#list>
     })
-    <#elseif f.access == "ATTRIBUTE" >
+    <#elseif f.access?? && f.access == "ATTRIBUTE" >
     @XmlAttribute
     </#if>
-    private ${f.javaType} ${f.name}<#if !f.isNullable && f.defaultValue??> = ${f.defaultValueExp}</#if>;
+    private ${f.javaType!""} ${f.name}<#if f.isNullable?? && !f.isNullable && f.defaultValue??> = ${f.defaultValueExp}</#if>;
     
     </#list>
     <#list fields as f>
-    public ${f.javaType} get${f.name?cap_first}()
+    public ${f.javaType!""} get${f.name?cap_first}()
     {
         <#if f.isNullable && f.defaultValue??>
         if(this.${f.name} == null)
@@ -34,6 +37,31 @@
     }
 
     </#list>
+    </#if>
+</#macro>
+
+<#macro parentCode>
+    <#if parent??>
+    private ${parent.type} ${parent.name};
+
+    public ${parent.type} get${parent.name?cap_first}()
+    {
+        return this.${parent.name};
+    }
+
+    void set${parent.name?cap_first}(${parent.type} ${parent.name})
+    {
+        this.${parent.name} = ${parent.name};
+    }
+
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        if(parent instanceof ${parent.type})
+        {
+            set${parent.name?cap_first}((${parent.type})parent);
+        }
+    }
+
     </#if>
 </#macro>
 

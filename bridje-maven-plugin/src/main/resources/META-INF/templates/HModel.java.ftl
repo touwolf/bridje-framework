@@ -11,6 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ${name} extends ${name}Parent
+public class ${name} extends ${name}Base
 {
 }

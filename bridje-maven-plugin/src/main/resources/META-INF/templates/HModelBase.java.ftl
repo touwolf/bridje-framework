@@ -1,6 +1,6 @@
 <#include "utils.ftl"/>
 
-package ${package};
+package ${packageName};
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 </#if>
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ${name}<#if customizable >Parent</#if><#if extends??> extends ${extends}</#if>
+public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#if><#if extendsFrom??> extends ${extendsFrom}</#if>
 {
     <@entityContent />
             

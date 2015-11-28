@@ -13,23 +13,32 @@ import javax.xml.bind.Unmarshaller;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HEntity extends HEntityData
+public class HParentField
 {
-    @XmlTransient
-    private HModel model;
-
-    public HModel getModel()
+    @XmlAttribute
+    private String name;
+    
+    @XmlAttribute
+    private String type;
+    
+    public String getName()
     {
-        return model;
+        return this.name;
     }
 
-    public void setModel(HModel model)
+    public void setName(String name)
     {
-        this.model = model;
+        this.name = name;
     }
 
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public String getType()
     {
-        setModel((HModel)parent);
+        return this.type;
     }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
 }
