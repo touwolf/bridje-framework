@@ -42,6 +42,7 @@
 
 <#macro parentCode>
     <#if parent??>
+    @XmlTransient
     private ${parent.type} ${parent.name};
 
     public ${parent.type} get${parent.name?cap_first}()

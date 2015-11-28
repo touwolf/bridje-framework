@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
@@ -49,16 +50,20 @@ public class HEnum
 
     public HModel getModel()
     {
-        return model;
+        return this.model;
     }
 
-    public void setModel(HModel model)
+    void setModel(HModel model)
     {
         this.model = model;
     }
 
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
-        setModel((HModel)parent);
+        if(parent instanceof HModel)
+        {
+            setModel((HModel)parent);
+        }
     }
+
 }

@@ -14,19 +14,19 @@ import javax.xml.bind.Unmarshaller;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class HStringFieldBase extends HBasicField
+public abstract class HElementFieldBase extends HField
 {
     @XmlAttribute
-    private String defaultValue;
+    private String type;
     
-    public String getDefaultValue()
+    public String getType()
     {
-        return this.defaultValue;
+        return this.type;
     }
 
-    public void setDefaultValue(String defaultValue)
+    public void setType(String type)
     {
-        this.defaultValue = defaultValue;
+        this.type = type;
     }
 
 }

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
@@ -29,7 +30,8 @@ public class HEntityData
         @XmlElement(name = "string", type = HStringField.class), 
         @XmlElement(name = "list", type = HListField.class), 
         @XmlElement(name = "enum", type = HEnumField.class), 
-        @XmlElement(name = "boolean", type = HBooleanField.class)
+        @XmlElement(name = "boolean", type = HBooleanField.class), 
+        @XmlElement(name = "element", type = HElementField.class)
     })
     private java.util.List<HField> fields;
     
