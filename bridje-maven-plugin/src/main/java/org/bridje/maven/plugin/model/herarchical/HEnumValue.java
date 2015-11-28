@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Gilberto
+ * A value definition for one enumerator type.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEnumValue

@@ -24,8 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- *
- * @author Gilberto
+ * A field that contains a list of elements.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HListField extends HField

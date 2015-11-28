@@ -23,8 +23,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Gilberto
+ * Base class for all entitys fields.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlTransient

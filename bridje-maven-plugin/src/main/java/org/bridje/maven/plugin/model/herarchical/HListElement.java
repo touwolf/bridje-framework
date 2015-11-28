@@ -21,8 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- *
- * @author Gilberto
+ * An element of a HListField
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HListElement

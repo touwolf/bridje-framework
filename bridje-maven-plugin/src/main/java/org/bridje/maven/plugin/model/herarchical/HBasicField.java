@@ -22,8 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Gilberto
+ * Base class for all navite fields like HStringField, HBooleanField, etc...
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlTransient

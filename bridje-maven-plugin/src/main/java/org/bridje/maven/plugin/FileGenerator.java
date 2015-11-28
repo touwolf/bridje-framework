@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bridje.maven.plugin;
 
 import freemarker.template.Configuration;
@@ -27,14 +26,21 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 /**
- *
- * @author Gilberto
+ * Utility class for files generation with freemarker.
+ * <p>
+ * <b>EXAMPLE</b>
+ * <p>
+ * <code>
+ * <pre>FileGenerator generator = new FileGenerator(new File("myDir"), true);
+ * generator.generateFile(new GenerateFileData(new HashMap(), "sometpl.ftl", "MyClass.java"));</pre>
+ * </code>
  */
 public class FileGenerator
 {
+
     private final File targetDir;
-    
-    private boolean override;
+
+    private final boolean override;
 
     public FileGenerator(File targetDir, boolean override)
     {
@@ -50,7 +56,7 @@ public class FileGenerator
         File fileToGenerate = new File(targetDir.getPath() + "/" + toGenerate.getDest());
         if (fileToGenerate.exists())
         {
-            if(!override)
+            if (!override)
             {
                 return;
             }
@@ -59,14 +65,11 @@ public class FileGenerator
                 throw new IOException(String.format("No se pudo eliminar el archivo \"%s\" existente", fileToGenerate.getAbsoluteFile()));
             }
         }
-        else
+        else if (!fileToGenerate.getParentFile().exists())
         {
-            if(!fileToGenerate.getParentFile().exists())
+            if (!fileToGenerate.getParentFile().getAbsoluteFile().mkdirs())
             {
-                if (!fileToGenerate.getParentFile().getAbsoluteFile().mkdirs())
-                {
-                    throw new IOException(String.format("No se pudo crear la carpeta del archivo \"%s\"", fileToGenerate.getAbsoluteFile()));
-                }
+                throw new IOException(String.format("No se pudo crear la carpeta del archivo \"%s\"", fileToGenerate.getAbsoluteFile()));
             }
         }
         try (OutputStreamWriter streamWriter = new OutputStreamWriter(new FileOutputStream(fileToGenerate), StandardCharsets.UTF_8))
@@ -74,4 +77,5 @@ public class FileGenerator
             template.process(toGenerate.getData(), streamWriter);
         }
     }
+
 }

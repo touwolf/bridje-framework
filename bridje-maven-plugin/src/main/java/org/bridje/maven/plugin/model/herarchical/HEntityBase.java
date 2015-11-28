@@ -24,8 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- *
- * @author Gilberto
+ * Base class for all entity like classes link HModel and HEntity.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEntityBase

@@ -22,8 +22,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Gilberto
+ * This class represents an element into the hierarchy.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEntity extends HEntityBase

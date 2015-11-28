@@ -26,8 +26,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Gilberto
+ * This class defines an enumerator to be use in the hierarchy.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEnum

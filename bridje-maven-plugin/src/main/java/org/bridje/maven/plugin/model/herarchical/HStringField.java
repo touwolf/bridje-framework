@@ -21,8 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- *
- * @author Gilberto
+ * A field of type String
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HStringField extends HBasicField

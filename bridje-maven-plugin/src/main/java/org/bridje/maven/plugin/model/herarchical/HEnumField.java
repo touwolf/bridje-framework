@@ -21,8 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- *
- * @author Gilberto
+ * A field that holds an enumerator value.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEnumField extends HBasicField

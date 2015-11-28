@@ -21,8 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- *
- * @author Gilberto
+ * A boolean field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HBooleanField extends HBasicField

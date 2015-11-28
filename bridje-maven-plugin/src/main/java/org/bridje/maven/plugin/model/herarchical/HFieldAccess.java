@@ -19,8 +19,7 @@ package org.bridje.maven.plugin.model.herarchical;
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
- *
- * @author Gilberto
+ * Defines the xml access of a field.
  */
 @XmlEnum
 public enum HFieldAccess

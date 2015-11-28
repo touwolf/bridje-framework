@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Gilberto
+ * Root class for the hierarchical model.
  */
 @XmlRootElement(name = "hierarchy")
 @XmlAccessorType(XmlAccessType.FIELD)
