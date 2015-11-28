@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.maven.plugin.model.herarchical;
+package org.bridje.maven.plugin.model.hierarchical;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
