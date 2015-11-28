@@ -5,7 +5,7 @@
 
   <xs:complexType name="hModel">
     <xs:complexContent>
-      <xs:extension base="tns:hEntityBase">
+      <xs:extension base="tns:hEntityData">
         <xs:sequence>
           <xs:element name="entitys" minOccurs="0">
             <xs:complexType>
@@ -22,13 +22,12 @@
             </xs:complexType>
           </xs:element>
         </xs:sequence>
-        <xs:attribute name="package" type="xs:string"/>
-        <xs:attribute name="namespace" type="xs:string"/>
+        <xs:attribute name="packageName" type="xs:string"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
 
-  <xs:complexType name="hEntityBase">
+  <xs:complexType name="hEntityData">
     <xs:sequence>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="string" type="tns:hStringField"/>
@@ -39,13 +38,13 @@
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="extends" type="xs:string"/>
+    <xs:attribute name="extendsFrom" type="xs:string"/>
     <xs:attribute name="customizable" type="xs:boolean"/>
   </xs:complexType>
 
   <xs:complexType name="hEntity">
     <xs:complexContent>
-      <xs:extension base="tns:hEntityBase">
+      <xs:extension base="tns:hEntityData">
         <xs:sequence>
           <xs:element name="parent" type="tns:hParentField" minOccurs="0"/>
         </xs:sequence>
@@ -60,24 +59,73 @@
   </xs:complexType>
 
   <xs:complexType name="hStringField">
+    <xs:complexContent>
+      <xs:extension base="tns:hStringFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hStringFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicField">
+        <xs:sequence/>
+        <xs:attribute name="defaultValue" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hBasicField" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hBasicFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hField">
+        <xs:sequence/>
+        <xs:attribute name="access" type="tns:hFieldAccess"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hField" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hFieldBase" abstract="true">
     <xs:sequence/>
     <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="required" type="xs:boolean" use="required"/>
-    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
-    <xs:attribute name="transient" type="xs:boolean" use="required"/>
-    <xs:attribute name="access" type="tns:hFieldAccess"/>
-    <xs:attribute name="default" type="xs:string"/>
+    <xs:attribute name="required" type="xs:boolean"/>
+    <xs:attribute name="readonly" type="xs:boolean"/>
+    <xs:attribute name="isTransient" type="xs:boolean"/>
   </xs:complexType>
 
   <xs:complexType name="hListField">
-    <xs:sequence>
-      <xs:element name="element" type="tns:hListElement" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="required" type="xs:boolean" use="required"/>
-    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
-    <xs:attribute name="transient" type="xs:boolean" use="required"/>
-    <xs:attribute name="of" type="xs:string"/>
+    <xs:complexContent>
+      <xs:extension base="tns:hListFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hListFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hField">
+        <xs:sequence>
+          <xs:element name="element" type="tns:hListElement" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="of" type="xs:string"/>
+        <xs:attribute name="wrapper" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="hListElement">
@@ -87,32 +135,54 @@
   </xs:complexType>
 
   <xs:complexType name="hEnumField">
-    <xs:sequence/>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="required" type="xs:boolean" use="required"/>
-    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
-    <xs:attribute name="transient" type="xs:boolean" use="required"/>
-    <xs:attribute name="access" type="tns:hFieldAccess"/>
-    <xs:attribute name="type" type="xs:string"/>
+    <xs:complexContent>
+      <xs:extension base="tns:hEnumFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hEnumFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicField">
+        <xs:sequence/>
+        <xs:attribute name="type" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="hBooleanField">
-    <xs:sequence/>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="required" type="xs:boolean" use="required"/>
-    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
-    <xs:attribute name="transient" type="xs:boolean" use="required"/>
-    <xs:attribute name="access" type="tns:hFieldAccess"/>
-    <xs:attribute name="default" type="xs:boolean"/>
+    <xs:complexContent>
+      <xs:extension base="tns:hBooleanFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hBooleanFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hBasicField">
+        <xs:sequence/>
+        <xs:attribute name="defaultValue" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="hElementField">
-    <xs:sequence/>
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="required" type="xs:boolean" use="required"/>
-    <xs:attribute name="readonly" type="xs:boolean" use="required"/>
-    <xs:attribute name="transient" type="xs:boolean" use="required"/>
-    <xs:attribute name="type" type="xs:string"/>
+    <xs:complexContent>
+      <xs:extension base="tns:hElementFieldBase">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hElementFieldBase" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="tns:hField">
+        <xs:sequence/>
+        <xs:attribute name="type" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="hEnum">
@@ -129,8 +199,8 @@
 
   <xs:simpleType name="hFieldAccess">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="ELEMENT"/>
       <xs:enumeration value="ATTRIBUTE"/>
+      <xs:enumeration value="ELEMENT"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

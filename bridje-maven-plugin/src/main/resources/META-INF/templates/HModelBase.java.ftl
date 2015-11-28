@@ -34,9 +34,16 @@ public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#
         return (${name})unmarsh.unmarshal(source);
     }
 
-    public static void generateSchema(File target) throws JAXBException, IOException
+    public static void generateSchema(final File target) throws JAXBException, IOException
     {
-        JAXBContext ctx = JAXBContext.newInstance(${name}.class);
-        //ctx.generateSchema(new OutputResolver(target));
+        JAXBContext ctx = JAXBContext.newInstance(HModel.class);
+        ctx.generateSchema(new SchemaOutputResolver()
+        {
+            @Override
+            public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException
+            {
+                return new StreamResult(target);
+            }
+        });
     }
 }

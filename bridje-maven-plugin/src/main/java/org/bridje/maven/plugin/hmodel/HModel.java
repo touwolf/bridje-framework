@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -14,6 +15,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * 
@@ -77,9 +80,16 @@ public class HModel extends HEntityData
         return (HModel)unmarsh.unmarshal(source);
     }
 
-    public static void generateSchema(File target) throws JAXBException, IOException
+    public static void generateSchema(final File target) throws JAXBException, IOException
     {
         JAXBContext ctx = JAXBContext.newInstance(HModel.class);
-        //ctx.generateSchema(new OutputResolver(target));
+        ctx.generateSchema(new SchemaOutputResolver()
+        {
+            @Override
+            public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException
+            {
+                return new StreamResult(target);
+            }
+        });
     }
 }

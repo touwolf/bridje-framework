@@ -61,6 +61,6 @@ public class HModelTest
     @Test
     public void testLoadModel() throws Exception
     {
-        //HModel.generateSchema(new File("./hierarchical.xsd"));
+        HModel.generateSchema(new File("./hierarchical.xsd"));
     }   
 }
