@@ -20,13 +20,11 @@ package org.bridje.data.hmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-<<<<<<< HEAD:bridje-maven-plugin/src/main/java/org/bridje/data/hmodel/HEntityData.java
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlElementWrapper;
-=======
->>>>>>> 25da036fbb102bdcae228f4b9efceba42a9d2fd0:bridje-maven-plugin/src/main/java/org/bridje/maven/plugin/hmodel/HEntityData.java
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.Unmarshaller;
 
 /**
  * 
@@ -48,11 +46,7 @@ public class HEntityData
         @XmlElement(name = "string", type = HStringField.class), 
         @XmlElement(name = "list", type = HListField.class), 
         @XmlElement(name = "enum", type = HEnumField.class), 
-<<<<<<< HEAD:bridje-maven-plugin/src/main/java/org/bridje/data/hmodel/HEntityData.java
         @XmlElement(name = "boolean", type = HBooleanField.class), 
-=======
-        @XmlElement(name = "boolean", type = HBooleanField.class),
->>>>>>> 25da036fbb102bdcae228f4b9efceba42a9d2fd0:bridje-maven-plugin/src/main/java/org/bridje/maven/plugin/hmodel/HEntityData.java
         @XmlElement(name = "element", type = HElementField.class)
     })
     private java.util.List<HField> fields;
