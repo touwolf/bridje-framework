@@ -89,3 +89,11 @@
     </#if>
     </#list>
 </#macro>
+
+<#macro javaDocLicense value>
+/**
+<#list value?split("\n") as l>
+ * ${l}
+</#list>
+ */
+</#macro>

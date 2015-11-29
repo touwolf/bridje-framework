@@ -1,4 +1,5 @@
 <#include "utils.ftl"/>
+<@javaDocLicense license />
 
 package ${packageName};
 

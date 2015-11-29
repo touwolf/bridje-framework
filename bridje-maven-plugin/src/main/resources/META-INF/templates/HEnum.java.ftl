@@ -1,4 +1,5 @@
 <#include "utils.ftl" />
+<@javaDocLicense model.license />
 
 package ${model.packageName};
 

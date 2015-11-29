@@ -148,6 +148,7 @@ public class GenerateMojo extends AbstractMojo
     {
         List<GenerateFileData> result = new ArrayList<>();
         result.add(createGenerateFileData(model, "HModelBase.java", findGenFileName(model) + ".java", model.getPackageName()));
+        result.add(createGenerateFileData(model, "package-info.java", "package-info.java", model.getPackageName()));
         List<HEntity> entitys = model.getEntitys();
         List<HEnum> enums = model.getEnums();
         if (entitys != null)
