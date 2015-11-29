@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hModel 
+    xmlns="http://www.bridje.org/schemas/hirarchical" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bridje.org/schemas/hirarchical file:/E:/Projects/bridje-framework/bridje-maven-plugin/hierarchical.xsd"
+    name="HModel" packageName="org.bridje.data.hmodel" extendsFrom="HEntityData" >
+    
+    <string name="packageName" access="ATTRIBUTE" />
+    <list name="entitys" of="HEntity" wrapper="true" >
+        <element name="entity" type="HEntity" />
+    </list>
+    <list name="enums" of="HEnum" wrapper="true" >
+        <element name="enum" type="HEnum" />
+    </list>
+    
+    <entitys>
+        <entity name="HEntityData" >
+            <string name="name" access="ATTRIBUTE" />
+            <string name="extendsFrom" access="ATTRIBUTE" />
+            <boolean name="customizable" access="ATTRIBUTE" defaultValue="false" />
+            <list name="fields" of="HField">
+                <element name="string" type="HStringField" />
+                <element name="list" type="HListField" />
+                <element name="enum" type="HEnumField" />
+                <element name="boolean" type="HBooleanField" />
+                <element name="element" type="HElementField" />
+            </list>
+        </entity>
+        <entity name="HStringField" extendsFrom="HBasicField" customizable="true">
+            <string name="defaultValue" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HBooleanField" extendsFrom="HBasicField" customizable="true">
+            <boolean name="defaultValue" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HListField" extendsFrom="HField" customizable="true">
+            <string name="of" access="ATTRIBUTE" />
+            <boolean name="wrapper" access="ATTRIBUTE" defaultValue="false" />
+            <list name="elements" of="HListElement" >
+                <element name="element" type="HListElement" />
+            </list>
+        </entity>
+        <entity name="HEnumField" extendsFrom="HBasicField" customizable="true">
+            <string name="type" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HBasicField" extendsFrom="HField" customizable="true">
+            <enum name="access" type="HFieldAccess" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HField" customizable="true" >
+            <string name="name" access="ATTRIBUTE" />
+            <boolean name="required" access="ATTRIBUTE" required="true" defaultValue="false" />
+            <boolean name="readonly" access="ATTRIBUTE" required="true" defaultValue="false" />
+            <boolean name="isTransient" access="ATTRIBUTE" required="true" defaultValue="false" />
+        </entity>
+        <entity name="HListElement">
+            <string name="type" access="ATTRIBUTE" />
+            <string name="name" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HElementField" extendsFrom="HField" customizable="true">
+            <string name="type" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HParentField" >
+            <string name="name" access="ATTRIBUTE" />
+            <string name="type" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HEntity" extendsFrom="HEntityData">
+            <parent name="model" type="HModel" />
+            <element name="parent" type="HParentField" />
+        </entity>
+        <entity name="HEnum">
+            <parent name="model" type="HModel" />
+            <string name="name" access="ATTRIBUTE" />
+            <list name="values" of="HEnumValue" >
+                <element name="value" type="HEnumValue" />
+            </list>
+        </entity>
+        <entity name="HEnumValue">
+            <string name="name" access="ATTRIBUTE" />
+        </entity>
+    </entitys>
+    <enums>
+        <enum name="HFieldAccess">
+            <value name="ATTRIBUTE" />
+            <value name="ELEMENT" />
+        </enum>
+    </enums>
+</hModel>

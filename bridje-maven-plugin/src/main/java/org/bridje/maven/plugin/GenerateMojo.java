@@ -15,7 +15,6 @@
  */
 package org.bridje.maven.plugin;
 
-import org.bridje.maven.plugin.hmodel.HModel;
 import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +28,10 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.bridje.maven.plugin.hmodel.HEntity;
-import org.bridje.maven.plugin.hmodel.HEntityData;
-import org.bridje.maven.plugin.hmodel.HEnum;
+import org.bridje.data.hmodel.HEntity;
+import org.bridje.data.hmodel.HEntityData;
+import org.bridje.data.hmodel.HEnum;
+import org.bridje.data.hmodel.HModel;
 
 /**
  * This is the maven mojo for generate hierarchy classes for the given model.
@@ -61,7 +61,7 @@ public class GenerateMojo extends AbstractMojo
     @Parameter(property = "project", defaultValue = "${project}")
     private MavenProject project;
 
-    @Parameter(property = "generate.domainModel", defaultValue = "${basedir}/src/main/resources/BRIDJE-INF/models/hierarchical.xml")
+    @Parameter(property = "genhmodel.source", defaultValue = "${basedir}/src/main/resources/BRIDJE-INF/models/hierarchical.xml")
     private File source;
 
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/data", readonly = false)

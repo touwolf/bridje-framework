@@ -5,9 +5,9 @@
     <xs:element name="${name?uncap_first}" type="tns:${name?uncap_first}"/>
 
     <xs:complexType name="${name?uncap_first}">
-        <#if extends??>
+        <#if extendsFrom??>
         <xs:complexContent>
-            <xs:extension base="tns:${extends?uncap_first}">
+            <xs:extension base="tns:${extendsFrom?uncap_first}">
                 <@xmlFields fields=fields![] indent=2 />
             </xs:extension>
         </xs:complexContent>
@@ -18,9 +18,9 @@
 
     <#list entitys as entity>
     <xs:complexType name="${entity.name?uncap_first}">
-        <#if entity.extends??>
+        <#if entity.extendsFrom??>
         <xs:complexContent>
-            <xs:extension base="tns:${entity.extends?uncap_first}">
+            <xs:extension base="tns:${entity.extendsFrom?uncap_first}">
                 <@xmlFields fields=entity.fields![] indent=2 />
             </xs:extension>
         </xs:complexContent>

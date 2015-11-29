@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * 
  */
-@XmlRootElement
+@XmlRootElement(name = "${name?lower_case}")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ${name} extends ${name}Base
 {
