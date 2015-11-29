@@ -1,5 +1,7 @@
 <#include "utils.ftl"/>
-<@javaDocLicense license />
+/**
+ <@javaDocContent license!"" />
+ */
 
 package ${packageName};
 
@@ -21,7 +23,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * ${description!""}
+ <@javaDocContent description!"" true />
  */
 <#if !customizable>
 @XmlRootElement(name = "${name?lower_case}")

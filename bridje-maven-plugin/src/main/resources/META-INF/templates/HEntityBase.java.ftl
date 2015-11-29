@@ -1,5 +1,7 @@
 <#include "utils.ftl" />
-<@javaDocLicense model.license />
+/**
+ <@javaDocContent model.license!"" />
+ */
 
 package ${model.packageName};
 
@@ -13,7 +15,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * ${description!""}
+ <@javaDocContent description!"" true />
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#if><#if extendsFrom??> extends ${extendsFrom}</#if>

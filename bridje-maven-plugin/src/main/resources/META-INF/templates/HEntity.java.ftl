@@ -1,5 +1,7 @@
 <#include "utils.ftl" />
-<@javaDocLicense model.license />
+/**
+ <@javaDocContent model.license!"" />
+ */
 
 package ${model.packageName};
 
@@ -7,7 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * ${description!""}
+ <@javaDocContent description!"" true />
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ${name} extends ${name}Base

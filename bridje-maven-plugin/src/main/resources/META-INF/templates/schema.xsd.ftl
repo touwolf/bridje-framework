@@ -55,7 +55,15 @@
         </#if>
         <xs:restriction base="xs:string">
             <#list enum.values as value>
-            <xs:enumeration value="${value.name}"/>
+            <xs:enumeration value="${value.name}">
+                <#if value.description??>
+                <xs:annotation>
+                    <xs:documentation>
+                        ${value.description?trim}
+                    </xs:documentation>
+                </xs:annotation>
+                </#if>
+            </xs:enumeration>
             </#list>
         </xs:restriction>
     </xs:simpleType>

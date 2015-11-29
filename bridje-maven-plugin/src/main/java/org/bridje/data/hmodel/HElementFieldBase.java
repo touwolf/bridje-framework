@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * A field that holds a reference to another entity of the model.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HElementFieldBase extends HField
@@ -36,7 +36,7 @@ public abstract class HElementFieldBase extends HField
     private String type;
     
     /**
-     * 
+     * The name of the entity that this field refers to.
      * @return A String object representing the value of the type field.
      */
     public String getType()
@@ -45,7 +45,7 @@ public abstract class HElementFieldBase extends HField
     }
 
     /**
-     * 
+     * The name of the entity that this field refers to.
      * @param type The new value for the type field.
      */
     public void setType(String type)

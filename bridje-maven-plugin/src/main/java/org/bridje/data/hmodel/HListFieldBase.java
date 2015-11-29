@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents a field that holds a collection of objects.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HListFieldBase extends HField
@@ -100,6 +100,38 @@ public abstract class HListFieldBase extends HField
     public void setElements(java.util.List<HListElement> elements)
     {
         this.elements = elements;
+    }
+
+    @XmlTransient
+    private HEntityData entity;
+
+    /**
+     * The HEntityData object representing the parent of this object.
+     */
+    public HEntityData getEntity()
+    {
+        return this.entity;
+    }
+
+    /**
+     * The HEntityData object representing the parent of this object.
+     */
+    void setEntity(HEntityData entity)
+    {
+        this.entity = entity;
+    }
+
+    /**
+     * This method is call by the JAXB Unmarshaller after the object's creation.
+     * @param unmarshaller The unmarshaller object being used.
+     * @param parent The parent object for this object.
+     */
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        if(parent instanceof HEntityData)
+        {
+            setEntity((HEntityData)parent);
+        }
     }
 
 }

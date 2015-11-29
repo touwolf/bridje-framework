@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * 
+ * Root class for all the basic fields objects.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HBasicField extends HBasicFieldBase

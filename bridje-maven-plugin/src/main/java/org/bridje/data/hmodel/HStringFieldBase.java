@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents a string field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HStringFieldBase extends HBasicField
@@ -36,7 +36,7 @@ public abstract class HStringFieldBase extends HBasicField
     private String defaultValue;
     
     /**
-     * 
+     * The default value for this field.
      * @return A String object representing the value of the defaultValue field.
      */
     public String getDefaultValue()
@@ -45,7 +45,7 @@ public abstract class HStringFieldBase extends HBasicField
     }
 
     /**
-     * 
+     * The default value for this field.
      * @param defaultValue The new value for the defaultValue field.
      */
     public void setDefaultValue(String defaultValue)

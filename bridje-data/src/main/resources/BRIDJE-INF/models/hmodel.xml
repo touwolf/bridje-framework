@@ -4,7 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.bridje.org/schemas/hmodel file:/E:/Projects/bridje-framework/bridje-data/hmodel.xsd"
     name="HModel" packageName="org.bridje.data.hmodel" extendsFrom="HEntityData" 
-    namespace="http://www.bridje.org/schemas/hmodel">
+    namespace="http://www.bridje.org/schemas/hmodel"
+    customizable="true">
 
     <license>
 Copyright 2015 Bridje Framework.
@@ -29,17 +30,16 @@ limitations under the License.
     <list name="enums" of="HEnum" wrapper="true" description="List of model enumerators" >
         <element name="enum" type="HEnum" />
     </list>
-    <description>
-        Hierarchical model definition.
-    </description>
+    <description>Hierarchical model definition.</description>
 
     <entitys>
-        <entity name="HEntityData" >
-            <string name="name" access="ATTRIBUTE" />
-            <string name="extendsFrom" access="ATTRIBUTE" />
-            <string name="description" access="ELEMENT" />
-            <boolean name="customizable" access="ATTRIBUTE" defaultValue="false" />
-            <list name="fields" of="HField">
+        <entity name="HEntityData" customizable="true" >
+            <description>Data common to all entity like classes.</description>
+            <string name="name" access="ATTRIBUTE" description="The name for this object, This value will be used to identify the entity withing the model, it will be the class and xml type name also." />
+            <string name="extendsFrom" access="ATTRIBUTE" description="Entity that this object will extends from." />
+            <string name="description" access="ELEMENT" description="The description of this entity." />
+            <boolean name="customizable" access="ATTRIBUTE" defaultValue="false" description="If this entity is customizable or not. If true a base class will be generated for this entity." />
+            <list name="fields" of="HField" description="A list of fields for this entity.">
                 <element name="string" type="HStringField" />
                 <element name="list" type="HListField" />
                 <element name="enum" type="HEnumField" />
@@ -48,63 +48,79 @@ limitations under the License.
             </list>
         </entity>
         <entity name="HStringField" extendsFrom="HBasicField" customizable="true">
-            <string name="defaultValue" access="ATTRIBUTE" />
+            <description>Represents a string field.</description>
+            <string name="defaultValue" access="ATTRIBUTE" description="The default value for this field." />
         </entity>
         <entity name="HBooleanField" extendsFrom="HBasicField" customizable="true">
-            <boolean name="defaultValue" access="ATTRIBUTE" />
+            <description>Represents a boolean field.</description>
+            <boolean name="defaultValue" access="ATTRIBUTE" description="The default value for this field." />
         </entity>
         <entity name="HListField" extendsFrom="HField" customizable="true">
-            <string name="of" access="ATTRIBUTE" />
-            <boolean name="wrapper" access="ATTRIBUTE" defaultValue="false" />
-            <list name="elements" of="HListElement" >
+            <description>Represents a field that holds a collection of objects.</description>
+            <parent name="entity" type="HEntityData" />
+            <string name="of" access="ATTRIBUTE" description="The type of the list represented by this field." />
+            <boolean name="wrapper" access="ATTRIBUTE" defaultValue="false" description="If this fields needs to be wrapped." />
+            <list name="elements" of="HListElement" description="Elements " >
                 <element name="element" type="HListElement" />
             </list>
         </entity>
         <entity name="HEnumField" extendsFrom="HBasicField" customizable="true">
-            <string name="type" access="ATTRIBUTE" />
+            <description>Represents a field that holds an enumerator value.</description>
+            <string name="type" access="ATTRIBUTE" description="The name of the enumerator for this field." />
         </entity>
         <entity name="HBasicField" extendsFrom="HField" customizable="true">
-            <enum name="access" type="HFieldAccess" access="ATTRIBUTE" />
+            <description>Root class for all the basic fields objects.</description>
+            <enum name="access" type="HFieldAccess" access="ATTRIBUTE" description="" />
         </entity>
         <entity name="HField" customizable="true" >
-            <string name="name" access="ATTRIBUTE" />
-            <string name="description" access="ATTRIBUTE" />
-            <boolean name="required" access="ATTRIBUTE" required="true" defaultValue="false" />
-            <boolean name="readonly" access="ATTRIBUTE" required="true" defaultValue="false" />
-            <boolean name="isTransient" access="ATTRIBUTE" required="true" defaultValue="false" />
+            <description>Root class for all the fields objects.</description>
+            <string name="name" access="ATTRIBUTE" description="The field name" />
+            <string name="description" access="ATTRIBUTE" description="The fiel description" />
+            <boolean name="required" access="ATTRIBUTE" required="true" defaultValue="false" description="If this field is required." />
+            <boolean name="readonly" access="ATTRIBUTE" required="true" defaultValue="false" description="If this field is read only." />
+            <boolean name="isTransient" access="ATTRIBUTE" required="true" defaultValue="false" description="If this field transient." />
         </entity>
-        <entity name="HListElement">
-            <string name="type" access="ATTRIBUTE" />
-            <string name="name" access="ATTRIBUTE" />
+        <entity name="HListElement" customizable="true">
+            <description>An element of a list field.</description>
+            <parent name="listField" type="HListField" />
+            <string name="type" access="ATTRIBUTE" description="The entity or class this element maps to." />
+            <string name="name" access="ATTRIBUTE" description="The name of the element." />
+            <string name="description" access="ATTRIBUTE" description="If this field is required." />
         </entity>
         <entity name="HElementField" extendsFrom="HField" customizable="true">
-            <string name="type" access="ATTRIBUTE" />
+            <description>A field that holds a reference to another entity of the model.</description>
+            <string name="type" access="ATTRIBUTE" description="The name of the entity that this field refers to." />
         </entity>
         <entity name="HParentField" >
-            <string name="name" access="ATTRIBUTE" />
-            <string name="type" access="ATTRIBUTE" />
+            <description>Defines the parent of an entity.</description>
+            <string name="name" access="ATTRIBUTE" description="The name of the parent field to be use." />
+            <string name="type" access="ATTRIBUTE" description="The name of the entity or class the parent object must extends or implement." />
         </entity>
         <entity name="HEntity" extendsFrom="HEntityData">
+            <description>Represents an entity of the hierarchical model.</description>
             <parent name="model" type="HModel" />
-            <element name="parent" type="HParentField" />
+            <element name="parent" type="HParentField" description="The parent field of this entity." />
         </entity>
-        <entity name="HEnum">
+        <entity name="HEnum" >
+            <description>Represents an enumerator of the model, to be use as a source for the enumerators fields of the entitys.</description>
             <parent name="model" type="HModel" />
-            <string name="name" access="ATTRIBUTE" />
-            <string name="description" access="ELEMENT" />
-            <list name="values" of="HEnumValue" >
+            <string name="name" access="ATTRIBUTE" description="The name of the enumerator, this value will identify the enumerator withing the model." />
+            <string name="description" access="ELEMENT" description="The description of the enumerator." />
+            <list name="values" of="HEnumValue" description="A list of values for this enumerator." >
                 <element name="value" type="HEnumValue" />
             </list>
         </entity>
-        <entity name="HEnumValue">
-            <string name="name" access="ATTRIBUTE" />
-            <string name="description" access="ATTRIBUTE" />
+        <entity name="HEnumValue" >
+            <description>An enumerator value, this class defines the constans of the object representing by the HEnum object.</description>
+            <string name="name" access="ATTRIBUTE" description="The name of the value." />
+            <string name="description" access="ATTRIBUTE" description="The description of the value." />
         </entity>
     </entitys>
     <enums>
         <enum name="HFieldAccess">
-            <value name="ATTRIBUTE" />
-            <value name="ELEMENT" />
+            <description>Defines the type of access a field may have.</description>
+            <value name="ATTRIBUTE" description="The field will be mapped from an xml attribute." />
+            <value name="ELEMENT" description="The field will be mapped from an xml element." />
         </enum>
     </enums>
 </hmodel>

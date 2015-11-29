@@ -1,5 +1,7 @@
 <#include "utils.ftl" />
-<@javaDocLicense license />
+/**
+ <@javaDocContent license!"" />
+ */
 
 @XmlSchema(namespace = "${namespace}",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,

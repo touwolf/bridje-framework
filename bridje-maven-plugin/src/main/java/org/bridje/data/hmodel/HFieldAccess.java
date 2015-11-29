@@ -14,24 +14,23 @@
  * limitations under the License.
  *     
  */
-
 package org.bridje.data.hmodel;
 
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
- * 
+ * Defines the type of access a field may have.
  */
 @XmlEnum
 public enum HFieldAccess
 {
     /**
-     *
+     * Defines the type of access a field may have.
      */
     ATTRIBUTE,
 
     /**
-     *
+     * Defines the type of access a field may have.
      */
     ELEMENT
 

@@ -92,10 +92,25 @@
     <#if field.isList>
         <#if field.wrapper>
             ${spc}<xs:element name="${field.name}" minOccurs="0">
+                <#if field.description??>
+                ${spc}<xs:annotation>
+                    ${spc}<xs:documentation>
+                        ${spc}${field.description?trim}
+                    ${spc}</xs:documentation>
+                ${spc}</xs:annotation>
+                </#if>
                 ${spc}<xs:complexType>
                     ${spc}<xs:sequence>
                         <#list field.elements![] as element >
-                        ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}" minOccurs="0" maxOccurs="unbounded"/>
+                        ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}" minOccurs="0" maxOccurs="unbounded">
+                            <#if element.description??>
+                            ${spc}<xs:annotation>
+                                ${spc}<xs:documentation>
+                                    ${spc}${element.description?trim}
+                                ${spc}</xs:documentation>
+                            ${spc}</xs:annotation>
+                            </#if>
+                        ${spc}</xs:element>
                         </#list>
                     ${spc}</xs:sequence>
                 ${spc}</xs:complexType>
@@ -110,7 +125,15 @@
                 ${spc}</xs:annotation>
                 </#if>
                 <#list field.elements![] as element >
-                ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}"/>
+                ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}">
+                    <#if element.description??>
+                    ${spc}<xs:annotation>
+                        ${spc}<xs:documentation>
+                            ${spc}${element.description?trim}
+                        ${spc}</xs:documentation>
+                    ${spc}</xs:annotation>
+                    </#if>
+                ${spc}</xs:element>
                 </#list>
             ${spc}</xs:choice>
         </#if>
@@ -142,10 +165,12 @@
     </#list>
 </#macro>
 
-<#macro javaDocLicense value>
-/**
+<#macro javaDocContent value trim=false>
 <#list value?split("\n") as l>
+<#if trim>
+ * ${l?trim}
+<#else>
  * ${l}
+</#if>
 </#list>
- */
 </#macro>

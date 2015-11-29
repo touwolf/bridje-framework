@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents a field that holds an enumerator value.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HEnumFieldBase extends HBasicField
@@ -36,7 +36,7 @@ public abstract class HEnumFieldBase extends HBasicField
     private String type;
     
     /**
-     * 
+     * The name of the enumerator for this field.
      * @return A String object representing the value of the type field.
      */
     public String getType()
@@ -45,7 +45,7 @@ public abstract class HEnumFieldBase extends HBasicField
     }
 
     /**
-     * 
+     * The name of the enumerator for this field.
      * @param type The new value for the type field.
      */
     public void setType(String type)

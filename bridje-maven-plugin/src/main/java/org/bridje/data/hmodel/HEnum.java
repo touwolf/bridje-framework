@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents an enumerator of the model, to be use as a source for the enumerators fields of the entitys.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEnum
@@ -44,7 +44,7 @@ public class HEnum
     private java.util.List<HEnumValue> values;
     
     /**
-     * 
+     * The name of the enumerator, this value will identify the enumerator withing the model.
      * @return A String object representing the value of the name field.
      */
     public String getName()
@@ -53,7 +53,7 @@ public class HEnum
     }
 
     /**
-     * 
+     * The name of the enumerator, this value will identify the enumerator withing the model.
      * @param name The new value for the name field.
      */
     public void setName(String name)
@@ -62,7 +62,7 @@ public class HEnum
     }
 
     /**
-     * 
+     * The description of the enumerator.
      * @return A String object representing the value of the description field.
      */
     public String getDescription()
@@ -71,7 +71,7 @@ public class HEnum
     }
 
     /**
-     * 
+     * The description of the enumerator.
      * @param description The new value for the description field.
      */
     public void setDescription(String description)
@@ -80,7 +80,7 @@ public class HEnum
     }
 
     /**
-     * 
+     * A list of values for this enumerator.
      * @return A java.util.List&lt;HEnumValue&gt; object representing the value of the values field.
      */
     public java.util.List<HEnumValue> getValues()
@@ -89,7 +89,7 @@ public class HEnum
     }
 
     /**
-     * 
+     * A list of values for this enumerator.
      * @param values The new value for the values field.
      */
     public void setValues(java.util.List<HEnumValue> values)

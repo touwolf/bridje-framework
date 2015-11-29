@@ -1,14 +1,16 @@
 <#include "utils.ftl"/>
-<@javaDocLicense license />
+/**
+ <@javaDocContent license!"" />
+ */
 
-package ${package};
+package ${packageName};
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * ${description!""}
+ <@javaDocContent description!"" true />
  */
 @XmlRootElement(name = "${name?lower_case}")
 @XmlAccessorType(XmlAccessType.FIELD)

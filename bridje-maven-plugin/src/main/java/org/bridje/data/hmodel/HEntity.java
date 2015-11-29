@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents an entity of the hierarchical model.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEntity extends HEntityData
@@ -35,7 +35,7 @@ public class HEntity extends HEntityData
     private HParentField parent;
     
     /**
-     * 
+     * The parent field of this entity.
      * @return A HParentField object representing the value of the parent field.
      */
     public HParentField getParent()
@@ -44,7 +44,7 @@ public class HEntity extends HEntityData
     }
 
     /**
-     * 
+     * The parent field of this entity.
      * @param parent The new value for the parent field.
      */
     public void setParent(HParentField parent)

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * An enumerator value, this class defines the constans of the object representing by the HEnum object.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HEnumValue
@@ -39,7 +39,7 @@ public class HEnumValue
     private String description;
     
     /**
-     * 
+     * The name of the value.
      * @return A String object representing the value of the name field.
      */
     public String getName()
@@ -48,7 +48,7 @@ public class HEnumValue
     }
 
     /**
-     * 
+     * The name of the value.
      * @param name The new value for the name field.
      */
     public void setName(String name)
@@ -57,7 +57,7 @@ public class HEnumValue
     }
 
     /**
-     * 
+     * The description of the value.
      * @return A String object representing the value of the description field.
      */
     public String getDescription()
@@ -66,7 +66,7 @@ public class HEnumValue
     }
 
     /**
-     * 
+     * The description of the value.
      * @param description The new value for the description field.
      */
     public void setDescription(String description)

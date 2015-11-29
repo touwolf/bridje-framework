@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Defines the parent of an entity.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HParentField
@@ -39,7 +39,7 @@ public class HParentField
     private String type;
     
     /**
-     * 
+     * The name of the parent field to be use.
      * @return A String object representing the value of the name field.
      */
     public String getName()
@@ -48,7 +48,7 @@ public class HParentField
     }
 
     /**
-     * 
+     * The name of the parent field to be use.
      * @param name The new value for the name field.
      */
     public void setName(String name)
@@ -57,7 +57,7 @@ public class HParentField
     }
 
     /**
-     * 
+     * The name of the entity or class the parent object must extends or implement.
      * @return A String object representing the value of the type field.
      */
     public String getType()
@@ -66,7 +66,7 @@ public class HParentField
     }
 
     /**
-     * 
+     * The name of the entity or class the parent object must extends or implement.
      * @param type The new value for the type field.
      */
     public void setType(String type)

@@ -1,19 +1,20 @@
 <#include "utils.ftl" />
-<@javaDocLicense model.license />
-
+/**
+ <@javaDocContent model.license!"" />
+ */
 package ${model.packageName};
 
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
- * ${description!""}
+ <@javaDocContent description!"" true />
  */
 @XmlEnum
 public enum ${name}
 {
     <#list values as v>
     /**
-     *
+     * ${description!""}
      */
     ${v.name}<#sep>,</#sep>
 

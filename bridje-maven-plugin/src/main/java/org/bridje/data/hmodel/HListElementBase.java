@@ -27,28 +27,40 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * Root class for all the fields objects.
+ * An element of a list field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class HFieldBase
+public abstract class HListElementBase
 {
+    @XmlAttribute
+    private String type;
+    
     @XmlAttribute
     private String name;
     
     @XmlAttribute
     private String description;
     
-    @XmlAttribute
-    private Boolean required;
-    
-    @XmlAttribute
-    private Boolean readonly;
-    
-    @XmlAttribute
-    private Boolean isTransient;
-    
     /**
-     * The field name
+     * The entity or class this element maps to.
+     * @return A String object representing the value of the type field.
+     */
+    public String getType()
+    {
+        return this.type;
+    }
+
+    /**
+     * The entity or class this element maps to.
+     * @param type The new value for the type field.
+     */
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    /**
+     * The name of the element.
      * @return A String object representing the value of the name field.
      */
     public String getName()
@@ -57,7 +69,7 @@ public abstract class HFieldBase
     }
 
     /**
-     * The field name
+     * The name of the element.
      * @param name The new value for the name field.
      */
     public void setName(String name)
@@ -66,7 +78,7 @@ public abstract class HFieldBase
     }
 
     /**
-     * The fiel description
+     * If this field is required.
      * @return A String object representing the value of the description field.
      */
     public String getDescription()
@@ -75,7 +87,7 @@ public abstract class HFieldBase
     }
 
     /**
-     * The fiel description
+     * If this field is required.
      * @param description The new value for the description field.
      */
     public void setDescription(String description)
@@ -83,70 +95,36 @@ public abstract class HFieldBase
         this.description = description;
     }
 
+    @XmlTransient
+    private HListField listField;
+
     /**
-     * If this field is required.
-     * @return A Boolean object representing the value of the required field.
+     * The HListField object representing the parent of this object.
      */
-    public Boolean getRequired()
+    public HListField getListField()
     {
-        if(this.required == null)
+        return this.listField;
+    }
+
+    /**
+     * The HListField object representing the parent of this object.
+     */
+    void setListField(HListField listField)
+    {
+        this.listField = listField;
+    }
+
+    /**
+     * This method is call by the JAXB Unmarshaller after the object's creation.
+     * @param unmarshaller The unmarshaller object being used.
+     * @param parent The parent object for this object.
+     */
+    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    {
+        if(parent instanceof HListField)
         {
-            this.required = false;
+            setListField((HListField)parent);
         }
-        return this.required;
-    }
-
-    /**
-     * If this field is required.
-     * @param required The new value for the required field.
-     */
-    public void setRequired(Boolean required)
-    {
-        this.required = required;
-    }
-
-    /**
-     * If this field is read only.
-     * @return A Boolean object representing the value of the readonly field.
-     */
-    public Boolean getReadonly()
-    {
-        if(this.readonly == null)
-        {
-            this.readonly = false;
-        }
-        return this.readonly;
-    }
-
-    /**
-     * If this field is read only.
-     * @param readonly The new value for the readonly field.
-     */
-    public void setReadonly(Boolean readonly)
-    {
-        this.readonly = readonly;
-    }
-
-    /**
-     * If this field transient.
-     * @return A Boolean object representing the value of the isTransient field.
-     */
-    public Boolean getIsTransient()
-    {
-        if(this.isTransient == null)
-        {
-            this.isTransient = false;
-        }
-        return this.isTransient;
-    }
-
-    /**
-     * If this field transient.
-     * @param isTransient The new value for the isTransient field.
-     */
-    public void setIsTransient(Boolean isTransient)
-    {
-        this.isTransient = isTransient;
     }
 
 }

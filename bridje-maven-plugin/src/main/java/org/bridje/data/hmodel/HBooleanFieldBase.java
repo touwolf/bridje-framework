@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Represents a boolean field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HBooleanFieldBase extends HBasicField
@@ -36,7 +36,7 @@ public abstract class HBooleanFieldBase extends HBasicField
     private Boolean defaultValue;
     
     /**
-     * 
+     * The default value for this field.
      * @return A Boolean object representing the value of the defaultValue field.
      */
     public Boolean getDefaultValue()
@@ -45,7 +45,7 @@ public abstract class HBooleanFieldBase extends HBasicField
     }
 
     /**
-     * 
+     * The default value for this field.
      * @param defaultValue The new value for the defaultValue field.
      */
     public void setDefaultValue(Boolean defaultValue)

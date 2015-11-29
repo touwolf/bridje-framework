@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * Root class for all the basic fields objects.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class HBasicFieldBase extends HField
