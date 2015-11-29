@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" targetNamespace="${namespace}" xmlns:tns="http://www.bridje.org/schemas/hirarchical" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:element name="${name?uncap_first}" type="tns:${name?uncap_first}"/>
+    <xs:element name="${name?lower_case}" type="tns:${name?uncap_first}"/>
 
     <xs:complexType name="${name?uncap_first}">
         <#if extendsFrom??>

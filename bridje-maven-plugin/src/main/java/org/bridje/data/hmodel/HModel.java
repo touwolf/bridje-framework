@@ -37,7 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 /**
  * 
  */
-@XmlRootElement
+@XmlRootElement(name = "hmodel")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HModel extends HEntityData
 {

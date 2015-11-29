@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<hModel 
+<hmodel 
     xmlns="http://www.bridje.org/schemas/hmodel" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.bridje.org/schemas/hmodel file:/E:/Projects/bridje-framework/bridje-data/target/generated-resources/data/BRIDJE-INF/schemas/hmodel.xsd"
     name="HModel" packageName="org.bridje.data.hmodel" extendsFrom="HEntityData" 
     namespace="http://www.bridje.org/schemas/hmodel">
-    <!--
-    xsi:schemaLocation="http://www.bridje.org/schemas/hmodel file:/E:/Projects/bridje-framework/bridje-maven-plugin/hierarchical.xsd"
-    -->
+
     <license>
 Copyright 2015 Bridje Framework.
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,4 +100,4 @@ limitations under the License.
             <value name="ELEMENT" />
         </enum>
     </enums>
-</hModel>
+</hmodel>

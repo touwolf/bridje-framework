@@ -24,7 +24,7 @@ import javax.xml.transform.stream.StreamResult;
  * 
  */
 <#if !customizable>
-@XmlRootElement
+@XmlRootElement(name = "${name?lower_case}")
 </#if>
 @XmlAccessorType(XmlAccessType.FIELD)
 public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#if><#if extendsFrom??> extends ${extendsFrom}</#if>
