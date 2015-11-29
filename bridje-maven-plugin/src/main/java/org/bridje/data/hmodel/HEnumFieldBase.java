@@ -35,11 +35,19 @@ public abstract class HEnumFieldBase extends HBasicField
     @XmlAttribute
     private String type;
     
+    /**
+     * 
+     * @return A String object representing the value of the type field.
+     */
     public String getType()
     {
         return this.type;
     }
 
+    /**
+     * 
+     * @param type The new value for the type field.
+     */
     public void setType(String type)
     {
         this.type = type;

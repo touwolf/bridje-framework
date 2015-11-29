@@ -36,4 +36,10 @@ public class HListField extends HListFieldBase
     {
         return true;
     }
+
+    @Override
+    public String getXmlType()
+    {
+        return null;
+    }
 }

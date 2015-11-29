@@ -36,6 +36,9 @@ public abstract class HFieldBase
     private String name;
     
     @XmlAttribute
+    private String description;
+    
+    @XmlAttribute
     private Boolean required;
     
     @XmlAttribute
@@ -44,16 +47,46 @@ public abstract class HFieldBase
     @XmlAttribute
     private Boolean isTransient;
     
+    /**
+     * 
+     * @return A String object representing the value of the name field.
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * 
+     * @param name The new value for the name field.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return A String object representing the value of the description field.
+     */
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    /**
+     * 
+     * @param description The new value for the description field.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    /**
+     * 
+     * @return A Boolean object representing the value of the required field.
+     */
     public Boolean getRequired()
     {
         if(this.required == null)
@@ -63,11 +96,19 @@ public abstract class HFieldBase
         return this.required;
     }
 
+    /**
+     * 
+     * @param required The new value for the required field.
+     */
     public void setRequired(Boolean required)
     {
         this.required = required;
     }
 
+    /**
+     * 
+     * @return A Boolean object representing the value of the readonly field.
+     */
     public Boolean getReadonly()
     {
         if(this.readonly == null)
@@ -77,11 +118,19 @@ public abstract class HFieldBase
         return this.readonly;
     }
 
+    /**
+     * 
+     * @param readonly The new value for the readonly field.
+     */
     public void setReadonly(Boolean readonly)
     {
         this.readonly = readonly;
     }
 
+    /**
+     * 
+     * @return A Boolean object representing the value of the isTransient field.
+     */
     public Boolean getIsTransient()
     {
         if(this.isTransient == null)
@@ -91,6 +140,10 @@ public abstract class HFieldBase
         return this.isTransient;
     }
 
+    /**
+     * 
+     * @param isTransient The new value for the isTransient field.
+     */
     public void setIsTransient(Boolean isTransient)
     {
         this.isTransient = isTransient;

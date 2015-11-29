@@ -38,6 +38,8 @@ public class HEntityData
     @XmlAttribute
     private String extendsFrom;
     
+    private String description;
+    
     @XmlAttribute
     private Boolean customizable;
     
@@ -51,26 +53,64 @@ public class HEntityData
     })
     private java.util.List<HField> fields;
     
+    /**
+     * 
+     * @return A String object representing the value of the name field.
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * 
+     * @param name The new value for the name field.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return A String object representing the value of the extendsFrom field.
+     */
     public String getExtendsFrom()
     {
         return this.extendsFrom;
     }
 
+    /**
+     * 
+     * @param extendsFrom The new value for the extendsFrom field.
+     */
     public void setExtendsFrom(String extendsFrom)
     {
         this.extendsFrom = extendsFrom;
     }
 
+    /**
+     * 
+     * @return A String object representing the value of the description field.
+     */
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    /**
+     * 
+     * @param description The new value for the description field.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    /**
+     * 
+     * @return A Boolean object representing the value of the customizable field.
+     */
     public Boolean getCustomizable()
     {
         if(this.customizable == null)
@@ -80,16 +120,28 @@ public class HEntityData
         return this.customizable;
     }
 
+    /**
+     * 
+     * @param customizable The new value for the customizable field.
+     */
     public void setCustomizable(Boolean customizable)
     {
         this.customizable = customizable;
     }
 
+    /**
+     * 
+     * @return A java.util.List&lt;HField&gt; object representing the value of the fields field.
+     */
     public java.util.List<HField> getFields()
     {
         return this.fields;
     }
 
+    /**
+     * 
+     * @param fields The new value for the fields field.
+     */
     public void setFields(java.util.List<HField> fields)
     {
         this.fields = fields;

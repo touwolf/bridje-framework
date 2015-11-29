@@ -35,11 +35,19 @@ public abstract class HBasicFieldBase extends HField
     @XmlAttribute
     private HFieldAccess access;
     
+    /**
+     * 
+     * @return A HFieldAccess object representing the value of the access field.
+     */
     public HFieldAccess getAccess()
     {
         return this.access;
     }
 
+    /**
+     * 
+     * @param access The new value for the access field.
+     */
     public void setAccess(HFieldAccess access)
     {
         this.access = access;

@@ -37,4 +37,10 @@ public class HElementField extends HElementFieldBase
     {
         return false;
     }
+    
+    @Override
+    public String getXmlType()
+    {
+        return getType();
+    }
 }

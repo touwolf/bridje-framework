@@ -35,14 +35,43 @@ public class HEnumValue
     @XmlAttribute
     private String name;
     
+    @XmlAttribute
+    private String description;
+    
+    /**
+     * 
+     * @return A String object representing the value of the name field.
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * 
+     * @param name The new value for the name field.
+     */
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    /**
+     * 
+     * @return A String object representing the value of the description field.
+     */
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    /**
+     * 
+     * @param description The new value for the description field.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
 }

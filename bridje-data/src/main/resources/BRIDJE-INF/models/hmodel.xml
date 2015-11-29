@@ -20,20 +20,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
     </license>
-    <string name="packageName" access="ATTRIBUTE" />
-    <string name="namespace" access="ATTRIBUTE" />
-    <string name="license" access="ELEMENT" />
-    <list name="entitys" of="HEntity" wrapper="true" >
+    <string name="packageName" access="ATTRIBUTE" description="Package name for java clases." />
+    <string name="namespace" access="ATTRIBUTE" description="Target namespace for the xml schema." />
+    <string name="license" access="ELEMENT" description="License text to be used for this model." />
+    <list name="entitys" of="HEntity" wrapper="true" description="List of model entitys" >
         <element name="entity" type="HEntity" />
     </list>
-    <list name="enums" of="HEnum" wrapper="true" >
+    <list name="enums" of="HEnum" wrapper="true" description="List of model enumerators" >
         <element name="enum" type="HEnum" />
     </list>
-    
+    <description>
+        Hierarchical model definition.
+    </description>
+
     <entitys>
         <entity name="HEntityData" >
             <string name="name" access="ATTRIBUTE" />
             <string name="extendsFrom" access="ATTRIBUTE" />
+            <string name="description" access="ELEMENT" />
             <boolean name="customizable" access="ATTRIBUTE" defaultValue="false" />
             <list name="fields" of="HField">
                 <element name="string" type="HStringField" />
@@ -64,6 +68,7 @@ limitations under the License.
         </entity>
         <entity name="HField" customizable="true" >
             <string name="name" access="ATTRIBUTE" />
+            <string name="description" access="ATTRIBUTE" />
             <boolean name="required" access="ATTRIBUTE" required="true" defaultValue="false" />
             <boolean name="readonly" access="ATTRIBUTE" required="true" defaultValue="false" />
             <boolean name="isTransient" access="ATTRIBUTE" required="true" defaultValue="false" />
@@ -86,12 +91,14 @@ limitations under the License.
         <entity name="HEnum">
             <parent name="model" type="HModel" />
             <string name="name" access="ATTRIBUTE" />
+            <string name="description" access="ELEMENT" />
             <list name="values" of="HEnumValue" >
                 <element name="value" type="HEnumValue" />
             </list>
         </entity>
         <entity name="HEnumValue">
             <string name="name" access="ATTRIBUTE" />
+            <string name="description" access="ATTRIBUTE" />
         </entity>
     </entitys>
     <enums>

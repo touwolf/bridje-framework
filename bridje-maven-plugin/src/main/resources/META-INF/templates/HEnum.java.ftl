@@ -6,7 +6,7 @@ package ${model.packageName};
 import javax.xml.bind.annotation.XmlEnum;
 
 /**
- * 
+ * ${description!""}
  */
 @XmlEnum
 public enum ${name}

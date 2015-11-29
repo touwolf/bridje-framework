@@ -35,11 +35,19 @@ public abstract class HStringFieldBase extends HBasicField
     @XmlAttribute
     private String defaultValue;
     
+    /**
+     * 
+     * @return A String object representing the value of the defaultValue field.
+     */
     public String getDefaultValue()
     {
         return this.defaultValue;
     }
 
+    /**
+     * 
+     * @param defaultValue The new value for the defaultValue field.
+     */
     public void setDefaultValue(String defaultValue)
     {
         this.defaultValue = defaultValue;

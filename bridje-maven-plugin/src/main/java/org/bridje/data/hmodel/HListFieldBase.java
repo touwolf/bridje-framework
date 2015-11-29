@@ -44,16 +44,28 @@ public abstract class HListFieldBase extends HField
     })
     private java.util.List<HListElement> elements;
     
+    /**
+     * 
+     * @return A String object representing the value of the of field.
+     */
     public String getOf()
     {
         return this.of;
     }
 
+    /**
+     * 
+     * @param of The new value for the of field.
+     */
     public void setOf(String of)
     {
         this.of = of;
     }
 
+    /**
+     * 
+     * @return A Boolean object representing the value of the wrapper field.
+     */
     public Boolean getWrapper()
     {
         if(this.wrapper == null)
@@ -63,16 +75,28 @@ public abstract class HListFieldBase extends HField
         return this.wrapper;
     }
 
+    /**
+     * 
+     * @param wrapper The new value for the wrapper field.
+     */
     public void setWrapper(Boolean wrapper)
     {
         this.wrapper = wrapper;
     }
 
+    /**
+     * 
+     * @return A java.util.List&lt;HListElement&gt; object representing the value of the elements field.
+     */
     public java.util.List<HListElement> getElements()
     {
         return this.elements;
     }
 
+    /**
+     * 
+     * @param elements The new value for the elements field.
+     */
     public void setElements(java.util.List<HListElement> elements)
     {
         this.elements = elements;

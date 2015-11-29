@@ -38,21 +38,37 @@ public class HListElement
     @XmlAttribute
     private String name;
     
+    /**
+     * 
+     * @return A String object representing the value of the type field.
+     */
     public String getType()
     {
         return this.type;
     }
 
+    /**
+     * 
+     * @param type The new value for the type field.
+     */
     public void setType(String type)
     {
         this.type = type;
     }
 
+    /**
+     * 
+     * @return A String object representing the value of the name field.
+     */
     public String getName()
     {
         return this.name;
     }
 
+    /**
+     * 
+     * @param name The new value for the name field.
+     */
     public void setName(String name)
     {
         this.name = name;

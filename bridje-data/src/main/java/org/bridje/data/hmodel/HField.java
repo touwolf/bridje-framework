@@ -26,9 +26,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public abstract class HField extends HFieldBase
 {
     public abstract String getJavaType();
-    
+
+    public abstract String getXmlType();
+
     public abstract boolean getIsList();
-    
+
     public boolean getIsNullable()
     {
         return true;

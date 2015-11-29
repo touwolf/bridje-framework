@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * 
+ * ${description!""}
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#if><#if extendsFrom??> extends ${extendsFrom}</#if>

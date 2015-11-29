@@ -35,11 +35,19 @@ public abstract class HBooleanFieldBase extends HBasicField
     @XmlAttribute
     private Boolean defaultValue;
     
+    /**
+     * 
+     * @return A Boolean object representing the value of the defaultValue field.
+     */
     public Boolean getDefaultValue()
     {
         return this.defaultValue;
     }
 
+    /**
+     * 
+     * @param defaultValue The new value for the defaultValue field.
+     */
     public void setDefaultValue(Boolean defaultValue)
     {
         this.defaultValue = defaultValue;

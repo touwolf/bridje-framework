@@ -20,6 +20,10 @@
     
     </#list>
     <#list fields as f>
+    /**
+     * ${f.description!""}
+     * @return A ${f.javaType?html} object representing the value of the ${f.name} field.
+     */
     public ${f.javaType!""} get${f.name?cap_first}()
     {
         <#if f.isNullable && f.defaultValue??>
@@ -31,6 +35,10 @@
         return this.${f.name};
     }
 
+    /**
+     * ${f.description!""}
+     * @param ${f.name} The new value for the ${f.name} field.
+     */
     <#if !f.readonly>public </#if>void set${f.name?cap_first}(${f.javaType} ${f.name})
     {
         this.${f.name} = ${f.name};
@@ -45,16 +53,27 @@
     @XmlTransient
     private ${parent.type} ${parent.name};
 
+    /**
+     * The ${parent.type?html} object representing the parent of this object.
+     */
     public ${parent.type} get${parent.name?cap_first}()
     {
         return this.${parent.name};
     }
 
+    /**
+     * The ${parent.type?html} object representing the parent of this object.
+     */
     void set${parent.name?cap_first}(${parent.type} ${parent.name})
     {
         this.${parent.name} = ${parent.name};
     }
 
+    /**
+     * This method is call by the JAXB Unmarshaller after the object's creation.
+     * @param unmarshaller The unmarshaller object being used.
+     * @param parent The parent object for this object.
+     */
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof ${parent.type})
@@ -68,9 +87,10 @@
 
 <#macro xmlFields fields indent=0>
     <#local spc>${""?left_pad(indent * 4)}</#local>
+        ${spc}<xs:sequence>
     <#list fields as field>
     <#if field.isList>
-        ${spc}<xs:sequence>
+        <#if field.wrapper>
             ${spc}<xs:element name="${field.name}" minOccurs="0">
                 ${spc}<xs:complexType>
                     ${spc}<xs:sequence>
@@ -80,12 +100,44 @@
                     ${spc}</xs:sequence>
                 ${spc}</xs:complexType>
             ${spc}</xs:element>
-        ${spc}</xs:sequence>
+        <#else>
+            ${spc}<xs:choice minOccurs="0" maxOccurs="unbounded">
+                <#if field.description??>
+                ${spc}<xs:annotation>
+                    ${spc}<xs:documentation>
+                        ${spc}${field.description?trim}
+                    ${spc}</xs:documentation>
+                ${spc}</xs:annotation>
+                </#if>
+                <#list field.elements![] as element >
+                ${spc}<xs:element name="${element.name}" type="tns:${element.type?uncap_first}"/>
+                </#list>
+            ${spc}</xs:choice>
+        </#if>
+    <#elseif !(field.access??) || field.access == "ELEMENT">
+            ${spc}<xs:element name="${field.name}" type="tns:${field.xmlType?uncap_first}" minOccurs="0" maxOccurs="1">
+                <#if field.description??>
+                ${spc}<xs:annotation>
+                    ${spc}<xs:documentation>
+                        ${spc}${field.description?trim}
+                    ${spc}</xs:documentation>
+                ${spc}</xs:annotation>
+                </#if>
+            ${spc}</xs:element>
     </#if>
     </#list>
+        ${spc}</xs:sequence>
     <#list fields as field>
     <#if field.access?? && field.access == "ATTRIBUTE">
-        ${spc}<xs:attribute name="${field.name}" type="xs:${field.xmlType}"/>
+        ${spc}<xs:attribute name="${field.name}" type="xs:${field.xmlType}">
+            <#if field.description??>
+            ${spc}<xs:annotation>
+                ${spc}<xs:documentation>
+                    ${spc}${field.description?trim}
+                ${spc}</xs:documentation>
+            ${spc}</xs:annotation>
+            </#if>
+        ${spc}</xs:attribute>
     </#if>
     </#list>
 </#macro>

@@ -21,7 +21,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * 
+ * ${description!""}
  */
 <#if !customizable>
 @XmlRootElement(name = "${name?lower_case}")

@@ -36,6 +36,8 @@ import javax.xml.transform.stream.StreamResult;
 
 /**
  * 
+        Hierarchical model definition.
+    
  */
 @XmlRootElement(name = "hmodel")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -63,51 +65,91 @@ public class HModel extends HEntityData
     })
     private java.util.List<HEnum> enums;
     
+    /**
+     * Package name for java clases.
+     * @return A String object representing the value of the packageName field.
+     */
     public String getPackageName()
     {
         return this.packageName;
     }
 
+    /**
+     * Package name for java clases.
+     * @param packageName The new value for the packageName field.
+     */
     public void setPackageName(String packageName)
     {
         this.packageName = packageName;
     }
 
+    /**
+     * Target namespace for the xml schema.
+     * @return A String object representing the value of the namespace field.
+     */
     public String getNamespace()
     {
         return this.namespace;
     }
 
+    /**
+     * Target namespace for the xml schema.
+     * @param namespace The new value for the namespace field.
+     */
     public void setNamespace(String namespace)
     {
         this.namespace = namespace;
     }
 
+    /**
+     * License text to be used for this model.
+     * @return A String object representing the value of the license field.
+     */
     public String getLicense()
     {
         return this.license;
     }
 
+    /**
+     * License text to be used for this model.
+     * @param license The new value for the license field.
+     */
     public void setLicense(String license)
     {
         this.license = license;
     }
 
+    /**
+     * List of model entitys
+     * @return A java.util.List&lt;HEntity&gt; object representing the value of the entitys field.
+     */
     public java.util.List<HEntity> getEntitys()
     {
         return this.entitys;
     }
 
+    /**
+     * List of model entitys
+     * @param entitys The new value for the entitys field.
+     */
     public void setEntitys(java.util.List<HEntity> entitys)
     {
         this.entitys = entitys;
     }
 
+    /**
+     * List of model enumerators
+     * @return A java.util.List&lt;HEnum&gt; object representing the value of the enums field.
+     */
     public java.util.List<HEnum> getEnums()
     {
         return this.enums;
     }
 
+    /**
+     * List of model enumerators
+     * @param enums The new value for the enums field.
+     */
     public void setEnums(java.util.List<HEnum> enums)
     {
         this.enums = enums;

@@ -34,11 +34,19 @@ public class HEntity extends HEntityData
 {
     private HParentField parent;
     
+    /**
+     * 
+     * @return A HParentField object representing the value of the parent field.
+     */
     public HParentField getParent()
     {
         return this.parent;
     }
 
+    /**
+     * 
+     * @param parent The new value for the parent field.
+     */
     public void setParent(HParentField parent)
     {
         this.parent = parent;
@@ -47,16 +55,27 @@ public class HEntity extends HEntityData
     @XmlTransient
     private HModel model;
 
+    /**
+     * The HModel object representing the parent of this object.
+     */
     public HModel getModel()
     {
         return this.model;
     }
 
+    /**
+     * The HModel object representing the parent of this object.
+     */
     void setModel(HModel model)
     {
         this.model = model;
     }
 
+    /**
+     * This method is call by the JAXB Unmarshaller after the object's creation.
+     * @param unmarshaller The unmarshaller object being used.
+     * @param parent The parent object for this object.
+     */
     public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof HModel)

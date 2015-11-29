@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * 
+ * ${description!""}
  */
 @XmlRootElement(name = "${name?lower_case}")
 @XmlAccessorType(XmlAccessType.FIELD)
