@@ -59,13 +59,15 @@
     <#if fields??>
     <#list fields as f>
     <#if f.isList?? && f.isList >
+    <#if f.elements??>
+    <#list f.elements as e>
     /**
-     * 
-     * @param values 
+     * Adds a ${e.type} object to the ${f.name} list.
+     * @param value The object to be added
      */
-    <#if !f.readonly>public </#if>void add${f.name?cap_first}(${f.of}... values)
+    <#if !f.readonly>public </#if>void add${e.name?cap_first}(${e.type} value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -73,16 +75,16 @@
         {
             this.${f.name} = new java.util.ArrayList<>();
         }
-        this.${f.name}.addAll(java.util.Arrays.asList(values));
+        this.${f.name}.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a ${e.type} object from the ${f.name} list.
+     * @param value The object to be removed.
      */
-    <#if !f.readonly>public </#if>void remove${f.name?cap_first}(${f.of}... values)
+    <#if !f.readonly>public </#if>void remove${e.name?cap_first}(${e.type} value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -90,9 +92,11 @@
         {
             return;
         }
-        this.${f.name}.removeAll(java.util.Arrays.asList(values));
+        this.${f.name}.remove(value);
     }
 
+    </#list>
+    </#if>
     </#if>
     </#list>
     </#if>

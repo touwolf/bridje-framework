@@ -98,12 +98,12 @@ public abstract class HListFieldBase extends HField
     }
 
     /**
-     * 
-     * @param values 
+     * Adds a HListElement object from the elements list.
+     * @param value The object to be added
      */
-    public void addElements(HListElement... values)
+    public void addElement(HListElement value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -111,16 +111,16 @@ public abstract class HListFieldBase extends HField
         {
             this.elements = new java.util.ArrayList<>();
         }
-        this.elements.addAll(java.util.Arrays.asList(values));
+        this.elements.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a HListElement object from the elements list.
+     * @param value The object to be removed.
      */
-    public void removeElements(HListElement... values)
+    public void removeElement(HListElement value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -128,7 +128,7 @@ public abstract class HListFieldBase extends HField
         {
             return;
         }
-        this.elements.removeAll(java.util.Arrays.asList(values));
+        this.elements.remove(value);
     }
 
     @XmlTransient

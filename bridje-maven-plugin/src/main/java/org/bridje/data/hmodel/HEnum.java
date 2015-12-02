@@ -93,12 +93,12 @@ public class HEnum
     }
 
     /**
-     * 
-     * @param values 
+     * Adds a HEnumValue object from the values list.
+     * @param value The object to be added
      */
-    public void addValues(HEnumValue... values)
+    public void addValue(HEnumValue value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -106,16 +106,16 @@ public class HEnum
         {
             this.values = new java.util.ArrayList<>();
         }
-        this.values.addAll(java.util.Arrays.asList(values));
+        this.values.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a HEnumValue object from the values list.
+     * @param value The object to be removed.
      */
-    public void removeValues(HEnumValue... values)
+    public void removeValue(HEnumValue value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -123,7 +123,7 @@ public class HEnum
         {
             return;
         }
-        this.values.removeAll(java.util.Arrays.asList(values));
+        this.values.remove(value);
     }
 
     @XmlTransient

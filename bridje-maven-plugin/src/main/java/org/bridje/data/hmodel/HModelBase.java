@@ -143,12 +143,12 @@ public abstract class HModelBase extends HEntityData
     }
 
     /**
-     * 
-     * @param values 
+     * Adds a HEntity object from the entitys list.
+     * @param value The object to be added
      */
-    public void addEntitys(HEntity... values)
+    public void addEntity(HEntity value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -156,16 +156,16 @@ public abstract class HModelBase extends HEntityData
         {
             this.entitys = new java.util.ArrayList<>();
         }
-        this.entitys.addAll(java.util.Arrays.asList(values));
+        this.entitys.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a HEntity object from the entitys list.
+     * @param value The object to be removed.
      */
-    public void removeEntitys(HEntity... values)
+    public void removeEntity(HEntity value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -173,16 +173,16 @@ public abstract class HModelBase extends HEntityData
         {
             return;
         }
-        this.entitys.removeAll(java.util.Arrays.asList(values));
+        this.entitys.remove(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Adds a HEnum object from the enums list.
+     * @param value The object to be added
      */
-    public void addEnums(HEnum... values)
+    public void addEnum(HEnum value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -190,16 +190,16 @@ public abstract class HModelBase extends HEntityData
         {
             this.enums = new java.util.ArrayList<>();
         }
-        this.enums.addAll(java.util.Arrays.asList(values));
+        this.enums.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a HEnum object from the enums list.
+     * @param value The object to be removed.
      */
-    public void removeEnums(HEnum... values)
+    public void removeEnum(HEnum value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -207,7 +207,7 @@ public abstract class HModelBase extends HEntityData
         {
             return;
         }
-        this.enums.removeAll(java.util.Arrays.asList(values));
+        this.enums.remove(value);
     }
 
             

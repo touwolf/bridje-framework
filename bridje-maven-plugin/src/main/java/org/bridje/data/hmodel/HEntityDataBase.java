@@ -143,12 +143,12 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * 
-     * @param values 
+     * Adds a HStringField object from the fields list.
+     * @param value The object to be added
      */
-    public void addFields(HField... values)
+    public void addString(HStringField value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -156,16 +156,16 @@ public abstract class HEntityDataBase
         {
             this.fields = new java.util.ArrayList<>();
         }
-        this.fields.addAll(java.util.Arrays.asList(values));
+        this.fields.add(value);
     }
 
     /**
-     * 
-     * @param values 
+     * Removes a HStringField object from the fields list.
+     * @param value The object to be removed.
      */
-    public void removeFields(HField... values)
+    public void removeString(HStringField value)
     {
-        if(values == null || values.length == 0)
+        if(value == null)
         {
             return;
         }
@@ -173,7 +173,143 @@ public abstract class HEntityDataBase
         {
             return;
         }
-        this.fields.removeAll(java.util.Arrays.asList(values));
+        this.fields.remove(value);
+    }
+
+    /**
+     * Adds a HListField object from the fields list.
+     * @param value The object to be added
+     */
+    public void addList(HListField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            this.fields = new java.util.ArrayList<>();
+        }
+        this.fields.add(value);
+    }
+
+    /**
+     * Removes a HListField object from the fields list.
+     * @param value The object to be removed.
+     */
+    public void removeList(HListField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            return;
+        }
+        this.fields.remove(value);
+    }
+
+    /**
+     * Adds a HEnumField object from the fields list.
+     * @param value The object to be added
+     */
+    public void addEnum(HEnumField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            this.fields = new java.util.ArrayList<>();
+        }
+        this.fields.add(value);
+    }
+
+    /**
+     * Removes a HEnumField object from the fields list.
+     * @param value The object to be removed.
+     */
+    public void removeEnum(HEnumField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            return;
+        }
+        this.fields.remove(value);
+    }
+
+    /**
+     * Adds a HBooleanField object from the fields list.
+     * @param value The object to be added
+     */
+    public void addBoolean(HBooleanField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            this.fields = new java.util.ArrayList<>();
+        }
+        this.fields.add(value);
+    }
+
+    /**
+     * Removes a HBooleanField object from the fields list.
+     * @param value The object to be removed.
+     */
+    public void removeBoolean(HBooleanField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            return;
+        }
+        this.fields.remove(value);
+    }
+
+    /**
+     * Adds a HElementField object from the fields list.
+     * @param value The object to be added
+     */
+    public void addElement(HElementField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            this.fields = new java.util.ArrayList<>();
+        }
+        this.fields.add(value);
+    }
+
+    /**
+     * Removes a HElementField object from the fields list.
+     * @param value The object to be removed.
+     */
+    public void removeElement(HElementField value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            return;
+        }
+        this.fields.remove(value);
     }
 
 }
