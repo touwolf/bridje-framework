@@ -85,16 +85,45 @@ public class HEnum
      */
     public java.util.List<HEnumValue> getValues()
     {
-        return this.values;
+        if(this.values == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.values);
     }
 
     /**
-     * A list of values for this enumerator.
-     * @param values The new value for the values field.
+     * 
+     * @param values 
      */
-    public void setValues(java.util.List<HEnumValue> values)
+    public void addValues(HEnumValue... values)
     {
-        this.values = values;
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.values == null)
+        {
+            this.values = new java.util.ArrayList<>();
+        }
+        this.values.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void removeValues(HEnumValue... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.values == null)
+        {
+            return;
+        }
+        this.values.removeAll(java.util.Arrays.asList(values));
     }
 
     @XmlTransient

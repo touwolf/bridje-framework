@@ -122,16 +122,11 @@ public abstract class HModelBase extends HEntityData
      */
     public java.util.List<HEntity> getEntitys()
     {
-        return this.entitys;
-    }
-
-    /**
-     * List of model entitys
-     * @param entitys The new value for the entitys field.
-     */
-    public void setEntitys(java.util.List<HEntity> entitys)
-    {
-        this.entitys = entitys;
+        if(this.entitys == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.entitys);
     }
 
     /**
@@ -140,16 +135,79 @@ public abstract class HModelBase extends HEntityData
      */
     public java.util.List<HEnum> getEnums()
     {
-        return this.enums;
+        if(this.enums == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.enums);
     }
 
     /**
-     * List of model enumerators
-     * @param enums The new value for the enums field.
+     * 
+     * @param values 
      */
-    public void setEnums(java.util.List<HEnum> enums)
+    public void addEntitys(HEntity... values)
     {
-        this.enums = enums;
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.entitys == null)
+        {
+            this.entitys = new java.util.ArrayList<>();
+        }
+        this.entitys.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void removeEntitys(HEntity... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.entitys == null)
+        {
+            return;
+        }
+        this.entitys.removeAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void addEnums(HEnum... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.enums == null)
+        {
+            this.enums = new java.util.ArrayList<>();
+        }
+        this.enums.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void removeEnums(HEnum... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.enums == null)
+        {
+            return;
+        }
+        this.enums.removeAll(java.util.Arrays.asList(values));
     }
 
             

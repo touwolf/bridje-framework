@@ -26,6 +26,13 @@
      */
     public ${f.javaType!""} get${f.name?cap_first}()
     {
+        <#if f.isList?? && f.isList>
+        if(this.${f.name} == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.${f.name});
+        <#else>
         <#if f.isNullable && f.defaultValue??>
         if(this.${f.name} == null)
         {
@@ -33,8 +40,10 @@
         }
         </#if>
         return this.${f.name};
+        </#if>
     }
 
+    <#if !(f.isList?? && f.isList)>
     /**
      * ${f.description!""}
      * @param ${f.name} The new value for the ${f.name} field.
@@ -44,6 +53,47 @@
         this.${f.name} = ${f.name};
     }
 
+    </#if>
+    </#list>
+    </#if>
+    <#if fields??>
+    <#list fields as f>
+    <#if f.isList?? && f.isList >
+    /**
+     * 
+     * @param values 
+     */
+    <#if !f.readonly>public </#if>void add${f.name?cap_first}(${f.of}... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.${f.name} == null)
+        {
+            this.${f.name} = new java.util.ArrayList<>();
+        }
+        this.${f.name}.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    <#if !f.readonly>public </#if>void remove${f.name?cap_first}(${f.of}... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.${f.name} == null)
+        {
+            return;
+        }
+        this.${f.name}.removeAll(java.util.Arrays.asList(values));
+    }
+
+    </#if>
     </#list>
     </#if>
 </#macro>

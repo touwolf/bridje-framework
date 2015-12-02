@@ -135,16 +135,45 @@ public abstract class HEntityDataBase
      */
     public java.util.List<HField> getFields()
     {
-        return this.fields;
+        if(this.fields == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.fields);
     }
 
     /**
-     * A list of fields for this entity.
-     * @param fields The new value for the fields field.
+     * 
+     * @param values 
      */
-    public void setFields(java.util.List<HField> fields)
+    public void addFields(HField... values)
     {
-        this.fields = fields;
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            this.fields = new java.util.ArrayList<>();
+        }
+        this.fields.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void removeFields(HField... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.fields == null)
+        {
+            return;
+        }
+        this.fields.removeAll(java.util.Arrays.asList(values));
     }
 
 }

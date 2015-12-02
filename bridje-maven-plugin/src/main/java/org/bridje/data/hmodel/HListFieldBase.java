@@ -90,16 +90,45 @@ public abstract class HListFieldBase extends HField
      */
     public java.util.List<HListElement> getElements()
     {
-        return this.elements;
+        if(this.elements == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.elements);
     }
 
     /**
-     * Elements 
-     * @param elements The new value for the elements field.
+     * 
+     * @param values 
      */
-    public void setElements(java.util.List<HListElement> elements)
+    public void addElements(HListElement... values)
     {
-        this.elements = elements;
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.elements == null)
+        {
+            this.elements = new java.util.ArrayList<>();
+        }
+        this.elements.addAll(java.util.Arrays.asList(values));
+    }
+
+    /**
+     * 
+     * @param values 
+     */
+    public void removeElements(HListElement... values)
+    {
+        if(values == null || values.length == 0)
+        {
+            return;
+        }
+        if(this.elements == null)
+        {
+            return;
+        }
+        this.elements.removeAll(java.util.Arrays.asList(values));
     }
 
     @XmlTransient
