@@ -98,7 +98,7 @@ public abstract class HListFieldBase extends HField
     }
 
     /**
-     * Adds a HListElement object from the elements list.
+     * Adds a HListElement object to the elements list.
      * @param value The object to be added
      */
     public void addElement(HListElement value)

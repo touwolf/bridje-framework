@@ -93,7 +93,7 @@ public class HEnum
     }
 
     /**
-     * Adds a HEnumValue object from the values list.
+     * Adds a HEnumValue object to the values list.
      * @param value The object to be added
      */
     public void addValue(HEnumValue value)

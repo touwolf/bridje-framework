@@ -143,7 +143,7 @@ public abstract class HModelBase extends HEntityData
     }
 
     /**
-     * Adds a HEntity object from the entitys list.
+     * Adds a HEntity object to the entitys list.
      * @param value The object to be added
      */
     public void addEntity(HEntity value)
@@ -177,7 +177,7 @@ public abstract class HModelBase extends HEntityData
     }
 
     /**
-     * Adds a HEnum object from the enums list.
+     * Adds a HEnum object to the enums list.
      * @param value The object to be added
      */
     public void addEnum(HEnum value)

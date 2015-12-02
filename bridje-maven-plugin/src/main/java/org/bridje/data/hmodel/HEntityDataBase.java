@@ -143,7 +143,7 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * Adds a HStringField object from the fields list.
+     * Adds a HStringField object to the fields list.
      * @param value The object to be added
      */
     public void addString(HStringField value)
@@ -177,7 +177,7 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * Adds a HListField object from the fields list.
+     * Adds a HListField object to the fields list.
      * @param value The object to be added
      */
     public void addList(HListField value)
@@ -211,7 +211,7 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * Adds a HEnumField object from the fields list.
+     * Adds a HEnumField object to the fields list.
      * @param value The object to be added
      */
     public void addEnum(HEnumField value)
@@ -245,7 +245,7 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * Adds a HBooleanField object from the fields list.
+     * Adds a HBooleanField object to the fields list.
      * @param value The object to be added
      */
     public void addBoolean(HBooleanField value)
@@ -279,7 +279,7 @@ public abstract class HEntityDataBase
     }
 
     /**
-     * Adds a HElementField object from the fields list.
+     * Adds a HElementField object to the fields list.
      * @param value The object to be added
      */
     public void addElement(HElementField value)

@@ -20,16 +20,26 @@
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
                 <version>${project.version}</version>
-                <configuration>
-                    <source>${basedir}/src/main/resources/BRIDJE-INF/models/hmodel.xml</source>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>generate-hierarchy</id>
+                        <id>generate-hmodel</id>
                         <goals>
                             <goal>generate-hierarchy</goal>
                         </goals>
                         <phase>generate-sources</phase>
+                        <configuration>
+                            <source>${basedir}/src/main/resources/BRIDJE-INF/models/hmodel.xml</source>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-rmodel</id>
+                        <goals>
+                            <goal>generate-hierarchy</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <source>${basedir}/src/main/resources/BRIDJE-INF/models/rmodel.xml</source>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

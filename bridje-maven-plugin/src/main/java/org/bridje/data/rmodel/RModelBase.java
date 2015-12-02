@@ -1,9 +1,21 @@
-<#include "utils.ftl"/>
 /**
- <@javaDocContent license!"" />
+ * 
+ * Copyright 2015 Bridje Framework.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *     
  */
 
-package ${packageName};
+package org.bridje.data.rmodel;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,26 +35,22 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- <@javaDocContent description!"" true />
+ * 
  */
-<#if !customizable>
-@XmlRootElement(name = "${name?lower_case}")
-</#if>
 @XmlAccessorType(XmlAccessType.FIELD)
-public <#if customizable >abstract </#if>class ${name}<#if customizable >Base</#if><#if extendsFrom??> extends ${extendsFrom}</#if>
+public abstract class RModelBase
 {
-    <@entityContent />
             
-    public static ${name} loadModel(File source) throws JAXBException
+    public static RModel loadModel(File source) throws JAXBException
     {
-        JAXBContext ctx = JAXBContext.newInstance(${name}.class);
+        JAXBContext ctx = JAXBContext.newInstance(RModel.class);
         Unmarshaller unmarsh = ctx.createUnmarshaller();
-        return (${name})unmarsh.unmarshal(source);
+        return (RModel)unmarsh.unmarshal(source);
     }
 
     public static void generateSchema(final File target) throws JAXBException, IOException
     {
-        JAXBContext ctx = JAXBContext.newInstance(${name}.class);
+        JAXBContext ctx = JAXBContext.newInstance(RModel.class);
         ctx.generateSchema(new SchemaOutputResolver()
         {
             @Override
