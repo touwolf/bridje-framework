@@ -17,48 +17,31 @@
 
 package org.bridje.data.hmodel;
 
-import java.io.File;
-import java.io.IOException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
-
 /**
  * Hierarchical model definition.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class HModelBase extends HEntityData
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String packageName;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String namespace;
     
     private String license;
     
-    @XmlElementWrapper(name = "entitys")
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElementWrapper(name = "entitys")
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "entity", type = HEntity.class)
+        @javax.xml.bind.annotation.XmlElement(name = "entity", type = HEntity.class)
     })
     private java.util.List<HEntity> entitys;
     
-    @XmlElementWrapper(name = "enums")
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElementWrapper(name = "enums")
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "enum", type = HEnum.class)
+        @javax.xml.bind.annotation.XmlElement(name = "enum", type = HEnum.class)
     })
     private java.util.List<HEnum> enums;
     
@@ -211,22 +194,22 @@ public abstract class HModelBase extends HEntityData
     }
 
             
-    public static HModel loadModel(File source) throws JAXBException
+    public static HModel loadModel(java.io.File source) throws javax.xml.bind.JAXBException
     {
-        JAXBContext ctx = JAXBContext.newInstance(HModel.class);
-        Unmarshaller unmarsh = ctx.createUnmarshaller();
+        javax.xml.bind.JAXBContext ctx = javax.xml.bind.JAXBContext.newInstance(HModel.class);
+        javax.xml.bind.Unmarshaller unmarsh = ctx.createUnmarshaller();
         return (HModel)unmarsh.unmarshal(source);
     }
 
-    public static void generateSchema(final File target) throws JAXBException, IOException
+    public static void generateSchema(final java.io.File target) throws javax.xml.bind.JAXBException, java.io.IOException
     {
-        JAXBContext ctx = JAXBContext.newInstance(HModel.class);
-        ctx.generateSchema(new SchemaOutputResolver()
+        javax.xml.bind.JAXBContext ctx = javax.xml.bind.JAXBContext.newInstance(HModel.class);
+        ctx.generateSchema(new javax.xml.bind.SchemaOutputResolver()
         {
             @Override
-            public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException
+            public javax.xml.transform.Result createOutput(String namespaceUri, String suggestedFileName) throws java.io.IOException
             {
-                return new StreamResult(target);
+                return new javax.xml.transform.stream.StreamResult(target);
             }
         });
     }

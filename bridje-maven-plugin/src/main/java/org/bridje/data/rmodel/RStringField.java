@@ -17,39 +17,34 @@
 
 package org.bridje.data.rmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class RStringField
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
+public class RStringField extends RField
 {
-    private String name;
+    private Boolean trim;
     
     /**
      * 
-     * @return A String object representing the value of the name field.
+     * @return A Boolean object representing the value of the trim field.
      */
-    public String getName()
+    public Boolean getTrim()
     {
-        return this.name;
+        if(this.trim == null)
+        {
+            this.trim = false;
+        }
+        return this.trim;
     }
 
     /**
      * 
-     * @param name The new value for the name field.
+     * @param trim The new value for the trim field.
      */
-    public void setName(String name)
+    public void setTrim(Boolean trim)
     {
-        this.name = name;
+        this.trim = trim;
     }
 
 }

@@ -17,28 +17,19 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * An element of a list field.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class HListElementBase
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String type;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String name;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String description;
     
     /**
@@ -95,7 +86,7 @@ public abstract class HListElementBase
         this.description = description;
     }
 
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     private HListField listField;
 
     /**
@@ -119,7 +110,7 @@ public abstract class HListElementBase
      * @param unmarshaller The unmarshaller object being used.
      * @param parent The parent object for this object.
      */
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof HListField)
         {

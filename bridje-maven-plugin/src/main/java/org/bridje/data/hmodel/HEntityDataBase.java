@@ -17,39 +17,30 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * Data common to all entity like classes.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class HEntityDataBase
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String name;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String extendsFrom;
     
     private String description;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private Boolean customizable;
     
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "string", type = HStringField.class), 
-        @XmlElement(name = "list", type = HListField.class), 
-        @XmlElement(name = "enum", type = HEnumField.class), 
-        @XmlElement(name = "boolean", type = HBooleanField.class), 
-        @XmlElement(name = "element", type = HElementField.class)
+        @javax.xml.bind.annotation.XmlElement(name = "string", type = HStringField.class), 
+        @javax.xml.bind.annotation.XmlElement(name = "list", type = HListField.class), 
+        @javax.xml.bind.annotation.XmlElement(name = "enum", type = HEnumField.class), 
+        @javax.xml.bind.annotation.XmlElement(name = "boolean", type = HBooleanField.class), 
+        @javax.xml.bind.annotation.XmlElement(name = "element", type = HElementField.class)
     })
     private java.util.List<HField> fields;
     

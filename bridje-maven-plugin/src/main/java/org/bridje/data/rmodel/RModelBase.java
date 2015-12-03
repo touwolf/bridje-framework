@@ -17,46 +17,29 @@
 
 package org.bridje.data.rmodel;
 
-import java.io.File;
-import java.io.IOException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
-
 /**
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class RModelBase
 {
             
-    public static RModel loadModel(File source) throws JAXBException
+    public static RModel loadModel(java.io.File source) throws javax.xml.bind.JAXBException
     {
-        JAXBContext ctx = JAXBContext.newInstance(RModel.class);
-        Unmarshaller unmarsh = ctx.createUnmarshaller();
+        javax.xml.bind.JAXBContext ctx = javax.xml.bind.JAXBContext.newInstance(RModel.class);
+        javax.xml.bind.Unmarshaller unmarsh = ctx.createUnmarshaller();
         return (RModel)unmarsh.unmarshal(source);
     }
 
-    public static void generateSchema(final File target) throws JAXBException, IOException
+    public static void generateSchema(final java.io.File target) throws javax.xml.bind.JAXBException, java.io.IOException
     {
-        JAXBContext ctx = JAXBContext.newInstance(RModel.class);
-        ctx.generateSchema(new SchemaOutputResolver()
+        javax.xml.bind.JAXBContext ctx = javax.xml.bind.JAXBContext.newInstance(RModel.class);
+        ctx.generateSchema(new javax.xml.bind.SchemaOutputResolver()
         {
             @Override
-            public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException
+            public javax.xml.transform.Result createOutput(String namespaceUri, String suggestedFileName) throws java.io.IOException
             {
-                return new StreamResult(target);
+                return new javax.xml.transform.stream.StreamResult(target);
             }
         });
     }

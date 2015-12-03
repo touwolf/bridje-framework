@@ -17,22 +17,13 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * A field that holds a reference to another entity of the model.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class HElementFieldBase extends HField
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String type;
     
     /**

@@ -17,29 +17,20 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * Represents an enumerator of the model, to be use as a source for the enumerators fields of the entitys.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public class HEnum
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String name;
     
     private String description;
     
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "value", type = HEnumValue.class)
+        @javax.xml.bind.annotation.XmlElement(name = "value", type = HEnumValue.class)
     })
     private java.util.List<HEnumValue> values;
     
@@ -126,7 +117,7 @@ public class HEnum
         this.values.remove(value);
     }
 
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     private HModel model;
 
     /**
@@ -150,7 +141,7 @@ public class HEnum
      * @param unmarshaller The unmarshaller object being used.
      * @param parent The parent object for this object.
      */
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof HModel)
         {

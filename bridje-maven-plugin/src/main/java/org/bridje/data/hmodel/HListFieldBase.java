@@ -17,30 +17,21 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * Represents a field that holds a collection of objects.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public abstract class HListFieldBase extends HField
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String of;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private Boolean wrapper;
     
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "element", type = HListElement.class)
+        @javax.xml.bind.annotation.XmlElement(name = "element", type = HListElement.class)
     })
     private java.util.List<HListElement> elements;
     
@@ -131,7 +122,7 @@ public abstract class HListFieldBase extends HField
         this.elements.remove(value);
     }
 
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     private HEntityData entity;
 
     /**
@@ -155,7 +146,7 @@ public abstract class HListFieldBase extends HField
      * @param unmarshaller The unmarshaller object being used.
      * @param parent The parent object for this object.
      */
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof HEntityData)
         {

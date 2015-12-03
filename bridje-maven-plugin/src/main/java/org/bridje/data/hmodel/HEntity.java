@@ -17,19 +17,10 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * Represents an entity of the hierarchical model.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public class HEntity extends HEntityData
 {
     private HParentField parent;
@@ -52,7 +43,7 @@ public class HEntity extends HEntityData
         this.parent = parent;
     }
 
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     private HModel model;
 
     /**
@@ -76,7 +67,7 @@ public class HEntity extends HEntityData
      * @param unmarshaller The unmarshaller object being used.
      * @param parent The parent object for this object.
      */
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof HModel)
         {

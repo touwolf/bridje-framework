@@ -1,24 +1,26 @@
-<#macro entityContent>
-    <#if fields??>
+<#macro fieldsDeclaration fields>
     <#list fields as f>
     <#if f.isTransient?? && f.isTransient>
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     <#elseif f.isList?? && f.isList >
     <#if f.wrapper?? && f.wrapper >
-    @XmlElementWrapper(name = "${f.name}")
+    @javax.xml.bind.annotation.XmlElementWrapper(name = "${f.name}")
     </#if>
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElements(
     {
         <#list f.elements as e>
-        @XmlElement(name = "${e.name}", type = ${e.type}.class)<#sep>, </#sep>
+        @javax.xml.bind.annotation.XmlElement(name = "${e.name}", type = ${e.type}.class)<#sep>, </#sep>
         </#list>
     })
     <#elseif f.access?? && f.access == "ATTRIBUTE" >
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     </#if>
     private ${f.javaType!""} ${f.name}<#if f.isNullable?? && !f.isNullable && f.defaultValue??> = ${f.defaultValueExp}</#if>;
     
     </#list>
+</#macro>
+
+<#macro fieldsGetterSetters fields>
     <#list fields as f>
     /**
      * ${f.description!""}
@@ -55,8 +57,9 @@
 
     </#if>
     </#list>
-    </#if>
-    <#if fields??>
+</#macro>
+
+<#macro listFieldsAddRemoveMethods fields>
     <#list fields as f>
     <#if f.isList?? && f.isList >
     <#if f.elements??>
@@ -99,12 +102,19 @@
     </#if>
     </#if>
     </#list>
+</#macro>
+
+<#macro entityContent>
+    <#if fields??>
+    <@fieldsDeclaration fields />
+    <@fieldsGetterSetters fields />
+    <@listFieldsAddRemoveMethods fields />
     </#if>
 </#macro>
 
 <#macro parentCode>
     <#if parent??>
-    @XmlTransient
+    @javax.xml.bind.annotation.XmlTransient
     private ${parent.type} ${parent.name};
 
     /**
@@ -128,7 +138,7 @@
      * @param unmarshaller The unmarshaller object being used.
      * @param parent The parent object for this object.
      */
-    public void afterUnmarshal(Unmarshaller unmarshaller, Object parent)
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
     {
         if(parent instanceof ${parent.type})
         {

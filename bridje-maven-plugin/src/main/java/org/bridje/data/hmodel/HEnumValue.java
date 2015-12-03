@@ -17,25 +17,16 @@
 
 package org.bridje.data.hmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * An enumerator value, this class defines the constans of the object representing by the HEnum object.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public class HEnumValue
 {
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String name;
     
-    @XmlAttribute
+    @javax.xml.bind.annotation.XmlAttribute
     private String description;
     
     /**

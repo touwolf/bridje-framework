@@ -17,32 +17,23 @@
 
 package org.bridje.data.rmodel;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.Unmarshaller;
-
 /**
  * 
  */
-@XmlAccessorType(XmlAccessType.FIELD)
+@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
 public class REntity
 {
-    @XmlElements(
+    @javax.xml.bind.annotation.XmlElements(
     {
-        @XmlElement(name = "string", type = RStringField.class)
+        @javax.xml.bind.annotation.XmlElement(name = "string", type = RStringField.class)
     })
-    private java.util.List<RStringField> fields;
+    private java.util.List<RField> fields;
     
     /**
      * 
-     * @return A java.util.List&lt;RStringField&gt; object representing the value of the fields field.
+     * @return A java.util.List&lt;RField&gt; object representing the value of the fields field.
      */
-    public java.util.List<RStringField> getFields()
+    public java.util.List<RField> getFields()
     {
         if(this.fields == null)
         {

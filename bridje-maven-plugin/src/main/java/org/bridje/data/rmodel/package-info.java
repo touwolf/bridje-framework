@@ -15,7 +15,7 @@
  *     
  */
 
-@XmlSchema(namespace = "http://www.bridje.org/schemas/hmodel",
+@XmlSchema(namespace = "http://www.bridje.org/schemas/rmodel",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
 package org.bridje.data.rmodel;

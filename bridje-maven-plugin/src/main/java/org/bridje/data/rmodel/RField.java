@@ -15,33 +15,32 @@
  *     
  */
 
-package org.bridje.data.hmodel;
+package org.bridje.data.rmodel;
 
 /**
- * Represents a string field.
+ * 
  */
 @javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
-public abstract class HStringFieldBase extends HBasicField
+public class RField
 {
-    @javax.xml.bind.annotation.XmlAttribute
-    private String defaultValue;
+    private String name;
     
     /**
-     * The default value for this field.
-     * @return A String object representing the value of the defaultValue field.
+     * 
+     * @return A String object representing the value of the name field.
      */
-    public String getDefaultValue()
+    public String getName()
     {
-        return this.defaultValue;
+        return this.name;
     }
 
     /**
-     * The default value for this field.
-     * @param defaultValue The new value for the defaultValue field.
+     * 
+     * @param name The new value for the name field.
      */
-    public void setDefaultValue(String defaultValue)
+    public void setName(String name)
     {
-        this.defaultValue = defaultValue;
+        this.name = name;
     }
 
 }
