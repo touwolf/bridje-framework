@@ -27,4 +27,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public abstract class HEntityData extends HEntityDataBase
 {
     public abstract HModel getModel();
+    
+    public HField findField(String field)
+    {
+        for (HField e : getFields())
+        {
+            if(e.getName().equalsIgnoreCase(field))
+            {
+                return e;
+            }
+        }
+        if(getModel() != null && getExtendsFrom() != null && getModel().findEntity(getExtendsFrom()) != null)
+        {
+            return getModel().findEntity(getExtendsFrom()).findField(field);
+        }
+        return null;
+    }
 }

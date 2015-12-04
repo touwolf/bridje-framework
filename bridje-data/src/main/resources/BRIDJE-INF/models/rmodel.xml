@@ -2,7 +2,7 @@
 <hmodel 
     xmlns="http://www.bridje.org/schemas/hmodel" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.bridje.org/schemas/hmodel file:/E:/Projects/Bridje/bridje-framework/bridje-data/hmodel.xsd"
+    xsi:schemaLocation="http://www.bridje.org/schemas/hmodel file:/E:/Projects/bridje-framework/bridje-data/hmodel.xsd"
     name="RModel" packageName="org.bridje.data.rmodel" 
     namespace="http://www.bridje.org/schemas/rmodel"
     customizable="true">
@@ -24,7 +24,9 @@ limitations under the License.
     <entitys>
         <entity name="REntity">
             <list name="fields" of="RField" wrapper="false">
-                <element name="string" type="RStringField" />
+                <elements>
+                    <element name="string" type="RStringField" />
+                </elements>
             </list>
         </entity>
         <entity name="RField">

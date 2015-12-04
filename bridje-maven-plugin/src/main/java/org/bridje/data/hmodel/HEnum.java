@@ -121,7 +121,8 @@ public class HEnum
     private HModel model;
 
     /**
-     * The HModel object representing the parent of this object.
+     * The HModel parent of this object.
+     * @return The HModel object representing the parent of this object.
      */
     public HModel getModel()
     {

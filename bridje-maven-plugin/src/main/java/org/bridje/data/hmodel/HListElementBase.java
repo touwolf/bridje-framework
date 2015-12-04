@@ -90,7 +90,8 @@ public abstract class HListElementBase
     private HListField listField;
 
     /**
-     * The HListField object representing the parent of this object.
+     * The HListField parent of this object.
+     * @return The HListField object representing the parent of this object.
      */
     public HListField getListField()
     {

@@ -140,4 +140,37 @@ public abstract class HFieldBase
         this.isTransient = isTransient;
     }
 
+    @javax.xml.bind.annotation.XmlTransient
+    private HEntityData entity;
+
+    /**
+     * The HEntityData parent of this object.
+     * @return The HEntityData object representing the parent of this object.
+     */
+    public HEntityData getEntity()
+    {
+        return this.entity;
+    }
+
+    /**
+     * The HEntityData object representing the parent of this object.
+     */
+    void setEntity(HEntityData entity)
+    {
+        this.entity = entity;
+    }
+
+    /**
+     * This method is call by the JAXB Unmarshaller after the object's creation.
+     * @param unmarshaller The unmarshaller object being used.
+     * @param parent The parent object for this object.
+     */
+    public void afterUnmarshal(javax.xml.bind.Unmarshaller unmarshaller, Object parent)
+    {
+        if(parent instanceof HEntityData)
+        {
+            setEntity((HEntityData)parent);
+        }
+    }
+
 }

@@ -29,11 +29,19 @@ public abstract class HListFieldBase extends HField
     @javax.xml.bind.annotation.XmlAttribute
     private Boolean wrapper;
     
+    @javax.xml.bind.annotation.XmlElementWrapper(name = "elements")
     @javax.xml.bind.annotation.XmlElements(
     {
         @javax.xml.bind.annotation.XmlElement(name = "element", type = HListElement.class)
     })
     private java.util.List<HListElement> elements;
+    
+    @javax.xml.bind.annotation.XmlElementWrapper(name = "filters")
+    @javax.xml.bind.annotation.XmlElements(
+    {
+        @javax.xml.bind.annotation.XmlElement(name = "filter", type = HListFilter.class)
+    })
+    private java.util.List<HListFilter> filters;
     
     /**
      * The type of the list represented by this field.
@@ -76,7 +84,7 @@ public abstract class HListFieldBase extends HField
     }
 
     /**
-     * Elements 
+     * Elements of the list
      * @return A java.util.List&lt;HListElement&gt; object representing the value of the elements field.
      */
     public java.util.List<HListElement> getElements()
@@ -86,6 +94,19 @@ public abstract class HListFieldBase extends HField
             return null;
         }
         return java.util.Collections.unmodifiableList(this.elements);
+    }
+
+    /**
+     * Filters for this list
+     * @return A java.util.List&lt;HListFilter&gt; object representing the value of the filters field.
+     */
+    public java.util.List<HListFilter> getFilters()
+    {
+        if(this.filters == null)
+        {
+            return null;
+        }
+        return java.util.Collections.unmodifiableList(this.filters);
     }
 
     /**
@@ -122,11 +143,46 @@ public abstract class HListFieldBase extends HField
         this.elements.remove(value);
     }
 
+    /**
+     * Adds a HListFilter object to the filters list.
+     * @param value The object to be added
+     */
+    public void addFilter(HListFilter value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.filters == null)
+        {
+            this.filters = new java.util.ArrayList<>();
+        }
+        this.filters.add(value);
+    }
+
+    /**
+     * Removes a HListFilter object from the filters list.
+     * @param value The object to be removed.
+     */
+    public void removeFilter(HListFilter value)
+    {
+        if(value == null)
+        {
+            return;
+        }
+        if(this.filters == null)
+        {
+            return;
+        }
+        this.filters.remove(value);
+    }
+
     @javax.xml.bind.annotation.XmlTransient
     private HEntityData entity;
 
     /**
-     * The HEntityData object representing the parent of this object.
+     * The HEntityData parent of this object.
+     * @return The HEntityData object representing the parent of this object.
      */
     public HEntityData getEntity()
     {

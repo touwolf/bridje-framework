@@ -196,6 +196,26 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:complexType name="hListFilterField">
+        <xs:sequence>
+        </xs:sequence>
+        <xs:attribute name="field" type="xs:string">
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="hListFilter">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="by" type="tns:hListFilterField">
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string">
+        </xs:attribute>
+        <xs:attribute name="unique" type="xs:boolean">
+        </xs:attribute>
+    </xs:complexType>
+
     <xs:complexType name="hListField">
         <xs:annotation>
             <xs:documentation>
@@ -205,27 +225,49 @@
         <xs:complexContent>
             <xs:extension base="tns:hField">
                 <xs:sequence>
-                    <xs:choice minOccurs="0" maxOccurs="unbounded">
-                        <xs:element name="element" type="tns:hListElement">
-                            <xs:annotation>
-                                <xs:documentation>
-                                    An element of a list field.
-                                </xs:documentation>
-                            </xs:annotation>
-                        </xs:element>
-                    </xs:choice>
+                    <xs:element name="elements" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Elements of the list
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="element" type="tns:hListElement" minOccurs="0" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                        <xs:documentation>
+                                            An element of a list field.
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filters" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Filters for this list
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="filter" type="tns:hListFilter" minOccurs="0" maxOccurs="unbounded">
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
                 </xs:sequence>
                 <xs:attribute name="of" type="xs:string">
                     <xs:annotation>
                         <xs:documentation>
-                            
+                            The type of the list represented by this field.
                         </xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="wrapper" type="xs:boolean">
                     <xs:annotation>
                         <xs:documentation>
-                            
+                            If this fields needs to be wrapped.
                         </xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
@@ -265,6 +307,11 @@
                 <xs:sequence>
                 </xs:sequence>
                 <xs:attribute name="access" type="xs:enum">
+                    <xs:annotation>
+                        <xs:documentation>
+                            
+                        </xs:documentation>
+                    </xs:annotation>
                 </xs:attribute>
             </xs:extension>
         </xs:complexContent>

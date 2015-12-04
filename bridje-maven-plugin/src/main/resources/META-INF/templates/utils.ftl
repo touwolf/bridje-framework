@@ -100,6 +100,22 @@
 
     </#list>
     </#if>
+    <#if f.filters??>
+    <#list f.filters as ft>
+    public ${f.of} find${ft.name}(<#list ft.fields as ftf>${(f.entity.model.findEntity(f.of).findField(ftf.field).javaType)!"Object"} ${ftf.field}<#sep>, </#sep></#list>)
+    {
+        for (${f.of} e : get${f.name?cap_first}())
+        {
+            if(<#list ft.fields as ftf>e.get${ftf.field?cap_first}().equals(${ftf.field})<#sep> && </#sep></#list>)
+            {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    </#list>
+    </#if>
     </#if>
     </#list>
 </#macro>
@@ -118,7 +134,8 @@
     private ${parent.type} ${parent.name};
 
     /**
-     * The ${parent.type?html} object representing the parent of this object.
+     * The ${parent.type?html} parent of this object.
+     * @return The ${parent.type?html} object representing the parent of this object.
      */
     public ${parent.type} get${parent.name?cap_first}()
     {

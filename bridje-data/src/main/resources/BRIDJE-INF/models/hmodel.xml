@@ -25,10 +25,24 @@ limitations under the License.
     <string name="namespace" access="ATTRIBUTE" description="Target namespace for the xml schema." />
     <string name="license" access="ELEMENT" description="License text to be used for this model." />
     <list name="entitys" of="HEntity" wrapper="true" description="List of model entitys" >
-        <element name="entity" type="HEntity" />
+        <elements>
+            <element name="entity" type="HEntity" />
+        </elements>
+        <filters>
+            <filter name="Entity" unique="true">
+                <by field="name" />
+            </filter>
+        </filters>
     </list>
     <list name="enums" of="HEnum" wrapper="true" description="List of model enumerators" >
-        <element name="enum" type="HEnum" />
+        <elements>
+            <element name="enum" type="HEnum" />
+        </elements>
+        <filters>
+            <filter name="Enum" unique="true">
+                <by field="name" />
+            </filter>
+        </filters>
     </list>
     <description>Hierarchical model definition.</description>
 
@@ -40,11 +54,13 @@ limitations under the License.
             <string name="description" access="ELEMENT" description="The description of this entity." />
             <boolean name="customizable" access="ATTRIBUTE" defaultValue="false" description="If this entity is customizable or not. If true a base class will be generated for this entity." />
             <list name="fields" of="HField" description="A list of fields for this entity.">
-                <element name="string" type="HStringField" />
-                <element name="list" type="HListField" />
-                <element name="enum" type="HEnumField" />
-                <element name="boolean" type="HBooleanField" />
-                <element name="element" type="HElementField" />
+                <elements>
+                    <element name="string" type="HStringField" />
+                    <element name="list" type="HListField" />
+                    <element name="enum" type="HEnumField" />
+                    <element name="boolean" type="HBooleanField" />
+                    <element name="element" type="HElementField" />
+                </elements>
             </list>
         </entity>
         <entity name="HStringField" extendsFrom="HBasicField" customizable="true">
@@ -55,13 +71,32 @@ limitations under the License.
             <description>Represents a boolean field.</description>
             <boolean name="defaultValue" access="ATTRIBUTE" description="The default value for this field." />
         </entity>
+        <entity name="HListFilterField">
+            <string name="field" access="ATTRIBUTE" />
+        </entity>
+        <entity name="HListFilter">
+            <string name="name" access="ATTRIBUTE" />
+            <boolean name="unique" access="ATTRIBUTE" defaultValue="false" />
+            <list name="fields" of="HListFilterField" >
+                <elements>
+                    <element name="by" type="HListFilterField" />
+                </elements>
+            </list>
+        </entity>
         <entity name="HListField" extendsFrom="HField" customizable="true">
             <description>Represents a field that holds a collection of objects.</description>
             <parent name="entity" type="HEntityData" />
             <string name="of" access="ATTRIBUTE" description="The type of the list represented by this field." />
             <boolean name="wrapper" access="ATTRIBUTE" defaultValue="false" description="If this fields needs to be wrapped." />
-            <list name="elements" of="HListElement" description="Elements " >
-                <element name="element" type="HListElement" />
+            <list name="elements" of="HListElement" description="Elements of the list" wrapper="true" >
+                <elements>
+                    <element name="element" type="HListElement" />
+                </elements>
+            </list>
+            <list name="filters" of="HListFilter" description="Filters for this list" wrapper="true" >
+                <elements>
+                    <element name="filter" type="HListFilter" />
+                </elements>
             </list>
         </entity>
         <entity name="HEnumField" extendsFrom="HBasicField" customizable="true">
@@ -74,6 +109,7 @@ limitations under the License.
         </entity>
         <entity name="HField" customizable="true" >
             <description>Root class for all the fields objects.</description>
+            <parent name="entity" type="HEntityData" />
             <string name="name" access="ATTRIBUTE" description="The field name" />
             <string name="description" access="ATTRIBUTE" description="The fiel description" />
             <boolean name="required" access="ATTRIBUTE" required="true" defaultValue="false" description="If this field is required." />
@@ -107,7 +143,9 @@ limitations under the License.
             <string name="name" access="ATTRIBUTE" description="The name of the enumerator, this value will identify the enumerator withing the model." />
             <string name="description" access="ELEMENT" description="The description of the enumerator." />
             <list name="values" of="HEnumValue" description="A list of values for this enumerator." >
-                <element name="value" type="HEnumValue" />
+                <elements>
+                    <element name="value" type="HEnumValue" />
+                </elements>
             </list>
         </entity>
         <entity name="HEnumValue" >

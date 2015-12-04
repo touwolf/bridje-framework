@@ -159,6 +159,18 @@ public abstract class HModelBase extends HEntityData
         this.entitys.remove(value);
     }
 
+    public HEntity findEntity(String name)
+    {
+        for (HEntity e : getEntitys())
+        {
+            if(e.getName().equals(name))
+            {
+                return e;
+            }
+        }
+        return null;
+    }
+
     /**
      * Adds a HEnum object to the enums list.
      * @param value The object to be added
@@ -191,6 +203,18 @@ public abstract class HModelBase extends HEntityData
             return;
         }
         this.enums.remove(value);
+    }
+
+    public HEnum findEnum(String name)
+    {
+        for (HEnum e : getEnums())
+        {
+            if(e.getName().equals(name))
+            {
+                return e;
+            }
+        }
+        return null;
     }
 
             
