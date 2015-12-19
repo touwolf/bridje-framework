@@ -19,7 +19,17 @@ package org.bridje.core.vfs;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Represents a file of the VFS tree.
+ */
 public interface VirtualFile extends VirtualResource
 {
+    /**
+     * Opens a file's InputStream for reading it's content.
+     *
+     * @return An InputStream to the file.
+     * @throws IOException This method may access to phisical device so this
+     * exception may be throw if any input output operation fails.
+     */
     InputStream open() throws IOException;
 }

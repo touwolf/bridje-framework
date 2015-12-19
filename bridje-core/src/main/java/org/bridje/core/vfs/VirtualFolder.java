@@ -18,21 +18,80 @@ package org.bridje.core.vfs;
 
 import java.util.List;
 
+/**
+ * Represents a folder of the VFS tree.
+ */
 public interface VirtualFolder extends VirtualResource
 {
+    /**
+     * Finds a folder mapped to the especified path.
+     *
+     * @param path The string representation of the path to the folder.
+     * @return A VirtualFolder object representing the folder mapped to the path
+     * argument or null if the especified path is not a valid folder in the vfs
+     * tree.
+     */
     VirtualFolder findFolder(String path);
-    
+
+    /**
+     * Finds a folder mapped to the especified path.
+     *
+     * @param path The path to the folder.
+     * @return A VirtualFolder object representing the folder mapped to the path
+     * argument or null if the especified path is not a valid folder in the vfs
+     * tree.
+     */
     VirtualFolder findFolder(Path path);
 
+    /**
+     * Finds a file mapped to the especified path.
+     *
+     * @param path The string representation of the path to the file.
+     * @return A VirtualFile object representing the file mapped to the path
+     * argument or null if the especified path is not a valid folder in the vfs
+     * tree.
+     */
     VirtualFile findFile(String path);
 
+    /**
+     * Finds a file mapped to the especified path.
+     *
+     * @param path The path to the file.
+     * @return A VirtualFile object representing the file mapped to the path
+     * argument or null if the especified path is not a valid folder in the vfs
+     * tree.
+     */
     VirtualFile findFile(Path path);
 
+    /**
+     * Gets a list of all child folders of this folder.
+     *
+     * @return A List of VirtualFolders representing the child folders of this
+     * folder.
+     */
     List<VirtualFolder> listFolders();
-    
+
+    /**
+     * Gets a list of all child files of this folder.
+     *
+     * @return A List of VirtualFiles representing the child files of this
+     * folder.
+     */
     List<VirtualFile> listFiles();
-    
+
+    /**
+     * Travle througt all files recursively from this folder and its childs
+     * folders.
+     *
+     * @param visitor The visitor to be used.
+     */
     void travel(VirtualFileVisitor visitor);
-    
+
+    /**
+     * Travle througt all folders recursively from this folder and its childs
+     * folders.
+     *
+     * @param visitor The visitor to be used.
+     */
     void travel(VirtualFolderVisitor visitor);
 }

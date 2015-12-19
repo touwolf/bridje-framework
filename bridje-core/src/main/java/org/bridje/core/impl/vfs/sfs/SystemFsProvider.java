@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package org.bridje.core.vfs;
+package org.bridje.core.impl.vfs.sfs;
 
 import java.io.File;
 import org.bridje.core.ioc.annotations.Component;
+import org.bridje.core.vfs.VfsMountEntry;
+import org.bridje.core.vfs.VfsProvider;
+import org.bridje.core.vfs.VfsSource;
 
 @Component
 public class SystemFsProvider implements VfsProvider
@@ -34,5 +37,5 @@ public class SystemFsProvider implements VfsProvider
     {
         return new FileVfsSource(new File(entry.getProperties().get("file")));
     }
-    
+
 }
