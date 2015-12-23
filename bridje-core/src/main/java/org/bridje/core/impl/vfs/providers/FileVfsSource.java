@@ -1,5 +1,5 @@
 
-package org.bridje.core.impl.vfs.sfs;
+package org.bridje.core.impl.vfs.providers;
 
 import java.io.File;
 import java.io.FileInputStream;

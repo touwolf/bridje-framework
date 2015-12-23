@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.impl.vfs.sfs;
+package org.bridje.core.impl.vfs.providers;
 
 import java.io.File;
 import org.bridje.core.ioc.annotations.Component;
