@@ -17,24 +17,38 @@
 package org.bridje.core.impl.vfs.providers;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.vfs.VfsMountEntry;
 import org.bridje.core.vfs.VfsProvider;
 import org.bridje.core.vfs.VfsSource;
 
 @Component
-public class SystemFsProvider implements VfsProvider
+public class ClassPathProvider implements VfsProvider
 {
+    private static final Logger LOG = Logger.getLogger(ClassPathProvider.class.getName());
 
     @Override
     public String getName()
     {
-        return "SYSTEMFS";
+        return "CLASSPATH";
     }
 
     @Override
     public VfsSource createVfsSource(VfsMountEntry entry)
     {
-        return new FileVfsSource(new File(entry.getProperties().get("file")));
+        try
+        {
+            return new ClassPathVfsSource(entry.getProperties().get("classpath"));
+        }
+        catch (IOException | URISyntaxException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
     }
+
 }
