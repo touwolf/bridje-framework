@@ -17,10 +17,17 @@
 package org.bridje.core.cast;
 
 /**
- *
- * @author Gilberto
+ * A cast service for converting values to especific classes.
  */
 public interface CastService
 {
+    /**
+     * Cast a value to the especified class.
+     * 
+     * @param <T> The type of the target class.
+     * @param object The object to be converted.
+     * @param cls The target class.
+     * @return The converted value or null if not conversion can be made.
+     */
     <T> T cast(Object object, Class<T> cls);
 }

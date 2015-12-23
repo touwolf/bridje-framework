@@ -18,14 +18,26 @@ package org.bridje.core.cast;
 
 /**
  *
- * @author Gilberto
  * @param <T>
  */
 public interface CastProvider<T>
 {
+    /**
+     * 
+     * @return 
+     */
     Class<?>[] getSrcClasses();
-    
+
+    /**
+     * 
+     * @return 
+     */
     Class<T> getDestClass();
 
+    /**
+     * 
+     * @param object
+     * @return 
+     */
     T cast(Object object);
 }
