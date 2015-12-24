@@ -21,14 +21,39 @@ import java.io.Writer;
 import java.util.Map;
 
 /**
- *
- * @author Gilberto
+ * This interface represents a template rendering context. The tpl api allows
+ * you to create many diferent contexts for diferent propouse when rendering
+ * templates.
  */
 public interface TplContext
 {
+    /**
+     * Renders the especified template with the data provided to the gived
+     * OutputStream.
+     *
+     * @param template The template path an name to be rendered.
+     * @param data The data to be use by the template.
+     * @param os The OutputStream to output the result of the rendering.
+     */
     void render(String template, Map data, OutputStream os);
 
+    /**
+     * Renders the especified template with the data provided to the gived
+     * Writer.
+     *
+     * @param template The template path an name to be rendered.
+     * @param data The data to be use by the template.
+     * @param writer
+     */
     void render(String template, Map data, Writer writer);
 
+    /**
+     * Renders the especified template with the data provided to and return the
+     * result.
+     *
+     * @param template The template path an name to be rendered.
+     * @param data The data to be use by the template.
+     * @return The result of the rendered template.
+     */
     String render(String template, Map data);
 }

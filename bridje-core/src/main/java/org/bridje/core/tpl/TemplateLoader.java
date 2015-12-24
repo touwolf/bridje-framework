@@ -19,10 +19,20 @@ package org.bridje.core.tpl;
 import java.io.InputStream;
 
 /**
+ * Defines a templates loader.
  *
- * @author Gilberto
+ * The objects implementing this interface are resposable for loading templates
+ * InputStreams from their storage and provide it to the tpl api.
  */
+@FunctionalInterface
 public interface TemplateLoader
 {
+    /**
+     * Gets an InputStream to the template specified by the path param.
+     *
+     * @param path The path of the template to be loaded.
+     * @return An InputStream witch allows the api to read the content of the
+     * template.
+     */
     InputStream loadTemplate(String path);
 }

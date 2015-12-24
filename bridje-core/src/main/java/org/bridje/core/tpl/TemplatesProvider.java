@@ -17,12 +17,27 @@
 package org.bridje.core.tpl;
 
 /**
+ * A service interface that can create template loaders that will be used in the
+ * tpl api.
  *
- * @author Gilberto
+ * The tpl api will use only one implementation of this interface.
  */
 public interface TemplatesProvider
 {
+    /**
+     * Creates the TemplateLoader object for the default context of the tpl api.
+     *
+     * @return The default TemplateLoader object to be use by the api.
+     */
     TemplateLoader createDefaultLoader();
-    
+
+    /**
+     * Create a new template loader that will take the templates from the
+     * especified path.
+     *
+     * @param path The root path for the new template loader.
+     * @return The TemplateLoader that will load templates that are in the
+     * especified path.
+     */
     TemplateLoader createLoader(String path);
 }

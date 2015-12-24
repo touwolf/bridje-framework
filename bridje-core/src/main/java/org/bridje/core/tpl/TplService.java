@@ -17,8 +17,7 @@
 package org.bridje.core.tpl;
 
 /**
- *
- * @author Gilberto
+ * 
  */
 public interface TplService extends TplContext
 {
