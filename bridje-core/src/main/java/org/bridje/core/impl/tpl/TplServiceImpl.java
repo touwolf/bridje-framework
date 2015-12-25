@@ -16,6 +16,8 @@
 
 package org.bridje.core.impl.tpl;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Map;
@@ -26,7 +28,7 @@ import org.bridje.core.tpl.TemplateLoader;
 import org.bridje.core.tpl.TemplatesProvider;
 import org.bridje.core.tpl.TplContext;
 import org.bridje.core.tpl.TplEngine;
-import org.bridje.core.tpl.TplEngineContext;
+import org.bridje.core.tpl.TplNotFoundException;
 import org.bridje.core.tpl.TplService;
 
 @Component
@@ -37,8 +39,6 @@ public class TplServiceImpl implements TplService
     
     @Inject
     private TplEngine[] engines;
-    
-    private Map<String,TplEngineContext> extContexts;
 
     private TplContext rootContext;
     
@@ -57,21 +57,32 @@ public class TplServiceImpl implements TplService
     }
 
     @Override
-    public void render(String template, Map data, OutputStream os)
+    public void render(String template, Map data, File file) throws TplNotFoundException, IOException
+    {
+        rootContext.render(template, data, file);
+    }
+
+    @Override
+    public void render(String template, Map data, OutputStream os) throws TplNotFoundException, IOException
     {
         rootContext.render(template, data, os);
     }
 
     @Override
-    public void render(String template, Map data, Writer writer)
+    public void render(String template, Map data, Writer writer) throws TplNotFoundException, IOException
     {
         rootContext.render(template, data, writer);
     }
 
     @Override
-    public String render(String template, Map data)
+    public String render(String template, Map data) throws TplNotFoundException, IOException
     {
         return rootContext.render(template, data);
     }
-    
+
+    @Override
+    public boolean exists(String template)
+    {
+        return rootContext.exists(template);
+    }
 }

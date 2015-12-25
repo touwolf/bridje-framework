@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package org.bridje.core.tpl;
+package org.bridje.core.cfg;
 
-/**
- * 
- */
-public interface TplService extends TplContext
+public interface ConfigRepository
 {
-    /**
-     * 
-     * @param path
-     * @return 
-     */
-    TplContext createTplContext(String path);
+    <T> T findConfig(Class<T> configClass);
+
+    <T> T saveConfig(T newConfig);
+
+    boolean canSave();
 }

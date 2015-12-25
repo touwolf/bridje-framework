@@ -16,6 +16,9 @@
 
 package org.bridje.core.tpl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -74,6 +77,26 @@ public class DummyTplEngineContext implements TplEngineContext
         StringWriter sw = new StringWriter();
         render(template, data, sw);
         return sw.toString();
+    }
+
+    @Override
+    public void render(String template, Map data, File file) throws TplNotFoundException, IOException
+    {
+        InputStream is = loader.loadTemplate(template);
+        try(OutputStream os = new FileOutputStream(file))
+        {
+            IOUtils.copy(is, os);
+        }
+        catch(Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public boolean exists(String template)
+    {
+        return true;
     }
     
 }

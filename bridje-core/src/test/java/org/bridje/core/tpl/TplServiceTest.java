@@ -16,6 +16,7 @@
 
 package org.bridje.core.tpl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import org.bridje.core.ioc.Ioc;
 import org.junit.After;
@@ -58,9 +59,11 @@ public class TplServiceTest
 
     /**
      * Test of createTplContext method, of class TplService.
+     * @throws org.bridje.core.tpl.TplNotFoundException
+     * @throws java.io.IOException
      */
     @Test
-    public void testAll()
+    public void testAll() throws TplNotFoundException, IOException
     {
         TplService tplServ = Ioc.context().find(TplService.class);
         String result = tplServ.render("/mytemplate.dummy", new HashMap());

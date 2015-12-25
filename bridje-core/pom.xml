@@ -53,6 +53,57 @@
 
     <dependencies>
         <dependency>
+            <artifactId>javax.servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <artifactId>jetty-http</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <artifactId>jetty-util</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <artifactId>jetty-io</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <artifactId>jetty-continuation</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <artifactId>jetty-security</artifactId>
+            <groupId>org.eclipse.jetty</groupId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-xml</artifactId>
+            <version>9.3.6.v20151106</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.23</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>

@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package org.bridje.core.impl.vfs.providers;
+package org.bridje.core.tpl;
 
-import java.io.File;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.vfs.VfsMountEntry;
-import org.bridje.core.vfs.VfsProvider;
-import org.bridje.core.vfs.VfsSource;
-
-@Component
-public class SystemFsProvider implements VfsProvider
+public class TplNotFoundException extends Exception
 {
-
-    @Override
-    public String getName()
+    public TplNotFoundException()
     {
-        return "SYSTEMFS";
     }
 
-    @Override
-    public VfsSource createVfsSource(VfsMountEntry entry)
+    public TplNotFoundException(String message)
     {
-        return new FileVfsSource(new File(entry.getProperties().get("file")));
+        super(message);
+    }
+
+    public TplNotFoundException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    public TplNotFoundException(Throwable cause)
+    {
+        super(cause);
     }
 }

@@ -16,15 +16,24 @@
 
 package org.bridje.core.tpl;
 
-/**
- * 
- */
-public interface TplService extends TplContext
+public class TplParserException extends Exception
 {
-    /**
-     * 
-     * @param path
-     * @return 
-     */
-    TplContext createTplContext(String path);
+    public TplParserException()
+    {
+    }
+
+    public TplParserException(String message)
+    {
+        super(message);
+    }
+
+    public TplParserException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    public TplParserException(Throwable cause)
+    {
+        super(cause);
+    }
 }

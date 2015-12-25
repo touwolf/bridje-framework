@@ -1,5 +1,5 @@
 
-package org.bridje.core.impl.vfs.providers;
+package org.bridje.core.impl.vfs.src;
 
 import java.io.File;
 import java.io.IOException;

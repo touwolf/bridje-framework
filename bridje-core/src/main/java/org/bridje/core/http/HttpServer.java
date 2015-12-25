@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package org.bridje.core.tpl;
+package org.bridje.core.http;
 
 /**
  * 
  */
-public interface TplService extends TplContext
+public interface HttpServer
 {
     /**
      * 
-     * @param path
-     * @return 
+     * @throws HttpServerException 
      */
-    TplContext createTplContext(String path);
+    public void start() throws HttpServerException;
+
+    /**
+     * 
+     * @throws HttpServerException 
+     */
+    public void stop() throws HttpServerException;
 }

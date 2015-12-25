@@ -16,6 +16,8 @@
 
 package org.bridje.core.impl.tpl;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import org.bridje.core.tpl.TemplateLoader;
 import org.bridje.core.tpl.TplContext;
 import org.bridje.core.tpl.TplEngine;
 import org.bridje.core.tpl.TplEngineContext;
+import org.bridje.core.tpl.TplNotFoundException;
 
 public class TplContextImpl implements TplContext
 {
@@ -35,7 +38,17 @@ public class TplContextImpl implements TplContext
     }
 
     @Override
-    public void render(String template, Map data, OutputStream os)
+    public void render(String template, Map data, File file) throws TplNotFoundException, IOException
+    {
+        TplEngineContext tplEngCtx = findTplEngineContext(template);
+        if(tplEngCtx != null)
+        {
+            tplEngCtx.render(template, data, file);
+        }
+    }
+
+    @Override
+    public void render(String template, Map data, OutputStream os) throws TplNotFoundException, IOException
     {
         TplEngineContext tplEngCtx = findTplEngineContext(template);
         if(tplEngCtx != null)
@@ -45,7 +58,7 @@ public class TplContextImpl implements TplContext
     }
 
     @Override
-    public void render(String template, Map data, Writer writer)
+    public void render(String template, Map data, Writer writer) throws TplNotFoundException, IOException
     {
         TplEngineContext tplEngCtx = findTplEngineContext(template);
         if(tplEngCtx != null)
@@ -55,7 +68,7 @@ public class TplContextImpl implements TplContext
     }
 
     @Override
-    public String render(String template, Map data)
+    public String render(String template, Map data) throws TplNotFoundException, IOException
     {
         TplEngineContext tplEngCtx = findTplEngineContext(template);
         if(tplEngCtx != null)
@@ -96,5 +109,16 @@ public class TplContextImpl implements TplContext
             }
         }
         return result;
+    }
+
+    @Override
+    public boolean exists(String template)
+    {
+        TplEngineContext tplEngCtx = findTplEngineContext(template);
+        if(tplEngCtx != null)
+        {
+            tplEngCtx.exists(template);
+        }
+        return false;
     }
 }

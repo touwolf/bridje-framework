@@ -16,6 +16,8 @@
 
 package org.bridje.core.tpl;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Map;
@@ -34,8 +36,22 @@ public interface TplContext
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
      * @param os The OutputStream to output the result of the rendering.
+     * @throws org.bridje.core.tpl.TplNotFoundException
+     * @throws java.io.IOException
      */
-    void render(String template, Map data, OutputStream os);
+    void render(String template, Map data, OutputStream os) throws TplNotFoundException, IOException;
+
+    /**
+     * Renders the especified template with the data provided to the gived
+     * OutputStream.
+     *
+     * @param template The template path an name to be rendered.
+     * @param data The data to be use by the template.
+     * @param file The File to output the result of the rendering.
+     * @throws org.bridje.core.tpl.TplNotFoundException
+     * @throws java.io.IOException
+     */
+    void render(String template, Map data, File file) throws TplNotFoundException, IOException;
 
     /**
      * Renders the especified template with the data provided to the gived
@@ -44,8 +60,10 @@ public interface TplContext
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
      * @param writer
+     * @throws org.bridje.core.tpl.TplNotFoundException
+     * @throws java.io.IOException
      */
-    void render(String template, Map data, Writer writer);
+    void render(String template, Map data, Writer writer) throws TplNotFoundException, IOException;
 
     /**
      * Renders the especified template with the data provided to and return the
@@ -54,6 +72,15 @@ public interface TplContext
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
      * @return The result of the rendered template.
+     * @throws org.bridje.core.tpl.TplNotFoundException
+     * @throws java.io.IOException
      */
-    String render(String template, Map data);
+    String render(String template, Map data) throws TplNotFoundException, IOException;
+    
+    /**
+     * 
+     * @param template
+     * @return 
+     */
+    boolean exists(String template);
 }
