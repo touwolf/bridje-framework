@@ -17,27 +17,32 @@
 package org.bridje.core.cast;
 
 /**
+ * Provider to cast any object to a specific class.
  *
- * @param <T>
+ * @param <T> The handled type by the provider.
  */
 public interface CastProvider<T>
 {
     /**
-     * 
-     * @return 
+     * Obtain the input types that can handle.
+     *
+     * @return The array of allowed input types.
      */
     Class<?>[] getSrcClasses();
 
     /**
-     * 
-     * @return 
+     * Obtain the destiny class of casting.
+     *
+     * @return The destiny class of casting.
      */
     Class<T> getDestClass();
 
     /**
-     * 
-     * @param object
-     * @return 
+     * Cast an object.
+     *
+     * @param object The object to be converted.
+     * @return The converted value or {@literal null} if not conversion can be made or
+     * cannot be handled.
      */
     T cast(Object object);
 }
