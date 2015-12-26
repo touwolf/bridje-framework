@@ -16,8 +16,6 @@
 
 package org.bridje.core.dbc;
 
-import java.util.Properties;
-
 /**
  *
  */
@@ -32,8 +30,30 @@ public class DataSourceConfig
     private String user;
     
     private String pass;
-    
-    private Properties properties;
+
+    private boolean logAbandoned;
+
+    private boolean removeAbandoned;
+
+    private int removeAbandonedTimeout;
+
+    private int maxActive;
+
+    private long maxWait;
+
+    private long minEvictableIdleTimeMillis;
+
+    private int numTestsPerEvictionRun;
+
+    private long timeBetweenEvictionRunsMillis;
+
+    private boolean testOnBorrow;
+
+    private boolean testOnReturn;
+
+    private boolean testWhileIdle;
+
+    private long softMinEvictableIdleTimeMillis;
 
     public String getDriver()
     {
@@ -85,13 +105,123 @@ public class DataSourceConfig
         this.pass = pass;
     }
 
-    public Properties getProperties()
+    public boolean isLogAbandoned()
     {
-        return properties;
+        return logAbandoned;
     }
 
-    public void setProperties(Properties properties)
+    public void setLogAbandoned(boolean logAbandoned)
     {
-        this.properties = properties;
+        this.logAbandoned = logAbandoned;
+    }
+
+    public boolean isRemoveAbandoned()
+    {
+        return removeAbandoned;
+    }
+
+    public void setRemoveAbandoned(boolean removeAbandoned)
+    {
+        this.removeAbandoned = removeAbandoned;
+    }
+
+    public int getRemoveAbandonedTimeout()
+    {
+        return removeAbandonedTimeout;
+    }
+
+    public void setRemoveAbandonedTimeout(int removeAbandonedTimeout)
+    {
+        this.removeAbandonedTimeout = removeAbandonedTimeout;
+    }
+
+    public int getMaxActive()
+    {
+        return maxActive;
+    }
+
+    public void setMaxActive(int maxActive)
+    {
+        this.maxActive = maxActive;
+    }
+
+    public long getMaxWait()
+    {
+        return maxWait;
+    }
+
+    public void setMaxWait(long maxWait)
+    {
+        this.maxWait = maxWait;
+    }
+
+    public long getMinEvictableIdleTimeMillis()
+    {
+        return minEvictableIdleTimeMillis;
+    }
+
+    public void setMinEvictableIdleTimeMillis(long minEvictableIdleTimeMillis)
+    {
+        this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
+    }
+
+    public int getNumTestsPerEvictionRun()
+    {
+        return numTestsPerEvictionRun;
+    }
+
+    public void setNumTestsPerEvictionRun(int numTestsPerEvictionRun)
+    {
+        this.numTestsPerEvictionRun = numTestsPerEvictionRun;
+    }
+
+    public long getTimeBetweenEvictionRunsMillis()
+    {
+        return timeBetweenEvictionRunsMillis;
+    }
+
+    public void setTimeBetweenEvictionRunsMillis(long timeBetweenEvictionRunsMillis)
+    {
+        this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
+    }
+
+    public boolean isTestOnBorrow()
+    {
+        return testOnBorrow;
+    }
+
+    public void setTestOnBorrow(boolean testOnBorrow)
+    {
+        this.testOnBorrow = testOnBorrow;
+    }
+
+    public boolean isTestOnReturn()
+    {
+        return testOnReturn;
+    }
+
+    public void setTestOnReturn(boolean testOnReturn)
+    {
+        this.testOnReturn = testOnReturn;
+    }
+
+    public boolean isTestWhileIdle()
+    {
+        return testWhileIdle;
+    }
+
+    public void setTestWhileIdle(boolean testWhileIdle)
+    {
+        this.testWhileIdle = testWhileIdle;
+    }
+
+    public long getSoftMinEvictableIdleTimeMillis()
+    {
+        return softMinEvictableIdleTimeMillis;
+    }
+
+    public void setSoftMinEvictableIdleTimeMillis(long softMinEvictableIdleTimeMillis)
+    {
+        this.softMinEvictableIdleTimeMillis = softMinEvictableIdleTimeMillis;
     }
 }

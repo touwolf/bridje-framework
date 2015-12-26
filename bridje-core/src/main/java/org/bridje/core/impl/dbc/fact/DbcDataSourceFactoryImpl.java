@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.core.impl.dbc.fact;
 
-public interface ConfigRepository
+import javax.sql.DataSource;
+import org.bridje.core.dbc.DataSourceConfig;
+import org.bridje.core.dbc.DbcDataSourceFactory;
+import org.bridje.core.ioc.annotations.Component;
+
+@Component
+public class DbcDataSourceFactoryImpl implements DbcDataSourceFactory
 {
-    <T> T findConfig(Class<T> configClass);
-    
-    <T> T findConfig(String configName, Class<T> configClass);
-
-    <T> T saveConfig(T newConfig);
-    
-    <T> T saveConfig(String configName, T newConfig);
-
-    boolean canSave();
+    @Override
+    public DataSource createDataSource(DataSourceConfig config)
+    {
+        return new DataSourceImpl(config);
+    }
 }

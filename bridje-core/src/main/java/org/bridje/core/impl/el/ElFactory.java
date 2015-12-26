@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.core.impl.el;
 
-public interface ConfigRepository
+import org.bridje.core.el.ElEnviroment;
+import org.bridje.core.ioc.IocContext;
+
+public class ElFactory
 {
-    <T> T findConfig(Class<T> configClass);
-    
-    <T> T findConfig(String configName, Class<T> configClass);
-
-    <T> T saveConfig(T newConfig);
-    
-    <T> T saveConfig(String configName, T newConfig);
-
-    boolean canSave();
+    public static ElEnviroment createElEnviroment(IocContext context)
+    {
+        return new IocEnviromentImpl(context);
+    }
 }

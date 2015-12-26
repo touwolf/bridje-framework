@@ -20,5 +20,9 @@ public interface ConfigService
 {
     <T> T findConfig(Class<T> configClass);
 
+    <T> T findConfig(String configName, Class<T> configClass);
+    
     <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig);
+
+    <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig);
 }

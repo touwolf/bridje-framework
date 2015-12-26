@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.core.el;
 
-public interface ConfigRepository
+public interface ElEnviroment
 {
-    <T> T findConfig(Class<T> configClass);
-    
-    <T> T findConfig(String configName, Class<T> configClass);
+    <T> T get(String expression, Class<T> resultCls);
 
-    <T> T saveConfig(T newConfig);
-    
-    <T> T saveConfig(String configName, T newConfig);
+    <T> void set(String expression, T value);
 
-    boolean canSave();
+    <T> T getVar(String name, Class<T> resultCls);
+
+    <T> void setVar(String name, T value);
 }

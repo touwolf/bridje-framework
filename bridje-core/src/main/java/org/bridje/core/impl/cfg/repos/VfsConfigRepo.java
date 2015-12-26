@@ -44,16 +44,22 @@ class VfsConfigRepo implements ConfigRepository
     @Override
     public <T> T findConfig(Class<T> configClass)
     {
+        String configName = findConfigName(configClass);
+        return findConfig(configName, configClass);
+    }
+
+    @Override
+    public <T> T findConfig(String configName, Class<T> configClass)
+    {
         if(cfgFolder == null)
         {
             cfgFolder = vfsService.findFolder("/etc");
         }
         if(cfgFolder != null)
         {
-            String fileName = findFileName(configClass);
-            if(fileName != null)
+            if(configName != null)
             {
-                VirtualFile file = cfgFolder.findFile(fileName);
+                VirtualFile file = cfgFolder.findFile(configName + "xml");
                 if(file != null)
                 {
                     try
@@ -77,12 +83,18 @@ class VfsConfigRepo implements ConfigRepository
     }
 
     @Override
+    public <T> T saveConfig(String configName, T newConfig)
+    {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     public boolean canSave()
     {
         return false;
     }
 
-    private <T> String findFileName(Class<T> configClass)
+    private <T> String findConfigName(Class<T> configClass)
     {
         XmlRootElement rootEl = configClass.getAnnotation(XmlRootElement.class);
         if(rootEl != null)

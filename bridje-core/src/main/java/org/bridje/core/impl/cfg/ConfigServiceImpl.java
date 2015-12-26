@@ -59,5 +59,38 @@ class ConfigServiceImpl implements ConfigService
         }
         return result;
     }
+
+    @Override
+    public <T> T findConfig(String configName, Class<T> configClass)
+    {
+        for (ConfigRepository repo : repos)
+        {
+            T result = repo.findConfig(configName, configClass);
+            if(result != null)
+            {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig)
+    {
+        T result = findConfig(configName, configClass);
+        if(result == null)
+        {
+            result = defaultConfig;
+            for (ConfigRepository repo : repos)
+            {
+                if(repo.canSave())
+                {
+                    repo.saveConfig(configName, defaultConfig);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
     
 }
