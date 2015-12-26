@@ -23,40 +23,41 @@ import java.io.Writer;
 import java.util.Map;
 
 /**
- * This interface represents a template rendering context. The tpl api allows
- * you to create many diferent contexts for diferent propouse when rendering
- * templates.
+ * This interface represents a template rendering context.
+ * <p>
+ * The api allows you to create many different contexts for different purposes
+ * when rendering templates.
  */
 public interface TplContext
 {
     /**
-     * Renders the especified template with the data provided to the gived
-     * OutputStream.
-     *
+     * Renders the specified template with the data provided to the given
+     * {@link OutputStream}.
+     * <p>
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
-     * @param os The OutputStream to output the result of the rendering.
+     * @param os The {@link OutputStream} to output the result of the rendering.
      * @throws org.bridje.core.tpl.TplNotFoundException
      * @throws java.io.IOException
      */
     void render(String template, Map data, OutputStream os) throws TplNotFoundException, IOException;
 
     /**
-     * Renders the especified template with the data provided to the gived
-     * OutputStream.
-     *
+     * Renders the specified template with the data provided to the given
+     * {@link OutputStream}.
+     * <p>
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
-     * @param file The File to output the result of the rendering.
+     * @param file The {@link File} to output the result of the rendering.
      * @throws org.bridje.core.tpl.TplNotFoundException
      * @throws java.io.IOException
      */
     void render(String template, Map data, File file) throws TplNotFoundException, IOException;
 
     /**
-     * Renders the especified template with the data provided to the gived
-     * Writer.
-     *
+     * Renders the specified template with the data provided to the given
+     * {@link Writer}.
+     * <p>
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
      * @param writer
@@ -66,9 +67,9 @@ public interface TplContext
     void render(String template, Map data, Writer writer) throws TplNotFoundException, IOException;
 
     /**
-     * Renders the especified template with the data provided to and return the
+     * Renders the specified template with the data provided to and return the
      * result.
-     *
+     * <p>
      * @param template The template path an name to be rendered.
      * @param data The data to be use by the template.
      * @return The result of the rendered template.
@@ -76,11 +77,13 @@ public interface TplContext
      * @throws java.io.IOException
      */
     String render(String template, Map data) throws TplNotFoundException, IOException;
-    
+
     /**
-     * 
-     * @param template
-     * @return 
+     *  Finds out whether the specified template exists.
+     * <p>
+     * @param template The template path an name to be rendered.
+     * @return {@literal true} if the template exists in the context,
+     *         {@literal false} otherwise.
      */
     boolean exists(String template);
 }

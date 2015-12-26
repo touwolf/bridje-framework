@@ -17,14 +17,17 @@
 package org.bridje.core.tpl;
 
 /**
- * 
+ * The template service allow to obtain a template context.
+ * <p>
+ * @see TplContext
  */
 public interface TplService extends TplContext
 {
     /**
-     * 
+     * Obtains a template contexts in the specified path.
+     * <p>
      * @param path
-     * @return 
+     * @return The context to access templates on the specified path.
      */
     TplContext createTplContext(String path);
 }
