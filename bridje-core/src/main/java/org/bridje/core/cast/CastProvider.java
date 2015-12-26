@@ -24,14 +24,14 @@ package org.bridje.core.cast;
 public interface CastProvider<T>
 {
     /**
-     * Obtain the input types that can handle.
+     * Obtains the input types that can handle.
      *
      * @return The array of allowed input types.
      */
     Class<?>[] getSrcClasses();
 
     /**
-     * Obtain the destiny class of casting.
+     * Obtains the destiny class of casting.
      *
      * @return The destiny class of casting.
      */
@@ -42,7 +42,7 @@ public interface CastProvider<T>
      *
      * @param object The object to be converted.
      * @return The converted value or {@literal null} if not conversion can be made or
-     * cannot be handled.
+     *         cannot be handled.
      */
     T cast(Object object);
 }

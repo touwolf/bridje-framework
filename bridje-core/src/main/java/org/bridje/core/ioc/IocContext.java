@@ -20,13 +20,13 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- * Represents a context in witch components are managed. This interfaz is mean
- * to be use (not for implementation), it brings all the method necesaries for
+ * Represents a context in witch components are managed. This interface is mean
+ * to be use (not for implementation), it brings all the method necessaries for
  * find components and services in the scope that it manages.
  * <p>
- * An implementetion of this interface can be obtained via the Ioc interface or
+ * An implementation of this interface can be obtained via the Ioc interface or
  * by injecting {@link org.bridje.core.ioc.annotations.Inject} it in any
- * component you whant.
+ * component you want.
  */
 public interface IocContext
 {
@@ -51,9 +51,9 @@ public interface IocContext
      * <p>
      * @param <T>       The generic type of the class of the service that this
      *                  method should return.
-     * @param service   The java.​lang.​reflect.Type that represents the service
+     * @param service   The {@link java.​lang.​reflect.Type} that represents the service
      *                  that this method must find.
-     * @param resultCls The expexted return class of this method.
+     * @param resultCls The expected return class of this method.
      * <p>
      * @return An object that extends or implement the service provided, or null
      *         if no component provides this services in the context.
@@ -62,7 +62,7 @@ public interface IocContext
 
     /**
      * This method finds the component that provides the given service with less
-     * priority thant the priority param.
+     * priority than the priority parameter.
      * <p>
      * @param <T>      The generic type of the class of the service that this
      *                 method should find.
@@ -70,7 +70,7 @@ public interface IocContext
      *                 must find.
      * <p>
      * @param priority The given component must have a priority value greater
-     *                 than this param.
+     *                 than this parameter.
      * <p>
      * @return An object that extends or implement the class of the service
      *         provided, or null if no component provides this services in the
@@ -80,16 +80,16 @@ public interface IocContext
 
     /**
      * This method finds the component that provides the given generic service
-     * with less priority thant the priority param.
+     * with less priority than the priority parameter.
      * <p>
      * @param <T>       The generic type of the class of the service that this
      *                  method should return.
-     * @param service   The java.​lang.​reflect.Type that represents the service
+     * @param service   The {@link java.​lang.​reflect.Type} that represents the service
      *                  that this method must find.
-     * @param resultCls The expexted return class of this method.
+     * @param resultCls The expected return class of this method.
      * <p>
      * @param priority  The given component must have a priority value greater
-     *                  than this param.
+     *                  than this parameter.
      * <p>
      * @return An object that extends or implement the service provided, or null
      *         if no component provides this services in the context.
@@ -118,7 +118,7 @@ public interface IocContext
      *                  method should find.
      * @param service   The class that represents the service that this method
      *                  must find.
-     * @param resultCls The expexted return class of this method.
+     * @param resultCls The expected return class of this method.
      * <p>
      * @return An array of objects who extends or implement the service
      *         provided, or an empty array if no component provides this
@@ -132,8 +132,8 @@ public interface IocContext
      * <p>
      * @param service The type of the service to look for.
      * <p>
-     * @return true A least one component provides this service, false
-     *         otherwise.
+     * @return {@literal true} If at least one component provides this service,
+     *         {@literal false} otherwise.
      */
     boolean exists(Type service);
 
@@ -142,8 +142,8 @@ public interface IocContext
      * <p>
      * @param component The class of the component to look for.
      * <p>
-     * @return true This class represents a component of the context, false
-     *         otherwise.
+     * @return {@literal true} If this class represents a component of the context,
+     *         {@literal false} otherwise.
      */
     boolean existsComponent(Class component);
 

@@ -23,7 +23,7 @@ public interface CastService
 {
     /**
      * Cast a value to the specified class.
-     *
+     * <p>
      * @param <T> The type of the target class.
      * @param object The object to be converted.
      * @param cls The target class.

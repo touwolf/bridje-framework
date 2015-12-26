@@ -16,13 +16,54 @@
 
 package org.bridje.core.cfg;
 
+/**
+ * A service for access the configurations of applications in multiple environments.
+ * <p>
+ * Configuration classes must be serializable in xml format.
+ */
 public interface ConfigService
 {
+    /**
+     * Obtains a configuration by its class.
+     * <p>
+     * @param <T> The type of the configuration.
+     * @param configClass The class of the configuration instance.
+     * @return The object with the configuration or {@literal null} if no
+     *         configuration of the specified type was found.
+     */
     <T> T findConfig(Class<T> configClass);
 
+    /**
+     * Obtains a configuration by its class.
+     * <p>
+     * @param <T> The type of the configuration.
+     * @param configName The name of the representative configuration file.
+     * @param configClass The class of the configuration instance.
+     * @return The object with the configuration or {@literal null} if no
+     *         configuration of the specified type was found.
+     */
     <T> T findConfig(String configName, Class<T> configClass);
-    
+
+    /**
+     * Obtains a configuration by its class, or create it if no found.
+     * <p>
+     * @param <T> The type of the configuration.
+     * @param configClass The class of the configuration instance.
+     * @param defaultConfig The default configuration if not exists.
+     * @return The object with the configuration or {@literal null} if no
+     *         configuration of the specified type was found.
+     */
     <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig);
 
+    /**
+     * Obtains a configuration by its class, or create it if no found.
+     * <p>
+     * @param <T> The type of the configuration.
+     * @param configName The name of the representative configuration file.
+     * @param configClass The class of the configuration instance.
+     * @param defaultConfig The default configuration if not exists.
+     * @return The object with the configuration or {@literal null} if no
+     *         configuration of the specified type was found.
+     */
     <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig);
 }

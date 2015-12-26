@@ -92,5 +92,4 @@ class ConfigServiceImpl implements ConfigService
         }
         return result;
     }
-    
 }
