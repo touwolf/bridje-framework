@@ -32,8 +32,8 @@ public class Tls
      * @param <T> The type of the object to look for.
      * @param cls The class of the object to look for.
      * <p>
-     * @return The last object of the cls Class that was put in the thread local
-     *         storage, or null if none can be found.
+     * @return The last object of the specified class that was put in the thread
+     *         local storage, or null if none can be found.
      */
     public static <T> T get(Class<T> cls)
     {

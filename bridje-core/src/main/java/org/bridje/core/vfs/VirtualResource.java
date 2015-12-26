@@ -18,14 +18,14 @@ package org.bridje.core.vfs;
 
 /**
  * Base interface for all resource type in the VFS tree.
- * 
+ * <p>
  * This interface represents a file or folder in the VFS tree.
  */
 public interface VirtualResource
 {
     /**
      * The parent folder of this resource.
-     * 
+     * <p>
      * @return A VirtualFlder representing the parent folder of this resource.
      */
     VirtualFolder getParent();

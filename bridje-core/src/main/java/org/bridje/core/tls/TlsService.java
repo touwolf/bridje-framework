@@ -37,13 +37,13 @@ public interface TlsService
     <T> T doAs(TlsAction<T> action, Object... data) throws Exception;
 
     /**
-     * Get the last object of the cls Class that was put in the thread local
+     * Get the last object of the specified class that was put in the thread local
      * storage.
      * <p>
      * @param <T> The type of the object to look for.
      * @param cls The class of the object to look for.
      * <p>
-     * @return The last object of the cls Class that was put in the thread local
+     * @return The last object of the specified class that was put in the thread local
      *         storage, or null if none can be found.
      */
     <T> T get(Class<T> cls);

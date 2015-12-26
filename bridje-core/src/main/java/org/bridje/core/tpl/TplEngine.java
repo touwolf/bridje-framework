@@ -18,24 +18,24 @@ package org.bridje.core.tpl;
 
 /**
  * An interface that every template engine must implement to provide his
- * funtionaliti in the tpl api.
+ * functionality in the tpl api.
  */
 public interface TplEngine
 {
     /**
      * The extensions used by the templates of this template engine.
-     *
-     * @return An String representing the extension that the files that this
+     * <p>
+     * @return A String representing the extension that the files that this
      * engine can render must have. The name must not have the dot (".")
      * character.(Eg: "tpl" NOT ".tpl")
      */
     String getExtension();
 
     /**
-     * Creates a template engine context for the especified loader. the tpl api
-     * will use this context tu render templates that match the extension of
+     * Creates a template engine context for the specified loader. The tpl api
+     * will use this context to render templates that match the extension of
      * this engine.
-     *
+     * <p>
      * @param loader The loader from witch the result context may load the
      * templates.
      * @return An TplEngineContext object that can render templates of this

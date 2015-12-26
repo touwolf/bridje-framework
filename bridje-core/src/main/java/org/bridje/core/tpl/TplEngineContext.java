@@ -17,9 +17,9 @@
 package org.bridje.core.tpl;
 
 /**
- * A marker interface for all the context of the diferents templates engines.
+ * A marker interface for all the context of the different templates engines.
  */
 public interface TplEngineContext extends TplContext
 {
-     
+
 }

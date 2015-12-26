@@ -18,7 +18,8 @@ package org.bridje.core.tls;
 
 /**
  * Represents an action that can be executed and can access to the data of the
- * current thread, that was made available on the {@link TlsService#doAs(org.bridje.core.tls.TlsAction, java.lang.Object...) doAs}
+ * current thread, that was made available on the
+ * {@link TlsService#doAs(org.bridje.core.tls.TlsAction, java.lang.Object...) doAs}
  * method.
  * <p>
  * @param <T> The type of the returning object for the action.
@@ -27,7 +28,9 @@ package org.bridje.core.tls;
 public interface TlsAction<T>
 {
     /**
-     * Executes the action. this method is called on the {@link TlsService#doAs(org.bridje.core.tls.TlsAction, java.lang.Object...) doAs} method.
+     * Executes the action. this method is called on the
+     * {@link TlsService#doAs(org.bridje.core.tls.TlsAction, java.lang.Object...) doAs}
+     * method.
      * <p>
      * @return The action result.
      * @throws java.lang.Exception Any exception throw by the action.

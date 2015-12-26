@@ -17,14 +17,14 @@
 package org.bridje.core.vfs;
 
 /**
- * A funtional interface to navigates files in the vfs tree.
+ * A functional interface to navigates files in the vfs tree.
  */
 @FunctionalInterface
 public interface VirtualFileVisitor
 {
     /**
      * Called when a match is hit in the navigation method.
-     * 
+     * <p>
      * @param file The file matched.
      */
     public void visit(VirtualFile file);

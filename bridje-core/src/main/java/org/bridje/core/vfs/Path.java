@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * An utility class for virtual path management.
- *
- * The path elements are separated by the / character.
+ * <p>
+ * The path elements are separated by the {@literal "/"} character.
  */
 public class Path implements Iterable<Path>
 {
@@ -17,7 +17,7 @@ public class Path implements Iterable<Path>
 
     /**
      * Creates a Path object from String
-     *
+     * <p>
      * @param path The String object representing the path
      */
     public Path(String path)
@@ -26,8 +26,8 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     * Internal constructor that creates a Path fron it´s elements.
-     *
+     * Internal constructor that creates a Path from it´s elements.
+     * <p>
      * @param pathElements
      */
     private Path(String[] pathElements)
@@ -40,9 +40,11 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     * Gets the first element of the path, this is if the path represented by
-     * this object is "usr/local" this method will return "usr".
-     *
+     * Gets the first element of the path.
+     * <p>
+     * For example, if the path represented by this object equals to {@literal "usr/local"},
+     * this method will return {@literal "usr"}.
+     * <p>
      * @return An String object that represents the first element of the path.
      */
     public String getFirstElement()
@@ -52,10 +54,10 @@ public class Path implements Iterable<Path>
 
     /**
      * Gets the first element of the path.
-     *
-     * This is if the path represented by this object is "usr/local/somefile"
-     * this method will return "somefile".
-     *
+     * <p>
+     * For example, if the path represented by this object equals to {@literal "usr/local/somefile"},
+     * this method will return {@literal "somefile"}.
+     * <p>
      * @return An String object that represents the first element of the path.
      */
     public String getName()
@@ -66,12 +68,12 @@ public class Path implements Iterable<Path>
     /**
      * Creates a new Path object that represents the path to the parent object
      * of the current path.
-     *
-     * This is if the path represented by this object is "usr/local/somefile"
-     * this method will return a path object representing "usr/local"
-     *
-     * @return The Path object parent of this object, or null if this is the
-     * last path.
+     * <p>
+     * For example, if the path represented by this object equals to {@literal "usr/local/somefile"},
+     * this method will return a path object representing {@literal "usr/local"}.
+     * <p>
+     * @return The Path object parent of this object, or {@literal null} if this
+     *         is the last path.
      */
     public Path getParent()
     {
@@ -84,14 +86,14 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     * Creates a new Path object that does not constaint the first element of
+     * Creates a new Path object that does not contains the first element of
      * the current path.
-     *
-     * This is if the path represented by this object is "usr/local/somefile"
-     * this method will return a path object representing "/local/somefile"
-     *
+     * <p>
+     * For example, if the path represented by this object equals to {@literal "usr/local/somefile"},
+     * this method will return a path object representing  {@literal "/local/somefile"}.
+     * <p>
      * @return The Path object without the first element of the current path, or
-     * null if this is the las path.
+     *         {@literal null} if this is the las path.
      */
     public Path getNext()
     {
@@ -106,12 +108,12 @@ public class Path implements Iterable<Path>
 
     /**
      * Determines if this path has any element left.
-     *
-     * If the path represented by this object is a multiple element path like
-     * "usr/local" the this method will return true.
-     *
-     * @return true if this path is a multi element path like "usr/local", false
-     * if this path is a single element path like "usr".
+     * <p>
+     * For example, if the path represented by this object is a multiple element
+     * path like {@literal "usr/local"} the this method will return {@literal true}.
+     * <p>
+     * @return {@literal true} if this path is a multi element path, {@literal false}
+     *         otherwise.
      */
     public boolean hasNext()
     {
@@ -121,9 +123,9 @@ public class Path implements Iterable<Path>
     /**
      * Determines if the first element of the path is the dot (.) character
      * witch represents the current folder.
-     *
-     * @return true if the first element of the path is the dot (.) character
-     * false otherwise.
+     * <p>
+     * @return {@literal true} if the first element of the path is the dot (.)
+     *         character, {@literal false} otherwise.
      */
     public boolean isSelf()
     {
@@ -133,9 +135,9 @@ public class Path implements Iterable<Path>
     /**
      * Determines if the first element of the path is the (..) identifier witch
      * represents the parent folder.
-     *
-     * @return true if the first element of the path is the (..) identifier
-     * false otherwise.
+     * <p>
+     * @return {@literal true} if the first element of the path is the (..) identifier,
+     *         {@literal false} otherwise.
      */
     public boolean isParent()
     {
@@ -143,13 +145,13 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     * Determines if this path has is the last path.
-     *
+     * Determines if this path is the last element path.
+     * <p>
      * If the path represented by this object is a single element path like
-     * "usr" the this method will return true.
-     *
-     * @return true if this path is a single element path like "usr", false if
-     * this path is a multiple element path like "usr/local".
+     * {@literal "usr"} then this method will return {@literal true}.
+     * <p>
+     * @return {@literal true} if this path is a single element, {@literal false}
+     *         otherwise.
      */
     public boolean isLast()
     {
@@ -157,12 +159,12 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     * This methos creates a new path object that does not contains the (.) and
+     * This method creates a new path object that does not contains the (.) and
      * (..) identifiers.
-     *
-     * If the path represented by this element is "usr/./local/../etc" this
-     * element will return "usr/etc".
-     *
+     * <p>
+     * For example, if the path represented by this element equals to {@literal "usr/./local/../etc"},
+     * this method will return {@link "usr/etc"}.
+     * <p>
      * @return A new Path object representing the canonical path of this object.
      */
     public Path getCanonicalPath()
@@ -196,7 +198,7 @@ public class Path implements Iterable<Path>
 
     /**
      * Gets a string representation of the current path.
-     *
+     * <p>
      * @return The String object representing the current path.
      */
     @Override
@@ -207,8 +209,8 @@ public class Path implements Iterable<Path>
 
     /**
      * Gets a string representation of the current path, separated by the
-     * pathSep parameter.
-     *
+     * specified path separator.
+     * <p>
      * @param pathSep The path separator to be used.
      * @return The String object representing the current path.
      */

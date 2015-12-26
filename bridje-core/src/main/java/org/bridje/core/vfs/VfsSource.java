@@ -22,81 +22,81 @@ import java.util.List;
 
 /**
  * Represents a file source for the VFS API.
- *
+ * <p>
  * All VfsProvider implementation must provides an object that implements this
  * interface in order to put files in the vfs tree.
  */
 public interface VfsSource
 {
     /**
-     * Gets all objects identifiying the files in the especified path, if the
-     * file represented by the path argument is a single file withing the
+     * Gets all objects identifying the files in the specified path, if the
+     * file represented by the path argument is a single file within the
      * VfsSource this method will return a single file object array, but if
-     * multiple files withing the VfsSource are map to the especified path then
+     * multiple files within the VfsSource are map to the specified path then
      * this method will return all objects files for the path.
-     *
+     * <p>
      * @param path The path to look for.
-     * @return An array of object, each acts as identifier for a file maped to
-     * the path argument.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     * @return An array of object, each acts as identifier for a file mapped to
+     *         the path argument.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     Object[] getFiles(Path path) throws IOException;
 
     /**
-     * This method retrive all names for the child folders withing the
-     * especified path.
-     *
+     * This method retrieve all names for the child folders within the
+     * specified path.
+     * <p>
      * @param path The path to look for children folders.
      * @return A list of string with the names of the child folders for the
-     * especified path.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     *         specified path.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     List<String> listFolders(Path path) throws IOException;
 
     /**
-     * This method retrive all names for the child files withing the especified
+     * This method retrieve all names for the child files within the specified
      * path.
-     *
+     * <p>
      * @param path The path to look for children files.
      * @return A list of string with the names of the child file for the
-     * especified path.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     *         specified path.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     List<String> listFiles(Path path) throws IOException;
 
     /**
-     * Determines if the especified path is a file from this VfsSource.
-     *
+     * Determines if the specified path is a file from this VfsSource.
+     * <p>
      * @param path The path of the file.
-     * @return true if a file mapped to the path argument exists withing this
-     * VfsSource.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     * @return {@literal true} if a file mapped to the path argument exists within
+     *         this VfsSource.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     boolean fileExists(Path path) throws IOException;
 
     /**
-     * Determines if the especified path is a folder from this VfsSource.
-     *
+     * Determines if the specified path is a folder from this VfsSource.
+     * <p>
      * @param path The path of the file.
-     * @return true if a folder mapped to the path argument exists withing this
-     * VfsSource.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     * @return {@literal true} if a folder mapped to the path argument exists within
+     *         this VfsSource.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     boolean folderExists(Path path) throws IOException;
 
     /**
-     * Opens a file's InputStream for reading it's content.
-     *
-     * @param data The file identifier retrive from this VfsSource by the
-     * getFiles method.
+     * Open a file's InputStream for reading it's content.
+     * <p>
+     * @param data The file identifier retrieve from this VfsSource by the
+     *        {@link #getFiles(org.bridje.core.vfs.Path)} method.
      * @return An InputStream to the file.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     InputStream open(Object data) throws IOException;
 }

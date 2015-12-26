@@ -25,11 +25,11 @@ import java.io.InputStream;
 public interface VirtualFile extends VirtualResource
 {
     /**
-     * Opens a file's InputStream for reading it's content.
-     *
+     * Open a file's InputStream for reading it's content.
+     * <p>
      * @return An InputStream to the file.
-     * @throws IOException This method may access to phisical device so this
-     * exception may be throw if any input output operation fails.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
      */
     InputStream open() throws IOException;
 }
