@@ -21,7 +21,6 @@ import org.bridje.core.procs.ProcessInstance;
 
 /**
  *
- * @author gilberto
  */
 public class ProcessInstanceImpl implements ProcessInstance
 {

@@ -45,7 +45,6 @@ import org.bridje.core.ioc.annotations.PostConstruct;
 
 /**
  *
- * @author Gilberto
  */
 @Component
 class CliServiceImpl implements CliService

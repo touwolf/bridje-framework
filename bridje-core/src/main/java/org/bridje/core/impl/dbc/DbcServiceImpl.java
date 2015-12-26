@@ -28,7 +28,6 @@ import org.bridje.core.ioc.annotations.Inject;
 
 /**
  *
- * @author gilberto
  */
 @Component
 class DbcServiceImpl implements DbcService

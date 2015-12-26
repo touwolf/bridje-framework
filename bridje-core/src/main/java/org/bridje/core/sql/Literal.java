@@ -20,7 +20,6 @@ import java.io.StringWriter;
 
 /**
  *
- * @author Gilberto
  */
 public class Literal implements ColumnExpresion
 {

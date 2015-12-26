@@ -24,10 +24,6 @@ import org.bridje.core.web.WebRequest;
 import org.bridje.core.web.WebRequestHandler;
 import org.bridje.core.web.WebResponse;
 
-/**
- *
- * @author Gilberto
- */
 @Component
 class WebManagerImpl implements WebManager
 {

@@ -15,9 +15,9 @@
  */
 
 package org.bridje.core.cli;
+
 /**
  *
- * @author Gilberto
  */
 public interface CommandParser
 {

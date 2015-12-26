@@ -21,7 +21,6 @@ import javax.security.auth.Subject;
 
 /**
  *
- * @author gilberto
  */
 public interface AasService
 {

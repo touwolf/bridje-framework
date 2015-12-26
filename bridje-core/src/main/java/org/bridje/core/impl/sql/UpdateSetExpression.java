@@ -24,7 +24,6 @@ import org.bridje.core.sql.SQLOperator;
 
 /**
  *
- * @author Gilberto
  */
 public class UpdateSetExpression implements SQLExpression
 {

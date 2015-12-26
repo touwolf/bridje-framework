@@ -21,7 +21,6 @@ import java.io.PrintStream;
 
 /**
  *
- * @author gilberto
  */
 public interface CliSession
 {

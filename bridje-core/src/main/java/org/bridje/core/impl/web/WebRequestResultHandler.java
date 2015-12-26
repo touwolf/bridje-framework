@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.impl.web.handlers;
+package org.bridje.core.impl.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +27,6 @@ import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
 import org.bridje.core.web.WebResultHandler;
 
-/**
- *
- * @author Gilberto
- */
 @Component
 @Priority(1000)
 class WebRequestResultHandler implements WebRequestHandler

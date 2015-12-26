@@ -24,9 +24,9 @@ import org.bridje.core.ioc.annotations.PostConstruct;
 import org.bridje.core.procs.ApplicationProcess;
 import org.bridje.core.procs.ProcessInstance;
 import org.bridje.core.procs.ProcessService;
+
 /**
  *
- * @author gilberto
  */
 @Component
 class ProcessServiceImpl implements ProcessService
@@ -35,16 +35,18 @@ class ProcessServiceImpl implements ProcessService
     private ApplicationProcess[] appProcess;
 
     private ProcessInstance[] allProcess;
-    
+
     private Map<String, ProcessInstance> procMap;
 
     @PostConstruct
     public void init()
     {
         procMap = new HashMap<>();
-        if(appProcess == null)
+        if (appProcess == null)
         {
-            appProcess = new ApplicationProcess[]{};
+            appProcess = new ApplicationProcess[]
+            {
+            };
         }
         allProcess = new ProcessInstance[appProcess.length];
         for (int i = 0; i < appProcess.length; i++)
@@ -53,7 +55,7 @@ class ProcessServiceImpl implements ProcessService
             procMap.put(allProcess[i].getName(), allProcess[i]);
         }
     }
-    
+
     @Override
     public ProcessInstance[] getAllProcess()
     {
@@ -71,7 +73,7 @@ class ProcessServiceImpl implements ProcessService
     {
         for (ProcessInstance process : allProcess)
         {
-            if(!process.isRunning())
+            if (!process.isRunning())
             {
                 process.start();
             }
@@ -83,7 +85,7 @@ class ProcessServiceImpl implements ProcessService
     {
         for (ProcessInstance process : allProcess)
         {
-            if(process.isRunning())
+            if (process.isRunning())
             {
                 process.stop();
             }
@@ -95,11 +97,11 @@ class ProcessServiceImpl implements ProcessService
     {
         for (ProcessInstance process : allProcess)
         {
-            if(process.isRunning())
+            if (process.isRunning())
             {
                 process.join();
             }
         }
     }
-    
+
 }

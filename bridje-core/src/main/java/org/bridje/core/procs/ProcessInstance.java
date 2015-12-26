@@ -18,7 +18,6 @@ package org.bridje.core.procs;
 
 /**
  *
- * @author gilberto
  */
 public interface ProcessInstance
 {

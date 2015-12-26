@@ -17,9 +17,9 @@
 package org.bridje.core.dbc;
 
 import javax.sql.DataSource;
+
 /**
  *
- * @author gilberto
  */
 public interface DbcDataSourceFactory
 {

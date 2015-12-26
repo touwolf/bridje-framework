@@ -18,7 +18,6 @@ package org.bridje.core.dbc;
 
 /**
  *
- * @author gilberto
  */
 public interface DbcConfigProvider
 {

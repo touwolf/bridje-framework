@@ -18,7 +18,6 @@ package org.bridje.core.cli;
 
 /**
  *
- * @author gilberto
  */
 public class InvalidCliCommandException extends Exception
 {

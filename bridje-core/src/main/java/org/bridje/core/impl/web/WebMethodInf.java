@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package org.bridje.core.impl.web.handlers.webmethod;
+package org.bridje.core.impl.web;
 
 import java.lang.reflect.Method;
 
-/**
- *
- * @author Gilberto
- */
 class WebMethodInf
 {
     private Class<?> compClass;

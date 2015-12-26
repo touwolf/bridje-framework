@@ -1,9 +1,6 @@
 
 package org.bridje.core.impl.http.jetty;
 
-import org.bridje.core.impl.http.jetty.cfg.WebServletConfig;
-import org.bridje.core.impl.http.jetty.cfg.HttpConnectorConfig;
-import org.bridje.core.impl.http.jetty.cfg.HttpConfig;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;

@@ -20,7 +20,6 @@ import java.io.OutputStream;
 
 /**
  *
- * @author Gilberto
  */
 public interface WebResponse
 {

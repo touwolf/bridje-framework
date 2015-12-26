@@ -22,10 +22,6 @@ import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
 import org.bridje.core.web.WebResponse;
 
-/**
- *
- * @author gilberto
- */
 class WebRequestChainImpl implements WebRequestChain
 {
     private final WebRequest request;

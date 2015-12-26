@@ -18,7 +18,6 @@ package org.bridje.core.cli;
 
 /**
  *
- * @author Gilberto
  */
 public class CommandInfo
 {

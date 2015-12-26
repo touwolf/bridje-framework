@@ -17,9 +17,9 @@
 package org.bridje.core.dbc;
 
 import java.util.Properties;
+
 /**
  *
- * @author gilberto
  */
 public class DataSourceConfig
 {

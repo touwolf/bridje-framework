@@ -20,7 +20,6 @@ import org.bridje.core.ioc.IocContext;
 
 /**
  *
- * @author Gilberto
  */
 public interface WebResultHandler<T>
 {

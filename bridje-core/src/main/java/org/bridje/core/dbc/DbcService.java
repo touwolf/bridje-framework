@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author gilberto
  */
 public interface DbcService
 {

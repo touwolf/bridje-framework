@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.impl.web.handlers.webmethod;
+package org.bridje.core.impl.web;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -24,10 +24,6 @@ import org.bridje.core.ioc.annotations.Priority;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
 
-/**
- *
- * @author Gilberto
- */
 @Component
 @Priority(950)
 class WebMethodHandler implements WebRequestHandler

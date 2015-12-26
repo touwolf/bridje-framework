@@ -18,7 +18,6 @@ package org.bridje.core.sql;
 
 /**
  *
- * @author Gilberto
  */
 public enum SQLOperator
 {

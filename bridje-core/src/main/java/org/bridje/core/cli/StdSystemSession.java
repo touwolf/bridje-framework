@@ -18,9 +18,9 @@ package org.bridje.core.cli;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+
 /**
  *
- * @author gilberto
  */
 public class StdSystemSession implements CliSession
 {

@@ -17,9 +17,9 @@
 package org.bridje.core.sql;
 
 import java.io.StringWriter;
+
 /**
  *
- * @author Gilberto
  */
 public class Table implements TableExpression
 {
@@ -29,7 +29,7 @@ public class Table implements TableExpression
     {
         this.name = name;
     }
-    
+
     public String getName()
     {
         return name;

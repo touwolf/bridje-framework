@@ -1,5 +1,5 @@
 
-package org.bridje.core.impl.http.jetty.cfg;
+package org.bridje.core.impl.http.jetty;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

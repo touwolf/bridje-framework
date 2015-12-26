@@ -17,14 +17,11 @@
 package org.bridje.core.impl.sql;
 
 import java.io.StringWriter;
-import static java.lang.Thread.State.values;
 import java.util.List;
-import org.bridje.core.sql.Literal;
 import org.bridje.core.sql.SQLExpression;
 
 /**
  *
- * @author Gilberto
  */
 public class Utils
 {
@@ -33,7 +30,7 @@ public class Utils
         boolean isFirst = true;
         for (SQLExpression literal : expressions)
         {
-            if(!isFirst)
+            if (!isFirst)
             {
                 sw.append(", ");
             }

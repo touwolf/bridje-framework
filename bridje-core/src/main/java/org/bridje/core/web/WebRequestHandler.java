@@ -18,7 +18,6 @@ package org.bridje.core.web;
 
 /**
  *
- * @author Gilberto
  */
 public interface WebRequestHandler
 {

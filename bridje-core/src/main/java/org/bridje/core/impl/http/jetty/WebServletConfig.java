@@ -1,5 +1,5 @@
 
-package org.bridje.core.impl.http.jetty.cfg;
+package org.bridje.core.impl.http.jetty;
 
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;

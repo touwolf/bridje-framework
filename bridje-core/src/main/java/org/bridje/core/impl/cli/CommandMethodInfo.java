@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 /**
  *
- * @author Gilberto
  */
 class CommandMethodInfo
 {

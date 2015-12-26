@@ -26,8 +26,6 @@ import java.lang.annotation.Target;
  * default constructor for the component instantiation by the container.
  * If this annotation appears in more than one constructor the first one that 
  * the container found will be used, and the rest will be ignored by the container.
- * 
- * @author gilberto
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.CONSTRUCTOR)
