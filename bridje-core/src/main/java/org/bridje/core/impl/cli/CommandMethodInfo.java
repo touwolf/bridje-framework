@@ -1,8 +1,6 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
- * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,26 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
 
-import org.bridje.core.ioc.Register;
+package org.bridje.core.impl.cli;
 
-public class ServiceRegister 
+import java.lang.reflect.Method;
+
+/**
+ *
+ * @author Gilberto
+ */
+class CommandMethodInfo
 {
-    private final Class<?> service;
+    private final String name;
     
-    public ServiceRegister(Class<?> service)
+    private final Method method;
+    
+    private final Object component;
+
+    public CommandMethodInfo(String name, Method method, Object component)
     {
-        this.service = service;
+        this.name = name;
+        this.method = method;
+        this.component = component;
     }
-    
-    public Register implementBy(Class<?> component)
+
+    public String getName()
     {
-        if(!(service.isAssignableFrom(component)))
-        {
-            throw new ClassCastException();
-        }
-        
-        return new Register(service, component);
+        return name;
+    }
+
+    public Method getMethod()
+    {
+        return method;
+    }
+
+    public Object getComponent()
+    {
+        return component;
     }
 }

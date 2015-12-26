@@ -15,26 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
+package org.bridje.core.ioc;
 
-import org.bridje.core.ioc.Register;
-
-public class ServiceRegister 
+public class Register
 {
     private final Class<?> service;
     
-    public ServiceRegister(Class<?> service)
+    private final Class<?> component;
+
+    public Register(Class<?> service, Class<?> component)
     {
         this.service = service;
+        this.component = component;
     }
-    
-    public Register implementBy(Class<?> component)
+
+    public Class<?> getService()
     {
-        if(!(service.isAssignableFrom(component)))
-        {
-            throw new ClassCastException();
-        }
-        
-        return new Register(service, component);
+        return service;
     }
+
+    public Class<?> getComponent() 
+    {
+        return component;
+    }  
 }

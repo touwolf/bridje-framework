@@ -1,8 +1,6 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
- * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,26 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
 
-import org.bridje.core.ioc.Register;
+package org.bridje.core.cli;
 
-public class ServiceRegister 
+import java.io.InputStream;
+import java.io.PrintStream;
+/**
+ *
+ * @author gilberto
+ */
+public class StdSystemSession implements CliSession
 {
-    private final Class<?> service;
-    
-    public ServiceRegister(Class<?> service)
+
+    @Override
+    public InputStream getIn()
     {
-        this.service = service;
+        return System.in;
+    }
+
+    @Override
+    public PrintStream getOut()
+    {
+        return System.out;
+    }
+
+    @Override
+    public PrintStream getErr()
+    {
+        return System.err;
     }
     
-    public Register implementBy(Class<?> component)
-    {
-        if(!(service.isAssignableFrom(component)))
-        {
-            throw new ClassCastException();
-        }
-        
-        return new Register(service, component);
-    }
 }

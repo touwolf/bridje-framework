@@ -1,8 +1,6 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
- * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,26 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
 
-import org.bridje.core.ioc.Register;
+package org.bridje.core.sql;
 
-public class ServiceRegister 
+import java.io.StringWriter;
+/**
+ *
+ * @author Gilberto
+ */
+public class Table implements TableExpression
 {
-    private final Class<?> service;
-    
-    public ServiceRegister(Class<?> service)
+    private final String name;
+
+    public Table(String name)
     {
-        this.service = service;
+        this.name = name;
     }
     
-    public Register implementBy(Class<?> component)
+    public String getName()
     {
-        if(!(service.isAssignableFrom(component)))
-        {
-            throw new ClassCastException();
-        }
-        
-        return new Register(service, component);
+        return name;
+    }
+
+    @Override
+    public OnStep innerJoin(TableExpression exp)
+    {
+        return new JoinImpl(this, "INNER", exp);
+    }
+
+    @Override
+    public void writeSQL(StringWriter sw)
+    {
+        sw.append(name);
     }
 }

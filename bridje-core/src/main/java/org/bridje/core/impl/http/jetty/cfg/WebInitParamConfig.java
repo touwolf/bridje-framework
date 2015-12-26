@@ -3,7 +3,6 @@ package org.bridje.core.impl.http.jetty.cfg;
 
 import java.lang.annotation.Annotation;
 import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
 
 public final class WebInitParamConfig
 {

@@ -1,7 +1,10 @@
+
+package org.bridje.core.sql;
+
+import java.io.StringWriter;
+
 /*
  * Copyright 2015 Bridje Framework.
- *
- * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +18,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
 
-import org.bridje.core.ioc.Register;
-
-public class ServiceRegister 
+public class OrderExpression implements SQLExpression
 {
-    private final Class<?> service;
+    private final Column column;
     
-    public ServiceRegister(Class<?> service)
+    private final String orderType;
+
+    public OrderExpression(Column column, String orderType)
     {
-        this.service = service;
+        this.column = column;
+        this.orderType = orderType;
     }
     
-    public Register implementBy(Class<?> component)
+    @Override
+    public void writeSQL(StringWriter sw)
     {
-        if(!(service.isAssignableFrom(component)))
-        {
-            throw new ClassCastException();
-        }
-        
-        return new Register(service, component);
+        column.writeSQL(sw);
+        sw.write(" ");
+        sw.write(orderType);
+    }
+
+    public Column getColumn()
+    {
+        return column;
+    }
+
+    public String getOrderType()
+    {
+        return orderType;
     }
 }

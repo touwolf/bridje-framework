@@ -16,6 +16,7 @@
 
 package org.bridje.core.impl.ioc;
 
+import org.bridje.core.ioc.Register;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

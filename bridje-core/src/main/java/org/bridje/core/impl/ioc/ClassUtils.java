@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import org.bridje.core.ioc.annotations.Priority;
 
-public class ClassUtils
+class ClassUtils
 {
 
     public static Type findParameterType(Parameter param)

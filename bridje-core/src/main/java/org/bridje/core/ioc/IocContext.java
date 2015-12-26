@@ -18,7 +18,6 @@ package org.bridje.core.ioc;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
-import org.bridje.core.impl.ioc.Register;
 
 /**
  * Represents a context in witch components are managed. This interfaz is mean

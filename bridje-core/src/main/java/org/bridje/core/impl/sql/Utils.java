@@ -1,8 +1,6 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
- * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.bridje.core.impl.ioc;
 
-import org.bridje.core.ioc.Register;
+package org.bridje.core.impl.sql;
 
-public class ServiceRegister 
+import java.io.StringWriter;
+import static java.lang.Thread.State.values;
+import java.util.List;
+import org.bridje.core.sql.Literal;
+import org.bridje.core.sql.SQLExpression;
+
+/**
+ *
+ * @author Gilberto
+ */
+public class Utils
 {
-    private final Class<?> service;
-    
-    public ServiceRegister(Class<?> service)
+    public static void joinExpressions(StringWriter sw, List<? extends SQLExpression> expressions)
     {
-        this.service = service;
-    }
-    
-    public Register implementBy(Class<?> component)
-    {
-        if(!(service.isAssignableFrom(component)))
+        boolean isFirst = true;
+        for (SQLExpression literal : expressions)
         {
-            throw new ClassCastException();
+            if(!isFirst)
+            {
+                sw.append(", ");
+            }
+            literal.writeSQL(sw);
+            isFirst = false;
         }
-        
-        return new Register(service, component);
     }
 }

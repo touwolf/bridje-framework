@@ -31,7 +31,7 @@ import org.bridje.core.ioc.annotations.PostConstruct;
  * @author Gilberto
  */
 @Component
-public class CastServiceImpl implements CastService
+class CastServiceImpl implements CastService
 {
     private Map<Class<?>,List<CastProvider<?>>> destClsProvidersMap;
     

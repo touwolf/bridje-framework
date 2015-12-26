@@ -17,7 +17,6 @@
 package org.bridje.core.ioc;
 
 import org.bridje.core.impl.ioc.ContextFactory;
-import org.bridje.core.impl.ioc.Register;
 
 /**
  * Facade for the Bridje IoC API.

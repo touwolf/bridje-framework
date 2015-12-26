@@ -22,7 +22,7 @@ import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
 
 @Component
-public class ConfigServiceImpl implements ConfigService
+class ConfigServiceImpl implements ConfigService
 {
     @Inject
     private ConfigRepository[] repos;
