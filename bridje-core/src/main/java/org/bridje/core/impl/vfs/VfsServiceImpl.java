@@ -153,16 +153,22 @@ class VfsServiceImpl implements VfsService
 
     private void loadConfig()
     {
-        for (VfsMountConfig cfg : mountConfig)
+        if(mountConfig != null)
         {
-            List<VfsMountEntry> entires = cfg.getEntries();
-            for (VfsMountEntry entry : entires)
+            for (VfsMountConfig cfg : mountConfig)
             {
-                String fileSystem = entry.getFileSystem();
-                VfsProvider fsProv = providersMap.get(fileSystem);
-                if(fsProv != null)
+                List<VfsMountEntry> entires = cfg.getEntries();
+                if(entires != null)
                 {
-                    mount(new Path(entry.getMountPath()), fsProv.createVfsSource(entry));
+                    for (VfsMountEntry entry : entires)
+                    {
+                        String fileSystem = entry.getFileSystem();
+                        VfsProvider fsProv = providersMap.get(fileSystem);
+                        if(fsProv != null)
+                        {
+                            mount(new Path(entry.getMountPath()), fsProv.createVfsSource(entry));
+                        }
+                    }
                 }
             }
         }

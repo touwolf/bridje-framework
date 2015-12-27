@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.core.cli.Argument;
 import org.bridje.core.cli.CliService;
 import org.bridje.core.cli.CliSession;
@@ -41,7 +42,6 @@ import org.bridje.core.ioc.Ioc;
 import org.bridje.core.ioc.IocContext;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
-import org.bridje.core.ioc.annotations.PostConstruct;
 
 /**
  *

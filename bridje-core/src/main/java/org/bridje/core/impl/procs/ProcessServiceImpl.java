@@ -18,9 +18,9 @@ package org.bridje.core.impl.procs;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
-import org.bridje.core.ioc.annotations.PostConstruct;
 import org.bridje.core.procs.ApplicationProcess;
 import org.bridje.core.procs.ProcessInstance;
 import org.bridje.core.procs.ProcessService;

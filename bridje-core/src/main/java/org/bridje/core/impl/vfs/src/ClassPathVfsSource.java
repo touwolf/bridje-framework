@@ -172,6 +172,10 @@ public class ClassPathVfsSource implements VfsSource
 
     private List<String> getResourceListing(Class clazz, String path) throws URISyntaxException, IOException
     {
+        if(path.startsWith("/"))
+        {
+            path = path.substring(1);
+        }
         Enumeration<URL> resources = clazz.getClassLoader().getResources(path);
         Set<String> result = new HashSet<>(); //avoid duplicates in case it is a subdirectory
         while (resources.hasMoreElements())
@@ -244,6 +248,7 @@ public class ClassPathVfsSource implements VfsSource
     @Override
     public InputStream open(Object data) throws IOException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        URL url = (URL)data;
+        return url.openStream();
     }
 }

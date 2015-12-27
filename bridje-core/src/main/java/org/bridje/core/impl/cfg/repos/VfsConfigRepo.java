@@ -59,7 +59,7 @@ class VfsConfigRepo implements ConfigRepository
         {
             if(configName != null)
             {
-                VirtualFile file = cfgFolder.findFile(configName + "xml");
+                VirtualFile file = cfgFolder.findFile(configName + ".xml");
                 if(file != null)
                 {
                     try

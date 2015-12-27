@@ -27,12 +27,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.core.ioc.ContextListener;
 import org.bridje.core.ioc.annotations.Inject;
 import org.bridje.core.ioc.IocContext;
 import org.bridje.core.ioc.annotations.Construct;
 import org.bridje.core.ioc.annotations.InjectNext;
-import org.bridje.core.ioc.annotations.PostConstruct;
 
 class Instanciator
 {

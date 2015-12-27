@@ -4,10 +4,12 @@ package org.bridje.core.impl.http.jetty;
 import org.bridje.core.http.HttpServer;
 import org.bridje.core.http.HttpServerException;
 import org.bridje.core.ioc.annotations.Component;
+import org.bridje.core.ioc.annotations.Inject;
 
 @Component
 class HttpServerImpl implements HttpServer
 {
+    @Inject
     private JettyServer server; 
     
     @Override
