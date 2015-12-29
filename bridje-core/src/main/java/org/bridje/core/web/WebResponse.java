@@ -19,9 +19,15 @@ package org.bridje.core.web;
 import java.io.OutputStream;
 
 /**
- *
+ * An object witch holds the data of the current request's response.
  */
 public interface WebResponse
 {
+    /**
+     * The output stream for the current request.
+     *
+     * @return An OutputStream object to outputs the result of the current
+     * request.
+     */
     public OutputStream getOutputStream();
 }

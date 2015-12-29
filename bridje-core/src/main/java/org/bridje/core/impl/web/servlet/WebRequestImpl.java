@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-package org.bridje.core.web;
+package org.bridje.core.impl.web.servlet;
 
-/**
- * An interface that especifies the information that a web request need to
- * provides.
- */
-public interface WebRequest
+import javax.servlet.http.HttpServletRequest;
+import org.bridje.core.web.WebRequest;
+
+public class WebRequestImpl implements WebRequest
 {
-    /**
-     * The path of the http request.
-     *
-     * @return An string object witch represents the called path for this
-     * request.
-     */
-    public String getRequestedPath();
+    private final HttpServletRequest request;
+
+    public WebRequestImpl(HttpServletRequest request)
+    {
+        this.request = request;
+    }
+
+    @Override
+    public String getRequestedPath()
+    {
+        return this.request.getPathInfo();
+    }
 }

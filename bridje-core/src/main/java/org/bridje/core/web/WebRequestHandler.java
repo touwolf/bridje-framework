@@ -17,9 +17,18 @@
 package org.bridje.core.web;
 
 /**
- *
+ * A handler for the web request chain of the framework.
  */
 public interface WebRequestHandler
 {
+    /**
+     * This methods will procced with the execution of the chain, if the
+     * implementation of this method needs to continue the chain it will need to
+     * call the procced method of the chain parameter passed to it. otherwise
+     * this method may return the result of the chain ignoring the rest of it.
+     *
+     * @param chain The current chain being proccessed.
+     * @return The result of the execution.
+     */
     Object proccess(WebRequestChain chain);
 }

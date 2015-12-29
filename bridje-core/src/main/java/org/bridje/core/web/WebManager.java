@@ -17,9 +17,19 @@
 package org.bridje.core.web;
 
 /**
+ * A manager services that can proccess web request.
  *
+ * This service is the starting point of every web request passed to this api.
+ * Usually this service will be used in a HttpServlet service method.
  */
 public interface WebManager
 {
+    /**
+     * Proccess a web request, this method will create the WEBREQUEST context an
+     * will invoke a WebRequestChain for handling the request.
+     *
+     * @param req The WebRequest object for this request.
+     * @param resp The WebResponse object for this request.
+     */
     void proccess(WebRequest req, WebResponse resp);
 }

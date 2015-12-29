@@ -22,11 +22,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ * This annotations defines a web method, that can be mapped to the especified
+ * path.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface WebMethod
 {
+    /**
+     * The web path for this method, it must be unique for the entire
+     * application otherwise the result of a call to this method is not
+     * garantied to call this especific method.
+     *
+     * @return String value witch represents the path to this method.
+     * (Eg: "/my-path/my-method") the starting slash is optional.
+     */
     String value();
 }
