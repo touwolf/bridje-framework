@@ -29,6 +29,7 @@ public interface WebRequestHandler
      *
      * @param chain The current chain being proccessed.
      * @return The result of the execution.
+     * @throws org.bridje.core.web.HttpException
      */
-    Object proccess(WebRequestChain chain);
+    Object proccess(WebRequestChain chain) throws HttpException;
 }

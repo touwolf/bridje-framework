@@ -17,6 +17,7 @@
 package org.bridje.core.impl.web;
 
 import org.bridje.core.ioc.IocContext;
+import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequest;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
@@ -62,7 +63,7 @@ class WebRequestChainImpl implements WebRequestChain
     }
 
     @Override
-    public Object procced()
+    public Object procced() throws HttpException
     {
         this.current--;
         if(this.current >= 0)

@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Priority;
+import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
 
@@ -33,7 +34,7 @@ class WebMethodHandler implements WebRequestHandler
     private WebMethodNode rootNode;
 
     @Override
-    public Object proccess(WebRequestChain chain)
+    public Object proccess(WebRequestChain chain) throws HttpException
     {
         if(rootNode == null)
         {

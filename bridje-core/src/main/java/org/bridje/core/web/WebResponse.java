@@ -30,4 +30,23 @@ public interface WebResponse
      * request.
      */
     public OutputStream getOutputStream();
+
+    /**
+     * Mark the response as processed, this method should be called only onece
+     * per request, if no handler calls this method the web api will return a
+     * 404 not found to the client.
+     */
+    public void processed();
+
+    /**
+     *
+     * @return
+     */
+    public boolean isProcessed();
+
+    /**
+     * 
+     * @param code 
+     */
+    public void setStatusCode(int code);
 }

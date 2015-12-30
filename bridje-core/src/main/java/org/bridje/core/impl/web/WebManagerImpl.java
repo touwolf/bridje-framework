@@ -16,17 +16,24 @@
 
 package org.bridje.core.impl.web;
 
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.core.ioc.IocContext;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebManager;
 import org.bridje.core.web.WebRequest;
+import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
 import org.bridje.core.web.WebResponse;
 
 @Component
 class WebManagerImpl implements WebManager
 {
+    private static final Logger LOG = Logger.getLogger(WebManagerImpl.class.getName());
+
     @Inject
     private WebRequestHandler[] handlersList;
 
@@ -36,9 +43,47 @@ class WebManagerImpl implements WebManager
     @Override
     public void proccess(WebRequest req, WebResponse resp)
     {
-        IocContext reqContext = context.createChild("WEBREQUEST");
-        WebRequestChainImpl chain = new WebRequestChainImpl(req, resp, reqContext, handlersList);
-        chain.procced();
+        try
+        {
+            IocContext reqContext = context.createChild("WEBREQUEST");
+            WebRequestChain chain = new WebRequestChainImpl(req, resp, reqContext, handlersList);
+            chain.procced();
+            if(!resp.isProcessed())
+            {
+                writeError(404, "Not Found", resp);
+            }
+        }
+        catch(HttpException ex)
+        {
+            if(!resp.isProcessed())
+            {
+                writeError(ex.getCode(), ex.getMessage(), resp);
+            }
+        }
+        catch(Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            if(!resp.isProcessed())
+            {
+                writeError(500, ex.getMessage(), resp);
+            }
+        }
+    }
+
+    private void writeError(int code, String message, WebResponse resp)
+    {
+        resp.setStatusCode(code);
+        try (PrintWriter w = new PrintWriter(resp.getOutputStream()))
+        {
+            w.print(code);
+            w.print(" - ");
+            w.print(message);
+            w.flush();
+        }
+        catch(Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
     
 }

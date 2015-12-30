@@ -28,6 +28,8 @@ public class WebResponseImpl implements WebResponse
     private static final Logger LOG = Logger.getLogger(WebResponseImpl.class.getName());
 
     private final HttpServletResponse resp;
+    
+    private boolean processed;
 
     public WebResponseImpl(HttpServletResponse resp)
     {
@@ -46,5 +48,27 @@ public class WebResponseImpl implements WebResponse
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
+    }
+
+    @Override
+    public void processed()
+    {
+        if(processed)
+        {
+            throw new IllegalStateException("The request is allready procesed.");
+        }
+        processed = true;
+    }
+
+    @Override
+    public boolean isProcessed()
+    {
+        return processed;
+    }
+
+    @Override
+    public void setStatusCode(int code)
+    {
+        resp.setStatus(code);
     }
 }

@@ -52,6 +52,7 @@ public interface WebRequestChain
      * handler can be found this method will return null.
      *
      * @return The result of the chain, may be null.
+     * @throws org.bridje.core.web.HttpException
      */
-    public Object procced();
+    public Object procced() throws HttpException;
 }
