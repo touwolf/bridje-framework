@@ -22,7 +22,7 @@ import org.bridje.core.procs.ProcessInstance;
 /**
  *
  */
-public class ProcessInstanceImpl implements ProcessInstance
+class ProcessInstanceImpl implements ProcessInstance
 {
     private Thread procThread;
     

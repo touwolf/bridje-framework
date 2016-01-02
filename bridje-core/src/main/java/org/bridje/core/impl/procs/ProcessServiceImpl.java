@@ -44,9 +44,7 @@ class ProcessServiceImpl implements ProcessService
         procMap = new HashMap<>();
         if (appProcess == null)
         {
-            appProcess = new ApplicationProcess[]
-            {
-            };
+            appProcess = new ApplicationProcess[]{};
         }
         allProcess = new ProcessInstance[appProcess.length];
         for (int i = 0; i < appProcess.length; i++)
