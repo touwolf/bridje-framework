@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package org.bridje.core.tpl;
+package org.bridje.core.impl.tpl;
 
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Priority;
+import org.bridje.core.tpl.TemplateLoader;
+import org.bridje.core.tpl.TemplatesProvider;
 
-/**
- *
- * @author Gilberto
- */
 @Component
-@Priority(-10)
-public class DummyTemplatesProvider implements TemplatesProvider
+@Priority(100)
+public class VfsTemplatesProvider implements TemplatesProvider
 {
-
     @Override
     public TemplateLoader createDefaultLoader()
     {
-        return new DummyTemplateLoader();
+        return new VfsTemplateLoader("/tpls");
     }
 
     @Override
     public TemplateLoader createLoader(String path)
     {
-        return new DummyTemplateLoader();
+        return new VfsTemplateLoader(path);
     }
     
 }

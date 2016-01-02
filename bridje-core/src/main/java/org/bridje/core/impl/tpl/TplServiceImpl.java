@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
@@ -34,6 +36,8 @@ import org.bridje.core.tpl.TplService;
 @Component
 public class TplServiceImpl implements TplService
 {
+    private static final Logger LOG = Logger.getLogger(TplServiceImpl.class.getName());
+
     @Inject
     private TemplatesProvider provider;
     

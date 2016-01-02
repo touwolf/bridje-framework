@@ -16,6 +16,7 @@
 
 package org.bridje.core.tpl;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -24,15 +25,22 @@ import java.io.InputStream;
  * The objects implementing this interface are responsible for loading templates
  * on {@link InputStream} objects from their storage and provides it to the tpl api.
  */
-@FunctionalInterface
 public interface TemplateLoader
 {
     /**
+     * 
+     * @param path
+     * @return 
+     */
+    Object findTemplate(String path);
+    
+    /**
      * Gets an InputStream to the template specified by the path parameter.
      * <p>
-     * @param path The path of the template to be loaded.
+     * @param template 
      * @return An InputStream witch allows the api to read the content of the
      * template.
+     * @throws java.io.IOException
      */
-    InputStream loadTemplate(String path);
+    InputStream loadTemplate(Object template) throws IOException;
 }

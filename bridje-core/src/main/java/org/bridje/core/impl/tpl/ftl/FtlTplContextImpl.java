@@ -1,7 +1,6 @@
 
 package org.bridje.core.impl.tpl.ftl;
 
-import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
 import freemarker.core.ParseException;
@@ -16,19 +15,16 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.core.ioc.IocContext;
 import org.bridje.core.tls.Tls;
-import org.bridje.core.tpl.TplContext;
+import org.bridje.core.tpl.TplEngineContext;
 import org.bridje.core.tpl.TplNotFoundException;
 import org.bridje.core.tpl.TplParserException;
 
-final class FtlTplContextImpl implements TplContext
+final class FtlTplContextImpl implements TplEngineContext
 {
     private static final Logger LOG = Logger.getLogger(FtlTplContextImpl.class.getName());
 
@@ -36,18 +32,13 @@ final class FtlTplContextImpl implements TplContext
 
     private final Configuration cf;
 
-    public FtlTplContextImpl(String basePath) throws IOException
+    public FtlTplContextImpl(org.bridje.core.tpl.TemplateLoader loader)
     {
-        List<TemplateLoader> loaders = new ArrayList();
-
-        loaders.add(new VfsTemplateLoader(basePath));
-
-        TemplateLoader[] listLoaders = new TemplateLoader[loaders.size()];
-        MultiTemplateLoader loader = new MultiTemplateLoader(loaders.toArray(listLoaders));
+        TemplateLoader ftlLoader = new FtlVfsTemplateLoader(loader);
 
         exceptionHandler = new FtlCtxImplExceptionHandler(isErrorIgnored());
         cf = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cf.setTemplateLoader(loader);
+        cf.setTemplateLoader(ftlLoader);
         cf.setTemplateExceptionHandler(exceptionHandler);
 
         System.setProperty(freemarker.log.Logger.SYSTEM_PROPERTY_NAME_LOGGER_LIBRARY, freemarker.log.Logger.LIBRARY_NAME_JUL);

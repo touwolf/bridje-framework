@@ -17,6 +17,7 @@
 package org.bridje.core.tpl;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -25,9 +26,14 @@ import java.io.InputStream;
  */
 public class DummyTemplateLoader implements TemplateLoader
 {
+    @Override
+    public Object findTemplate(String path)
+    {
+        return path;
+    }
 
     @Override
-    public InputStream loadTemplate(String path)
+    public InputStream loadTemplate(Object template) throws IOException
     {
         String text = "Hello";
         return new ByteArrayInputStream(text.getBytes());

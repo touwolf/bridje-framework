@@ -16,6 +16,7 @@
 
 package org.bridje.core.tpl;
 
+import java.io.IOException;
 /**
  * An interface that every template engine must implement to provide his
  * functionality in the tpl api.

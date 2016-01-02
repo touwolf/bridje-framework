@@ -32,10 +32,6 @@ public class Path implements Iterable<Path>
      */
     private Path(String[] pathElements)
     {
-        if (pathElements == null || pathElements.length == 0)
-        {
-            throw new IllegalArgumentException("The specified path is not valid .");
-        }
         this.pathElements = pathElements;
     }
 
@@ -129,6 +125,10 @@ public class Path implements Iterable<Path>
      */
     public boolean isSelf()
     {
+        if(pathElements.length < 0)
+        {
+            return false;
+        }
         return ".".equalsIgnoreCase(pathElements[0]);
     }
 
@@ -141,6 +141,10 @@ public class Path implements Iterable<Path>
      */
     public boolean isParent()
     {
+        if(pathElements.length < 0)
+        {
+            return false;
+        }
         return "..".equalsIgnoreCase(pathElements[0]);
     }
 
@@ -155,7 +159,7 @@ public class Path implements Iterable<Path>
      */
     public boolean isLast()
     {
-        return (pathElements.length == 1);
+        return (pathElements.length <= 1);
     }
 
     /**
@@ -280,7 +284,7 @@ public class Path implements Iterable<Path>
 
         if (newPath.trim().isEmpty())
         {
-            throw new IllegalArgumentException("The specified path is not valid .");
+            return new String[]{};
         }
 
         String[] arr = newPath.trim().split("/");

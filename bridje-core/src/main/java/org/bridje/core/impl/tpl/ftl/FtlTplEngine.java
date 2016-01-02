@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package org.bridje.core.tpl;
+package org.bridje.core.impl.tpl.ftl;
 
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Priority;
+import org.bridje.core.tpl.TemplateLoader;
+import org.bridje.core.tpl.TplEngine;
+import org.bridje.core.tpl.TplEngineContext;
 
-/**
- *
- * @author Gilberto
- */
 @Component
-@Priority(-10)
-public class DummyTemplatesProvider implements TemplatesProvider
+@Priority(100)
+public class FtlTplEngine implements TplEngine
 {
-
     @Override
-    public TemplateLoader createDefaultLoader()
+    public String getExtension()
     {
-        return new DummyTemplateLoader();
+        return "ftl";
     }
 
     @Override
-    public TemplateLoader createLoader(String path)
+    public TplEngineContext createContext(TemplateLoader loader)
     {
-        return new DummyTemplateLoader();
+        return new FtlTplContextImpl(loader);
     }
     
 }

@@ -44,7 +44,7 @@ public class DummyTplEngineContext implements TplEngineContext
     }
 
     @Override
-    public void render(String template, Map data, OutputStream os)
+    public void render(String template, Map data, OutputStream os) throws IOException
     {
         InputStream is = loader.loadTemplate(template);
         try
@@ -58,7 +58,7 @@ public class DummyTplEngineContext implements TplEngineContext
     }
 
     @Override
-    public void render(String template, Map data, Writer writer)
+    public void render(String template, Map data, Writer writer) throws IOException
     {
         InputStream is = loader.loadTemplate(template);
         try
@@ -72,7 +72,7 @@ public class DummyTplEngineContext implements TplEngineContext
     }
 
     @Override
-    public String render(String template, Map data)
+    public String render(String template, Map data) throws IOException
     {
         StringWriter sw = new StringWriter();
         render(template, data, sw);

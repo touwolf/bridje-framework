@@ -20,14 +20,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.bridje.core.ioc.annotations.Component;
 import org.bridje.core.ioc.annotations.Inject;
 import org.bridje.core.ioc.annotations.Priority;
-import org.bridje.core.tpl.TplNotFoundException;
+import org.bridje.core.vfs.Path;
 import org.bridje.core.vfs.VfsService;
 import org.bridje.core.vfs.VirtualFile;
 import org.bridje.core.web.HttpException;
@@ -72,15 +69,18 @@ public class ResourceRendererHandler implements WebRequestHandler
 
     private void renderVirtualFile(String path, WebRequestChain chain) throws HttpException
     {
-        VirtualFile file = vfsServ.findFile(path);
-        try(InputStream is = file.open())
+        VirtualFile file = vfsServ.findFile(new Path("/web/public").join(path));
+        if(file != null)
         {
-            IOUtils.copy(is, chain.getResponse().getOutputStream());
-            chain.getResponse().processed();
-        }
-        catch (IOException ex)
-        {
-            throw new HttpException(500, "Internal Server Error");
+            try(InputStream is = file.open())
+            {
+                IOUtils.copy(is, chain.getResponse().getOutputStream());
+                chain.getResponse().processed();
+            }
+            catch (IOException ex)
+            {
+                throw new HttpException(500, "Internal Server Error");
+            }
         }
     }
 

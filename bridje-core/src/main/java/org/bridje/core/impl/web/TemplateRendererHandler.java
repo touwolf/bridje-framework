@@ -88,5 +88,4 @@ public class TemplateRendererHandler implements WebRequestHandler
         }
         return result;
     }
-    
 }
