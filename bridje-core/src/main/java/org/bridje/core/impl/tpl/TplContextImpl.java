@@ -117,7 +117,7 @@ public class TplContextImpl implements TplContext
         TplEngineContext tplEngCtx = findTplEngineContext(template);
         if(tplEngCtx != null)
         {
-            tplEngCtx.exists(template);
+            return tplEngCtx.exists(template);
         }
         return false;
     }

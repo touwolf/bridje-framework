@@ -25,6 +25,7 @@ import org.bridje.core.ioc.annotations.Priority;
 import org.bridje.core.tpl.TplContext;
 import org.bridje.core.tpl.TplNotFoundException;
 import org.bridje.core.tpl.TplService;
+import org.bridje.core.vfs.Path;
 import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
@@ -70,7 +71,7 @@ public class TemplateRendererHandler implements WebRequestHandler
         {
             try
             {
-                String template = "public/" + path + ".ftl";
+                String template = new Path("public/").join(path + ".ftl").toString();
                 if(tplWebContext.exists(template))
                 {
                     tplWebContext.render(template, new HashMap(), chain.getResponse().getOutputStream());
