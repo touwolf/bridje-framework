@@ -3,8 +3,8 @@ package org.bridje.core.impl.http.jetty;
 
 import org.bridje.core.http.HttpServer;
 import org.bridje.core.http.HttpServerException;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 
 @Component
 class HttpServerImpl implements HttpServer

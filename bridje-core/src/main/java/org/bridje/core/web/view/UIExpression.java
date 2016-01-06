@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.bridje.core.el.ElEnviroment;
-import org.bridje.core.tls.Tls;
+import org.bridje.el.ElEnviroment;
+import org.bridje.tls.Tls;
 
 @XmlJavaTypeAdapter(UIExpressionAdapter.class)
 public class UIExpression

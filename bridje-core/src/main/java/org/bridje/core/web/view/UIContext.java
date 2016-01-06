@@ -19,8 +19,8 @@ package org.bridje.core.web.view;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.bridje.core.vfs.VirtualFile;
-import org.bridje.core.vfs.VirtualFolder;
+import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VirtualFolder;
 
 public class UIContext
 {

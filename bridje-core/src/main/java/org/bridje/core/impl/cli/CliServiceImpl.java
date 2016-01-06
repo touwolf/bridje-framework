@@ -38,10 +38,10 @@ import org.bridje.core.cli.StdSystemSession;
 import org.bridje.core.cli.InvalidCliCommandException;
 import org.bridje.core.cli.NoCliParserException;
 import org.bridje.core.cli.NoSuchCommandException;
-import org.bridje.core.ioc.Ioc;
-import org.bridje.core.ioc.IocContext;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.ioc.Ioc;
+import org.bridje.ioc.IocContext;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 
 /**
  *

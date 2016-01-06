@@ -19,7 +19,7 @@ package org.bridje.core.impl.dbc.fact;
 import javax.sql.DataSource;
 import org.bridje.core.dbc.DataSourceConfig;
 import org.bridje.core.dbc.DbcDataSourceFactory;
-import org.bridje.core.ioc.annotations.Component;
+import org.bridje.ioc.Component;
 
 @Component
 public class DbcDataSourceFactoryImpl implements DbcDataSourceFactory

@@ -16,7 +16,7 @@
 
 package org.bridje.core.impl.web;
 
-import org.bridje.core.ioc.IocContext;
+import org.bridje.ioc.IocContext;
 import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequest;
 import org.bridje.core.web.WebRequestChain;

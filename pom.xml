@@ -25,6 +25,11 @@
 
     <modules>
         <module>bridje-core</module>
+        <module>bridje-ioc</module>
+        <module>bridje-vfs</module>
+        <module>bridje-cfg</module>
+        <module>bridje-el</module>
+        <module>bridje-tpl</module>
     </modules>
 
     <scm>

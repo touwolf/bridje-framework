@@ -16,7 +16,7 @@
 
 package org.bridje.core.web;
 
-import org.bridje.core.ioc.IocContext;
+import org.bridje.ioc.IocContext;
 
 /**
  * A chain controller object for the current web request being processed by the

@@ -16,7 +16,7 @@
 
 package org.bridje.core.impl.sql;
 
-import org.bridje.core.ioc.annotations.Component;
+import org.bridje.ioc.Component;
 import org.bridje.core.sql.ColumnExpresion;
 import org.bridje.core.sql.DeleteFromStep;
 import org.bridje.core.sql.FromStep;

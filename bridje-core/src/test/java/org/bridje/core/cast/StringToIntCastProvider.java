@@ -16,7 +16,7 @@
 
 package org.bridje.core.cast;
 
-import org.bridje.core.ioc.annotations.Component;
+import org.bridje.ioc.Component;
 
 /**
  *

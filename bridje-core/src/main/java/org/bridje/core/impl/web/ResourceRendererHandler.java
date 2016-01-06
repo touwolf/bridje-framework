@@ -21,15 +21,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
-import org.bridje.core.ioc.annotations.Priority;
-import org.bridje.core.vfs.Path;
-import org.bridje.core.vfs.VfsService;
-import org.bridje.core.vfs.VirtualFile;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
+import org.bridje.ioc.Priority;
 import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VirtualFile;
 
 @Component
 @Priority(1100)

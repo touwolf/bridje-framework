@@ -19,16 +19,16 @@ package org.bridje.core.impl.web;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.annotation.PostConstruct;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
-import org.bridje.core.ioc.annotations.Priority;
-import org.bridje.core.tpl.TplContext;
-import org.bridje.core.tpl.TplNotFoundException;
-import org.bridje.core.tpl.TplService;
-import org.bridje.core.vfs.Path;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
+import org.bridje.ioc.Priority;
+import org.bridje.tpl.TplContext;
+import org.bridje.tpl.TplNotFoundException;
+import org.bridje.tpl.TplService;
 import org.bridje.core.web.HttpException;
 import org.bridje.core.web.WebRequestChain;
 import org.bridje.core.web.WebRequestHandler;
+import org.bridje.vfs.Path;
 
 @Component
 @Priority(1050)

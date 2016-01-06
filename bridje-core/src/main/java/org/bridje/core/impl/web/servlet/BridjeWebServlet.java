@@ -13,8 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.core.web.WebManager;
 
 @Component

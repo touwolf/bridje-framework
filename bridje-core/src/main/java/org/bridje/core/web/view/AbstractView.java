@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import org.bridje.core.vfs.VirtualFile;
+import org.bridje.vfs.VirtualFile;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractView

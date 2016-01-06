@@ -23,8 +23,8 @@ import org.bridje.core.dbc.DataSourceConfig;
 import org.bridje.core.dbc.DbcConfigProvider;
 import org.bridje.core.dbc.DbcDataSourceFactory;
 import org.bridje.core.dbc.DbcService;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 
 /**
  *

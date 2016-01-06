@@ -23,8 +23,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.bridje.core.cast.CastProvider;
 import org.bridje.core.cast.CastService;
-import org.bridje.core.ioc.annotations.Component;
-import org.bridje.core.ioc.annotations.Inject;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 
 /**
  *

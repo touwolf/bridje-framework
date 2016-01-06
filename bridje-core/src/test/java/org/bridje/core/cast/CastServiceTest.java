@@ -16,7 +16,7 @@
 
 package org.bridje.core.cast;
 
-import org.bridje.core.ioc.Ioc;
+import org.bridje.ioc.Ioc;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;

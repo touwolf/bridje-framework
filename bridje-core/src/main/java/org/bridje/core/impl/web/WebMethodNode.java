@@ -19,7 +19,7 @@ package org.bridje.core.impl.web;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import org.bridje.core.ioc.IocContext;
+import org.bridje.ioc.IocContext;
 import org.bridje.core.web.WebMethod;
 
 class WebMethodNode
