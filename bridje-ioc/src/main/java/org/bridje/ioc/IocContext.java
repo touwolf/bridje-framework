@@ -25,23 +25,30 @@ import java.util.Collection;
  * find components and services in the scope that it manages.
  * <p>
  * An implementation of this interface can be obtained via the Ioc interface or
- * by injecting {@link org.bridje.ioc.annotations.Inject} it in any
- * component you want.
+ * by injecting {@link org.bridje.ioc.annotations.Inject} it in any component
+ * you want.
  */
 public interface IocContext
 {
     /**
+     * Gets the scope of the current context.
+     *
+     * @return An string object representing the scope name used for this
+     * context.
+     */
+    String getScope();
+
+    /**
      * This method finds the highest priority component that provides the given
      * service.
      * <p>
-     * @param <T>     The generic type of the class of the service that this
-     *                method should find.
+     * @param <T> The generic type of the class of the service that this method
+     * should find.
      * @param service The class that represents the service that this method
-     *                must find.
+     * must find.
      * <p>
      * @return An object that extends or implement the class of the service
-     *         provided, or null if no component provides this services in the
-     *         context.
+     * provided, or null if no component provides this services in the context.
      */
     <T> T find(Class<T> service);
 
@@ -49,14 +56,14 @@ public interface IocContext
      * This method finds the highest priority component that provides the given
      * generic service.
      * <p>
-     * @param <T>       The generic type of the class of the service that this
-     *                  method should return.
-     * @param service   The {@link java.​lang.​reflect.Type} that represents the service
-     *                  that this method must find.
+     * @param <T> The generic type of the class of the service that this method
+     * should return.
+     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * service that this method must find.
      * @param resultCls The expected return class of this method.
      * <p>
      * @return An object that extends or implement the service provided, or null
-     *         if no component provides this services in the context.
+     * if no component provides this services in the context.
      */
     <T> T findGeneric(Type service, Class<T> resultCls);
 
@@ -64,17 +71,16 @@ public interface IocContext
      * This method finds the component that provides the given service with less
      * priority than the priority parameter.
      * <p>
-     * @param <T>      The generic type of the class of the service that this
-     *                 method should find.
-     * @param service  The class that represents the service that this method
-     *                 must find.
+     * @param <T> The generic type of the class of the service that this method
+     * should find.
+     * @param service The class that represents the service that this method
+     * must find.
      * <p>
      * @param priority The given component must have a priority value greater
-     *                 than this parameter.
+     * than this parameter.
      * <p>
      * @return An object that extends or implement the class of the service
-     *         provided, or null if no component provides this services in the
-     *         context.
+     * provided, or null if no component provides this services in the context.
      */
     <T> T findNext(Class<T> service, int priority);
 
@@ -82,31 +88,31 @@ public interface IocContext
      * This method finds the component that provides the given generic service
      * with less priority than the priority parameter.
      * <p>
-     * @param <T>       The generic type of the class of the service that this
-     *                  method should return.
-     * @param service   The {@link java.​lang.​reflect.Type} that represents the service
-     *                  that this method must find.
+     * @param <T> The generic type of the class of the service that this method
+     * should return.
+     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * service that this method must find.
      * @param resultCls The expected return class of this method.
      * <p>
-     * @param priority  The given component must have a priority value greater
-     *                  than this parameter.
+     * @param priority The given component must have a priority value greater
+     * than this parameter.
      * <p>
      * @return An object that extends or implement the service provided, or null
-     *         if no component provides this services in the context.
+     * if no component provides this services in the context.
      */
     <T> T findNextGeneric(Type service, Class<T> resultCls, int priority);
 
     /**
      * This method finds all the components that provides the given service.
      * <p>
-     * @param <T>     The generic type of the class of the service that this
-     *                method should find.
+     * @param <T> The generic type of the class of the service that this method
+     * should find.
      * @param service The class that represents the service that this method
-     *                must find.
+     * must find.
      * <p>
      * @return An array of objects who extends or implement the class of the
-     *         service provided, or an empty array if no component provides this
-     *         services in the context.
+     * service provided, or an empty array if no component provides this
+     * services in the context.
      */
     <T> T[] findAll(Class<T> service);
 
@@ -114,15 +120,15 @@ public interface IocContext
      * This method finds all the components that provides the given generic
      * service.
      * <p>
-     * @param <T>       The generic type of the class of the service that this
-     *                  method should find.
-     * @param service   The class that represents the service that this method
-     *                  must find.
+     * @param <T> The generic type of the class of the service that this method
+     * should find.
+     * @param service The class that represents the service that this method
+     * must find.
      * @param resultCls The expected return class of this method.
      * <p>
      * @return An array of objects who extends or implement the service
-     *         provided, or an empty array if no component provides this
-     *         services in the context.
+     * provided, or an empty array if no component provides this services in the
+     * context.
      */
     <T> T[] findAllGeneric(Type service, Class<T> resultCls);
 
@@ -133,7 +139,7 @@ public interface IocContext
      * @param service The type of the service to look for.
      * <p>
      * @return {@literal true} If at least one component provides this service,
-     *         {@literal false} otherwise.
+     * {@literal false} otherwise.
      */
     boolean exists(Type service);
 
@@ -142,8 +148,8 @@ public interface IocContext
      * <p>
      * @param component The class of the component to look for.
      * <p>
-     * @return {@literal true} If this class represents a component of the context,
-     *         {@literal false} otherwise.
+     * @return {@literal true} If this class represents a component of the
+     * context, {@literal false} otherwise.
      */
     boolean existsComponent(Class component);
 
@@ -151,14 +157,14 @@ public interface IocContext
      * The parent of this context.
      * <p>
      * @return The IocContext instance representing the parent of this context,
-     *         or null if this context has no parent.
+     * or null if this context has no parent.
      */
     IocContext getParent();
 
     /**
      * Create a child IocContext of this context.
      * <p>
-     * @param scope    The scope of the new context.
+     * @param scope The scope of the new context.
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope);
@@ -166,9 +172,9 @@ public interface IocContext
     /**
      * Create a child IocContext of this context.
      * <p>
-     * @param scope     The scope of the new context.
+     * @param scope The scope of the new context.
      * @param instances A collection of objects that will be components of the
-     *                  new context.
+     * new context.
      * @return The new IocContext instance created as child of this context.
      */
     IocContext createChild(String scope, Collection instances);

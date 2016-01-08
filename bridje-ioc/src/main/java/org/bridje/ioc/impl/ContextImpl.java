@@ -20,9 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -295,5 +293,17 @@ class ContextImpl implements IocContext
     public ClassRepository getClassRepository()
     {
         return classSet;
+    }
+
+    @Override
+    public String getScope()
+    {
+        return scope;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "IocContext: " + scope;
     }
 }

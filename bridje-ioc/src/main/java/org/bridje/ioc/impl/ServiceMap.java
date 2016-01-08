@@ -130,6 +130,7 @@ class ServiceMap
     private List<Type> findServices(Class<?> component)
     {
         List<Type> result = new ArrayList<>();
+        result.add(Object.class);
         result.add(component);
         fillServicesSuperClasses(component, result);
         fillServicesIntefaces(component, result);
