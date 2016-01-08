@@ -16,13 +16,20 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.PriorityBlockingQueue;
 import org.bridje.ioc.Priority;
 
 class ClassUtils
@@ -49,6 +56,18 @@ class ClassUtils
             return ((Class)supClass).getComponentType();
         }
         return null;
+    }
+    
+    public static boolean isArray(Type supClass)
+    {
+        if(supClass instanceof Class)
+        {
+            return ((Class) supClass).isArray();
+        }
+        else
+        {
+            return supClass instanceof GenericArrayType;
+        }
     }
     
     public static Class findClassFromType(Type supClass)
@@ -87,5 +106,90 @@ class ClassUtils
             v1 = a1.value();
         }
         return v1;
+    }
+
+    public static boolean isCollection(Type service)
+    {
+        Class cls = findClassFromType(service);
+        if(cls == null)
+        {
+            return false;
+        }
+        return cls.getPackage().getName().equals("java.util") 
+                && Collection.class.isAssignableFrom(cls) 
+                && !Map.class.isAssignableFrom(cls);
+    }
+
+    public static boolean isMap(Type service)
+    {
+        Class cls = findClassFromType(service);
+        if(cls == null)
+        {
+            return false;
+        }
+        return cls.getPackage().getName().equals("java.util") 
+                && Map.class.isAssignableFrom(cls);
+    }
+
+    public static Collection createCollection(Class collectionCls, Object[] data) throws InstantiationException, IllegalAccessException
+    {
+        Collection res = null;
+        Constructor construct = findDefConstructor(collectionCls);
+        if(construct != null && construct.isAccessible())
+        {
+            res = (Collection) collectionCls.newInstance();
+        }
+        else if(collectionCls.isAssignableFrom(LinkedList.class))
+        {
+            res = new ArrayList(data.length);
+        }
+        else if(collectionCls.isAssignableFrom(LinkedHashSet.class))
+        {
+            res = new LinkedHashSet(data.length);
+        }
+        else if(collectionCls.isAssignableFrom(PriorityBlockingQueue.class))
+        {
+            PriorityBlockingQueue q = new PriorityBlockingQueue(data.length);
+        }
+        if(res != null)
+        {
+            res.addAll(Arrays.asList(data));
+        }
+        return res;
+    }
+
+    private static Constructor findDefConstructor(Class collectionCls)
+    {
+        Constructor[] constructors = collectionCls.getConstructors();
+        for (Constructor constructor : constructors)
+        {
+            if(constructor.getParameterCount() == 0)
+            {
+                return constructor;
+            }
+        }
+        return null;
+    }
+
+    public static Map createMap(Class mapCls, Object[] data) throws InstantiationException, IllegalAccessException
+    {
+        Map map = null;
+        Constructor construct = findDefConstructor(mapCls);
+        if(construct != null && construct.isAccessible())
+        {
+            map = (Map) mapCls.newInstance();
+        }
+        else if(mapCls.isAssignableFrom(LinkedHashMap.class))
+        {
+            map = new LinkedHashMap(data.length);
+        }
+        if(map != null)
+        {
+            for (Object cmp : data)
+            {
+                map.put(cmp.getClass(), cmp);
+            }
+        }
+        return map;
     }
 }

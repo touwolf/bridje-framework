@@ -23,8 +23,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -117,32 +120,88 @@ class Instanciator
     
     public void injectDependency(Class cls, Object obj, Field field, Integer priority)
     {
-        Type service = field.getGenericType();
-        Object componentObj = null;
-        Class serviceCls = ClassUtils.findClassFromType(service);
-        if(service instanceof Class && serviceCls.isArray())
+        try
         {
-            service = serviceCls.getComponentType();
-            serviceCls = ClassUtils.findClassFromType(service);
-            componentObj = context.findAllGeneric(service, serviceCls);
-        }
-        else
-        {
-            if(priority == null)
+            Type service = field.getGenericType();
+            Object componentObj = null;
+            if(ClassUtils.isArray(service))
             {
-                componentObj = context.findGeneric(service, serviceCls);
+                service = ClassUtils.findTypeFromArray(service);
+                if(ClassUtils.isArray(service) 
+                        || ClassUtils.isCollection(service) 
+                        || ClassUtils.isMap(service))
+                {
+                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
+                    return ;
+                }
+                Class serviceCls = ClassUtils.findClassFromType(service);
+                componentObj = context.findAllGeneric(service, serviceCls);
+            }
+            else if(ClassUtils.isCollection(service))
+            {
+                Class collectionCls = ClassUtils.findClassFromType(service);
+                Type[] typeArgs = ((ParameterizedType)service).getActualTypeArguments();
+                service = typeArgs[0];
+                if(ClassUtils.isArray(service) 
+                        || ClassUtils.isCollection(service) 
+                        || ClassUtils.isMap(service))
+                {
+                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
+                    return ;
+                }
+                Class serviceCls = ClassUtils.findClassFromType(service);
+                Object[] data = context.findAllGeneric(service, serviceCls);
+                Collection col = ClassUtils.createCollection(collectionCls, data);
+                componentObj = col;
+            }
+            else if(ClassUtils.isMap(service))
+            {
+                Class mapCls = ClassUtils.findClassFromType(service);
+                Type[] typeArgs = ((ParameterizedType)service).getActualTypeArguments();
+                Type key = typeArgs[0];
+                if(ClassUtils.isArray(key) 
+                        || ClassUtils.isCollection(key) 
+                        || ClassUtils.isMap(key))
+                {
+                    LOG.log(Level.WARNING, "Cannot inject {0}, You must have a class as map key for the api to inject it.", new Object[]{field.toString(), service.toString()});
+                    return ;
+                }
+                Class keyClass = ClassUtils.findClassFromType(typeArgs[0]);
+                if( !(keyClass instanceof Class && keyClass.equals(Class.class)) )
+                {
+                    LOG.log(Level.WARNING, "Cannot inject {0}, You must have a class as map key for the api to inject it.", new Object[]{field.toString(), service.toString()});
+                    return ;
+                }
+                service = typeArgs[1];
+                if(ClassUtils.isArray(service) 
+                        || ClassUtils.isCollection(service) 
+                        || ClassUtils.isMap(service))
+                {
+                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
+                    return ;
+                }
+                Class serviceCls = ClassUtils.findClassFromType(service);
+                Object[] data = context.findAllGeneric(service, serviceCls);
+                Map map = ClassUtils.createMap(mapCls, data);
+                componentObj = map;
             }
             else
             {
-                componentObj = context.findNextGeneric(service, serviceCls, ClassUtils.findPriority(cls));
+                Class serviceCls = ClassUtils.findClassFromType(service);
+                if(priority == null)
+                {
+                    componentObj = context.findGeneric(service, serviceCls);
+                }
+                else
+                {
+                    componentObj = context.findNextGeneric(service, serviceCls, ClassUtils.findPriority(cls));
+                }
             }
-        }
-        try
-        {
+
             field.setAccessible(true);
             field.set(obj, componentObj);
         }
-        catch(IllegalArgumentException | IllegalAccessException ex)
+        catch(IllegalArgumentException | IllegalAccessException | InstantiationException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }

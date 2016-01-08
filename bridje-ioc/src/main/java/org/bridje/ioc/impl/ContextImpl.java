@@ -139,7 +139,7 @@ class ContextImpl implements IocContext
     public <T> T[] findAll(Class<T> service)
     {
         T[] result = findAllInternal(service);
-        if(result != null)
+        if(result.length > 0)
         {
             return result;
         }
@@ -147,14 +147,14 @@ class ContextImpl implements IocContext
         {
             return parent.findAll(service);
         }
-        return null;
+        return result;
     }
 
     @Override
     public <T> T[] findAllGeneric(Type service, Class<T> resultCls)
     {
         T[] result = findAllGenericInternal(service, resultCls);
-        if(result != null)
+        if(result.length > 0)
         {
             return result;
         }
@@ -162,7 +162,7 @@ class ContextImpl implements IocContext
         {
             return parent.findAllGeneric(service, resultCls);
         }
-        return null;
+        return result;
     }
     
     @Override
@@ -266,7 +266,7 @@ class ContextImpl implements IocContext
             T[] result = (T[])Array.newInstance(service, components.size());
             return (T[])resultList.toArray(result);
         }
-        return null;
+        return (T[])Array.newInstance(service, 0);
     }
     
     private <T> T[] findAllGenericInternal(Type service, Class<T> resultClass)
@@ -286,7 +286,7 @@ class ContextImpl implements IocContext
             T[] result = (T[])Array.newInstance(resultClass, components.size());
             return (T[])resultList.toArray(result);
         }
-        return null;
+        return (T[])Array.newInstance(resultClass, 0);
     }
 
     @Override
