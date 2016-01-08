@@ -17,6 +17,7 @@
 package org.bridje.ioc.impl;
 
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -94,12 +95,20 @@ class ServiceMap
 
     public List<Class<?>> findAll(Type service)
     {
-        List<Class<?>> result = map.get(service);
-        if(result == null)
+        if(service instanceof WildcardType)
         {
-            return null;
+            service = ClassUtils.findTypeFromWildcard((WildcardType)service);
         }
-        return Collections.unmodifiableList(result);
+        if(service != null)
+        {
+            List<Class<?>> result = map.get(service);
+            if(result == null)
+            {
+                return null;
+            }
+            return Collections.unmodifiableList(result);
+        }
+        return Collections.EMPTY_LIST;
     }
 
     public static ServiceMap findByScope(String scope)

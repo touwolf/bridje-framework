@@ -21,6 +21,7 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -82,6 +83,14 @@ class ClassUtils
             if(rawType instanceof Class)
             {
                 return ((Class)rawType);
+            }
+        }
+        else if(supClass instanceof WildcardType)
+        {
+            Type wildCardType = findTypeFromWildcard((WildcardType)supClass);
+            if(wildCardType instanceof Class)
+            {
+                return (Class)wildCardType;
             }
         }
         return null;
@@ -191,5 +200,19 @@ class ClassUtils
             }
         }
         return map;
+    }
+
+    public static Type findTypeFromWildcard(WildcardType service)
+    {
+        Type[] upperBounds = ((WildcardType)service).getUpperBounds();
+        if(upperBounds.length == 1)
+        {
+            return (upperBounds[0]);
+        }
+        else if(upperBounds.length == 0)
+        {
+            return Object.class;
+        }
+        return null;
     }
 }
