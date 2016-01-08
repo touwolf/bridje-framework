@@ -37,7 +37,7 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated method.
      */
-    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator);
+    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, MethodNavigator<A> navigator);
 
     /**
      * Navigates through all fields of all component classes registred in this
@@ -51,7 +51,7 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated field.
      */
-    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator);
+    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator);
 
     /**
      * Navigates through all component classes registred in this repository,
@@ -65,5 +65,5 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated class.
      */
-    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, AnnotClassNavigator<A> navigator);
+    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, ClassNavigator<A> navigator);
 }

@@ -34,24 +34,6 @@ public class Ioc
     }
 
     /**
-     * This method initiates the {@link IocContext} for the APPLICATION scope,
-     * and must be called one at the begining of the application, before any
-     * call to the {@link Ioc#context()} method, in order to register default
-     * implementations for especific services.
-     * <p>
-     * @param registers An array of {@link Register} that defines the default
-     *                  implementations to by use when looking for specific
-     *                  services in the {@link IocContext}.
-     * <p>
-     * @return The APPLICATION scoped {@link IocContext} instance for this
-     *         application.
-     */
-    public static IocContext init(Register... registers)
-    {
-        return ContextFactory.context(registers);
-    }
-
-    /**
      * This method returns the {@link IocContext} for the application scope. You
      * may call this method the number of times you whant. in contrast with the
      * {@link Ioc#init(org.bridje.core.ioc.impl.Register...)} witch may be call

@@ -16,7 +16,6 @@
 
 package org.bridje.ioc.impl;
 
-import org.bridje.ioc.Register;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,34 +40,23 @@ public class ContextFactory
 
     /**
      * This method returns the IocContext for the application scope.
-     * <p>
-     * @param registers An array of {@link Register} that defines the default
-     *                  implementations to by use when looking for specific
-     *                  services in the {@link IocContext}.
-     * <p>
+     *
      * @return An object providing de IocContext for the application scope.
      */
-    public static IocContext context(Register... registers)
+    public static IocContext context()
     {
         if (context == null)
         {
-            context = createApplicationContext(registers);
-        }
-        else
-        {
-            if (registers != null && registers.length > 0)
-            {
-                throw new IllegalStateException("The APPLICATION Context is already created.");
-            }
+            context = createApplicationContext();
         }
         return context;
     }
 
-    private static IocContext createApplicationContext(Register... register)
+    private static IocContext createApplicationContext()
     {
         try
         {
-            return new ContextImpl(register);
+            return new ContextImpl();
         }
         catch (IOException ex)
         {

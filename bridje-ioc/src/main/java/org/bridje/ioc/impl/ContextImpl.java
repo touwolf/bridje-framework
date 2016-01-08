@@ -16,7 +16,6 @@
 
 package org.bridje.ioc.impl;
 
-import org.bridje.ioc.Register;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
@@ -45,33 +44,24 @@ class ContextImpl implements IocContext
     private final Container container;
     
     private final IocContext parent;
-
-    /**
-     * Register componets manualy
-     */
-    private List<Register> registers;
     
     public ContextImpl() throws IOException
     {
         this("APPLICATION");
     }
     
-    public ContextImpl(Register... register) throws IOException
+    private ContextImpl(String scope) throws IOException
     {
-        this("APPLICATION", null, register);
+        this(scope, null, null);
     }
     
-    private ContextImpl(String scope, Register... register) throws IOException
+    private ContextImpl(String scope, Collection instances) throws IOException
     {
-        this(scope, null, null, register);
-    }
-    
-    private ContextImpl(String scope, Collection instances, Register... register) throws IOException
-    {
-        this(scope, instances, null, register);
+        this(scope, instances, null);
     }
 
-    private ContextImpl(String scope, Collection instances, IocContext parent, Register... register) throws IOException
+    @SuppressWarnings("LeakingThisInConstructor")
+    private ContextImpl(String scope, Collection instances, IocContext parent) throws IOException
     {
         this.scope = scope;
         this.parent = parent;
@@ -94,7 +84,6 @@ class ContextImpl implements IocContext
             allInstances.addAll(instances);
         }
         container = new Container(creator, allInstances);
-        register(register);
     }
 
     @Override
@@ -213,17 +202,17 @@ class ContextImpl implements IocContext
     }
 
     @Override
-    public IocContext createChild(String scope, Register... registers)
+    public IocContext createChild(String scope)
     {
-        return createChild(scope, null, registers);
+        return createChild(scope, null);
     }
 
     @Override
-    public IocContext createChild(String scope, Collection instances, Register... registers)
+    public IocContext createChild(String scope, Collection instances)
     {
         try
         {
-            return new ContextImpl(scope, instances, this, registers);
+            return new ContextImpl(scope, instances, this);
         }
         catch(Exception ex)
         {
@@ -234,13 +223,7 @@ class ContextImpl implements IocContext
 
     private <T> T findInternal(Class<T> service)
     {
-        Class<? extends T> component = findRegisterService(service);
-        if(component != null)
-        {
-            return container.create(component);
-        }
-        
-        component = serviceMap.findOne(service);
+        Class<? extends T> component = serviceMap.findOne(service);
         if(component != null)
         {
             return container.create(component);
@@ -305,34 +288,6 @@ class ContextImpl implements IocContext
             T[] result = (T[])Array.newInstance(resultClass, components.size());
             return (T[])resultList.toArray(result);
         }
-        return null;
-    }
-
-    private void register(Register... registers) 
-    {
-        if(null == this.registers)
-        {
-            this.registers = new LinkedList<>();
-        }
-        
-        this.registers.addAll(Arrays.asList(registers));
-    }
-
-    private <T> Class<? extends T> findRegisterService(Class<T> service) 
-    {
-        if(null == registers)
-        {
-            return null;
-        }
-        
-        for (Register register : registers) 
-        {
-            if(register.getService() == service)
-            {
-                return (Class<T>)register.getComponent();
-            }
-        }
-        
         return null;
     }
 

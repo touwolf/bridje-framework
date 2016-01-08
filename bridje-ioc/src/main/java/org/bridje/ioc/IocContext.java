@@ -159,10 +159,9 @@ public interface IocContext
      * Create a child IocContext of this context.
      * <p>
      * @param scope    The scope of the new context.
-     * @param register <p>
      * @return The new IocContext instance created as child of this context.
      */
-    IocContext createChild(String scope, Register... register);
+    IocContext createChild(String scope);
 
     /**
      * Create a child IocContext of this context.
@@ -170,10 +169,9 @@ public interface IocContext
      * @param scope     The scope of the new context.
      * @param instances A collection of objects that will be components of the
      *                  new context.
-     * @param register <p>
      * @return The new IocContext instance created as child of this context.
      */
-    IocContext createChild(String scope, Collection instances, Register... register);
+    IocContext createChild(String scope, Collection instances);
 
     /**
      * Obtains the class repository associated with this context. that allows to

@@ -34,11 +34,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.AnnotClassNavigator;
-import org.bridje.ioc.AnnotFieldNavigator;
-import org.bridje.ioc.AnnotMethodNavigator;
 import org.bridje.ioc.ClassRepository;
-import org.bridje.ioc.CompAnnotProcessor;
+import org.bridje.ioc.ComponentProcessor;
+import org.bridje.ioc.ClassNavigator;
+import org.bridje.ioc.MethodNavigator;
+import org.bridje.ioc.FieldNavigator;
 
 /**
  * This class represents a set of classes, his propouse is to serve as a container
@@ -47,7 +47,7 @@ import org.bridje.ioc.CompAnnotProcessor;
  */
 class ClassSet implements Iterable<Class<?>>, ClassRepository
 {
-    private static final Logger LOG = Logger.getLogger(CompAnnotProcessor.class.getName());
+    private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
 
     private static Map<String,ClassSet> classSetCache;
     
@@ -179,7 +179,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     private static Map<String, String> loadPropFilesCache() throws IOException
     {
         Map<String, String> result = new HashMap<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(CompAnnotProcessor.COMPONENTS_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ComponentProcessor.COMPONENTS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();
@@ -213,7 +213,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, AnnotMethodNavigator<A> navigator)
+    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, MethodNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
@@ -230,7 +230,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, AnnotFieldNavigator<A> navigator) 
+    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator) 
     {
         for (Class<?> cls : this)
         {
@@ -247,7 +247,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }    
 
     @Override
-    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, AnnotClassNavigator<A> navigator)
+    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, ClassNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {

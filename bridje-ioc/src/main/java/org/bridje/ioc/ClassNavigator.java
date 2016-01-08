@@ -1,6 +1,8 @@
 /*
  * Copyright 2015 Bridje Framework.
  *
+ * Alejandro Ferrandiz (acksecurity[at]hotmail.com)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,26 +19,23 @@
 package org.bridje.ioc;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 /**
  * Functional interface used by {@link ClassRepository} for navigating annotated 
- * methods in the inversion of control context.
+ * classes in the inversion of control context.
  * <p>
- * @param <A> The annotation that the methods must have in orther to be accept by
+ * @param <A> The annotation that classes must have in orther to be accept by
  *            the navigator.
  */
 @FunctionalInterface
-public interface AnnotMethodNavigator<A extends Annotation>
+public interface ClassNavigator<A extends Annotation>
 {
     /**
-     * This method is call when ever a method in a component if found to have the
-     * given annotation.
+     * This method is call when ever a class if found to have the given
+     * annotation.
      * <p>
-     * @param method     The method been found.
-     * @param component  The class of the component that contains the found
-     *                   method.
-     * @param annotation The instance of the annotation of the method.
+     * @param component  The class of the component found.
+     * @param annotation The instance of the annotation of the component.
      */
-    void accept(Method method, Class component, A annotation);
+    void accept(Class component, A annotation);
 }

@@ -28,7 +28,7 @@
                 <artifactId>maven-processor-plugin</artifactId>
                 <configuration>
                     <processors>
-                        <processor>org.bridje.ioc.CompAnnotProcessor</processor>
+                        <processor>org.bridje.ioc.ComponentProcessor</processor>
                     </processors>
                 </configuration>
                 <executions>
