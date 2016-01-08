@@ -25,6 +25,7 @@
 
     <modules>
         <module>bridje-ioc</module>
+        <module>bridje-tls</module>
     </modules>
 
     <scm>

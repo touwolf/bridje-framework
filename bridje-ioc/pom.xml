@@ -11,7 +11,7 @@
     <artifactId>bridje-ioc</artifactId>
 
     <name>Bridje IoC</name>
-    <description>Bridje Ioc API</description>
+    <description>Bridje Inversion of Control API</description>
     <url>http://www.bridje.org</url>
 
     <build>
