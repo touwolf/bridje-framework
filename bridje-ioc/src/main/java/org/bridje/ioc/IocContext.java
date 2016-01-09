@@ -53,21 +53,6 @@ public interface IocContext
     <T> T find(Class<T> service);
 
     /**
-     * This method finds the highest priority component that provides the given
-     * generic service.
-     * <p>
-     * @param <T> The generic type of the class of the service that this method
-     * should return.
-     * @param service The {@link java.​lang.​reflect.Type} that represents the
-     * service that this method must find.
-     * @param resultCls The expected return class of this method.
-     * <p>
-     * @return An object that extends or implement the service provided, or null
-     * if no component provides this services in the context.
-     */
-    <T> T findGeneric(Type service, Class<T> resultCls);
-
-    /**
      * This method finds the component that provides the given service with less
      * priority than the priority parameter.
      * <p>
@@ -85,24 +70,6 @@ public interface IocContext
     <T> T findNext(Class<T> service, int priority);
 
     /**
-     * This method finds the component that provides the given generic service
-     * with less priority than the priority parameter.
-     * <p>
-     * @param <T> The generic type of the class of the service that this method
-     * should return.
-     * @param service The {@link java.​lang.​reflect.Type} that represents the
-     * service that this method must find.
-     * @param resultCls The expected return class of this method.
-     * <p>
-     * @param priority The given component must have a priority value greater
-     * than this parameter.
-     * <p>
-     * @return An object that extends or implement the service provided, or null
-     * if no component provides this services in the context.
-     */
-    <T> T findNextGeneric(Type service, Class<T> resultCls, int priority);
-
-    /**
      * This method finds all the components that provides the given service.
      * <p>
      * @param <T> The generic type of the class of the service that this method
@@ -117,21 +84,32 @@ public interface IocContext
     <T> T[] findAll(Class<T> service);
 
     /**
-     * This method finds all the components that provides the given generic
-     * service.
+     * This method finds the highest priority component that provides the given
+     * generic service.
      * <p>
-     * @param <T> The generic type of the class of the service that this method
-     * should find.
-     * @param service The class that represents the service that this method
-     * must find.
-     * @param resultCls The expected return class of this method.
+     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * service that this method must find.
      * <p>
-     * @return An array of objects who extends or implement the service
-     * provided, or an empty array if no component provides this services in the
-     * context.
+     * @return An object that extends or implement the service provided, or null
+     * if no component provides this services in the context.
      */
-    <T> T[] findAllGeneric(Type service, Class<T> resultCls);
+    Object findGeneric(Type service);
 
+    /**
+     * This method finds the component that provides the given generic service
+     * with less priority than the priority parameter.
+     * <p>
+     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * service that this method must find.
+     * <p>
+     * @param priority The given component must have a priority value greater
+     * than this parameter.
+     * <p>
+     * @return An object that extends or implement the service provided, or null
+     * if no component provides this services in the context.
+     */
+    Object findNextGeneric(Type service, int priority);
+    
     /**
      * This method finds if a service is provided by a least one component in
      * the context.

@@ -62,27 +62,29 @@ class ServiceMap
 
     public <T> Class<? extends T> findOne(Type service)
     {
-        List<Class<?>> lst = map.get(service);
-        if(lst == null || lst.isEmpty())
-        {
-            return null;
-        }
-        return (Class)lst.get(0);
+        return findOne(service, null);
     }
 
-    public <T> Class<? extends T> findOne(Type service, int priority)
+    public <T> Class<? extends T> findOne(Type service, Integer priority)
     {
         List<Class<?>> lst = map.get(service);
         if(lst == null || lst.isEmpty())
         {
             return null;
         }
-        for (Class<?> cls : lst)
+        if(priority == null)
         {
-            int v1 = ClassUtils.findPriority(cls);
-            if(v1 > priority || v1 == Integer.MAX_VALUE)
+            return (Class)lst.get(0);
+        }
+        else
+        {
+            for (Class<?> cls : lst)
             {
-                return (Class)cls;
+                int v1 = ClassUtils.findPriority(cls);
+                if(v1 > priority || v1 == Integer.MAX_VALUE)
+                {
+                    return (Class)cls;
+                }
             }
         }
         return null;
@@ -97,7 +99,7 @@ class ServiceMap
     {
         if(service instanceof WildcardType)
         {
-            service = ClassUtils.findTypeFromWildcard((WildcardType)service);
+            service = ClassUtils.typeOf((WildcardType)service);
         }
         if(service != null)
         {
@@ -155,7 +157,7 @@ class ServiceMap
             {
                 servicesList.add(supClass);
             }
-            Class cls = ClassUtils.findClassFromType(supClass);
+            Class cls = ClassUtils.rawClass(supClass);
             servicesList.add(cls);
             if(cls != null)
             {
@@ -177,7 +179,7 @@ class ServiceMap
             {
                 servicesList.add(ifc);
             }
-            Class icfCls = ClassUtils.findClassFromType(ifc);
+            Class icfCls = ClassUtils.rawClass(ifc);
             servicesList.add(icfCls);
             if(icfCls != null)
             {

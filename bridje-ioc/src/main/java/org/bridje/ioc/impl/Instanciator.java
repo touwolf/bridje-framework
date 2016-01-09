@@ -23,11 +23,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -86,7 +83,7 @@ class Instanciator
                     declaredMethod.setAccessible(true);
                     declaredMethod.invoke(obj);
                 }
-                catch(Exception ex)
+                catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
                 {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -123,85 +120,20 @@ class Instanciator
         try
         {
             Type service = field.getGenericType();
-            Object componentObj = null;
-            if(ClassUtils.isArray(service))
+            Object componentObj;
+            if(priority == null)
             {
-                service = ClassUtils.findTypeFromArray(service);
-                if(ClassUtils.isArray(service) 
-                        || ClassUtils.isCollection(service) 
-                        || ClassUtils.isMap(service))
-                {
-                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
-                    return ;
-                }
-                Class serviceCls = ClassUtils.findClassFromType(service);
-                componentObj = context.findAllGeneric(service, serviceCls);
-            }
-            else if(ClassUtils.isCollection(service))
-            {
-                Class collectionCls = ClassUtils.findClassFromType(service);
-                Type[] typeArgs = ((ParameterizedType)service).getActualTypeArguments();
-                service = typeArgs[0];
-                if(ClassUtils.isArray(service) 
-                        || ClassUtils.isCollection(service) 
-                        || ClassUtils.isMap(service))
-                {
-                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
-                    return ;
-                }
-                Class serviceCls = ClassUtils.findClassFromType(service);
-                Object[] data = context.findAllGeneric(service, serviceCls);
-                Collection col = ClassUtils.createCollection(collectionCls, data);
-                componentObj = col;
-            }
-            else if(ClassUtils.isMap(service))
-            {
-                Class mapCls = ClassUtils.findClassFromType(service);
-                Type[] typeArgs = ((ParameterizedType)service).getActualTypeArguments();
-                Type key = typeArgs[0];
-                if(ClassUtils.isArray(key) 
-                        || ClassUtils.isCollection(key) 
-                        || ClassUtils.isMap(key))
-                {
-                    LOG.log(Level.WARNING, "Cannot inject {0}, You must have a class as map key for the api to inject it.", new Object[]{field.toString(), service.toString()});
-                    return ;
-                }
-                Class keyClass = ClassUtils.findClassFromType(typeArgs[0]);
-                if( !(keyClass instanceof Class && keyClass.equals(Class.class)) )
-                {
-                    LOG.log(Level.WARNING, "Cannot inject {0}, You must have a class as map key for the api to inject it.", new Object[]{field.toString(), service.toString()});
-                    return ;
-                }
-                service = typeArgs[1];
-                if(ClassUtils.isArray(service) 
-                        || ClassUtils.isCollection(service) 
-                        || ClassUtils.isMap(service))
-                {
-                    LOG.log(Level.WARNING, "Cannot inject {0}, The type {1} is invalid for injection.", new Object[]{field.toString(), service.toString()});
-                    return ;
-                }
-                Class serviceCls = ClassUtils.findClassFromType(service);
-                Object[] data = context.findAllGeneric(service, serviceCls);
-                Map map = ClassUtils.createMap(mapCls, data);
-                componentObj = map;
+                componentObj = context.findGeneric(service);
             }
             else
             {
-                Class serviceCls = ClassUtils.findClassFromType(service);
-                if(priority == null)
-                {
-                    componentObj = context.findGeneric(service, serviceCls);
-                }
-                else
-                {
-                    componentObj = context.findNextGeneric(service, serviceCls, ClassUtils.findPriority(cls));
-                }
+                componentObj = context.findNextGeneric(service, priority);
             }
 
             field.setAccessible(true);
             field.set(obj, componentObj);
         }
-        catch(IllegalArgumentException | IllegalAccessException | InstantiationException ex)
+        catch(IllegalArgumentException | IllegalAccessException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -274,17 +206,7 @@ class Instanciator
         Parameter[] parameters = constructor.getParameters();
         for (Parameter parameter : parameters)
         {
-            if(parameter.getType().isArray())
-            {
-                Type arrType = ClassUtils.findTypeFromArray(parameter.getParameterizedType());
-                Class resultCls = ClassUtils.findClassFromType(arrType);
-                instances.add(context.findAllGeneric(arrType, resultCls));
-            }
-            else
-            {
-                Class resultCls = ClassUtils.findClassFromType(parameter.getParameterizedType());
-                instances.add(context.findGeneric(parameter.getParameterizedType(), resultCls));
-            }
+            instances.add(context.findGeneric(parameter.getParameterizedType()));
         }
         return instances.toArray();
     }
@@ -294,7 +216,7 @@ class Instanciator
         boolean allExists = true;
         for (Parameter parameter : parameters)
         {
-            Type paramType = ClassUtils.findParameterType(parameter);
+            Type paramType = ClassUtils.typeOf(parameter);
             if(!context.exists(paramType))
             {
                 allExists = false;

@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.IocContext;
+import static org.bridje.ioc.impl.ClassUtils.*;
 
 class ContextImpl implements IocContext
 {
@@ -65,9 +66,9 @@ class ContextImpl implements IocContext
         this.parent = parent;
         if(instances != null && !instances.isEmpty())
         {
-            ClassSet instancesClassSet = new ClassSet(ClassUtils.findClasses(instances));
-            classSet = new ClassSet(ClassSet.findByScope(scope), instancesClassSet);
-            serviceMap = new ServiceMap(ServiceMap.findByScope(scope), instancesClassSet);
+            ClassSet cs = new ClassSet(toClasses(instances));
+            classSet = new ClassSet(ClassSet.findByScope(scope), cs);
+            serviceMap = new ServiceMap(ServiceMap.findByScope(scope), cs);
         }
         else
         {
@@ -100,37 +101,37 @@ class ContextImpl implements IocContext
     }
 
     @Override
-    public <T> T findGeneric(Type service, Class<T> resultCls)
+    public <T> T findNext(Class<T> service, int priority)
     {
-        T result = findGenericInternal(service, resultCls);
+        return (T)findNextGeneric(service, priority);
+    }
+
+    @Override
+    public Object findGeneric(Type service)
+    {
+        Object result = findGenericInternal(service);
         if(result != null)
         {
             return result;
         }
         if(parent != null)
         {
-            return parent.findGeneric(service, resultCls);
+            return parent.findGeneric(service);
         }
         return null;
     }
-
+    
     @Override
-    public <T> T findNext(Class<T> service, int priority)
+    public Object findNextGeneric(Type service, int priority)
     {
-        return findNextGeneric(service, service, priority);
-    }
-
-    @Override
-    public <T> T findNextGeneric(Type service, Class<T> resultCls, int priority)
-    {
-        T result = findNextGenericInternal(service, resultCls, priority);
+        Object result = findGenericInternal(service, priority);
         if(result != null)
         {
             return result;
         }
         if(parent != null)
         {
-            return parent.findNextGeneric(service, resultCls, priority);
+            return parent.findNextGeneric(service, priority);
         }
         return null;
     }
@@ -150,21 +151,6 @@ class ContextImpl implements IocContext
         return result;
     }
 
-    @Override
-    public <T> T[] findAllGeneric(Type service, Class<T> resultCls)
-    {
-        T[] result = findAllGenericInternal(service, resultCls);
-        if(result.length > 0)
-        {
-            return result;
-        }
-        if(parent != null)
-        {
-            return parent.findAllGeneric(service, resultCls);
-        }
-        return result;
-    }
-    
     @Override
     public boolean existsComponent(Class cls)
     {
@@ -221,32 +207,37 @@ class ContextImpl implements IocContext
 
     private <T> T findInternal(Class<T> service)
     {
-        Class<? extends T> component = serviceMap.findOne(service);
-        if(component != null)
+        if(service.isArray())
         {
-            return container.create(component);
+            return (T)findGenericInternal(service);
+        }
+        else
+        {
+            Class<? extends T> component = serviceMap.findOne(service);
+            if(component != null)
+            {
+                return container.create(component);
+            }
         }
         return null;
     }
 
-    private <T> T findGenericInternal(Type service, Class<T> resultCls)
+    private Object findGenericInternal(Type service)
     {
-        Class component = serviceMap.findOne(service);
-        if(component != null)
-        {
-            return (T)container.create(component);
-        }
-        return null;
+        return findGenericInternal(service, null);
     }
 
-    private <T> T findNextGenericInternal(Type service, Class<T> resultCls, int priority)
+    private Object findGenericInternal(Type service, Integer priority)
     {
-        Class component = serviceMap.findOne(service, priority);
-        if(component != null)
+        if(isMultiple(service))
         {
-            return (T)container.create(component);
+            Type type = multipleType(service);
+            return createMultiple(service, findAllGenericInternal(type));
         }
-        return null;
+        else
+        {
+            return findOneGenericInternal(service, priority);
+        }
     }
     
     private <T> T[] findAllInternal(Class<T> service)
@@ -269,8 +260,20 @@ class ContextImpl implements IocContext
         return (T[])Array.newInstance(service, 0);
     }
     
-    private <T> T[] findAllGenericInternal(Type service, Class<T> resultClass)
+    private Object findOneGenericInternal(Type service, Integer priority)
     {
+        Class component = serviceMap.findOne(service, priority);
+        if(component != null)
+        {
+            return container.create(component);
+        }
+        return null;
+    }
+    
+    private Object[] findAllGenericInternal(Type service)
+    {
+        Object[] result = null;
+        Class resultClass = rawClass(service);
         List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
@@ -283,10 +286,10 @@ class ContextImpl implements IocContext
                     resultList.add(compInstance);
                 }
             }
-            T[] result = (T[])Array.newInstance(resultClass, components.size());
-            return (T[])resultList.toArray(result);
+            result = (Object[])Array.newInstance(resultClass, components.size());
+            result = resultList.toArray(result);
         }
-        return (T[])Array.newInstance(resultClass, 0);
+        return result;
     }
 
     @Override

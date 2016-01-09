@@ -35,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.ClassRepository;
-import org.bridje.ioc.ComponentProcessor;
 import org.bridje.ioc.ClassNavigator;
 import org.bridje.ioc.MethodNavigator;
 import org.bridje.ioc.FieldNavigator;

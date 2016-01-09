@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.ioc;
+package org.bridje.ioc.impl;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -34,6 +34,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import org.bridje.ioc.Component;
 
 /**
  * Annotations processor for the {@link Component} annotation.

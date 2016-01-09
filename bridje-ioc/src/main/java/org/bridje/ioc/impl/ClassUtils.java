@@ -31,21 +31,55 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.Priority;
 
 class ClassUtils
 {
+    private static final Logger LOG = Logger.getLogger(ClassUtils.class.getName());
 
-    public static Type findParameterType(Parameter param)
+    public static Type typeOf(Parameter param)
     {
         if(param.getType().isArray())
         {
-            return findTypeFromArray(param.getParameterizedType());
+            return arrayType(param.getParameterizedType());
         }
         return param.getParameterizedType();
     }
-    
-    public static Type findTypeFromArray(Type supClass)
+
+    public static Type typeOf(WildcardType service)
+    {
+        Type[] upperBounds = ((WildcardType)service).getUpperBounds();
+        if(upperBounds.length == 1)
+        {
+            return (upperBounds[0]);
+        }
+        else if(upperBounds.length == 0)
+        {
+            return Object.class;
+        }
+        return null;
+    }
+
+    public static Type multipleType(Type service)
+    {
+        if(isArray(service))
+        {
+            return arrayType(service);
+        }
+        else if(isCollection(service))
+        {
+            return collectionType(service);
+        }
+        else if(isMap(service))
+        {
+            return mapType(service);
+        }
+        return null;
+    }
+
+    public static Type arrayType(Type supClass)
     {
         if(supClass instanceof GenericArrayType)
         {
@@ -58,7 +92,38 @@ class ClassUtils
         }
         return null;
     }
-    
+
+    public static Type collectionType(Type supClass)
+    {
+        if(supClass instanceof ParameterizedType)
+        {
+            Type[] args = ((ParameterizedType) supClass).getActualTypeArguments();
+            if(args.length == 1)
+            {
+                return args[1];
+            }
+        }
+        return null;
+    }
+
+    public static Type mapType(Type supClass)
+    {
+        if(supClass instanceof ParameterizedType)
+        {
+            Type[] args = ((ParameterizedType) supClass).getActualTypeArguments();
+            if(args.length == 2)
+            {
+                return args[1];
+            }
+        }
+        return null;
+    }
+
+    public static boolean isMultiple(Type service)
+    {
+        return isArray(service) || isCollection(service) || isMap(service);
+    }
+
     public static boolean isArray(Type supClass)
     {
         if(supClass instanceof Class)
@@ -71,7 +136,30 @@ class ClassUtils
         }
     }
     
-    public static Class findClassFromType(Type supClass)
+    public static boolean isCollection(Type service)
+    {
+        Class cls = rawClass(service);
+        if(cls == null || cls.isArray() || cls.getPackage() == null)
+        {
+            return false;
+        }
+        return cls.getPackage().getName().startsWith("java.") 
+                && Collection.class.isAssignableFrom(cls) 
+                && !Map.class.isAssignableFrom(cls);
+    }
+
+    public static boolean isMap(Type service)
+    {
+        Class cls = rawClass(service);
+        if(cls == null || cls.isArray() || cls.getPackage() == null)
+        {
+            return false;
+        }
+        return cls.getPackage().getName().startsWith("java.") 
+                && Map.class.isAssignableFrom(cls);
+    }
+
+    public static Class rawClass(Type supClass)
     {
         if(supClass instanceof Class)
         {
@@ -87,16 +175,16 @@ class ClassUtils
         }
         else if(supClass instanceof WildcardType)
         {
-            Type wildCardType = findTypeFromWildcard((WildcardType)supClass);
+            Type wildCardType = typeOf((WildcardType)supClass);
             if(wildCardType instanceof Class)
             {
                 return (Class)wildCardType;
             }
         }
         return null;
-    }    
+    }
 
-    public static Collection<Class<?>> findClasses(Collection instances)
+    public static Collection<Class<?>> toClasses(Collection instances)
     {
         List<Class<?>> arrList = new ArrayList();
         for (Object instance : instances)
@@ -116,34 +204,36 @@ class ClassUtils
         }
         return v1;
     }
-
-    public static boolean isCollection(Type service)
+    
+    public static Object createMultiple(Type service, Object[] data)
     {
-        Class cls = findClassFromType(service);
-        if(cls == null)
+        try
         {
-            return false;
+            Class resultClass = rawClass(service);
+            if(ClassUtils.isCollection(service))
+            {
+                return ClassUtils.createCollection(resultClass, data);
+            }
+            else if(ClassUtils.isMap(service))
+            {
+                return ClassUtils.createCollection(resultClass, data);
+            }
+            else if(ClassUtils.isArray(service))
+            {
+                return data;
+            }
         }
-        return cls.getPackage().getName().equals("java.util") 
-                && Collection.class.isAssignableFrom(cls) 
-                && !Map.class.isAssignableFrom(cls);
-    }
-
-    public static boolean isMap(Type service)
-    {
-        Class cls = findClassFromType(service);
-        if(cls == null)
+        catch(Exception ex)
         {
-            return false;
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        return cls.getPackage().getName().equals("java.util") 
-                && Map.class.isAssignableFrom(cls);
+        return null;
     }
 
     public static Collection createCollection(Class collectionCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
         Collection res = null;
-        Constructor construct = findDefConstructor(collectionCls);
+        Constructor construct = findConstructor(collectionCls);
         if(construct != null && construct.isAccessible())
         {
             res = (Collection) collectionCls.newInstance();
@@ -167,23 +257,10 @@ class ClassUtils
         return res;
     }
 
-    private static Constructor findDefConstructor(Class collectionCls)
-    {
-        Constructor[] constructors = collectionCls.getConstructors();
-        for (Constructor constructor : constructors)
-        {
-            if(constructor.getParameterCount() == 0)
-            {
-                return constructor;
-            }
-        }
-        return null;
-    }
-
     public static Map createMap(Class mapCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
         Map map = null;
-        Constructor construct = findDefConstructor(mapCls);
+        Constructor construct = findConstructor(mapCls);
         if(construct != null && construct.isAccessible())
         {
             map = (Map) mapCls.newInstance();
@@ -202,17 +279,16 @@ class ClassUtils
         return map;
     }
 
-    public static Type findTypeFromWildcard(WildcardType service)
+    private static Constructor findConstructor(Class collectionCls)
     {
-        Type[] upperBounds = ((WildcardType)service).getUpperBounds();
-        if(upperBounds.length == 1)
+        Constructor[] constructors = collectionCls.getConstructors();
+        for (Constructor constructor : constructors)
         {
-            return (upperBounds[0]);
-        }
-        else if(upperBounds.length == 0)
-        {
-            return Object.class;
+            if(constructor.getParameterCount() == 0)
+            {
+                return constructor;
+            }
         }
         return null;
-    }
+    }    
 }
