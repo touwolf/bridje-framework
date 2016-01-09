@@ -40,18 +40,30 @@ import org.bridje.ioc.MethodNavigator;
 import org.bridje.ioc.FieldNavigator;
 
 /**
- * This class represents a set of classes, his propouse is to serve as a container
- * for all the class that are to be managed by an IocContext instance.
- * 
+ * This class represents a set of classes, his propouse is to serve as a
+ * container for all the class that are to be managed by an IocContext instance.
+ *
  */
 class ClassSet implements Iterable<Class<?>>, ClassRepository
 {
+    /**
+     * Logger for this class
+     */
     private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
 
-    private static Map<String,ClassSet> classSetCache;
-    
-    private static Map<String,String> propFilesCache;
+    /**
+     * All ClassSets availables by scope.
+     */
+    private static Map<String, ClassSet> classSetCache;
 
+    /**
+     * Al the components declared in the components.properties files.
+     */
+    private static Map<String, String> propFilesCache;
+
+    /**
+     * The set of classes for this intance.
+     */
     private final Set<Class<?>> clsSet;
 
     /**
@@ -61,24 +73,25 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     {
         clsSet = new HashSet<>();
     }
-    
+
     /**
      * Constructor that receive an arbitrary collection of classes.
-     * 
-     * @param classes The collection of classes to be present in this set of classes.
+     *
+     * @param classes The collection of classes to be present in this set of
+     * classes.
      */
     public ClassSet(Collection<Class<?>> classes)
     {
         this();
-        if(classes != null && !classes.isEmpty())
+        if (classes != null && !classes.isEmpty())
         {
             clsSet.addAll(classes);
         }
     }
-    
+
     /**
      * Constructor that receive an array of classes.
-     * 
+     *
      * @param classes The array of classes to be present in this set of classes.
      */
     public ClassSet(Class<?>... classes)
@@ -86,69 +99,104 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         this(asList(classes));
     }
 
+    /**
+     * Constructor that receive an array of ClassSets.
+     *
+     * @param lsts The array of ClassSets to be present in this set of classes.
+     */
     public ClassSet(ClassSet... lsts)
     {
         this();
-        if(lsts != null && lsts.length > 0)
+        if (lsts != null && lsts.length > 0)
         {
             for (ClassSet clst : lsts)
             {
-                if(clst != null && !clst.isEmpty())
+                if (clst != null && !clst.isEmpty())
                 {
                     clsSet.addAll(clst.clsSet);
                 }
             }
         }
     }
-    
+
+    /**
+     * Determines whenever a class exist whiting the class set.
+     *
+     * @param cls The class to lookup.
+     * @return true the class exists, false otherwise.
+     */
     public boolean contains(Class cls)
     {
         return clsSet.contains(cls);
     }
-    
+
+    /**
+     * Determines if this class set has any classes or not.
+     *
+     * @return true this CassSet does not have any classes, false otherwise.
+     */
     public boolean isEmpty()
     {
         return clsSet.isEmpty();
     }
 
+    /**
+     * Gets the class iterator for this class set.
+     *
+     * @return An iterator of classes.
+     */
     @Override
     public Iterator<Class<?>> iterator()
     {
         return clsSet.iterator();
     }
-    
+
+    /**
+     * Finds a ClassSet that contains all the classes in the especified scope.
+     *
+     * @param scope The scope of the classes to lookup.
+     * @return A ClassSet containing all the classes in the especified scope.
+     */
     public static ClassSet findByScope(String scope)
     {
-        if(classSetCache == null)
+        if (classSetCache == null)
         {
             classSetCache = new ConcurrentHashMap<>();
         }
-        if(classSetCache.containsKey(scope))
+        if (classSetCache.containsKey(scope))
         {
             return classSetCache.get(scope);
         }
         try
         {
             ClassSet result = loadFromClassPath(scope);
-            if(result != null)
+            if (result != null)
             {
                 classSetCache.put(scope, result);
                 return result;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }
-    
+
+    /**
+     * Load all classes of the especified scope from the class path.
+     *
+     * @param scope The scope to load.
+     * @return A ClassSet containing all the classes in the scope, that where
+     * found in the classpath.
+     * @throws IOException If something whent wrong.
+     */
     private static ClassSet loadFromClassPath(String scope) throws IOException
     {
         Set<Class<?>> clsList = new HashSet<>();
         //An instance of IocContextImpl is always a component in every scope.
         clsList.add(ContextImpl.class);
-        if(propFilesCache == null)
+        if (propFilesCache == null)
         {
             propFilesCache = loadPropFilesCache();
         }
@@ -156,7 +204,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         {
             String clsName = entrySet.getKey();
             String compScope = entrySet.getValue();
-            if(null != compScope && compScope.equalsIgnoreCase(scope))
+            if (null != compScope && compScope.equalsIgnoreCase(scope))
             {
                 try
                 {
@@ -168,13 +216,20 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
                 }
             }
         }
-        if(clsList.isEmpty())
+        if (clsList.isEmpty())
         {
             return null;
         }
         return new ClassSet(clsList);
     }
 
+    /**
+     * Loads all of the components.properties files in the class path.
+     *
+     * @return A map containing the combination of all the components.properties
+     * files present in the class path.
+     * @throws IOException If a file cannot be readed.
+     */
     private static Map<String, String> loadPropFilesCache() throws IOException
     {
         Map<String, String> result = new HashMap<>();
@@ -183,28 +238,40 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         {
             URL nextElement = resources.nextElement();
             Properties prop = new Properties();
-            try(InputStream is = nextElement.openStream())
+            try (InputStream is = nextElement.openStream())
             {
                 prop.load(is);
             }
-            prop.forEach((key, value) -> 
-            {
-                String clsName = (String)key;
-                String compScope = (String)value;
-                result.put(clsName, compScope);
+            prop.forEach((key, value)
+                    -> 
+                    {
+                        String clsName = (String) key;
+                        String compScope = (String) value;
+                        result.put(clsName, compScope);
             });
         }
         return result;
     }
 
+    /**
+     * The size of this ClassSet.
+     *
+     * @return The amount of classes this ClassSet contains.
+     */
     public int size()
     {
         return clsSet.size();
     }
-    
+
+    /**
+     * Utility method to convert from array to Collection of classes.
+     *
+     * @param clss The array of clases to be converted.
+     * @return A collection containing the classes in the passed array.
+     */
     private static Collection<Class<?>> asList(Class<?>... clss)
     {
-        if(clss == null || clss.length == 0)
+        if (clss == null || clss.length == 0)
         {
             return null;
         }
@@ -220,7 +287,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             for (Method method : methods)
             {
                 A annInst = method.getAnnotation(annotation);
-                if(annInst != null)
+                if (annInst != null)
                 {
                     navigator.accept(method, cls, annInst);
                 }
@@ -229,7 +296,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator) 
+    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
@@ -237,25 +304,25 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             for (Field field : fields)
             {
                 A annInst = field.getAnnotation(annotation);
-                if(annInst != null)
+                if (annInst != null)
                 {
                     navigator.accept(field, cls, annInst);
                 }
             }
         }
-    }    
+    }
 
     @Override
     public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, ClassNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
-            A annot = cls.getAnnotation(annotation);        
-            if(annot != null)
+            A annot = cls.getAnnotation(annotation);
+            if (annot != null)
             {
                 navigator.accept(cls, annot);
                 break;
             }
-        }    
+        }
     }
 }

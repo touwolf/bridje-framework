@@ -216,7 +216,7 @@ class Instanciator
         boolean allExists = true;
         for (Parameter parameter : parameters)
         {
-            Type paramType = ClassUtils.typeOf(parameter);
+            Type paramType = parameter.getParameterizedType();
             if(!context.exists(paramType))
             {
                 allExists = false;

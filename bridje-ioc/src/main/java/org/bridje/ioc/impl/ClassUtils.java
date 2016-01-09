@@ -16,16 +16,16 @@
 
 package org.bridje.ioc.impl;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -36,70 +36,113 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Priority;
 
+/**
+ * Utility method for class and type handling.
+ */
 class ClassUtils
 {
+    /**
+     * Logger for this class
+     */
     private static final Logger LOG = Logger.getLogger(ClassUtils.class.getName());
 
-    public static Type typeOf(Parameter param)
-    {
-        if(param.getType().isArray())
-        {
-            return arrayType(param.getParameterizedType());
-        }
-        return param.getParameterizedType();
-    }
-
+    /**
+     * Gets the upper bounds Type for a WildcarType.
+     *
+     * <pre>
+     * ? extends SomeService               = SomeService
+     * ? extends SomeService&lt;String&gt; = SomeService&lt;String&gt;
+     * </pre>
+     *
+     * @param service The wildcardType to inspect.
+     * @return The upper bounds Type of the WildcardType.
+     */
     public static Type typeOf(WildcardType service)
     {
-        Type[] upperBounds = ((WildcardType)service).getUpperBounds();
-        if(upperBounds.length == 1)
+        Type[] upperBounds = ((WildcardType) service).getUpperBounds();
+        if (upperBounds.length == 1)
         {
             return (upperBounds[0]);
         }
-        else if(upperBounds.length == 0)
+        else if (upperBounds.length == 0)
         {
             return Object.class;
         }
         return null;
     }
 
+    /**
+     * Find the Type of an array, map or collection.
+     *
+     * <pre>
+     * SomeService[]                 = SomeService
+     * List&lt;SomeService&gt;       = SomeService
+     * Map&lt;Class, SomeService&gt; = SomeService
+     * </pre>
+     *
+     * @param service The inner type of the multiple type passed.
+     * @return A type representing the inner type for the collection, array or
+     * map passed.
+     */
     public static Type multipleType(Type service)
     {
-        if(isArray(service))
+        if (isArray(service))
         {
             return arrayType(service);
         }
-        else if(isCollection(service))
+        else if (isCollection(service))
         {
             return collectionType(service);
         }
-        else if(isMap(service))
+        else if (isMap(service))
         {
             return mapType(service);
         }
         return null;
     }
 
-    public static Type arrayType(Type supClass)
+    /**
+     * Find the Type of an array.
+     *
+     * <pre>
+     * SomeService[] = SomeService
+     * </pre>
+     *
+     * @param service The inner type of the array type passed.
+     * @return A type representing the inner type for the array type passed.
+     */
+    public static Type arrayType(Type service)
     {
-        if(supClass instanceof GenericArrayType)
+        if (service instanceof GenericArrayType)
         {
-            Type rawType = ((GenericArrayType)supClass).getGenericComponentType();
+            Type rawType = ((GenericArrayType) service).getGenericComponentType();
             return rawType;
         }
-        else if(supClass instanceof Class)
+        else if (service instanceof Class)
         {
-            return ((Class)supClass).getComponentType();
+            return ((Class) service).getComponentType();
         }
         return null;
     }
 
-    public static Type collectionType(Type supClass)
+    /**
+     * Find the Type of collection.
+     *
+     * <pre>
+     * List&lt;SomeService&gt; = SomeService
+     * Set&lt;SomeService&gt;  = SomeService
+     * </pre>
+     *
+     * @param service The inner type of the array type passed.
+     * @return A type representing the inner type for the collection type
+     * passed.
+     */
+    public static Type collectionType(Type service)
     {
-        if(supClass instanceof ParameterizedType)
+        if (service instanceof ParameterizedType)
         {
-            Type[] args = ((ParameterizedType) supClass).getActualTypeArguments();
-            if(args.length == 1)
+            Type[] args = ((ParameterizedType) service).getActualTypeArguments();
+            if (args.length == 1)
             {
                 return args[0];
             }
@@ -107,12 +150,23 @@ class ClassUtils
         return null;
     }
 
-    public static Type mapType(Type supClass)
+    /**
+     * Find the Type of a map.
+     *
+     * <pre>
+     * Map&lt;Class, SomeService&gt;     = SomeService
+     * HashMap&lt;Class, SomeService&gt; = SomeService
+     * </pre>
+     *
+     * @param service The inner type of the array type passed.
+     * @return A type representing the inner type for the map type passed.
+     */
+    public static Type mapType(Type service)
     {
-        if(supClass instanceof ParameterizedType)
+        if (service instanceof ParameterizedType)
         {
-            Type[] args = ((ParameterizedType) supClass).getActualTypeArguments();
-            if(args.length == 2)
+            Type[] args = ((ParameterizedType) service).getActualTypeArguments();
+            if (args.length == 2)
             {
                 return args[1];
             }
@@ -120,68 +174,153 @@ class ClassUtils
         return null;
     }
 
+    /**
+     * Determines whenever the passed type is an array, a java collection like
+     * List or Set, or a java Map.
+     * <pre>
+     * SomeService                      = false
+     * SomeService[]                    = true
+     * List&lt;SomeService&gt;          = true
+     * Map&lt;Class, SomeService&gt;    = true
+     * MyListImpl&lt;SomeService&gt;    = false
+     * HashMap&lt;Class, SomeService&gt = true
+     * </pre>
+     *
+     * @param service The type to inspect.
+     * @return true if the especified type is an array, a collection or map from
+     * java languaje.
+     */
     public static boolean isMultiple(Type service)
     {
         return isArray(service) || isCollection(service) || isMap(service);
     }
 
-    public static boolean isArray(Type supClass)
+    /**
+     * Determines whenever the passed type is an array.
+     * <pre>
+     * SomeService                      = false
+     * SomeService[]                    = true
+     * List&lt;SomeService&gt;          = false
+     * List&lt;SomeService&gt;[]        = true
+     * Map&lt;Class, SomeService&gt;    = false
+     * MyListImpl&lt;SomeService&gt;    = false
+     * HashMap&lt;Class, SomeService&gt = false
+     * </pre>
+     *
+     * @param service The type to inspect.
+     * @return true if the especified type is an array.
+     */
+    public static boolean isArray(Type service)
     {
-        if(supClass instanceof Class)
+        if (service instanceof Class)
         {
-            return ((Class) supClass).isArray();
+            return ((Class) service).isArray();
         }
         else
         {
-            return supClass instanceof GenericArrayType;
+            return service instanceof GenericArrayType;
         }
     }
-    
+
+    /**
+     * Determines whenever the passed type is a collection.
+     * <pre>
+     * SomeService                      = false
+     * SomeService[]                    = false
+     * List&lt;SomeService&gt;          = true
+     * List&lt;SomeService&gt;[]        = true
+     * Map&lt;Class, SomeService&gt;    = false
+     * MyListImpl&lt;SomeService&gt;    = false
+     * HashMap&lt;Class, SomeService&gt = false
+     * </pre>
+     *
+     * @param service The type to inspect.
+     * @return true if the especified type is a List Set or other java
+     * collection except a map.
+     */
     public static boolean isCollection(Type service)
     {
         Class cls = rawClass(service);
-        if(cls == null || cls.isArray() || cls.getPackage() == null)
+        if (cls == null || cls.isArray() || cls.getPackage() == null)
         {
             return false;
         }
-        return cls.getPackage().getName().startsWith("java.") 
-                && Collection.class.isAssignableFrom(cls) 
+        return cls.getPackage().getName().startsWith("java.")
+                && Collection.class.isAssignableFrom(cls)
                 && !Map.class.isAssignableFrom(cls);
     }
 
+    /**
+     * Determines whenever the passed type is a map.
+     * <pre>
+     * SomeService                      = false
+     * SomeService[]                    = false
+     * List&lt;SomeService&gt;          = false
+     * List&lt;SomeService&gt;[]        = false
+     * Map&lt;Class, SomeService&gt;    = true
+     * MyListImpl&lt;SomeService&gt;    = false
+     * HashMap&lt;Class, SomeService&gt = true
+     * </pre>
+     *
+     * @param service The type to inspect.
+     * @return true if the especified type is a java Map.
+     */
     public static boolean isMap(Type service)
     {
         Class cls = rawClass(service);
-        if(cls == null || cls.isArray() || cls.getPackage() == null)
+        if (cls == null || cls.isArray() || cls.getPackage() == null)
         {
             return false;
         }
-        return cls.getPackage().getName().startsWith("java.") 
+        return cls.getPackage().getName().startsWith("java.")
                 && Map.class.isAssignableFrom(cls);
     }
 
-    public static Class rawClass(Type supClass)
+    /**
+     * Gets the raw class for the especified Type.
+     * <pre>
+     * SomeService                      = SomeService
+     * SomeService[]                    = SomeService[]
+     * List&lt;SomeService&gt;          = List
+     * List&lt;SomeService&gt;[]        = List[]
+     * Map&lt;Class, SomeService&gt;    = Map
+     * MyListImpl&lt;SomeService&gt;    = MyListImpl
+     * HashMap&lt;Class, SomeService&gt = HashMap
+     * </pre>
+     *
+     * @param service
+     * @return
+     */
+    public static Class rawClass(Type service)
     {
-        if(supClass instanceof Class)
+        if (service instanceof Class)
         {
-            return ((Class)supClass);
+            return ((Class) service);
         }
-        else if(supClass instanceof ParameterizedType)
+        else if (service instanceof ParameterizedType)
         {
-            Type rawType = ((ParameterizedType)supClass).getRawType();
-            if(rawType instanceof Class)
+            Type rawType = ((ParameterizedType) service).getRawType();
+            if (rawType instanceof Class)
             {
-                return ((Class)rawType);
+                return ((Class) rawType);
             }
         }
-        else if(supClass instanceof WildcardType)
+        else if (service instanceof WildcardType)
         {
-            Type wildCardType = typeOf((WildcardType)supClass);
+            Type wildCardType = typeOf((WildcardType) service);
             return rawClass(wildCardType);
         }
         return null;
     }
 
+    /**
+     * Gets a collection with all the classes of the objects from the especified
+     * collection.
+     *
+     * @param instances The objects to obtain it´s classes from.
+     * @return A Collection object with all the classes of the object´s in the
+     * collection passed.
+     */
     public static Collection<Class<?>> toClasses(Collection instances)
     {
         List<Class<?>> arrList = new ArrayList();
@@ -192,86 +331,149 @@ class ClassUtils
         return arrList;
     }
 
+    /**
+     * Finds te priority value for a class, from it´s @Priority annotation if it
+     * haveit.
+     *
+     * @param cls The class to find it´s priority.
+     * @return The int value of the priority, by default the priority will be
+     * Integer.MAX_VALUE if not especified directly in the component.
+     */
     public static int findPriority(Class<?> cls)
     {
         Priority a1 = cls.getAnnotation(Priority.class);
         int v1 = Integer.MAX_VALUE;
-        if(a1 != null)
+        if (a1 != null)
         {
             v1 = a1.value();
         }
         return v1;
     }
-    
+
+    /**
+     * Given a multiple type, (array, collection, or map) this method will
+     * return the appropied instance for it.
+     * <pre>
+     * SomeService                      = null
+     * SomeService[]                    = SomeService[]
+     * List&lt;SomeService&gt;          = ArrayList
+     * List&lt;SomeService&gt;[]        = List[]
+     * Map&lt;Class, SomeService&gt;    = Map
+     * MyListImpl&lt;SomeService&gt;    = null
+     * HashMap&lt;Class, SomeService&gt = HashMap
+     * </pre>
+     *
+     * @param service The type of the array, collection or map.
+     * @param data The data to put on the result listing.
+     * @return The proper object for the especified type.
+     */
     public static Object createMultiple(Type service, Object[] data)
     {
         try
         {
-            if(data != null)
+            if (data != null)
             {
-                if(ClassUtils.isCollection(service))
+                if (ClassUtils.isCollection(service))
                 {
                     Class resultClass = rawClass(service);
                     return ClassUtils.createCollection(resultClass, data);
                 }
-                else if(ClassUtils.isMap(service))
+                else if (ClassUtils.isMap(service))
                 {
                     Class resultClass = rawClass(service);
                     return ClassUtils.createCollection(resultClass, data);
                 }
-                else if(ClassUtils.isArray(service))
+                else if (ClassUtils.isArray(service))
                 {
                     return data;
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }
 
+    /**
+     * Given a collection type this method will return the appropied instance
+     * for it.
+     * <pre>
+     * SomeService                      = null
+     * SomeService[]                    = null
+     * List&lt;SomeService&gt;          = ArrayList
+     * LinkedList&lt;SomeService&gt;    = LinkedList
+     * List&lt;SomeService&gt;[]        = null
+     * Map&lt;Class, SomeService&gt;    = null
+     * MyListImpl&lt;SomeService&gt;    = null
+     * HashMap&lt;Class, SomeService&gt = null
+     * </pre>
+     *
+     * @param collectionCls
+     * @param data
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public static Collection createCollection(Class collectionCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
         Collection res = null;
         Constructor construct = findConstructor(collectionCls);
-        if(construct != null && construct.isAccessible())
+        if (construct != null && construct.isAccessible())
         {
             res = (Collection) collectionCls.newInstance();
         }
-        else if(collectionCls.isAssignableFrom(LinkedList.class))
+        else if (collectionCls.isAssignableFrom(ArrayList.class))
         {
             res = new ArrayList(data.length);
         }
-        else if(collectionCls.isAssignableFrom(LinkedHashSet.class))
+        else if (collectionCls.isAssignableFrom(LinkedHashSet.class))
         {
             res = new LinkedHashSet(data.length);
         }
-        else if(collectionCls.isAssignableFrom(PriorityBlockingQueue.class))
+        else if (collectionCls.isAssignableFrom(PriorityBlockingQueue.class))
         {
-            PriorityBlockingQueue q = new PriorityBlockingQueue(data.length);
+            res = new PriorityBlockingQueue(data.length);
         }
-        if(res != null)
+        if (res != null)
         {
             res.addAll(Arrays.asList(data));
         }
         return res;
     }
 
+    /**
+     * Given a map type this method will return the appropied instance for it.
+     * <pre>
+     * SomeService                      = null
+     * SomeService[]                    = null
+     * List&lt;SomeService&gt;          = null
+     * List&lt;SomeService&gt;[]        = null
+     * Map&lt;Class, SomeService&gt;    = Map
+     * MyListImpl&lt;SomeService&gt;    = null
+     * HashMap&lt;Class, SomeService&gt = HashMapl
+     * </pre>
+     *
+     * @param mapCls
+     * @param data
+     * @return
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public static Map createMap(Class mapCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
         Map map = null;
         Constructor construct = findConstructor(mapCls);
-        if(construct != null && construct.isAccessible())
+        if (construct != null && construct.isAccessible())
         {
             map = (Map) mapCls.newInstance();
         }
-        else if(mapCls.isAssignableFrom(LinkedHashMap.class))
+        else if (mapCls.isAssignableFrom(LinkedHashMap.class))
         {
             map = new LinkedHashMap(data.length);
         }
-        if(map != null)
+        if (map != null)
         {
             for (Object cmp : data)
             {
@@ -281,16 +483,71 @@ class ClassUtils
         return map;
     }
 
-    private static Constructor findConstructor(Class collectionCls)
+    /**
+     * Finds the default constructor for the especified class.
+     *
+     * @param cls The class to find the constructor for.
+     * @return The default constructor for the class of null if none can be
+     * found.
+     */
+    private static Constructor findConstructor(Class cls)
     {
-        Constructor[] constructors = collectionCls.getConstructors();
+        Constructor[] constructors = cls.getConstructors();
         for (Constructor constructor : constructors)
         {
-            if(constructor.getParameterCount() == 0)
+            if (constructor.getParameterCount() == 0)
             {
                 return constructor;
             }
         }
         return null;
-    }    
+    }
+
+    /**
+     * Sorts a list of components by priority.
+     *
+     * @param value The list of classes to sort.
+     */
+    public static void sort(List<Class<?>> value)
+    {
+        Collections.sort(value, (Class<?> c1, Class<?> c2)
+                -> 
+                {
+                    int v1 = ClassUtils.findPriority(c1);
+                    int v2 = ClassUtils.findPriority(c2);
+                    return v1 - v2;
+        });
+    }
+
+    /**
+     * Determines whenever the especified type has a wildcard or TypeVariable
+     * declaration whiting.
+     * <pre>
+     * SomeService&lt;T&gt;      = true
+     * SomeService&lt;?&gt;      = true
+     * SomeService               = false
+     * SomeService&lt;String&gt; = false
+     * </pre>
+     *
+     * @param type The type to inspect.
+     * @return true the especified type has a generic declaration, false
+     * otherwise.
+     */
+    public static boolean hasGenericDeclaration(Type type)
+    {
+        if (type instanceof ParameterizedType)
+        {
+            ParameterizedType pType = (ParameterizedType) type;
+            Type[] types = pType.getActualTypeArguments();
+            for (Type t : types)
+            {
+                if (hasGenericDeclaration(t))
+                {
+                    return true;
+                }
+            }
+        }
+        return type instanceof TypeVariable || type instanceof WildcardType;
+    }
+
 }

@@ -168,9 +168,20 @@ class ContextImpl implements IocContext
     @Override
     public boolean exists(Type service)
     {
-        if(serviceMap.exists(service))
+        if(isMultiple(service))
         {
-            return true;
+            Type type = multipleType(service);
+            if(serviceMap.exists(type))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if(serviceMap.exists(service))
+            {
+                return true;
+            }
         }
         if(parent != null)
         {
@@ -213,10 +224,10 @@ class ContextImpl implements IocContext
         }
         else
         {
-            Class<? extends T> component = serviceMap.findOne(service);
+            Class<?> component = serviceMap.findOne(service);
             if(component != null)
             {
-                return container.create(component);
+                return (T)container.create(component);
             }
         }
         return null;
