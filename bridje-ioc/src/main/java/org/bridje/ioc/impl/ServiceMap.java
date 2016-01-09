@@ -16,7 +16,9 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,9 +155,12 @@ class ServiceMap
         Type supClass = component.getGenericSuperclass();
         while(supClass != null && supClass != Object.class)
         {
-            if(!servicesList.contains(supClass))
+            if(!hasGenericDeclaration(supClass))
             {
-                servicesList.add(supClass);
+                if(!servicesList.contains(supClass))
+                {
+                    servicesList.add(supClass);
+                }
             }
             Class cls = ClassUtils.rawClass(supClass);
             servicesList.add(cls);
@@ -175,9 +180,12 @@ class ServiceMap
         Type[] interfaces = cls.getGenericInterfaces();
         for (Type ifc : interfaces)
         {
-            if(!servicesList.contains(ifc))
+            if(!hasGenericDeclaration(ifc))
             {
-                servicesList.add(ifc);
+                if(!servicesList.contains(ifc))
+                {
+                    servicesList.add(ifc);
+                }
             }
             Class icfCls = ClassUtils.rawClass(ifc);
             servicesList.add(icfCls);
@@ -210,6 +218,23 @@ class ServiceMap
             int v2 = ClassUtils.findPriority(c2);
             return v1 - v2;
         });
+    }
+
+    private boolean hasGenericDeclaration(Type type)
+    {
+        if(type instanceof ParameterizedType)
+        {
+            ParameterizedType pType = (ParameterizedType)type;
+            Type[] types = pType.getActualTypeArguments();
+            for (Type t : types)
+            {
+                if(hasGenericDeclaration(t))
+                {
+                    return true;
+                }
+            }
+        }
+        return type instanceof TypeVariable || type instanceof WildcardType;
     }
 
 }

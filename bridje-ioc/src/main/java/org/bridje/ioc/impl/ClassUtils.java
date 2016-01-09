@@ -16,6 +16,7 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Parameter;
@@ -100,7 +101,7 @@ class ClassUtils
             Type[] args = ((ParameterizedType) supClass).getActualTypeArguments();
             if(args.length == 1)
             {
-                return args[1];
+                return args[0];
             }
         }
         return null;
@@ -176,10 +177,7 @@ class ClassUtils
         else if(supClass instanceof WildcardType)
         {
             Type wildCardType = typeOf((WildcardType)supClass);
-            if(wildCardType instanceof Class)
-            {
-                return (Class)wildCardType;
-            }
+            return rawClass(wildCardType);
         }
         return null;
     }
@@ -209,18 +207,22 @@ class ClassUtils
     {
         try
         {
-            Class resultClass = rawClass(service);
-            if(ClassUtils.isCollection(service))
+            if(data != null)
             {
-                return ClassUtils.createCollection(resultClass, data);
-            }
-            else if(ClassUtils.isMap(service))
-            {
-                return ClassUtils.createCollection(resultClass, data);
-            }
-            else if(ClassUtils.isArray(service))
-            {
-                return data;
+                if(ClassUtils.isCollection(service))
+                {
+                    Class resultClass = rawClass(service);
+                    return ClassUtils.createCollection(resultClass, data);
+                }
+                else if(ClassUtils.isMap(service))
+                {
+                    Class resultClass = rawClass(service);
+                    return ClassUtils.createCollection(resultClass, data);
+                }
+                else if(ClassUtils.isArray(service))
+                {
+                    return data;
+                }
             }
         }
         catch(Exception ex)

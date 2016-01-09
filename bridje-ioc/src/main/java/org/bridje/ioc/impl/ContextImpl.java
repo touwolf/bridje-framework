@@ -140,7 +140,7 @@ class ContextImpl implements IocContext
     public <T> T[] findAll(Class<T> service)
     {
         T[] result = findAllInternal(service);
-        if(result.length > 0)
+        if(result != null && result.length > 0)
         {
             return result;
         }
@@ -222,24 +222,6 @@ class ContextImpl implements IocContext
         return null;
     }
 
-    private Object findGenericInternal(Type service)
-    {
-        return findGenericInternal(service, null);
-    }
-
-    private Object findGenericInternal(Type service, Integer priority)
-    {
-        if(isMultiple(service))
-        {
-            Type type = multipleType(service);
-            return createMultiple(service, findAllGenericInternal(type));
-        }
-        else
-        {
-            return findOneGenericInternal(service, priority);
-        }
-    }
-    
     private <T> T[] findAllInternal(Class<T> service)
     {
         List<Class<?>> components = serviceMap.findAll(service);
@@ -260,6 +242,25 @@ class ContextImpl implements IocContext
         return (T[])Array.newInstance(service, 0);
     }
     
+    private Object findGenericInternal(Type service)
+    {
+        return findGenericInternal(service, null);
+    }
+
+    private Object findGenericInternal(Type service, Integer priority)
+    {
+        if(isMultiple(service))
+        {
+            Type type = multipleType(service);
+            Object[] data = findAllGenericInternal(type);
+            return createMultiple(service, data);
+        }
+        else
+        {
+            return findOneGenericInternal(service, priority);
+        }
+    }
+    
     private Object findOneGenericInternal(Type service, Integer priority)
     {
         Class component = serviceMap.findOne(service, priority);
@@ -272,8 +273,16 @@ class ContextImpl implements IocContext
     
     private Object[] findAllGenericInternal(Type service)
     {
-        Object[] result = null;
+        if(isMultiple(service))
+        {
+            return null;
+        }
         Class resultClass = rawClass(service);
+        if(resultClass == null)
+        {
+            return null;
+        }
+        Object[] result = null;
         List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
@@ -288,6 +297,10 @@ class ContextImpl implements IocContext
             }
             result = (Object[])Array.newInstance(resultClass, components.size());
             result = resultList.toArray(result);
+        }
+        else
+        {
+            result = (Object[])Array.newInstance(resultClass, 0);
         }
         return result;
     }
