@@ -29,11 +29,13 @@ Installation and Usage
 Bridje Core library is availables on the Maven Central Repository
 
     <dependencies>
+		....
         <dependency>
             <groupId>org.bridje</groupId>
-            <artifactId>bridje-core</artifactId>
-            <version>0.0.1-2</version>
+            <artifactId>bridje-ioc</artifactId>
+            <version>0.1.1</version>
         </dependency>
+		....
     </dependencies>
 
 About the Project
