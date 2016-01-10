@@ -25,7 +25,7 @@ import java.util.Collection;
  * find components and services in the scope that it manages.
  * <p>
  * An implementation of this interface can be obtained via the Ioc interface or
- * by injecting {@link org.bridje.ioc.annotations.Inject} it in any component
+ * by injecting {@link org.bridje.ioc.Inject} it in any component
  * you want.
  */
 public interface IocContext
@@ -87,7 +87,7 @@ public interface IocContext
      * This method finds the highest priority component that provides the given
      * generic service.
      * <p>
-     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * @param service The {@link java.lang.reflect.Type} that represents the
      * service that this method must find.
      * <p>
      * @return An object that extends or implement the service provided, or null
@@ -99,7 +99,7 @@ public interface IocContext
      * This method finds the component that provides the given generic service
      * with less priority than the priority parameter.
      * <p>
-     * @param service The {@link java.​lang.​reflect.Type} that represents the
+     * @param service The {@link java.lang.reflect.Type} that represents the
      * service that this method must find.
      * <p>
      * @param priority The given component must have a priority value greater

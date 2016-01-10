@@ -34,13 +34,11 @@ public class Ioc
     }
 
     /**
-     * This method returns the {@link IocContext} for the application scope. You
-     * may call this method the number of times you whant. in contrast with the
-     * {@link Ioc#init(org.bridje.core.ioc.impl.Register...)} witch may be call
-     * only once before this method is ever call.
+     * This method returns the {@link IocContext} for the APPLICATION scoped
+     * {@link IocContext}.
      * <p>
      * @return The APPLICATION scoped {@link IocContext} instance for this
-     *         application.
+     * application.
      */
     public static IocContext context()
     {
