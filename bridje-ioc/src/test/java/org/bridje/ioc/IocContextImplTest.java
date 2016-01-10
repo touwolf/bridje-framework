@@ -7,8 +7,6 @@ import org.bridje.ioc.test.ConcreteComponent;
 import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
 import org.bridje.ioc.test.DummyServiceProvider2;
-import org.bridje.ioc.test.DummyWithAnnotatedConstruct;
-import org.bridje.ioc.test.DummyWithParamsComponent;
 import org.bridje.ioc.test.GenericComponent;
 import org.bridje.ioc.test.GenericInjectComponent;
 import org.bridje.ioc.test.SomeService;
@@ -68,22 +66,6 @@ public class IocContextImplTest
         IocContext instance = Ioc.context();
         DummyComponent result = instance.find(DummyComponent.class);
         assertNotNull(result);
-    }
-
-    @Test
-    public void testFindWithConstructor() throws IOException
-    {
-        IocContext instance = Ioc.context();
-        DummyWithParamsComponent result = instance.find(DummyWithParamsComponent.class);
-        assertNotNull(result);
-        assertNotNull(result.getDummyComponent());
-        assertEquals(result.getDummyComponent(), instance.find(DummyComponent.class));
-
-        DummyWithAnnotatedConstruct result1 = instance.find(DummyWithAnnotatedConstruct.class);
-        assertNotNull(result1);
-        assertNotNull(result1.getComplexInject());
-        assertEquals(result1.getComplexInject(), instance.find(ComplexInjectComponent.class));
-        assertNull(result1.getDummyComponent());
     }
 
     @Test

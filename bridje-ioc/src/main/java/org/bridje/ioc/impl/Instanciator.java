@@ -20,15 +20,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import org.bridje.ioc.Construct;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
@@ -55,13 +52,13 @@ class Instanciator
     {
         try
         {
-            Constructor<?> constructor = findConstructor(cls);
+            Constructor<?> constructor = findDefaultConstructor(cls);
             if(constructor == null)
             {
                 return null;
             }
-            Object[] parameters = findParameters(constructor);
-            return parameters.length == 0 ? (T)constructor.newInstance() : (T)constructor.newInstance(parameters);
+            constructor.setAccessible(true);
+            return (T)constructor.newInstance();
         }
         catch (InstantiationException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
         {
@@ -138,55 +135,6 @@ class Instanciator
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-    
-    private <T> Constructor<?> findConstructor(Class<T> cls)
-    {
-        Constructor<?> constructor = findConstructorWithAnnotation(cls);
-        if(constructor == null)
-        {
-            constructor = findConstructorWithParameters(cls);
-            if(constructor == null)
-            {
-                constructor = findDefaultConstructor(cls);
-            }
-        }
-        if(constructor == null)
-        {
-            LOG.log(Level.WARNING, "Couldn't find a default constructor for {}", cls.getName());
-            return null;
-        }
-        constructor.setAccessible(true);
-        return constructor;
-    }
-    
-    private Constructor<?> findConstructorWithAnnotation(Class cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            Construct constructAnnot = constructor.getAnnotation(Construct.class);
-            if (constructAnnot != null)
-            {                    
-                return constructor;
-            }
-        }
-        return null;
-    }
-
-    private Constructor<?> findConstructorWithParameters(Class cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            //If it is not the default constructor we find out if we can create de component by injecting all his parameters.
-            if (constructor.getParameterTypes().length != 0)
-            {
-                if(allParametersExists(constructor.getParameters()))
-                {
-                    return constructor;
-                }
-            }
-        }
-        return null;
-    }
 
     private <T> Constructor<?> findDefaultConstructor(Class<T> cls)
     {
@@ -198,32 +146,6 @@ class Instanciator
             }
         }
         return null;
-    }
-
-    private Object[] findParameters(Constructor<?> constructor)
-    {
-        List<Object> instances = new LinkedList<>();
-        Parameter[] parameters = constructor.getParameters();
-        for (Parameter parameter : parameters)
-        {
-            instances.add(context.findGeneric(parameter.getParameterizedType()));
-        }
-        return instances.toArray();
-    }
-
-    private boolean allParametersExists(Parameter[] parameters)
-    {
-        boolean allExists = true;
-        for (Parameter parameter : parameters)
-        {
-            Type paramType = parameter.getParameterizedType();
-            if(!context.exists(paramType))
-            {
-                allExists = false;
-                break;
-            }
-        }
-        return allExists;
     }
 
     private void initContextListeners()
