@@ -25,6 +25,7 @@
 
     <modules>
         <module>bridje-ioc</module>
+        <module>bridje-xsd-maven-plugin</module>
     </modules>
 
     <scm>
