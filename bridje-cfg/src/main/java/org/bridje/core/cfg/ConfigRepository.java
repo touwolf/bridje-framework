@@ -18,6 +18,7 @@ package org.bridje.core.cfg;
 
 import java.io.Reader;
 import java.io.Writer;
+
 /**
  * An interface that every configuration repository must implements.
  *
