@@ -6,11 +6,14 @@ import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
+/**
+ * xsd schema output resolver fo the result xsd file.
+ */
 public class OutputResolver extends SchemaOutputResolver
 {
     private final String baseDir;
 
-    private String schemaName = "schema.xsd";
+    private String schemaName;
 
     public OutputResolver(String baseDir)
     {
@@ -25,6 +28,10 @@ public class OutputResolver extends SchemaOutputResolver
     @Override
     public Result createOutput(String nsUri, String fileName) throws IOException
     {
+        if(schemaName == null || schemaName.isEmpty())
+        {
+            setSchemaName(fileName);
+        }
         String path = baseDir + File.separator + schemaName;
         File file = new File(path);
         if (file.exists())
@@ -37,6 +44,11 @@ public class OutputResolver extends SchemaOutputResolver
         return new StreamResult(file);
     }
 
+    public String getSchemaName()
+    {
+        return schemaName;
+    }
+    
     public void setSchemaName(String schemaName)
     {
         if (schemaName == null || schemaName.isEmpty())

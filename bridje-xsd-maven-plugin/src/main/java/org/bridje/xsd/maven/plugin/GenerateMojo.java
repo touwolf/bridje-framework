@@ -21,6 +21,9 @@ import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.classworlds.realm.DuplicateRealmException;
 
+/**
+ * Mojo for xsd schema generation form project classes
+ */
 @Mojo(name = "generate-xsd")
 public class GenerateMojo extends AbstractMojo
 {
@@ -84,9 +87,9 @@ public class GenerateMojo extends AbstractMojo
             arr = lstClass.toArray(arr);
             JAXBContext context = JAXBContext.newInstance(arr);
             outputResolver.setSchemaName(modelName);
-            getLog().info("Generando XSD: " + modelName + " ...");
+            getLog().info("Generating XSD: " + modelName + " ...");
             context.generateSchema(outputResolver);
-            getLog().info("Generado " + modelName + ".xsd");
+            getLog().info("File " + modelName + ".xsd generated.");
         }
         catch (JAXBException | IOException ex)
         {
