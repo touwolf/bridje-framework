@@ -33,7 +33,7 @@ Bridje Core library is availables on the Maven Central Repository
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2</version>
         </dependency>
 		....
     </dependencies>
