@@ -23,10 +23,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.core.cfg.ConfigRepository;
 import org.bridje.core.cfg.ConfigService;
+import org.bridje.core.cfg.Configuration;
+import org.bridje.core.cfg.ConfigurationAdapter;
+import org.bridje.core.cfg.XmlConfigAdapter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.Ioc;
 
 @Component
 class ConfigServiceImpl implements ConfigService
@@ -123,30 +128,31 @@ class ConfigServiceImpl implements ConfigService
 
     private <T> void writeConfig(Writer writer, T newConfig) throws IOException
     {
-        try
+        Configuration cfgAnnot = newConfig.getClass().getAnnotation(Configuration.class);
+        Class<? extends ConfigurationAdapter> configAdapter = null;
+        if(cfgAnnot != null)
         {
-            JAXBContext context = JAXBContext.newInstance(newConfig.getClass());
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.marshal(newConfig, writer);
+            configAdapter = cfgAnnot.value();
         }
-        catch(JAXBException ex)
+        if(configAdapter == null)
         {
-            throw new IOException(ex.getMessage(), ex);
+            configAdapter = XmlConfigAdapter.class;
         }
+        Ioc.context().find(configAdapter).write(newConfig, writer);
     }
 
     private <T> T readConfig(Reader reader, Class<T> configClass) throws IOException
     {
-        try
+        Configuration cfgAnnot = configClass.getAnnotation(Configuration.class);
+        Class<? extends ConfigurationAdapter> configAdapter = null;
+        if(cfgAnnot != null)
         {
-            JAXBContext context = JAXBContext.newInstance(configClass);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            Object result = unmarshaller.unmarshal(reader);
-            return (T)result;
+            configAdapter = cfgAnnot.value();
         }
-        catch(JAXBException ex)
+        if(configAdapter == null)
         {
-            throw new IOException(ex.getMessage(), ex);
+            configAdapter = XmlConfigAdapter.class;
         }
+        return (T)Ioc.context().find(configAdapter).read(configClass, reader);
     }
 }

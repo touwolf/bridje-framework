@@ -4,3 +4,4 @@ target
 *.releaseBackup
 release.properties
 /nbactions.xml
+/bridje-cfg/nbproject/
