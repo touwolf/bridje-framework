@@ -37,21 +37,56 @@ class ConfigServiceImpl implements ConfigService
     @Override
     public <T> T findConfig(Class<T> configClass) throws IOException
     {
-        return findConfig(findDefaultName(configClass), configClass);
+        return findConfigInternal(findFileName(configClass), configClass);
     }
 
     @Override
     public <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig) throws IOException
     {
-        return findOrCreateConfig(findDefaultName(configClass), configClass, defaultConfig);
+        return findOrCreateConfigInternal(findFileName(configClass), configClass, defaultConfig);
     }
 
     @Override
     public <T> T findConfig(String configName, Class<T> configClass) throws IOException
     {
+        return findConfigInternal(findFileName(configName, configClass), configClass);
+    }
+
+    @Override
+    public <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig) throws IOException
+    {
+        return findOrCreateConfigInternal(findFileName(configName, configClass), configClass, defaultConfig);
+    }
+
+    @Override
+    public <T> T saveConfig(T newConfig) throws IOException
+    {
+        return saveConfigInternal(findFileName(newConfig.getClass()), newConfig);
+    }
+
+    @Override
+    public <T> T saveConfig(String configName, T newConfig) throws IOException
+    {
+        return saveConfigInternal(findFileName(configName, newConfig.getClass()), newConfig);
+    }
+
+    private <T> T saveConfigInternal(String configFileName, T newConfig) throws IOException
+    {
         for (ConfigRepository repo : repos)
         {
-            T result = findConfigFromRepo(configName, configClass, repo);
+            if(repo.canSave())
+            {
+                return saveConfigToRepo(configFileName, newConfig, repo);
+            }
+        }
+        return null;
+    }
+
+    private <T> T findConfigInternal(String configFileName, Class<T> configClass) throws IOException
+    {
+        for (ConfigRepository repo : repos)
+        {
+            T result = findConfigFromRepo(configFileName, configClass, repo);
             if(result != null)
             {
                 return result;
@@ -60,44 +95,24 @@ class ConfigServiceImpl implements ConfigService
         return null;
     }
 
-    @Override
-    public <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig) throws IOException
+    private <T> T findOrCreateConfigInternal(String configFileName, Class<T> configClass, T defaultConfig) throws IOException
     {
-        T result = findConfig(configName, configClass);
+        T result = findConfigInternal(configFileName, configClass);
         if(result == null)
         {
-            result = saveConfig(configName, defaultConfig);
+            result = saveConfigInternal(configFileName, defaultConfig);
         }
         return result;
     }
 
-    @Override
-    public <T> T saveConfig(T newConfig) throws IOException
+    private <T> String findFileName(Class<T> cls)
     {
-        return saveConfig(findDefaultName(newConfig.getClass()), newConfig);
+        return findAdapter(cls).findDefaultFileName(cls);
     }
 
-    @Override
-    public <T> T saveConfig(String configName, T newConfig) throws IOException
+    private <T> String findFileName(String configName, Class<T> cls)
     {
-        for (ConfigRepository repo : repos)
-        {
-            if(repo.canSave())
-            {
-                return saveConfigToRepo(configName, newConfig, repo);
-            }
-        }
-        return null;
-    }
-    
-    private <T> String findDefaultName(Class<T> cls)
-    {
-        String name = findAdapter(cls).findDefaultName(cls);
-        if(name != null && !name.trim().isEmpty())
-        {
-            return name;
-        }
-        return cls.getSimpleName().toLowerCase();
+        return findAdapter(cls).findFileName(configName, cls);
     }
 
     private <T> T saveConfigToRepo(String configName, T newConfig, ConfigRepository repo) throws IOException
@@ -135,7 +150,7 @@ class ConfigServiceImpl implements ConfigService
     {
         return (T)findAdapter(configClass).read(configClass, reader);
     }
-    
+
     private ConfigurationAdapter findAdapter(Class<?> cfgClass)
     {
         Configuration cfgAnnot = cfgClass.getAnnotation(Configuration.class);

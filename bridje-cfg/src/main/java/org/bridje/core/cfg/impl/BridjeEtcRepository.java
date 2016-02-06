@@ -30,7 +30,7 @@ public class BridjeEtcRepository implements ConfigRepository
     @Override
     public Reader findConfig(String configName) throws IOException
     {
-        URL resource = this.getClass().getResource("/BRIDJE-INF/etc/" + configName + ".xml");
+        URL resource = this.getClass().getResource("/BRIDJE-INF/etc/" + configName);
         if(resource != null)
         {
             return new InputStreamReader(resource.openStream());

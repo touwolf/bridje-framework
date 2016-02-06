@@ -26,10 +26,21 @@ import java.io.Writer;
 public interface ConfigurationAdapter
 {
     /**
+     * Obtains the file name for the especified configuration name and class.
      * 
-     * @return 
+     * @param name The name of the configuration instance.
+     * @param cls The class of the configuration
+     * @return The real file name to be use to find the configuration instance.
      */
-    String findDefaultName(Class<?> cls);
+    String findFileName(String name, Class<?> cls);
+
+    /**
+     * Obtains the file name for the especified configuration class.
+     * 
+     * @param cls The class of the configuration
+     * @return The real file name to be use to find the configuration instance.
+     */
+    String findDefaultFileName(Class<?> cls);
     
     /**
      * Writes the configuration object to the especified writer.

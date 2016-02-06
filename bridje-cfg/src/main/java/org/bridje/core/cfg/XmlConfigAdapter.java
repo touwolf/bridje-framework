@@ -34,19 +34,24 @@ import org.bridje.ioc.Component;
 @Component
 public class XmlConfigAdapter implements ConfigurationAdapter
 {
+    @Override
+    public String findFileName(String name, Class<?> cls)
+    {
+        return name + ".xml";
+    }
 
     @Override
-    public String findDefaultName(Class<?> cls)
+    public String findDefaultFileName(Class<?> cls)
     {
         XmlRootElement ann = cls.getAnnotation(XmlRootElement.class);
         if(ann != null)
         {
             if(ann.name() != null && !ann.name().trim().isEmpty() && !ann.name().equalsIgnoreCase("##default"))
             {
-                return ann.name();
+                return ann.name() + ".xml";
             }
         }
-        return null;
+        return cls.getSimpleName().toLowerCase() + ".xml";
     }
 
     @Override
