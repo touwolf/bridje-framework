@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg.impl;
+package org.bridje.cfg.impl;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
-import org.bridje.core.cfg.ConfigRepository;
+import org.bridje.cfg.ConfigRepository;
 import org.bridje.ioc.Component;
 
 @Component

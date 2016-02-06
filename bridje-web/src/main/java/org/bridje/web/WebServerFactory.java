@@ -14,35 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.web;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@Configuration(XmlConfigAdapter.class)
-@XmlRootElement
-public class MyConfig
+public interface WebServerFactory
 {
-    private String name;
-    
-    private int port;
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public int getPort()
-    {
-        return port;
-    }
-
-    public void setPort(int port)
-    {
-        this.port = port;
-    }
+    WebServer createWebServer(WebServerConfig config);
 }

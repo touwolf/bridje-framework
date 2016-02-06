@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.web;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.cfg.Configuration;
+import org.bridje.cfg.XmlConfigAdapter;
 
 /**
- * This annotation is used to especify the configuration adapter for the given
- * configuration definition class.
+ *
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Configuration
+@Configuration(XmlConfigAdapter.class)
+@XmlRootElement(name = "web-server")
+public class WebServerConfig
 {
-    /**
-     * The adapter to be use to serialice/parse this configuration definicion
-     * class.
-     *
-     * @return The adapter class to be use.
-     */
-    Class<? extends ConfigurationAdapter> value();
+    private int port;
+
+    public int getPort()
+    {
+        return port;
+    }
+
+    public void setPort(int port)
+    {
+        this.port = port;
+    }
 }

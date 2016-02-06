@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.cfg;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public interface ConfigService
      * @param configClass The class of the configuration instance.
      * @return The object with the configuration or {@literal null} if no
      * configuration of the specified type was found.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration retreval.
      */
     <T> T findConfig(Class<T> configClass) throws IOException;
 
@@ -45,7 +45,7 @@ public interface ConfigService
      * @param configClass The class of the configuration instance.
      * @return The object with the configuration or {@literal null} if no
      * configuration of the specified type was found.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration retreval.
      */
     <T> T findConfig(String configName, Class<T> configClass) throws IOException;
 
@@ -57,7 +57,7 @@ public interface ConfigService
      * @param defaultConfig The default configuration if not exists.
      * @return The object with the configuration or {@literal null} if no
      * configuration of the specified type was found.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration saving or retreval.
      */
     <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig) throws IOException;
 
@@ -70,7 +70,7 @@ public interface ConfigService
      * @param defaultConfig The default configuration if not exists.
      * @return The object with the configuration or {@literal null} if no
      * configuration of the specified type was found.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration saving or retreval.
      */
     <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig) throws IOException;
 
@@ -83,7 +83,7 @@ public interface ConfigService
      * @param newConfig The configuration object to be save as the default
      * instance of the object´s class config.
      * @return The newConfig object passed to this method.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration saving.
      */
     <T> T saveConfig(T newConfig) throws IOException;
 
@@ -97,7 +97,7 @@ public interface ConfigService
      * @param newConfig The configuration object to be save as the named
      * instance of the object´s class config.
      * @return The newConfig object passed to this method.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration saving.
      */
     <T> T saveConfig(String configName, T newConfig) throws IOException;
 }

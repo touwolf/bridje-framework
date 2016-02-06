@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg.impl;
+package org.bridje.cfg.impl;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import org.bridje.core.cfg.ConfigRepository;
-import org.bridje.core.cfg.ConfigService;
-import org.bridje.core.cfg.Configuration;
-import org.bridje.core.cfg.ConfigurationAdapter;
-import org.bridje.core.cfg.XmlConfigAdapter;
+import org.bridje.cfg.ConfigRepository;
+import org.bridje.cfg.ConfigService;
+import org.bridje.cfg.Configuration;
+import org.bridje.cfg.ConfigurationAdapter;
+import org.bridje.cfg.XmlConfigAdapter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;

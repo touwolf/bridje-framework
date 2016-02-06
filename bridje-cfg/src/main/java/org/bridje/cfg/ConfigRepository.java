@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.cfg;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -33,7 +33,7 @@ public interface ConfigRepository
      *
      * @param configName The name of the configuration.
      * @return A Reader from wich to read the configuracion instance.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration retreval.
      */
     Reader findConfig(String configName) throws IOException;
 
@@ -43,7 +43,7 @@ public interface ConfigRepository
      * @param configName The name for this configuration instance.
      * @return The writer in wich to put the new configuration instance, 
      * or null if this repository does not allows configuration saving.
-     * @throws java.io.IOException
+     * @throws java.io.IOException If any IOException occurs during configuration saving.
      */
     Writer saveConfig(String configName) throws IOException;
 

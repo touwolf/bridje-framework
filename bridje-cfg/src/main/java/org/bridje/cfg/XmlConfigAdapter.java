@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.cfg;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -29,7 +29,7 @@ import org.bridje.ioc.Component;
 /**
  * This adapter use JAXB to write an read configuration objects into/from xml
  * files, configuration classes using this adapter must be annotated with
- * @XmlRootElement annotation.
+ * XmlRootElement annotation.
  */
 @Component
 public class XmlConfigAdapter implements ConfigurationAdapter

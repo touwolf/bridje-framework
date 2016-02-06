@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.cfg;
 
 import java.io.IOException;
 import java.io.Reader;

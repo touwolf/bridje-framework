@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.cfg;
 
 import org.bridje.ioc.Ioc;
 import org.junit.After;
