@@ -23,11 +23,32 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.ioc.Component;
 
+/**
+ * This adapter use JAXB to write an read configuration objects into/from xml
+ * files, configuration classes using this adapter must be annotated with
+ * @XmlRootElement annotation.
+ */
 @Component
 public class XmlConfigAdapter implements ConfigurationAdapter
 {
+
+    @Override
+    public String findDefaultName(Class<?> cls)
+    {
+        XmlRootElement ann = cls.getAnnotation(XmlRootElement.class);
+        if(ann != null)
+        {
+            if(ann.name() != null && !ann.name().trim().isEmpty() && !ann.name().equalsIgnoreCase("##default"))
+            {
+                return ann.name();
+            }
+        }
+        return null;
+    }
+
     @Override
     public void write(Object newConfig, Writer writer) throws IOException
     {
@@ -37,7 +58,7 @@ public class XmlConfigAdapter implements ConfigurationAdapter
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(newConfig, writer);
         }
-        catch(JAXBException ex)
+        catch (JAXBException ex)
         {
             throw new IOException(ex.getMessage(), ex);
         }
@@ -53,7 +74,7 @@ public class XmlConfigAdapter implements ConfigurationAdapter
             Object result = unmarshaller.unmarshal(reader);
             return result;
         }
-        catch(JAXBException ex)
+        catch (JAXBException ex)
         {
             throw new IOException(ex.getMessage(), ex);
         }

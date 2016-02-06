@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myConfig>
+    <name>someServer</name>
+    <port>8080</port>
+</myConfig>

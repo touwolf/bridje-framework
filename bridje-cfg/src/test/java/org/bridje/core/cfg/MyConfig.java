@@ -16,6 +16,10 @@
 
 package org.bridje.core.cfg;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Configuration(XmlConfigAdapter.class)
+@XmlRootElement
 public class MyConfig
 {
     private String name;

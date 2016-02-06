@@ -16,6 +16,7 @@
 
 package org.bridje.core.cfg;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -32,8 +33,9 @@ public interface ConfigRepository
      *
      * @param configName The name of the configuration.
      * @return A Reader from wich to read the configuracion instance.
+     * @throws java.io.IOException
      */
-    Reader findConfig(String configName);
+    Reader findConfig(String configName) throws IOException;
 
     /**
      * Obtains a writer to the configuration resource by the given name.
@@ -41,8 +43,9 @@ public interface ConfigRepository
      * @param configName The name for this configuration instance.
      * @return The writer in wich to put the new configuration instance, 
      * or null if this repository does not allows configuration saving.
+     * @throws java.io.IOException
      */
-    Writer saveConfig(String configName);
+    Writer saveConfig(String configName) throws IOException;
 
     /**
      * Especifies when ever this repository allows to save configuration

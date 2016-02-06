@@ -19,11 +19,6 @@ package org.bridje.core.cfg.impl;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.core.cfg.ConfigRepository;
 import org.bridje.core.cfg.ConfigService;
 import org.bridje.core.cfg.Configuration;
@@ -97,6 +92,11 @@ class ConfigServiceImpl implements ConfigService
     
     private <T> String findDefaultName(Class<T> cls)
     {
+        String name = findAdapter(cls).findDefaultName(cls);
+        if(name != null && !name.trim().isEmpty())
+        {
+            return name;
+        }
         return cls.getSimpleName().toLowerCase();
     }
 
@@ -128,22 +128,17 @@ class ConfigServiceImpl implements ConfigService
 
     private <T> void writeConfig(Writer writer, T newConfig) throws IOException
     {
-        Configuration cfgAnnot = newConfig.getClass().getAnnotation(Configuration.class);
-        Class<? extends ConfigurationAdapter> configAdapter = null;
-        if(cfgAnnot != null)
-        {
-            configAdapter = cfgAnnot.value();
-        }
-        if(configAdapter == null)
-        {
-            configAdapter = XmlConfigAdapter.class;
-        }
-        Ioc.context().find(configAdapter).write(newConfig, writer);
+        findAdapter(newConfig.getClass()).write(newConfig, writer);
     }
 
     private <T> T readConfig(Reader reader, Class<T> configClass) throws IOException
     {
-        Configuration cfgAnnot = configClass.getAnnotation(Configuration.class);
+        return (T)findAdapter(configClass).read(configClass, reader);
+    }
+    
+    private ConfigurationAdapter findAdapter(Class<?> cfgClass)
+    {
+        Configuration cfgAnnot = cfgClass.getAnnotation(Configuration.class);
         Class<? extends ConfigurationAdapter> configAdapter = null;
         if(cfgAnnot != null)
         {
@@ -153,6 +148,6 @@ class ConfigServiceImpl implements ConfigService
         {
             configAdapter = XmlConfigAdapter.class;
         }
-        return (T)Ioc.context().find(configAdapter).read(configClass, reader);
+        return Ioc.context().find(configAdapter);
     }
 }

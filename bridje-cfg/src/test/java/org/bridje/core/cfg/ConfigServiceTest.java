@@ -16,8 +16,10 @@
 
 package org.bridje.core.cfg;
 
+import org.bridje.ioc.Ioc;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,12 +54,26 @@ public class ConfigServiceTest
     @Test
     public void testFindConfig_Class() throws Exception
     {
-        /*System.out.println("findConfig");
         ConfigService instance = Ioc.context().find(ConfigService.class);
-        Object expResult = null;
-        Object result = instance.findConfig(null);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");*/
+        MyConfig myCfg = instance.findConfig(MyConfig.class);
+        assertNotNull(myCfg);
+        assertNotNull(myCfg.getName());
+        assertNotNull(myCfg.getPort());
+        assertEquals("someServer", myCfg.getName());
+        assertEquals(8080, myCfg.getPort());
+
+        MyConfig myCfg1 = instance.findConfig("my-config", MyConfig.class);
+        assertNotNull(myCfg1);
+        assertNotNull(myCfg1.getName());
+        assertNotNull(myCfg1.getPort());
+        assertEquals("someServer1", myCfg1.getName());
+        assertEquals(8081, myCfg1.getPort());
+
+        MyConfig myCfg2 = instance.findConfig("system/server", MyConfig.class);
+        assertNotNull(myCfg2);
+        assertNotNull(myCfg2.getName());
+        assertNotNull(myCfg2.getPort());
+        assertEquals("localhost", myCfg2.getName());
+        assertEquals(8082, myCfg2.getPort());
     }
 }

@@ -22,15 +22,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
+ * This annotation is used to especify the configuration adapter for the given
+ * configuration definition class.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Configuration
 {
     /**
-     * 
-     * @return 
+     * The adapter to be use to serialice/parse this configuration definicion
+     * class.
+     *
+     * @return The adapter class to be use.
      */
     Class<? extends ConfigurationAdapter> value();
 }

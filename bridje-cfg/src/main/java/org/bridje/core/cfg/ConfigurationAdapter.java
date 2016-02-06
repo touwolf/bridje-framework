@@ -21,24 +21,32 @@ import java.io.Reader;
 import java.io.Writer;
 
 /**
- * 
+ * Represents an adapter witch can be use to read/write configuration objects.
  */
 public interface ConfigurationAdapter
 {
     /**
      * 
-     * @param newConfig 
-     * @param writer 
-     * @throws java.io.IOException 
+     * @return 
+     */
+    String findDefaultName(Class<?> cls);
+    
+    /**
+     * Writes the configuration object to the especified writer.
+     *
+     * @param newConfig The configuration object to write.
+     * @param writer The writer to write to.
+     * @throws java.io.IOException If the writing operation failed.
      */
     void write(Object newConfig, Writer writer) throws IOException;
 
     /**
-     * 
-     * @param cls 
-     * @param reader 
-     * @return 
-     * @throws java.io.IOException 
+     * Reads the especified configuration class into an object.
+     *
+     * @param cls The configuration class to read.
+     * @param reader The reader to read from.
+     * @return The configuration object readed.
+     * @throws java.io.IOException If the reading operation failed.
      */
     Object read(Class<?> cls, Reader reader) throws IOException;
 }

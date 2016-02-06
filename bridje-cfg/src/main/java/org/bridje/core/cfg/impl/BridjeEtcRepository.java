@@ -14,31 +14,40 @@
  * limitations under the License.
  */
 
-package org.bridje.core.cfg;
+package org.bridje.core.cfg.impl;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
+import org.bridje.core.cfg.ConfigRepository;
 import org.bridje.ioc.Component;
 
 @Component
-public class CpEtcConfigRepository implements ConfigRepository
+public class BridjeEtcRepository implements ConfigRepository
 {
     @Override
-    public Reader findConfig(String configName)
+    public Reader findConfig(String configName) throws IOException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        URL resource = this.getClass().getResource("/BRIDJE-INF/etc/" + configName + ".xml");
+        if(resource != null)
+        {
+            return new InputStreamReader(resource.openStream());
+        }
+        return null;
     }
 
     @Override
-    public Writer saveConfig(String configName)
+    public Writer saveConfig(String configName) throws IOException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public boolean canSave()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return false;
     }
     
 }
