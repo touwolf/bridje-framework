@@ -79,7 +79,7 @@ class ConfigServiceImpl implements ConfigService
                 return saveConfigToRepo(configFileName, newConfig, repo);
             }
         }
-        return null;
+        return newConfig;
     }
 
     private <T> T findConfigInternal(String configFileName, Class<T> configClass) throws IOException

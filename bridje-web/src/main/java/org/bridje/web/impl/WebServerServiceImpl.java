@@ -17,13 +17,16 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
+import javax.servlet.Servlet;
 import org.bridje.cfg.ConfigService;
+import org.bridje.ioc.Component;
 import org.bridje.web.WebServer;
 import org.bridje.web.WebServerConfig;
 import org.bridje.web.WebServerFactory;
 import org.bridje.web.WebServerService;
 import org.bridje.ioc.Inject;
 
+@Component
 class WebServerServiceImpl implements WebServerService
 {
     @Inject
@@ -31,9 +34,12 @@ class WebServerServiceImpl implements WebServerService
 
     @Inject
     private ConfigService cfgServ;
-    
+
     private WebServer server;
     
+    @Inject
+    private Servlet[] servlets;
+
     @Override
     public void start()
     {
@@ -45,6 +51,10 @@ class WebServerServiceImpl implements WebServerService
                 cfg.setPort(8080);
                 cfg = cfgServ.findOrCreateConfig(WebServerConfig.class, cfg);
                 server = fact.createWebServer(cfg);
+                for (Servlet servlet : servlets)
+                {
+                    server.addServlet(servlet);
+                }
             }
             server.start();
         }
@@ -62,6 +72,7 @@ class WebServerServiceImpl implements WebServerService
             throw new IllegalStateException("Web server has not being started.");
         }
         server.stop();
+        server = null;
     }
 
     @Override
