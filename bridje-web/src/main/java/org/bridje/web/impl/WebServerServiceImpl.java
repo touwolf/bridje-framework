@@ -36,7 +36,7 @@ class WebServerServiceImpl implements WebServerService
     private ConfigService cfgServ;
 
     private WebServer server;
-    
+
     @Inject
     private Servlet[] servlets;
 
