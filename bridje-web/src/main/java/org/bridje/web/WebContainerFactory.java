@@ -16,7 +16,19 @@
 
 package org.bridje.web;
 
-public interface WebServerFactory
+/**
+ * This interface is to be implemented by a web container provider. The
+ * implementation of this interface must create a WebContainer object with the
+ * capabilitys it specify.
+ */
+public interface WebContainerFactory
 {
-    WebServer createWebServer(WebServerConfig config);
+    /**
+     * This method is called ones to create an object who implements the
+     * WebContainer interface.
+     *
+     * @param config The configuration for the web container.
+     * @return A WebContainer capable object.
+     */
+    WebContainer createWebServer(WebContainerConfig config);
 }

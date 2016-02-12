@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
-import org.bridje.web.WebServer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -30,13 +29,14 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.bridje.web.WebContainer;
 
 /**
  *
  */
-class JettyWebServer implements WebServer
+class JettyWebContainer implements WebContainer
 {
-    private static final Logger LOG = Logger.getLogger(JettyWebServer.class.getName());
+    private static final Logger LOG = Logger.getLogger(JettyWebContainer.class.getName());
 
     private final Server server;
 
@@ -48,7 +48,7 @@ class JettyWebServer implements WebServer
 
     private SessionHandler sessionHandler;
 
-    JettyWebServer(int port)
+    JettyWebContainer(int port)
     {
         server = new Server(port);
         server.setHandler(createSessionHandler());

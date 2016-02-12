@@ -21,19 +21,29 @@ import org.bridje.cfg.Configuration;
 import org.bridje.cfg.XmlConfigAdapter;
 
 /**
- *
+ * The web container configuration.
  */
 @Configuration(XmlConfigAdapter.class)
-@XmlRootElement(name = "web-server")
-public class WebServerConfig
+@XmlRootElement(name = "web-container")
+public class WebContainerConfig
 {
     private int port;
 
+    /**
+     * Gets the port on wich the web server must be started.
+     * 
+     * @return The web server port.
+     */
     public int getPort()
     {
         return port;
     }
 
+    /**
+     * Sets the port on wich the web server must be started.
+     * 
+     * @param port The web server port.
+     */
     public void setPort(int port)
     {
         this.port = port;

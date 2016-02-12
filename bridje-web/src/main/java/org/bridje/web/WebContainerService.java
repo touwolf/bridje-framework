@@ -16,23 +16,27 @@
 
 package org.bridje.web;
 
-import javax.servlet.Servlet;
-
-public interface WebServer
+/**
+ * Provides the services that allows the application to control the web
+ * container. The user of the web API must inject this interface to access the
+ * services it provides.
+ */
+public interface WebContainerService
 {
-    void addServlet(Servlet servlet);
-
-    void removeServlet(Servlet servlet);
-
-    void registerWebSocket(Class<?> cls, String name, String pathSpec);
-    
-    void registerWebSocket(Class<?> cls, String name, String[] pathSpec);
-
-    void unregisterWebSocket(Class<?> cls);
-    
+    /**
+     * Starts the web container, this method will register all of the http
+     * servlets and web sockets abailables in the class path.
+     */
     void start();
-    
+
+    /**
+     * Stops the web container, this methods will unregister all http servlets 
+     * and web sockets that where deployed on the start method.
+     */
     void stop();
-    
+
+    /**
+     * Joins the thread of the web container.
+     */
     void join();
 }

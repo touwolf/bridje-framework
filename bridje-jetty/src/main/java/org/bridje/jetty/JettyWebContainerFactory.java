@@ -17,17 +17,17 @@
 package org.bridje.jetty;
 
 import org.bridje.ioc.Component;
-import org.bridje.web.WebServer;
-import org.bridje.web.WebServerConfig;
-import org.bridje.web.WebServerFactory;
+import org.bridje.web.WebContainerConfig;
+import org.bridje.web.WebContainer;
+import org.bridje.web.WebContainerFactory;
 
 @Component
-class JettyWebServerFactory implements WebServerFactory
+class JettyWebContainerFactory implements WebContainerFactory
 {
     @Override
-    public WebServer createWebServer(WebServerConfig config)
+    public WebContainer createWebServer(WebContainerConfig config)
     {
-        return new JettyWebServer(config.getPort());
+        return new JettyWebContainer(config.getPort());
     }
     
 }

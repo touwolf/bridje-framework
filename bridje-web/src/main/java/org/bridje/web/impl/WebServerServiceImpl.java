@@ -20,22 +20,22 @@ import java.io.IOException;
 import javax.servlet.Servlet;
 import org.bridje.cfg.ConfigService;
 import org.bridje.ioc.Component;
-import org.bridje.web.WebServer;
-import org.bridje.web.WebServerConfig;
-import org.bridje.web.WebServerFactory;
-import org.bridje.web.WebServerService;
+import org.bridje.web.WebContainerConfig;
 import org.bridje.ioc.Inject;
+import org.bridje.web.WebContainer;
+import org.bridje.web.WebContainerFactory;
+import org.bridje.web.WebContainerService;
 
 @Component
-class WebServerServiceImpl implements WebServerService
+class WebServerServiceImpl implements WebContainerService
 {
     @Inject
-    private WebServerFactory fact;
+    private WebContainerFactory fact;
 
     @Inject
     private ConfigService cfgServ;
 
-    private WebServer server;
+    private WebContainer server;
 
     @Inject
     private Servlet[] servlets;
@@ -47,9 +47,9 @@ class WebServerServiceImpl implements WebServerService
         {
             if(server == null)
             {
-                WebServerConfig cfg = new WebServerConfig();
+                WebContainerConfig cfg = new WebContainerConfig();
                 cfg.setPort(8080);
-                cfg = cfgServ.findOrCreateConfig(WebServerConfig.class, cfg);
+                cfg = cfgServ.findOrCreateConfig(WebContainerConfig.class, cfg);
                 server = fact.createWebServer(cfg);
                 for (Servlet servlet : servlets)
                 {
