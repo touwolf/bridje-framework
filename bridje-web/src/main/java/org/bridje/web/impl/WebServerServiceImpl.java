@@ -16,8 +16,22 @@
 
 package org.bridje.web.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.servlet.Servlet;
+import javax.websocket.server.ServerEndpoint;
 import org.bridje.cfg.ConfigService;
 import org.bridje.ioc.Component;
 import org.bridje.web.WebContainerConfig;
@@ -29,6 +43,8 @@ import org.bridje.web.WebContainerService;
 @Component
 class WebServerServiceImpl implements WebContainerService
 {
+    private static final Logger LOG = Logger.getLogger(WebServerServiceImpl.class.getName());
+
     @Inject
     private WebContainerFactory fact;
 
@@ -39,6 +55,8 @@ class WebServerServiceImpl implements WebContainerService
 
     @Inject
     private Servlet[] servlets;
+    
+    private Set<Class<?>> webSockets;
 
     @Override
     public void start()
@@ -47,14 +65,10 @@ class WebServerServiceImpl implements WebContainerService
         {
             if(server == null)
             {
-                WebContainerConfig cfg = new WebContainerConfig();
-                cfg.setPort(8080);
-                cfg = cfgServ.findOrCreateConfig(WebContainerConfig.class, cfg);
+                WebContainerConfig cfg = findConfig();
                 server = fact.createWebServer(cfg);
-                for (Servlet servlet : servlets)
-                {
-                    server.addServlet(servlet);
-                }
+                addAllServlets();
+                registerAllWebSockets();
             }
             server.start();
         }
@@ -83,5 +97,87 @@ class WebServerServiceImpl implements WebContainerService
             throw new IllegalStateException("Web server has not being started.");
         }
         server.join();
+    }
+
+    private void addAllServlets()
+    {
+        for (Servlet servlet : servlets)
+        {
+            server.addServlet(servlet);
+        }
+    }
+    
+    private void registerAllWebSockets()
+    {
+        for (Class<?> webSocket : getWebSockets())
+        {
+            server.registerWebSocket(webSocket);
+        }
+    }
+
+    public Set<Class<?>> getWebSockets()
+    {
+        if(webSockets == null)
+        {
+            try
+            {
+                webSockets = findAllWebSockets();
+            }
+            catch (IOException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        return webSockets;
+    }
+    
+    private WebContainerConfig findConfig() throws IOException
+    {
+        WebContainerConfig cfg = new WebContainerConfig();
+        cfg.setPort(8080);
+        return cfgServ.findOrCreateConfig(WebContainerConfig.class, cfg);
+    }
+
+    private Set<Class<?>> findAllWebSockets() throws IOException
+    {
+        Set result = new HashSet();
+        List<String> clsList = readAllEndpoints();
+        for (String clsName : clsList)
+        {
+            try
+            {
+                Class<?> cls = Class.forName(clsName);
+                if(cls.getAnnotation(ServerEndpoint.class) != null)
+                {
+                    result.add(cls);
+                }
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        return result;
+    }
+
+    private List<String> readAllEndpoints() throws IOException
+    {
+        List<String> result = new ArrayList<>();
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(WebSocketProcessor.RESOURCE_FILE);
+        while(resources.hasMoreElements())
+        {
+            URL url = resources.nextElement();
+            result.addAll(readEndpoints(url));
+        }
+        return result;
+    }
+
+    private List<String> readEndpoints(URL url) throws IOException
+    {
+        try (InputStream is = url.openStream())
+        {
+            BufferedReader r = new BufferedReader(new InputStreamReader(is));
+            return r.lines().collect(Collectors.toList());
+        }
     }
 }

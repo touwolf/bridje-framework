@@ -47,20 +47,8 @@ public interface WebContainer
      * in the container. The specification should be readed from the annotations of the web socket class.
      * 
      * @param cls The web socket class to be register in the container.
-     * @param name The name of the web socket.
-     * @param pathSpec The path specification for this web socket.
      */
-    void registerWebSocket(Class<?> cls, String name, String pathSpec);
-
-    /**
-     * This method should register a the especified class as a web socket server end point
-     * in the container. The specification should be readed from the annotations of the web socket class.
-     * 
-     * @param cls The web socket class to be register in the container.
-     * @param name The name of the web socket.
-     * @param pathSpec The path specifications for this web socket.
-     */
-    void registerWebSocket(Class<?> cls, String name, String[] pathSpec);
+    void registerWebSocket(Class<?> cls);
 
     /**
      * Remove a previous register web socket class from the container, 

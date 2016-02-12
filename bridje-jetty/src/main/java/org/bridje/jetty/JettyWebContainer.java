@@ -30,6 +30,9 @@ import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.bridje.web.WebContainer;
+import org.eclipse.jetty.websocket.server.WebSocketHandler;
+import org.eclipse.jetty.websocket.server.WebSocketServerFactory;
+import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 
 /**
  *
@@ -42,11 +45,13 @@ class JettyWebContainer implements WebContainer
 
     private ServletHandler servletHandler;
 
-    private ServletHandler webSocketHandler;
+    private WebSocketHandler webSocketHandler;
 
     private HandlerList mainHandlerList;
 
     private SessionHandler sessionHandler;
+    
+    private WebSocketServerFactory webSocketFactory;
 
     JettyWebContainer(int port)
     {
@@ -73,28 +78,9 @@ class JettyWebContainer implements WebContainer
     }
 
     @Override
-    public void registerWebSocket(Class<?> cls, String name, String pathSpec)
+    public void registerWebSocket(final Class<?> cls)
     {
-        registerWebSocket(cls, name, new String[]{pathSpec});
-    }
-
-    @Override
-    public void registerWebSocket(final Class<?> cls, String name, String[] pathSpec)
-    {
-        WebSocketServlet servlet = new WebSocketServlet()
-        {
-            @Override
-            public void configure(WebSocketServletFactory factory)
-            {
-                factory.register(cls);
-            }
-        };
-        ServletHolder holder = new ServletHolder(name, servlet);
-        ServletMapping servletMapping = new ServletMapping();
-        servletMapping.setPathSpecs(pathSpec);
-        servletMapping.setServletName(name);
-        webSocketHandler.addServlet(holder);
-        webSocketHandler.addServletMapping(servletMapping);
+        webSocketFactory.register(cls);
     }
 
     @Override
@@ -151,8 +137,8 @@ class JettyWebContainer implements WebContainer
     private HandlerCollection createHandlerCollection()
     {
         mainHandlerList = new HandlerList();
-        mainHandlerList.addHandler(createServletHandler());
         mainHandlerList.addHandler(createWebSocketHandler());
+        mainHandlerList.addHandler(createServletHandler());
         return mainHandlerList;
     }
 
@@ -162,9 +148,22 @@ class JettyWebContainer implements WebContainer
         return servletHandler;
     }
 
-    private ServletHandler createWebSocketHandler()
+    private WebSocketHandler createWebSocketHandler()
     {
-        webSocketHandler = new ServletHandler();
+        webSocketHandler = new WebSocketHandler()
+        {
+            @Override
+            public void configure(WebSocketServletFactory factory)
+            {
+                factory.setCreator(createWebSocketFactory());
+            }
+        };
         return webSocketHandler;
+    }
+
+    private WebSocketServerFactory createWebSocketFactory()
+    {
+        webSocketFactory = new WebSocketServerFactory();
+        return webSocketFactory;
     }
 }
