@@ -16,10 +16,13 @@
 
 package org.bridje.jetty;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.Servlet;
 import javax.servlet.annotation.WebServlet;
+import javax.websocket.server.ServerEndpoint;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -27,12 +30,9 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlet.ServletMapping;
+import org.bridje.web.WebContainer;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-import org.bridje.web.WebContainer;
-import org.eclipse.jetty.websocket.server.WebSocketHandler;
-import org.eclipse.jetty.websocket.server.WebSocketServerFactory;
-import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
 
 /**
  *
@@ -45,16 +45,17 @@ class JettyWebContainer implements WebContainer
 
     private ServletHandler servletHandler;
 
-    private WebSocketHandler webSocketHandler;
+    private ServletHandler webSocketHandler;
 
     private HandlerList mainHandlerList;
 
     private SessionHandler sessionHandler;
     
-    private WebSocketServerFactory webSocketFactory;
+    private final Map<Class<?>, WebSocketServlet> wsServlets;
 
     JettyWebContainer(int port)
     {
+        wsServlets = new HashMap<>();
         server = new Server(port);
         server.setHandler(createSessionHandler());
     }
@@ -65,7 +66,7 @@ class JettyWebContainer implements WebContainer
         WebServlet annot = servlet.getClass().getAnnotation(WebServlet.class);
         ServletHolder holder = new ServletHolder(annot.name(), servlet);
         ServletMapping servletMapping = new ServletMapping();
-        servletMapping.setPathSpecs(annot.urlPatterns());
+        servletMapping.setPathSpecs(findUrlPatterns(annot));
         servletMapping.setServletName(annot.name());
         servletHandler.addServlet(holder);
         servletHandler.addServletMapping(servletMapping);
@@ -80,12 +81,30 @@ class JettyWebContainer implements WebContainer
     @Override
     public void registerWebSocket(final Class<?> cls)
     {
-        webSocketFactory.register(cls);
+        WebSocketServlet servlet = new WebSocketServlet()
+        {
+            @Override
+            public void configure(WebSocketServletFactory factory)
+            {
+                factory.setCreator(new WebSocketCreatorImpl(cls));
+            }
+        };
+        ServerEndpoint annot = servlet.getClass().getAnnotation(ServerEndpoint.class);
+        ServletHolder holder = new ServletHolder(annot.value(), servlet);
+        ServletMapping servletMapping = new ServletMapping();
+        servletMapping.setPathSpec(annot.value());
+        servletMapping.setServletName(annot.value());
+        webSocketHandler.addServlet(holder);
+        webSocketHandler.addServletMapping(servletMapping);
+        wsServlets.put(cls, servlet);
     }
 
     @Override
     public void unregisterWebSocket(Class<?> cls)
     {
+        WebSocketServlet wsServlet = wsServlets.get(cls);
+        webSocketHandler.removeBean(wsServlet);
+        wsServlets.remove(cls);
     }
 
     @Override
@@ -148,22 +167,18 @@ class JettyWebContainer implements WebContainer
         return servletHandler;
     }
 
-    private WebSocketHandler createWebSocketHandler()
+    private ServletHandler createWebSocketHandler()
     {
-        webSocketHandler = new WebSocketHandler()
-        {
-            @Override
-            public void configure(WebSocketServletFactory factory)
-            {
-                factory.setCreator(createWebSocketFactory());
-            }
-        };
+        webSocketHandler = new ServletHandler();
         return webSocketHandler;
     }
 
-    private WebSocketServerFactory createWebSocketFactory()
+    private String[] findUrlPatterns(WebServlet annot)
     {
-        webSocketFactory = new WebSocketServerFactory();
-        return webSocketFactory;
+        if(annot.urlPatterns() != null && annot.urlPatterns().length > 0)
+        {
+            return annot.urlPatterns();
+        }
+        return annot.value();
     }
 }
