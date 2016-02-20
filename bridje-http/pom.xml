@@ -25,5 +25,10 @@
             <artifactId>netty-all</artifactId>
             <version>4.0.34.Final</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-ioc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

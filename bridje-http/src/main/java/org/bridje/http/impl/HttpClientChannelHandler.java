@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.http;
+package org.bridje.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -29,9 +29,9 @@ import java.util.logging.Logger;
  *
  */
 @Sharable
-public class HttpClientHandler extends SimpleChannelInboundHandler<ByteBuf>
+public class HttpClientChannelHandler extends SimpleChannelInboundHandler<ByteBuf>
 {
-    private static final Logger LOG = Logger.getLogger(HttpClientHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(HttpClientChannelHandler.class.getName());
 
     @Override
     public void channelActive(ChannelHandlerContext ctx)

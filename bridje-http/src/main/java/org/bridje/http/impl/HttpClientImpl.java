@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.http;
+package org.bridje.http.impl;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -28,13 +28,13 @@ import java.net.InetSocketAddress;
 /**
  *
  */
-public class HttpClient
+public class HttpClientImpl
 {
     private final String host;
 
     private final int port;
 
-    public HttpClient(String host, int port)
+    public HttpClientImpl(String host, int port)
     {
         this.host = host;
         this.port = port;
@@ -54,7 +54,7 @@ public class HttpClient
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception
                         {
-                            ch.pipeline().addLast(new HttpClientHandler());
+                            ch.pipeline().addLast(new HttpClientChannelHandler());
                         }
                     });
             ChannelFuture f = b.connect().sync();

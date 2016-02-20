@@ -16,44 +16,19 @@
 
 package org.bridje.http;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Ioc;
 
 /**
  *
  */
 public class Main
 {
-    private static final Logger LOG = Logger.getLogger(Main.class.getName());
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        new Thread(() ->
-        {
-            try
-            {
-                new HttpServer(8080).start();
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
-        }).start();
-        
-        new Thread(() ->
-        {
-            try
-            {
-                Thread.sleep(1000);
-                new HttpClient("localhost", 8080).start();
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
-        }).start();
+        Ioc.context().find(HttpServer.class).start();
     }
 }
