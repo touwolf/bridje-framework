@@ -16,6 +16,9 @@
 
 package org.bridje.http.impl;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import org.bridje.http.HttpServerResponse;
 
@@ -24,9 +27,39 @@ import org.bridje.http.HttpServerResponse;
  */
 public class HttpServerResponseImpl implements HttpServerResponse
 {
+    private final ByteBuf buffer;
+    
+    private OutputStream out;
+
+    public HttpServerResponseImpl(ByteBuf buffer)
+    {
+        this.buffer = buffer;
+        this.buffer.retain();
+        out = new ByteBufOutputStream(buffer);
+    }
+
     @Override
     public OutputStream getOutputStream()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return out;
+    }
+
+    public ByteBuf getBuffer()
+    {
+        return buffer;
+    }
+
+    void close() throws IOException
+    {
+        try
+        {
+            out.flush();
+            out.close();
+            this.buffer.release();
+        }
+        catch (IOException e)
+        {
+            throw e; 
+        }
     }
 }

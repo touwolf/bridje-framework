@@ -16,19 +16,27 @@
 
 package org.bridje.http.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import org.apache.commons.io.IOUtils;
 import org.bridje.ioc.Component;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
+import org.bridje.http.HttpServerResponse;
+import org.bridje.ioc.Priority;
 
 /**
  *
  */
 @Component
+@Priority(0)
 public class RootServerHandler implements HttpServerHandler
 {
     @Override
-    public boolean handle(HttpServerContext handler)
+    public boolean handle(HttpServerContext context) throws IOException
     {
+        IOUtils.copy(new FileInputStream(new File("./test.html")), context.get(HttpServerResponse.class).getOutputStream());
         return false;
     }
     

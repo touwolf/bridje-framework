@@ -14,14 +14,34 @@
  * limitations under the License.
  */
 
-package org.bridje.http;
+package org.bridje.http.impl;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.bridje.http.HttpServerContext;
 
 /**
  *
  */
-public interface HttpServerHandler
+public class HttpServerContextImpl implements HttpServerContext
 {
-    boolean handle(HttpServerContext context) throws IOException;
+    private Map<Class<?>, Object> dataMap;
+
+    public HttpServerContextImpl()
+    {
+        this.dataMap = new HashMap<>();
+    }
+    
+    @Override
+    public <T> T get(Class<T> cls)
+    {
+        return (T)dataMap.get(cls);
+    }
+
+    @Override
+    public <T> void set(Class<T> cls, T data)
+    {
+        dataMap.put(cls, data);
+    }
+    
 }

@@ -26,16 +26,21 @@ import org.bridje.http.HttpServerRequest;
  */
 public class HttpServerRequestImpl implements HttpServerRequest
 {
-    private final ByteBuf contents;
+    private final ByteBuf buffer;
 
-    public HttpServerRequestImpl(ByteBuf contents)
+    public HttpServerRequestImpl(ByteBuf buffer)
     {
-        this.contents = contents;
+        this.buffer = buffer;
     }
         
     @Override
     public InputStream getInputStream()
     {
-        return new ByteBufInputStream(contents);
+        return new ByteBufInputStream(buffer);
+    }
+
+    public ByteBuf getBuffer()
+    {
+        return buffer;
     }
 }

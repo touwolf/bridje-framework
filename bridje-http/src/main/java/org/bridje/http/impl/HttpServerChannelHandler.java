@@ -16,6 +16,7 @@
 
 package org.bridje.http.impl;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -29,6 +30,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,26 +45,19 @@ import org.bridje.http.HttpServerResponse;
 public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
-    
+
     private HttpServerContext context;
-    
+
     private HttpServerRequestImpl req;
-    
+
     private HttpServerResponseImpl resp;
-    
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception
-    {
-        super.channelReadComplete(ctx);
-        ctx.flush();
-    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception
     {
         if(msg instanceof HttpRequest)
         {
-            
+            context = new HttpServerContextImpl();
         }
         else if(msg instanceof HttpContent)
         {
@@ -74,12 +69,13 @@ public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object
             {
                 if(resp == null)
                 {
-                    resp = new HttpServerResponseImpl();
+                    resp = new HttpServerResponseImpl(ctx.alloc().buffer());
                 }
                 RootServerHandler rootHandler = Ioc.context().find(RootServerHandler.class);
                 context.set(HttpServerRequest.class, req);
                 context.set(HttpServerResponse.class, resp);
                 rootHandler.handle(context);
+                sendResponse(ctx);
             }
             else
             {
@@ -95,21 +91,18 @@ public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object
         ctx.close();
     }
 
-    private void send404(ChannelHandlerContext ctx) throws UnsupportedEncodingException
+    private void sendResponse(ChannelHandlerContext ctx) throws UnsupportedEncodingException, IOException
     {
-        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND);
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-        response.headers().set(CONTENT_LENGTH, 0);
+        resp.close();
+        int length = resp.getBuffer().readableBytes();
+        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, resp.getBuffer());
+        response.headers().set(CONTENT_TYPE, "text/html; charset=UTF-8");
+        response.headers().set(CONTENT_LENGTH, length);
         response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         ctx.write(response);
-    }
-
-    private void sendResponse(ChannelHandlerContext ctx) throws UnsupportedEncodingException
-    {
-        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-        response.headers().set(CONTENT_LENGTH, 0);
-        response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-        ctx.write(response);
+        ctx.flush();
+        context = null;
+        req = null;
+        resp = null;
     }
 }
