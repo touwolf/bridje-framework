@@ -16,7 +16,6 @@
 
 package org.bridje.http;
 
-import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 
 /**

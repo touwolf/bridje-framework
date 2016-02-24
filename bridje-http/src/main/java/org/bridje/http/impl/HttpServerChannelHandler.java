@@ -16,7 +16,6 @@
 
 package org.bridje.http.impl;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -30,8 +29,13 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Ioc;
+import org.bridje.http.HttpServerContext;
+import org.bridje.http.HttpServerRequest;
+import org.bridje.http.HttpServerResponse;
 
 /**
  *
@@ -39,6 +43,12 @@ import java.util.logging.Logger;
 public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
+    
+    private HttpServerContext context;
+    
+    private HttpServerRequestImpl req;
+    
+    private HttpServerResponseImpl resp;
     
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception
@@ -50,31 +60,32 @@ public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception
     {
-        System.out.println(Thread.currentThread().getName());
         if(msg instanceof HttpRequest)
         {
             
         }
         else if(msg instanceof HttpContent)
         {
-            //All http content
+            if(req != null)
+            {
+                req = new HttpServerRequestImpl( ((HttpContent)msg).content() );
+            }
             if(msg instanceof LastHttpContent)
             {
-                ByteBuf buffer = ctx.alloc().buffer();
-                buffer.writeBytes("hola".getBytes("UTF-8"), 0, "hola".getBytes("UTF-8").length);
-                DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buffer);
-                response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-                response.headers().set(CONTENT_LENGTH, "hola".getBytes("UTF-8").length);
-                response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
-                ctx.write(response);
+                if(resp == null)
+                {
+                    resp = new HttpServerResponseImpl();
+                }
+                RootServerHandler rootHandler = Ioc.context().find(RootServerHandler.class);
+                context.set(HttpServerRequest.class, req);
+                context.set(HttpServerResponse.class, resp);
+                rootHandler.handle(context);
             }
             else
             {
-                //not the las http content
+                //not the last http content
             }
         }
-        System.out.println(msg);
-        System.out.println("----------------------------------------------------");
     }
 
     @Override
@@ -82,5 +93,23 @@ public class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object
     {
         LOG.log(Level.SEVERE, cause.getMessage(), cause);
         ctx.close();
+    }
+
+    private void send404(ChannelHandlerContext ctx) throws UnsupportedEncodingException
+    {
+        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.headers().set(CONTENT_LENGTH, 0);
+        response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+        ctx.write(response);
+    }
+
+    private void sendResponse(ChannelHandlerContext ctx) throws UnsupportedEncodingException
+    {
+        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.headers().set(CONTENT_LENGTH, 0);
+        response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+        ctx.write(response);
     }
 }
