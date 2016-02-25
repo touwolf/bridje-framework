@@ -43,9 +43,12 @@ public class HttpServerImpl implements HttpServer
     private final int port;
     
     private EventLoopGroup group;
+    
+    private final String serverName;
 
     public HttpServerImpl()
     {
+        this.serverName = "Bridje HTTP Server";
         this.port = 8080;
     }
 
@@ -68,7 +71,7 @@ public class HttpServerImpl implements HttpServer
                             {
                                 ch.pipeline().addLast("decoder", new HttpRequestDecoder());
                                 ch.pipeline().addLast("encoder", new HttpResponseEncoder());
-                                ch.pipeline().addLast("handler", new HttpServerChannelHandler());
+                                ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
                                 ch.pipeline().addLast("compressor", new HttpContentCompressor());
                             }
                         });
@@ -97,5 +100,10 @@ public class HttpServerImpl implements HttpServer
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    public String getServerName()
+    {
+        return serverName;
     }
 }

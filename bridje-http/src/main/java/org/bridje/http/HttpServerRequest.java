@@ -23,5 +23,23 @@ import java.io.InputStream;
  */
 public interface HttpServerRequest
 {
+    public String getMethod();
+
+    String getProtocol();
+
+    String getHost();
+
+    String getUserAgent();
+
+    String getAccept();
+
+    String getAcceptLanguage();
+
+    String getPath();
+
+    String[] getHeaders();
+
+    String getHeader(String header);
+
     InputStream getInputStream();
 }

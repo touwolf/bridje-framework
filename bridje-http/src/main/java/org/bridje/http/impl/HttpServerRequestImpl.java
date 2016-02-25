@@ -18,7 +18,9 @@ package org.bridje.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.handler.codec.http.HttpRequest;
 import java.io.InputStream;
+import java.util.Set;
 import org.bridje.http.HttpServerRequest;
 
 /**
@@ -26,13 +28,17 @@ import org.bridje.http.HttpServerRequest;
  */
 public class HttpServerRequestImpl implements HttpServerRequest
 {
-    private final ByteBuf buffer;
+    private ByteBuf buffer;
 
-    public HttpServerRequestImpl(ByteBuf buffer)
+    private final HttpRequest headers;
+    
+    private String[] headersArr;
+
+    public HttpServerRequestImpl(HttpRequest headers)
     {
-        this.buffer = buffer;
+        this.headers = headers;
     }
-        
+
     @Override
     public InputStream getInputStream()
     {
@@ -42,5 +48,70 @@ public class HttpServerRequestImpl implements HttpServerRequest
     public ByteBuf getBuffer()
     {
         return buffer;
+    }
+
+    void setContent(ByteBuf content)
+    {
+        this.buffer = content;
+    }
+
+    @Override
+    public String getMethod()
+    {
+        return this.headers.getMethod().name();
+    }
+
+    @Override
+    public String getProtocol()
+    {
+        return this.headers.getProtocolVersion().text();
+    }
+
+    @Override
+    public String getHost()
+    {
+        return this.headers.headers().get("Host");
+    }
+
+    @Override
+    public String getUserAgent()
+    {
+        return this.headers.headers().get("User-Agent");
+    }
+
+    @Override
+    public String getAccept()
+    {
+        return this.headers.headers().get("Accept");
+    }
+
+    @Override
+    public String getAcceptLanguage()
+    {
+        return this.headers.headers().get("Accept-Language");
+    }
+    
+    @Override
+    public String getPath()
+    {
+        return this.headers.getUri();
+    }
+
+    @Override
+    public String getHeader(String header)
+    {
+        return this.headers.headers().get(header);
+    }
+
+    @Override
+    public String[] getHeaders()
+    {
+        if(headersArr == null)
+        {
+            Set<String> names = headers.headers().names();
+            headersArr = new String[names.size()];
+            names.toArray(headersArr);
+        }
+        return headersArr;
     }
 }

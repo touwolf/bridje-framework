@@ -20,22 +20,31 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.bridje.http.HttpServerResponse;
 
 /**
  *
  */
-public class HttpServerResponseImpl implements HttpServerResponse
+class HttpServerResponseImpl implements HttpServerResponse
 {
     private final ByteBuf buffer;
-    
-    private OutputStream out;
+
+    private final OutputStream out;
+
+    private String contentType = "text/html; charset=UTF-8";
+
+    private int statusCode = 200;
+
+    private final Map<String, Object> headers;
 
     public HttpServerResponseImpl(ByteBuf buffer)
     {
         this.buffer = buffer;
         this.buffer.retain();
         out = new ByteBufOutputStream(buffer);
+        this.headers = new LinkedHashMap<>();
     }
 
     @Override
@@ -61,5 +70,40 @@ public class HttpServerResponseImpl implements HttpServerResponse
         {
             throw e; 
         }
+    }
+
+    @Override
+    public String getContentType()
+    {
+        return contentType;
+    }
+
+    @Override
+    public void setContentType(String contentType)
+    {
+        this.contentType = contentType;
+    }
+
+    @Override
+    public int getStatusCode()
+    {
+        return statusCode;
+    }
+
+    @Override
+    public void setStatusCode(int statusCode)
+    {
+        this.statusCode = statusCode;
+    }
+
+    @Override
+    public void setHeader(String name, Object value)
+    {
+        this.headers.put(name, value);
+    }
+
+    public Map<String, Object> getHeadersMap()
+    {
+        return headers;
     }
 }

@@ -23,7 +23,7 @@ import org.bridje.http.HttpServerContext;
 /**
  *
  */
-public class HttpServerContextImpl implements HttpServerContext
+class HttpServerContextImpl implements HttpServerContext
 {
     private Map<Class<?>, Object> dataMap;
 

@@ -24,4 +24,14 @@ import java.io.OutputStream;
 public interface HttpServerResponse
 {
     OutputStream getOutputStream();
+
+    String getContentType();
+
+    void setContentType(String contentType);
+
+    int getStatusCode();
+
+    void setStatusCode(int statusCode);
+
+    void setHeader(String name, Object value);
 }
