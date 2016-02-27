@@ -26,11 +26,13 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
-import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.cfg.ConfigService;
 import org.bridje.http.HttpServer;
+import org.bridje.http.HttpServerConfig;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 
 /**
  *
@@ -40,18 +42,26 @@ public class HttpServerImpl implements HttpServer
 {
     private static final Logger LOG = Logger.getLogger(HttpServerImpl.class.getName());
 
-    private final int port;
-    
     private EventLoopGroup group;
     
-    private final String serverName;
+    private HttpServerConfig config;
+    
+    @Inject
+    private ConfigService cfgServ;
 
-    public HttpServerImpl()
+    public void init()
     {
-        this.serverName = "Bridje HTTP Server";
-        this.port = 8080;
+        try
+        {
+            this.config = new HttpServerConfig();
+            this.config = cfgServ.findOrCreateConfig(HttpServerConfig.class, this.config);
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
-
+    
     @Override
     public void start()
     {
@@ -63,7 +73,7 @@ public class HttpServerImpl implements HttpServer
                 ServerBootstrap b = new ServerBootstrap();
                 b.group(group)
                         .channel(NioServerSocketChannel.class)
-                        .localAddress(new InetSocketAddress(port))
+                        .localAddress(this.config.createInetSocketAddress())
                         .childHandler(new ChannelInitializer<SocketChannel>()
                         {
                             @Override
@@ -75,7 +85,7 @@ public class HttpServerImpl implements HttpServer
                                 ch.pipeline().addLast("compressor", new HttpContentCompressor());
                             }
                         });
-                ChannelFuture f = b.bind(port).sync();
+                ChannelFuture f = b.bind(this.config.getPort()).sync();
                 f.channel().closeFuture().sync();
             }
             finally
@@ -104,6 +114,6 @@ public class HttpServerImpl implements HttpServer
 
     public String getServerName()
     {
-        return serverName;
+        return this.config.getName();
     }
 }
