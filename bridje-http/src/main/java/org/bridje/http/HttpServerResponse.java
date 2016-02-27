@@ -19,19 +19,45 @@ package org.bridje.http;
 import java.io.OutputStream;
 
 /**
- *
+ * Represents the response made by the server to the client in the HTTP request.
+ * This object allows you to control the response of the HTTP request.
  */
 public interface HttpServerResponse
 {
+    /**
+     * The OutputStream to print the response body.
+     * @return The OutputStream to print the response body.
+     */
     OutputStream getOutputStream();
 
+    /**
+     * The content mime type of the response.
+     * @return The content mime type of the response.
+     */
     String getContentType();
 
+    /**
+     * The content mime type of the response.
+     * @param contentType The content mime type of the response.
+     */
     void setContentType(String contentType);
 
+    /**
+     * The status code of the response.
+     * @return The status code of the response.
+     */
     int getStatusCode();
 
+    /**
+     * The status code of the response.
+     * @param statusCode The status code of the response.
+     */
     void setStatusCode(int statusCode);
 
+    /**
+     * Sets a header for the response.
+     * @param name The header name
+     * @param value The header value
+     */
     void setHeader(String name, Object value);
 }

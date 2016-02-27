@@ -17,11 +17,28 @@
 package org.bridje.http;
 
 /**
- *
+ * Represents a context used in a HTTP request by the server handlers. This
+ * interface allows to set and get data that is especific to the request being
+ * made to the server. handlers can share information using this interface.
  */
 public interface HttpServerContext
 {
+    /**
+     * Gets an instance of the specified class if an instance of it was added
+     * previously to this context.
+     *
+     * @param <T> The type of the class to search for.
+     * @param cls The class to search for.
+     * @return The previuosly set instance of the class or null if none can be found.
+     */
     <T> T get(Class<T> cls);
 
+    /**
+     * Add the data object to the context so it can be retrive by the get method.
+     * 
+     * @param <T> The type of the class of data.
+     * @param cls The class of the data.
+     * @param data The instance to store in the context.
+     */
     <T> void set(Class<T> cls, T data);
 }

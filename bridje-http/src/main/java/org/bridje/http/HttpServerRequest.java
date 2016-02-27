@@ -19,27 +19,68 @@ package org.bridje.http;
 import java.io.InputStream;
 
 /**
- *
+ * Represents an HTTP request being made to the server.
  */
 public interface HttpServerRequest
 {
-    public String getMethod();
+    /**
+     * The HTTP method used to made the request.
+     * @return An String representing the HTTP method used to made the request.
+     */
+    String getMethod();
 
+    /**
+     * The protocol used to made the request
+     * @return An String representing the protocol used to made the request
+     */
     String getProtocol();
 
+    /**
+     * The host of the server the client made the HTTP request to
+     * @return An String representing the host name of the server.
+     */
     String getHost();
 
+    /**
+     * The UserAgent heather from the http request if any.
+     * @return An String representing the UserAgent information from the client if is available.
+     */
     String getUserAgent();
 
+    /**
+     * The Accept header sended by the client.
+     * @return An String representing the value of the Accept header
+     */
     String getAccept();
 
+    /**
+     * The AcceptLanguaje header sended by the client.
+     * @return An String representing the value of the AcceptLanguaje  header
+     */
     String getAcceptLanguage();
 
+    /**
+     * The requested path asked by the client.
+     * @return An String representing the requested path asked by the client.
+     */
     String getPath();
 
+    /**
+     * All the headers names in this request.
+     * @return An String array with all the request headers names.
+     */
     String[] getHeaders();
 
+    /**
+     * Gets the value of the especified header.
+     * @param header The header name
+     * @return The header value
+     */
     String getHeader(String header);
 
+    /**
+     * An InputStream witch allows to read the request body for this request.
+     * @return The InputStream to read the request body.
+     */
     InputStream getInputStream();
 }

@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Http server configuration.
  */
 @XmlRootElement(name = "http-server")
 public class HttpServerConfig
@@ -37,26 +37,48 @@ public class HttpServerConfig
         this.name = "Bridje HTTP Server";
     }
 
+    /**
+     * The host on witch to start the http server, can be null witch means all ips will be allowed.
+     * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
+     * @return The host for the HTTP server.
+     */
     public String getHost()
     {
         return host;
     }
-
+    
+    /**
+     * The host on witch to start the http server, can be null witch means all ips will be allowed.
+     * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
+     * @param host The host for the HTTP server.
+     */
     public void setHost(String host)
     {
         this.host = host;
     }
     
+    /**
+     * The HTTP server name, by default it will be "Bridje HTTP Server" but you can change that setting this property.
+     * @return The name of the HTTP server.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The HTTP server name, by default it will be "Bridje HTTP Server" but you can change that setting this property.
+     * @param name The name of the HTTP server.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The port on witch the HTTP server will listen for new connections. By default 8080
+     * @return The HTTP server port
+     */
     public int getPort()
     {
         if(port <= 0)
@@ -66,11 +88,19 @@ public class HttpServerConfig
         return port;
     }
 
+    /**
+     * The port on witch the HTTP server will listen for new connections. By default 8080
+     * @param port The HTTP server port
+     */
     public void setPort(int port)
     {
         this.port = port;
     }
-    
+
+    /**
+     * Creates the InetSocketAddress to be user by the server.
+     * @return A new InetSocketAddress instance 
+     */
     public InetSocketAddress createInetSocketAddress()
     {
         if(host == null || host.trim().isEmpty())

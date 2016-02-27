@@ -19,9 +19,23 @@ package org.bridje.http;
 import java.io.IOException;
 
 /**
- *
+ * Represents a handler of HTTP request, this interface must be implemented by
+ * components that will be call in chain to handle the request. Handlers must
+ * provide a Priority grether than 0 and it is recomended that it is used with
+ * the @InjectNext annotation to create a chain of handlers that can handler
+ * properly all http request for the application.
  */
 public interface HttpServerHandler
 {
+    /**
+     * Handles the HTTP request, This method must call the same method from the
+     * next handler if it exists an return it's result or it can handle the
+     * request it self and return true in that case.
+     *
+     * @param context The data context for this request.
+     * @return true the request was handler withing this call, false the request
+     * was not handled by any handler whiting this call.
+     * @throws IOException If any IOException occurs during this call.
+     */
     boolean handle(HttpServerContext context) throws IOException;
 }

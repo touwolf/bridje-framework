@@ -17,11 +17,17 @@
 package org.bridje.http;
 
 /**
- *
+ * Http server service, you can inject this interface to control HTTP server.
  */
 public interface HttpServer
 {
+    /**
+     * Starts the HTTP server
+     */
     public void start();
 
+    /**
+     * Stops the HTTP server
+     */
     public void stop();
 }
