@@ -3,6 +3,8 @@ package org.bridje.ioc;
 
 import java.io.IOException;
 import org.bridje.ioc.test.ComplexInjectComponent;
+import org.bridje.ioc.test.ComponentBaseInterface;
+import org.bridje.ioc.test.ComponentChild;
 import org.bridje.ioc.test.ConcreteComponent;
 import org.bridje.ioc.test.DummyComponent;
 import org.bridje.ioc.test.DummyServiceProvider;
@@ -145,5 +147,16 @@ public class IocContextImplTest
         ChainTest chainTest = instance.find(ChainTest.class);
 
         assertEquals("Wrong Chain", "1 2 3", chainTest.execute());
+    }
+
+    @Test
+    public void testComponentChild() throws IOException
+    {
+        IocContext instance = Ioc.context();
+
+        ComponentBaseInterface childTest = instance.find(ComponentBaseInterface.class);
+        
+        assertNotNull(childTest);
+        assertTrue(childTest instanceof ComponentChild);
     }
 }

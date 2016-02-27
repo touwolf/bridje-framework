@@ -232,6 +232,7 @@ class ServiceMap
             }
             Class cls = ClassUtils.rawClass(supClass);
             servicesList.add(cls);
+            fillServicesIntefaces(cls, servicesList);
             if (cls != null)
             {
                 supClass = cls.getGenericSuperclass();
