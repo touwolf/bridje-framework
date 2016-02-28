@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc)
 
 Introduction
 ============
