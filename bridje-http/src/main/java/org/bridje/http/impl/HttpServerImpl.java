@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.cfg.ConfigService;
 import org.bridje.http.HttpServer;
-import org.bridje.http.HttpServerConfig;
+import org.bridje.http.config.HttpServerConfig;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 

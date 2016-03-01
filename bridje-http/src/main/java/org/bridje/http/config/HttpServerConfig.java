@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package org.bridje.http;
+package org.bridje.http.config;
 
 import java.net.InetSocketAddress;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.cfg.Configuration;
+import org.bridje.cfg.XmlConfigAdapter;
 
 /**
  * Http server configuration.
  */
+@Configuration(XmlConfigAdapter.class)
 @XmlRootElement(name = "http-server")
 public class HttpServerConfig
 {
