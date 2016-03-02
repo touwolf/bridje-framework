@@ -19,7 +19,7 @@ package org.bridje.http.config;
 import java.net.InetSocketAddress;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.cfg.Configuration;
-import org.bridje.cfg.XmlConfigAdapter;
+import org.bridje.cfg.adapter.XmlConfigAdapter;
 
 /**
  * Http server configuration.

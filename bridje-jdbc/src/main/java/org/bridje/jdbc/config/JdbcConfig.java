@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.cfg.Configuration;
-import org.bridje.cfg.XmlConfigAdapter;
+import org.bridje.cfg.adapter.XmlConfigAdapter;
 /**
  *
  */
