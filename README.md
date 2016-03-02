@@ -6,10 +6,12 @@ Introduction
 
 This package contains the Bridje Java Applications Framework. A project providing Java API for building Fast, Roboust Java Aplications with Maven.
 
+See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG.md)
+
 Dependencies
 ============
 
-The project libraries can be use without dependencies.
+- Netty 4.0.34
 
 Installation and Usage
 ======================
