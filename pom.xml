@@ -4,7 +4,7 @@
 
     <groupId>org.bridje</groupId>
     <artifactId>bridje-parent</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Bridje (Parent)</name>
@@ -33,7 +33,7 @@
         <url>https://github.com/bridje/bridje-framework</url>
         <connection>scm:git:https://github.com/bridje/bridje-framework.git</connection>
         <developerConnection>scm:git:https://github.com/bridje/bridje-framework.git</developerConnection>
-        <tag>v0.1.3</tag>
+        <tag>HEAD</tag>
     </scm>
     
     <issueManagement>
