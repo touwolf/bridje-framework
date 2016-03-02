@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc)
+[![IoC Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc)
+[![CFG Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-cfg/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-cfg)
+[![HTTP Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-http)
 
 Introduction
 ============
@@ -14,14 +16,24 @@ The project libraries can be use without dependencies.
 Installation and Usage
 ======================
 
-Bridje Core library is availables on the Maven Central Repository
+Bridje libraries are availables on the Maven Central Repository
 
     <dependencies>
 		....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-cfg</artifactId>
+            <version>0.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-http</artifactId>
+            <version>0.1.3</version>
         </dependency>
 		....
     </dependencies>
