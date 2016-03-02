@@ -11,7 +11,7 @@ See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG
 Dependencies
 ============
 
-- Netty 4.0.34
+- [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html)
 
 Installation and Usage
 ======================
