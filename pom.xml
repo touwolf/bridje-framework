@@ -28,6 +28,7 @@
         <module>bridje-cfg</module>
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
+        <module>bridje-dm</module>
     </modules>
 
     <scm>

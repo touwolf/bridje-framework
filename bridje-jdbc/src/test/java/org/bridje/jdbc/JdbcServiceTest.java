@@ -27,7 +27,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import javax.xml.bind.JAXBContext;
 import org.bridje.ioc.Ioc;
+import org.bridje.jdbc.config.JdbcConfig;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -77,6 +79,7 @@ public class JdbcServiceTest
         System.out.println("getDataSource");
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
+        assertNotNull(result);
         Connection connection = result.getConnection();
         assertNotNull(connection);
         connection.close();
