@@ -1,7 +1,5 @@
 [![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
-[![IoC Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-ioc)
-[![CFG Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-cfg/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-cfg)
-[![HTTP Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-http/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-http)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
 Introduction
 ============
