@@ -27,6 +27,7 @@
         <module>bridje-ioc</module>
         <module>bridje-cfg</module>
         <module>bridje-http</module>
+        <module>bridje-jdbc</module>
     </modules>
 
     <scm>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jdbc>
+    <datasources>
+        <name>H2TestDataSource</name>
+        <driver>org.h2.Driver</driver>
+        <url>jdbc:h2:./target/dbtest</url>
+        <username>sa</username>
+        <password></password>
+    </datasources>
+</jdbc>
