@@ -16,6 +16,8 @@
 
 package org.bridje.cfg;
 
+import org.bridje.cfg.adapter.XmlConfigAdapter;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Configuration(XmlConfigAdapter.class)

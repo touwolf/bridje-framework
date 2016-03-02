@@ -35,5 +35,5 @@ public @interface Configuration
      *
      * @return The adapter class to be use.
      */
-    Class<? extends ConfigurationAdapter> value();
+    Class<? extends ConfigAdapter> value();
 }

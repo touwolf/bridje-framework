@@ -27,6 +27,14 @@ import java.io.IOException;
 public interface ConfigService
 {
     /**
+     * Set the context to filter repositories
+     *
+     * @param context The context to filter
+     * @return The ConfigService object to fluent
+     */
+    ConfigService context(String context);
+
+    /**
      * Obtains a configuration by its class.
      * <p>
      * @param <T> The type of the configuration.
