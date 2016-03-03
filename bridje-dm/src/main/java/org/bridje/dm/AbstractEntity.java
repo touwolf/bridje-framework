@@ -25,14 +25,11 @@ import javax.xml.bind.annotation.XmlIDREF;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Entity extends EntityBase
+public class AbstractEntity extends EntityBase
 {
     @XmlAttribute
     @XmlID
     private String name;
-
-    @XmlAttribute
-    private String table;
 
     @XmlAttribute(name = "extends")
     @XmlIDREF
@@ -46,16 +43,6 @@ public class Entity extends EntityBase
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public String getTable()
-    {
-        return table;
-    }
-
-    public void setTable(String table)
-    {
-        this.table = table;
     }
 
     public AbstractEntity getExtends()

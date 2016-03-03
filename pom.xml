@@ -29,6 +29,7 @@
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
         <module>bridje-dm</module>
+        <module>bridje-dm-maven-plugin</module>
     </modules>
 
     <scm>

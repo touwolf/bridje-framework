@@ -19,52 +19,37 @@ package org.bridje.dm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlValue;
+
 /**
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Entity extends EntityBase
+public class EnumConstant
 {
-    @XmlAttribute
-    @XmlID
-    private String name;
+    @XmlValue
+    private String javaValue;
 
-    @XmlAttribute
-    private String table;
+    @XmlAttribute(name = "sqlValue")
+    private String sqlValue;
 
-    @XmlAttribute(name = "extends")
-    @XmlIDREF
-    private AbstractEntity extendsFrom;
-
-    public String getName()
+    public String getSqlValue()
     {
-        return name;
+        return sqlValue;
     }
 
-    public void setName(String name)
+    public void setSqlValue(String sqlValue)
     {
-        this.name = name;
+        this.sqlValue = sqlValue;
+    }
+    
+    public String getJavaValue()
+    {
+        return javaValue;
     }
 
-    public String getTable()
+    public void setJavaValue(String javaValue)
     {
-        return table;
-    }
-
-    public void setTable(String table)
-    {
-        this.table = table;
-    }
-
-    public AbstractEntity getExtends()
-    {
-        return extendsFrom;
-    }
-
-    public void setExtends(AbstractEntity extendsFrom)
-    {
-        this.extendsFrom = extendsFrom;
+        this.javaValue = javaValue;
     }
 }

@@ -19,36 +19,64 @@ package org.bridje.dm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlIDREF;
 
 /**
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DataType
+public class DataType extends DataTypeBase
 {
     @XmlAttribute
-    private String name;
-    
+    private String javaType;
+
+    @XmlAttribute
+    private String sqlType;
+
     @XmlAttribute(name = "extends")
-    private String extendsFrom;
+    @XmlIDREF
+    private DataType extendsFrom;
 
-    public String getName()
-    {
-        return name;
-    }
+    @XmlAttribute
+    private boolean indexed;
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getExtends()
+    public DataType getExtends()
     {
         return extendsFrom;
     }
 
-    public void setExtends(String extendsFrom)
+    public void setExtends(DataType extendsFrom)
     {
         this.extendsFrom = extendsFrom;
+    }
+
+    public String getJavaType()
+    {
+        return javaType;
+    }
+
+    public void setJavaType(String javaType)
+    {
+        this.javaType = javaType;
+    }
+
+    public String getSqlType()
+    {
+        return sqlType;
+    }
+
+    public void setSqlType(String sqlType)
+    {
+        this.sqlType = sqlType;
+    }
+
+    public boolean getIndexed()
+    {
+        return indexed;
+    }
+
+    public void setIndexed(boolean indexed)
+    {
+        this.indexed = indexed;
     }
 }

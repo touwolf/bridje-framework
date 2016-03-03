@@ -16,55 +16,47 @@
 
 package org.bridje.dm;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Entity extends EntityBase
+public class EntityBase
 {
-    @XmlAttribute
-    @XmlID
-    private String name;
+    private String description;
 
-    @XmlAttribute
-    private String table;
-
-    @XmlAttribute(name = "extends")
-    @XmlIDREF
-    private AbstractEntity extendsFrom;
-
-    public String getName()
+    @XmlElements(
     {
-        return name;
+        @XmlElement(name = "field", type = EntityField.class)
+    })
+    private List<EntityField> fields;
+
+    public List<EntityField> getFields()
+    {
+        if(fields == null)
+        {
+            fields = new ArrayList<>();
+        }
+        return fields;
     }
 
-    public void setName(String name)
+    public String getDescription()
     {
-        this.name = name;
+        return description;
     }
 
-    public String getTable()
+    public void setDescription(String description)
     {
-        return table;
-    }
-
-    public void setTable(String table)
-    {
-        this.table = table;
-    }
-
-    public AbstractEntity getExtends()
-    {
-        return extendsFrom;
-    }
-
-    public void setExtends(AbstractEntity extendsFrom)
-    {
-        this.extendsFrom = extendsFrom;
+        this.description = description;
     }
 }

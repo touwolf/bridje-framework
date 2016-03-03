@@ -16,8 +16,16 @@
 
 package org.bridje.dm;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,6 +33,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  */
@@ -35,19 +44,27 @@ public class DataModel
     @XmlAttribute
     private String name;
     
+    @XmlAttribute(name = "tbprefix")
+    private String tablesPrefix;
+    
+    @XmlAttribute(name = "package")
+    private String javaPackage;
+
     @XmlElementWrapper(name = "types")
     @XmlElements(
     {
-        @XmlElement(name = "type", type = DataType.class)
+        @XmlElement(name = "type", type = DataType.class),
+        @XmlElement(name = "enum", type = EnumDataType.class)
     })
-    private List<DataType> types;
+    private List<DataTypeBase> types;
 
     @XmlElementWrapper(name = "entitys")
     @XmlElements(
     {
-        @XmlElement(name = "entity", type = DataType.class)
+        @XmlElement(name = "abstract", type = AbstractEntity.class),
+        @XmlElement(name = "entity", type = Entity.class)
     })
-    private List<Entity> entitys;
+    private List<EntityBase> entitys;
 
     public String getName()
     {
@@ -59,7 +76,7 @@ public class DataModel
         this.name = name;
     }
 
-    public List<DataType> getTypes()
+    public List<DataTypeBase> getTypes()
     {
         if(types == null)
         {
@@ -67,13 +84,69 @@ public class DataModel
         }
         return types;
     }
+    
+    public List<EnumDataType> getEnums()
+    {
+        return getTypes().stream()
+                .filter((edt) -> edt instanceof EnumDataType)
+                .map((DataTypeBase dtb) -> (EnumDataType)dtb)
+                .collect(Collectors.toList());
+    }
 
-    public List<Entity> getEntitys()
+    public List<EntityBase> getEntitys()
     {
         if(entitys == null)
         {
             entitys = new ArrayList<>();
         }
         return entitys;
+    }
+    
+    public List<Entity> getConcreteEntitys()
+    {
+        //Nice java lamdas and collection framework....... :)
+        return getEntitys().stream()
+                .filter((entity) -> (entity instanceof Entity))
+                .map((EntityBase entity) -> (Entity)entity)
+                .collect(Collectors.toList());
+    }
+
+    public String getTablesPrefix()
+    {
+        return tablesPrefix;
+    }
+
+    public void setTablesPrefix(String tablesPrefix)
+    {
+        this.tablesPrefix = tablesPrefix;
+    }
+
+    public String getPackage()
+    {
+        return javaPackage;
+    }
+
+    public void setPackage(String javaPackage)
+    {
+        this.javaPackage = javaPackage;
+    }
+    
+    public static DataModel read(InputStream is) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(DataModel.class);
+        Unmarshaller unmarshaller = ctx.createUnmarshaller();
+        Object data = unmarshaller.unmarshal(is);
+        if(data instanceof DataModel)
+        {
+            return (DataModel)data;
+        }
+        return null;
+    }
+    
+    public static void write(DataModel dataModel, OutputStream os) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(DataModel.class);
+        Marshaller marshaller = ctx.createMarshaller();
+        marshaller.marshal(dataModel, os);
     }
 }

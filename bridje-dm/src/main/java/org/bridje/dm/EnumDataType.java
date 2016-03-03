@@ -16,55 +16,60 @@
 
 package org.bridje.dm;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
+
 /**
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Entity extends EntityBase
+public class EnumDataType extends DataTypeBase
 {
     @XmlAttribute
-    @XmlID
-    private String name;
+    private String sqlType;
 
     @XmlAttribute
-    private String table;
+    private boolean indexed;
 
-    @XmlAttribute(name = "extends")
-    @XmlIDREF
-    private AbstractEntity extendsFrom;
-
-    public String getName()
+    @XmlElements(
     {
-        return name;
+        @XmlElement(name = "value", type = EnumConstant.class)
+    })
+    private List<EnumConstant> values;
+
+    public String getSqlType()
+    {
+        return sqlType;
     }
 
-    public void setName(String name)
+    public void setSqlType(String sqlType)
     {
-        this.name = name;
+        this.sqlType = sqlType;
     }
 
-    public String getTable()
+    public boolean getIndexed()
     {
-        return table;
+        return indexed;
     }
 
-    public void setTable(String table)
+    public void setIndexed(boolean indexed)
     {
-        this.table = table;
+        this.indexed = indexed;
     }
 
-    public AbstractEntity getExtends()
+    public List<EnumConstant> getValues()
     {
-        return extendsFrom;
-    }
-
-    public void setExtends(AbstractEntity extendsFrom)
-    {
-        this.extendsFrom = extendsFrom;
+        if(values == null)
+        {
+            values = new ArrayList<>();
+        }
+        return values;
     }
 }

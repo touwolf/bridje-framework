@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 Bridje Framework.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<dm:datamodel
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:dm='http://www.bridje.org/schemas/datamodel'
+    xsi:schemaLocation='http://www.bridje.org/schemas/datamodel ../../../../../target/generated-resources/schemagen/schema1.xsd'
+    name="TestDataModel"
+    tbprefix="mydm_">
+    <dm:types>
+        <dm:type name="Id" javaType="Long" sqlType="BIGINT" indexed="true" >
+            <dm:description>Unique Identifier for this entity.</dm:description>
+        </dm:type>
+        <dm:type name="String" javaType="String" sqlType="VARCHAR(100)" indexed="false" >
+            <dm:description>This field can contain any string from 0 to 100 characters</dm:description>
+        </dm:type>
+        <dm:enum name="Status" sqlType="SMALLINT" indexed="true">
+            <dm:description>Status for this entity</dm:description>
+            <dm:value sqlValue="1" >ENABLED</dm:value>
+            <dm:value sqlValue="0" >DISABLED</dm:value>
+        </dm:enum>
+    </dm:types>
+    <dm:entitys>
+        <dm:abstract name="BaseEntity" >
+            <dm:description>Base entity ...</dm:description>
+            <dm:field name="id" type="Id" >
+                <dm:description>This entity identification</dm:description>
+            </dm:field>
+        </dm:abstract>
+        <dm:entity name="User" extends="BaseEntity" table="users" >
+            <dm:field name="name" type="String" >
+                <dm:description>The user name</dm:description>
+            </dm:field>
+            <dm:field name="status" type="Status" >
+                <dm:description>The user status</dm:description>
+            </dm:field>
+        </dm:entity>
+    </dm:entitys>
+
+</dm:datamodel>

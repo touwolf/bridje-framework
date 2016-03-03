@@ -19,6 +19,7 @@ package org.bridje.dm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlIDREF;
 
 /**
  *
@@ -30,7 +31,10 @@ public class EntityField
     private String name;
 
     @XmlAttribute
-    private String type;
+    @XmlIDREF
+    private DataType type;
+    
+    private String description;
 
     public String getName()
     {
@@ -42,13 +46,23 @@ public class EntityField
         this.name = name;
     }
 
-    public String getType()
+    public DataType getType()
     {
         return type;
     }
 
-    public void setType(String type)
+    public void setType(DataType type)
     {
         this.type = type;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

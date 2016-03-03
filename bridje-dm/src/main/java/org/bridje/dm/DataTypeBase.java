@@ -20,24 +20,19 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
+
 /**
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Entity extends EntityBase
+public class DataTypeBase
 {
     @XmlAttribute
     @XmlID
     private String name;
 
-    @XmlAttribute
-    private String table;
-
-    @XmlAttribute(name = "extends")
-    @XmlIDREF
-    private AbstractEntity extendsFrom;
-
+    private String description;
+    
     public String getName()
     {
         return name;
@@ -48,23 +43,13 @@ public class Entity extends EntityBase
         this.name = name;
     }
 
-    public String getTable()
+    public String getDescription()
     {
-        return table;
+        return description;
     }
 
-    public void setTable(String table)
+    public void setDescription(String description)
     {
-        this.table = table;
-    }
-
-    public AbstractEntity getExtends()
-    {
-        return extendsFrom;
-    }
-
-    public void setExtends(AbstractEntity extendsFrom)
-    {
-        this.extendsFrom = extendsFrom;
+        this.description = description;
     }
 }
