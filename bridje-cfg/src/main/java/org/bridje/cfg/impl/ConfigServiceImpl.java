@@ -22,8 +22,8 @@ import java.io.Writer;
 import org.bridje.cfg.ConfigRepository;
 import org.bridje.cfg.ConfigService;
 import org.bridje.cfg.Configuration;
-import org.bridje.cfg.ConfigurationAdapter;
-import org.bridje.cfg.XmlConfigAdapter;
+import org.bridje.cfg.ConfigAdapter;
+import org.bridje.cfg.adapter.XmlConfigAdapter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
@@ -33,6 +33,12 @@ class ConfigServiceImpl implements ConfigService
 {
     @Inject
     private ConfigRepository[] repos;
+
+    @Override
+    public ConfigService context(String context)
+    {
+        return this;
+    }
 
     @Override
     public <T> T findConfig(Class<T> configClass) throws IOException
@@ -151,10 +157,10 @@ class ConfigServiceImpl implements ConfigService
         return (T)findAdapter(configClass).read(configClass, reader);
     }
 
-    private ConfigurationAdapter findAdapter(Class<?> cfgClass)
+    private ConfigAdapter findAdapter(Class<?> cfgClass)
     {
         Configuration cfgAnnot = cfgClass.getAnnotation(Configuration.class);
-        Class<? extends ConfigurationAdapter> configAdapter = null;
+        Class<? extends ConfigAdapter> configAdapter = null;
         if(cfgAnnot != null)
         {
             configAdapter = cfgAnnot.value();
