@@ -18,6 +18,11 @@ public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
 {
     private List<ConfigRepository> repos;
 
+    public ConfigRepositoryContextImpl(ConfigRepository[] repos)
+    {
+        this.repos = createRepositoriesContexts("", repos);
+    }
+
     public ConfigRepositoryContextImpl(String context, ConfigRepository[] repos)
     {
         this.repos = createRepositoriesContexts(context, repos);

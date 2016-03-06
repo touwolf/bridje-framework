@@ -37,7 +37,7 @@ class ConfigServiceImpl implements ConfigService
     @PostConstruct
     public void init()
     {
-        repoContext = new ConfigRepositoryContextImpl("", repos);
+        repoContext = new ConfigRepositoryContextImpl(repos);
     }
 
     @Override
