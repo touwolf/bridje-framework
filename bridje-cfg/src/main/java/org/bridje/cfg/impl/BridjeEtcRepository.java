@@ -28,6 +28,12 @@ import org.bridje.ioc.Component;
 public class BridjeEtcRepository implements ConfigRepository
 {
     @Override
+    public Boolean handleContext(String context)
+    {
+        return context == null || context.isEmpty();
+    }
+
+    @Override
     public Reader findConfig(String configName) throws IOException
     {
         URL resource = this.getClass().getResource("/BRIDJE-INF/etc/" + configName);

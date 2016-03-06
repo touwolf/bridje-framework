@@ -16,159 +16,69 @@
 
 package org.bridje.cfg.impl;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import org.bridje.cfg.ConfigRepository;
-import org.bridje.cfg.ConfigService;
-import org.bridje.cfg.Configuration;
-import org.bridje.cfg.ConfigAdapter;
-import org.bridje.cfg.adapter.XmlConfigAdapter;
+import org.bridje.cfg.*;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.ioc.Ioc;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 @Component
 class ConfigServiceImpl implements ConfigService
 {
+    private static final Logger LOG = Logger.getLogger(ConfigServiceImpl.class.getName());
+
     @Inject
     private ConfigRepository[] repos;
 
-    @Override
-    public ConfigService context(String context)
+    private ConfigRepositoryContext repoContext;
+
+    @PostConstruct
+    public void init()
     {
-        return this;
+        repoContext = new ConfigRepositoryContextImpl("", repos);
+    }
+
+    @Override
+    public ConfigRepositoryContext createRepoContext(String context)
+    {
+        return new ConfigRepositoryContextImpl(context, repos);
     }
 
     @Override
     public <T> T findConfig(Class<T> configClass) throws IOException
     {
-        return findConfigInternal(findFileName(configClass), configClass);
-    }
-
-    @Override
-    public <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig) throws IOException
-    {
-        return findOrCreateConfigInternal(findFileName(configClass), configClass, defaultConfig);
+        return repoContext.findConfig(configClass);
     }
 
     @Override
     public <T> T findConfig(String configName, Class<T> configClass) throws IOException
     {
-        return findConfigInternal(findFileName(configName, configClass), configClass);
+        return repoContext.findConfig(configName, configClass);
+    }
+
+    @Override
+    public <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig) throws IOException
+    {
+        return repoContext.findOrCreateConfig(configClass, defaultConfig);
     }
 
     @Override
     public <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig) throws IOException
     {
-        return findOrCreateConfigInternal(findFileName(configName, configClass), configClass, defaultConfig);
+        return repoContext.findOrCreateConfig(configName, configClass, defaultConfig);
     }
 
     @Override
     public <T> T saveConfig(T newConfig) throws IOException
     {
-        return saveConfigInternal(findFileName(newConfig.getClass()), newConfig);
+        return repoContext.saveConfig(newConfig);
     }
 
     @Override
     public <T> T saveConfig(String configName, T newConfig) throws IOException
     {
-        return saveConfigInternal(findFileName(configName, newConfig.getClass()), newConfig);
-    }
-
-    private <T> T saveConfigInternal(String configFileName, T newConfig) throws IOException
-    {
-        for (ConfigRepository repo : repos)
-        {
-            if(repo.canSave())
-            {
-                return saveConfigToRepo(configFileName, newConfig, repo);
-            }
-        }
-        return newConfig;
-    }
-
-    private <T> T findConfigInternal(String configFileName, Class<T> configClass) throws IOException
-    {
-        for (ConfigRepository repo : repos)
-        {
-            T result = findConfigFromRepo(configFileName, configClass, repo);
-            if(result != null)
-            {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    private <T> T findOrCreateConfigInternal(String configFileName, Class<T> configClass, T defaultConfig) throws IOException
-    {
-        T result = findConfigInternal(configFileName, configClass);
-        if(result == null)
-        {
-            result = saveConfigInternal(configFileName, defaultConfig);
-        }
-        return result;
-    }
-
-    private <T> String findFileName(Class<T> cls)
-    {
-        return findAdapter(cls).findDefaultFileName(cls);
-    }
-
-    private <T> String findFileName(String configName, Class<T> cls)
-    {
-        return findAdapter(cls).findFileName(configName, cls);
-    }
-
-    private <T> T saveConfigToRepo(String configName, T newConfig, ConfigRepository repo) throws IOException
-    {
-        try (Writer writer = repo.saveConfig(configName))
-        {
-            if(writer != null)
-            {
-                writeConfig(writer, newConfig);
-                writer.flush();
-            }
-        }
-        return newConfig;
-    }
-
-    private <T> T findConfigFromRepo(String configName, Class<T> configClass, ConfigRepository repo) throws IOException
-    {
-        T configInstance = null;
-        try (Reader reader = repo.findConfig(configName))
-        {
-            if(reader != null)
-            {
-                configInstance = readConfig(reader, configClass);
-            }
-        }
-        return configInstance;
-    }
-
-    private <T> void writeConfig(Writer writer, T newConfig) throws IOException
-    {
-        findAdapter(newConfig.getClass()).write(newConfig, writer);
-    }
-
-    private <T> T readConfig(Reader reader, Class<T> configClass) throws IOException
-    {
-        return (T)findAdapter(configClass).read(configClass, reader);
-    }
-
-    private ConfigAdapter findAdapter(Class<?> cfgClass)
-    {
-        Configuration cfgAnnot = cfgClass.getAnnotation(Configuration.class);
-        Class<? extends ConfigAdapter> configAdapter = null;
-        if(cfgAnnot != null)
-        {
-            configAdapter = cfgAnnot.value();
-        }
-        if(configAdapter == null)
-        {
-            configAdapter = XmlConfigAdapter.class;
-        }
-        return Ioc.context().find(configAdapter);
+        return repoContext.saveConfig(configName, newConfig);
     }
 }
