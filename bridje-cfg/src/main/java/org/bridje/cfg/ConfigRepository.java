@@ -29,6 +29,14 @@ import java.io.Writer;
 public interface ConfigRepository
 {
     /**
+     * Obtains if the repository handle a context
+     *
+     * @param context
+     * @return
+     */
+    Boolean handleContext(String context);
+
+    /**
      * Obtains a reader to the configuration resource by the given name.
      *
      * @param configName The name of the configuration.
