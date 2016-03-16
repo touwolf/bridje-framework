@@ -32,6 +32,7 @@
         <module>bridje-dm</module>
         <module>bridje-dm-maven-plugin</module>
         -->
+        <module>bridje-orm</module>
     </modules>
 
     <scm>
