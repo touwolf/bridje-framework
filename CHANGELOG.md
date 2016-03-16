@@ -1,7 +1,7 @@
 # Change Log
 
 
-## [v0.1.4-3](https://github.com/bridje/bridje-framework/tree/v0.1.4-3) (2016-03-18)
+## [v0.1.4-3](https://github.com/bridje/bridje-framework/tree/v0.1.4-3) (2016-03-14)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.3...v0.1.4-3)
 
 - Adding configuration contextxs to the Bridje Cfg API
