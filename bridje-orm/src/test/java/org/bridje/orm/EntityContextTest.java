@@ -81,8 +81,7 @@ public class EntityContextTest
         instance.delete(user);
         user = instance.find(User.class, 1l);
         assertNull(user);
-        */
-        
+
         instance.insert(new User(1l, "Admin"));
         User user = instance.find(User.class, 1l);
         assertNotNull(user);
@@ -98,6 +97,6 @@ public class EntityContextTest
         assertNotNull(user.getName());
         assertEquals(user.getId().longValue(), 2l);
         assertEquals(user.getName(), "Admin 1");
-
+        */
     }
 }
