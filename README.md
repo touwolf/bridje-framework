@@ -53,10 +53,8 @@ Bridje libraries are availables on the Maven Central Repository
 		....
     </dependencies>
 
-About the Project
+LICENSE
 =================
-
-The project provides a set of tools for creating Java Applications.
 
 The project is licensed under the Apache License:
 
