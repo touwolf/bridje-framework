@@ -23,10 +23,22 @@ All of these goals a really ambitious, and many time one or more of then need to
 
 See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG.md)
 
-Dependencies
-============
+LICENSE
+=================
 
-- [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html)
+The project is licensed under the Apache License:
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 Installation and Usage
 ======================
@@ -53,20 +65,7 @@ Bridje libraries are availables on the Maven Central Repository
 		....
     </dependencies>
 
-LICENSE
-=================
+Dependencies
+============
 
-The project is licensed under the Apache License:
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
+- [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html)
