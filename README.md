@@ -4,7 +4,23 @@
 Introduction
 ============
 
-This package contains the Bridje Java Applications Framework. A project providing Java API for building Fast, Roboust Java Aplications with Maven.
+This package contains the Bridje Java Applications Framework. A project that provides set of Java APIs to be use in java projects. Bridje can be compared to Spring but it´s more simplistic and lightweigh. 
+The project bring you e way of doing thinks that is not compromise by any jsr. The goals for this project are:
+
+ - Simple: We try to follow the KISS principle, We avoid providing too much ways of resolving the same problem.
+ - Reuse: We try to reuse concepts as much as posible in the framework internals and in your apps, So they both use the same things
+ - Minimal: We try to reduce the dependencies of both the framework and your application to the minimun necesary, This means that for many things we make our own implementations instead of using a thirdparty api.
+ - Multipropouse: The framework it´s mean to be use in cli, desktop, web and mobile apps.
+ - Standalone: Your application can run by themselves, no server is needed.
+ - Embbeded: The APIs are designed to be embbeded in your applications and not the other way arround
+ - Modular: You must use what you need, and in some case some inavoidable dependencies but you are not force by any means to put in your classpath any library that it´s not absolutly necesary, for the framework or your app.
+ - Performace: We try to reduce to the maximun the overhead of the framework and enforce you to use good practices in your app to gain maximun performace
+ - Low Memory: By reducing the amount of clases and code, and by enforcing good architecture patterns in your app the memory consuption can decrease a lot.
+ - Productivity: We try to reduce to the minimun posible the code that it´s not part of you applications domain logic without taking away from you the control that you need as a software developer over your code.
+ - Robust: We try to enforce encapsulation, static typing and all the nice features that java as a languaje has. So not your code, nor the framework it self it´s easily broken.
+ - Scalable: We try to enforce practices and patterns that cost you the same amount of resources from the hardware (more or less) no matter the amount of users your will handle in production
+ 
+All of thees goals a really ambitious, and many time one or more of then need to be sacrifice in favor of others, but we think that is a matter of balance and priorities. So the framework will orbit arround thees principles.
 
 See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG.md)
 
