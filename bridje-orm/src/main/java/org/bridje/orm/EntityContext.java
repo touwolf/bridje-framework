@@ -28,4 +28,6 @@ public interface EntityContext
     <T> T insert(T entity);
 
     <T> T delete(T entity);
+
+    <T> Query<T> query(Class<T> entityClass);
 }

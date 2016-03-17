@@ -19,43 +19,20 @@ package org.bridje.orm;
 /**
  *
  */
-@Entity(table = "users")
-@Generate
-public class User
+public enum Operator
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
-
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
-
-    public User()
-    {
-    }
-
-    public User(Long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
+    EQ("="), GT(">"), GE(">="), LT("<"), LE("<="), NE("<>");
     
-    public Long getId()
+    private final String symbol;
+
+    private Operator(String symbol)
     {
-        return id;
+        this.symbol = symbol;
     }
 
-    public void setId(Long id)
+    @Override
+    public String toString()
     {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
+        return symbol;
     }
 }

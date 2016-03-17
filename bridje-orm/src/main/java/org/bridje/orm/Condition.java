@@ -16,46 +16,11 @@
 
 package org.bridje.orm;
 
+import java.util.List;
 /**
  *
  */
-@Entity(table = "users")
-@Generate
-public class User
+public abstract class Condition
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
-
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
-
-    public User()
-    {
-    }
-
-    public User(Long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
-    
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    public abstract String writeString(List<Object> parameters);
 }

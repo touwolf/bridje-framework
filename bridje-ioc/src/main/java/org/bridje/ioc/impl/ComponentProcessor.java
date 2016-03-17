@@ -101,7 +101,7 @@ public class ComponentProcessor extends AbstractProcessor
             messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage());
             LOG.severe(ex.getMessage());
         }
-        return false;
+        return true;
     }
 
     /**

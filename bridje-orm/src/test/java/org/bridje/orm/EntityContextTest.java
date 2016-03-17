@@ -26,7 +26,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -74,6 +73,15 @@ public class EntityContextTest
         config.setPassword("asd");
         DataSource ds = jdbcServ.createDataSource(config);
         EntityContext instance = new EntityContextImpl(ds);
+
+        /*
+        instance.insert(new User(3l, "Other Admin"));
+        
+        instance.query(User.class)
+                //.by(User_.name.eq("Admin"))
+                .fetchAll().stream()
+                .map((user) -> user.getName())
+                .forEach(System.out::println);
         //instance.fixTable(User.class);
         
         /*

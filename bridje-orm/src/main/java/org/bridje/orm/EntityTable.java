@@ -19,43 +19,17 @@ package org.bridje.orm;
 /**
  *
  */
-@Entity(table = "users")
-@Generate
-public class User
+public class EntityTable<T>
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
+    private final Class<T> entityClass;
 
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
-
-    public User()
+    public EntityTable(Class<T> entityClass)
     {
+        this.entityClass = entityClass;
     }
 
-    public User(Long id, String name)
+    public Class<T> getEntityClass()
     {
-        this.id = id;
-        this.name = name;
-    }
-    
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
+        return entityClass;
     }
 }

@@ -14,6 +14,51 @@
     <description>Bridje Object Relational Mapping</description>
     <url>http://www.bridje.org</url>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <processors>
+                                <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
+                            </processors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>process-test</id>
+                        <goals>
+                            <goal>process-test</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                        <configuration>
+                            <processors>
+                                <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
+                                <!--
+                                <processor>org.bridje.orm.impl.EntityProcessor</processor>
+                                -->
+                            </processors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

@@ -18,44 +18,41 @@ package org.bridje.orm;
 
 /**
  *
+ * @param <E>
+ * @param <T>
  */
-@Entity(table = "users")
-@Generate
-public class User
+public class EntityColumn<E, T>
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
+    private final EntityTable<E> table;
 
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
+    private final String field;
 
-    public User()
+    private final Class<T> type;
+
+    public EntityColumn(EntityTable<E> table, String field, Class<T> type)
     {
+        this.table = table;
+        this.field = field;
+        this.type = type;
     }
 
-    public User(Long id, String name)
+    public EntityTable<E> getTable()
     {
-        this.id = id;
-        this.name = name;
-    }
-    
-    public Long getId()
-    {
-        return id;
+        return table;
     }
 
-    public void setId(Long id)
+    public String getField()
     {
-        this.id = id;
+        return field;
     }
 
-    public String getName()
+    public Class<T> getType()
     {
-        return name;
+        return type;
     }
 
-    public void setName(String name)
+    public Condition eq(T value)
     {
-        this.name = name;
+        return new BinaryCondition(this, Operator.EQ, value);
     }
 }

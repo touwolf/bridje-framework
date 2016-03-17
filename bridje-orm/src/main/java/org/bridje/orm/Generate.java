@@ -16,46 +16,16 @@
 
 package org.bridje.orm;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  *
  */
-@Entity(table = "users")
-@Generate
-public class User
+@Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+public @interface Generate
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
-
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
-
-    public User()
-    {
-    }
-
-    public User(Long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
-    
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
 }

@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.Query;
 
 /**
  * 
@@ -72,7 +73,7 @@ public class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entityClass);
-            return doQuery(entityInf.createFindQuery(entityClass), (rs) -> entityInf.parseEntity(rs), id);
+            return doQuery(entityInf.buildSelectQuery(entityInf.buildIdCondition()), (rs) -> entityInf.parseEntity(rs), id);
         }
         catch (SQLException ex)
         {
@@ -87,7 +88,7 @@ public class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entity);
-            doUpdate(entityInf.createInsertQuery(entity), entityInf.createInsertParameters(entity));
+            doUpdate(entityInf.buildInsertQuery(entity), entityInf.buildInsertParameters(entity));
         }
         catch (SQLException ex)
         {
@@ -102,7 +103,7 @@ public class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entity);
-            doUpdate(entityInf.createDeleteQuery(entity), entityInf.findKeyValue(entity));
+            doUpdate(entityInf.buildDeleteQuery(entity), entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
         {
@@ -111,8 +112,9 @@ public class EntityContextImpl implements EntityContext
         return entity;
     }
 
-    private <T> T doQuery(String query, QueryConsumer<T> consumer, Object... parameters) throws SQLException
+    public <T> T doQuery(String query, QueryConsumer<T> consumer, Object... parameters) throws SQLException
     {
+        LOG.log(Level.INFO, query);
         T result = null;
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query))
         {
@@ -128,7 +130,7 @@ public class EntityContextImpl implements EntityContext
         return result;
     }
     
-    private int doUpdate(String query, Object... parameters) throws SQLException
+    public int doUpdate(String query, Object... parameters) throws SQLException
     {
         LOG.log(Level.INFO, query);
         try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query))
@@ -180,7 +182,14 @@ public class EntityContextImpl implements EntityContext
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
     {
-        String query = entityInf.createCreateTableQuery();
+        String query = entityInf.buildCreateTableQuery();
         doUpdate(query);
+    }
+
+    @Override
+    public <T> Query<T> query(Class<T> entityClass)
+    {
+        EntityInf<T> entityInf = findEntityInf(entityClass);
+        return new QueryImpl<>(this, entityInf);
     }
 }

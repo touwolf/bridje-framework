@@ -16,7 +16,6 @@
 
 package org.bridje.orm.impl;
 
-import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -104,7 +103,12 @@ class EntityInf<T>
         return keyField;
     }
     
-    public <T> String createFindQuery(Class<T> entityClass)
+    public <T> String buildSelectQuery(String condition)
+    {
+        return buildSelectQuery(condition, -1, -1);
+    }
+    
+    public <T> String buildSelectQuery(String condition, int index, int size)
     {
         StringBuilder sw = new StringBuilder();
         
@@ -115,10 +119,53 @@ class EntityInf<T>
         sw.append(" FROM ");
         sw.append(getTableName());
         sw.append(" WHERE ");
-        sw.append(keyField.getColumnName());
-        sw.append(" = ?;");
+        sw.append(condition);
+        if(index >= 0 && size >= 0)
+        {
+            sw.append(" LIMIT ");
+            sw.append(index);
+            sw.append(", ");
+            sw.append(size);
+        }
+        sw.append(";");
         
         return sw.toString();
+    }
+    
+    public <T> String buildCountQuery(String condition)
+    {
+        StringBuilder sw = new StringBuilder();
+        
+        sw.append("SELECT ");
+        sw.append("count(*)");
+        sw.append(" FROM ");
+        sw.append(getTableName());
+        sw.append(" WHERE ");
+        sw.append(condition);
+        sw.append(";");
+        
+        return sw.toString();
+    }
+    
+    public List<T> parseAllEntitys(ResultSet rs)
+    {
+        List<T> result = new ArrayList<>();
+        try
+        {
+            while(rs.next())
+            {
+                T entity = parseEntityInternal(rs);
+                if(entity != null)
+                {
+                    result.add(entity);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return result;
     }
     
     public T parseEntity(ResultSet rs)
@@ -127,9 +174,7 @@ class EntityInf<T>
         {
             if(rs.next())
             {
-                T entity = createEntityObject();
-                fillEntity(entity, rs);
-                return entity;
+                return parseEntityInternal(rs);
             }
         }
         catch (Exception e)
@@ -138,8 +183,31 @@ class EntityInf<T>
         }
         return null;
     }
+    
+    public int parseCount(ResultSet rs)
+    {
+        try
+        {
+            if(rs.next())
+            {
+                return rs.getInt(0);
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return -1;
+    }
+    
+    private T parseEntityInternal(ResultSet rs) throws SQLException
+    {
+        T entity = buildEntityObject();
+        fillEntity(entity, rs);
+        return entity;
+    }
 
-    public T createEntityObject()
+    public T buildEntityObject()
     {
         try
         {
@@ -161,9 +229,9 @@ class EntityInf<T>
         }
     }
 
-    public <T> String createInsertQuery(T entity)
+    public <T> String buildInsertQuery(T entity)
     {
-        StringWriter sw = new StringWriter();
+        StringBuilder sw = new StringBuilder();
         
         sw.append("INSERT INTO ");
         sw.append(getTableName());
@@ -179,7 +247,7 @@ class EntityInf<T>
         return sw.toString();        
     }
 
-    public <T> Object[] createInsertParameters(T entity)
+    public <T> Object[] buildInsertParameters(T entity)
     {
         return fields.stream()
                 .map((fi) -> fi.getValue(entity))
@@ -187,9 +255,9 @@ class EntityInf<T>
                 .toArray();
     }
 
-    public <T> String createDeleteQuery(T entity)
+    public <T> String buildDeleteQuery(T entity)
     {
-        StringWriter sw = new StringWriter();
+        StringBuilder sw = new StringBuilder();
         
         sw.append("DELETE FROM ");
         sw.append(getTableName());
@@ -205,9 +273,9 @@ class EntityInf<T>
         return keyField.getValue(entity);
     }
 
-    public String createCreateTableQuery()
+    public String buildCreateTableQuery()
     {
-        StringWriter sw = new StringWriter();
+        StringBuilder sw = new StringBuilder();
         sw.append("CREATE TABLE `");
         sw.append(tableName);
         sw.append("` (\n");
@@ -220,5 +288,10 @@ class EntityInf<T>
         sw.append(") ENGINE=InnoDB;");
 
         return sw.toString();
+    }
+    
+    public String buildIdCondition()
+    {
+        return keyField.getColumnName() + " = ?";
     }
 }

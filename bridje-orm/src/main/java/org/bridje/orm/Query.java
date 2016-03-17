@@ -16,46 +16,23 @@
 
 package org.bridje.orm;
 
+import java.util.List;
+
 /**
  *
+ * @param <T>
  */
-@Entity(table = "users")
-@Generate
-public class User
+public interface Query<T>
 {
-    @Field(key = true, column = "id", sqlType = "BIGINT")
-    private Long id;
+    List<T> fetchAll();
 
-    @Field(column = "name", sqlType = "VARCHAR(100)")
-    private String name;
+    List<T> fetchAll(int page, int size);
 
-    public User()
-    {
-    }
+    T fetchOne();
 
-    public User(Long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
-    
-    public Long getId()
-    {
-        return id;
-    }
+    long count();
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+    boolean exists();
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    Query<T> by(Condition condition);
 }
