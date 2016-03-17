@@ -68,4 +68,4 @@ Bridje libraries are availables on the Maven Central Repository
 Dependencies
 ============
 
-- [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html)
+[Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html) is for now the only dependency the framework has.
