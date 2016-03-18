@@ -21,9 +21,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.bridje.orm.Entity;
 
 /**
@@ -41,6 +43,8 @@ class EntityInf<T>
     private FieldInf keyField;
 
     private final List<FieldInf> fields;
+    
+    private final List<RelationInf> relations;
 
     public EntityInf(Class<T> entityClass)
     {
@@ -53,6 +57,7 @@ class EntityInf<T>
         tableName = annotation.table();
         fields = new ArrayList<>();
         keyField = fillFields();
+        relations = new ArrayList<>();
         if(keyField == null)
         {
             throw new IllegalArgumentException("The class " + entityClass.getName() + " does not have a valid key field.");
@@ -102,6 +107,20 @@ class EntityInf<T>
         }
         return keyField;
     }
+
+    public void fillRelations(EntityContextImpl entityCtx)
+    {
+        Field[] declaredFields = entityClass.getDeclaredFields();
+        for (Field declaredField : declaredFields)
+        {
+            org.bridje.orm.Relation fieldAnnot = declaredField.getAnnotation(org.bridje.orm.Relation.class);
+            if(fieldAnnot != null)
+            {
+                RelationInf fInf = new RelationInf(declaredField, entityCtx.findEntityInf(declaredField.getType()));
+                relations.add(fInf);
+            }
+        }
+    }
     
     public <T> String buildSelectQuery(String condition)
     {
@@ -113,9 +132,10 @@ class EntityInf<T>
         StringBuilder sw = new StringBuilder();
         
         sw.append("SELECT ");
-        sw.append(fields.stream()
-                    .map((field) -> field.getColumnName())
-                    .collect(Collectors.joining(", ")));
+        sw.append(Stream.concat(
+                    fields.stream().map((field) -> field.getColumnName()),
+                    relations.stream().map((relation) -> relation.getColumnName())
+                ).collect(Collectors.joining(", ")));
         sw.append(" FROM ");
         sw.append(getTableName());
         sw.append(" WHERE ");
@@ -147,14 +167,14 @@ class EntityInf<T>
         return sw.toString();
     }
     
-    public List<T> parseAllEntitys(ResultSet rs)
+    public List<T> parseAllEntitys(ResultSet rs, EntityContextImpl ctx)
     {
         List<T> result = new ArrayList<>();
         try
         {
             while(rs.next())
             {
-                T entity = parseEntityInternal(rs);
+                T entity = parseEntityInternal(rs, ctx);
                 if(entity != null)
                 {
                     result.add(entity);
@@ -168,13 +188,13 @@ class EntityInf<T>
         return result;
     }
     
-    public T parseEntity(ResultSet rs)
+    public T parseEntity(ResultSet rs, EntityContextImpl ctx)
     {
         try
         {
             if(rs.next())
             {
-                return parseEntityInternal(rs);
+                return parseEntityInternal(rs, ctx);
             }
         }
         catch (Exception e)
@@ -200,10 +220,10 @@ class EntityInf<T>
         return -1;
     }
     
-    private T parseEntityInternal(ResultSet rs) throws SQLException
+    private T parseEntityInternal(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         T entity = buildEntityObject();
-        fillEntity(entity, rs);
+        fillEntity(entity, rs, ctx);
         return entity;
     }
 
@@ -220,12 +240,19 @@ class EntityInf<T>
         return null;
     }
 
-    private void fillEntity(T entity, ResultSet rs) throws SQLException
+    private void fillEntity(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         for (FieldInf fieldInf : fields)
         {
             Object value = rs.getObject(fieldInf.getColumnName());
             fieldInf.setValue(entity, value);
+        }
+        for (RelationInf relationInf : relations)
+        {
+            Object value = rs.getObject(relationInf.getColumnName());
+            Class<?> rec = relationInf.getRelatedEntity().getEntityClass();
+            Object relatedEntityObject = ctx.find(rec, value);
+            relationInf.setValue(entity, relatedEntityObject);
         }
     }
 
@@ -236,23 +263,26 @@ class EntityInf<T>
         sw.append("INSERT INTO ");
         sw.append(getTableName());
         sw.append(" (");
-        sw.append(fields.stream()
-                    .map((field) -> field.getColumnName())
-                    .collect(Collectors.joining(", ")));
+        sw.append(Stream.concat(
+                fields.stream().map((field) -> field.getColumnName()),
+                relations.stream().map((relation) -> relation.getColumnName())
+            ).collect(Collectors.joining(", ")));
         sw.append(") VALUES (");
-        sw.append(fields.stream()
-                    .map((field) -> "?")
-                    .collect(Collectors.joining(", ")));
+        sw.append(Stream.concat(
+                fields.stream().map((field) -> "?"),
+                relations.stream().map((relation) -> "?")
+            ).collect(Collectors.joining(", ")));
         sw.append(")");
         return sw.toString();        
     }
 
     public <T> Object[] buildInsertParameters(T entity)
     {
-        return fields.stream()
-                .map((fi) -> fi.getValue(entity))
-                .collect(Collectors.toList())
-                .toArray();
+        List<Object> result = Stream.concat(
+                            fields.stream().map((fi) -> fi.getValue(entity)),
+                            relations.stream().map((fi) -> fi.getColumnValue(entity))
+                        ).collect(Collectors.toList());
+        return result.toArray();
     }
 
     public <T> String buildDeleteQuery(T entity)
@@ -279,9 +309,10 @@ class EntityInf<T>
         sw.append("CREATE TABLE `");
         sw.append(tableName);
         sw.append("` (\n");
-        sw.append(fields.stream()
-                .map((f) -> f.createFieldStmt())
-                .collect(Collectors.joining(", \n")));
+        sw.append(Stream.concat(
+                    fields.stream().map((f) -> f.createFieldStmt()),
+                    relations.stream().map((f) -> f.createRelationStmt())
+                ).collect(Collectors.joining(", \n")));
         sw.append(", \nPRIMARY KEY (`");
         sw.append(keyField.getColumnName());
         sw.append("`)\n");

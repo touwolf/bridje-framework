@@ -68,6 +68,9 @@ public class User
 
     @Field
     private java.sql.Time hour;
+    
+    @Relation(column = "id_group")
+    private Group group;
 
     public User()
     {
@@ -217,5 +220,15 @@ public class User
     public void setHour(Time hour)
     {
         this.hour = hour;
+    }
+
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(Group group)
+    {
+        this.group = group;
     }
 }

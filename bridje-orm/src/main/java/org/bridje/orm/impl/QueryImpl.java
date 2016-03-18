@@ -51,7 +51,7 @@ class QueryImpl<T> implements Query<T>
             List<Object> parameters = new ArrayList<>();
             return entCtxImpl.doQuery(
                     entityInf.buildSelectQuery(condition.writeString(parameters)), 
-                    (rs) -> entityInf.parseAllEntitys(rs), 
+                    (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), 
                     parameters.toArray());
         }
         catch (Exception e)
@@ -70,7 +70,7 @@ class QueryImpl<T> implements Query<T>
             int index = ((page - 1) * size);
             return entCtxImpl.doQuery(
                     entityInf.buildSelectQuery(condition.writeString(parameters), index, size),
-                    (rs) -> entityInf.parseAllEntitys(rs),
+                    (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl),
                     parameters);
         }
         catch (Exception e)
@@ -88,7 +88,7 @@ class QueryImpl<T> implements Query<T>
             List<Object> parameters = new ArrayList<>();
             return entCtxImpl.doQuery(
                     entityInf.buildSelectQuery(condition.writeString(parameters), 1, 1), 
-                    (rs) -> entityInf.parseEntity(rs),
+                    (rs) -> entityInf.parseEntity(rs, entCtxImpl),
                     parameters);
         }
         catch (Exception e)

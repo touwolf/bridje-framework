@@ -77,6 +77,8 @@ public class EntityContextTest
         DataSource ds = jdbcServ.createDataSource(config);
         EntityContext instance = new EntityContextImpl(ds);
 
+        Group group = instance.find(Group.class, 1l);
+        
         User user = new User(1l, "Admin");
         user.setAge((short)30);
         user.setBrithday(new Date());
@@ -90,8 +92,12 @@ public class EntityContextTest
         user.setMoney(100.40d);
         user.setUpdated(new java.sql.Date(System.currentTimeMillis()));
         user.setYear(2016l);
+        user.setGroup(group);
         //instance.insert(user);
+        
         //instance.fixTable(User.class);
+        //instance.fixTable(Group.class);
+        System.out.println(instance.find(User.class, 1l).getGroup().getName());
         /*
         instance.insert(new User(3l, "Other Admin"));
         

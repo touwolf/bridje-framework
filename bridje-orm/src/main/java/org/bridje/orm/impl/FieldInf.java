@@ -141,7 +141,7 @@ class FieldInf
         return sw.toString();
     }
 
-    private JDBCType getSqlType()
+    public JDBCType getSqlType()
     {
         return sqlType;
     }

@@ -74,7 +74,7 @@ public class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entityClass);
-            return doQuery(entityInf.buildSelectQuery(entityInf.buildIdCondition()), (rs) -> entityInf.parseEntity(rs), id);
+            return doQuery(entityInf.buildSelectQuery(entityInf.buildIdCondition()), (rs) -> entityInf.parseEntity(rs, this), id);
         }
         catch (SQLException ex)
         {
@@ -138,13 +138,13 @@ public class EntityContextImpl implements EntityContext
         {
             for (int i = 0; i < parameters.length; i++)
             {
-                setParam(stmt, parameters, i + 1);
+                setParam(stmt, parameters[i], i + 1);
             }
             return stmt.executeUpdate();
         }
     }
 
-    private <T> EntityInf<T> findEntityInf(Class<T> entityClass)
+    public <T> EntityInf<T> findEntityInf(Class<T> entityClass)
     {
         if(entitysMap.containsKey(entityClass))
         {
@@ -152,6 +152,7 @@ public class EntityContextImpl implements EntityContext
         }
         EntityInf<T> entityInf = new EntityInf<>(entityClass);
         entitysMap.put(entityClass, entityInf);
+        entityInf.fillRelations(this);
         return entityInf;
     }
     

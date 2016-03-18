@@ -28,6 +28,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.cfg.ConfigService;
 import org.bridje.http.HttpServer;
 import org.bridje.http.config.HttpServerConfig;
@@ -49,6 +50,7 @@ public class HttpServerImpl implements HttpServer
     @Inject
     private ConfigService cfgServ;
 
+    @PostConstruct
     public void init()
     {
         try
