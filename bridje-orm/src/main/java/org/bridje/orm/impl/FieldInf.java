@@ -80,7 +80,7 @@ class FieldInf
     {
         try
         {
-            this.field.set(entity, value);
+            this.field.set(entity, castValue(value));
         }
         catch (Exception e)
         {
@@ -235,5 +235,64 @@ class FieldInf
             return field.getName();
         }
         return column.trim();
+    }
+
+    private Object castValue(Object value)
+    {
+        if(value != null)
+        {
+            if(!field.getType().isAssignableFrom(value.getClass()))
+            {
+                if(Character.class.isAssignableFrom(field.getType()))
+                {
+                    return toCharacter(value);
+                }
+                if(Byte.class.isAssignableFrom(field.getType()))
+                {
+                    return toByte(value);
+                }
+                if(Short.class.isAssignableFrom(field.getType()))
+                {
+                    return toShort(value);
+                }
+            }
+            return value;
+        }
+        return null;
+    }
+
+    private Character toCharacter(Object value)
+    {
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return ((String) value).toCharArray()[0];
+        }
+        return null;
+    }
+
+    private Object toByte(Object value)
+    {
+        if(value instanceof Number)
+        {
+            return ((Number)value).byteValue();
+        }
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return Byte.valueOf((String)value);
+        }
+        return null;
+    }
+    
+    private Object toShort(Object value)
+    {
+        if(value instanceof Number)
+        {
+            return ((Number)value).shortValue();
+        }
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return Short.valueOf((String)value);
+        }
+        return null;
     }
 }

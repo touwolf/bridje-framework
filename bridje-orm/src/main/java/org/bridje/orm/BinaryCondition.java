@@ -55,6 +55,12 @@ class BinaryCondition extends Condition
         {
             sb.append(((EntityColumn)operand).getField());
         }
+        else if(operand instanceof Condition)
+        {
+            sb.append("(");
+            sb.append( ((Condition)operand).writeString(parameters) );
+            sb.append(")");
+        }
         else
         {
             parameters.add(operand);

@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.EntityTable;
 import org.bridje.orm.Query;
 
 /**
@@ -120,7 +121,7 @@ public class EntityContextImpl implements EntityContext
         {
             for (int i = 0; i < parameters.length; i++)
             {
-                stmt.setObject(i + 1, parameters[i]);
+                setParam(stmt, parameters[i], i + 1);
             }
             try (ResultSet resultSet = stmt.executeQuery())
             {
@@ -137,14 +138,7 @@ public class EntityContextImpl implements EntityContext
         {
             for (int i = 0; i < parameters.length; i++)
             {
-                if(parameters[i] != null && parameters[i] instanceof Character) 
-                {
-                    stmt.setString(i + 1, parameters[i].toString());
-                }
-                else
-                {
-                    stmt.setObject(i + 1, parameters[i]);
-                }
+                setParam(stmt, parameters, i + 1);
             }
             return stmt.executeUpdate();
         }
@@ -194,9 +188,21 @@ public class EntityContextImpl implements EntityContext
     }
 
     @Override
-    public <T> Query<T> query(Class<T> entityClass)
+    public <T> Query<T> query(EntityTable<T> entityTable)
     {
-        EntityInf<T> entityInf = findEntityInf(entityClass);
+        EntityInf<T> entityInf = findEntityInf(entityTable.getEntityClass());
         return new QueryImpl<>(this, entityInf);
+    }
+
+    private void setParam(PreparedStatement stmt, Object parameter, int index) throws SQLException
+    {
+        if(parameter != null && parameter instanceof Character) 
+        {
+            stmt.setString(index, parameter.toString());
+        }
+        else
+        {
+            stmt.setObject(index, parameter);
+        }
     }
 }

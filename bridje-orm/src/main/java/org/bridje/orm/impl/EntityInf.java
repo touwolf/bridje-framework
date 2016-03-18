@@ -115,7 +115,7 @@ class EntityInf<T>
         sw.append("SELECT ");
         sw.append(fields.stream()
                     .map((field) -> field.getColumnName())
-                    .collect(Collectors.joining(" ,")));
+                    .collect(Collectors.joining(", ")));
         sw.append(" FROM ");
         sw.append(getTableName());
         sw.append(" WHERE ");
@@ -238,11 +238,11 @@ class EntityInf<T>
         sw.append(" (");
         sw.append(fields.stream()
                     .map((field) -> field.getColumnName())
-                    .collect(Collectors.joining(" ,")));
+                    .collect(Collectors.joining(", ")));
         sw.append(") VALUES (");
         sw.append(fields.stream()
                     .map((field) -> "?")
-                    .collect(Collectors.joining(" ,")));
+                    .collect(Collectors.joining(", ")));
         sw.append(")");
         return sw.toString();        
     }
