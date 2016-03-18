@@ -55,4 +55,29 @@ public class EntityColumn<E, T>
     {
         return new BinaryCondition(this, Operator.EQ, value);
     }
+    
+    public Condition ne(T value)
+    {
+        return new BinaryCondition(this, Operator.NE, value);
+    }
+
+    public Condition gt(T value)
+    {
+        return new BinaryCondition(this, Operator.GT, value);
+    }
+
+    public Condition ge(T value)
+    {
+        return new BinaryCondition(this, Operator.GE, value);
+    }
+
+    public Condition lt(T value)
+    {
+        return new BinaryCondition(this, Operator.LT, value);
+    }
+
+    public Condition le(T value)
+    {
+        return new BinaryCondition(this, Operator.LE, value);
+    }
 }

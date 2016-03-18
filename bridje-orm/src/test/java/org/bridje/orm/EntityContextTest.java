@@ -90,7 +90,7 @@ public class EntityContextTest
         user.setMoney(100.40d);
         user.setUpdated(new java.sql.Date(System.currentTimeMillis()));
         user.setYear(2016l);
-        instance.insert(user);
+        //instance.insert(user);
         //instance.fixTable(User.class);
         /*
         instance.insert(new User(3l, "Other Admin"));

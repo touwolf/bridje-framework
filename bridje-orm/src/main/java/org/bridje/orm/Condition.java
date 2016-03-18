@@ -23,4 +23,14 @@ import java.util.List;
 public abstract class Condition
 {
     public abstract String writeString(List<Object> parameters);
+
+    public Condition and(Condition otherCondition)
+    {
+        return new BinaryCondition(this, Operator.AND, otherCondition);
+    }
+
+    public Condition or(Condition otherCondition)
+    {
+        return new BinaryCondition(this, Operator.OR, otherCondition);
+    }
 }

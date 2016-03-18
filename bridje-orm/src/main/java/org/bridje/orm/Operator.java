@@ -21,7 +21,7 @@ package org.bridje.orm;
  */
 public enum Operator
 {
-    EQ("="), GT(">"), GE(">="), LT("<"), LE("<="), NE("<>");
+    EQ("="), GT(">"), GE(">="), LT("<"), LE("<="), NE("<>"), AND("and"), OR("or"), NOT("not");
     
     private final String symbol;
 
