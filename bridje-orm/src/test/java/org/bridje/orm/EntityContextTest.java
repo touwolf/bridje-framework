@@ -16,6 +16,9 @@
 
 package org.bridje.orm;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
 import org.bridje.jdbc.JdbcService;
@@ -74,6 +77,21 @@ public class EntityContextTest
         DataSource ds = jdbcServ.createDataSource(config);
         EntityContext instance = new EntityContextImpl(ds);
 
+        User user = new User(1l, "Admin");
+        user.setAge((short)30);
+        user.setBrithday(new Date());
+        user.setClasif('A');
+        user.setCounts((byte)1);
+        user.setCreated(new Timestamp(System.currentTimeMillis()));
+        user.setCredit(50.5f);
+        user.setEnable(true);
+        user.setHour(new Time(System.currentTimeMillis()));
+        user.setMins(10);
+        user.setMoney(100.40d);
+        user.setUpdated(new java.sql.Date(System.currentTimeMillis()));
+        user.setYear(2016l);
+        instance.insert(user);
+        //instance.fixTable(User.class);
         /*
         instance.insert(new User(3l, "Other Admin"));
         
@@ -82,7 +100,6 @@ public class EntityContextTest
                 .fetchAll().stream()
                 .map((user) -> user.getName())
                 .forEach(System.out::println);
-        //instance.fixTable(User.class);
         
         /*
         User user = instance.find(User.class, 1l);

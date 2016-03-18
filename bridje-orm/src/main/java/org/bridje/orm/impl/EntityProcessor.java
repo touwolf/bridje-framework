@@ -18,9 +18,7 @@ package org.bridje.orm.impl;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -122,6 +120,7 @@ public class EntityProcessor extends AbstractProcessor
 
     private void writeClassDec(Writer writer, Element element) throws IOException
     {
+        writer.append("\n@javax.annotation.Generated(value = \"bridje-orm\")");
         writer.append("\npublic class ");
         writer.append(element.getSimpleName() + "_");
         writer.append(" extends");

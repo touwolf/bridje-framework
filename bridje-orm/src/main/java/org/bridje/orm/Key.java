@@ -20,20 +20,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.sql.JDBCType;
 
 /**
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Field
+public @interface Key
 {
-    String column() default "";
-
-    JDBCType type() default JDBCType.NULL;
-
-    int length() default 0;
-
-    int precision() default 0;
 }

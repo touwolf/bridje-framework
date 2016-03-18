@@ -137,7 +137,14 @@ public class EntityContextImpl implements EntityContext
         {
             for (int i = 0; i < parameters.length; i++)
             {
-                stmt.setObject(i + 1, parameters[i]);
+                if(parameters[i] != null && parameters[i] instanceof Character) 
+                {
+                    stmt.setString(i + 1, parameters[i].toString());
+                }
+                else
+                {
+                    stmt.setObject(i + 1, parameters[i]);
+                }
             }
             return stmt.executeUpdate();
         }
