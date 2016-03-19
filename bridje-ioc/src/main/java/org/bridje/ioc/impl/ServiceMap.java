@@ -140,13 +140,14 @@ class ServiceMap
      */
     public List<Class<?>> findAll(Type service)
     {
+        Type realService = service;
         if (service instanceof WildcardType)
         {
-            service = ClassUtils.typeOf((WildcardType) service);
+            realService = ClassUtils.typeOf((WildcardType) service);
         }
-        if (service != null)
+        if (realService != null)
         {
-            List<Class<?>> result = map.get(service);
+            List<Class<?>> result = map.get(realService);
             if (result == null)
             {
                 return null;
