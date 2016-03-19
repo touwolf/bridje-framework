@@ -26,11 +26,6 @@ import org.junit.Test;
 
 public class ConfigServiceTest
 {
-    
-    public ConfigServiceTest()
-    {
-    }
-    
     @BeforeClass
     public static void setUpClass()
     {

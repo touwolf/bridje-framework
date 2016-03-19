@@ -24,7 +24,6 @@ import org.bridje.ioc.Inject;
 @Component
 public class GenericInjectComponent
 {
-    //TODO test for array injection of generic services.
     private GenericService<String>[] gsOfStrArr;
 
     @Inject
@@ -49,5 +48,10 @@ public class GenericInjectComponent
     public GenericService<Map<String, List<Integer>>> getComplexInject()
     {
         return complexInject;
+    }
+
+    public GenericService<String>[] getGsOfStrArr()
+    {
+        return gsOfStrArr;
     }
 }

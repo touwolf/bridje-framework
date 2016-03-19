@@ -27,24 +27,9 @@ import static org.junit.Assert.*;
 
 public class IocContextImplTest
 {
-
-    public IocContextImplTest()
-    {
-    }
-
     @BeforeClass
     public static void setUpClass()
     {
-        /*
-        TODO: This initialization causes 
-         java.lang.IllegalStateException: The APPLICATION Context is already created.
-        becouse the test order is not defined, a work arround is needed.
-        */
-        /*
-        Ioc.init(Service.
-                forThis(DefaultService.class).
-                implementBy(DefaultComponent2.class));
-        */
     }
 
     @AfterClass

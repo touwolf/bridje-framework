@@ -36,8 +36,6 @@ class ContextImpl implements IocContext
 
     private final ClassSet classSet;
 
-    private final Instanciator creator;
-    
     private final ServiceMap serviceMap;
     
     private final Container container;
@@ -75,7 +73,7 @@ class ContextImpl implements IocContext
             classSet = ClassSet.findByScope(scope);
             serviceMap = ServiceMap.findByScope(scope);
         }
-        creator = new Instanciator(this, serviceMap);
+        Instanciator creator = new Instanciator(this, serviceMap);
         List allInstances = new ArrayList(instances != null ? instances.size() + 1 : 1);
         allInstances.add(this);
         if(instances != null)

@@ -88,8 +88,6 @@ public class EntityProcessor extends AbstractProcessor
 
     private void generateClass(Element element) throws IOException
     {
-        Generate annot = element.getAnnotation(Generate.class);
-
         JavaFileObject fo = filer.createSourceFile(element.toString() + "_");
         try(Writer writer = fo.openWriter())
         {
@@ -101,7 +99,7 @@ public class EntityProcessor extends AbstractProcessor
             writeFields(writer, element);
             writeDefConstructor(writer, element);
             //Finish Code
-            writeClassDecClose(writer, element);
+            writeClassDecClose(writer);
             writer.flush();
         }
     }
@@ -130,7 +128,7 @@ public class EntityProcessor extends AbstractProcessor
         writer.append("\n{");
     }
 
-    private void writeClassDecClose(Writer writer, Element element) throws IOException
+    private void writeClassDecClose(Writer writer) throws IOException
     {
         writer.append("\n}");
     }

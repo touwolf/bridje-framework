@@ -84,6 +84,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
             else
             {
                 req.setContent(((HttpContent)msg).content());
+                //if is the last http content
                 if(msg instanceof LastHttpContent)
                 {
                     if(resp == null)
@@ -95,10 +96,6 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
                     context.set(HttpServerResponse.class, resp);
                     rootHandler.handle(context);
                     sendResponse(ctx);
-                }
-                else
-                {
-                    //not the last http content
                 }
             }
         }

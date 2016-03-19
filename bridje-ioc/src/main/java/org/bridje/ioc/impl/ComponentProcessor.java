@@ -43,10 +43,6 @@ import org.bridje.ioc.Component;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class ComponentProcessor extends AbstractProcessor
 {
-    private Filer filer;
-
-    private FileObject fobj;
-
     private Writer writer;
 
     private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
@@ -61,9 +57,9 @@ public class ComponentProcessor extends AbstractProcessor
         Messager messager = processingEnv.getMessager();
         try
         {
-            filer = processingEnv.getFiler();
+            Filer filer = processingEnv.getFiler();
             //Creating output file
-            fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", COMPONENTS_RESOURCE_FILE);
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", COMPONENTS_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
         catch (IOException e)

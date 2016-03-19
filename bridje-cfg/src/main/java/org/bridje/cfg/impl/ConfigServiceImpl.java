@@ -22,13 +22,10 @@ import org.bridje.ioc.Inject;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 @Component
 class ConfigServiceImpl implements ConfigService
 {
-    private static final Logger LOG = Logger.getLogger(ConfigServiceImpl.class.getName());
-
     @Inject
     private ConfigRepository[] repos;
 
