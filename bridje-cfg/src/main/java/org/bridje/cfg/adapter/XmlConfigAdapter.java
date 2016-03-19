@@ -46,12 +46,9 @@ public class XmlConfigAdapter implements ConfigAdapter
     public String findDefaultFileName(Class<?> cls)
     {
         XmlRootElement ann = cls.getAnnotation(XmlRootElement.class);
-        if(ann != null)
+        if(ann != null && ann.name() != null && !ann.name().trim().isEmpty() && !ann.name().equalsIgnoreCase("##default"))
         {
-            if(ann.name() != null && !ann.name().trim().isEmpty() && !ann.name().equalsIgnoreCase("##default"))
-            {
-                return ann.name() + ".xml";
-            }
+            return ann.name() + ".xml";
         }
         return cls.getSimpleName().toLowerCase() + ".xml";
     }
