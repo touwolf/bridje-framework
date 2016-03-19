@@ -7,4 +7,5 @@ script:
  - sudo curl https://www.jpm4j.org/install/script | sudo sh
  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
  - export CODACY_PROJECT_TOKEN=$projectToken
+ - ls bridje-ioc/target/site/jacoco
  - codacy-coverage-reporter -l Java -r bridje-ioc/target/site/jacoco/jacoco.xml --prefix bridje-ioc/src/main/java/
