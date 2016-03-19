@@ -42,12 +42,8 @@ public class JdbcServiceTest
 {
     private static final Logger LOG = Logger.getLogger(JdbcServiceTest.class.getName());
 
-    private static String DS_NAME = "H2TestDataSource";
-    
-    public JdbcServiceTest()
-    {
-    }
-    
+    private static final String DS_NAME = "H2TestDataSource";
+
     @BeforeClass
     public static void setUpClass()
     {

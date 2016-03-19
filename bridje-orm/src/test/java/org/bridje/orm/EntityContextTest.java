@@ -24,15 +24,9 @@ import org.junit.Test;
 
 /**
  *
- * @author gilbe
  */
 public class EntityContextTest
 {
-    
-    public EntityContextTest()
-    {
-    }
-    
     @BeforeClass
     public static void setUpClass()
     {
