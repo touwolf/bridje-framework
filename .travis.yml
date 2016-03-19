@@ -3,11 +3,10 @@ jdk:
   - oraclejdk8
 
 script:
- - mvn test jacoco:report
+ - mvn test
+ - mvn jacoco:merge
+ - mvn jacoco:report
  - sudo curl https://www.jpm4j.org/install/script | sudo sh
  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
  - export CODACY_PROJECT_TOKEN=$projectToken
- - codacy-coverage-reporter -l Java -r bridje-ioc/target/site/jacoco/jacoco.xml --prefix bridje-ioc/src/main/java/
- - codacy-coverage-reporter -l Java -r bridje-cfg/target/site/jacoco/jacoco.xml --prefix bridje-cfg/src/main/java/
- - codacy-coverage-reporter -l Java -r bridje-jdbc/target/site/jacoco/jacoco.xml --prefix bridje-jdbc/src/main/java/
- - codacy-coverage-reporter -l Java -r bridje-orm/target/site/jacoco/jacoco.xml --prefix bridje-orm/src/main/java/
+ - codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml

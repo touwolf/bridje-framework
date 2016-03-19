@@ -49,11 +49,8 @@ public class JdbcServiceTest
     @Test
     public void testGetDataSource() throws SQLException, InterruptedException
     {
-        File f = new File("target/dbtest");
-        if(f.exists())
-        {
-            f.delete();
-        }
+        deleteDbFile("./target/dbtest.mv.db");
+        deleteDbFile("./target/dbtest.trace.db");
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);
@@ -143,6 +140,15 @@ public class JdbcServiceTest
         catch (SQLException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    private void deleteDbFile(String file)
+    {
+        File f = new File(file);
+        if(f.exists())
+        {
+            f.delete();
         }
     }
 }
