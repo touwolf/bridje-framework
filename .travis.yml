@@ -2,8 +2,9 @@ language: java
 jdk:
   - oraclejdk8
 
-script: curl https://www.jpm4j.org/install/script | sh
-script: jpm install com.codacy:codacy-coverage-reporter:assembly
-script: export CODACY_PROJECT_TOKEN=$projectToken
-script: echo $CODACY_PROJECT_TOKEN
-script: codacy-coverage-reporter -l Java -r coverage.xml
+script:
+ - curl https://www.jpm4j.org/install/script | sh
+ - jpm install com.codacy:codacy-coverage-reporter:assembly
+ - export CODACY_PROJECT_TOKEN=$projectToken
+ - echo $CODACY_PROJECT_TOKEN
+ - codacy-coverage-reporter -l Java -r coverage.xml
