@@ -253,12 +253,10 @@ class ServiceMap
         Type[] interfaces = cls.getGenericInterfaces();
         for (Type ifc : interfaces)
         {
-            if (!ClassUtils.hasGenericDeclaration(ifc))
+            if (!ClassUtils.hasGenericDeclaration(ifc) 
+                    && !servicesList.contains(ifc))
             {
-                if (!servicesList.contains(ifc))
-                {
-                    servicesList.add(ifc);
-                }
+                servicesList.add(ifc);
             }
             Class icfCls = ClassUtils.rawClass(ifc);
             servicesList.add(icfCls);
