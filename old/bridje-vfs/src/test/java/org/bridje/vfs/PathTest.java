@@ -146,9 +146,8 @@ public class PathTest
      * Test of toString method, of class Path.
      */
     @Test
-    public void testToString_String()
+    public void testToStringString()
     {
-        System.out.println("toString");
         String pathSep = "\\";
         Path instance = new Path("/usr/local/bin");
         String expResult = "usr\\local\\bin";

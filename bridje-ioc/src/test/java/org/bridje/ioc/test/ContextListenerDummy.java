@@ -15,27 +15,30 @@
  */
 package org.bridje.ioc.test;
 
+import java.util.logging.Logger;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Component;
 
 @Component
 public class ContextListenerDummy implements ContextListener<DummyComponent>
 {
+    private static final Logger LOG = Logger.getLogger(ContextListenerDummy.class.getName());
+
     @Override
     public void preCreateComponent(Class<DummyComponent> clazz)
     {
-        System.out.println("This method is called only when DummyComponent is preCreate");
+        LOG.info("This method is called only when DummyComponent is preCreate");
     }
 
     @Override
     public void preInitComponent(Class<DummyComponent> clazz, DummyComponent instance)
     {
-        System.out.println("This method is called only when DummyComponent is preInit");
+        LOG.info("This method is called only when DummyComponent is preInit");
     }
 
     @Override
     public void postInitComponent(Class<DummyComponent> clazz, DummyComponent instance)
     {
-        System.out.println("This method is called only when DummyComponent is postInit");
+        LOG.info("This method is called only when DummyComponent is postInit");
     }    
 }

@@ -15,27 +15,31 @@
  */
 package org.bridje.ioc.test;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Component;
 
 @Component
 public class ContextListenerGeneric implements ContextListener<Object>
 {
+    private static final Logger LOG = Logger.getLogger(ContextListenerGeneric.class.getName());
+
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
-        System.out.println("General method called for all the components preCreate: " + clazz.getName());
+        LOG.log(Level.INFO, "General method called for all the components preCreate: {0}", clazz.getName());
     }
 
     @Override
     public void preInitComponent(Class<Object> clazz, Object object)
     {
-        System.out.println("General method called for all the components  preInit: " + clazz.getName());
+        LOG.log(Level.INFO, "General method called for all the components  preInit: {0}", clazz.getName());
     }
 
     @Override
     public void postInitComponent(Class<Object> clazz, Object object)
     {
-        System.out.println("General method called for all the components  postInit: " + clazz.getName());
+        LOG.log(Level.INFO, "General method called for all the components  postInit: {0}", clazz.getName());
     }    
 }

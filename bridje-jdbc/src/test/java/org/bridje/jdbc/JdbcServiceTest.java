@@ -52,7 +52,6 @@ public class JdbcServiceTest
     @Test
     public void testGetDataSource() throws SQLException, InterruptedException
     {
-        System.out.println("getDataSource");
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);
