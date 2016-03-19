@@ -26,6 +26,8 @@ public interface EntityContext
     <T> T find(Class<T> entityClass, Object id);
 
     <T> T insert(T entity);
+    
+    <T> T refresh(T entity);
 
     <T> T delete(T entity);
 

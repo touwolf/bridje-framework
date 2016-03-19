@@ -87,6 +87,24 @@ public class EntityContextImpl implements EntityContext
     }
 
     @Override
+    public <T> T refresh(T entity)
+    {
+        try
+        {
+            EntityInf<T> entityInf = findEntityInf(entity);
+            return doQuery(
+                    entityInf.buildSelectQuery(entityInf.buildIdCondition(), null), 
+                    (rs) -> entityInf.parseEntity(entity, rs, this), 
+                    entityInf.getKeyField().getValue(entity));
+        }
+        catch (SQLException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    @Override
     public <T> T insert(T entity)
     {
         try

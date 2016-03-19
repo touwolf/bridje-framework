@@ -279,6 +279,22 @@ class EntityInf<T>
         return null;
     }
 
+    public T parseEntity(T entity, ResultSet rs, EntityContextImpl ctx)
+    {
+        try
+        {
+            if(rs.next())
+            {
+                fillEntity(entity, rs, ctx);
+                return entity;
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
     
     public <C> C parseColumn(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
