@@ -314,7 +314,7 @@ class ClassWriter
         String javaLang = "java.lang.";
         if(type.startsWith(javaLang))
         {
-            type = type.substring(javaLang.length());
+            return type.substring(javaLang.length());
         }
         return type;
     }
