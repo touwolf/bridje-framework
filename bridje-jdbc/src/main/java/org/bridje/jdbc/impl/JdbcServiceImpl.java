@@ -34,7 +34,7 @@ import org.bridje.jdbc.config.JdbcConfig;
  *
  */
 @Component
-public class JdbcServiceImpl implements JdbcService
+class JdbcServiceImpl implements JdbcService
 {
     private static final Logger LOG = Logger.getLogger(JdbcServiceImpl.class.getName());
 

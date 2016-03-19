@@ -33,7 +33,7 @@ import org.bridje.orm.Query;
 /**
  * 
  */
-public class EntityContextImpl implements EntityContext
+class EntityContextImpl implements EntityContext
 {
     private static final Logger LOG = Logger.getLogger(EntityContextImpl.class.getName());
 
