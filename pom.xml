@@ -142,11 +142,11 @@
                         </goals>
                         <configuration>
                             <fileSets>
-                                <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
+                                <fileSet>
                                     <directory>.</directory>
                                     <includes>
-                                        <include>*.exec</include>
-                                    </includes>
+                                        <include>**/*.exec</include>
+                                    </includes>                                    
                                 </fileSet>
                             </fileSets>
                             <destFile>${project.build.directory}/jacoco.exec</destFile>
