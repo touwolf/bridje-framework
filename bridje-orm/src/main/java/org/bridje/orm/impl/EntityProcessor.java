@@ -33,7 +33,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
-import org.bridje.orm.Generate;
 
 @SupportedAnnotationTypes("org.bridje.orm.Generate")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)

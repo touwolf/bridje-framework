@@ -129,7 +129,7 @@ public class DataSourceImpl implements DataSource
         return new ConnectionImpl(internalConnection, this);
     }
 
-    void connectionClosed(ConnectionImpl closedConnection)
+    protected void connectionClosed(ConnectionImpl closedConnection)
     {
         usedConnections.remove(closedConnection);
         freeConnections.add(closedConnection);

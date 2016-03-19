@@ -155,9 +155,7 @@ class EntityInf<T>
     {
         StringBuilder sw = new StringBuilder();
         
-        sw.append("SELECT ");
-        sw.append("count(*)");
-        sw.append(" FROM ");
+        sw.append("SELECT count(*) FROM");
         sw.append(getTableName());
         sw.append(" WHERE ");
         sw.append(condition);

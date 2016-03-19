@@ -16,8 +16,6 @@
 
 package org.bridje.orm;
 
-import org.junit.Test;
-
 /**
  *
  */
@@ -26,7 +24,7 @@ public class EntityContextTest
     /**
      * Test of find method, of class EntityContext.
      */
-    @Test
+    //@Test
     public void testFind()
     {
         /*
