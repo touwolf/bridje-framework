@@ -222,12 +222,10 @@ class ServiceMap
         Type supClass = component.getGenericSuperclass();
         while (supClass != null && supClass != Object.class)
         {
-            if (!ClassUtils.hasGenericDeclaration(supClass))
+            if (!ClassUtils.hasGenericDeclaration(supClass)
+                    && !servicesList.contains(supClass))
             {
-                if (!servicesList.contains(supClass))
-                {
-                    servicesList.add(supClass);
-                }
+                servicesList.add(supClass);
             }
             Class cls = ClassUtils.rawClass(supClass);
             servicesList.add(cls);
