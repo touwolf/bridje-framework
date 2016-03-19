@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 
 script:
- - mvn test jacobo:prepare-agent
+ - mvn test jacoco:prepare-agent
  - ls bridje-ioc/target
  - mvn jacoco:merge jacoco:report
  - ls target/site/jacoco
