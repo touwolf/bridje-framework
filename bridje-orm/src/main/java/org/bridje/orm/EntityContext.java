@@ -29,5 +29,5 @@ public interface EntityContext
 
     <T> T delete(T entity);
 
-    <T> Query<T> query(EntityTable<T> entityTable);
+    <T> Query<T> query(Table<T> entityTable);
 }

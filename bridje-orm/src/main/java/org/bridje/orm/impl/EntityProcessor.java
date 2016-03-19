@@ -104,12 +104,12 @@ public class EntityProcessor extends AbstractProcessor
             cw.classPackage(classPack);
             //Imports
             cw.importClass("javax.annotation.Generated");
-            cw.importClass("org.bridje.orm.EntityTable");
-            cw.importClass("org.bridje.orm.EntityColumn");
+            cw.importClass("org.bridje.orm.Table");
+            cw.importClass("org.bridje.orm.Column");
             //Class
             cw.emptyLine();
             cw.annotate("Generated(value = \"bridje-orm\")");
-            cw.publicAccess().finalElement().classDec(className).extendsFrom("EntityTable<" + entityClassName + ">");
+            cw.publicAccess().finalElement().classDec(className).extendsFrom("Table<" + entityClassName + ">");
             cw.begin();
                 //Table Field
                 cw.publicAccess().staticElement().finalElement().fieldDec(className, "table", "new " + className + "()");
@@ -141,8 +141,8 @@ public class EntityProcessor extends AbstractProcessor
             String entityName = classEl.getSimpleName().toString();
             String name = fieldEl.getSimpleName().toString();
             String fieldType = cw.removeJavaLangPack(fieldEl.asType().toString());
-            String type = cw.createGenericType("EntityColumn", entityName, fieldType);
-            String value = cw.newObjStatement("EntityColumn<>",
+            String type = cw.createGenericType("Column", entityName, fieldType);
+            String value = cw.newObjStatement("Column<>",
                     entityName + "_.table", 
                     cw.stringLiteral(name),
                     cw.dotClass(fieldType));

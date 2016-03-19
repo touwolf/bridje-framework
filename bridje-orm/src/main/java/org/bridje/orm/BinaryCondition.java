@@ -51,9 +51,9 @@ class BinaryCondition extends Condition
 
     private void writeOperand(Object operand, List<Object> parameters, StringBuilder sb)
     {
-        if(operand instanceof EntityColumn)
+        if(operand instanceof Column)
         {
-            sb.append(((EntityColumn)operand).getField());
+            sb.append(((Column)operand).getField());
         }
         else if(operand instanceof Condition)
         {

@@ -21,22 +21,22 @@ package org.bridje.orm;
  * @param <E>
  * @param <T>
  */
-public class EntityColumn<E, T>
+public class Column<E, T>
 {
-    private final EntityTable<E> table;
+    private final Table<E> table;
 
     private final String field;
 
     private final Class<T> type;
 
-    public EntityColumn(EntityTable<E> table, String field, Class<T> type)
+    public Column(Table<E> table, String field, Class<T> type)
     {
         this.table = table;
         this.field = field;
         this.type = type;
     }
 
-    public EntityTable<E> getTable()
+    public Table<E> getTable()
     {
         return table;
     }

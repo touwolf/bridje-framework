@@ -4,5 +4,4 @@
  - Agregando order by en las consultas
  - Crear cache de entidades
  - Crear metodo refresh para refrescar las entidad
- - Cambiar nombre de EntityTable y EntityColumn a Table y Column
  

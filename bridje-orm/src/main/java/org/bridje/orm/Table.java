@@ -19,11 +19,11 @@ package org.bridje.orm;
 /**
  *
  */
-public class EntityTable<T>
+public class Table<T>
 {
     private final Class<T> entityClass;
 
-    public EntityTable(Class<T> entityClass)
+    public Table(Class<T> entityClass)
     {
         this.entityClass = entityClass;
     }

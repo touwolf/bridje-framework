@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.orm.EntityContext;
-import org.bridje.orm.EntityTable;
+import org.bridje.orm.Table;
 import org.bridje.orm.Query;
 
 /**
@@ -189,7 +189,7 @@ public class EntityContextImpl implements EntityContext
     }
 
     @Override
-    public <T> Query<T> query(EntityTable<T> entityTable)
+    public <T> Query<T> query(Table<T> entityTable)
     {
         EntityInf<T> entityInf = findEntityInf(entityTable.getEntityClass());
         return new QueryImpl<>(this, entityInf);
