@@ -3,8 +3,8 @@ jdk:
   - oraclejdk8
 
 script:
- - curl https://www.jpm4j.org/install/script | sh
+ - mvn -Dgpg.skip=true test
+ - sudo curl https://www.jpm4j.org/install/script | sh
  - jpm install com.codacy:codacy-coverage-reporter:assembly
  - export CODACY_PROJECT_TOKEN=$projectToken
- - echo $CODACY_PROJECT_TOKEN
  - codacy-coverage-reporter -l Java -r coverage.xml
