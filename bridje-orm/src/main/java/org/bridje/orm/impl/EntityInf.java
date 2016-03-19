@@ -324,4 +324,9 @@ class EntityInf<T>
     {
         return keyField.getColumnName() + " = ?";
     }
+
+    public String buildCreateColumnQuery()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

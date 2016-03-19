@@ -179,7 +179,7 @@ public class EntityContextImpl implements EntityContext
 
     private <T> void fixColumns(EntityInf<T> entityInf)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String query = entityInf.buildCreateColumnQuery();
     }
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
