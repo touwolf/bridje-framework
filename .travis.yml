@@ -4,6 +4,6 @@ jdk:
 
 script:
  - sudo curl https://www.jpm4j.org/install/script | sudo sh
- - jpm install com.codacy:codacy-coverage-reporter:assembly
- - export CODACY_PROJECT_TOKEN=$projectToken
- - codacy-coverage-reporter -l Java -r coverage.xml
+ - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
+ - sudo export CODACY_PROJECT_TOKEN=$projectToken
+ - sudo codacy-coverage-reporter -l Java -r coverage.xml
