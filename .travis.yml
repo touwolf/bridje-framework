@@ -6,6 +6,7 @@ script:
  - mvn test jacoco:prepare-agent
  - ls bridje-ioc/target
  - mvn jacoco:merge jacoco:report
+ - ls bridje-ioc/target
  - ls target/site/jacoco
  - sudo curl https://www.jpm4j.org/install/script | sudo sh
  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
