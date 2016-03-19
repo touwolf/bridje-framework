@@ -58,7 +58,7 @@ class HttpServerResponseImpl implements HttpServerResponse
         return buffer;
     }
 
-    void close() throws IOException
+    protected void close() throws IOException
     {
         try
         {

@@ -135,7 +135,7 @@ public class DataSourceImpl implements DataSource
         freeConnections.add(closedConnection);
     }
 
-    void close() throws SQLException
+    protected void close() throws SQLException
     {
         while(!usedConnections.isEmpty())
         {

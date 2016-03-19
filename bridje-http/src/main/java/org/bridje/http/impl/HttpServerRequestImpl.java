@@ -26,7 +26,7 @@ import org.bridje.http.HttpServerRequest;
 /**
  *
  */
-public class HttpServerRequestImpl implements HttpServerRequest
+class HttpServerRequestImpl implements HttpServerRequest
 {
     private ByteBuf buffer;
 
@@ -50,7 +50,7 @@ public class HttpServerRequestImpl implements HttpServerRequest
         return buffer;
     }
 
-    void setContent(ByteBuf content)
+    protected void setContent(ByteBuf content)
     {
         this.buffer = content;
     }

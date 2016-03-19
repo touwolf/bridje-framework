@@ -19,6 +19,7 @@ package org.bridje.orm;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+
 /**
  *
  */
@@ -64,10 +65,10 @@ public class User
     private java.sql.Date updated;
     
     @Field
-    private java.sql.Timestamp created;
+    private Timestamp created;
 
     @Field
-    private java.sql.Time hour;
+    private Time hour;
     
     @Relation(column = "id_group")
     private Group group;

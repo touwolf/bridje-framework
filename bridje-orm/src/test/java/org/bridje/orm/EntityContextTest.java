@@ -16,14 +16,6 @@
 
 package org.bridje.orm;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
-import javax.sql.DataSource;
-import org.bridje.ioc.Ioc;
-import org.bridje.jdbc.JdbcService;
-import org.bridje.jdbc.config.DataSourceConfig;
-import org.bridje.orm.impl.EntityContextImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

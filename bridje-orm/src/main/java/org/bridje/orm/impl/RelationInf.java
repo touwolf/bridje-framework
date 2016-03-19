@@ -21,8 +21,8 @@ import java.lang.reflect.Field;
 import java.sql.JDBCType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import org.bridje.orm.Relation;
+
 /**
  *
  */

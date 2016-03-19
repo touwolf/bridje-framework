@@ -1,22 +1,21 @@
+
 package org.bridje.cfg.impl;
 
 import org.bridje.cfg.ConfigAdapter;
 import org.bridje.cfg.ConfigRepositoryContext;
 import org.bridje.cfg.ConfigRepository;
-import org.bridje.cfg.Configuration;
 import org.bridje.cfg.adapter.XmlConfigAdapter;
 import org.bridje.ioc.Ioc;
-import org.bridje.ioc.IocContext;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
+import org.bridje.cfg.Configuration;
 
 public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
 {
-    private List<ConfigRepository> repos;
+    private final List<ConfigRepository> repos;
 
     public ConfigRepositoryContextImpl(ConfigRepository[] repos)
     {

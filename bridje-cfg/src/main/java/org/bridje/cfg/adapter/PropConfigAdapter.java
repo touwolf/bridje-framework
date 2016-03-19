@@ -79,7 +79,7 @@ public class PropConfigAdapter implements ConfigAdapter
             case "boolean":
             {
                 boolean isTrue = !(value.toLowerCase().equals("false") ||
-                        value.equals("0"));
+                        "0".equals(value));
                 field.setBoolean(obj, isTrue);
                 break;
             }
@@ -116,6 +116,10 @@ public class PropConfigAdapter implements ConfigAdapter
             {
                 field.set(obj, value);
                 break;
+            }
+            default:
+            {
+                throw new IllegalStateException("Cannot find a valid data type for the field " + field.getName());
             }
         }
     }

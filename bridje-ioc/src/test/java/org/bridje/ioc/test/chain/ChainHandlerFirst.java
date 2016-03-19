@@ -17,7 +17,6 @@
 package org.bridje.ioc.test.chain;
 
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 

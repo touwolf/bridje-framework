@@ -374,7 +374,7 @@ public class ConnectionImpl implements Connection
         return connection.isWrapperFor(iface);
     }
 
-    void realClose() throws SQLException
+    protected void realClose() throws SQLException
     {
         connection.close();
     }
