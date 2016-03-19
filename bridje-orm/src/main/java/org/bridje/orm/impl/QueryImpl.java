@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.Query;
 
@@ -37,6 +38,10 @@ class QueryImpl<T> implements Query<T>
 
     private Condition condition;
     
+    private int page;
+    
+    private int pageSize;
+    
     public QueryImpl(EntityContextImpl entCtxImpl, EntityInf<T> entityInf)
     {
         this.entityInf = entityInf;
@@ -44,13 +49,30 @@ class QueryImpl<T> implements Query<T>
     }
     
     @Override
+    public void paging(int page, int size)
+    {
+        this.page = page;
+        this.page = pageSize;
+    }
+
+    @Override
     public List<T> fetchAll()
     {
         try
         {
             List<Object> parameters = new ArrayList<>();
+            String queryString;
+            if(page > 0)
+            {
+                int index = ((page - 1) * pageSize);
+                queryString = entityInf.buildSelectQuery(condition.writeString(parameters), index, pageSize);
+            }
+            else
+            {
+                queryString = entityInf.buildSelectQuery(condition.writeString(parameters));
+            }
             return entCtxImpl.doQuery(
-                    entityInf.buildSelectQuery(condition.writeString(parameters)), 
+                    queryString, 
                     (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), 
                     parameters.toArray());
         }
@@ -62,16 +84,25 @@ class QueryImpl<T> implements Query<T>
     }
 
     @Override
-    public List<T> fetchAll(int page, int size)
+    public <C> List<C> fetchAll(Column<T, C> column)
     {
         try
         {
             List<Object> parameters = new ArrayList<>();
-            int index = ((page - 1) * size);
+            String queryString;
+            if(page > 0)
+            {
+                int index = ((page - 1) * pageSize);
+                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), index, pageSize);
+            }
+            else
+            {
+                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters));
+            }
             return entCtxImpl.doQuery(
-                    entityInf.buildSelectQuery(condition.writeString(parameters), index, size),
-                    (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl),
-                    parameters);
+                    queryString, 
+                    (rs) -> entityInf.parseAllColumns(column, rs, entCtxImpl), 
+                    parameters.toArray());
         }
         catch (Exception e)
         {
@@ -87,9 +118,27 @@ class QueryImpl<T> implements Query<T>
         {
             List<Object> parameters = new ArrayList<>();
             return entCtxImpl.doQuery(
-                    entityInf.buildSelectQuery(condition.writeString(parameters), 1, 1), 
+                    entityInf.buildSelectQuery(condition.writeString(parameters), 0, 1), 
                     (rs) -> entityInf.parseEntity(rs, entCtxImpl),
-                    parameters);
+                    parameters.toArray());
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
+    
+    @Override
+    public <C> C fetchOne(Column<T, C> column)
+    {
+        try
+        {
+            List<Object> parameters = new ArrayList<>();
+            return entCtxImpl.doQuery(
+                    entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), 0, 1), 
+                    (rs) -> entityInf.parseColumn(column, rs, entCtxImpl),
+                    parameters.toArray());
         }
         catch (Exception e)
         {
@@ -107,7 +156,7 @@ class QueryImpl<T> implements Query<T>
             return entCtxImpl.doQuery(
                     entityInf.buildCountQuery(condition.writeString(parameters)), 
                     (rs) -> entityInf.parseCount(rs), 
-                    parameters);
+                    parameters.toArray());
         }
         catch (Exception e)
         {

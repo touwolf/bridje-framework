@@ -29,7 +29,7 @@ import org.bridje.orm.Key;
 /**
  *
  */
-class FieldInf
+class FieldInf<T, C>
 {
     private static final Logger LOG = Logger.getLogger(FieldInf.class.getName());
     
@@ -45,8 +45,14 @@ class FieldInf
     
     private final long precision;
     
-    public FieldInf(Field field)
+    private final EntityInf<T> entityInf;
+
+    private final Class<C> dataType;
+    
+    public FieldInf(EntityInf<T> entityInf, Field field, Class<C> dataType)
     {
+        this.entityInf = entityInf;
+        this.dataType = dataType;
         this.field = field;
         this.field.setAccessible(true);
         org.bridje.orm.Field annotation = this.field.getAnnotation(org.bridje.orm.Field.class);
@@ -154,6 +160,16 @@ class FieldInf
     public long getPrecision()
     {
         return precision;
+    }
+
+    public EntityInf<T> getEntityInf()
+    {
+        return entityInf;
+    }
+
+    public Class<C> getDataType()
+    {
+        return dataType;
     }
 
     private long findLength(int length)

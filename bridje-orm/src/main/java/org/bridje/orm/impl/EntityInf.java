@@ -20,11 +20,14 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.bridje.orm.Column;
 import org.bridje.orm.Entity;
 
 /**
@@ -44,6 +47,8 @@ class EntityInf<T>
     private final List<FieldInf> fields;
     
     private final List<RelationInf> relations;
+    
+    private final Map<String, FieldInf<T, ?>> fieldsMap;
 
     public EntityInf(Class<T> entityClass)
     {
@@ -60,6 +65,11 @@ class EntityInf<T>
         if(keyField == null)
         {
             throw new IllegalArgumentException("The class " + entityClass.getName() + " does not have a valid key field.");
+        }
+        fieldsMap = new HashMap<>();
+        for (FieldInf fieldInf : fields)
+        {
+            fieldsMap.put(fieldInf.getField().getName(), fieldInf);
         }
     }
 
@@ -92,7 +102,7 @@ class EntityInf<T>
             org.bridje.orm.Field fieldAnnot = declaredField.getAnnotation(org.bridje.orm.Field.class);
             if(fieldAnnot != null)
             {
-                FieldInf fInf = new FieldInf(declaredField);
+                FieldInf fInf = new FieldInf(this, declaredField, declaredField.getType());
                 if(fInf.isKey())
                 {
                     if(keyField != null)
@@ -121,12 +131,12 @@ class EntityInf<T>
         }
     }
     
-    public <T> String buildSelectQuery(String condition)
+    public String buildSelectQuery(String condition)
     {
         return buildSelectQuery(condition, -1, -1);
     }
     
-    public <T> String buildSelectQuery(String condition, int index, int size)
+    public String buildSelectQuery(String condition, int index, int size)
     {
         StringBuilder sw = new StringBuilder();
         
@@ -135,6 +145,33 @@ class EntityInf<T>
                     fields.stream().map((field) -> field.getColumnName()),
                     relations.stream().map((relation) -> relation.getColumnName())
                 ).collect(Collectors.joining(", ")));
+        sw.append(" FROM ");
+        sw.append(getTableName());
+        sw.append(" WHERE ");
+        sw.append(condition);
+        if(index >= 0 && size >= 0)
+        {
+            sw.append(" LIMIT ");
+            sw.append(index);
+            sw.append(", ");
+            sw.append(size);
+        }
+        sw.append(";");
+        
+        return sw.toString();
+    }
+
+    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition)
+    {
+        return buildSelectQuery(condition, -1, -1);
+    }
+    
+    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, int index, int size)
+    {
+        StringBuilder sw = new StringBuilder();
+        
+        sw.append("SELECT ");
+        sw.append(findColumnName(column));
         sw.append(" FROM ");
         sw.append(getTableName());
         sw.append(" WHERE ");
@@ -163,6 +200,28 @@ class EntityInf<T>
         
         return sw.toString();
     }
+    
+    public <C> List<C> parseAllColumns(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+    {
+        List<C> result = new ArrayList<>();
+        try
+        {
+            while(rs.next())
+            {
+                C value = parseEntityColumn(findFieldInfo(column), rs);
+                if(value != null)
+                {
+                    result.add(value);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return result;
+    }
+    
     
     public List<T> parseAllEntitys(ResultSet rs, EntityContextImpl ctx)
     {
@@ -200,7 +259,24 @@ class EntityInf<T>
         }
         return null;
     }
+
     
+    public <C> C parseColumn(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+    {
+        try
+        {
+            if(rs.next())
+            {
+                return parseEntityColumn(findFieldInfo(column), rs);
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
+        
     public int parseCount(ResultSet rs)
     {
         try
@@ -222,6 +298,11 @@ class EntityInf<T>
         T entity = buildEntityObject();
         fillEntity(entity, rs, ctx);
         return entity;
+    }
+    
+    private <C> C parseEntityColumn(FieldInf<T, C> field, ResultSet rs) throws SQLException
+    {
+        return (C)rs.getObject(field.getColumnName());
     }
 
     public T buildEntityObject()
@@ -326,4 +407,14 @@ class EntityInf<T>
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    private String findColumnName(Column column)
+    {
+        return fieldsMap.get(column.getField()).getColumnName();
+    }
+
+    private <C> FieldInf<T, C> findFieldInfo(Column<T, C> column)
+    {
+        return (FieldInf<T, C>)fieldsMap.get(column.getField());
+    }    
 }

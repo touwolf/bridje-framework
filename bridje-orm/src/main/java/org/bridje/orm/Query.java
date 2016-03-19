@@ -24,11 +24,15 @@ import java.util.List;
  */
 public interface Query<T>
 {
+    void paging(int page, int size);
+
     List<T> fetchAll();
 
-    List<T> fetchAll(int page, int size);
-
+    <C> List<C> fetchAll(Column<T, C> column);
+    
     T fetchOne();
+    
+    <C> C fetchOne(Column<T, C> column);
 
     long count();
 
