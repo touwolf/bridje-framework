@@ -14,13 +14,49 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
 
 /**
  *
  */
 public class EntityContextTest
 {
+    /*
+    @Test
+    public void testClassWriter() throws IOException
+    {
+        File f = new File("./target/MyClass.java");
+        if(f.exists())
+        {
+            f.delete();
+        }
+        f.createNewFile();
+        Writer w = new FileWriter(f);
+        ClassWriter cw = new ClassWriter(w);
+        cw.classPackage("some.package");
+                
+        cw.importClass("some.package.SomeClass");
+        cw.importClass("some.package.SomeClass2");
+        cw.importClass("some.package.SomeInterf");
+        cw.importClass("some.package.SomeInterf2");
+
+        cw.publicAccess().classDec("MyClass")
+                .extendsFrom("SomeClass").extendsFrom("SomeClass2")
+                .implementsInterf("SomeInterf").implementsInterf("SomerInterf2");
+        cw.begin();
+        
+        cw.privateAccess().finalElement().staticElement().fieldDec("Integer", "myField", "0");
+        
+        cw.publicAccess().contructorDec("MyClass").methodParam("String", "name").methodParam("int", "someInt");
+        cw.begin();
+            cw.codeLine("super()");
+        cw.end();
+        
+        cw.end();
+        w.flush();
+    }
+    */
+
     /**
      * Test of find method, of class EntityContext.
      */

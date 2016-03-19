@@ -1,4 +1,3 @@
- - Refacturar EntityProcesor
  - Generar relaciones en clases
  - Soportar relaciones en las consultas
  - Poder hacer select a los campos

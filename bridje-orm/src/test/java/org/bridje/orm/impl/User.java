@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import org.bridje.orm.Entity;
+import org.bridje.orm.Field;
+import org.bridje.orm.Generate;
+import org.bridje.orm.Key;
+import org.bridje.orm.Relation;
 
 /**
  *

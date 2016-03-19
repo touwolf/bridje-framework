@@ -18,8 +18,10 @@ package org.bridje.orm.impl;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -87,18 +89,41 @@ public class EntityProcessor extends AbstractProcessor
 
     private void generateClass(Element element) throws IOException
     {
-        JavaFileObject fo = filer.createSourceFile(element.toString() + "_");
+        String entityClassName = element.getSimpleName().toString();
+        String className = entityClassName + "_";
+        String fullClassName = element.toString() + "_";
+        String classPack = findPackage(fullClassName);
+
+        JavaFileObject fo = filer.createSourceFile(fullClassName);
         try(Writer writer = fo.openWriter())
         {
-            writePackage(writer, element);
+            
+            ClassWriter cw = new ClassWriter(writer);
+            //Package
+            cw.emptyLine();
+            cw.classPackage(classPack);
             //Imports
-            writeClassDec(writer, element);
-            //Code
-            writeTableField(writer, element);
-            writeFields(writer, element);
-            writeDefConstructor(writer, element);
-            //Finish Code
-            writeClassDecClose(writer);
+            cw.importClass("javax.annotation.Generated");
+            cw.importClass("org.bridje.orm.EntityTable");
+            cw.importClass("org.bridje.orm.EntityColumn");
+            //Class
+            cw.emptyLine();
+            cw.annotate("Generated(value = \"bridje-orm\")");
+            cw.publicAccess().finalElement().classDec(className).extendsFrom("EntityTable<" + entityClassName + ">");
+            cw.begin();
+                //Table Field
+                cw.publicAccess().staticElement().finalElement().fieldDec(className, "table", "new " + className + "()");
+                //Column Fields
+                element.getEnclosedElements().stream()
+                        .filter((e) -> e.getKind() == ElementKind.FIELD)
+                        .forEach((e) -> writeField(cw, e, element));
+                //Constructor
+                cw.privateAccess().contructorDec(className);
+                cw.begin();
+                    cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
+                cw.end();
+            //End
+            cw.end();
             writer.flush();
         }
     }
@@ -108,85 +133,25 @@ public class EntityProcessor extends AbstractProcessor
         return fullClsName.substring(0, fullClsName.lastIndexOf("."));
     }
 
-    private void writePackage(Writer writer, Element element) throws IOException
-    {
-        writer.append("package ");
-        writer.append(findPackage(element.toString()));
-        writer.append(";\n");
-    }
-
-    private void writeClassDec(Writer writer, Element element) throws IOException
-    {
-        writer.append("\n@javax.annotation.Generated(value = \"bridje-orm\")");
-        writer.append("\npublic class ");
-        writer.append(element.getSimpleName() + "_");
-        writer.append(" extends");
-        writer.append(" org.bridje.orm.EntityTable<");
-        writer.append(element.getSimpleName());
-        writer.append(">");
-        writer.append("\n{");
-    }
-
-    private void writeClassDecClose(Writer writer) throws IOException
-    {
-        writer.append("\n}");
-    }
-
-    private void writeDefConstructor(Writer writer, Element element) throws IOException
-    {
-        writer.append("\n    ");
-        writer.append(element.getSimpleName() + "_()");
-        writer.append("\n    {");
-        writer.append("\n        super(");
-        writer.append(element.getSimpleName());
-        writer.append(".class);");
-        writer.append("\n    }");
-    }
-
-    private void writeFields(Writer writer, Element element)
-    {
-        element.getEnclosedElements().stream()
-                .filter((e) -> e.getKind() == ElementKind.FIELD)
-                .forEach((e) -> writeField(writer, e, element));
-    }
-    
-    private void writeField(Writer writer, Element element, Element parent)
+    private void writeField(ClassWriter cw, Element fieldEl, Element classEl)
     {
         Messager messager = processingEnv.getMessager();
         try
         {
-            String type = element.asType().toString();
-            String name = element.getSimpleName().toString();
-            writer.append("\n    public static final ");
-            writer.append("org.bridje.orm.EntityColumn<");
-            writer.append(parent.getSimpleName().toString());
-            writer.append(", ");
-            writer.append(type);
-            writer.append("> ");
-            writer.append(name);
-            writer.append(" = new org.bridje.orm.EntityColumn<>(");
-            writer.append(parent.getSimpleName().toString());
-            writer.append("_.table, ");
-            writer.append("\"");
-            writer.append(name);
-            writer.append("\", ");
-            writer.append(type);
-            writer.append(".class");
-            writer.append(")");
-            writer.append(";\n");
+            String entityName = classEl.getSimpleName().toString();
+            String name = fieldEl.getSimpleName().toString();
+            String fieldType = cw.removeJavaLangPack(fieldEl.asType().toString());
+            String type = cw.createGenericType("EntityColumn", entityName, fieldType);
+            String value = cw.newObjStatement("EntityColumn<>",
+                    entityName + "_.table", 
+                    cw.stringLiteral(name),
+                    cw.dotClass(fieldType));
+            cw.publicAccess().staticElement().finalElement().fieldDec(type, name, value);
         }
         catch (Exception e)
         {
             messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
             LOG.severe(e.getMessage());
         }
-    }
-    
-    private void writeTableField(Writer writer, Element element) throws IOException
-    {
-        writer.append("\n    public static final ");
-        writer.append(element.getSimpleName() + "_");
-        writer.append(" table = new ");
-        writer.append(element.getSimpleName() + "_();\n");
     }
 }

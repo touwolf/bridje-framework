@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
 
+import org.bridje.orm.Entity;
+import org.bridje.orm.Field;
+import org.bridje.orm.Key;
 /**
  *
  */
