@@ -16,6 +16,7 @@
 
 package org.bridje.jdbc;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,6 +49,11 @@ public class JdbcServiceTest
     @Test
     public void testGetDataSource() throws SQLException, InterruptedException
     {
+        File f = new File("target/dbtest");
+        if(f.exists())
+        {
+            f.delete();
+        }
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);

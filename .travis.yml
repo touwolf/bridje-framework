@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 
 script:
- - mvn jacoco:report
+ - mvn test jacoco:report
  - sudo curl https://www.jpm4j.org/install/script | sudo sh
  - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
  - export CODACY_PROJECT_TOKEN=$projectToken
