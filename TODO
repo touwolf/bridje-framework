@@ -1,7 +1,5 @@
  - Generar relaciones en clases
  - Soportar relaciones en las consultas
- - Poder hacer select a los campos
- - Agregando order by en las consultas
  - Crear cache de entidades
  - Crear metodo refresh para refrescar las entidad
  

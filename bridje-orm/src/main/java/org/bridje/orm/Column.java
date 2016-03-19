@@ -80,4 +80,14 @@ public class Column<E, T>
     {
         return new BinaryCondition(this, Operator.LE, value);
     }
+    
+    public OrderBy asc()
+    {
+        return new OrderBy(OrderByType.ASC, this);
+    }
+
+    public OrderBy desc()
+    {
+        return new OrderBy(OrderByType.DESC, this);
+    }    
 }

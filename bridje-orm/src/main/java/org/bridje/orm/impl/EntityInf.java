@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bridje.orm.Column;
 import org.bridje.orm.Entity;
+import org.bridje.orm.OrderBy;
+import org.bridje.orm.OrderByType;
 
 /**
  *
@@ -131,12 +134,12 @@ class EntityInf<T>
         }
     }
     
-    public String buildSelectQuery(String condition)
+    public String buildSelectQuery(String condition, OrderBy[] orderBy)
     {
-        return buildSelectQuery(condition, -1, -1);
+        return buildSelectQuery(condition, orderBy, -1, -1);
     }
     
-    public String buildSelectQuery(String condition, int index, int size)
+    public String buildSelectQuery(String condition, OrderBy[] orderBy, int index, int size)
     {
         StringBuilder sw = new StringBuilder();
         
@@ -149,6 +152,14 @@ class EntityInf<T>
         sw.append(getTableName());
         sw.append(" WHERE ");
         sw.append(condition);
+        if(orderBy != null)
+        {
+            sw.append(" ORDER BY ");
+            sw.append(Arrays
+                    .asList(orderBy).stream()
+                    .map((ob) -> findColumnName(ob.getColumn()) + (ob.getType() == OrderByType.ASC ? "ASC" : "DESC"))
+                    .collect(Collectors.joining(", ")));
+        }
         if(index >= 0 && size >= 0)
         {
             sw.append(" LIMIT ");
@@ -161,12 +172,12 @@ class EntityInf<T>
         return sw.toString();
     }
 
-    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition)
+    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, OrderBy[] orderBy)
     {
-        return buildSelectQuery(condition, -1, -1);
+        return buildSelectQuery(condition, orderBy, -1, -1);
     }
     
-    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, int index, int size)
+    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, OrderBy[] orderBy, int index, int size)
     {
         StringBuilder sw = new StringBuilder();
         
@@ -176,6 +187,14 @@ class EntityInf<T>
         sw.append(getTableName());
         sw.append(" WHERE ");
         sw.append(condition);
+        if(orderBy != null)
+        {
+            sw.append(" ORDER BY ");
+            sw.append(Arrays
+                    .asList(orderBy).stream()
+                    .map((ob) -> findColumnName(ob.getColumn()) + " " + (ob.getType() == OrderByType.ASC ? "ASC" : "DESC"))
+                    .collect(Collectors.joining(", ")));
+        }
         if(index >= 0 && size >= 0)
         {
             sw.append(" LIMIT ");

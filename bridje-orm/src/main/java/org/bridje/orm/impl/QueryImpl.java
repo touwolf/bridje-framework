@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
+import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 
 /**
@@ -37,6 +38,8 @@ class QueryImpl<T> implements Query<T>
     private final EntityContextImpl entCtxImpl;
 
     private Condition condition;
+    
+    private OrderBy[] orderBy;
     
     private int page;
     
@@ -65,11 +68,11 @@ class QueryImpl<T> implements Query<T>
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
-                queryString = entityInf.buildSelectQuery(condition.writeString(parameters), index, pageSize);
+                queryString = entityInf.buildSelectQuery(condition.writeString(parameters), orderBy, index, pageSize);
             }
             else
             {
-                queryString = entityInf.buildSelectQuery(condition.writeString(parameters));
+                queryString = entityInf.buildSelectQuery(condition.writeString(parameters), orderBy);
             }
             return entCtxImpl.doQuery(
                     queryString, 
@@ -93,11 +96,11 @@ class QueryImpl<T> implements Query<T>
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
-                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), index, pageSize);
+                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), orderBy, index, pageSize);
             }
             else
             {
-                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters));
+                queryString = entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), orderBy);
             }
             return entCtxImpl.doQuery(
                     queryString, 
@@ -118,7 +121,7 @@ class QueryImpl<T> implements Query<T>
         {
             List<Object> parameters = new ArrayList<>();
             return entCtxImpl.doQuery(
-                    entityInf.buildSelectQuery(condition.writeString(parameters), 0, 1), 
+                    entityInf.buildSelectQuery(condition.writeString(parameters), orderBy, 0, 1), 
                     (rs) -> entityInf.parseEntity(rs, entCtxImpl),
                     parameters.toArray());
         }
@@ -136,7 +139,7 @@ class QueryImpl<T> implements Query<T>
         {
             List<Object> parameters = new ArrayList<>();
             return entCtxImpl.doQuery(
-                    entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), 0, 1), 
+                    entityInf.buildSelectColumnQuery(column, condition.writeString(parameters), orderBy, 0, 1), 
                     (rs) -> entityInf.parseColumn(column, rs, entCtxImpl),
                     parameters.toArray());
         }
@@ -172,9 +175,16 @@ class QueryImpl<T> implements Query<T>
     }
 
     @Override
-    public Query<T> by(Condition condition)
+    public Query<T> where(Condition condition)
     {
         this.condition = condition;
+        return this;
+    }
+
+    @Override
+    public Query<T> orderBy(OrderBy... statements)
+    {
+        orderBy = statements;
         return this;
     }
 }

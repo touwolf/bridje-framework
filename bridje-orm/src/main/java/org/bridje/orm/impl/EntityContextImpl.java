@@ -74,7 +74,10 @@ public class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entityClass);
-            return doQuery(entityInf.buildSelectQuery(entityInf.buildIdCondition()), (rs) -> entityInf.parseEntity(rs, this), id);
+            return doQuery(
+                    entityInf.buildSelectQuery(entityInf.buildIdCondition(), null), 
+                    (rs) -> entityInf.parseEntity(rs, this), 
+                    id);
         }
         catch (SQLException ex)
         {

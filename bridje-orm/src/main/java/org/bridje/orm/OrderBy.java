@@ -16,29 +16,28 @@
 
 package org.bridje.orm;
 
-import java.util.List;
-
 /**
  *
- * @param <T>
  */
-public interface Query<T>
+public class OrderBy
 {
-    void paging(int page, int size);
+    private final OrderByType type;
 
-    List<T> fetchAll();
+    private final Column column;
 
-    <C> List<C> fetchAll(Column<T, C> column);
-    
-    T fetchOne();
-    
-    <C> C fetchOne(Column<T, C> column);
+    protected OrderBy(OrderByType type, Column column)
+    {
+        this.type = type;
+        this.column = column;
+    }
 
-    long count();
+    public OrderByType getType()
+    {
+        return type;
+    }
 
-    boolean exists();
-
-    Query<T> where(Condition condition);
-
-    Query<T> orderBy(OrderBy... statements);
+    public Column getColumn()
+    {
+        return column;
+    }
 }
