@@ -145,7 +145,7 @@
                                 <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
                                     <directory>.</directory>
                                     <includes>
-                                        <include>**/target/*.exec</include>
+                                        <include>*.exec</include>
                                     </includes>
                                 </fileSet>
                             </fileSets>
