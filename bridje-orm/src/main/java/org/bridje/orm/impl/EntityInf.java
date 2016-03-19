@@ -312,8 +312,7 @@ class EntityInf<T>
                 ).collect(Collectors.joining(", \n")));
         sw.append(", \nPRIMARY KEY (`");
         sw.append(keyField.getColumnName());
-        sw.append("`)\n");
-        sw.append(") ENGINE=InnoDB;");
+        sw.append("`)\n) ENGINE=InnoDB;");
 
         return sw.toString();
     }
