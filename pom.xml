@@ -144,7 +144,7 @@
                                 <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
                                     <directory>.</directory>
                                     <includes>
-                                        <include>**/coverage-merged/*.exec</include>
+                                        <include>**/*.exec</include>
                                     </includes>
                                 </fileSet>
                             </fileSets>
