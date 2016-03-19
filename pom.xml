@@ -136,6 +136,7 @@
                     </execution>
                     <execution>
                         <id>merge</id>
+                        <inherited>false</inherited>
                         <goals>
                             <goal>merge</goal>
                         </goals>
@@ -144,7 +145,7 @@
                                 <fileSet implementation="org.apache.maven.shared.model.fileset.FileSet">
                                     <directory>.</directory>
                                     <includes>
-                                        <include>**/*.exec</include>
+                                        <include>**/target/*.exec</include>
                                     </includes>
                                 </fileSet>
                             </fileSets>
