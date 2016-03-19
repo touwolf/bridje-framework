@@ -44,28 +44,10 @@ public class JdbcServiceTest
 
     private static final String DS_NAME = "H2TestDataSource";
 
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-    
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-    
-    @Before
-    public void setUp()
-    {
-    }
-    
-    @After
-    public void tearDown()
-    {
-    }
-
     /**
      * Test of getDataSource method, of class JdbcService.
+     * @throws java.sql.SQLException
+     * @throws java.lang.InterruptedException
      */
     @Test
     public void testGetDataSource() throws SQLException, InterruptedException

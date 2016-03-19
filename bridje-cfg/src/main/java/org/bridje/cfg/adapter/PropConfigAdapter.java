@@ -2,17 +2,20 @@ package org.bridje.cfg.adapter;
 
 import org.bridje.cfg.ConfigAdapter;
 import org.bridje.ioc.Component;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class PropConfigAdapter implements ConfigAdapter
 {
+    private static final Logger LOG = Logger.getLogger(PropConfigAdapter.class.getName());
+
     @Override
     public String findFileName(String name, Class<?> cls)
     {
@@ -29,19 +32,19 @@ public class PropConfigAdapter implements ConfigAdapter
     @Override
     public void write(Object newConfig, Writer writer) throws IOException
     {
-
+        //TODO write properties
     }
 
     @Override
     public Object read(Class<?> cls, Reader reader) throws IOException
     {
-        Object obj = null;
+        Object obj;
         try
         {
             //only if it has default constructor
             obj = (Object) cls.newInstance();
         }
-        catch (Exception ex)
+        catch (InstantiationException | IllegalAccessException ex)
         {
             return null;
         }
@@ -63,8 +66,9 @@ public class PropConfigAdapter implements ConfigAdapter
                     setValue(obj, value, field);
                 }
             }
-            catch (Exception ex)
+            catch (NoSuchFieldException | SecurityException | IllegalAccessException ex)
             {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
 

@@ -16,44 +16,12 @@
 
 package org.bridje.vfs;
 
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
 import org.bridje.ioc.Ioc;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class VfsServiceTest
 {
-    
-    public VfsServiceTest()
-    {
-    }
-    
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-    
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-    
-    @Before
-    public void setUp()
-    {
-    }
-    
-    @After
-    public void tearDown()
-    {
-    }
-
     @Test
     public void testFindFolder_String()
     {

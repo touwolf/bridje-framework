@@ -17,37 +17,13 @@
 package org.bridje.cfg;
 
 import org.bridje.ioc.Ioc;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ConfigServiceTest
 {
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-    
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-    
-    @Before
-    public void setUp()
-    {
-    }
-    
-    @After
-    public void tearDown()
-    {
-    }
-
     @Test
-    public void testFindConfig_Class() throws Exception
+    public void testFindConfigClass() throws Exception
     {
         ConfigService instance = Ioc.context().find(ConfigService.class);
         MyConfig myCfg = instance.findConfig(MyConfig.class);
