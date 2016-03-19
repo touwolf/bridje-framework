@@ -67,6 +67,7 @@ public class EntityContextTest
     @Test
     public void testFind()
     {
+        /*
         JdbcService jdbcServ = Ioc.context().find(JdbcService.class);
         DataSourceConfig config = new DataSourceConfig();
         config.setDriver("com.mysql.jdbc.Driver");
@@ -98,7 +99,7 @@ public class EntityContextTest
         //instance.fixTable(User.class);
         //instance.fixTable(Group.class);
         System.out.println(instance.find(User.class, 1l).getGroup().getName());
-        /*
+        
         instance.insert(new User(3l, "Other Admin"));
         
         instance.query(User.class)
