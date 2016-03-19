@@ -9,6 +9,5 @@ script:
  - export CODACY_PROJECT_TOKEN=$projectToken
  - codacy-coverage-reporter -l Java -r bridje-ioc/target/site/jacoco/jacoco.xml --prefix bridje-ioc/src/main/java/
  - codacy-coverage-reporter -l Java -r bridje-cfg/target/site/jacoco/jacoco.xml --prefix bridje-cfg/src/main/java/
- - codacy-coverage-reporter -l Java -r bridje-http/target/site/jacoco/jacoco.xml --prefix bridje-http/src/main/java/
  - codacy-coverage-reporter -l Java -r bridje-jdbc/target/site/jacoco/jacoco.xml --prefix bridje-jdbc/src/main/java/
  - codacy-coverage-reporter -l Java -r bridje-orm/target/site/jacoco/jacoco.xml --prefix bridje-orm/src/main/java/
