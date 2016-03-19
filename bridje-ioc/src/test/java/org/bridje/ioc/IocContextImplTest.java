@@ -124,22 +124,6 @@ public class IocContextImplTest
     }
 
     @Test
-    public void testDefineService() throws IOException
-    {
-        /*
-        TODO: This test needs the initialization that i commented becouse of the 
-        java.lang.IllegalStateException: The APPLICATION Context is already created.
-        */
-        /*
-        IocContext instance = Ioc.context();
-
-        DefaultService service = instance.find(DefaultService.class);
-
-        assertTrue(service instanceof DefaultComponent2);
-        */
-    }
-
-    @Test
     public void testChain() throws IOException
     {
         IocContext instance = Ioc.context();
