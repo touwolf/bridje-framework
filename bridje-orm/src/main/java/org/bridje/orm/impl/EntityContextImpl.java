@@ -179,7 +179,7 @@ public class EntityContextImpl implements EntityContext
 
     private <T> void fixColumns(EntityInf<T> entityInf)
     {
-        String query = entityInf.buildCreateColumnQuery();
+        entityInf.buildCreateColumnQuery();
     }
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
