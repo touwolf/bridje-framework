@@ -54,13 +54,13 @@ class ClassWriter
         writer.append(annotation);
         return this;
     }
-    
+
     public ClassWriter emptyLine() throws IOException
     {
         writer.append("\n");
         return this;
     }
-    
+
     public ClassWriter classPackage(String packageName) throws IOException
     {
         writer.append("package ");

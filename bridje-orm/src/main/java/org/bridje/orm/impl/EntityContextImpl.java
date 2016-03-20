@@ -51,7 +51,7 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            EntityInf<T> entityInf = findEntityInf(entityClass);
+            EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
             if(tableExists(entityInf))
             {
                 fixColumns(entityInf);
@@ -72,9 +72,9 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            EntityInf<T> entityInf = findEntityInf(entityClass);
-            QueryBuilder qb = new QueryBuilder();
-            qb.select(entityInf.allFieldsSelect())
+            EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
+            SelectBuilder qb = new SelectBuilder();
+            qb.select(entityInf.allFieldsQuery())
                 .from(entityInf.getTableName())
                 .where(entityInf.buildIdCondition())
                 .limit(0, 1);
@@ -93,9 +93,9 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            EntityInf<T> entityInf = findEntityInf(entity);
-            QueryBuilder qb = new QueryBuilder();
-            qb.select(entityInf.allFieldsSelect())
+            EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
+            SelectBuilder qb = new SelectBuilder();
+            qb.select(entityInf.allFieldsQuery())
                 .from(entityInf.getTableName())
                 .where(entityInf.buildIdCondition())
                 .limit(0, 1);
@@ -114,8 +114,15 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            EntityInf<T> entityInf = findEntityInf(entity);
-            doUpdate(entityInf.buildInsertQuery(entity), entityInf.buildInsertParameters(entity));
+            EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
+
+            InsertBuilder ib = new InsertBuilder();
+
+            ib.insertInto(entityInf.getTableName())
+                    .fields(entityInf.allFieldsQuery())
+                    .valuesParams(entityInf.allFieldsCount());
+
+            doUpdate(ib.toString(), entityInf.buildInsertParameters(entity));
         }
         catch (SQLException ex)
         {
@@ -129,8 +136,13 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            EntityInf<T> entityInf = findEntityInf(entity);
-            doUpdate(entityInf.buildDeleteQuery(entity), entityInf.findKeyValue(entity));
+            EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
+            DeleteBuilder db = new DeleteBuilder();
+
+            db.delete(entityInf.getTableName())
+                .where(entityInf.buildIdCondition());
+
+            doUpdate(db.toString(), entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
         {
@@ -156,7 +168,7 @@ class EntityContextImpl implements EntityContext
         }
         return result;
     }
-    
+
     public int doUpdate(String query, Object... parameters) throws SQLException
     {
         LOG.log(Level.INFO, query);
@@ -168,16 +180,6 @@ class EntityContextImpl implements EntityContext
             }
             return stmt.executeUpdate();
         }
-    }
-
-    private <T> EntityInf<T> findEntityInf(Class<T> entityClass)
-    {
-        return metainf.findEntityInf(entityClass);
-    }
-    
-    private <T> EntityInf<T> findEntityInf(T entity)
-    {
-        return findEntityInf((Class<T>)entity.getClass());
     }
 
     private <T> boolean tableExists(EntityInf<T> entityInf) throws SQLException
@@ -210,7 +212,7 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> Query<T> query(Table<T> entityTable)
     {
-        EntityInf<T> entityInf = findEntityInf(entityTable.getEntityClass());
+        EntityInf<T> entityInf = metainf.findEntityInf(entityTable.getEntityClass());
         return new QueryImpl<>(this, entityInf);
     }
 

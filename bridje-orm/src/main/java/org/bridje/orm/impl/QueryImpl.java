@@ -66,16 +66,13 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            QueryBuilder qb = createQuery(entityInf.allFieldsSelect(), parameters);
+            SelectBuilder qb = createQuery(entityInf.allFieldsQuery(), parameters);
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
                 qb.limit(index, pageSize);
             }
-            return entCtxImpl.doQuery(
-                    qb.toString(), 
-                    (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), 
-                    parameters.toArray());
+            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), parameters.toArray());
         }
         catch (Exception e)
         {
@@ -90,16 +87,13 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            QueryBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
+            SelectBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
                 qb.limit(index, pageSize);
             }
-            return entCtxImpl.doQuery(
-                    qb.toString(), 
-                    (rs) -> entityInf.parseAllColumns(column, rs, entCtxImpl), 
-                    parameters.toArray());
+            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllColumns(column, rs, entCtxImpl), parameters.toArray());
         }
         catch (Exception e)
         {
@@ -114,7 +108,7 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            QueryBuilder qb = createQuery(entityInf.allFieldsSelect(), parameters);
+            SelectBuilder qb = createQuery(entityInf.allFieldsQuery(), parameters);
             qb.limit(0, 1);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseEntity(rs, entCtxImpl), parameters.toArray());
         }
@@ -131,7 +125,7 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            QueryBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
+            SelectBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
             qb.limit(0, 1);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseColumn(column, rs, entCtxImpl),parameters.toArray());
         }
@@ -148,7 +142,7 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            QueryBuilder qb = createQuery("COUNT(*)", parameters);
+            SelectBuilder qb = createQuery("COUNT(*)", parameters);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseCount(rs), parameters.toArray());
         }
         catch (Exception e)
@@ -178,9 +172,9 @@ class QueryImpl<T> implements Query<T>
         return this;
     }
 
-    private QueryBuilder createQuery(String fields, List<Object> parameters)
+    private SelectBuilder createQuery(String fields, List<Object> parameters)
     {
-        QueryBuilder qb = new QueryBuilder();
+        SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
         .from(entityInf.getTableName())
         .where(condition.writeString(parameters));

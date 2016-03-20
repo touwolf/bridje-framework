@@ -47,9 +47,9 @@ class EntityInf<T>
     private final FieldInf keyField;
 
     private final List<FieldInf> fields;
-    
+
     private final List<RelationInf> relations;
-    
+
     private final Map<String, FieldInf<T, ?>> fieldsMap;
 
     public EntityInf(Class<T> entityClass, String tableName)
@@ -126,14 +126,14 @@ class EntityInf<T>
         }
     }
 
-    public String allFieldsSelect()
+    public String allFieldsQuery()
     {
         return Stream.concat(
                     fields.stream().map((field) -> field.getColumnName()),
                     relations.stream().map((relation) -> relation.getColumnName())
                 ).collect(Collectors.joining(", "));
     }
-        
+
     public <C> List<C> parseAllColumns(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         List<C> result = new ArrayList<>();
@@ -154,8 +154,7 @@ class EntityInf<T>
         }
         return result;
     }
-    
-    
+
     public List<T> parseAllEntitys(ResultSet rs, EntityContextImpl ctx)
     {
         List<T> result = new ArrayList<>();
@@ -176,7 +175,7 @@ class EntityInf<T>
         }
         return result;
     }
-    
+
     public T parseEntity(ResultSet rs, EntityContextImpl ctx)
     {
         try
@@ -209,7 +208,7 @@ class EntityInf<T>
         }
         return null;
     }
-    
+
     public <C> C parseColumn(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         try
@@ -225,7 +224,7 @@ class EntityInf<T>
         }
         return null;
     }
-        
+
     public int parseCount(ResultSet rs)
     {
         try
@@ -241,14 +240,14 @@ class EntityInf<T>
         }
         return -1;
     }
-    
+
     private T parseEntityInternal(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         T entity = buildEntityObject();
         fillEntity(entity, rs, ctx);
         return entity;
     }
-    
+
     private <C> C parseEntityColumn(FieldInf<T, C> field, ResultSet rs) throws SQLException
     {
         return (C)rs.getObject(field.getColumnName());
@@ -283,26 +282,6 @@ class EntityInf<T>
         }
     }
 
-    public <T> String buildInsertQuery(T entity)
-    {
-        StringBuilder sw = new StringBuilder();
-        
-        sw.append("INSERT INTO ");
-        sw.append(getTableName());
-        sw.append(" (");
-        sw.append(Stream.concat(
-                fields.stream().map((field) -> field.getColumnName()),
-                relations.stream().map((relation) -> relation.getColumnName())
-            ).collect(Collectors.joining(", ")));
-        sw.append(") VALUES (");
-        sw.append(Stream.concat(
-                fields.stream().map((field) -> "?"),
-                relations.stream().map((relation) -> "?")
-            ).collect(Collectors.joining(", ")));
-        sw.append(")");
-        return sw.toString();        
-    }
-
     public <T> Object[] buildInsertParameters(T entity)
     {
         List<Object> result = Stream.concat(
@@ -310,19 +289,6 @@ class EntityInf<T>
                             relations.stream().map((fi) -> fi.getColumnValue(entity))
                         ).collect(Collectors.toList());
         return result.toArray();
-    }
-
-    public <T> String buildDeleteQuery(T entity)
-    {
-        StringBuilder sw = new StringBuilder();
-        
-        sw.append("DELETE FROM ");
-        sw.append(getTableName());
-        sw.append(" WHERE ");
-        sw.append(keyField.getColumnName());
-        sw.append(" = ?;");
-
-        return sw.toString();        
     }
 
     public <T> Object findKeyValue(T entity)
@@ -346,7 +312,7 @@ class EntityInf<T>
 
         return sw.toString();
     }
-    
+
     public String buildIdCondition()
     {
         return keyField.getColumnName() + " = ?";
@@ -357,11 +323,6 @@ class EntityInf<T>
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private String findColumnName(Column column)
-    {
-        return fieldsMap.get(column.getField()).getColumnName();
-    }
-
     public <C> FieldInf<T, C> findFieldInfo(Column<T, C> column)
     {
         return (FieldInf<T, C>)fieldsMap.get(column.getField());
@@ -370,5 +331,10 @@ class EntityInf<T>
     public String buildOrderBy(OrderBy orderBy)
     {
         return findFieldInfo(orderBy.getColumn()).getColumnName() + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
+    }
+
+    public int allFieldsCount()
+    {
+        return fields.size() + relations.size();
     }
 }

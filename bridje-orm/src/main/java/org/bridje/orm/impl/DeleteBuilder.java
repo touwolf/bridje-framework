@@ -19,55 +19,29 @@ package org.bridje.orm.impl;
 /**
  *
  */
-public class QueryBuilder
+class DeleteBuilder
 {
     private final StringBuilder sb;
 
-    public QueryBuilder()
+    public DeleteBuilder()
     {
         sb = new StringBuilder();
     }
 
-    public QueryBuilder select(String fields)
+    public DeleteBuilder delete(String fields)
     {
-        sb.append("SELECT ");
+        sb.append("DELETE FROM ");
         sb.append(fields);
         return this;
     }
     
-    public QueryBuilder from(String table)
-    {
-        sb.append(" FROM ");
-        sb.append(table);
-        return this;
-    }
-    
-    public QueryBuilder where(String condition)
+    public DeleteBuilder where(String condition)
     {
         sb.append(" WHERE ");
         sb.append(condition);
         return this;
     }
-    
-    public QueryBuilder orderBy(String orderBy)
-    {
-        sb.append(" ORDER BY ");
-        sb.append(orderBy);
-        return this;
-    }
 
-    public QueryBuilder limit(int index, int size)
-    {
-        if(index >= 0 && size >= 0)
-        {
-            sb.append(" LIMIT ");
-            sb.append(index);
-            sb.append(", ");
-            sb.append(size);
-        }
-        return this;
-    }
-    
     @Override
     public String toString()
     {
