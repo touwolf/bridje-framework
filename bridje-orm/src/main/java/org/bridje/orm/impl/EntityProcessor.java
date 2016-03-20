@@ -32,15 +32,23 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
+import org.bridje.ioc.Component;
+import org.bridje.orm.Entity;
 
-@SupportedAnnotationTypes("org.bridje.orm.Generate")
+/**
+ * Annotations processor for the {@link Component} annotation.
+ */
+@SupportedAnnotationTypes("org.bridje.orm.Entity")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class EntityProcessor extends AbstractProcessor
 {
+    private Writer writer;
+
     private static final Logger LOG = Logger.getLogger(EntityProcessor.class.getName());
 
-    private Filer filer;
+    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
@@ -50,9 +58,12 @@ public class EntityProcessor extends AbstractProcessor
         Messager messager = processingEnv.getMessager();
         try
         {
-            filer = processingEnv.getFiler();
+            Filer filer = processingEnv.getFiler();
+            //Creating output file
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", COMPONENTS_RESOURCE_FILE);
+            writer = fobj.openWriter();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
             LOG.severe(e.getMessage());
@@ -67,17 +78,22 @@ public class EntityProcessor extends AbstractProcessor
         {
             for (TypeElement typeElement : annotations)
             {
+                //Find all @Component marked classes
                 Set<? extends Element> ann = roundEnv.getElementsAnnotatedWith(typeElement);
                 for (Element element : ann)
                 {
                     if (element.getKind() == ElementKind.CLASS)
                     {
-                        generateClass(element);
+                        //Get the @Entity annotation for the current element.
+                        Entity annot = element.getAnnotation(Entity.class);
+                        String clsName = element.toString();
+                        String model = findModel(element);
+                        appendClass(clsName, model);
                     }
                 }
             }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage());
             LOG.severe(ex.getMessage());
@@ -85,71 +101,26 @@ public class EntityProcessor extends AbstractProcessor
         return true;
     }
 
-    private void generateClass(Element element) throws IOException
+    /**
+     * This method appends class=scope to the output file.
+     * <p>
+     * @param clsName The full class name of the component to append
+     * @param scope   The scope of the component
+     * <p>
+     * @throws IOException If any IO error prevents the writing.
+     */
+    private void appendClass(String clsName, String scope) throws IOException
     {
-        String entityClassName = element.getSimpleName().toString();
-        String className = entityClassName + "_";
-        String fullClassName = element.toString() + "_";
-        String classPack = findPackage(fullClassName);
-
-        JavaFileObject fo = filer.createSourceFile(fullClassName);
-        try(Writer writer = fo.openWriter())
-        {
-            
-            ClassWriter cw = new ClassWriter(writer);
-            //Package
-            cw.emptyLine();
-            cw.classPackage(classPack);
-            //Imports
-            cw.importClass("javax.annotation.Generated");
-            cw.importClass("org.bridje.orm.Table");
-            cw.importClass("org.bridje.orm.Column");
-            //Class
-            cw.emptyLine();
-            cw.annotate("Generated(value = \"bridje-orm\")");
-            cw.publicAccess().finalElement().classDec(className).extendsFrom("Table<" + entityClassName + ">");
-            cw.begin();
-                //Table Field
-                cw.publicAccess().staticElement().finalElement().fieldDec(className, "table", "new " + className + "()");
-                //Column Fields
-                element.getEnclosedElements().stream()
-                        .filter((e) -> e.getKind() == ElementKind.FIELD)
-                        .forEach((e) -> writeField(cw, e, element));
-                //Constructor
-                cw.privateAccess().contructorDec(className);
-                cw.begin();
-                    cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
-                cw.end();
-            //End
-            cw.end();
-            writer.flush();
-        }
+        writer.append(clsName);
+        writer.append("=");
+        writer.append(scope);
+        writer.append("\n");
+        writer.flush();
     }
 
-    private String findPackage(String fullClsName)
+    private String findModel(Element element)
     {
+        String fullClsName = element.toString();
         return fullClsName.substring(0, fullClsName.lastIndexOf("."));
-    }
-
-    private void writeField(ClassWriter cw, Element fieldEl, Element classEl)
-    {
-        Messager messager = processingEnv.getMessager();
-        try
-        {
-            String entityName = classEl.getSimpleName().toString();
-            String name = fieldEl.getSimpleName().toString();
-            String fieldType = cw.removeJavaLangPack(fieldEl.asType().toString());
-            String type = cw.createGenericType("Column", entityName, fieldType);
-            String value = cw.newObjStatement("Column<>",
-                    entityName + "_.table", 
-                    cw.stringLiteral(name),
-                    cw.dotClass(fieldType));
-            cw.publicAccess().staticElement().finalElement().fieldDec(type, name, value);
-        }
-        catch (Exception e)
-        {
-            messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-            LOG.severe(e.getMessage());
-        }
     }
 }

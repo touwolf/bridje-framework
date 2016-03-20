@@ -21,11 +21,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import org.bridje.ioc.Ioc;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Table;
 import org.bridje.orm.Query;
@@ -38,13 +37,13 @@ class EntityContextImpl implements EntityContext
     private static final Logger LOG = Logger.getLogger(EntityContextImpl.class.getName());
 
     private final DataSource ds;
-    
-    private final Map<Class<?>, EntityInf<?>> entitysMap;
+
+    private final OrmMetaInfService metainf;
 
     public EntityContextImpl(DataSource ds)
     {
         this.ds = ds;
-        this.entitysMap = new ConcurrentHashMap<>();
+        this.metainf = Ioc.context().find(OrmMetaInfService.class);
     }
 
     @Override
@@ -167,14 +166,7 @@ class EntityContextImpl implements EntityContext
 
     public <T> EntityInf<T> findEntityInf(Class<T> entityClass)
     {
-        if(entitysMap.containsKey(entityClass))
-        {
-            return (EntityInf<T>)entitysMap.get(entityClass);
-        }
-        EntityInf<T> entityInf = new EntityInf<>(entityClass);
-        entitysMap.put(entityClass, entityInf);
-        entityInf.fillRelations(this);
-        return entityInf;
+        throw new UnsupportedOperationException();
     }
     
     private <T> EntityInf<T> findEntityInf(T entity)

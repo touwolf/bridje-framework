@@ -50,6 +50,7 @@
                                 <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
                                 <!--
                                 <processor>org.bridje.orm.impl.EntityProcessor</processor>
+                                <processor>org.bridje.orm.impl.GenerateProcessor</processor>
                                 -->
                             </processors>
                         </configuration>

@@ -120,7 +120,7 @@ class EntityInf<T>
         return keyField;
     }
 
-    public void fillRelations(EntityContextImpl entityCtx)
+    public void fillRelations(EntitysModel entityCtx)
     {
         Field[] declaredFields = entityClass.getDeclaredFields();
         for (Field declaredField : declaredFields)
