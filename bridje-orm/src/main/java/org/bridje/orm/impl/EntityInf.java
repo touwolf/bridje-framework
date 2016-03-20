@@ -20,7 +20,6 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.bridje.ioc.Ioc;
 import org.bridje.orm.Column;
-import org.bridje.orm.Entity;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
 
@@ -45,7 +44,7 @@ class EntityInf<T>
 
     private final String tableName;
 
-    private FieldInf keyField;
+    private final FieldInf keyField;
 
     private final List<FieldInf> fields;
     
@@ -53,15 +52,10 @@ class EntityInf<T>
     
     private final Map<String, FieldInf<T, ?>> fieldsMap;
 
-    public EntityInf(Class<T> entityClass)
+    public EntityInf(Class<T> entityClass, String tableName)
     {
         this.entityClass = entityClass;
-        Entity annotation = this.entityClass.getAnnotation(Entity.class);
-        if(annotation == null)
-        {
-            throw new IllegalArgumentException("The class " + entityClass.getName() + " is not a valid entity.");
-        }
-        tableName = annotation.table();
+        this.tableName = tableName;
         fields = new ArrayList<>();
         keyField = fillFields();
         relations = new ArrayList<>();
@@ -70,10 +64,7 @@ class EntityInf<T>
             throw new IllegalArgumentException("The class " + entityClass.getName() + " does not have a valid key field.");
         }
         fieldsMap = new HashMap<>();
-        for (FieldInf fieldInf : fields)
-        {
-            fieldsMap.put(fieldInf.getField().getName(), fieldInf);
-        }
+        fields.stream().forEach((fieldInf) -> fieldsMap.put(fieldInf.getField().getName(), fieldInf));
     }
 
     public Class<T> getEntityClass()
@@ -120,106 +111,29 @@ class EntityInf<T>
         return keyField;
     }
 
-    public void fillRelations(EntitysModel entityCtx)
+    protected void fillRelations()
     {
+        OrmMetaInfService metainf = Ioc.context().find(OrmMetaInfService.class);
         Field[] declaredFields = entityClass.getDeclaredFields();
         for (Field declaredField : declaredFields)
         {
             org.bridje.orm.Relation fieldAnnot = declaredField.getAnnotation(org.bridje.orm.Relation.class);
             if(fieldAnnot != null)
             {
-                RelationInf fInf = new RelationInf(declaredField, entityCtx.findEntityInf(declaredField.getType()));
+                RelationInf fInf = new RelationInf(declaredField, metainf.findEntityInf(declaredField.getType()));
                 relations.add(fInf);
             }
         }
     }
-    
-    public String buildSelectQuery(String condition, OrderBy[] orderBy)
+
+    public String allFieldsSelect()
     {
-        return buildSelectQuery(condition, orderBy, -1, -1);
-    }
-    
-    public String buildSelectQuery(String condition, OrderBy[] orderBy, int index, int size)
-    {
-        StringBuilder sw = new StringBuilder();
-        
-        sw.append("SELECT ");
-        sw.append(Stream.concat(
+        return Stream.concat(
                     fields.stream().map((field) -> field.getColumnName()),
                     relations.stream().map((relation) -> relation.getColumnName())
-                ).collect(Collectors.joining(", ")));
-        sw.append(" FROM ");
-        sw.append(getTableName());
-        sw.append(" WHERE ");
-        sw.append(condition);
-        if(orderBy != null)
-        {
-            sw.append(" ORDER BY ");
-            sw.append(Arrays
-                    .asList(orderBy).stream()
-                    .map((ob) -> findColumnName(ob.getColumn()) + (ob.getType() == OrderByType.ASC ? "ASC" : "DESC"))
-                    .collect(Collectors.joining(", ")));
-        }
-        if(index >= 0 && size >= 0)
-        {
-            sw.append(" LIMIT ");
-            sw.append(index);
-            sw.append(", ");
-            sw.append(size);
-        }
-        sw.append(";");
-        
-        return sw.toString();
+                ).collect(Collectors.joining(", "));
     }
-
-    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, OrderBy[] orderBy)
-    {
-        return buildSelectQuery(condition, orderBy, -1, -1);
-    }
-    
-    public <C> String buildSelectColumnQuery(Column<T, C> column, String condition, OrderBy[] orderBy, int index, int size)
-    {
-        StringBuilder sw = new StringBuilder();
         
-        sw.append("SELECT ");
-        sw.append(findColumnName(column));
-        sw.append(" FROM ");
-        sw.append(getTableName());
-        sw.append(" WHERE ");
-        sw.append(condition);
-        if(orderBy != null)
-        {
-            sw.append(" ORDER BY ");
-            sw.append(Arrays
-                    .asList(orderBy).stream()
-                    .map((ob) -> findColumnName(ob.getColumn()) + " " + (ob.getType() == OrderByType.ASC ? "ASC" : "DESC"))
-                    .collect(Collectors.joining(", ")));
-        }
-        if(index >= 0 && size >= 0)
-        {
-            sw.append(" LIMIT ");
-            sw.append(index);
-            sw.append(", ");
-            sw.append(size);
-        }
-        sw.append(";");
-        
-        return sw.toString();
-    }
-    
-    public <T> String buildCountQuery(String condition)
-    {
-        StringBuilder sw = new StringBuilder();
-        
-        sw.append("SELECT count(*) FROM");
-        sw.append(getTableName());
-        sw.append(" WHERE ");
-        sw.append(condition);
-        sw.append(";");
-        
-        return sw.toString();
-    }
-    
     public <C> List<C> parseAllColumns(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         List<C> result = new ArrayList<>();
@@ -318,7 +232,7 @@ class EntityInf<T>
         {
             if(rs.next())
             {
-                return rs.getInt(0);
+                return rs.getInt(1);
             }
         }
         catch (Exception e)
@@ -448,8 +362,13 @@ class EntityInf<T>
         return fieldsMap.get(column.getField()).getColumnName();
     }
 
-    private <C> FieldInf<T, C> findFieldInfo(Column<T, C> column)
+    public <C> FieldInf<T, C> findFieldInfo(Column<T, C> column)
     {
         return (FieldInf<T, C>)fieldsMap.get(column.getField());
     }    
+
+    public String buildOrderBy(OrderBy orderBy)
+    {
+        return findFieldInfo(orderBy.getColumn()).getColumnName() + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
+    }
 }

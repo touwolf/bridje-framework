@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 /**
  *
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface Entity
 {

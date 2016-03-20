@@ -18,6 +18,7 @@ package org.bridje.orm;
 
 /**
  *
+ * @param <T>
  */
 public class Table<T>
 {

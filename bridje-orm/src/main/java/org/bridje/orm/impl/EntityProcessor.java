@@ -34,11 +34,10 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-import org.bridje.ioc.Component;
 import org.bridje.orm.Entity;
 
 /**
- * Annotations processor for the {@link Component} annotation.
+ * Annotations processor for the {@link Entity} annotation.
  */
 @SupportedAnnotationTypes("org.bridje.orm.Entity")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
@@ -78,7 +77,7 @@ public class EntityProcessor extends AbstractProcessor
         {
             for (TypeElement typeElement : annotations)
             {
-                //Find all @Component marked classes
+                //Find all @Entity marked classes
                 Set<? extends Element> ann = roundEnv.getElementsAnnotatedWith(typeElement);
                 for (Element element : ann)
                 {
@@ -87,8 +86,8 @@ public class EntityProcessor extends AbstractProcessor
                         //Get the @Entity annotation for the current element.
                         Entity annot = element.getAnnotation(Entity.class);
                         String clsName = element.toString();
-                        String model = findModel(element);
-                        appendClass(clsName, model);
+                        String table = annot.table();
+                        appendClass(clsName, table);
                     }
                 }
             }
@@ -98,29 +97,23 @@ public class EntityProcessor extends AbstractProcessor
             messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage());
             LOG.severe(ex.getMessage());
         }
-        return true;
+        return false;
     }
 
     /**
-     * This method appends class=scope to the output file.
+     * This method appends class=table to the output file.
      * <p>
-     * @param clsName The full class name of the component to append
-     * @param scope   The scope of the component
+     * @param clsName The full class name of the entity to append
+     * @param table   The table name for the entity
      * <p>
      * @throws IOException If any IO error prevents the writing.
      */
-    private void appendClass(String clsName, String scope) throws IOException
+    private void appendClass(String clsName, String table) throws IOException
     {
         writer.append(clsName);
         writer.append("=");
-        writer.append(scope);
+        writer.append(table);
         writer.append("\n");
         writer.flush();
-    }
-
-    private String findModel(Element element)
-    {
-        String fullClsName = element.toString();
-        return fullClsName.substring(0, fullClsName.lastIndexOf("."));
     }
 }

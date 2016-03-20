@@ -34,7 +34,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-@SupportedAnnotationTypes("org.bridje.orm.Generate")
+@SupportedAnnotationTypes("org.bridje.orm.Entity")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class GenerateProcessor extends AbstractProcessor
 {
@@ -82,7 +82,7 @@ public class GenerateProcessor extends AbstractProcessor
             messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage());
             LOG.severe(ex.getMessage());
         }
-        return true;
+        return false;
     }
 
     private void generateClass(Element element) throws IOException

@@ -73,10 +73,13 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entityClass);
-            return doQuery(
-                    entityInf.buildSelectQuery(entityInf.buildIdCondition(), null), 
-                    (rs) -> entityInf.parseEntity(rs, this), 
-                    id);
+            QueryBuilder qb = new QueryBuilder();
+            qb.select(entityInf.allFieldsSelect())
+                .from(entityInf.getTableName())
+                .where(entityInf.buildIdCondition())
+                .limit(0, 1);
+
+            return doQuery(qb.toString(), (rs) -> entityInf.parseEntity(rs, this), id);
         }
         catch (SQLException ex)
         {
@@ -91,10 +94,13 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = findEntityInf(entity);
-            return doQuery(
-                    entityInf.buildSelectQuery(entityInf.buildIdCondition(), null), 
-                    (rs) -> entityInf.parseEntity(entity, rs, this), 
-                    entityInf.getKeyField().getValue(entity));
+            QueryBuilder qb = new QueryBuilder();
+            qb.select(entityInf.allFieldsSelect())
+                .from(entityInf.getTableName())
+                .where(entityInf.buildIdCondition())
+                .limit(0, 1);
+            Object id = entityInf.getKeyField().getValue(entity);
+            return doQuery(qb.toString(), (rs) -> entityInf.parseEntity(entity, rs, this), id);
         }
         catch (SQLException ex)
         {
@@ -164,9 +170,9 @@ class EntityContextImpl implements EntityContext
         }
     }
 
-    public <T> EntityInf<T> findEntityInf(Class<T> entityClass)
+    private <T> EntityInf<T> findEntityInf(Class<T> entityClass)
     {
-        throw new UnsupportedOperationException();
+        return metainf.findEntityInf(entityClass);
     }
     
     private <T> EntityInf<T> findEntityInf(T entity)

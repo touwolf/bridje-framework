@@ -88,7 +88,7 @@ class FieldInf<T, C>
         {
             this.field.set(entity, castValue(value));
         }
-        catch (Exception e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -100,7 +100,7 @@ class FieldInf<T, C>
         {
             return this.field.get(entity);
         }
-        catch (Exception e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

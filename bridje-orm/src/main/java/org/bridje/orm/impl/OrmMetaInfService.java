@@ -28,7 +28,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.impl.ComponentProcessor;
 
 /**
  *
@@ -38,18 +37,15 @@ class OrmMetaInfService
 {
     private static final Logger LOG = Logger.getLogger(OrmMetaInfService.class.getName());
 
-    private final Map<String, EntitysModel> models;
-
-    private final Map<Class, EntitysModel> modelsToEntitys;
+    private final Map<Class<?>, EntityInf<?>> entitysMap;
 
     public OrmMetaInfService()
     {
-        this.models = new HashMap<>();
-        this.modelsToEntitys = new HashMap<>();
+        this.entitysMap = new HashMap<>();
         try
         {
-            fillModels();
-            this.models.forEach((k, m) -> m.fillRelations());
+            fillEntitys();
+            this.entitysMap.forEach((k, e) -> e.fillRelations());
         }
         catch (Exception e)
         {
@@ -57,17 +53,12 @@ class OrmMetaInfService
         }
     }
 
-    public EntitysModel getModel(String modelName)
+    public <T> EntityInf<T> findEntityInf(Class<?> entityClass)
     {
-        return models.get(modelName);
+        return (EntityInf<T>)this.entitysMap.get(entityClass);
     }
     
-    public EntitysModel getModel(Class entityClass)
-    {
-        return modelsToEntitys.get(entityClass);
-    }
-
-    private void fillModels() throws IOException
+    private void fillEntitys() throws IOException
     {
         List<URL> files = findModelsFiles();
         files.stream()
@@ -78,7 +69,7 @@ class OrmMetaInfService
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ComponentProcessor.COMPONENTS_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(EntityProcessor.COMPONENTS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();
@@ -101,16 +92,14 @@ class OrmMetaInfService
         return prop;
     }
     
-    private void createEntity(Object objClsName, Object objModelName)
+    private void createEntity(Object objClsName, Object objTableName)
     {
         try
         {
             String clsName = (String)objClsName;
-            String modelName = (String)objModelName;
-            EntitysModel model = findOrCreateModel(modelName);
+            String tableName = (String)objTableName;
             Class cls = Class.forName(clsName);
-            model.addEntity(cls);
-            modelsToEntitys.put(cls, model);
+            findOrCreateEntity(cls, tableName);
         }
         catch (Exception e)
         {
@@ -118,12 +107,12 @@ class OrmMetaInfService
         }
     }
 
-    private EntitysModel findOrCreateModel(String modelName)
+    private <T> EntityInf<T> findOrCreateEntity(Class<T> entityClass, String tableName)
     {
-        if(!models.containsKey(modelName))
+        if(!entitysMap.containsKey(entityClass))
         {
-            models.put(modelName, new EntitysModel(modelName));
+            entitysMap.put(entityClass, new EntityInf<>(entityClass, tableName));
         }
-        return models.get(modelName);
+        return (EntityInf<T>) entitysMap.get(entityClass);
     }
 }

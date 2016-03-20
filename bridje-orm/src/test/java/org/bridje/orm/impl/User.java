@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import org.bridje.orm.Entity;
 import org.bridje.orm.Field;
-import org.bridje.orm.Generate;
 import org.bridje.orm.Key;
 import org.bridje.orm.Relation;
 
@@ -29,7 +28,6 @@ import org.bridje.orm.Relation;
  *
  */
 @Entity(table = "users")
-@Generate
 public class User
 {
     @Key
