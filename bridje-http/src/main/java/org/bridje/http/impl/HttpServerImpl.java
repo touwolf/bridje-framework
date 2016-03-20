@@ -26,9 +26,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.ssl.SslHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import org.bridje.cfg.ConfigService;
 import org.bridje.http.HttpServer;
 import org.bridje.http.config.HttpServerConfig;
@@ -49,6 +52,8 @@ public class HttpServerImpl implements HttpServer
     
     @Inject
     private ConfigService cfgServ;
+    
+    private SSLContext sslContext;
 
     @PostConstruct
     public void init()
@@ -57,6 +62,10 @@ public class HttpServerImpl implements HttpServer
         {
             this.config = new HttpServerConfig();
             this.config = cfgServ.findOrCreateConfig(HttpServerConfig.class, this.config);
+            if(config.isSsl())
+            {
+                sslContext = config.createSSLContext();
+            }
         }
         catch (Exception e)
         {
@@ -69,6 +78,7 @@ public class HttpServerImpl implements HttpServer
     {
         try
         {
+            LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
             group = new NioEventLoopGroup();
             try
             {
@@ -81,6 +91,12 @@ public class HttpServerImpl implements HttpServer
                             @Override
                             public void initChannel(SocketChannel ch) throws Exception
                             {
+                                if(sslContext != null)
+                                {
+                                    SSLEngine engine = sslContext.createSSLEngine();
+                                    engine.setUseClientMode(false);
+                                    ch.pipeline().addLast("ssl", new SslHandler(engine));
+                                }
                                 ch.pipeline().addLast("decoder", new HttpRequestDecoder());
                                 ch.pipeline().addLast("encoder", new HttpResponseEncoder());
                                 ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
@@ -116,6 +132,6 @@ public class HttpServerImpl implements HttpServer
 
     public String getServerName()
     {
-        return this.config.getName();
+        return config.getName();
     }
 }

@@ -16,7 +16,14 @@
 
 package org.bridje.http.config;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.security.KeyStore;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.cfg.Configuration;
 import org.bridje.cfg.adapter.XmlConfigAdapter;
@@ -28,36 +35,46 @@ import org.bridje.cfg.adapter.XmlConfigAdapter;
 @XmlRootElement(name = "http-server")
 public class HttpServerConfig
 {
-    private String host;
+    private String listen = "0.0.0.0";
 
-    private String name;
+    private String name = "Bridje HTTP Server";
     
-    private int port;
+    private int port = 8080;
+
+    private boolean ssl = false;
+
+    private String keyStoreFile = "keyStoreFile.keystore";
+
+    private String keyStorePass = "somepass";
+
+    private String keyStoreType = "JKS";
+
+    private String keyStoreAlgo = KeyManagerFactory.getDefaultAlgorithm();
+
+    private String sslAlgo = "TLS";
 
     public HttpServerConfig()
     {
-        this.port = 8080;
-        this.name = "Bridje HTTP Server";
     }
 
     /**
-     * The host on witch to start the http server, can be null witch means all ips will be allowed.
+     * The listen ip on witch to start the http server, can be null witch means all ips will be allowed.
      * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
-     * @return The host for the HTTP server.
+     * @return The listen for the HTTP server.
      */
-    public String getHost()
+    public String getListen()
     {
-        return host;
+        return listen;
     }
     
     /**
      * The host on witch to start the http server, can be null witch means all ips will be allowed.
      * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
-     * @param host The host for the HTTP server.
+     * @param listen The host for the HTTP server.
      */
-    public void setHost(String host)
+    public void setListen(String listen)
     {
-        this.host = host;
+        this.listen = listen;
     }
     
     /**
@@ -100,19 +117,96 @@ public class HttpServerConfig
         this.port = port;
     }
 
+    public boolean isSsl()
+    {
+        return ssl;
+    }
+
+    public void setSsl(boolean ssl)
+    {
+        this.ssl = ssl;
+    }
+
+    public String getSslAlgo()
+    {
+        return sslAlgo;
+    }
+
+    public void setSslAlgo(String sslAlgo)
+    {
+        this.sslAlgo = sslAlgo;
+    }
+
+    public String getKeyStoreFile()
+    {
+        return keyStoreFile;
+    }
+
+    public void setKeyStoreFile(String keyStoreFile)
+    {
+        this.keyStoreFile = keyStoreFile;
+    }
+
+    public String getKeyStorePass()
+    {
+        return keyStorePass;
+    }
+
+    public void setKeyStorePass(String keyStorePass)
+    {
+        this.keyStorePass = keyStorePass;
+    }
+
+    public String getKeyStoreType()
+    {
+        return keyStoreType;
+    }
+
+    public void setKeyStoreType(String keyStoreType)
+    {
+        this.keyStoreType = keyStoreType;
+    }
+
+    public String getKeyStoreAlgo()
+    {
+        return keyStoreAlgo;
+    }
+
+    public void setKeyStoreAlgo(String keyStoreAlgo)
+    {
+        this.keyStoreAlgo = keyStoreAlgo;
+    }
+
     /**
      * Creates the InetSocketAddress to be user by the server.
      * @return A new InetSocketAddress instance 
      */
     public InetSocketAddress createInetSocketAddress()
     {
-        if(host == null || host.trim().isEmpty())
+        if(listen == null || listen.trim().isEmpty())
         {
             return new InetSocketAddress(getPort());
         }
         else
         {
-            return new InetSocketAddress(host, getPort());
+            return new InetSocketAddress(listen, getPort());
         }
+    }
+
+    public SSLContext createSSLContext() throws Exception
+    {
+        SSLContext serverContext = SSLContext.getInstance(sslAlgo);
+        final KeyStore ks = KeyStore.getInstance(keyStoreType);
+        ks.load(readKeyStoreData(), keyStorePass.toCharArray());
+        System.out.println(KeyManagerFactory.getDefaultAlgorithm());
+        final KeyManagerFactory kmf = KeyManagerFactory.getInstance(keyStoreAlgo);
+        kmf.init(ks, keyStorePass.toCharArray());
+        serverContext.init(kmf.getKeyManagers(), null, null);
+        return serverContext;
+    }
+    
+    private InputStream readKeyStoreData() throws FileNotFoundException
+    {
+        return new FileInputStream(new File(keyStoreFile));
     }
 }

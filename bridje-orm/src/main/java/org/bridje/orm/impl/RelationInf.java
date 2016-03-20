@@ -103,14 +103,13 @@ class RelationInf<T, R>
         return sw.toString();
     }
 
-
     public void setValue(Object entity, Object value)
     {
         try
         {
             this.field.set(entity, value);
         }
-        catch (Exception e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -122,7 +121,7 @@ class RelationInf<T, R>
         {
             return (R)this.field.get(entity);
         }
-        catch (Exception e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

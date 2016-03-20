@@ -60,6 +60,7 @@ public class XmlConfigAdapter implements ConfigAdapter
         {
             JAXBContext context = JAXBContext.newInstance(newConfig.getClass());
             Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(newConfig, writer);
         }
         catch (JAXBException ex)
