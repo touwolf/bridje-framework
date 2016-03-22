@@ -62,7 +62,7 @@ public class EntityContextTest
     /**
      * Test of find method, of class EntityContext.
      */
-    @Test
+    //@Test
     public void testFind()
     {
         /*
