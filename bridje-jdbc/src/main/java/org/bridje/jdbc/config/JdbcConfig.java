@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bridje.jdbc.config;
 
 import java.util.ArrayList;
@@ -24,26 +23,44 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.cfg.Configuration;
 import org.bridje.cfg.adapter.XmlConfigAdapter;
+
 /**
- *
+ * Configuration objecto for the JdbcService. This class can be retrived by the
+ * {@link org.bridje.cfg.ConfigService} class like this.
+ * Ioc.context().find(ConfigService.class).find(JdbcConfig.class); It specify
+ * all the datasources availables for the application. Users can specify their
+ * configurations by putting the jdbc.xml file into the configuration folder.
  */
 @XmlRootElement(name = "jdbc")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Configuration(XmlConfigAdapter.class)
 public class JdbcConfig
 {
+
     @XmlElement(name = "datasources")
     private List<DataSourceConfig> dataSources;
 
+    /**
+     * Gets all the DataSourceConfig objects specified by the user in the
+     * jdbc.xml configuration file.
+     *
+     * @return A list of DataSorucesConfig objects specified by the user.
+     */
     public List<DataSourceConfig> getDataSources()
     {
-        if(dataSources == null)
+        if (dataSources == null)
         {
             dataSources = new ArrayList<>();
         }
         return dataSources;
     }
 
+    /**
+     * Sets all the DataSourceConfig objects that can be user by the JdbcService.
+     *
+     * @param dataSources A list of DataSorucesConfig objects to be use by the
+     * JdbcService.
+     */
     public void setDataSources(List<DataSourceConfig> dataSources)
     {
         this.dataSources = dataSources;

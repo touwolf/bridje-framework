@@ -38,7 +38,7 @@ import java.util.concurrent.Executor;
 /**
  *
  */
-public class ConnectionImpl implements Connection
+class ConnectionImpl implements Connection
 {
     private final Connection connection;
     

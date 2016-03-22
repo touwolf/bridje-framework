@@ -31,7 +31,7 @@ import org.bridje.jdbc.config.DataSourceConfig;
 /**
  *
  */
-public class DataSourceImpl implements DataSource
+class DataSourceImpl implements DataSource
 {
     private static final Logger LOG = Logger.getLogger(DataSourceImpl.class.getName());
 

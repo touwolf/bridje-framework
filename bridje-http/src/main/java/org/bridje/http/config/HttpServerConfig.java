@@ -32,7 +32,7 @@ import org.bridje.cfg.adapter.XmlConfigAdapter;
  * Http server configuration.
  */
 @Configuration(XmlConfigAdapter.class)
-@XmlRootElement(name = "http-server")
+@XmlRootElement(name = "http")
 public class HttpServerConfig
 {
     private String listen = "0.0.0.0";
