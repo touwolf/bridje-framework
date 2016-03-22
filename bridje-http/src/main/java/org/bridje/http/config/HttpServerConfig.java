@@ -53,10 +53,6 @@ public class HttpServerConfig
 
     private String sslAlgo = "TLS";
 
-    public HttpServerConfig()
-    {
-    }
-
     /**
      * The listen ip on witch to start the http server, can be null witch means all ips will be allowed.
      * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
@@ -198,7 +194,6 @@ public class HttpServerConfig
         SSLContext serverContext = SSLContext.getInstance(sslAlgo);
         final KeyStore ks = KeyStore.getInstance(keyStoreType);
         ks.load(readKeyStoreData(), keyStorePass.toCharArray());
-        System.out.println(KeyManagerFactory.getDefaultAlgorithm());
         final KeyManagerFactory kmf = KeyManagerFactory.getInstance(keyStoreAlgo);
         kmf.init(ks, keyStorePass.toCharArray());
         serverContext.init(kmf.getKeyManagers(), null, null);

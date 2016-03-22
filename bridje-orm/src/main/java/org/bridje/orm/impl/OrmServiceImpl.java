@@ -32,9 +32,6 @@ public class OrmServiceImpl implements OrmService
     @Inject
     private JdbcService jdbcServ;
     
-    @Inject
-    private OrmMetaInfService metaInfServ;
-    
     @Override
     public EntityContext createContext(String dsName)
     {
