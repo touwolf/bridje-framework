@@ -27,7 +27,7 @@ import org.bridje.orm.OrmService;
  *
  */
 @Component
-public class OrmServiceImpl implements OrmService
+class OrmServiceImpl implements OrmService
 {
     @Inject
     private JdbcService jdbcServ;
@@ -41,6 +41,10 @@ public class OrmServiceImpl implements OrmService
     @Override
     public EntityContext createContext(DataSource ds)
     {
+        if(ds == null)
+        {
+            throw new IllegalArgumentException("No datasource was specified.");
+        }
         return new EntityContextImpl(ds);
     }
 }

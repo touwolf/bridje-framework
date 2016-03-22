@@ -176,8 +176,11 @@ class QueryImpl<T> implements Query<T>
     {
         SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
-        .from(entityInf.getTableName())
-        .where(condition.writeString(parameters));
+        .from(entityInf.getTableName());
+        if(condition != null)
+        {
+            qb.where(condition.writeString(parameters));
+        }
         if(orderBy != null)
         {
             qb.orderBy(Arrays

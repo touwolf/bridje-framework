@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 
 /**
@@ -37,9 +38,12 @@ class OrmMetaInfService
 {
     private static final Logger LOG = Logger.getLogger(OrmMetaInfService.class.getName());
 
-    private final Map<Class<?>, EntityInf<?>> entitysMap;
+    private Map<Class<?>, EntityInf<?>> entitysMap;
 
-    public OrmMetaInfService()
+    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
+    
+    @PostConstruct
+    public void init()
     {
         this.entitysMap = new HashMap<>();
         try
@@ -69,7 +73,7 @@ class OrmMetaInfService
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(EntityProcessor.COMPONENTS_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(COMPONENTS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

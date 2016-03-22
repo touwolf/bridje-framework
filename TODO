@@ -1,3 +1,4 @@
+ - Parse the http form parameters
  - Implement the indexs
  - Implement generated keys strategies
  - Generar relaciones en clases
