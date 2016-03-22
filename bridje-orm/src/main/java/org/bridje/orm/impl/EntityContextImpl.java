@@ -21,8 +21,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
 import org.bridje.orm.EntityContext;
@@ -40,10 +42,13 @@ class EntityContextImpl implements EntityContext
 
     private final OrmMetaInfService metainf;
 
+    private final EntitysCache enittysCache;
+    
     public EntityContextImpl(DataSource ds)
     {
         this.ds = ds;
         this.metainf = Ioc.context().find(OrmMetaInfService.class);
+        this.enittysCache = new EntitysCache();
     }
 
     @Override
@@ -52,6 +57,10 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
+            if(entityInf == null)
+            {
+                throw new IllegalArgumentException(entityClass.getName() + " is not an entity class.");
+            }
             if(tableExists(entityInf))
             {
                 fixColumns(entityInf);
@@ -72,9 +81,14 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
+            T cachedEntity = enittysCache.get(entityClass, id);
+            if(cachedEntity != null)
+            {
+                return cachedEntity;
+            }
             EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
             SelectBuilder qb = new SelectBuilder();
-            qb.select(entityInf.allFieldsQuery())
+            qb.select(entityInf.allFieldsCommaSep())
                 .from(entityInf.getTableName())
                 .where(entityInf.buildIdCondition())
                 .limit(0, 1);
@@ -95,7 +109,7 @@ class EntityContextImpl implements EntityContext
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
             SelectBuilder qb = new SelectBuilder();
-            qb.select(entityInf.allFieldsQuery())
+            qb.select(entityInf.allFieldsCommaSep())
                 .from(entityInf.getTableName())
                 .where(entityInf.buildIdCondition())
                 .limit(0, 1);
@@ -119,10 +133,34 @@ class EntityContextImpl implements EntityContext
             InsertBuilder ib = new InsertBuilder();
 
             ib.insertInto(entityInf.getTableName())
-                    .fields(entityInf.allFieldsQuery())
+                    .fields(entityInf.allFieldsCommaSep())
                     .valuesParams(entityInf.allFieldsCount());
 
             doUpdate(ib.toString(), entityInf.buildInsertParameters(entity));
+            enittysCache.put(entity, entityInf.findKeyValue(entity));
+        }
+        catch (SQLException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return entity;
+    }
+    
+    @Override
+    public <T> T update(T entity)
+    {
+        try
+        {
+            EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
+
+            UpdateBuilder ub = new UpdateBuilder();
+
+            ub.update(entityInf.getTableName());
+            entityInf.allFieldsStream().forEach(ub::set);
+            ub.where(entityInf.buildIdCondition());
+
+            doUpdate(ub.toString(), entityInf.buildInsertParameters(entity));
+            enittysCache.put(entity, entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
         {
@@ -143,6 +181,7 @@ class EntityContextImpl implements EntityContext
                 .where(entityInf.buildIdCondition());
 
             doUpdate(db.toString(), entityInf.findKeyValue(entity));
+            enittysCache.remove(entity.getClass(), entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
         {
@@ -200,7 +239,67 @@ class EntityContextImpl implements EntityContext
 
     private <T> void fixColumns(EntityInf<T> entityInf)
     {
-        entityInf.buildCreateColumnQuery();
+        entityInf.getFields().stream().forEach(this::fixColumn);
+        entityInf.getRelations().stream().forEach(this::fixColumn);
+    }
+    
+    private <T, C> void fixColumn(FieldInf<T, C> field)
+    {
+        try
+        {
+            if(!columnExists(field.getEntityInf().getTableName(), field.getColumnName()))
+            {
+                String query = buildAlterTableSmt(field.getEntityInf(), "ADD ", field.createFieldStmt());
+                doUpdate(query);
+            }
+        }
+        catch (SQLException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+    
+    private <T, C> void fixColumn(RelationInf<T, C> field)
+    {
+        try
+        {
+            if(!columnExists(field.getEntityInf().getTableName(), field.getColumnName()))
+            {
+                String query = buildAlterTableSmt(field.getEntityInf(), "ADD ", field.createRelationStmt());
+                doUpdate(query);
+            }
+        }
+        catch (SQLException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+    
+    private <T> String buildAlterTableSmt(EntityInf<T> entityInf, String... stmts)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ALTER TABLE ");
+        sb.append(entityInf.getTableName());
+        sb.append("\n");
+        sb.append(Arrays.asList(stmts).stream().collect(Collectors.joining()));
+        sb.append(";");
+        return sb.toString();
+    }
+    
+    private <T, C> boolean columnExists(String tableName, String columnName) throws SQLException
+    {
+        try (Connection conn = ds.getConnection())
+        {
+            DatabaseMetaData metaData = conn.getMetaData();
+            try (ResultSet resultSet = metaData.getColumns(null, null, tableName, columnName))
+            {
+                if(resultSet.next())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
@@ -226,5 +325,10 @@ class EntityContextImpl implements EntityContext
         {
             stmt.setObject(index, parameter);
         }
+    }
+
+    public EntitysCache getEnittysCache()
+    {
+        return enittysCache;
     }
 }

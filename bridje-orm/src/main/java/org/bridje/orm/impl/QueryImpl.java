@@ -66,7 +66,7 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery(entityInf.allFieldsQuery(), parameters);
+            SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
@@ -108,7 +108,7 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery(entityInf.allFieldsQuery(), parameters);
+            SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
             qb.limit(0, 1);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseEntity(rs, entCtxImpl), parameters.toArray());
         }

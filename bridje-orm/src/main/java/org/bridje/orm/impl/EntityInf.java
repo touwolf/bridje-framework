@@ -82,6 +82,11 @@ class EntityInf<T>
         return fields;
     }
 
+    public List<RelationInf> getRelations()
+    {
+        return relations;
+    }
+
     public String getTableName()
     {
         return tableName;
@@ -120,13 +125,21 @@ class EntityInf<T>
             org.bridje.orm.Relation fieldAnnot = declaredField.getAnnotation(org.bridje.orm.Relation.class);
             if(fieldAnnot != null)
             {
-                RelationInf fInf = new RelationInf(declaredField, metainf.findEntityInf(declaredField.getType()));
+                RelationInf fInf = new RelationInf(this, declaredField, metainf.findEntityInf(declaredField.getType()));
                 relations.add(fInf);
             }
         }
     }
 
-    public String allFieldsQuery()
+    public Stream<String> allFieldsStream()
+    {
+        return Stream.concat(
+                    fields.stream().map((field) -> field.getColumnName()),
+                    relations.stream().map((relation) -> relation.getColumnName())
+                );
+    }
+    
+    public String allFieldsCommaSep()
     {
         return Stream.concat(
                     fields.stream().map((field) -> field.getColumnName()),
@@ -166,6 +179,7 @@ class EntityInf<T>
                 if(entity != null)
                 {
                     result.add(entity);
+                    ctx.getEnittysCache().put(entity, findKeyValue(entity));
                 }
             }
         }
@@ -182,7 +196,11 @@ class EntityInf<T>
         {
             if(rs.next())
             {
-                return parseEntityInternal(rs, ctx);
+                T result = parseEntityInternal(rs, ctx);
+                if(result != null)
+                {
+                    ctx.getEnittysCache().put(result, findKeyValue(result));
+                }
             }
         }
         catch (Exception e)
@@ -199,6 +217,7 @@ class EntityInf<T>
             if(rs.next())
             {
                 fillEntity(entity, rs, ctx);
+                ctx.getEnittysCache().put(entity, findKeyValue(entity));
                 return entity;
             }
         }
@@ -316,11 +335,6 @@ class EntityInf<T>
     public String buildIdCondition()
     {
         return keyField.getColumnName() + " = ?";
-    }
-
-    public String buildCreateColumnQuery()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public <C> FieldInf<T, C> findFieldInfo(Column<T, C> column)

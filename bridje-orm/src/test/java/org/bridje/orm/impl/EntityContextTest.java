@@ -16,6 +16,12 @@
 
 package org.bridje.orm.impl;
 
+import javax.sql.DataSource;
+import org.bridje.ioc.Ioc;
+import org.bridje.jdbc.JdbcService;
+import org.bridje.jdbc.config.DataSourceConfig;
+import org.bridje.orm.EntityContext;
+import org.junit.Test;
 /**
  *
  */
@@ -60,7 +66,7 @@ public class EntityContextTest
     /**
      * Test of find method, of class EntityContext.
      */
-    //@Test
+    @Test
     public void testFind()
     {
         /*
@@ -74,6 +80,8 @@ public class EntityContextTest
         DataSource ds = jdbcServ.createDataSource(config);
         EntityContext instance = new EntityContextImpl(ds);
 
+        instance.fixTable(User.class);
+        
         Group group = instance.find(Group.class, 1l);
         
         User user = new User(1l, "Admin");

@@ -34,10 +34,13 @@ class RelationInf<T, R>
 
     private final String columnName;
 
+    private final EntityInf<T> entityInf;
+    
     private final EntityInf relatedEntity;
 
-    public RelationInf(Field field, EntityInf<R> relatedEntity)
+    public RelationInf(EntityInf<T> entityInf, Field field, EntityInf<R> relatedEntity)
     {
+        this.entityInf = entityInf;
         this.field = field;
         this.field.setAccessible(true);
         this.relatedEntity = relatedEntity;
@@ -143,5 +146,10 @@ class RelationInf<T, R>
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
+    }
+
+    public EntityInf<T> getEntityInf()
+    {
+        return entityInf;
     }
 }
