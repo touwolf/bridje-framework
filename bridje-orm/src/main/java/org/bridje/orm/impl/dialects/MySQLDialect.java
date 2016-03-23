@@ -71,8 +71,7 @@ class MySQLDialect implements SQLDialect
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
         sb.append(column.getTableData().getTableName());
-        sb.append("\n");
-        sb.append("ADD ");
+        sb.append("\nADD ");
         sb.append(buildColumnStmt(column));
         sb.append(";");
         return sb.toString();

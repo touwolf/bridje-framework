@@ -63,12 +63,9 @@ class EntitysCache
     public <T> void remove(Class<T> entityClass, Object id)
     {
         Map<Object, Object> map = entitysMap.get(entityClass);
-        if(map != null)
+        if(map != null && map.containsKey(id))
         {
-            if(map.containsKey(id))
-            {
-                map.remove(id);
-            }
+            map.remove(id);
         }
     }
 

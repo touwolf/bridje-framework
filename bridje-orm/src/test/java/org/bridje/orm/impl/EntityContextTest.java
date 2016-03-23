@@ -63,6 +63,8 @@ public class EntityContextTest
     {
         ctx.fixTable(User.class);
         ctx.fixTable(Group.class);
+        assertEquals(0, ctx.query(Group_.table).count());
+        assertEquals(0, ctx.query(User_.table).count());
     }
 
     @Test
