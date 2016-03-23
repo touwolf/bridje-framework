@@ -21,15 +21,15 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Table;
 import org.bridje.orm.Query;
+import org.bridje.orm.dialects.ColumnData;
+import org.bridje.orm.dialects.SQLDialect;
 
 /**
  * 
@@ -44,11 +44,14 @@ class EntityContextImpl implements EntityContext
 
     private final EntitysCache enittysCache;
     
-    public EntityContextImpl(DataSource ds)
+    private final SQLDialect dialect;
+    
+    public EntityContextImpl(DataSource ds, SQLDialect dialect)
     {
         this.ds = ds;
         this.metainf = Ioc.context().find(OrmMetaInfService.class);
         this.enittysCache = new EntitysCache();
+        this.dialect = dialect;
     }
 
     @Override
@@ -159,7 +162,7 @@ class EntityContextImpl implements EntityContext
             entityInf.allFieldsStream().forEach(ub::set);
             ub.where(entityInf.buildIdCondition());
 
-            doUpdate(ub.toString(), entityInf.buildInsertParameters(entity));
+            doUpdate(ub.toString(), entityInf.buildUpdateParameters(entity));
             enittysCache.put(entity, entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
@@ -243,13 +246,13 @@ class EntityContextImpl implements EntityContext
         entityInf.getRelations().stream().forEach(this::fixColumn);
     }
     
-    private <T, C> void fixColumn(FieldInf<T, C> field)
+    private <T, C> void fixColumn(ColumnData column)
     {
         try
         {
-            if(!columnExists(field.getEntityInf().getTableName(), field.getColumnName()))
+            if(!columnExists(column.getTableData().getTableName(), column.getColumnName()))
             {
-                String query = buildAlterTableSmt(field.getEntityInf(), "ADD ", field.createFieldStmt());
+                String query = dialect.createColumn(column);
                 doUpdate(query);
             }
         }
@@ -258,34 +261,7 @@ class EntityContextImpl implements EntityContext
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-    
-    private <T, C> void fixColumn(RelationInf<T, C> field)
-    {
-        try
-        {
-            if(!columnExists(field.getEntityInf().getTableName(), field.getColumnName()))
-            {
-                String query = buildAlterTableSmt(field.getEntityInf(), "ADD ", field.createRelationStmt());
-                doUpdate(query);
-            }
-        }
-        catch (SQLException ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-    
-    private <T> String buildAlterTableSmt(EntityInf<T> entityInf, String... stmts)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ALTER TABLE ");
-        sb.append(entityInf.getTableName());
-        sb.append("\n");
-        sb.append(Arrays.asList(stmts).stream().collect(Collectors.joining()));
-        sb.append(";");
-        return sb.toString();
-    }
-    
+
     private <T, C> boolean columnExists(String tableName, String columnName) throws SQLException
     {
         try (Connection conn = ds.getConnection())
@@ -304,7 +280,7 @@ class EntityContextImpl implements EntityContext
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
     {
-        String query = entityInf.buildCreateTableQuery();
+        String query = dialect.createTable(entityInf);
         doUpdate(query);
     }
 
@@ -330,5 +306,11 @@ class EntityContextImpl implements EntityContext
     public EntitysCache getEnittysCache()
     {
         return enittysCache;
+    }
+
+    @Override
+    public void clearCache()
+    {
+        enittysCache.clear();
     }
 }

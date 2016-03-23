@@ -25,11 +25,13 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.orm.Key;
+import org.bridje.orm.dialects.ColumnData;
+import org.bridje.orm.dialects.TableData;
 
 /**
  *
  */
-class FieldInf<T, C>
+class FieldInf<T, C> implements ColumnData
 {
     private static final Logger LOG = Logger.getLogger(FieldInf.class.getName());
     
@@ -72,11 +74,13 @@ class FieldInf<T, C>
         return field;
     }
 
+    @Override
     public boolean isKey()
     {
         return key;
     }
 
+    @Override
     public String getColumnName()
     {
         return columnName;
@@ -107,56 +111,19 @@ class FieldInf<T, C>
         return null;
     }
 
-    public String createFieldStmt()
-    {
-        StringWriter sw = new StringWriter();
-        
-        sw.append("`");
-        sw.append(getColumnName());
-        sw.append("` ");
-        sw.append(getSqlType().getName());
-        if(getLength() > 0)
-        {
-            sw.append("(");
-            sw.append(String.valueOf(getLength()));
-            if(precision > 0 && 
-                    (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) )
-            {
-                sw.append(", ");
-                sw.append(String.valueOf(getPrecision()));
-            }
-            sw.append(")");
-        }
-        if(isKey())
-        {
-            sw.append(" NOT NULL");
-        }
-        else
-        {
-            if(sqlType == JDBCType.TIMESTAMP
-                    || sqlType == JDBCType.TIMESTAMP_WITH_TIMEZONE)
-            {
-                sw.append(" DEFAULT '0000-00-00 00:00:00'");
-            }
-            else
-            {
-                sw.append(" DEFAULT NULL");
-            }
-        }
-        
-        return sw.toString();
-    }
-
+    @Override
     public JDBCType getSqlType()
     {
         return sqlType;
     }
 
+    @Override
     public long getLength()
     {
         return length;
     }
 
+    @Override
     public long getPrecision()
     {
         return precision;
@@ -271,6 +238,10 @@ class FieldInf<T, C>
                 {
                     return toShort(value);
                 }
+                if(Float.class.isAssignableFrom(field.getType()))
+                {
+                    return toFloat(value);
+                }
             }
             return value;
         }
@@ -310,5 +281,24 @@ class FieldInf<T, C>
             return Short.valueOf((String)value);
         }
         return null;
+    }
+    
+    private Object toFloat(Object value)
+    {
+        if(value instanceof Number)
+        {
+            return ((Number)value).floatValue();
+        }
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return Short.valueOf((String)value);
+        }
+        return null;
+    }
+
+    @Override
+    public TableData getTableData()
+    {
+        return entityInf;
     }
 }

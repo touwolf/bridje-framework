@@ -31,12 +31,14 @@ import org.bridje.ioc.Ioc;
 import org.bridje.orm.Column;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
+import org.bridje.orm.dialects.ColumnData;
+import org.bridje.orm.dialects.TableData;
 
 /**
  *
  * @param <T>
  */
-class EntityInf<T>
+class EntityInf<T> implements TableData
 {
     private static final Logger LOG = Logger.getLogger(EntityInf.class.getName());
 
@@ -87,6 +89,7 @@ class EntityInf<T>
         return relations;
     }
 
+    @Override
     public String getTableName()
     {
         return tableName;
@@ -201,6 +204,7 @@ class EntityInf<T>
                 {
                     ctx.getEnittysCache().put(result, findKeyValue(result));
                 }
+                return result;
             }
         }
         catch (Exception e)
@@ -301,6 +305,16 @@ class EntityInf<T>
         }
     }
 
+    public <T> Object[] buildUpdateParameters(T entity)
+    {
+        List<Object> result = Stream.concat(
+                            fields.stream().map((fi) -> fi.getValue(entity)),
+                            relations.stream().map((fi) -> fi.getColumnValue(entity))
+                        ).collect(Collectors.toList());
+        result.add(keyField.getValue(entity));
+        return result.toArray();
+    }
+    
     public <T> Object[] buildInsertParameters(T entity)
     {
         List<Object> result = Stream.concat(
@@ -313,23 +327,6 @@ class EntityInf<T>
     public <T> Object findKeyValue(T entity)
     {
         return keyField.getValue(entity);
-    }
-
-    public String buildCreateTableQuery()
-    {
-        StringBuilder sw = new StringBuilder();
-        sw.append("CREATE TABLE `");
-        sw.append(tableName);
-        sw.append("` (\n");
-        sw.append(Stream.concat(
-                    fields.stream().map((f) -> f.createFieldStmt()),
-                    relations.stream().map((f) -> f.createRelationStmt())
-                ).collect(Collectors.joining(", \n")));
-        sw.append(", \nPRIMARY KEY (`");
-        sw.append(keyField.getColumnName());
-        sw.append("`)\n) ENGINE=InnoDB;");
-
-        return sw.toString();
     }
 
     public String buildIdCondition()
@@ -350,5 +347,20 @@ class EntityInf<T>
     public int allFieldsCount()
     {
         return fields.size() + relations.size();
+    }
+
+    @Override
+    public List<ColumnData> getColumns()
+    {
+        return Stream.concat(
+                    fields.stream().map((field) -> (ColumnData)field),
+                    relations.stream().map((relation) -> (ColumnData)relation)
+                ).collect(Collectors.toList());
+    }
+
+    @Override
+    public ColumnData getKeyColumn()
+    {
+        return keyField;
     }
 }

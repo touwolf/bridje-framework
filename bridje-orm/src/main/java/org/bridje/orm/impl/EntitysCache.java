@@ -71,4 +71,9 @@ class EntitysCache
             }
         }
     }
+
+    public void clear()
+    {
+        entitysMap.clear();
+    }
 }

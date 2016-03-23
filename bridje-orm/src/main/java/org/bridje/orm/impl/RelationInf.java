@@ -22,11 +22,13 @@ import java.sql.JDBCType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.orm.Relation;
+import org.bridje.orm.dialects.ColumnData;
+import org.bridje.orm.dialects.TableData;
 
 /**
  *
  */
-class RelationInf<T, R>
+class RelationInf<T, R> implements ColumnData
 {
     private static final Logger LOG = Logger.getLogger(RelationInf.class.getName());
 
@@ -53,6 +55,7 @@ class RelationInf<T, R>
         return field;
     }
 
+    @Override
     public String getColumnName()
     {
         return columnName;
@@ -72,6 +75,7 @@ class RelationInf<T, R>
         return column.trim();
     }
 
+    /*
     public String createRelationStmt()
     {
         FieldInf keyField = getRelatedEntity().getKeyField();
@@ -105,6 +109,7 @@ class RelationInf<T, R>
         
         return sw.toString();
     }
+    */
 
     public void setValue(Object entity, Object value)
     {
@@ -151,5 +156,35 @@ class RelationInf<T, R>
     public EntityInf<T> getEntityInf()
     {
         return entityInf;
+    }
+
+    @Override
+    public JDBCType getSqlType()
+    {
+        return relatedEntity.getKeyField().getSqlType();
+    }
+
+    @Override
+    public boolean isKey()
+    {
+        return false;
+    }
+
+    @Override
+    public TableData getTableData()
+    {
+        return entityInf;
+    }
+
+    @Override
+    public long getLength()
+    {
+        return relatedEntity.getKeyField().getLength();
+    }
+
+    @Override
+    public long getPrecision()
+    {
+        return relatedEntity.getKeyField().getPrecision();
     }
 }

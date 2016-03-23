@@ -22,6 +22,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.jdbc.JdbcService;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrmService;
+import org.bridje.orm.dialects.SQLDialect;
 
 /**
  *
@@ -31,6 +32,9 @@ class OrmServiceImpl implements OrmService
 {
     @Inject
     private JdbcService jdbcServ;
+    
+    @Inject
+    private SQLDialect[] dialects;
     
     @Override
     public EntityContext createContext(String dsName)
@@ -45,6 +49,13 @@ class OrmServiceImpl implements OrmService
         {
             throw new IllegalArgumentException("No datasource was specified.");
         }
-        return new EntityContextImpl(ds);
+        for (SQLDialect dialect : dialects)
+        {
+            if(dialect.canHandle(ds))
+            {
+                return new EntityContextImpl(ds, dialect);
+            }
+        }
+        throw new IllegalArgumentException("Can´t find a valid dialect for this DataSource");
     }
 }

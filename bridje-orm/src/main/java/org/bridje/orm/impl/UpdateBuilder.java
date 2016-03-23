@@ -41,7 +41,7 @@ public class UpdateBuilder
     {
         if(isFirst)
         {
-            sb.append("set ");
+            sb.append(" SET ");
         }
         else
         {
@@ -49,6 +49,7 @@ public class UpdateBuilder
         }
         sb.append(field);
         sb.append(" = ?");
+        isFirst = false;
         return this;
     }
     
