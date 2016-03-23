@@ -39,15 +39,13 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EntityContextTest
 {
-    private JdbcService jdbc;
-
     private EntityContext ctx;
 
     @Before
     public void before()
     {
         deleteDataBase("./target/h2testdb.mv.db");
-        jdbc = Ioc.context().find(JdbcService.class);
+        JdbcService jdbc = Ioc.context().find(JdbcService.class);
         DataSourceConfig config = new DataSourceConfig();
         config.setDriver("org.h2.Driver");
         config.setUrl("jdbc:h2:./target/h2testdb");
