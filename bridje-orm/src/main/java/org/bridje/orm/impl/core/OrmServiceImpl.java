@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.core;
 
 import javax.sql.DataSource;
 import org.bridje.ioc.Component;

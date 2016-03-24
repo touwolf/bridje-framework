@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.core;
 
+import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

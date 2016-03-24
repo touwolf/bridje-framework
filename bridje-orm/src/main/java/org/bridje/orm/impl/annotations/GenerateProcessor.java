@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.annotations;
 
 import java.io.IOException;
 import java.io.Writer;

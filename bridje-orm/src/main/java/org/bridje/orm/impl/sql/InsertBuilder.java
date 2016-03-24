@@ -14,57 +14,55 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.sql;
 
 /**
  *
  */
-public class SelectBuilder
+public class InsertBuilder
 {
     private final StringBuilder sb;
 
-    public SelectBuilder()
+    public InsertBuilder()
     {
         sb = new StringBuilder();
     }
 
-    public SelectBuilder select(String fields)
+    public InsertBuilder insertInto(String table)
     {
-        sb.append("SELECT ");
-        sb.append(fields);
-        return this;
-    }
-    
-    public SelectBuilder from(String table)
-    {
-        sb.append(" FROM ");
+        sb.append("INSERT INTO ");
         sb.append(table);
         return this;
     }
-
-    public SelectBuilder where(String condition)
+    
+    public InsertBuilder fields(String fields)
     {
-        sb.append(" WHERE ");
-        sb.append(condition);
+        sb.append(" (");
+        sb.append(fields);
+        sb.append(") ");
         return this;
     }
     
-    public SelectBuilder orderBy(String orderBy)
+    public InsertBuilder values(String values)
     {
-        sb.append(" ORDER BY ");
-        sb.append(orderBy);
+        sb.append(" VALUES (");
+        sb.append(values);
+        sb.append(")");
         return this;
     }
-
-    public SelectBuilder limit(int index, int size)
+    
+    public InsertBuilder valuesParams(int count)
     {
-        if(index >= 0 && size >= 0)
+        sb.append(" VALUES (");
+        for (int i = 0; i < count; i++)
         {
-            sb.append(" LIMIT ");
-            sb.append(index);
-            sb.append(", ");
-            sb.append(size);
+            if(i > 0)
+            {
+                sb.append(", ");
+            }
+            sb.append("?");
         }
+        sb.append(")");
         return this;
     }
     

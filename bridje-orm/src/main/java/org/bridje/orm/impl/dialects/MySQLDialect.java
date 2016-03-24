@@ -15,18 +15,16 @@
  */
 package org.bridje.orm.impl.dialects;
 
-import java.io.StringWriter;
 import org.bridje.orm.dialects.SQLDialect;
 import java.sql.Connection;
-import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.bridje.ioc.Component;
 import org.bridje.orm.dialects.ColumnData;
 import org.bridje.orm.dialects.TableData;
+import org.bridje.orm.impl.sql.DDLBuilder;
 
 /**
  *
@@ -50,85 +48,44 @@ class MySQLDialect implements SQLDialect
         return false;
     }
 
+
     @Override
     public <T> String createTable(TableData table)
     {
-        StringBuilder sw = new StringBuilder();
-        sw.append("CREATE TABLE `");
-        sw.append(table.getTableName());
-        sw.append("` (\n");
-        sw.append(table.getColumns().stream().map((f) -> buildColumnStmt(f)).collect(Collectors.joining(",\n")));
-        sw.append(", \nPRIMARY KEY (`");
-        sw.append(table.getKeyColumn().getColumnName());
-        sw.append("`)\n) ENGINE=InnoDB;");
-
-        return sw.toString();
+        DDLBuilder b = new DDLBuilder("`");
+        b.createTable(table.getTableName());
+        table.getColumns().stream()
+                .map((f) -> buildColumnStmt(f, b))
+                .forEach(b::column);
+        b.primaryKey(table.getKeyColumn().getColumnName());
+        return b.toString();
     }
 
     @Override
     public <T> String createColumn(ColumnData column)
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("ALTER TABLE `");
-        sb.append(column.getTableData().getTableName());
-        sb.append("`\nADD ");
-        sb.append(buildColumnStmt(column));
-        sb.append(";");
-        return sb.toString();
+        DDLBuilder b = new DDLBuilder("`");
+        b.alterTable(column.getTableData().getTableName())
+                .addColumn(buildColumnStmt(column, b));
+        
+        return b.toString();
     }
 
     @Override
     public <T> String createIndex(ColumnData column)
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CREATE INDEX `idx_");
-        sb.append(column.getTableData().getTableName());
-        sb.append("_");
-        sb.append(column.getColumnName());
-        sb.append("` ON ");
-        sb.append(column.getTableData().getTableName());
-        sb.append(" ( `");
-        sb.append(column.getColumnName());
-        sb.append("` ASC);");
-        return sb.toString();
+        DDLBuilder b = new DDLBuilder("`");
+        return b.createIndex(column.getTableData().getTableName(), column.getColumnName());
     }
-    
-    private String buildColumnStmt(ColumnData column)
+
+    public String buildColumnStmt(ColumnData column, DDLBuilder b)
     {
-        StringBuilder sw = new StringBuilder();
-        sw.append("`");
-        sw.append(column.getColumnName());
-        sw.append("` ");
-        sw.append(column.getSqlType().getName());
-        if(column.getLength() > 0)
-        {
-            sw.append("(");
-            sw.append(String.valueOf(column.getLength()));
-            if(column.getPrecision() > 0 
-                    && (column.getSqlType() == JDBCType.FLOAT || column.getSqlType() == JDBCType.DOUBLE || column.getSqlType() == JDBCType.DECIMAL) )
-            {
-                sw.append(", ");
-                sw.append(String.valueOf(column.getPrecision()));
-            }
-            sw.append(")");
-        }
-        if(column.isKey())
-        {
-            sw.append(" NOT NULL");
-        }
-        else
-        {
-            if(column.getSqlType() == JDBCType.TIMESTAMP
-                    || column.getSqlType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
-            {
-                sw.append(" DEFAULT '0000-00-00 00:00:00'");
-            }
-            else
-            {
-                sw.append(" DEFAULT NULL");
-            }
-        }
-        
-        return sw.toString();
+        return b.buildColumnStmt(column.getColumnName(), 
+                column.getSqlType().getName(), 
+                column.getLength(), 
+                column.getPrecision(), 
+                column.isKey(), 
+                column.getDefaultValue());
     }
 }
+

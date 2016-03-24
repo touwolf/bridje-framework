@@ -31,9 +31,11 @@ public interface ColumnData
 
     boolean isKey();
 
-    long getLength();
+    int getLength();
 
-    long getPrecision();
+    int getPrecision();
     
     boolean isIndexed();
+
+    String getDefaultValue();
 }

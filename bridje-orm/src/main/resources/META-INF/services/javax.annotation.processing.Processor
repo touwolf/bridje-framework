@@ -1,2 +1,2 @@
-org.bridje.orm.impl.EntityProcessor
-org.bridje.orm.impl.GenerateProcessor
+org.bridje.orm.impl.annotations.EntityProcessor
+org.bridje.orm.impl.annotations.GenerateProcessor

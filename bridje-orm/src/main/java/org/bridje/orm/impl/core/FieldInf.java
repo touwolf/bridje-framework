@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.core;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
@@ -42,9 +42,9 @@ class FieldInf<T, C> implements ColumnData
     
     private final JDBCType sqlType;
     
-    private final long length;
+    private final int length;
     
-    private final long precision;
+    private final int precision;
     
     private final EntityInf<T> entityInf;
 
@@ -67,7 +67,7 @@ class FieldInf<T, C> implements ColumnData
         this.columnName = findColumnName(annotation.column());
         this.sqlType = findSqlType(annotation.type());
         this.length = findLength(annotation.length());
-        this.precision = annotation.precision();
+        this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? annotation.precision() : 0;
         this.indexed = annotation.index();
     }
 
@@ -120,13 +120,13 @@ class FieldInf<T, C> implements ColumnData
     }
 
     @Override
-    public long getLength()
+    public int getLength()
     {
         return length;
     }
 
     @Override
-    public long getPrecision()
+    public int getPrecision()
     {
         return precision;
     }
@@ -141,7 +141,7 @@ class FieldInf<T, C> implements ColumnData
         return dataType;
     }
 
-    private long findLength(int length)
+    private int findLength(int length)
     {
         if(length <= 0)
         {
@@ -342,5 +342,24 @@ class FieldInf<T, C> implements ColumnData
     public boolean isIndexed()
     {
         return indexed;
+    }
+
+    @Override
+    public String getDefaultValue()
+    {
+        String def = null;
+        if(!isKey())
+        {
+            if(getSqlType() == JDBCType.TIMESTAMP
+                    || getSqlType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
+            {
+                def = "'0000-00-00 00:00:00'";
+            }
+            else
+            {
+                def = "NULL";
+            }
+        }
+        return def;
     }
 }

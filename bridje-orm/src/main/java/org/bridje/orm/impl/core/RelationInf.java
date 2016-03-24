@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.core;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
@@ -73,42 +73,6 @@ class RelationInf<T, R> implements ColumnData
         }
         return column.trim();
     }
-
-    /*
-    public String createRelationStmt()
-    {
-        FieldInf keyField = getRelatedEntity().getKeyField();
-        StringWriter sw = new StringWriter();
-        
-        sw.append("`");
-        sw.append(getColumnName());
-        sw.append("` ");
-        sw.append(keyField.getSqlType().getName());
-        if(keyField.getLength() > 0)
-        {
-            sw.append("(");
-            sw.append(String.valueOf(keyField.getLength()));
-            if(keyField.getPrecision() > 0 && 
-                    (keyField.getSqlType() == JDBCType.FLOAT || keyField.getSqlType() == JDBCType.DOUBLE || keyField.getSqlType() == JDBCType.DECIMAL) )
-            {
-                sw.append(", ");
-                sw.append(String.valueOf(keyField.getPrecision()));
-            }
-            sw.append(")");
-        }
-        if(keyField.getSqlType() == JDBCType.TIMESTAMP
-                || keyField.getSqlType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
-        {
-            sw.append(" DEFAULT '0000-00-00 00:00:00'");
-        }
-        else
-        {
-            sw.append(" DEFAULT NULL");
-        }
-        
-        return sw.toString();
-    }
-    */
 
     public void setValue(Object entity, Object value)
     {
@@ -176,13 +140,13 @@ class RelationInf<T, R> implements ColumnData
     }
 
     @Override
-    public long getLength()
+    public int getLength()
     {
         return relatedEntity.getKeyField().getLength();
     }
 
     @Override
-    public long getPrecision()
+    public int getPrecision()
     {
         return relatedEntity.getKeyField().getPrecision();
     }
@@ -191,5 +155,11 @@ class RelationInf<T, R> implements ColumnData
     public boolean isIndexed()
     {
         return true;
+    }
+
+    @Override
+    public String getDefaultValue()
+    {
+        return "NULL";
     }
 }

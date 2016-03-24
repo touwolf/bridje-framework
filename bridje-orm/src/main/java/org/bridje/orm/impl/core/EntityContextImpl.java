@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.core;
 
+import org.bridje.orm.impl.sql.SelectBuilder;
+import org.bridje.orm.impl.sql.InsertBuilder;
+import org.bridje.orm.impl.sql.DeleteBuilder;
+import org.bridje.orm.impl.sql.UpdateBuilder;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -30,6 +34,11 @@ import org.bridje.orm.Table;
 import org.bridje.orm.Query;
 import org.bridje.orm.dialects.ColumnData;
 import org.bridje.orm.dialects.SQLDialect;
+import org.bridje.orm.impl.core.EntityInf;
+import org.bridje.orm.impl.core.EntitysCache;
+import org.bridje.orm.impl.core.OrmMetaInfService;
+import org.bridje.orm.impl.core.QueryConsumer;
+import org.bridje.orm.impl.core.QueryImpl;
 
 /**
  * 

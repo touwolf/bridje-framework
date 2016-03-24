@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm.impl.sql;
 
 /**
  *
  */
-class DeleteBuilder
+public class DeleteBuilder
 {
     private final StringBuilder sb;
 
