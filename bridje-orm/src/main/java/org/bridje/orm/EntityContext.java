@@ -29,6 +29,8 @@ public interface EntityContext
     
     <T> T update(T entity);
     
+    <T> T update(T entity, Object id);
+    
     <T> T refresh(T entity);
 
     <T> T delete(T entity);

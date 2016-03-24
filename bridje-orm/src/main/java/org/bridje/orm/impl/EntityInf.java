@@ -305,13 +305,13 @@ class EntityInf<T> implements TableData
         }
     }
 
-    public <T> Object[] buildUpdateParameters(T entity)
+    public <T> Object[] buildUpdateParameters(T entity, Object id)
     {
         List<Object> result = Stream.concat(
                             fields.stream().map((fi) -> fi.getValue(entity)),
                             relations.stream().map((fi) -> fi.getColumnValue(entity))
                         ).collect(Collectors.toList());
-        result.add(keyField.getValue(entity));
+        result.add(id);
         return result.toArray();
     }
     
