@@ -186,4 +186,10 @@ class RelationInf<T, R> implements ColumnData
     {
         return relatedEntity.getKeyField().getPrecision();
     }
+
+    @Override
+    public boolean isIndexed()
+    {
+        return true;
+    }
 }

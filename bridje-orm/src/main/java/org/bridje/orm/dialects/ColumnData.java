@@ -34,4 +34,6 @@ public interface ColumnData
     long getLength();
 
     long getPrecision();
+    
+    boolean isIndexed();
 }

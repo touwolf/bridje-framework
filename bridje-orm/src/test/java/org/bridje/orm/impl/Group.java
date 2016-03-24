@@ -29,7 +29,7 @@ public class Group
     @Field
     private Long id;
 
-    @Field
+    @Field(index = true)
     private String name;
 
     public Group()

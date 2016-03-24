@@ -299,10 +299,13 @@ class EntityContextImpl implements EntityContext
     {
         try
         {
-            if(!indexExists(column.getTableData().getTableName(), column.getColumnName()))
+            if(column.isIndexed())
             {
-                String query = dialect.createIndex(column);
-                doUpdate(query);
+                if(!indexExists(column.getTableData().getTableName(), column.getColumnName()))
+                {
+                    String query = dialect.createIndex(column);
+                    doUpdate(query);
+                }
             }
         }
         catch (SQLException ex)

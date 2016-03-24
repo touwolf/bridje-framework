@@ -49,6 +49,8 @@ class FieldInf<T, C> implements ColumnData
     private final EntityInf<T> entityInf;
 
     private final Class<C> dataType;
+
+    private final boolean indexed;
     
     public FieldInf(EntityInf<T> entityInf, Field field, Class<C> dataType)
     {
@@ -66,6 +68,7 @@ class FieldInf<T, C> implements ColumnData
         this.sqlType = findSqlType(annotation.type());
         this.length = findLength(annotation.length());
         this.precision = annotation.precision();
+        this.indexed = annotation.index();
     }
 
     public Field getField()
@@ -333,5 +336,11 @@ class FieldInf<T, C> implements ColumnData
     public TableData getTableData()
     {
         return entityInf;
+    }
+
+    @Override
+    public boolean isIndexed()
+    {
+        return indexed;
     }
 }
