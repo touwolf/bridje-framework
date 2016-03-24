@@ -150,14 +150,15 @@ class EntityInf<T> implements TableData
                 ).collect(Collectors.joining(", "));
     }
 
-    public <C> List<C> parseAllColumns(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+    public <C> List<C> parseAllColumns(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         List<C> result = new ArrayList<>();
         try
         {
+            FieldInf<T, C> fieldInfo = findFieldInfo(column);
             while(rs.next())
             {
-                C value = parseEntityColumn(findFieldInfo(column), rs);
+                C value = fieldInfo.castValue(column.getType(), parseEntityColumn(index, rs));
                 if(value != null)
                 {
                     result.add(value);
@@ -232,13 +233,14 @@ class EntityInf<T> implements TableData
         return null;
     }
 
-    public <C> C parseColumn(Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+    public <C> C parseColumn(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         try
         {
+            FieldInf<T, C> fieldInfo = findFieldInfo(column);
             if(rs.next())
             {
-                return parseEntityColumn(findFieldInfo(column), rs);
+                return fieldInfo.castValue(column.getType(), parseEntityColumn(index, rs));
             }
         }
         catch (Exception e)
@@ -247,7 +249,7 @@ class EntityInf<T> implements TableData
         }
         return null;
     }
-
+    
     public int parseCount(ResultSet rs)
     {
         try
@@ -271,9 +273,9 @@ class EntityInf<T> implements TableData
         return entity;
     }
 
-    private <C> C parseEntityColumn(FieldInf<T, C> field, ResultSet rs) throws SQLException
+    private <C> C parseEntityColumn(int index, ResultSet rs) throws SQLException
     {
-        return (C)rs.getObject(field.getColumnName());
+        return (C)rs.getObject(index);
     }
 
     public T buildEntityObject()

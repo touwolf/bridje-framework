@@ -16,21 +16,12 @@
 
 package org.bridje.orm;
 
-import java.util.List;
+import org.bridje.orm.Column;
 /**
  *
  */
-public abstract class Condition
+@FunctionalInterface
+public interface ColumnNameFinder
 {
-    public abstract String writeString(List<Object> parameters, ColumnNameFinder cnf);
-
-    public Condition and(Condition otherCondition)
-    {
-        return new BinaryCondition(this, Operator.AND, otherCondition);
-    }
-
-    public Condition or(Condition otherCondition)
-    {
-        return new BinaryCondition(this, Operator.OR, otherCondition);
-    }
+    String findColumnName(Column column);
 }

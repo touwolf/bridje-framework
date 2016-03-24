@@ -102,8 +102,7 @@ public class GenerateProcessor extends AbstractProcessor
             cw.classPackage(classPack);
             //Imports
             cw.importClass("javax.annotation.Generated");
-            cw.importClass("org.bridje.orm.Table");
-            cw.importClass("org.bridje.orm.Column");
+            cw.importClass("org.bridje.orm.*");
             //Class
             cw.emptyLine();
             cw.annotate("Generated(value = \"bridje-orm\")");
@@ -139,11 +138,36 @@ public class GenerateProcessor extends AbstractProcessor
             String entityName = classEl.getSimpleName().toString();
             String name = fieldEl.getSimpleName().toString();
             String fieldType = cw.removeJavaLangPack(fieldEl.asType().toString());
-            String type = cw.createGenericType("Column", entityName, fieldType);
-            String value = cw.newObjStatement("Column<>",
-                    entityName + "_.table", 
-                    cw.stringLiteral(name),
-                    cw.dotClass(fieldType));
+            String type;
+            String value;
+            if(fieldType.equalsIgnoreCase("String"))
+            {
+                type = cw.createGenericType("StringColumn", entityName);
+                value = cw.newObjStatement("StringColumn<>",
+                        entityName + "_.table", 
+                        cw.stringLiteral(name));
+            }
+            else if(fieldType.equalsIgnoreCase("Byte")
+                    || fieldType.equalsIgnoreCase("Short")
+                    || fieldType.equalsIgnoreCase("Integer")
+                    || fieldType.equalsIgnoreCase("Long")
+                    || fieldType.equalsIgnoreCase("Float")
+                    || fieldType.equalsIgnoreCase("Double"))
+            {
+                type = cw.createGenericType("NumberColumn", entityName, fieldType);
+                value = cw.newObjStatement("NumberColumn<>",
+                        entityName + "_.table", 
+                        cw.stringLiteral(name),
+                        cw.dotClass(fieldType));
+            }
+            else
+            {
+                type = cw.createGenericType("Column", entityName, fieldType);
+                value = cw.newObjStatement("Column<>",
+                        entityName + "_.table", 
+                        cw.stringLiteral(name),
+                        cw.dotClass(fieldType));
+            }
             cw.publicAccess().staticElement().finalElement().fieldDec(type, name, value);
         }
         catch (Exception e)

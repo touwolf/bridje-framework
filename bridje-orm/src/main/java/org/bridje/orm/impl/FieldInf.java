@@ -89,7 +89,7 @@ class FieldInf<T, C> implements ColumnData
     {
         try
         {
-            this.field.set(entity, castValue(value));
+            this.field.set(entity, castValue(field.getType(), value));
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
@@ -219,30 +219,38 @@ class FieldInf<T, C> implements ColumnData
         return column.trim();
     }
 
-    private Object castValue(Object value)
+    public <F> F castValue(Class<F> fieldType, Object value)
     {
         if(value != null)
         {
             if(!field.getType().isAssignableFrom(value.getClass()))
             {
-                if(Character.class.isAssignableFrom(field.getType()))
+                if(Character.class.isAssignableFrom(fieldType))
                 {
-                    return toCharacter(value);
+                    return (F)toCharacter(value);
                 }
-                if(Byte.class.isAssignableFrom(field.getType()))
+                if(Byte.class.isAssignableFrom(fieldType))
                 {
-                    return toByte(value);
+                    return (F)toByte(value);
                 }
-                if(Short.class.isAssignableFrom(field.getType()))
+                if(Short.class.isAssignableFrom(fieldType))
                 {
-                    return toShort(value);
+                    return (F)toShort(value);
                 }
-                if(Float.class.isAssignableFrom(field.getType()))
+                if(Integer.class.isAssignableFrom(fieldType))
                 {
-                    return toFloat(value);
+                    return (F)toInteger(value);
+                }
+                if(Long.class.isAssignableFrom(fieldType))
+                {
+                    return (F)toLong(value);
+                }
+                if(Float.class.isAssignableFrom(fieldType))
+                {
+                    return (F)toFloat(value);
                 }
             }
-            return value;
+            return (F)value;
         }
         return null;
     }
@@ -278,6 +286,32 @@ class FieldInf<T, C> implements ColumnData
         if(value instanceof String && !((String)value).isEmpty())
         {
             return Short.valueOf((String)value);
+        }
+        return null;
+    }
+
+    private Object toLong(Object value)
+    {
+        if(value instanceof Number)
+        {
+            return ((Number)value).longValue();
+        }
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return Long.valueOf((String)value);
+        }
+        return null;
+    }
+
+    private Object toInteger(Object value)
+    {
+        if(value instanceof Number)
+        {
+            return ((Number)value).intValue();
+        }
+        if(value instanceof String && !((String)value).isEmpty())
+        {
+            return Integer.valueOf((String)value);
         }
         return null;
     }

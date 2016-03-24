@@ -16,6 +16,8 @@
 
 package org.bridje.orm;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @param <E>
@@ -28,12 +30,34 @@ public class Column<E, T>
     private final String field;
 
     private final Class<T> type;
+    
+    private String function;
+    
+    private List<Object> parameters;
 
     public Column(Table<E> table, String field, Class<T> type)
     {
         this.table = table;
         this.field = field;
         this.type = type;
+    }
+
+    public Column(Table<E> table, String field, Class<T> type, String function, List<Object> parameters)
+    {
+        this.table = table;
+        this.field = field;
+        this.type = type;
+        this.function = function;
+        if(parameters != null)
+        {
+            this.parameters = new ArrayList<>();
+            this.parameters.addAll(parameters);
+        }
+    }
+
+    public String getFunction()
+    {
+        return function;
     }
 
     public Table<E> getTable()
@@ -89,5 +113,19 @@ public class Column<E, T>
     public OrderBy desc()
     {
         return new OrderBy(OrderByType.DESC, this);
-    }    
+    }
+    
+    protected void addParameter(Object param)
+    {
+        if(parameters == null)
+        {
+            parameters = new ArrayList<>();
+        }
+        parameters.add(param);
+    }
+
+    public List<Object> getParameters()
+    {
+        return parameters;
+    }
 }

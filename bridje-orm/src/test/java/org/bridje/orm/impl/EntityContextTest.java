@@ -165,19 +165,50 @@ public class EntityContextTest
     }
 
     @Test
-    public void test4Delete()
+    public void test4Functions()
+    {
+        User user = new User(2l, "Admin 3");
+        user.setAge((short)20);
+        user.setBrithday(new Date());
+        user.setClasif('C');
+        user.setCounts((byte)3);
+        user.setCreated(new Timestamp(System.currentTimeMillis()));
+        user.setCredit(6.5f);
+        user.setEnable(true);
+        user.setHour(new Time(System.currentTimeMillis()));
+        user.setMins(9);
+        user.setMoney(150.40d);
+        user.setUpdated(new java.sql.Date(System.currentTimeMillis()));
+        user.setYear(2018l);
+        user.setGroup(ctx.find(Group.class, 1l));
+        assertNotNull(ctx.insert(user));
+
+        assertEquals(60, ctx.query(User_.table).fetchOne(User_.age.sum()).shortValue());
+        assertEquals(5, ctx.query(User_.table).fetchOne(User_.counts.sum()).byteValue());
+        assertEquals(37.0f, ctx.query(User_.table).fetchOne(User_.credit.sum()), 0.01f);
+        assertEquals(7, ctx.query(User_.table).where(User_.name.eq("Admin 3")).fetchOne(User_.name.length()).intValue());
+        assertEquals(9, ctx.query(User_.table).where(User_.name.eq("Admin 3")).fetchOne(User_.name.length().puls(2)).intValue());
+        assertEquals("Admin 3", ctx.query(User_.table).where(User_.name.length().eq(7)).fetchOne(User_.name));
+        assertEquals("Admin 3", ctx.query(User_.table).where(User_.name.length().puls(1).eq(8)).fetchOne(User_.name));
+    }
+
+    @Test
+    public void test5Delete()
     {
         assertNotNull(ctx.find(Group.class, 1l));
         assertNotNull(ctx.find(Group.class, 2l));
         assertNotNull(ctx.find(User.class, 1l));
+        assertNotNull(ctx.find(User.class, 2l));
         
-        User user = ctx.find(User.class, 1l);
-        ctx.delete(user.getGroup());
-        ctx.delete(user);
+        ctx.delete(ctx.find(User.class, 1l).getGroup());
+        ctx.delete(ctx.find(User.class, 1l));
+        ctx.delete(ctx.find(User.class, 2l).getGroup());
+        ctx.delete(ctx.find(User.class, 2l));
         
-        assertNotNull(ctx.find(Group.class, 1l));
+        assertNull(ctx.find(Group.class, 1l));
         assertNull(ctx.find(Group.class, 2l));
         assertNull(ctx.find(User.class, 1l));
+        assertNull(ctx.find(User.class, 2l));
     }
     
     private void deleteDataBase(String tageth2testdb)

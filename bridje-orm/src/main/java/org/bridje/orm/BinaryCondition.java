@@ -37,29 +37,33 @@ class BinaryCondition extends Condition
     }
 
     @Override
-    public String writeString(List<Object> parameters)
+    public String writeString(List<Object> parameters, ColumnNameFinder cnf)
     {
         StringBuilder sb = new StringBuilder();
         
-        writeOperand(firstOperand, parameters, sb);
+        writeOperand(firstOperand, parameters, cnf, sb);
         sb.append(" ");
         sb.append(operator.toString());
         sb.append(" ");
-        writeOperand(secondOperand, parameters, sb);
+        writeOperand(secondOperand, parameters, cnf, sb);
         
         return sb.toString();
     }
 
-    private void writeOperand(Object operand, List<Object> parameters, StringBuilder sb)
+    private void writeOperand(Object operand, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
     {
         if(operand instanceof Column)
         {
-            sb.append(((Column)operand).getField());
+            sb.append( cnf.findColumnName((Column)operand) );
+            if( ((Column)operand).getParameters() != null)
+            {
+                parameters.addAll(((Column)operand).getParameters());
+            }
         }
         else if(operand instanceof Condition)
         {
             sb.append("(");
-            sb.append( ((Condition)operand).writeString(parameters) );
+            sb.append( ((Condition)operand).writeString(parameters, cnf) );
             sb.append(")");
         }
         else

@@ -16,21 +16,28 @@
 
 package org.bridje.orm;
 
-import java.util.List;
 /**
  *
+ * @param <E>
  */
-public abstract class Condition
+public class StringColumn<E> extends Column<E, String>
 {
-    public abstract String writeString(List<Object> parameters, ColumnNameFinder cnf);
-
-    public Condition and(Condition otherCondition)
+    public StringColumn(Table<E> table, String field)
     {
-        return new BinaryCondition(this, Operator.AND, otherCondition);
+        super(table, field, String.class);
     }
 
-    public Condition or(Condition otherCondition)
+    public NumberColumn<E, Integer> length()
     {
-        return new BinaryCondition(this, Operator.OR, otherCondition);
+        String functionExp;
+        if(getFunction() == null)
+        {
+            functionExp = "LENGTH(%s)";
+        }
+        else
+        {
+            functionExp = "LENGTH(" + getFunction() + ")";
+        }
+        return new NumberColumn<>(getTable(), getField(), Integer.class, functionExp, getParameters());
     }
 }

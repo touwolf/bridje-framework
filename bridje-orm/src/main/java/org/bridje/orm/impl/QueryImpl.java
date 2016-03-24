@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.bridje.orm.Column;
+import org.bridje.orm.ColumnNameFinder;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
@@ -31,7 +32,7 @@ import org.bridje.orm.Query;
  *
  * @param <T>
  */
-class QueryImpl<T> implements Query<T>
+class QueryImpl<T> implements Query<T>, ColumnNameFinder
 {
     private static final Logger LOG = Logger.getLogger(QueryImpl.class.getName());
 
@@ -87,13 +88,17 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
+            if(column.getParameters() != null)
+            {
+                parameters.addAll(column.getParameters());
+            }
             SelectBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
                 qb.limit(index, pageSize);
             }
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllColumns(column, rs, entCtxImpl), parameters.toArray());
+            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllColumns(1, column, rs, entCtxImpl), parameters.toArray());
         }
         catch (Exception e)
         {
@@ -125,9 +130,13 @@ class QueryImpl<T> implements Query<T>
         try
         {
             List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
+            if(column.getParameters() != null)
+            {
+                parameters.addAll(column.getParameters());
+            }
+            SelectBuilder qb = createQuery(findColumnName(column), parameters);
             qb.limit(0, 1);
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseColumn(column, rs, entCtxImpl),parameters.toArray());
+            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseColumn(1, column, rs, entCtxImpl),parameters.toArray());
         }
         catch (Exception e)
         {
@@ -179,7 +188,7 @@ class QueryImpl<T> implements Query<T>
         .from(entityInf.getTableName());
         if(condition != null)
         {
-            qb.where(condition.writeString(parameters));
+            qb.where(condition.writeString(parameters, this));
         }
         if(orderBy != null)
         {
@@ -189,5 +198,16 @@ class QueryImpl<T> implements Query<T>
                     .collect(Collectors.joining(", ")));
         }
         return qb;
+    }
+
+    @Override
+    public String findColumnName(Column column)
+    {
+        String columnName = entityInf.findFieldInfo(column).getColumnName();
+        if(column.getFunction() != null)
+        {
+            return String.format(column.getFunction(), columnName);
+        }
+        return columnName;
     }
 }
