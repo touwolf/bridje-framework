@@ -28,4 +28,6 @@ public interface SQLDialect
     <T> String createTable(TableData table);
     
     <T> String createColumn(ColumnData table);
+
+    <T> String createIndex(ColumnData column);
 }

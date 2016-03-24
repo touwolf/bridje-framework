@@ -272,6 +272,12 @@ class EntityContextImpl implements EntityContext
         entityInf.getFields().stream().forEach(this::fixColumn);
         entityInf.getRelations().stream().forEach(this::fixColumn);
     }
+
+    private <T> void fixIndexs(EntityInf<T> entityInf)
+    {
+        entityInf.getFields().stream().forEach(this::fixIndex);
+        entityInf.getRelations().stream().forEach(this::fixIndex);
+    }
     
     private <T, C> void fixColumn(ColumnData column)
     {
@@ -280,6 +286,22 @@ class EntityContextImpl implements EntityContext
             if(!columnExists(column.getTableData().getTableName(), column.getColumnName()))
             {
                 String query = dialect.createColumn(column);
+                doUpdate(query);
+            }
+        }
+        catch (SQLException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+    
+    private <T, C> void fixIndex(ColumnData column)
+    {
+        try
+        {
+            if(!indexExists(column.getTableData().getTableName(), column.getColumnName()))
+            {
+                String query = dialect.createIndex(column);
                 doUpdate(query);
             }
         }
@@ -304,11 +326,32 @@ class EntityContextImpl implements EntityContext
         }
         return false;
     }
+    
+    private <T, C> boolean indexExists(String tableName, String columnName) throws SQLException
+    {
+        try (Connection conn = ds.getConnection())
+        {
+            DatabaseMetaData metaData = conn.getMetaData();
+            try (ResultSet resultSet = metaData.getIndexInfo(null, null, tableName, false, true))
+            {
+                while(resultSet.next())
+                {
+                    String col = resultSet.getString("COLUMN_NAME");
+                    if(col != null && col.equalsIgnoreCase(columnName))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     private <T> void createTable(EntityInf<T> entityInf) throws SQLException
     {
         String query = dialect.createTable(entityInf);
         doUpdate(query);
+        fixIndexs(entityInf);
     }
 
     @Override

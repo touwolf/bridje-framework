@@ -36,4 +36,6 @@ public @interface Field
     int length() default 0;
 
     int precision() default 0;
+
+    boolean index() default false;
 }

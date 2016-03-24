@@ -54,13 +54,13 @@ public class H2Dialect implements SQLDialect
     public <T> String createTable(TableData table)
     {
         StringBuilder sw = new StringBuilder();
-        sw.append("CREATE TABLE `");
+        sw.append("CREATE TABLE ");
         sw.append(table.getTableName());
-        sw.append("` (\n");
+        sw.append(" (\n");
         sw.append(table.getColumns().stream().map((f) -> buildColumnStmt(f)).collect(Collectors.joining(",\n")));
-        sw.append(", \nPRIMARY KEY (`");
+        sw.append(", \nPRIMARY KEY (");
         sw.append(table.getKeyColumn().getColumnName());
-        sw.append("`)\n);");
+        sw.append(")\n);");
 
         return sw.toString();
     }
@@ -77,13 +77,28 @@ public class H2Dialect implements SQLDialect
         return sb.toString();
     }
 
+    @Override
+    public <T> String createIndex(ColumnData column)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CREATE INDEX idx_");
+        sb.append(column.getTableData().getTableName());
+        sb.append("_");
+        sb.append(column.getColumnName());
+        sb.append(" ON ");
+        sb.append(column.getTableData().getTableName());
+        sb.append(" ( ");
+        sb.append(column.getColumnName());
+        sb.append(" ASC);");
+        return sb.toString();
+    }
+    
     public String buildColumnStmt(ColumnData column)
     {
         StringWriter sw = new StringWriter();
         
-        sw.append("`");
         sw.append(column.getColumnName());
-        sw.append("` ");
+        sw.append(" ");
         sw.append(column.getSqlType().getName());
         if(column.getLength() > 0)
         {

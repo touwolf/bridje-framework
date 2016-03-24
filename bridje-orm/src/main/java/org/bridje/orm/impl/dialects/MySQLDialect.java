@@ -69,18 +69,33 @@ class MySQLDialect implements SQLDialect
     public <T> String createColumn(ColumnData column)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("ALTER TABLE ");
+        sb.append("ALTER TABLE `");
         sb.append(column.getTableData().getTableName());
-        sb.append("\nADD ");
+        sb.append("`\nADD ");
         sb.append(buildColumnStmt(column));
         sb.append(";");
         return sb.toString();
     }
 
-    public String buildColumnStmt(ColumnData column)
+    @Override
+    public <T> String createIndex(ColumnData column)
     {
-        StringWriter sw = new StringWriter();
-        
+        StringBuilder sb = new StringBuilder();
+        sb.append("CREATE INDEX `idx_");
+        sb.append(column.getTableData().getTableName());
+        sb.append("_");
+        sb.append(column.getColumnName());
+        sb.append("` ON ");
+        sb.append(column.getTableData().getTableName());
+        sb.append(" ( `");
+        sb.append(column.getColumnName());
+        sb.append("` ASC);");
+        return sb.toString();
+    }
+    
+    private String buildColumnStmt(ColumnData column)
+    {
+        StringBuilder sw = new StringBuilder();
         sw.append("`");
         sw.append(column.getColumnName());
         sw.append("` ");
