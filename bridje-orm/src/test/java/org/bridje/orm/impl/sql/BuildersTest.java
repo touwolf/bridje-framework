@@ -57,4 +57,27 @@ public class BuildersTest
                          ";";
         assertEquals(expected, query);
     }
+
+    @Test
+    public void testDeleteWithConditionTuples()
+    {
+        DeleteBuilder d = new DeleteBuilder();
+        String query = d.delete("`my_table`")
+                .where("`my_table`.`id`=1").toString();
+
+        System.out.println(query);
+        String expected = "DELETE FROM `my_table` WHERE `my_table`.`id`=1;";
+        assertEquals(expected, query);
+    }
+
+    @Test
+    public void testDeleteWithoutConditionTuples()
+    {
+        DeleteBuilder d = new DeleteBuilder();
+        String query = d.delete("`my_table`").toString();
+
+        System.out.println(query);
+        String expected = "DELETE FROM `my_table`;";
+        assertEquals(expected, query);
+    }
 }
