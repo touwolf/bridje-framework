@@ -22,11 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * This annotation can be use to declare an Entity class. Entity's classes will
+ * be managed by the api so the user can read, insert, update, and delete it.
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 public @interface Entity
 {
+    /**
+     * The name of the database table that this entity is link to.
+     *
+     * @return The name of the table.
+     */
     String table();
 }
