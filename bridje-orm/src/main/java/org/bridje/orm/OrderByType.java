@@ -21,5 +21,5 @@ package org.bridje.orm;
  */
 public enum OrderByType
 {
-    ASC, DESC;
+    ASC, DESC
 }

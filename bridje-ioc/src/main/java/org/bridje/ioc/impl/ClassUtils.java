@@ -58,7 +58,7 @@ class ClassUtils
      */
     public static Type typeOf(WildcardType service)
     {
-        Type[] upperBounds = ((WildcardType) service).getUpperBounds();
+        Type[] upperBounds = service.getUpperBounds();
         if (upperBounds.length == 1)
         {
             return (upperBounds[0]);
@@ -322,7 +322,7 @@ class ClassUtils
      */
     public static Collection<Class<?>> toClasses(Collection instances)
     {
-        List<Class<?>> arrList = new ArrayList();
+        List<Class<?>> arrList = new ArrayList<>();
         for (Object instance : instances)
         {
             arrList.add(instance.getClass());

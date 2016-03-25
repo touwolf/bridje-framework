@@ -24,10 +24,10 @@ public interface HttpServer
     /**
      * Starts the HTTP server
      */
-    public void start();
+    void start();
 
     /**
      * Stops the HTTP server
      */
-    public void stop();
+    void stop();
 }

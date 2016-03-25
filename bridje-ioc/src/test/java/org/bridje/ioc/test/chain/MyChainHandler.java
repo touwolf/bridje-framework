@@ -18,5 +18,5 @@ package org.bridje.ioc.test.chain;
 
 public interface MyChainHandler<T>
 {
-    public T execute(T prev);
+    T execute(T prev);
 }

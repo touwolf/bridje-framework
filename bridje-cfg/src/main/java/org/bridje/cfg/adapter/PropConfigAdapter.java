@@ -42,7 +42,7 @@ public class PropConfigAdapter implements ConfigAdapter
         try
         {
             //only if it has default constructor
-            obj = (Object) cls.newInstance();
+            obj = cls.newInstance();
         }
         catch (InstantiationException | IllegalAccessException ex)
         {

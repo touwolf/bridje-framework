@@ -31,7 +31,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,7 +110,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
         resp = null;
     }
 
-    private void sendResponse(ChannelHandlerContext ctx) throws UnsupportedEncodingException, IOException
+    private void sendResponse(ChannelHandlerContext ctx) throws IOException
     {
         resp.close();
         int length = resp.getBuffer().readableBytes();
