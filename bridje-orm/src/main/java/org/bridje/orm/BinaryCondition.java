@@ -19,7 +19,9 @@ package org.bridje.orm;
 import java.util.List;
 
 /**
- *
+ * A condition with two operators. This condition can be use with the binary
+ * operators in the Operator enum like EQ("="), GT(">"), GE(">="), LT("&lt;"),
+ * LE("&lt;="), NE("&lt;&gt;"), AND("and"), OR("or")
  */
 class BinaryCondition extends Condition
 {
@@ -40,36 +42,89 @@ class BinaryCondition extends Condition
     public String writeString(List<Object> parameters, ColumnNameFinder cnf)
     {
         StringBuilder sb = new StringBuilder();
-        
+
         writeOperand(firstOperand, parameters, cnf, sb);
         sb.append(" ");
         sb.append(operator.toString());
         sb.append(" ");
         writeOperand(secondOperand, parameters, cnf, sb);
-        
+
         return sb.toString();
     }
 
+    /**
+     * This method writes and operant to the StringBuilder when the condition is
+     * beign serialised in the writeString method.
+     *
+     * @param operand The operant to be writed
+     * @param parameters The parameters list for the query.
+     * @param cnf The ColumnNameFinder that will be use for writing columns
+     * names in the condition.
+     * @param sb THe StringBuilder to write the result.
+     */
     private void writeOperand(Object operand, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
     {
-        if(operand instanceof Column)
+        if (operand instanceof Column)
         {
-            sb.append( cnf.findColumnName((Column)operand) );
-            if( ((Column)operand).getParameters() != null)
-            {
-                parameters.addAll(((Column)operand).getParameters());
-            }
+            writeColumn((Column) operand, parameters, cnf, sb);
         }
-        else if(operand instanceof Condition)
+        else if (operand instanceof Condition)
         {
-            sb.append("(");
-            sb.append( ((Condition)operand).writeString(parameters, cnf) );
-            sb.append(")");
+            writeCondition((Condition) operand, parameters, cnf, sb);
         }
         else
         {
-            parameters.add(operand);
-            sb.append("?");
+            writeLiteral(operand, parameters, sb);
         }
+    }
+
+    /**
+     * This method writes a column as one of the operands of the current
+     * condition when this object is beign serialised.
+     *
+     * @param column The column operand to write.
+     * @param parameters The parameters list for the query.
+     * @param cnf The ColumnNameFinder that will be use for writing columns
+     * names in the condition.
+     * @param sb THe StringBuilder to write the result.
+     */
+    private void writeColumn(Column column, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
+    {
+        sb.append(cnf.findColumnName(column));
+        if (column.getParameters() != null)
+        {
+            parameters.addAll(column.getParameters());
+        }
+    }
+
+    /**
+     * This method writes a condition as one of the operands of the current
+     * condition when this object is beign serialised.
+     *
+     * @param condition
+     * @param parameters The parameters list for the query.
+     * @param cnf The ColumnNameFinder that will be use for writing columns
+     * names in the condition.
+     * @param sb THe StringBuilder to write the result.
+     */
+    private void writeCondition(Condition condition, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
+    {
+        sb.append("(");
+        sb.append(condition.writeString(parameters, cnf));
+        sb.append(")");
+    }
+
+    /**
+     * This method writes a literal param as one of the operands of the current
+     * condition when this object is beign serialised.
+     *
+     * @param operand The operand literal to write.
+     * @param parameters The parameters list for the query.
+     * @param sb THe StringBuilder to write the result.
+     */
+    private void writeLiteral(Object operand, List<Object> parameters, StringBuilder sb)
+    {
+        parameters.add(operand);
+        sb.append("?");
     }
 }

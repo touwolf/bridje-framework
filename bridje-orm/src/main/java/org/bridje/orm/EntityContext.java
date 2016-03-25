@@ -17,25 +17,25 @@
 package org.bridje.orm;
 
 /**
- * 
+ *
  */
 public interface EntityContext
 {
     <T> void fixTable(Class<T> entityClass);
-    
+
     <T> T find(Class<T> entityClass, Object id);
 
     <T> T insert(T entity);
-    
+
     <T> T update(T entity);
-    
+
     <T> T update(T entity, Object id);
-    
+
     <T> T refresh(T entity);
 
     <T> T delete(T entity);
 
     <T> Query<T> query(Table<T> entityTable);
-    
+
     void clearCache();
 }

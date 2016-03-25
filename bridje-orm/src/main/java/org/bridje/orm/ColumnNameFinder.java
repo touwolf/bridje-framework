@@ -16,12 +16,18 @@
 
 package org.bridje.orm;
 
-import org.bridje.orm.Column;
 /**
- *
+ * A functional interface to retrive the column name that must be use to
+ * serialize the given column into a query.
  */
 @FunctionalInterface
 public interface ColumnNameFinder
 {
+    /**
+     * Finds the real column name in the database for the given column.
+     *
+     * @param column The column whos name needs to be find.
+     * @return The real column name in the database for the given column.
+     */
     String findColumnName(Column column);
 }
