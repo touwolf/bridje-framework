@@ -52,3 +52,4 @@ junit*.properties
 /bridje-orm/nbproject/
 .project
 .settings
+.classpath
