@@ -28,7 +28,7 @@ import org.junit.runners.MethodSorters;
 public class BuildersTest
 {
     @Test
-    public void test1CreateTable()
+    public void testCreateTable()
     {
         DDLBuilder b = new DDLBuilder("`");
         String query = b.createTable("my_table")
@@ -36,6 +36,7 @@ public class BuildersTest
                 .column(b.buildColumnStmt("name", "VARCHAR", 100, 0, false, false, "NULL"))
                 .primaryKey("id")
                 .toString();
+
         String expected = "CREATE TABLE `my_table`(\n" +
                           "    `id` BIGINT NOT NULL AUTO_INCREMENT, \n" +
                           "    `name` VARCHAR(100) NULL DEFAULT NULL, \n" +
@@ -45,13 +46,13 @@ public class BuildersTest
     }
 
     @Test
-    public void test2CreateColumn()
+    public void testAlterTableColumn()
     {
         DDLBuilder b = new DDLBuilder("`");
         String query = b.alterTable("my_table")
                 .addColumn(b.buildColumnStmt("other_col", "DECIMAL", 8, 2, false, false, "NULL"))
                 .toString();
-        System.out.println(query);
+
         String expected = "ALTER TABLE `my_table`\n" +
                          "    ADD `other_col` DECIMAL(8, 2) NULL DEFAULT NULL\n" +
                          ";";
@@ -65,7 +66,6 @@ public class BuildersTest
         String query = d.delete("`my_table`")
                 .where("`my_table`.`id`=1").toString();
 
-        System.out.println(query);
         String expected = "DELETE FROM `my_table` WHERE `my_table`.`id`=1;";
         assertEquals(expected, query);
     }
@@ -76,8 +76,46 @@ public class BuildersTest
         DeleteBuilder d = new DeleteBuilder();
         String query = d.delete("`my_table`").toString();
 
-        System.out.println(query);
         String expected = "DELETE FROM `my_table`;";
+        assertEquals(expected, query);
+    }
+
+    @Test
+    public void testInsertTuples()
+    {
+        InsertBuilder i = new InsertBuilder();
+        String query = i.insertInto("`my_table`")
+                .fields("`my_field`, `my_field_str`")
+                .values("2, 'value'")
+                .toString();
+
+        String expected = "INSERT INTO `my_table` (`my_field`, `my_field_str`)  VALUES (2, 'value');";
+        assertEquals(expected, query);
+    }
+
+    @Test
+    public void testUpdateTuples()
+    {
+        UpdateBuilder u = new UpdateBuilder();
+        String query = u.update("`my_table`")
+                .set("`my_field`='new value'")
+                .where("`my_field` <> 'new value'")
+                .toString();
+
+        String expected = "UPDATE `my_table` SET `my_field`='new value' = ? WHERE `my_field` <> 'new value';";
+        assertEquals(expected, query);
+    }
+
+    @Test
+    public void testSeletTuples()
+    {
+        SelectBuilder s = new SelectBuilder();
+        String query = s.select("`id`")
+                .from("`my_table`")
+                .where("`my_field` <> 'new value'")
+                .toString();
+
+        String expected = "SELECT `id` FROM `my_table` WHERE `my_field` <> 'new value';";
         assertEquals(expected, query);
     }
 }
