@@ -92,4 +92,17 @@ public class BuildersTest
         String expected = "INSERT INTO `my_table` (`my_field`, `my_field_str`)  VALUES (2, 'value');";
         assertEquals(expected, query);
     }
+
+    @Test
+    public void testUpdateTuples()
+    {
+        UpdateBuilder u = new UpdateBuilder();
+        String query = u.update("`my_table`")
+                .set("`my_field`='new value'")
+                .where("`my_field` <> 'new value'")
+                .toString();
+
+        String expected = "UPDATE `my_table` SET `my_field`='new value' = ? WHERE `my_field` <> 'new value';";
+        assertEquals(expected, query);
+    }
 }
