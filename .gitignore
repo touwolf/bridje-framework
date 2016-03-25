@@ -50,3 +50,5 @@ build/
 build.properties
 junit*.properties
 /bridje-orm/nbproject/
+.project
+.settings
