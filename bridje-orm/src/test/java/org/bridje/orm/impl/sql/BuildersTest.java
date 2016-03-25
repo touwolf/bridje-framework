@@ -105,4 +105,17 @@ public class BuildersTest
         String expected = "UPDATE `my_table` SET `my_field`='new value' = ? WHERE `my_field` <> 'new value';";
         assertEquals(expected, query);
     }
+
+    @Test
+    public void testSeletTuples()
+    {
+        SelectBuilder s = new SelectBuilder();
+        String query = s.select("`id`")
+                .from("`my_table`")
+                .where("`my_field` <> 'new value'")
+                .toString();
+
+        String expected = "SELECT `id` FROM `my_table` WHERE `my_field` <> 'new value';";
+        assertEquals(expected, query);
+    }
 }
