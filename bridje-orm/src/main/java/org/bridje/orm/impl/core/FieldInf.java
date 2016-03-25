@@ -52,6 +52,8 @@ class FieldInf<T, C> implements ColumnData
 
     private final boolean indexed;
     
+    private final boolean autoIncrement;
+    
     public FieldInf(EntityInf<T> entityInf, Field field, Class<C> dataType)
     {
         this.entityInf = entityInf;
@@ -64,6 +66,7 @@ class FieldInf<T, C> implements ColumnData
             throw new IllegalArgumentException("The field " + field.getName() + " is not a valid entity field.");
         }
         this.key = this.field.getAnnotation(Key.class) != null;
+        this.autoIncrement = this.key && this.field.getAnnotation(Key.class).autoIncrement();
         this.columnName = findColumnName(annotation.column());
         this.sqlType = findSqlType(annotation.type());
         this.length = findLength(annotation.length());
@@ -344,6 +347,11 @@ class FieldInf<T, C> implements ColumnData
         return indexed;
     }
 
+    public boolean isAutoIncrement()
+    {
+        return autoIncrement;
+    }
+    
     @Override
     public String getDefaultValue()
     {

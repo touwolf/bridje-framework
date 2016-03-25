@@ -32,13 +32,13 @@ public class BuildersTest
     {
         DDLBuilder b = new DDLBuilder("`");
         String query = b.createTable("my_table")
-                .column(b.buildColumnStmt("id", "BIGINT", 0, 0, true, null))
-                .column(b.buildColumnStmt("name", "VARCHAR", 100, 0, false, "NULL"))
+                .column(b.buildColumnStmt("id", "BIGINT", 0, 0, true, true, null))
+                .column(b.buildColumnStmt("name", "VARCHAR", 100, 0, false, false, "NULL"))
                 .primaryKey("id")
                 .toString();
         String expected = "CREATE TABLE `my_table`(\n" +
-                          "    `id` BIGINT NOT NULL, \n" +
-                          "    `name` VARCHAR(100) DEFAULT NULL, \n" +
+                          "    `id` BIGINT NOT NULL AUTO_INCREMENT, \n" +
+                          "    `name` VARCHAR(100) NULL DEFAULT NULL, \n" +
                           "    PRIMARY KEY (`id`)\n" +
                           ");";
         assertEquals(expected, query);
@@ -49,11 +49,11 @@ public class BuildersTest
     {
         DDLBuilder b = new DDLBuilder("`");
         String query = b.alterTable("my_table")
-                .addColumn(b.buildColumnStmt("other_col", "DECIMAL", 8, 2, false, "NULL"))
+                .addColumn(b.buildColumnStmt("other_col", "DECIMAL", 8, 2, false, false, "NULL"))
                 .toString();
         System.out.println(query);
         String expected = "ALTER TABLE `my_table`\n" +
-                         "    ADD `other_col` DECIMAL(8, 2) DEFAULT NULL\n" +
+                         "    ADD `other_col` DECIMAL(8, 2) NULL DEFAULT NULL\n" +
                          ";";
         assertEquals(expected, query);
     }

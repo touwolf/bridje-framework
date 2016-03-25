@@ -232,7 +232,7 @@ class EntityInf<T> implements TableData
         }
         return null;
     }
-
+    
     public <C> C parseColumn(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
     {
         try
@@ -241,6 +241,22 @@ class EntityInf<T> implements TableData
             if(rs.next())
             {
                 return fieldInfo.castValue(column.getType(), parseEntityColumn(index, rs));
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public <C> C parseColumn(int index, FieldInf<T, C> fieldInfo, ResultSet rs, EntityContextImpl ctx)
+    {
+        try
+        {
+            if(rs.next())
+            {
+                return fieldInfo.castValue(fieldInfo.getDataType(), parseEntityColumn(index, rs));
             }
         }
         catch (Exception e)
@@ -364,5 +380,11 @@ class EntityInf<T> implements TableData
     public ColumnData getKeyColumn()
     {
         return keyField;
+    }
+
+    public <T> T updateKeyField(T entity, ResultSet rs, EntityContextImpl entityContext)
+    {
+        keyField.setValue(entity, parseColumn(1, keyField, rs, entityContext));
+        return entity;
     }
 }

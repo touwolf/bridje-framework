@@ -26,8 +26,8 @@ public class DDLBuilder
     private final StringBuilder sb;
 
     private boolean firstColumn;
-    
-    private String idDelimiter;
+
+    private final String idDelimiter;
 
     public DDLBuilder(String idDelimiter)
     {
@@ -103,7 +103,7 @@ public class DDLBuilder
         return sb.toString();
     }
     
-    public String buildColumnStmt(String columnName, String sqlType, int length, int precision, boolean isKey, String def)
+    public String buildColumnStmt(String columnName, String sqlType, int length, int precision, boolean isKey, boolean autoIncement, String def)
     {
         StringWriter sw = new StringWriter();
         
@@ -124,9 +124,14 @@ public class DDLBuilder
         if(isKey)
         {
             sw.append(" NOT NULL");
+            if(autoIncement)
+            {
+                sw.append(" AUTO_INCREMENT");
+            }
         }
         else
         {
+            sw.append(" NULL");
             if(def != null)
             {
                 sw.append(" DEFAULT ");

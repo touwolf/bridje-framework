@@ -211,6 +211,15 @@ public class EntityContextTest
         assertNull(ctx.find(User.class, 2l));
     }
     
+    @Test
+    public void test6AutoIncrement()
+    {
+        ctx.fixTable(Rol.class);
+        Rol rol = ctx.insert(new Rol("Admin Rol"));
+        assertNotNull(rol.getId());
+        assertEquals(1, rol.getId().intValue());
+    }
+    
     private void deleteDataBase(String tageth2testdb)
     {
         File f = new File(tageth2testdb);

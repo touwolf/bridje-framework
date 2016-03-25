@@ -34,11 +34,6 @@ import org.bridje.orm.Table;
 import org.bridje.orm.Query;
 import org.bridje.orm.dialects.ColumnData;
 import org.bridje.orm.dialects.SQLDialect;
-import org.bridje.orm.impl.core.EntityInf;
-import org.bridje.orm.impl.core.EntitysCache;
-import org.bridje.orm.impl.core.OrmMetaInfService;
-import org.bridje.orm.impl.core.QueryConsumer;
-import org.bridje.orm.impl.core.QueryImpl;
 
 /**
  * 
@@ -160,7 +155,14 @@ class EntityContextImpl implements EntityContext
                     .fields(entityInf.allFieldsCommaSep())
                     .valuesParams(entityInf.allFieldsCount());
 
-            doUpdate(ib.toString(), entityInf.buildInsertParameters(entity));
+            if(entityInf.getKeyField().isAutoIncrement())
+            {
+                doUpdate(ib.toString(), (rs) -> entityInf.updateKeyField(entity, rs, this) , entityInf.buildInsertParameters(entity));
+            }
+            else
+            {
+                doUpdate(ib.toString(), entityInf.buildInsertParameters(entity));
+            }
             enittysCache.put(entity, entityInf.findKeyValue(entity));
         }
         catch (SQLException ex)
@@ -242,6 +244,27 @@ class EntityContextImpl implements EntityContext
             try (ResultSet resultSet = stmt.executeQuery())
             {
                 result = consumer.parse(resultSet);
+            }
+        }
+        return result;
+    }
+
+    public <T> T doUpdate(String query, QueryConsumer<T> consumer, Object... parameters) throws SQLException
+    {
+        LOG.log(Level.INFO, query);
+        T result = null;
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query))
+        {
+            for (int i = 0; i < parameters.length; i++)
+            {
+                setParam(stmt, parameters[i], i + 1);
+            }
+            if(stmt.executeUpdate() > 0)
+            {
+                try(ResultSet rs = stmt.getGeneratedKeys())
+                {
+                    result = consumer.parse(rs);
+                }
             }
         }
         return result;

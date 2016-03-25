@@ -162,4 +162,10 @@ class RelationInf<T, R> implements ColumnData
     {
         return "NULL";
     }
+
+    @Override
+    public boolean isAutoIncrement()
+    {
+        return false;
+    }
 }

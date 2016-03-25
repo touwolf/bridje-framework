@@ -14,30 +14,46 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.dialects;
+package org.bridje.orm.impl;
 
-import java.sql.JDBCType;
+import org.bridje.orm.Entity;
+import org.bridje.orm.Field;
+import org.bridje.orm.Key;
 
 /**
- * 
+ *
  */
-public interface ColumnData
+@Entity(table = "rols")
+public class Rol
 {
-    TableData getTableData();
+    @Key(autoIncrement = true)
+    @Field
+    private Long id;
 
-    String getColumnName();
+    @Field
+    private String name;
 
-    JDBCType getSqlType();
+    public Rol()
+    {
+    }
 
-    boolean isKey();
+    public Rol(String name)
+    {
+        this.name = name;
+    }
 
-    int getLength();
+    public Long getId()
+    {
+        return id;
+    }
 
-    int getPrecision();
-    
-    boolean isIndexed();
+    public String getName()
+    {
+        return name;
+    }
 
-    String getDefaultValue();
-    
-    boolean isAutoIncrement();
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 }
