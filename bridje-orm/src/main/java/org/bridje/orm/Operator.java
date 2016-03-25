@@ -19,7 +19,7 @@ package org.bridje.orm;
 /**
  *
  */
-public enum Operator
+enum Operator
 {
     EQ("="), GT(">"), GE(">="), LT("<"), LE("<="), NE("<>"), AND("and"), OR("or"), NOT("not");
     
