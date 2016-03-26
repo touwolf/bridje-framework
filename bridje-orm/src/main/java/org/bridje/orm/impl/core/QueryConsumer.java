@@ -17,12 +17,21 @@
 package org.bridje.orm.impl.core;
 
 import java.sql.ResultSet;
+
 /**
+ * A functional interface to parse the results of a ResultSet object into the
+ * required type.
  *
- * @param <T>
+ * @param <T> The type to convert the result set records to.
  */
 @FunctionalInterface
 public interface QueryConsumer<T>
 {
+    /**
+     * Parse the result set and gets the required type.
+     *
+     * @param rs The result set to parse.
+     * @return The resulting type.
+     */
     T parse(ResultSet rs);
 }
