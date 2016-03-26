@@ -27,7 +27,7 @@ public interface OrmService
     /**
      * Creates a entity context from the name of the datasource that must be use
      * to access the database. The name of the datasource must be a valid name
-     * that the {@link JdbcService} can return.
+     * that the {@link org.bridje.jdbc.JdbcService} can return.
      *
      * @param dsName The name of the datasource.
      * @return The new created entity context.
