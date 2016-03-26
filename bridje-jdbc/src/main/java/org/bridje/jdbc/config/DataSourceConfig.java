@@ -39,7 +39,7 @@ public class DataSourceConfig
 
     /**
      * Gets the name of the DataSource object that will be found by the 
-     * {@link JdbcService#getDataSource} method.
+     * {@link org.bridje.jdbc.JdbcService#getDataSource} method.
      * 
      * @return The name of the DataSource.
      */
@@ -50,7 +50,7 @@ public class DataSourceConfig
 
     /**
      * Sets the name of the DataSource object that will be found by the 
-     * {@link JdbcService#getDataSource} method.
+     * {@link org.bridje.jdbc.JdbcService#getDataSource} method.
      * 
      * @param name The name of the DataSource.
      */
