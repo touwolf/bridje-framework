@@ -29,10 +29,11 @@ import java.io.Writer;
 public interface ConfigRepository
 {
     /**
-     * Obtains if the repository handle a context
+     * Obtains if the repository can handles a context
      *
-     * @param context
-     * @return
+     * @param context The context name.
+     * @return true the repository can handles the given context, false
+     * otherwise.
      */
     Boolean handleContext(String context);
 
@@ -41,7 +42,8 @@ public interface ConfigRepository
      *
      * @param configName The name of the configuration.
      * @return A Reader from wich to read the configuracion instance.
-     * @throws java.io.IOException If any IOException occurs during configuration retreval.
+     * @throws java.io.IOException If any IOException occurs during
+     * configuration retreval.
      */
     Reader findConfig(String configName) throws IOException;
 
@@ -49,9 +51,10 @@ public interface ConfigRepository
      * Obtains a writer to the configuration resource by the given name.
      *
      * @param configName The name for this configuration instance.
-     * @return The writer in wich to put the new configuration instance, 
-     * or null if this repository does not allows configuration saving.
-     * @throws java.io.IOException If any IOException occurs during configuration saving.
+     * @return The writer in wich to put the new configuration instance, or null
+     * if this repository does not allows configuration saving.
+     * @throws java.io.IOException If any IOException occurs during
+     * configuration saving.
      */
     Writer saveConfig(String configName) throws IOException;
 
