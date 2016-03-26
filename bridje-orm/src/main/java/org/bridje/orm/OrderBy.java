@@ -17,7 +17,8 @@
 package org.bridje.orm;
 
 /**
- *
+ * Represents an order by statement that can be use in a query to order the
+ * results.
  */
 public class OrderBy
 {
@@ -31,11 +32,20 @@ public class OrderBy
         this.column = column;
     }
 
+    /**
+     * Gets the type of the order by ASD or DESC.
+     * @return ASC the order is ascending, DESC the order is descending.
+     */
     public OrderByType getType()
     {
         return type;
     }
 
+    /**
+     * The column to be ordered.
+     * 
+     * @return A Column object witch represents the ordered column.
+     */
     public Column getColumn()
     {
         return column;

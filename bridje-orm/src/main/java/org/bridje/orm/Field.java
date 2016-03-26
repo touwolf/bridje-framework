@@ -23,19 +23,49 @@ import java.lang.annotation.Target;
 import java.sql.JDBCType;
 
 /**
- *
+ * This annotation can be use on a field of an entity class to especify that the
+ * field should be mapped to a especific column in the target table of the
+ * entity.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Field
 {
+    /**
+     * The column name that this field should be mapped to.
+     *
+     * @return The name of the column in the target table of the entity.
+     */
     String column() default "";
 
+    /**
+     * The JDBCType for the column.
+     *
+     * @return The JDBCType for the column.
+     */
     JDBCType type() default JDBCType.NULL;
 
+    /**
+     * Defines the length of the data type for this column for the types that
+     * needs then (ex: VARCHAR, CHAR, INTEGER, BIGINT, DECIMAL, ....)
+     *
+     * @return The length of the field.
+     */
     int length() default 0;
 
+    /**
+     * Defines the precision of the floating point types.
+     *
+     * @return The precision of the field.
+     */
     int precision() default 0;
 
+    /**
+     * Defines if this field have a index or not. If true th ORM API will create
+     * an index on this field upon fix the Entity table.
+     *
+     * @return true the column will be indexed, false no index will be
+     * automatically created on the column of this field.
+     */
     boolean index() default false;
 }

@@ -19,26 +19,88 @@ package org.bridje.orm;
 import java.util.List;
 
 /**
+ * Represents a query that can be execute in an entity context to retrive
+ * entitys from the database.
  *
- * @param <T>
+ * @param <T> The type of the base entity for the query.
  */
 public interface Query<T>
 {
+    /**
+     * The page that must be fetch from the database.
+     *
+     * @param page The page number where 1 is the first page, 0 or less means no
+     * page, so all the entitys will be returned.
+     * @param size The size in records of a page.
+     */
     void paging(int page, int size);
 
+    /**
+     * Executes the query and fetch all entitys.
+     *
+     * @return The list of entitys returned from the database.
+     */
     List<T> fetchAll();
 
+    /**
+     * Executes the query and fetch the given column.
+     *
+     * @param <C> The type of the field the given column represents.
+     * @param column The column to be fetch.
+     * @return A list of objects of type c representing the values of the
+     * column.
+     */
     <C> List<C> fetchAll(Column<T, C> column);
-    
+
+    /**
+     * Executes the query and fetch the first record that the database return.
+     *
+     * @return The first entity returned by the query.
+     */
     T fetchOne();
-    
+
+    /**
+     * Executes the query and fetch the first value of the given column returned
+     * by the database.
+     *
+     * @param <C> The type of the field the given column represents.
+     * @param column The column to be fetch.
+     * @return The first entity returned by the query.
+     */
     <C> C fetchOne(Column<T, C> column);
 
+    /**
+     * Executes a select count in the database and gets the number of records
+     * this query will return from the database.
+     *
+     * @return The number of records this query can return, 0 means that this
+     * query will not return any records.
+     */
     long count();
 
+    /**
+     * Gets when ever this query will return any records at all.
+     *
+     * @return true the query will return 1 or more record, false the query will
+     * not return any records.
+     */
     boolean exists();
 
+    /**
+     * Specifies the condition to be use on this query.
+     *
+     * @param condition A condition object representing the where statement of
+     * the query.
+     * 
+     * @return this object.
+     */
     Query<T> where(Condition condition);
 
+    /**
+     * Specifies the order by statement to be use in this query.
+     * 
+     * @param statements The OrderBy objects that the query must use to order the records.
+     * @return this object.
+     */
     Query<T> orderBy(OrderBy... statements);
 }

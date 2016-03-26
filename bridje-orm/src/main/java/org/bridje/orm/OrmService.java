@@ -19,11 +19,27 @@ package org.bridje.orm;
 import javax.sql.DataSource;
 
 /**
- *
+ * A service interface to access the Orm features. This interfaces can create
+ * new EntityContext objects so you can manage your data model with then.
  */
 public interface OrmService
 {
+    /**
+     * Creates a entity context from the name of the datasource that must be use
+     * to access the database. The name of the datasource must be a valid name
+     * that the {@link JdbcService} can return.
+     *
+     * @param dsName The name of the datasource.
+     * @return The new created entity context.
+     */
     EntityContext createContext(String dsName);
 
+    /**
+     * Creates an entity context from the actual datasource that must be use to
+     * access the database.
+     *
+     * @param ds The data source to use in the entity context.
+     * @return The new created entity context.
+     */
     EntityContext createContext(DataSource ds);
 }

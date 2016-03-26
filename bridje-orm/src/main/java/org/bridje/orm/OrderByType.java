@@ -17,9 +17,17 @@
 package org.bridje.orm;
 
 /**
- *
+ * Type for order by statements.
  */
 public enum OrderByType
 {
-    ASC, DESC
+    /**
+     * The order will be ascending.
+     */
+    ASC,
+
+    /**
+     * The order will be descending.
+     */
+    DESC;
 }

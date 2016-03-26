@@ -22,11 +22,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * This annotation can be use on a field of an entity class to especify that the
+ * field should be mapped to a especific column in the target table of the
+ * entity, and that the field is a foraign key on the database with the table of
+ * the entity of the type of this field. This annotation must be use on a field
+ * whos type is another entity of the data model, otherwise the framework will
+ * throw an exception indicating that the given field is not a relation.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Relation
 {
+    /**
+     * The name of the column to be use as a foraign key. the related field will
+     * always be the primary key of the related table.
+     *
+     * @return The column name.
+     */
     String column() default "";
 }

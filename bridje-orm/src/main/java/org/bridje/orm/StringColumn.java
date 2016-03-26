@@ -17,20 +17,41 @@
 package org.bridje.orm;
 
 /**
+ * Represents an string column, string columns are the same as a regular columns
+ * but the ofer some unique functions like length.
  *
- * @param <E>
+ * @param <E> The type of the entity that the field this columns represents
+ * belongs to.
  */
 public class StringColumn<E> extends Column<E, String>
 {
+
+    /**
+     * This constructor is used to create a column without any funcions, a
+     * column constructed by this constructor along will represent the plain
+     * database column with no functions, columns must be created with the table
+     * object they belong to, the field name as declared in the entity class,
+     * and the Type of the field.
+     *
+     * @param table The Table object this columns belong to.
+     * @param field The field name for the declared java field in the base
+     * entity class.
+     */
     public StringColumn(Table<E> table, String field)
     {
         super(table, field, String.class);
     }
 
+    /**
+     * Creates a new column that will return the the length in characters ot
+     * this column.
+     *
+     * @return The new created column.
+     */
     public NumberColumn<E, Integer> length()
     {
         String functionExp;
-        if(getFunction() == null)
+        if (getFunction() == null)
         {
             functionExp = "LENGTH(%s)";
         }

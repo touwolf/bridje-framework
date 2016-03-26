@@ -17,7 +17,7 @@
 package org.bridje.orm;
 
 /**
- *
+ * Operators used in querys.
  */
 enum Operator
 {
