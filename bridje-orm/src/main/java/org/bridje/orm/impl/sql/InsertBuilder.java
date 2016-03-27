@@ -60,16 +60,16 @@ public class InsertBuilder
             {
                 sb.append(", ");
             }
-            sb.append("?");
+            sb.append('?');
         }
-        sb.append(")");
+        sb.append(')');
         return this;
     }
     
     @Override
     public String toString()
     {
-        sb.append(";");
+        sb.append(';');
         return sb.toString();
     }
 }

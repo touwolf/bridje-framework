@@ -44,9 +44,9 @@ class BinaryCondition extends Condition
         StringBuilder sb = new StringBuilder();
 
         writeOperand(firstOperand, parameters, cnf, sb);
-        sb.append(" ");
+        sb.append(' ');
         sb.append(operator.toString());
-        sb.append(" ");
+        sb.append(' ');
         writeOperand(secondOperand, parameters, cnf, sb);
 
         return sb.toString();
@@ -125,6 +125,6 @@ class BinaryCondition extends Condition
     private void writeLiteral(Object operand, List<Object> parameters, StringBuilder sb)
     {
         parameters.add(operand);
-        sb.append("?");
+        sb.append('?');
     }
 }
