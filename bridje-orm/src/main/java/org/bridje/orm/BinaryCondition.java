@@ -109,9 +109,9 @@ class BinaryCondition extends Condition
      */
     private void writeCondition(Condition condition, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
     {
-        sb.append("(");
+        sb.append('(');
         sb.append(condition.writeString(parameters, cnf));
-        sb.append(")");
+        sb.append(')');
     }
 
     /**
