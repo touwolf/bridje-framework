@@ -27,6 +27,12 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -67,7 +73,7 @@ public class HttpServerImpl implements HttpServer
                 sslContext = config.createSSLContext();
             }
         }
-        catch (Exception e)
+        catch (NoSuchAlgorithmException | KeyStoreException | IOException | UnrecoverableKeyException | CertificateException | KeyManagementException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

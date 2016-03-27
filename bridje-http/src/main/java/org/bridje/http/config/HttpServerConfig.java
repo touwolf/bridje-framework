@@ -19,9 +19,15 @@ package org.bridje.http.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -189,7 +195,7 @@ public class HttpServerConfig
         }
     }
 
-    public SSLContext createSSLContext() throws Exception
+    public SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableKeyException, CertificateException, KeyManagementException
     {
         SSLContext serverContext = SSLContext.getInstance(sslAlgo);
         final KeyStore ks = KeyStore.getInstance(keyStoreType);

@@ -16,6 +16,7 @@
 
 package org.bridje.jdbc.impl;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,12 +51,10 @@ class JdbcServiceImpl implements JdbcService
         {
             dsMap = new ConcurrentHashMap<>();
             JdbcConfig jdbcCfg = cfgServ.findOrCreateConfig(JdbcConfig.class, new JdbcConfig());
-            for(DataSourceConfig config : jdbcCfg.getDataSources())
-            {
-                dsMap.put(config.getName(), new DataSourceImpl(config));
-            }
+            jdbcCfg.getDataSources().stream()
+                    .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

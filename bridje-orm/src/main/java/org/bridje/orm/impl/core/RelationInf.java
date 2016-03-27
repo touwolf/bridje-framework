@@ -101,17 +101,10 @@ class RelationInf<T, R> implements ColumnData
 
     public <T> Object getColumnValue(T entity)
     {
-        try
+        R relatedEntityObject = getValue(entity);
+        if(relatedEntityObject != null)
         {
-            R relatedEntityObject = getValue(entity);
-            if(relatedEntityObject != null)
-            {
-                return relatedEntity.getKeyField().getValue(relatedEntityObject);
-            }
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return relatedEntity.getKeyField().getValue(relatedEntityObject);
         }
         return null;
     }

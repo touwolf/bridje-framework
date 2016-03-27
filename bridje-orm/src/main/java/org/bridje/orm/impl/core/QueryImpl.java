@@ -16,6 +16,7 @@
 
 package org.bridje.orm.impl.core;
 
+import java.sql.SQLException;
 import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +77,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             }
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), parameters.toArray());
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -101,7 +102,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             }
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllColumns(1, column, rs, entCtxImpl), parameters.toArray());
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -118,7 +119,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             qb.limit(0, 1);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseEntity(rs, entCtxImpl), parameters.toArray());
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -139,7 +140,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             qb.limit(0, 1);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseColumn(1, column, rs, entCtxImpl),parameters.toArray());
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -155,7 +156,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             SelectBuilder qb = createQuery("COUNT(*)", parameters);
             return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseCount(rs), parameters.toArray());
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

@@ -47,16 +47,7 @@ public class GenerateProcessor extends AbstractProcessor
     {
         //Creating necesary objects for annotations procesing.
         super.init(processingEnv);
-        Messager messager = processingEnv.getMessager();
-        try
-        {
-            filer = processingEnv.getFiler();
-        }
-        catch (Exception e)
-        {
-            messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
-            LOG.severe(e.getMessage());
-        }
+        filer = processingEnv.getFiler();
     }
 
     @Override
@@ -77,7 +68,7 @@ public class GenerateProcessor extends AbstractProcessor
                 }
             }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage());
             LOG.severe(ex.getMessage());
@@ -170,7 +161,7 @@ public class GenerateProcessor extends AbstractProcessor
             }
             cw.publicAccess().staticElement().finalElement().fieldDec(type, name, value);
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage());
             LOG.severe(e.getMessage());

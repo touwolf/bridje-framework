@@ -143,7 +143,7 @@ class DataSourceImpl implements DataSource
             {
                 Thread.sleep(1000l);
             }
-            catch (Exception e)
+            catch (InterruptedException e)
             {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }

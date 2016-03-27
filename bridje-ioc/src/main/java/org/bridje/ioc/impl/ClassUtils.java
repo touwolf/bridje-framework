@@ -388,7 +388,7 @@ class ClassUtils
                 }
             }
         }
-        catch (Exception ex)
+        catch (InstantiationException | IllegalAccessException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }

@@ -99,7 +99,7 @@ public class JdbcServiceTest
                 LOG.log(Level.INFO, "Data: {0} {1}", new Object[]{ resultSet.getLong(1), resultSet.getString(2) });
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -115,7 +115,7 @@ public class JdbcServiceTest
             LOG.log(Level.INFO, "{0}{1}", new Object[]{sql, connection.toString()});
             stmt.execute(sql);
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

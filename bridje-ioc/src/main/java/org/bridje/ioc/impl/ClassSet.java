@@ -176,7 +176,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
                 return result;
             }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }

@@ -165,7 +165,7 @@ class EntityInf<T> implements TableData
                 }
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -187,7 +187,7 @@ class EntityInf<T> implements TableData
                 }
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -208,7 +208,7 @@ class EntityInf<T> implements TableData
                 return result;
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -226,7 +226,7 @@ class EntityInf<T> implements TableData
                 return entity;
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -243,7 +243,7 @@ class EntityInf<T> implements TableData
                 return fieldInfo.castValue(column.getType(), parseEntityColumn(index, rs));
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -259,7 +259,7 @@ class EntityInf<T> implements TableData
                 return fieldInfo.castValue(fieldInfo.getDataType(), parseEntityColumn(index, rs));
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -275,7 +275,7 @@ class EntityInf<T> implements TableData
                 return rs.getInt(1);
             }
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

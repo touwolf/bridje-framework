@@ -42,7 +42,8 @@ public class DataSourceImpl implements DataSource, ConnectionFactory
         {
             cn.setAutoCommit(true);
             cn.setReadOnly(false);
-        } catch (Exception e)
+        }
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -58,7 +59,7 @@ public class DataSourceImpl implements DataSource, ConnectionFactory
             cn.setAutoCommit(true);
             cn.setReadOnly(false);
         }
-        catch (Exception e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

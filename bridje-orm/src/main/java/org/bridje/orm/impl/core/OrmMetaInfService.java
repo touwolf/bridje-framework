@@ -51,7 +51,7 @@ class OrmMetaInfService
             fillEntitys();
             this.entitysMap.forEach((k, e) -> e.fillRelations());
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -105,7 +105,7 @@ class OrmMetaInfService
             Class cls = Class.forName(clsName);
             findOrCreateEntity(cls, tableName);
         }
-        catch (Exception e)
+        catch (ClassNotFoundException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
