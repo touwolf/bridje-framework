@@ -60,7 +60,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception
+    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws IOException
     {
         if(msg instanceof HttpRequest)
         {
@@ -101,7 +101,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
     {
         LOG.log(Level.SEVERE, cause.getMessage(), cause);
         ctx.close();

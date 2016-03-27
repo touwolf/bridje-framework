@@ -16,6 +16,7 @@
 
 package org.bridje.cfg;
 
+import java.io.IOException;
 import org.bridje.ioc.Ioc;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import org.junit.Test;
 public class ConfigServiceTest
 {
     @Test
-    public void testFindConfigClass() throws Exception
+    public void testFindConfigClass() throws IOException
     {
         ConfigService instance = Ioc.context().find(ConfigService.class);
         MyConfig myCfg = instance.findConfig(MyConfig.class);
