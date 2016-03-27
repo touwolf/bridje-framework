@@ -373,7 +373,7 @@ class EntityContextImpl implements EntityContext
 
     private void setParam(PreparedStatement stmt, Object parameter, int index) throws SQLException
     {
-        if(parameter != null && parameter instanceof Character) 
+        if(parameter instanceof Character) 
         {
             stmt.setString(index, parameter.toString());
         }
