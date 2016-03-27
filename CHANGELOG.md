@@ -1,6 +1,6 @@
 # Change Log
 
-## [v0.1.4-3](https://github.com/bridje/bridje-framework/tree/v0.1.5-1) (2016-03-25)
+## [v0.1.5-1](https://github.com/bridje/bridje-framework/tree/v0.1.5-1) (2016-03-25)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.4-3...v0.1.5-1)
 
 - HTTP server SSL configuration.
