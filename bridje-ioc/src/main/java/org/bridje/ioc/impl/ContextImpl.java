@@ -207,7 +207,7 @@ class ContextImpl implements IocContext
         {
             return new ContextImpl(scope, instances, this);
         }
-        catch(Exception ex)
+        catch (IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
