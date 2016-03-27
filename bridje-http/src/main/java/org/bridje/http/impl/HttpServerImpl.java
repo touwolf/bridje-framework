@@ -130,9 +130,9 @@ public class HttpServerImpl implements HttpServer
         {
             group.shutdownGracefully().sync();
         }
-        catch (Exception e)
+        catch (InterruptedException ex)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
