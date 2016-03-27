@@ -45,7 +45,7 @@ public class DeleteBuilder
     @Override
     public String toString()
     {
-        sb.append(";");
+        sb.append(';');
         return sb.toString();
     }
 }

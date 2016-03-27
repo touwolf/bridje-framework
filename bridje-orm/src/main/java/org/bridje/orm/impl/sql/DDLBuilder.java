@@ -57,7 +57,7 @@ public class DDLBuilder
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE INDEX idx_");
         sb.append(identifier(tableName));
-        sb.append("_");
+        sb.append('_');
         sb.append(identifier(columnName));
         sb.append(" ON ");
         sb.append(identifier(tableName));
@@ -99,7 +99,7 @@ public class DDLBuilder
     @Override
     public String toString()
     {
-        sb.append(";");
+        sb.append(';');
         return sb.toString();
     }
     
