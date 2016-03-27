@@ -47,7 +47,7 @@ public class InsertBuilder
     {
         sb.append(" VALUES (");
         sb.append(values);
-        sb.append(")");
+        sb.append(')');
         return this;
     }
     
