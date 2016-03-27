@@ -41,9 +41,9 @@ public class UpdateSetExpression implements SQLExpression
     public void writeSQL(StringWriter sw)
     {
         column.writeSQL(sw);
-        sw.append(" ");
+        sw.append(' ');
         sw.append(SQLOperator.EQ.toString());
-        sw.append(" ");
+        sw.append(' ');
         value.writeSQL(sw);
     }
 }

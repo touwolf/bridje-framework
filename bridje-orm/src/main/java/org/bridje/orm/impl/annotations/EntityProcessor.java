@@ -113,7 +113,7 @@ public class EntityProcessor extends AbstractProcessor
         writer.append(clsName);
         writer.append("=");
         writer.append(table);
-        writer.append("\n");
+        writer.append('\n');
         writer.flush();
     }
 }

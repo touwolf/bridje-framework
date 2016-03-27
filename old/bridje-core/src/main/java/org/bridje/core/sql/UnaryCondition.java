@@ -64,9 +64,9 @@ class UnaryCondition implements Condition
         sw.append("(");
         if(operator == SQLOperator.NOT)
         {
-            sw.append(" ");
+            sw.append(' ');
             sw.append(operator.toString());
-            sw.append(" ");
+            sw.append(' ');
             writeOperand(sw, operand);
         }
         sw.append(")");

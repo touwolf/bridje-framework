@@ -59,7 +59,12 @@ class OrmMetaInfService
 
     public <T> EntityInf<T> findEntityInf(Class<?> entityClass)
     {
-        return (EntityInf<T>)this.entitysMap.get(entityClass);
+        EntityInf<T> result = (EntityInf<T>)this.entitysMap.get(entityClass);
+        if(result == null)
+        {
+            throw new IllegalArgumentException(entityClass.getName() + " is not an entity class.");
+        }
+        return result;
     }
     
     private void fillEntitys() throws IOException

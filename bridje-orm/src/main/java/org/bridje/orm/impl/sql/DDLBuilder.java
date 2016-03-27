@@ -48,7 +48,7 @@ public class DDLBuilder
     {
         sb.append("ALTER TABLE ");
         sb.append(identifier(tableName));
-        sb.append("\n");
+        sb.append('\n');
         return this;
     }
 
@@ -84,7 +84,7 @@ public class DDLBuilder
         firstColumn = false;
         sb.append("    ADD ");
         sb.append(columnStmt);
-        sb.append("\n");
+        sb.append('\n');
         return this;
     }
     
@@ -108,7 +108,7 @@ public class DDLBuilder
         StringWriter sw = new StringWriter();
         
         sw.append(identifier(columnName));
-        sw.append(" ");
+        sw.append(' ');
         sw.append(sqlType);
         if(length > 0)
         {

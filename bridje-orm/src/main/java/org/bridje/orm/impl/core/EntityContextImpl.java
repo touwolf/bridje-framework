@@ -64,10 +64,6 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
-            if(entityInf == null)
-            {
-                throw new IllegalArgumentException(entityClass.getName() + " is not an entity class.");
-            }
             if(tableExists(entityInf))
             {
                 fixColumns(entityInf);
@@ -94,10 +90,6 @@ class EntityContextImpl implements EntityContext
                 return cachedEntity;
             }
             EntityInf<T> entityInf = metainf.findEntityInf(entityClass);
-            if(entityInf == null)
-            {
-                throw new IllegalArgumentException(entityClass.getName() + " is not an entity class.");
-            }
             SelectBuilder qb = new SelectBuilder();
             qb.select(entityInf.allFieldsCommaSep())
                 .from(entityInf.getTableName())
@@ -119,10 +111,6 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
-            if(entityInf == null)
-            {
-                throw new IllegalArgumentException(entity.getClass().getName() + " is not an entity class.");
-            }
             SelectBuilder qb = new SelectBuilder();
             qb.select(entityInf.allFieldsCommaSep())
                 .from(entityInf.getTableName())
@@ -144,13 +132,7 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
-            if(entityInf == null)
-            {
-                throw new IllegalArgumentException(entity.getClass().getName() + " is not an entity class.");
-            }
-
             InsertBuilder ib = new InsertBuilder();
-
             ib.insertInto(entityInf.getTableName())
                     .fields(entityInf.allFieldsCommaSep())
                     .valuesParams(entityInf.allFieldsCount());
@@ -184,10 +166,6 @@ class EntityContextImpl implements EntityContext
         try
         {
             EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
-            if(entityInf == null)
-            {
-                throw new IllegalArgumentException(entity.getClass().getName() + " is not an entity class.");
-            }
             UpdateBuilder ub = new UpdateBuilder();
 
             ub.update(entityInf.getTableName());
@@ -390,10 +368,6 @@ class EntityContextImpl implements EntityContext
     public <T> Query<T> query(Table<T> entityTable)
     {
         EntityInf<T> entityInf = metainf.findEntityInf(entityTable.getEntityClass());
-        if(entityInf == null)
-        {
-            throw new IllegalArgumentException(entityTable.getEntityClass().getName() + " is not an entity class.");
-        }
         return new QueryImpl<>(this, entityInf);
     }
 

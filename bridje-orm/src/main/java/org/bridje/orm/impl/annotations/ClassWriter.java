@@ -57,7 +57,7 @@ class ClassWriter
 
     public ClassWriter emptyLine() throws IOException
     {
-        writer.append("\n");
+        writer.append('\n');
         return this;
     }
 
@@ -131,7 +131,7 @@ class ClassWriter
         }
         if(classDec)
         {
-            writer.append("\n");
+            writer.append('\n');
             classDec = false;
         }
         writeIdentation();
@@ -215,7 +215,7 @@ class ClassWriter
     public ClassWriter fieldDec(String type, String name, String value) throws IOException
     {
         writer.append(type);
-        writer.append(" ");
+        writer.append(' ');
         writer.append(name);
         if(value != null && !value.isEmpty())
         {
@@ -253,7 +253,7 @@ class ClassWriter
             writer.append(", ");
         }
         writer.append(type);
-        writer.append(" ");
+        writer.append(' ');
         writer.append(param);
         this.firstParam = false;
         return this;
@@ -276,16 +276,16 @@ class ClassWriter
     {
         for(int i = 0; i < currentIdent; i++)
         {
-            writer.append(" ");
+            writer.append(' ');
         }
     }
 
     public String createGenericType(String baseType, String... parameters)
     {
         StringBuilder sb = new StringBuilder(baseType);
-        sb.append("<");
+        sb.append('<');
         sb.append(Arrays.asList(parameters).stream().collect(Collectors.joining(", ")));
-        sb.append(">");
+        sb.append('>');
         return sb.toString();
     }
 
@@ -293,15 +293,15 @@ class ClassWriter
     {
         StringBuilder sb = new StringBuilder("new ");
         sb.append(objCls);
-        sb.append("(");
+        sb.append('(');
         sb.append(Arrays.asList(parameters).stream().collect(Collectors.joining(", ")));
-        sb.append(")");
+        sb.append(')');
         return sb.toString();
     }
 
     public String stringLiteral(String value)
     {
-        return "\"" + value + "\"";
+        return '\"' + value + '\"';
     }
 
     public String dotClass(String value)

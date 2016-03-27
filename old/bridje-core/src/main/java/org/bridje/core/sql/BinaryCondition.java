@@ -86,9 +86,9 @@ class BinaryCondition implements Condition
     {
         sw.append("(");
         writeOperand(sw, leftOperand);
-        sw.append(" ");
+        sw.append(' ');
         sw.append(operator.toString());
-        sw.append(" ");
+        sw.append(' ');
         writeOperand(sw, rightOperand);
         sw.append(")");
     }

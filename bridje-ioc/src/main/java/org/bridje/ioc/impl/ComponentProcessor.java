@@ -113,7 +113,7 @@ public class ComponentProcessor extends AbstractProcessor
         writer.append(clsName);
         writer.append("=");
         writer.append(scope);
-        writer.append("\n");
+        writer.append('\n');
         writer.flush();
     }
 }
