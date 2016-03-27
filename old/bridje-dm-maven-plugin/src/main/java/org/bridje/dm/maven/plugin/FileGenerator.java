@@ -57,10 +57,6 @@ public class FileGenerator
                 generated.add(gFile);
             }
         }
-        catch (IOException | TemplateException e)
-        {
-            throw e;
-        }
         finally
         {
             files.removeAll(generated);

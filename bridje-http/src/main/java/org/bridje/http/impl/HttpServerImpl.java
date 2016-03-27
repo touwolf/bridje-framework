@@ -95,7 +95,7 @@ public class HttpServerImpl implements HttpServer
                         .childHandler(new ChannelInitializer<SocketChannel>()
                         {
                             @Override
-                            public void initChannel(SocketChannel ch) throws Exception
+                            public void initChannel(SocketChannel ch)
                             {
                                 if(sslContext != null)
                                 {
@@ -117,7 +117,7 @@ public class HttpServerImpl implements HttpServer
                 group.shutdownGracefully().sync();
             }
         }
-        catch (Exception e)
+        catch (InterruptedException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

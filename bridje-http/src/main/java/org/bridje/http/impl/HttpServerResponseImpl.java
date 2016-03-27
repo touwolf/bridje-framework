@@ -60,16 +60,9 @@ class HttpServerResponseImpl implements HttpServerResponse
 
     protected void close() throws IOException
     {
-        try
-        {
-            out.flush();
-            out.close();
-            this.buffer.release();
-        }
-        catch (IOException e)
-        {
-            throw e; 
-        }
+        out.flush();
+        out.close();
+        this.buffer.release();
     }
 
     @Override
