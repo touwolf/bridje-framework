@@ -108,7 +108,7 @@ public class GenerateProcessor extends AbstractProcessor
             //Constructor
             cw.privateAccess().contructorDec(className);
             cw.begin();
-                cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
+            cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
             cw.end();
             //End
             cw.end();
