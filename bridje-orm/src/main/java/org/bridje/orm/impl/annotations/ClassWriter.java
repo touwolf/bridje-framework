@@ -28,19 +28,19 @@ class ClassWriter
 {
     private final Writer writer;
     
-    private int currentIdent = 0;
+    private int currentIdent;
     
-    private boolean extendsPrinted = false;
+    private boolean extendsPrinted;
     
-    private boolean implementsPrinted = false;
+    private boolean implementsPrinted;
     
     private boolean classDec = true;
 
-    private boolean methodDec = false;
+    private boolean methodDec;
 
-    private boolean firstParam = false;
+    private boolean firstParam;
     
-    private boolean accessWrited = false;
+    private boolean accessWrited;
 
     public ClassWriter(Writer writer)
     {
@@ -232,7 +232,7 @@ class ClassWriter
         this.methodDec = true;
         this.firstParam = true;
         writer.append(method);
-        writer.append("(");
+        writer.append('(');
         return this;
     }
     
@@ -242,7 +242,7 @@ class ClassWriter
         this.firstParam = true;
         writer.append(returnType);
         writer.append(method);
-        writer.append("(");
+        writer.append('(');
         return this;
     }
     

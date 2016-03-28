@@ -47,7 +47,7 @@ public class HttpServerConfig
     
     private int port = 8080;
 
-    private boolean ssl = false;
+    private boolean ssl;
 
     private String keyStoreFile = "keyStoreFile.keystore";
 
