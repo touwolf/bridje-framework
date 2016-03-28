@@ -19,14 +19,14 @@ public class PropConfigAdapter implements ConfigAdapter
     @Override
     public String findFileName(String name, Class<?> cls)
     {
-       //The adapter must attach the file extension to the end of the given name.
+        //The adapter must attach the file extension to the end of the given name.
         return name + ".properties";
     }
 
     @Override
     public String findDefaultFileName(Class<?> cls)
     {
-        return cls.getSimpleName().toLowerCase() + ".properties";
+        return findFileName(cls.getSimpleName().toLowerCase(), cls);
     }
 
     @Override
