@@ -23,6 +23,7 @@ This package contains the Bridje Java Applications Framework. A project that pro
 All of these goals a really ambitious, and many time one or more of then need to be sacrifice in favor of others, but we think that is a matter of balance and priorities. So the framework will orbit around these principles.
 
 See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG.md)
+See [The Framework´s Wiki](https://github.com/bridje/bridje-framework/wiki)
 
 LICENSE
 =================
