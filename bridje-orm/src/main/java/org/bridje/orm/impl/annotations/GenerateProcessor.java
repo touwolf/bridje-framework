@@ -131,11 +131,12 @@ public class GenerateProcessor extends AbstractProcessor
             String fieldType = cw.removeJavaLangPack(fieldEl.asType().toString());
             String type;
             String value;
+            String entityTableField = entityName + "_.table";
             if(fieldType.equalsIgnoreCase("String"))
             {
                 type = cw.createGenericType("StringColumn", entityName);
                 value = cw.newObjStatement("StringColumn<>",
-                        entityName + "_.table", 
+                        entityTableField, 
                         cw.stringLiteral(name));
             }
             else if(fieldType.equalsIgnoreCase("Byte")
@@ -147,7 +148,7 @@ public class GenerateProcessor extends AbstractProcessor
             {
                 type = cw.createGenericType("NumberColumn", entityName, fieldType);
                 value = cw.newObjStatement("NumberColumn<>",
-                        entityName + "_.table", 
+                        entityTableField, 
                         cw.stringLiteral(name),
                         cw.dotClass(fieldType));
             }
@@ -155,7 +156,7 @@ public class GenerateProcessor extends AbstractProcessor
             {
                 type = cw.createGenericType("Column", entityName, fieldType);
                 value = cw.newObjStatement("Column<>",
-                        entityName + "_.table", 
+                        entityTableField, 
                         cw.stringLiteral(name),
                         cw.dotClass(fieldType));
             }
