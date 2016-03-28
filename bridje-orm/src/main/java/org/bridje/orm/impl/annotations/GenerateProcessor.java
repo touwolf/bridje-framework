@@ -99,17 +99,17 @@ public class GenerateProcessor extends AbstractProcessor
             cw.annotate("Generated(value = \"bridje-orm\")");
             cw.publicAccess().finalElement().classDec(className).extendsFrom("Table<" + entityClassName + ">");
             cw.begin();
-                //Table Field
-                cw.publicAccess().staticElement().finalElement().fieldDec(className, "table", "new " + className + "()");
-                //Column Fields
-                element.getEnclosedElements().stream()
-                        .filter((e) -> e.getKind() == ElementKind.FIELD)
-                        .forEach((e) -> writeField(cw, e, element));
-                //Constructor
-                cw.privateAccess().contructorDec(className);
-                cw.begin();
-                    cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
-                cw.end();
+            //Table Field
+            cw.publicAccess().staticElement().finalElement().fieldDec(className, "table", "new " + className + "()");
+            //Column Fields
+            element.getEnclosedElements().stream()
+                    .filter((e) -> e.getKind() == ElementKind.FIELD)
+                    .forEach((e) -> writeField(cw, e, element));
+            //Constructor
+            cw.privateAccess().contructorDec(className);
+            cw.begin();
+                cw.codeLine("super(" + cw.dotClass(entityClassName) + ")");
+            cw.end();
             //End
             cw.end();
             writer.flush();
