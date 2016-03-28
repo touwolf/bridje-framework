@@ -242,12 +242,11 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             {
                 prop.load(is);
             }
-            prop.forEach((key, value)
-                    -> 
-                    {
-                        String clsName = (String) key;
-                        String compScope = (String) value;
-                        result.put(clsName, compScope);
+            prop.forEach((key, value) -> 
+            {
+                String clsName = (String) key;
+                String compScope = (String) value;
+                result.put(clsName, compScope);
             });
         }
         return result;
