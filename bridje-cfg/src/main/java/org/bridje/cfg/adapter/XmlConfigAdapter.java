@@ -48,9 +48,9 @@ public class XmlConfigAdapter implements ConfigAdapter
         XmlRootElement ann = cls.getAnnotation(XmlRootElement.class);
         if(ann != null && ann.name() != null && !ann.name().trim().isEmpty() && !ann.name().equalsIgnoreCase("##default"))
         {
-            return ann.name() + ".xml";
+            return findFileName(ann.name(), cls);
         }
-        return cls.getSimpleName().toLowerCase() + ".xml";
+        return  findFileName(cls.getSimpleName().toLowerCase(), cls);
     }
 
     @Override
