@@ -244,7 +244,7 @@ class ClassUtils
         {
             return false;
         }
-        return cls.getPackage().getName().startsWith("java.")
+        return isJavaPackage(cls.getPackage().getName())
                 && Collection.class.isAssignableFrom(cls)
                 && !Map.class.isAssignableFrom(cls);
     }
@@ -271,7 +271,7 @@ class ClassUtils
         {
             return false;
         }
-        return cls.getPackage().getName().startsWith("java.")
+        return isJavaPackage(cls.getPackage().getName())
                 && Map.class.isAssignableFrom(cls);
     }
 
@@ -546,6 +546,11 @@ class ClassUtils
             }
         }
         return type instanceof TypeVariable || type instanceof WildcardType;
+    }
+
+    private static boolean isJavaPackage(String name)
+    {
+        return name.startsWith("java.");
     }
 
 }
