@@ -187,7 +187,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     {
         SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
-        .from(entityInf.getTableName());
+            .from(entityInf.getTableName());
         if(condition != null)
         {
             qb.where(condition.writeString(parameters, this));

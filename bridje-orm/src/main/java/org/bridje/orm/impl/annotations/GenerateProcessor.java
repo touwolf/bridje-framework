@@ -79,8 +79,8 @@ public class GenerateProcessor extends AbstractProcessor
     private void generateClass(Element element) throws IOException
     {
         String entityClassName = element.getSimpleName().toString();
-        String className = entityClassName + "_";
-        String fullClassName = element.toString() + "_";
+        String className = entityClassName + '_';
+        String fullClassName = element.toString() + '_';
         String classPack = findPackage(fullClassName);
 
         JavaFileObject fo = filer.createSourceFile(fullClassName);
