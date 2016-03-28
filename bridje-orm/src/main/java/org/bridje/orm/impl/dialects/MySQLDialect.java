@@ -52,7 +52,7 @@ class MySQLDialect implements SQLDialect
     @Override
     public <T> String createTable(TableData table)
     {
-        DDLBuilder b = new DDLBuilder("`");
+        DDLBuilder b = createDDLBuilder();
         b.createTable(table.getTableName());
         table.getColumns().stream()
                 .map((f) -> buildColumnStmt(f, b))
@@ -64,7 +64,7 @@ class MySQLDialect implements SQLDialect
     @Override
     public <T> String createColumn(ColumnData column)
     {
-        DDLBuilder b = new DDLBuilder("`");
+        DDLBuilder b = createDDLBuilder();
         b.alterTable(column.getTableData().getTableName())
                 .addColumn(buildColumnStmt(column, b));
         
@@ -74,7 +74,7 @@ class MySQLDialect implements SQLDialect
     @Override
     public <T> String createIndex(ColumnData column)
     {
-        DDLBuilder b = new DDLBuilder("`");
+        DDLBuilder b = createDDLBuilder();
         return b.createIndex(column.getTableData().getTableName(), column.getColumnName());
     }
 
@@ -87,6 +87,11 @@ class MySQLDialect implements SQLDialect
                 column.isKey(), 
                 column.isAutoIncrement(), 
                 column.getDefaultValue());
+    }
+
+    private DDLBuilder createDDLBuilder()
+    {
+        return new DDLBuilder("`");
     }
 }
 
