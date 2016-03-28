@@ -509,12 +509,11 @@ class ClassUtils
      */
     public static void sort(List<Class<?>> value)
     {
-        Collections.sort(value, (Class<?> c1, Class<?> c2)
-                -> 
-                {
-                    int v1 = ClassUtils.findPriority(c1);
-                    int v2 = ClassUtils.findPriority(c2);
-                    return v1 - v2;
+        Collections.sort(value, (Class<?> c1, Class<?> c2) -> 
+        {
+            int v1 = ClassUtils.findPriority(c1);
+            int v2 = ClassUtils.findPriority(c2);
+            return v1 - v2;
         });
     }
 
