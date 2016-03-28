@@ -24,7 +24,8 @@ import org.bridje.jdbc.config.DataSourceConfig;
  * class can be configure from the {@link org.bridje.jdbc.config.JdbcConfig}
  * class witch will be returned via bridje configuration API.
  */
-public interface JdbcService {
+public interface JdbcService
+{
 
     /**
      * Retrives a pooled DataSource object associeted with the given name.
