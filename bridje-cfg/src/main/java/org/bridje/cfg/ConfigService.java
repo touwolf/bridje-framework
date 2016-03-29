@@ -17,6 +17,7 @@
 package org.bridje.cfg;
 
 import java.io.File;
+
 /**
  * A service for access the configurations of applications in multiple
  * environments.
@@ -26,23 +27,31 @@ import java.io.File;
 public interface ConfigService extends ConfigContext
 {
     /**
-     * 
-     * @param repo 
+     * This method allows you to add a new configuration repository to the
+     * internal list of repositories so the services can use it to find
+     * configurations files on it. This repository will have precedence to the
+     * previous added repositories.
+     *
+     * @param repo The configuration repository to add.
      */
     void addRepository(ConfigRepository repo);
 
     /**
-     * 
-     * @param file
-     * @return 
+     * This method allows you to create a new configuration repository base on a
+     * file system folder.
+     *
+     * @param file The file system folder base for the new repository.
+     * @return The new created ConfigRepository.
      */
     ConfigRepository createFileRepository(File file);
 
     /**
+     * This method allows you to create a new configuration repository base on a
+     * class path string and class.
      * 
-     * @param cls
-     * @param path
-     * @return 
+     * @param cls The class for finding the class paths resources.
+     * @param path The base path for the repository.
+     * @return The new created ConfigRepository.
      */
     ConfigRepository createClassPathRepository(Class<?> cls, String path);
 }

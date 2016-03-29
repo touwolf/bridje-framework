@@ -40,7 +40,7 @@ class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
     @Override
     public void addRepository(ConfigRepository repo)
     {
-        repos.add(repo);
+        repos.add(0, repo);
     }
 
     @Override
