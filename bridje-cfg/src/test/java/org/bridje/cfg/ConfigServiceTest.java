@@ -92,7 +92,7 @@ public class ConfigServiceTest
     }
 
     @Test
-    public void test4Properties() throws IOException
+    public void test4MultipleAdapters() throws IOException
     {
         MultiAdapterConfig config = cfgServ.findConfig(MultiAdapterConfig.class);
         assertNotNull(config);
@@ -102,6 +102,24 @@ public class ConfigServiceTest
         assertEquals(5050, config.getPort());        
 
         config = cfgServ.createContext("system").findConfig(MultiAdapterConfig.class);
+        assertNotNull(config);
+        assertNotNull(config.getName());
+        assertNotNull(config.getPort());
+        assertEquals("someServer", config.getName());
+        assertEquals(8080, config.getPort());        
+    }
+
+    @Test
+    public void test5OptionalAnnot() throws IOException
+    {
+        OptionalAdaptConfig config = cfgServ.findConfig(OptionalAdaptConfig.class);
+        assertNotNull(config);
+        assertNotNull(config.getName());
+        assertNotNull(config.getPort());
+        assertEquals("someserver", config.getName());
+        assertEquals(5050, config.getPort());        
+
+        config = cfgServ.createContext("system").findConfig(OptionalAdaptConfig.class);
         assertNotNull(config);
         assertNotNull(config.getName());
         assertNotNull(config.getPort());

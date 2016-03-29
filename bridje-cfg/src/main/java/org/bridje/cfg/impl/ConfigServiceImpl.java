@@ -62,7 +62,8 @@ class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
         return repos;
     }
 
-    public ConfigAdapter[] getAllAdapters()
+    @Override
+    public ConfigAdapter[] getAdapters()
     {
         return allAdapters;
     }
