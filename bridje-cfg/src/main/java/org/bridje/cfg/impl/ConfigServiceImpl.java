@@ -32,7 +32,6 @@ class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
     @Inject    
     private ConfigAdapter[] allAdapters;
 
-
     public ConfigServiceImpl()
     {
         super(null, "");

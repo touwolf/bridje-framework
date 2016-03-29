@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import org.bridje.cfg.ConfigService;
 import org.bridje.ioc.Ioc;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -51,6 +52,8 @@ public class JdbcServiceTest
     {
         deleteDbFile("./target/dbtest.mv.db");
         deleteDbFile("./target/dbtest.trace.db");
+        ConfigService configServ = Ioc.context().find(ConfigService.class);
+        configServ.addRepository(configServ.createClassPathRepository(JdbcServiceTest.class, "/BRIDJE-INF/etc"));
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);
