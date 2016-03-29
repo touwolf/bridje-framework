@@ -78,13 +78,10 @@ class ConfigContextImpl implements ConfigContext
         ConfigAdapter adapter = findFirstAdapters(newConfig.getClass());
         for (ConfigRepository repo : getRepos())
         {
-            if(repo.canSave())
+            if(repo.canSave() && adapter != null)
             {
-                if(adapter != null)
-                {
-                    String realFileName = findContextFileName(adapter.findDefaultFileName(newConfig.getClass()));
-                    return saveConfigToRepo(adapter, realFileName, newConfig, repo);
-                }
+                String realFileName = findContextFileName(adapter.findDefaultFileName(newConfig.getClass()));
+                return saveConfigToRepo(adapter, realFileName, newConfig, repo);
             }
         }
         return newConfig;
@@ -96,13 +93,10 @@ class ConfigContextImpl implements ConfigContext
         ConfigAdapter adapter = findFirstAdapters(newConfig.getClass());
         for (ConfigRepository repo : getRepos())
         {
-            if(repo.canSave())
+            if(repo.canSave() && adapter != null)
             {
-                if(adapter != null)
-                {
-                    String realFileName = findContextFileName(adapter.findFileName(configName, newConfig.getClass()));
-                    return saveConfigToRepo(adapter, realFileName, newConfig, repo);
-                }
+                String realFileName = findContextFileName(adapter.findFileName(configName, newConfig.getClass()));
+                return saveConfigToRepo(adapter, realFileName, newConfig, repo);
             }
         }
         return newConfig;
