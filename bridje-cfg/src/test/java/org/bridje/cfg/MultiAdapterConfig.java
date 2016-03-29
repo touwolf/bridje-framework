@@ -16,24 +16,35 @@
 
 package org.bridje.cfg;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.cfg.adapter.PropConfigAdapter;
+import org.bridje.cfg.adapter.XmlConfigAdapter;
 
-/**
- * This annotation is used to especify the configuration adapter for the given
- * configuration definition class.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Configuration
+@Configuration({PropConfigAdapter.class, XmlConfigAdapter.class})
+@XmlRootElement(name = "multi-adapter-config")
+public class MultiAdapterConfig
 {
-    /**
-     * The adapter to be use to serialice/parse this configuration definicion
-     * class.
-     *
-     * @return The adapter class to be use.
-     */
-    Class<? extends ConfigAdapter>[] value();
+    private String name;
+    
+    private int port;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
+
+    public void setPort(int port)
+    {
+        this.port = port;
+    }
 }

@@ -29,6 +29,10 @@ class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
     @Inject
     private List<ConfigRepository> repos;
 
+    @Inject    
+    private ConfigAdapter[] allAdapters;
+
+
     public ConfigServiceImpl()
     {
         super(null, "");
@@ -56,5 +60,10 @@ class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
     public List<ConfigRepository> getRepos()
     {
         return repos;
+    }
+
+    public ConfigAdapter[] getAllAdapters()
+    {
+        return allAdapters;
     }
 }

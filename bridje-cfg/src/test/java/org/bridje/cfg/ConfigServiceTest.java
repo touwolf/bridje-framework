@@ -90,4 +90,22 @@ public class ConfigServiceTest
         assertEquals("someserver", prop.getName());
         assertEquals(5050, prop.getPort());        
     }
+
+    @Test
+    public void test4Properties() throws IOException
+    {
+        MultiAdapterConfig config = cfgServ.findConfig(MultiAdapterConfig.class);
+        assertNotNull(config);
+        assertNotNull(config.getName());
+        assertNotNull(config.getPort());
+        assertEquals("someserver", config.getName());
+        assertEquals(5050, config.getPort());        
+
+        config = cfgServ.createContext("system").findConfig(MultiAdapterConfig.class);
+        assertNotNull(config);
+        assertNotNull(config.getName());
+        assertNotNull(config.getPort());
+        assertEquals("someServer", config.getName());
+        assertEquals(8080, config.getPort());        
+    }
 }
