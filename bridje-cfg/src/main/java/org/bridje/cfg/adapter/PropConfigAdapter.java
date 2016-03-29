@@ -33,6 +33,23 @@ public class PropConfigAdapter implements ConfigAdapter
     public void write(Object newConfig, Writer writer) throws IOException
     {
         //TODO write properties
+        Properties prop = new Properties();
+        Field[] fields = newConfig.getClass().getDeclaredFields();
+        for (Field field : fields)
+        {
+            field.setAccessible(true);
+            String name = field.getName();
+            try
+            {
+                Object value = field.get(newConfig);
+                prop.put(name, value);
+            }
+            catch (IllegalArgumentException | IllegalAccessException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        prop.store(writer, "");
     }
 
     @Override
@@ -63,6 +80,7 @@ public class PropConfigAdapter implements ConfigAdapter
                 Field field = cls.getDeclaredField(key);
                 if(null != field)
                 {
+                    field.setAccessible(true);
                     setValue(obj, value, field);
                 }
             }
@@ -79,7 +97,7 @@ public class PropConfigAdapter implements ConfigAdapter
     {
         switch (field.getType().getName())
         {
-            case "Boolean":
+            case "java.lang.Boolean":
             case "boolean":
             {
                 boolean isTrue = !(value.toLowerCase().equals("false") ||
@@ -87,36 +105,36 @@ public class PropConfigAdapter implements ConfigAdapter
                 field.setBoolean(obj, isTrue);
                 break;
             }
-            case "Long":
+            case "java.lang.Long":
             case "long":
             {
                 field.setLong(obj, Long.valueOf(value));
                 break;
             }
-            case "Float":
+            case "java.lang.Float":
             case "float":
             {
                 field.setFloat(obj, Long.valueOf(value));
                 break;
             }
-            case "Integer":
+            case "java.lang.Integer":
             case "int":
             {
                 field.setInt(obj, Integer.valueOf(value));
                 break;
             }
-            case "Double":
+            case "java.lang.Double":
             case "double":
             {
                 field.setDouble(obj, Double.valueOf(value));
                 break;
             }
-            case "Short":
+            case "java.lang.Short":
             {
                 field.setShort(obj, Short.valueOf(value));
                 break;
             }
-            case "String":
+            case "java.lang.String":
             {
                 field.set(obj, value);
                 break;

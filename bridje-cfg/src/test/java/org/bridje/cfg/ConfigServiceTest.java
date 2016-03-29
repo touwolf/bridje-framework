@@ -79,4 +79,15 @@ public class ConfigServiceTest
         assertNull(myCfg2);
 
     }
+
+    @Test
+    public void test3Properties() throws IOException
+    {
+        PropConfig prop = cfgServ.findConfig(PropConfig.class);
+        assertNotNull(prop);
+        assertNotNull(prop.getName());
+        assertNotNull(prop.getPort());
+        assertEquals("someserver", prop.getName());
+        assertEquals(5050, prop.getPort());        
+    }
 }
