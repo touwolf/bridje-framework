@@ -304,7 +304,7 @@ class ContextImpl implements IocContext
                     resultList.add(compInstance);
                 }
             }
-            result = (Object[])Array.newInstance(resultClass, components.size());
+            result = (Object[])Array.newInstance(resultClass, resultList.size());
             result = resultList.toArray(result);
         }
         else

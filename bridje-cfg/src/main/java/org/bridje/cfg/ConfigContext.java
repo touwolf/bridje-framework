@@ -5,8 +5,16 @@ import java.io.IOException;
 /**
  * This interface define a context for the repositories
  */
-public interface ConfigRepositoryContext
+public interface ConfigContext
 {
+    /**
+     * Creates a new nested configuration context base on this object.
+     *
+     * @param context The context path.
+     * @return The new created configuration context.
+     */
+    ConfigContext createContext(String context);
+
     /**
      * Obtains a configuration by its class.
      * <p>

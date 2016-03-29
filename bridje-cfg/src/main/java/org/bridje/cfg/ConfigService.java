@@ -16,19 +16,33 @@
 
 package org.bridje.cfg;
 
+import java.io.File;
 /**
  * A service for access the configurations of applications in multiple
  * environments.
  * <p>
  * Configuration classes must be serializable in xml format.
  */
-public interface ConfigService extends ConfigRepositoryContext
+public interface ConfigService extends ConfigContext
 {
     /**
-     * Set the context to filter repositories
-     *
-     * @param context The context to filter
-     * @return The ConfigService object to fluent
+     * 
+     * @param repo 
      */
-    ConfigRepositoryContext createRepoContext(String context);
+    void addRepository(ConfigRepository repo);
+
+    /**
+     * 
+     * @param file
+     * @return 
+     */
+    ConfigRepository createFileRepository(File file);
+
+    /**
+     * 
+     * @param cls
+     * @param path
+     * @return 
+     */
+    ConfigRepository createClassPathRepository(Class<?> cls, String path);
 }

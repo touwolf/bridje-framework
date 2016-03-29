@@ -16,66 +16,45 @@
 
 package org.bridje.cfg.impl;
 
+import java.io.File;
 import org.bridje.cfg.*;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
+import java.util.List;
 
 @Component
-class ConfigServiceImpl implements ConfigService
+class ConfigServiceImpl extends ConfigContextImpl implements ConfigService
 {
     @Inject
-    private ConfigRepository[] repos;
+    private List<ConfigRepository> repos;
 
-    private ConfigRepositoryContext repoContext;
-
-    @PostConstruct
-    public void init()
+    public ConfigServiceImpl()
     {
-        repoContext = new ConfigRepositoryContextImpl(repos);
+        super(null, "");
     }
 
     @Override
-    public ConfigRepositoryContext createRepoContext(String context)
+    public void addRepository(ConfigRepository repo)
     {
-        return new ConfigRepositoryContextImpl(context, repos);
+        repos.add(repo);
     }
 
     @Override
-    public <T> T findConfig(Class<T> configClass) throws IOException
+    public ConfigRepository createFileRepository(File file)
     {
-        return repoContext.findConfig(configClass);
+        return new FileRepository(file);
     }
 
     @Override
-    public <T> T findConfig(String configName, Class<T> configClass) throws IOException
+    public ConfigRepository createClassPathRepository(Class<?> cls, String path)
     {
-        return repoContext.findConfig(configName, configClass);
+        return new ClassPathRepository(cls, path);
     }
 
     @Override
-    public <T> T findOrCreateConfig(Class<T> configClass, T defaultConfig) throws IOException
+    public List<ConfigRepository> getRepos()
     {
-        return repoContext.findOrCreateConfig(configClass, defaultConfig);
-    }
-
-    @Override
-    public <T> T findOrCreateConfig(String configName, Class<T> configClass, T defaultConfig) throws IOException
-    {
-        return repoContext.findOrCreateConfig(configName, configClass, defaultConfig);
-    }
-
-    @Override
-    public <T> T saveConfig(T newConfig) throws IOException
-    {
-        return repoContext.saveConfig(newConfig);
-    }
-
-    @Override
-    public <T> T saveConfig(String configName, T newConfig) throws IOException
-    {
-        return repoContext.saveConfig(configName, newConfig);
+        return repos;
     }
 }

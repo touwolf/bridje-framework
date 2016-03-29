@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.cfg;
+package org.bridje.cfg.impl;
 
 import java.io.File;
 import java.io.FileReader;
@@ -22,15 +22,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import org.bridje.cfg.ConfigRepository;
 
 /**
  *
  */
-public abstract class FileConfigRepository implements ConfigRepository
+class FileRepository implements ConfigRepository
 {
     private final File parentFile;
 
-    public FileConfigRepository(File parentFile)
+    public FileRepository(File parentFile)
     {
         this.parentFile = parentFile;
         if(parentFile.exists() && !parentFile.isDirectory())
@@ -38,17 +39,6 @@ public abstract class FileConfigRepository implements ConfigRepository
             throw new IllegalArgumentException("The parent file for the repository is not a directory.");
         }
         parentFile.mkdirs();
-    }
-
-    @Override
-    public Boolean handleContext(String context)
-    {
-        if(context == null || context.isEmpty())
-        {
-            return true;
-        }
-        File f = new File(parentFile.getAbsolutePath() + File.separator + context);
-        return (f.exists() && f.isDirectory());
     }
 
     @Override

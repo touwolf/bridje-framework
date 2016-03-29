@@ -2,29 +2,36 @@
 package org.bridje.cfg.impl;
 
 import org.bridje.cfg.ConfigAdapter;
-import org.bridje.cfg.ConfigRepositoryContext;
 import org.bridje.cfg.ConfigRepository;
 import org.bridje.cfg.adapter.XmlConfigAdapter;
 import org.bridje.ioc.Ioc;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import org.bridje.cfg.Configuration;
+import org.bridje.cfg.ConfigContext;
 
-public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
+class ConfigContextImpl implements ConfigContext
 {
-    private final List<ConfigRepository> repos;
+    private final ConfigContextImpl parent;
+    
+    private final String context;
 
-    public ConfigRepositoryContextImpl(ConfigRepository[] repos)
+    private final String fullContext;
+
+    ConfigContextImpl(ConfigContextImpl parent, String context)
     {
-        this.repos = createRepositoriesContexts("", repos);
+        this.parent = parent;
+        this.context = context;
+        this.fullContext = findFullContext();
     }
 
-    public ConfigRepositoryContextImpl(String context, ConfigRepository[] repos)
+    @Override
+    public ConfigContext createContext(String context)
     {
-        this.repos = createRepositoriesContexts(context, repos);
+        return new ConfigContextImpl(this, context);
     }
 
     @Override
@@ -65,11 +72,11 @@ public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
 
     private <T> T saveConfigInternal(String configFileName, T newConfig) throws IOException
     {
-        for (ConfigRepository repo : repos)
+        for (ConfigRepository repo : getRepos())
         {
             if(repo.canSave())
             {
-                return saveConfigToRepo(configFileName, newConfig, repo);
+                return saveConfigToRepo(findContextFileName(configFileName), newConfig, repo);
             }
         }
         return newConfig;
@@ -77,9 +84,9 @@ public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
 
     private <T> T findConfigInternal(String configFileName, Class<T> configClass) throws IOException
     {
-        for (ConfigRepository repo : repos)
+        for (ConfigRepository repo : getRepos())
         {
-            T result = findConfigFromRepo(configFileName, configClass, repo);
+            T result = findConfigFromRepo(findContextFileName(configFileName), configClass, repo);
             if(result != null)
             {
                 return result;
@@ -96,6 +103,11 @@ public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
             result = saveConfigInternal(configFileName, defaultConfig);
         }
         return result;
+    }
+    
+    private String findContextFileName(String configFileName)
+    {
+        return fullContext + "/" + configFileName;
     }
 
     private <T> String findFileName(Class<T> cls)
@@ -158,17 +170,34 @@ public class ConfigRepositoryContextImpl implements ConfigRepositoryContext
         }
         return Ioc.context().find(configAdapter);
     }
-
-    private List<ConfigRepository> createRepositoriesContexts(String context, ConfigRepository[] repos)
+    
+    public List<ConfigRepository> getRepos()
     {
-        List<ConfigRepository> configRepo = new LinkedList<>();
-        for (ConfigRepository repo : repos)
+        if(this.parent != null)
         {
-            if(repo.handleContext(context))
-            {
-                configRepo.add(repo);
-            }
+            return this.parent.getRepos();
         }
-        return configRepo;
+        return Collections.EMPTY_LIST;
+    }
+
+    public String getContext()
+    {
+        return this.context;
+    }
+
+    public String getFullContext()
+    {
+        return this.fullContext;
+    }
+
+    private String findFullContext()
+    {
+        if(parent != null 
+            && this.parent.getFullContext() != null 
+            && !this.parent.getFullContext().isEmpty())
+        {
+            return this.parent.getFullContext() + "/" + this.context;
+        }
+        return this.context;
     }
 }

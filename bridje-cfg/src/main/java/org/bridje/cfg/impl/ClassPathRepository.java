@@ -25,18 +25,22 @@ import org.bridje.cfg.ConfigRepository;
 import org.bridje.ioc.Component;
 
 @Component
-public class BridjeEtcRepository implements ConfigRepository
+public class ClassPathRepository implements ConfigRepository
 {
-    @Override
-    public Boolean handleContext(String context)
+    private final Class<?> cls;
+    
+    private final String path;
+
+    public ClassPathRepository(Class<?> cls, String path)
     {
-        return context == null || context.isEmpty();
+        this.cls = cls;
+        this.path = path;
     }
 
     @Override
     public Reader findConfig(String configName) throws IOException
     {
-        URL resource = this.getClass().getResource("/BRIDJE-INF/etc/" + configName);
+        URL resource = cls.getResource(path + "/" + configName);
         if(resource != null)
         {
             return new InputStreamReader(resource.openStream());
