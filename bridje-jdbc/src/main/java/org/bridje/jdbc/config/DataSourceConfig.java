@@ -20,9 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * Represents the configuration parameters needed to initialize a 
- * DataSource object in the JdbcService. The changes to this object 
- * will no have any effects one the DataSource is created.
+ * Represents the configuration parameters needed to initialize a DataSource
+ * object in the JdbcService. The changes to this object will no have any
+ * effects one the DataSource is created.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataSourceConfig
@@ -36,7 +36,7 @@ public class DataSourceConfig
     private String user;
 
     private String password;
-    
+
     private int maxConnections;
 
     private long idleTime;
@@ -44,9 +44,9 @@ public class DataSourceConfig
     private int minConnections;
 
     /**
-     * Gets the name of the DataSource object that will be found by the 
+     * Gets the name of the DataSource object that will be found by the
      * {@link org.bridje.jdbc.JdbcService#getDataSource} method.
-     * 
+     *
      * @return The name of the DataSource.
      */
     public String getName()
@@ -55,9 +55,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the name of the DataSource object that will be found by the 
+     * Sets the name of the DataSource object that will be found by the
      * {@link org.bridje.jdbc.JdbcService#getDataSource} method.
-     * 
+     *
      * @param name The name of the DataSource.
      */
     public void setName(String name)
@@ -66,9 +66,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the driver to be use for connecting the database. It must be a valid 
+     * Gets the driver to be use for connecting the database. It must be a valid
      * jdbc driver class name. (ex: com.mysql.jdbc.Driver for MySQL server).
-     * 
+     *
      * @return The jdbc driver for this DataSource.
      */
     public String getDriver()
@@ -77,9 +77,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the driver to be use for connecting the database. It must be a valid 
+     * Sets the driver to be use for connecting the database. It must be a valid
      * jdbc driver class name. (ex: com.mysql.jdbc.Driver for MySQL server).
-     * 
+     *
      * @param driver The jdbc driver for this DataSource.
      */
     public void setDriver(String driver)
@@ -88,9 +88,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the jdbc url to connect to by this DataSource.
-     * It must be a valid jdbc url connection string like (ex: jdbc:mysql://localhost:3306/books).
-     * 
+     * Gets the jdbc url to connect to by this DataSource. It must be a valid
+     * jdbc url connection string like (ex: jdbc:mysql://localhost:3306/books).
+     *
      * @return The jdbc connection string to be use by this DataSource.
      */
     public String getUrl()
@@ -99,9 +99,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the jdbc url to connect to by this DataSource.
-     * It must be a valid jdbc url connection string like (ex: jdbc:mysql://localhost:3306/books).
-     * 
+     * Sets the jdbc url to connect to by this DataSource. It must be a valid
+     * jdbc url connection string like (ex: jdbc:mysql://localhost:3306/books).
+     *
      * @param url The jdbc connection string to be use by this DataSource.
      */
     public void setUrl(String url)
@@ -111,7 +111,7 @@ public class DataSourceConfig
 
     /**
      * Gets the username to be use to authenticate to the database server.
-     * 
+     *
      * @return The username for the database server authentication.
      */
     public String getUser()
@@ -121,7 +121,7 @@ public class DataSourceConfig
 
     /**
      * Sets the username to be use to authenticate to the database server.
-     * 
+     *
      * @param user The username for the database server authentication.
      */
     public void setUser(String user)
@@ -131,7 +131,7 @@ public class DataSourceConfig
 
     /**
      * Gets the password to be use to authenticate to the database server.
-     * 
+     *
      * @return The password for the database server authentication.
      */
     public String getPassword()
@@ -141,7 +141,7 @@ public class DataSourceConfig
 
     /**
      * Sets the password to be use to authenticate to the database server.
-     * 
+     *
      * @param password The password for the database server authentication.
      */
     public void setPassword(String password)
@@ -150,12 +150,15 @@ public class DataSourceConfig
     }
 
     /**
-     * 
-     * @return 
+     * Gets the maximun numer of configurations allowed in the datasource. If
+     * the current total connectios in the datasource reach this number new
+     * requests will have to way for a new connection to be released.
+     *
+     * @return The maximun numer of connections in the datasource.
      */
     public int getMaxConnections()
     {
-        if(maxConnections <= 0)
+        if (maxConnections <= 0)
         {
             maxConnections = 8;
         }
@@ -163,37 +166,72 @@ public class DataSourceConfig
     }
 
     /**
-     * 
-     * @param maxConnections 
+     * Sets the maximun numer of configurations allowed in the datasource. If
+     * the current total connectios in the datasource reach this number new
+     * requests will have to way for a new connection to be released.
+     *
+     * @param maxConnections The maximun numer of connections in the datasource.
      */
     public void setMaxConnections(int maxConnections)
     {
         this.maxConnections = maxConnections;
     }
 
+    /**
+     * Gets the minimun time in seconds that a connection is unused in the
+     * datasource to be considered idle, be released from it.
+     *
+     * @return The minimun amount of seconds a connection can be unused before
+     * it is released.
+     */
     public long getIdleTime()
     {
-        if(idleTime <= 0)
+        if (idleTime <= 0)
         {
             idleTime = 600;
         }
         return idleTime;
     }
 
+    /**
+     * Sets the minimun time in seconds that a connection is unused in the
+     * datasource to be considered idle, be released from it.
+     *
+     * @param idleTime The minimun amount of seconds a connection can be unused
+     * before it is released.
+     */
     public void setIdleTime(long idleTime)
     {
         this.idleTime = idleTime;
     }
 
+    /**
+     * Gets the minumun amount of connections to keep in the datasource when idle
+     * connections are released. Idle connections will be released from the
+     * datasource but not all, a number of connections equals to this parameter
+     * will be keep even if they are idle.
+     *
+     * @return The number of connections to keep in the datasource even if they
+     * are idles.
+     */
     public int getMinConnections()
     {
-        if(minConnections <= 0)
+        if (minConnections <= 0)
         {
             return 3;
         }
         return minConnections;
     }
 
+    /**
+     * Sets the minumun amount of connections to keep in the datasource when idle
+     * connections are released. Idle connections will be released from the
+     * datasource but not all, a number of connections equals to this parameter
+     * will be keep even if they are idle.
+     *
+     * @param minConnections The number of connections to keep in the datasource even if they
+     * are idles.
+     */
     public void setMinConnections(int minConnections)
     {
         this.minConnections = minConnections;
