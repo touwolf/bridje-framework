@@ -36,6 +36,12 @@ public class DataSourceConfig
     private String user;
 
     private String password;
+    
+    private int maxConnections;
+
+    private long idleTime;
+
+    private int minConnections;
 
     /**
      * Gets the name of the DataSource object that will be found by the 
@@ -141,5 +147,55 @@ public class DataSourceConfig
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public int getMaxConnections()
+    {
+        if(maxConnections <= 0)
+        {
+            maxConnections = 8;
+        }
+        return maxConnections;
+    }
+
+    /**
+     * 
+     * @param maxConnections 
+     */
+    public void setMaxConnections(int maxConnections)
+    {
+        this.maxConnections = maxConnections;
+    }
+
+    public long getIdleTime()
+    {
+        if(idleTime <= 0)
+        {
+            idleTime = 600;
+        }
+        return idleTime;
+    }
+
+    public void setIdleTime(long idleTime)
+    {
+        this.idleTime = idleTime;
+    }
+
+    public int getMinConnections()
+    {
+        if(minConnections <= 0)
+        {
+            return 3;
+        }
+        return minConnections;
+    }
+
+    public void setMinConnections(int minConnections)
+    {
+        this.minConnections = minConnections;
     }
 }

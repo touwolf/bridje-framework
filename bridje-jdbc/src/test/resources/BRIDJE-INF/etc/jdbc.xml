@@ -23,5 +23,8 @@ limitations under the License.
         <jdbc:url>jdbc:h2:./target/dbtest</jdbc:url>
         <jdbc:username>sa</jdbc:username>
         <jdbc:password></jdbc:password>
+        <jdbc:maxConnections>8</jdbc:maxConnections>
+        <jdbc:minConnections>3</jdbc:minConnections>
+        <jdbc:idleTime>1</jdbc:idleTime>
     </jdbc:datasources>
 </jdbc:jdbc>

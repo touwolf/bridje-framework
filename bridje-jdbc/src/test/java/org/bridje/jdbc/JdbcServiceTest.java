@@ -25,6 +25,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
@@ -32,6 +34,7 @@ import org.bridje.cfg.ConfigService;
 import org.bridje.ioc.Ioc;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 
 /**
  *
@@ -42,13 +45,28 @@ public class JdbcServiceTest
 
     private static final String DS_NAME = "H2TestDataSource";
 
+    @Before
+    public void before()
+    {
+        //Setup logging level.
+        Logger.getLogger("org.bridje.jdbc").setLevel(Level.FINE);
+        Handler[] handlers = Logger.getLogger("").getHandlers();
+        for (Handler handler : handlers)
+        {
+            if(handler instanceof ConsoleHandler)
+            {
+                handler.setLevel(Level.FINE);
+            }
+        }
+    }
+
     /**
      * Test of getDataSource method, of class JdbcService.
      * @throws java.sql.SQLException
      * @throws java.lang.InterruptedException
      */
     @Test
-    public void testGetDataSource() throws SQLException, InterruptedException
+    public void test1GetDataSource() throws SQLException, InterruptedException
     {
         deleteDbFile("./target/dbtest.mv.db");
         deleteDbFile("./target/dbtest.trace.db");
@@ -73,14 +91,16 @@ public class JdbcServiceTest
         executor.submit(() -> runSomeQuerys(21, 40) );
         executor.submit(() -> runSomeQuerys(41, 60) );
         executor.submit(() -> runSomeQuerys(61, 70) );
-        Thread.sleep(500);
         executor.submit(() -> runSomeQuerys(71, 75) );
         executor.submit(() -> runSomeQuerys(76, 85) );
         executor.submit(() -> runSomeQuerys(86, 100) );
         executor.submit(() -> runSomeQuerys(101, 120) );
         executor.submit(() -> runSomeQuerys(121, 130) );
         executor.submit(() -> runSomeQuerys(131, 150) );
-        executor.submit(() -> runSomeQuerys(151, 130) );
+        executor.submit(() -> runSomeQuerys(151, 160) );
+        Thread.sleep(2000);
+        executor.submit(() -> runSomeQuerys(161, 180) );
+        executor.submit(() -> runSomeQuerys(181, 200) );
         executor.shutdown();
         executor.awaitTermination(2, TimeUnit.MINUTES);
         selectAll();
@@ -99,7 +119,7 @@ public class JdbcServiceTest
             ResultSet resultSet = stmt.executeQuery(sql);
             while(resultSet.next())
             {
-                LOG.log(Level.INFO, "Data: {0} {1}", new Object[]{ resultSet.getLong(1), resultSet.getString(2) });
+                //Parse Data
             }
         }
         catch (SQLException e)
@@ -130,12 +150,12 @@ public class JdbcServiceTest
         DataSource dataSource = jdbcServ.getDataSource(DS_NAME);
         try (Connection connection = dataSource.getConnection())
         {
+            LOG.log(Level.INFO, "Inserting Data {0}-{1}, Connection: {2}", new Object[]{minId, maxId, connection.toString()});
             for(int i = minId; i <= maxId; i++)
             {
                 try (Statement stmt = connection.createStatement())
                 {
                     String sql = "INSERT INTO my_table (id, name) VALUES (" + i + ", \'" + UUID.randomUUID().toString() + "\');";
-                    LOG.log(Level.INFO, "{0}{1}", new Object[]{sql, connection.toString()});
                     stmt.execute(sql);
                 }
             }
