@@ -43,11 +43,13 @@ class RootServerHandler implements HttpServerHandler
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
+        HttpServerRequest req = context.get(HttpServerRequest.class);
+        HttpServerResponse resp = context.get(HttpServerResponse.class);
+        LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
         if(handler == null || !handler.handle(context))
         {
-            HttpServerRequest req = context.get(HttpServerRequest.class);
-            HttpServerResponse resp = context.get(HttpServerResponse.class);
-            LOG.log(Level.WARNING, "{0} {1} {2} - 404 Not Found", new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
+            LOG.log(Level.WARNING, "{0} {1} {2} - 404 Not Found", 
+                        new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
             resp.setStatusCode(404);
             try (OutputStreamWriter writer = new OutputStreamWriter(resp.getOutputStream()))
             {

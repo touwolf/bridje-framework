@@ -26,10 +26,20 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http.multipart.Attribute;
+import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
+import io.netty.handler.codec.http.multipart.DiskAttribute;
+import io.netty.handler.codec.http.multipart.DiskFileUpload;
+import io.netty.handler.codec.http.multipart.FileUpload;
+import io.netty.handler.codec.http.multipart.HttpDataFactory;
+import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
+import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -42,7 +52,7 @@ import org.bridje.http.HttpServerResponse;
 /**
  *
  */
-class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
+class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
 
@@ -53,50 +63,41 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
     private HttpServerResponseImpl resp;
     
     private final HttpServerImpl server;
-
+    
+    private HttpPostRequestDecoder decoder;
+    
+    private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk if size exceed
+    
+    static
+    {
+        DiskFileUpload.deleteOnExitTemporaryFile = true; // should delete file
+                                                         // on exit (in normal
+                                                         // exit)
+        DiskFileUpload.baseDirectory = null; // system temp directory
+        DiskAttribute.deleteOnExitTemporaryFile = true; // should delete file on
+                                                        // exit (in normal exit)
+        DiskAttribute.baseDirectory = null; // system temp directory
+    }
+    
     public HttpServerChannelHandler(HttpServerImpl server)
     {
         this.server = server;
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws IOException
+    protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws IOException
     {
         if(msg instanceof HttpRequest)
         {
-            if(req != null || context != null)
-            {
-                sendBadRequest(ctx);
-            }
-            else
-            {
-                context = new HttpServerContextImpl();
-                req = new HttpServerRequestImpl( (HttpRequest)msg );
-            }
+            readHeaders(ctx, (HttpRequest)msg);
         }
         else if(msg instanceof HttpContent)
         {
-            if(req == null)
-            {
-                sendBadRequest(ctx);
-            }
-            else
-            {
-                req.setContent(((HttpContent)msg).content());
-                //if is the last http content
-                if(msg instanceof LastHttpContent)
-                {
-                    if(resp == null)
-                    {
-                        resp = new HttpServerResponseImpl(ctx.alloc().buffer());
-                    }
-                    RootServerHandler rootHandler = Ioc.context().find(RootServerHandler.class);
-                    context.set(HttpServerRequest.class, req);
-                    context.set(HttpServerResponse.class, resp);
-                    rootHandler.handle(context);
-                    sendResponse(ctx);
-                }
-            }
+            readContent(ctx, (HttpContent)msg);
+        }
+        else
+        {
+            sendBadRequest(ctx);
         }
     }
 
@@ -105,9 +106,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
     {
         LOG.log(Level.SEVERE, cause.getMessage(), cause);
         ctx.close();
-        context = null;
-        req = null;
-        resp = null;
+        closeAll();
     }
 
     private void sendResponse(ChannelHandlerContext ctx) throws IOException
@@ -135,22 +134,140 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<Object>
         }
         ctx.write(response);
         ctx.flush();
-        context = null;
-        req = null;
-        resp = null;
+        closeAll();
     }
 
     private void sendBadRequest(ChannelHandlerContext ctx)
     {
-        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
+        LOG.log(Level.WARNING, "Bad Request Received....");
+        DefaultHttpResponse response = 
+                new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
         response.headers().set(SERVER, server.getServerName());
         response.headers().set(CONTENT_TYPE, "text/html");
         response.headers().set(CONTENT_LENGTH, 0);
         response.headers().set(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         ctx.write(response);
         ctx.flush();
+        closeAll();
+    }
+
+    private void readHeaders(ChannelHandlerContext ctx, HttpRequest msg)
+    {
+        if(req == null && context == null && msg.getDecoderResult().isSuccess())
+        {
+            context = new HttpServerContextImpl();
+            req = new HttpServerRequestImpl( msg );
+            if(!req.isGet() && req.isForm())
+            {
+                decoder = new HttpPostRequestDecoder(factory, msg);
+            }
+        }
+        else
+        {
+            sendBadRequest(ctx);
+        }
+    }
+
+    private void readContent(ChannelHandlerContext ctx, HttpContent msg) throws IOException
+    {
+        if(req != null && msg.getDecoderResult().isSuccess())
+        {
+            if(!req.isGet())
+            {
+                if(req.isForm())
+                {
+                    decoder.offer(msg);
+                    readHttpDataChunkByChunk();
+                }
+                else
+                {
+                    req.setContent(msg.content());
+                }
+            }
+            
+            //if is the last http content
+            if(msg instanceof LastHttpContent)
+            {
+                handleRequest(ctx);
+            }
+        }
+        else
+        {
+            sendBadRequest(ctx);
+        }
+    }
+    
+    private void readHttpDataChunkByChunk() throws IOException
+    {
+        while (decoder.hasNext())
+        {
+            InterfaceHttpData data = decoder.next();
+            if (data != null)
+            {
+                try
+                {
+                    // new value
+                    writeHttpData(data);
+                }
+                finally
+                {
+                    data.release();
+                }
+            }
+        }
+    }
+
+    private void writeHttpData(InterfaceHttpData data) throws IOException
+    {
+        if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute)
+        {
+            Attribute attribute = (Attribute) data;
+            String value = attribute.getValue();
+
+            if (value.length() > 100)
+            {
+                throw new IOException("Data too long");
+            }
+            req.addPostParameter(attribute.getName(), value);
+        }
+        else
+        {
+            if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.FileUpload)
+            {
+                FileUpload fileUpload = (FileUpload) data;
+                req.addFileUpload(fileUpload);
+            }
+        }
+    }
+    
+    private void handleRequest(ChannelHandlerContext ctx) throws IOException
+    {
+        if(resp == null)
+        {
+            resp = new HttpServerResponseImpl(ctx.alloc().buffer());
+        }
+        RootServerHandler rootHandler = Ioc.context().find(RootServerHandler.class);
+        context.set(HttpServerRequest.class, req);
+        context.set(HttpServerResponse.class, resp);
+        rootHandler.handle(context);
+        sendResponse(ctx);
+    }
+
+    private void closeAll()
+    {
         context = null;
+        resp.release();
+        req.release();
         req = null;
         resp = null;
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception
+    {
+        if (decoder != null)
+        {
+            decoder.cleanFiles();
+        }
     }
 }

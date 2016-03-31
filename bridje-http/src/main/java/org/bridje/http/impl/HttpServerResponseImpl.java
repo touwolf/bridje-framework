@@ -62,7 +62,6 @@ class HttpServerResponseImpl implements HttpServerResponse
     {
         out.flush();
         out.close();
-        this.buffer.release();
     }
 
     @Override
@@ -98,5 +97,10 @@ class HttpServerResponseImpl implements HttpServerResponse
     public Map<String, Object> getHeadersMap()
     {
         return headers;
+    }
+    
+    protected void release()
+    {
+        this.buffer.release();
     }
 }

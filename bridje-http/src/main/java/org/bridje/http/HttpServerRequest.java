@@ -17,6 +17,7 @@
 package org.bridje.http;
 
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Represents an HTTP request being made to the server.
@@ -65,6 +66,79 @@ public interface HttpServerRequest
      */
     String getPath();
 
+    /**
+     * 
+     * @return 
+     */
+    String getConentType();
+
+    /**
+     * 
+     * @return 
+     */
+    boolean isGet();
+
+    /**
+     * 
+     * @return 
+     */
+    boolean isPost();
+
+    /**
+     * 
+     * @return 
+     */
+    boolean isDelete();
+
+    /**
+     * 
+     * @return 
+     */
+    boolean isPut();
+
+    /**
+     * 
+     * @return 
+     */
+    boolean isForm();
+    
+    /**
+     * 
+     * @return 
+     */
+    boolean isWwwForm();
+    
+    /**
+     * 
+     * @return 
+     */
+    boolean isMultipartForm();
+
+    /**
+     * 
+     * @return 
+     */
+    Map<String, String> getPostParameters();
+
+    /**
+     * 
+     * @param parameter
+     * @return 
+     */
+    String getPostParameter(String parameter);
+
+    /**
+     * 
+     * @return 
+     */
+    String[] getPostParametersNames();
+
+    /**
+     * 
+     * @return 
+     */
+    UploadedFile[] getUploadedFiles();
+    
     /**
      * All the headers names in this request.
      * @return An String array with all the request headers names.
