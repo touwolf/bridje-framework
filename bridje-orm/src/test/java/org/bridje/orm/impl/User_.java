@@ -37,7 +37,7 @@ public final class User_ extends Table<User>
 
     public static final Column<User, java.sql.Time> hour = new Column<>(User_.table, "hour", java.sql.Time.class);
 
-    public static final Column<User, org.bridje.orm.impl.Group> group = new Column<>(User_.table, "group", org.bridje.orm.impl.Group.class);
+    public static final RelationColumn<User, org.bridje.orm.impl.Group> group = new RelationColumn<>(User_.table, Group_.table, "group");
 
     private User_()
     {

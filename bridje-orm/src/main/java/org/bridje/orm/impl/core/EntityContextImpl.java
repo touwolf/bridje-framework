@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
+import org.bridje.orm.Entity;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Table;
 import org.bridje.orm.Query;
@@ -386,6 +387,11 @@ class EntityContextImpl implements EntityContext
     public EntitysCache getEnittysCache()
     {
         return enittysCache;
+    }
+
+    public OrmMetaInfService getMetainf()
+    {
+        return metainf;
     }
 
     @Override

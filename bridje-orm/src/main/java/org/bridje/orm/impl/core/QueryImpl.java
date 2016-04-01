@@ -94,7 +94,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
             {
                 parameters.addAll(column.getParameters());
             }
-            SelectBuilder qb = createQuery(entityInf.findFieldInfo(column).getColumnName(), parameters);
+            SelectBuilder qb = createQuery(findColumnName(column), parameters);
             if(page > 0)
             {
                 int index = ((page - 1) * pageSize);
@@ -205,7 +205,8 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     @Override
     public String findColumnName(Column column)
     {
-        String columnName = entityInf.findFieldInfo(column).getColumnName();
+        EntityInf<Object> eInf = entCtxImpl.getMetainf().findEntityInf(column.getTable().getEntityClass());
+        String columnName = eInf.findColumnName(column);
         if(column.getFunction() != null)
         {
             return String.format(column.getFunction(), columnName);

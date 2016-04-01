@@ -95,7 +95,7 @@ class FieldInf<T, C> implements ColumnData
     {
         try
         {
-            this.field.set(entity, castValue(field.getType(), value));
+            this.field.set(entity, CastUtils.castValue(field.getType(), value));
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
@@ -225,116 +225,6 @@ class FieldInf<T, C> implements ColumnData
         return column.trim();
     }
 
-    public <F> F castValue(Class<F> fieldType, Object value)
-    {
-        if(value != null)
-        {
-            if(!field.getType().isAssignableFrom(value.getClass()))
-            {
-                if(Character.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toCharacter(value);
-                }
-                if(Byte.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toByte(value);
-                }
-                if(Short.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toShort(value);
-                }
-                if(Integer.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toInteger(value);
-                }
-                if(Long.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toLong(value);
-                }
-                if(Float.class.isAssignableFrom(fieldType))
-                {
-                    return (F)toFloat(value);
-                }
-            }
-            return (F)value;
-        }
-        return null;
-    }
-
-    private Character toCharacter(Object value)
-    {
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return ((String) value).toCharArray()[0];
-        }
-        return null;
-    }
-
-    private Object toByte(Object value)
-    {
-        if(value instanceof Number)
-        {
-            return ((Number)value).byteValue();
-        }
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return Byte.valueOf((String)value);
-        }
-        return null;
-    }
-    
-    private Object toShort(Object value)
-    {
-        if(value instanceof Number)
-        {
-            return ((Number)value).shortValue();
-        }
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return Short.valueOf((String)value);
-        }
-        return null;
-    }
-
-    private Object toLong(Object value)
-    {
-        if(value instanceof Number)
-        {
-            return ((Number)value).longValue();
-        }
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return Long.valueOf((String)value);
-        }
-        return null;
-    }
-
-    private Object toInteger(Object value)
-    {
-        if(value instanceof Number)
-        {
-            return ((Number)value).intValue();
-        }
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return Integer.valueOf((String)value);
-        }
-        return null;
-    }
-    
-    private Object toFloat(Object value)
-    {
-        if(value instanceof Number)
-        {
-            return ((Number)value).floatValue();
-        }
-        if(value instanceof String && !((String)value).isEmpty())
-        {
-            return Short.valueOf((String)value);
-        }
-        return null;
-    }
-
     @Override
     public TableData getTableData()
     {
@@ -347,6 +237,7 @@ class FieldInf<T, C> implements ColumnData
         return indexed;
     }
 
+    @Override
     public boolean isAutoIncrement()
     {
         return autoIncrement;

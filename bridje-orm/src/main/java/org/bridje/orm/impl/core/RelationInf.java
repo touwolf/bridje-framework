@@ -37,7 +37,7 @@ class RelationInf<T, R> implements ColumnData
 
     private final EntityInf<T> entityInf;
     
-    private final EntityInf relatedEntity;
+    private final EntityInf<R> relatedEntity;
 
     public RelationInf(EntityInf<T> entityInf, Field field, EntityInf<R> relatedEntity)
     {
@@ -60,7 +60,7 @@ class RelationInf<T, R> implements ColumnData
         return columnName;
     }
 
-    public EntityInf getRelatedEntity()
+    public EntityInf<R> getRelatedEntity()
     {
         return relatedEntity;
     }

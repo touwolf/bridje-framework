@@ -193,16 +193,38 @@ public class EntityContextTest
     }
 
     @Test
-    public void test5Delete()
+    public void test5FetchRelations()
+    {
+        List<Group> groups = ctx.query(User_.table).fetchAll(User_.group);
+        assertEquals(2, groups.size());
+        assertNotNull(groups.get(0));
+        assertNotNull(groups.get(1));
+        assertEquals(1l, groups.get(0).getId().longValue());
+        assertEquals(2l, groups.get(1).getId().longValue());
+        
+        User user = ctx.query(User_.table).where(User_.group.eq(groups.get(0))).fetchOne();
+        user.setGroup(groups.get(1));
+        ctx.update(user);
+
+        groups = ctx.query(User_.table).fetchAll(User_.group);
+        assertEquals(2, groups.size());
+        assertNotNull(groups.get(0));
+        assertNotNull(groups.get(1));
+        assertEquals(2l, groups.get(0).getId().longValue());
+        assertEquals(2l, groups.get(1).getId().longValue());
+    }
+    
+    @Test
+    public void test6Delete()
     {
         assertNotNull(ctx.find(Group.class, 1l));
         assertNotNull(ctx.find(Group.class, 2l));
         assertNotNull(ctx.find(User.class, 1l));
         assertNotNull(ctx.find(User.class, 2l));
         
-        ctx.delete(ctx.find(User.class, 1l).getGroup());
+        ctx.delete(ctx.find(Group.class, 1l));
         ctx.delete(ctx.find(User.class, 1l));
-        ctx.delete(ctx.find(User.class, 2l).getGroup());
+        ctx.delete(ctx.find(Group.class, 2l));
         ctx.delete(ctx.find(User.class, 2l));
         
         assertNull(ctx.find(Group.class, 1l));
@@ -212,14 +234,14 @@ public class EntityContextTest
     }
     
     @Test
-    public void test6AutoIncrement()
+    public void test7AutoIncrement()
     {
         ctx.fixTable(Rol.class);
         Rol rol = ctx.insert(new Rol("Admin Rol"));
         assertNotNull(rol.getId());
         assertEquals(1, rol.getId().intValue());
     }
-    
+
     private void deleteDataBase(String tageth2testdb)
     {
         File f = new File(tageth2testdb);

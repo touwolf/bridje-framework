@@ -42,4 +42,11 @@ public interface OrmService
      * @return The new created entity context.
      */
     EntityContext createContext(DataSource ds);
+
+    /**
+     * 
+     * @param entity
+     * @return 
+     */
+    Object findKeyValue(Object entity);
 }

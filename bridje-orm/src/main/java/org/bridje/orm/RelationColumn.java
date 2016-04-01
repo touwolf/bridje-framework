@@ -16,15 +16,17 @@
 
 package org.bridje.orm;
 
+import org.bridje.ioc.Ioc;
 /**
- * Represents an string column, string columns are the same as a regular columns
- * but the ofer some unique functions like length.
+ * Represents a relation column.
  *
  * @param <E> The type of the entity that the field this columns represents
  * belongs to.
+ * @param <R>
  */
-public class StringColumn<E> extends Column<E, String>
+public class RelationColumn<E, R> extends Column<E, R>
 {
+    private Table<R> related;
 
     /**
      * This constructor is used to create a column without any funcions, a
@@ -34,42 +36,24 @@ public class StringColumn<E> extends Column<E, String>
      * and the Type of the field.
      *
      * @param table The Table object this columns belong to.
+     * @param related
      * @param field The field name for the declared java field in the base
      * entity class.
      */
-    public StringColumn(Table<E> table, String field)
+    public RelationColumn(Table<E> table, Table<R> related, String field)
     {
-        super(table, field, String.class);
+        super(table, field, related.getEntityClass());
     }
 
-    /**
-     * Creates a new column that will return the the length in characters ot
-     * this column.
-     *
-     * @return The new created column.
-     */
-    public NumberColumn<E, Integer> length()
+    public Table<R> getRelatedTable()
     {
-        String functionExp;
-        if (getFunction() == null)
-        {
-            functionExp = "LENGTH(%s)";
-        }
-        else
-        {
-            functionExp = "LENGTH(" + getFunction() + ")";
-        }
-        return new NumberColumn<>(getTable(), getField(), Integer.class, functionExp, getParameters());
+        return related;
     }
 
-    /**
-     * Creates a new like condition for this column.
-     *
-     * @param value The like expression.
-     * @return The new created condition.
-     */
-    public Condition minus(String value)
+    @Override
+    public Condition eq(R value)
     {
-        return new BinaryCondition(this, Operator.LIKE, value);
+        Object keyValue = Ioc.context().find(OrmService.class).findKeyValue(value);
+        return new BinaryCondition(this, Operator.EQ, keyValue);
     }
 }

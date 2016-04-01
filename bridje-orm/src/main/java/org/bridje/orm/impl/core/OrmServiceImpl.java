@@ -32,6 +32,9 @@ class OrmServiceImpl implements OrmService
 {
     @Inject
     private JdbcService jdbcServ;
+
+    @Inject
+    private OrmMetaInfService metaInf;
     
     @Inject
     private SQLDialect[] dialects;
@@ -57,5 +60,11 @@ class OrmServiceImpl implements OrmService
             }
         }
         throw new IllegalArgumentException("Can´t find a valid dialect for this DataSource");
+    }
+
+    @Override
+    public Object findKeyValue(Object entity)
+    {
+        return metaInf.findEntityInf(entity.getClass()).findKeyValue(entity);
     }
 }
