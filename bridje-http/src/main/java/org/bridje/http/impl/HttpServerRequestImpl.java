@@ -53,7 +53,11 @@ class HttpServerRequestImpl implements HttpServerRequest
     
     private Map<String, String> postParameters;
 
+    private Map<String, List<String>> getParameters;
+    
     private String[] postParamsNames;
+
+    private String[] getParamsNames;
 
     public HttpServerRequestImpl(HttpRequest headers)
     {
@@ -281,5 +285,43 @@ class HttpServerRequestImpl implements HttpServerRequest
         return uploadedFiles.stream()
                 .map((f) -> new UploadedFileImpl(f))
                 .collect(Collectors.toList()).toArray(result);
+    }
+
+    @Override
+    public Map<String, List<String>> getGetParameters()
+    {
+        if(getParameters == null)
+        {
+            return Collections.EMPTY_MAP;
+        }
+        return Collections.unmodifiableMap(getParameters);
+    }
+    
+
+    @Override
+    public String getGetParameter(String parameter)
+    {
+        List<String> r = getGetParameters().get(parameter);
+        if(r == null)
+        {
+            return null;
+        }
+        return r.get(0);
+    }
+
+    @Override
+    public String[] getGetParametersNames()
+    {
+        if(getParamsNames == null)
+        {
+            getParamsNames = new String[getPostParameters().size()];
+            getGetParameters().keySet().toArray(getParamsNames);
+        }
+        return getParamsNames;
+    }
+    
+    protected void setQueryString(Map<String, List<String>> parameters)
+    {
+        this.getParameters = parameters;
     }
 }

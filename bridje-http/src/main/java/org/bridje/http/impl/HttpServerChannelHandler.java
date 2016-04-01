@@ -32,6 +32,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.DiskAttribute;
@@ -41,6 +42,7 @@ import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,7 +159,9 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         {
             context = new HttpServerContextImpl();
             req = new HttpServerRequestImpl( msg );
-            if(!req.isGet() && req.isForm())
+            QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.getUri());
+            req.setQueryString(decoderQuery.parameters());
+            if(req.isForm())
             {
                 decoder = new HttpPostRequestDecoder(factory, msg);
             }
@@ -172,17 +176,14 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if(req != null && msg.getDecoderResult().isSuccess())
         {
-            if(!req.isGet())
+            if(req.isForm())
             {
-                if(req.isForm())
-                {
-                    decoder.offer(msg);
-                    readHttpDataChunkByChunk();
-                }
-                else
-                {
-                    req.setContent(msg.content());
-                }
+                decoder.offer(msg);
+                readHttpDataChunkByChunk();
+            }
+            else
+            {
+                req.setContent(msg.content());
             }
             
             //if is the last http content

@@ -17,6 +17,7 @@
 package org.bridje.http;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -133,6 +134,25 @@ public interface HttpServerRequest
      */
     String[] getPostParametersNames();
 
+    /**
+     * 
+     * @return 
+     */
+    public Map<String, List<String>> getGetParameters();
+
+    /**
+     * 
+     * @param parameter
+     * @return 
+     */
+    String getGetParameter(String parameter);
+
+    /**
+     * 
+     * @return 
+     */
+    String[] getGetParametersNames();
+    
     /**
      * 
      * @return 
