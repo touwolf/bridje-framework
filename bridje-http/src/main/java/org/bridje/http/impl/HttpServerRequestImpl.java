@@ -21,6 +21,7 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.multipart.FileUpload;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.http.UploadedFile;
 
@@ -58,6 +60,10 @@ class HttpServerRequestImpl implements HttpServerRequest
     private String[] postParamsNames;
 
     private String[] getParamsNames;
+
+    private Map<String, HttpCookie> cookies;
+
+    private String[] cookiesNames;
 
     public HttpServerRequestImpl(HttpRequest headers)
     {
@@ -314,7 +320,7 @@ class HttpServerRequestImpl implements HttpServerRequest
     {
         if(getParamsNames == null)
         {
-            getParamsNames = new String[getPostParameters().size()];
+            getParamsNames = new String[getGetParameters().size()];
             getGetParameters().keySet().toArray(getParamsNames);
         }
         return getParamsNames;
@@ -323,5 +329,39 @@ class HttpServerRequestImpl implements HttpServerRequest
     protected void setQueryString(Map<String, List<String>> parameters)
     {
         this.getParameters = parameters;
+    }
+
+    protected void setCookies(Set<Cookie> parseCookies)
+    {
+        cookies = parseCookies.stream()
+                .map((c) -> new HttpCookieImpl(c))
+                .collect(Collectors.toMap(HttpCookie::getName, (c) -> (HttpCookie)c));
+    }
+
+    @Override
+    public Map<String, HttpCookie> getCookies()
+    {
+        if(getParameters == null)
+        {
+            return Collections.EMPTY_MAP;
+        }
+        return Collections.unmodifiableMap(cookies);
+    }
+
+    @Override
+    public HttpCookie getCookie(String name)
+    {
+        return cookies.get(name);
+    }
+
+    @Override
+    public String[] getCookiesNames()
+    {
+        if(cookiesNames == null)
+        {
+            cookiesNames = new String[cookies.size()];
+            cookies.keySet().toArray(cookiesNames);
+        }
+        return cookiesNames;
     }
 }

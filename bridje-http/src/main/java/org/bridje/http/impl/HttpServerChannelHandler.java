@@ -18,6 +18,7 @@ package org.bridje.http.impl;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
@@ -26,13 +27,16 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
-import io.netty.handler.codec.http.HttpMethod;
+import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.SET_COOKIE;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
+import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.DiskAttribute;
@@ -42,10 +46,12 @@ import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.http.HttpCookie;
 import org.bridje.ioc.Ioc;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
@@ -134,6 +140,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
                 response.headers().set(key, value);
             }
         }
+        writeCookies(response);
         ctx.write(response);
         ctx.flush();
         closeAll();
@@ -161,6 +168,9 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             req = new HttpServerRequestImpl( msg );
             QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.getUri());
             req.setQueryString(decoderQuery.parameters());
+            req.setCookies(parseCookies(msg.headers().get(COOKIE)));
+            // new getMethod
+
             if(req.isForm())
             {
                 decoder = new HttpPostRequestDecoder(factory, msg);
@@ -269,6 +279,33 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         if (decoder != null)
         {
             decoder.cleanFiles();
+        }
+    }
+    
+    public Set<Cookie> parseCookies(String cookiesHeader)
+    {
+        Set<Cookie> cookies;
+        if (cookiesHeader == null)
+        {
+            cookies = Collections.emptySet();
+        }
+        else
+        {
+            cookies = ServerCookieDecoder.STRICT.decode(cookiesHeader);
+        }
+        return cookies;
+    }
+
+    private void writeCookies(DefaultHttpResponse response)
+    {
+        if (resp.getCookies() != null && !resp.getCookies().isEmpty())
+        {
+            // Reset the cookies if necessary.
+            resp.getCookies().forEach((name, cookie) ->
+            {
+                response.headers()
+                        .add(SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookie.getInternalCookie()));
+            });
         }
     }
 }

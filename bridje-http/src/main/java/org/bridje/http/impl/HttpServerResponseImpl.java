@@ -18,10 +18,14 @@ package org.bridje.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
+import io.netty.handler.codec.http.cookie.DefaultCookie;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
+import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerResponse;
 
 /**
@@ -38,6 +42,8 @@ class HttpServerResponseImpl implements HttpServerResponse
     private int statusCode = 200;
 
     private final Map<String, Object> headers;
+
+    private Map<String, HttpCookieImpl> cookies;
 
     public HttpServerResponseImpl(ByteBuf buffer)
     {
@@ -102,5 +108,31 @@ class HttpServerResponseImpl implements HttpServerResponse
     protected void release()
     {
         this.buffer.release();
+    }
+    
+    protected Map<String, HttpCookieImpl> getCookies()
+    {
+        return cookies;
+    }
+
+    @Override
+    public HttpCookie addCookie(String name, String value)
+    {
+        if(cookies == null)
+        {
+            cookies = new HashMap<>();
+        }
+        HttpCookieImpl c = new HttpCookieImpl(new DefaultCookie(name, value));
+        cookies.put(c.getName(), c);
+        return c;
+    }
+
+    protected boolean hasCookie(String name)
+    {
+        if(cookies != null)
+        {
+            return cookies.containsKey(name);
+        }
+        return false;
     }
 }

@@ -177,4 +177,23 @@ public interface HttpServerRequest
      * @return The InputStream to read the request body.
      */
     InputStream getInputStream();
+
+    /**
+     * 
+     * @return 
+     */
+    Map<String, HttpCookie> getCookies();
+    
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    HttpCookie getCookie(String name);
+
+    /**
+     * 
+     * @return 
+     */
+    String[] getCookiesNames();
 }

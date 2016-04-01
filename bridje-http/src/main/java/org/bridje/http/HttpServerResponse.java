@@ -16,6 +16,7 @@
 
 package org.bridje.http;
 
+import io.netty.handler.codec.http.cookie.Cookie;
 import java.io.OutputStream;
 
 /**
@@ -60,4 +61,12 @@ public interface HttpServerResponse
      * @param value The header value
      */
     void setHeader(String name, Object value);
+    
+    /**
+     * 
+     * @param name
+     * @param value 
+     * @return  
+     */
+    HttpCookie addCookie(String name, String value);
 }
