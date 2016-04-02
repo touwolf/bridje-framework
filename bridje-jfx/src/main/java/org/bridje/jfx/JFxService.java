@@ -16,10 +16,17 @@
 
 package org.bridje.jfx;
 
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 /**
  *
  */
-public interface JFxServices
+public interface JFxService
 {
-    
+    void start(Stage stage, String title);
+
+    String getTitle();
+
+    void addPane(String title, Pane pane, PanePosition position);
 }

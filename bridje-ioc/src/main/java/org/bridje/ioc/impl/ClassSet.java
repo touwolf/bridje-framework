@@ -320,7 +320,6 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             if (annot != null)
             {
                 navigator.accept(cls, annot);
-                break;
             }
         }
     }
