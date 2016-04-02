@@ -17,6 +17,7 @@
 package org.bridje.orm.impl.core;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * A functional interface to parse the results of a ResultSet object into the
@@ -32,6 +33,7 @@ public interface QueryConsumer<T>
      *
      * @param rs The result set to parse.
      * @return The resulting type.
+     * @throws java.sql.SQLException
      */
-    T parse(ResultSet rs);
+    T parse(ResultSet rs) throws SQLException;
 }

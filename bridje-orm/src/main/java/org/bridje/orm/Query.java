@@ -16,6 +16,7 @@
 
 package org.bridje.orm;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -39,8 +40,9 @@ public interface Query<T>
      * Executes the query and fetch all entitys.
      *
      * @return The list of entitys returned from the database.
+     * @throws java.sql.SQLException
      */
-    List<T> fetchAll();
+    List<T> fetchAll() throws SQLException;
 
     /**
      * Executes the query and fetch the given column.
@@ -49,15 +51,17 @@ public interface Query<T>
      * @param column The column to be fetch.
      * @return A list of objects of type c representing the values of the
      * column.
+     * @throws java.sql.SQLException
      */
-    <C> List<C> fetchAll(Column<T, C> column);
+    <C> List<C> fetchAll(Column<T, C> column) throws SQLException;
 
     /**
      * Executes the query and fetch the first record that the database return.
      *
      * @return The first entity returned by the query.
+     * @throws java.sql.SQLException
      */
-    T fetchOne();
+    T fetchOne() throws SQLException;
 
     /**
      * Executes the query and fetch the first value of the given column returned
@@ -66,8 +70,9 @@ public interface Query<T>
      * @param <C> The type of the field the given column represents.
      * @param column The column to be fetch.
      * @return The first entity returned by the query.
+     * @throws java.sql.SQLException
      */
-    <C> C fetchOne(Column<T, C> column);
+    <C> C fetchOne(Column<T, C> column) throws SQLException;
 
     /**
      * Executes a select count in the database and gets the number of records
@@ -75,16 +80,18 @@ public interface Query<T>
      *
      * @return The number of records this query can return, 0 means that this
      * query will not return any records.
+     * @throws java.sql.SQLException
      */
-    long count();
+    long count() throws SQLException;
 
     /**
      * Gets when ever this query will return any records at all.
      *
      * @return true the query will return 1 or more record, false the query will
      * not return any records.
+     * @throws java.sql.SQLException
      */
-    boolean exists();
+    boolean exists() throws SQLException;
 
     /**
      * Specifies the condition to be use on this query.

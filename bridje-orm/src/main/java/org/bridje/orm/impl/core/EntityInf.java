@@ -32,7 +32,6 @@ import org.bridje.orm.Column;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
 import org.bridje.orm.RelationColumn;
-import org.bridje.orm.Table;
 import org.bridje.orm.dialects.ColumnData;
 import org.bridje.orm.dialects.TableData;
 
@@ -102,7 +101,7 @@ class EntityInf<T> implements TableData
 
     private FieldInf fillFields()
     {
-        FieldInf keyField = null;
+        FieldInf keyInf = null;
         Field[] declaredFields = entityClass.getDeclaredFields();
         for (Field declaredField : declaredFields)
         {
@@ -112,16 +111,16 @@ class EntityInf<T> implements TableData
                 FieldInf fInf = new FieldInf(this, declaredField, declaredField.getType());
                 if(fInf.isKey())
                 {
-                    if(keyField != null)
+                    if(keyInf != null)
                     {
                         throw new IllegalArgumentException("Entity " + entityClass.getName() + " has more than one key field.");
                     }
-                    keyField = fInf;
+                    keyInf = fInf;
                 }
                 fields.add(fInf);
             }
         }
-        return keyField;
+        return keyInf;
     }
 
     protected void fillRelations()
@@ -156,14 +155,14 @@ class EntityInf<T> implements TableData
                 ).collect(Collectors.joining(", "));
     }
 
-    public List<T> parseAllEntitys(ResultSet rs, EntityContextImpl ctx)
+    public List<T> parseAll(ResultSet rs, EntityContextImpl ctx)
     {
         List<T> result = new ArrayList<>();
         try
         {
             while(rs.next())
             {
-                T entity = parseEntityInternal(rs, ctx);
+                T entity = parseNew(rs, ctx);
                 if(entity != null)
                 {
                     result.add(entity);
@@ -178,170 +177,122 @@ class EntityInf<T> implements TableData
         return result;
     }
 
-    public T parseEntity(ResultSet rs, EntityContextImpl ctx)
+    public T parse(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        try
+        if(rs.next())
         {
-            if(rs.next())
+            T result = parseNew(rs, ctx);
+            if(result != null)
             {
-                T result = parseEntityInternal(rs, ctx);
-                if(result != null)
-                {
-                    ctx.getEnittysCache().put(result, findKeyValue(result));
-                }
-                return result;
+                ctx.getEnittysCache().put(result, findKeyValue(result));
             }
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return result;
         }
         return null;
     }
 
-    public T parseEntity(T entity, ResultSet rs, EntityContextImpl ctx)
+    public T parse(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        try
+        if(rs.next())
         {
-            if(rs.next())
-            {
-                fillEntity(entity, rs, ctx);
-                ctx.getEnittysCache().put(entity, findKeyValue(entity));
-                return entity;
-            }
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            fill(entity, rs, ctx);
+            ctx.getEnittysCache().put(entity, findKeyValue(entity));
+            return entity;
         }
         return null;
     }
 
-    public <C> List<C> parseAllColumns(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+    public <C> List<C> parseAll(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        if(column instanceof RelationColumn)
+        {
+            RelationInf<T, C> relationInf = findRelationInfo(column);
+            return parseAll(index, relationInf, rs, ctx);
+        }
+        else
+        {
+            return parseAll(index, column.getType(), rs, ctx);
+        }
+    }
+
+    public <C> List<C> parseAll(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         List<C> result = new ArrayList<>();
-        try
+        while(rs.next())
         {
-            Class columnType;
-            RelationInf<T, C> relation = null;
-            if(column instanceof RelationColumn)
+            Object value = CastUtils.castValue(type, rs.getObject(index));
+            if(value != null)
             {
-                relation = findRelationInfo(column);
-                columnType = relation.getRelatedEntity().getKeyField().getDataType();
+                result.add((C)value);
             }
-            else
-            {
-                columnType = column.getType();
-            }
-            while(rs.next())
-            {
-                Object value = CastUtils.castValue(columnType, parseEntityColumn(index, rs));
-                if(value != null)
-                {
-                    if(column instanceof RelationColumn)
-                    {
-                        if(relation != null)
-                        {
-                            result.add(ctx.find(relation.getRelatedEntity().getEntityClass(), value));
-                        }
-                    }
-                    else
-                    {
-                        result.add((C)value);
-                    }
-                }
-            }
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return result;
     }
-    
-    public <C> C parseColumn(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx)
+
+    public <C> List<C> parseAll(int index, RelationInf<T, C> relation, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        try
+        Class columnType = relation.getRelatedEntity().getKeyField().getDataType();
+        List<?> keys = parseAll(index, columnType, rs, ctx);
+        List<C> result = new ArrayList<>(keys.size());
+        for (Object key : keys)
         {
-            Class columnType;
-            RelationInf<T, C> relation = null;
-            if(column instanceof RelationColumn)
-            {
-                relation = findRelationInfo(column);
-                columnType = relation.getRelatedEntity().getKeyField().getDataType();
-            }
-            else
-            {
-                columnType = column.getType();
-            }
-            if(rs.next())
-            {
-                Object value = CastUtils.castValue(columnType, parseEntityColumn(index, rs));
-                if(value != null)
-                {
-                    if(column instanceof RelationColumn)
-                    {
-                        if(relation != null)
-                        {
-                            return ctx.find(relation.getRelatedEntity().getEntityClass(), value);
-                        }
-                    }
-                    else
-                    {
-                        return (C)value;
-                    }
-                }
-            }
+            C value = ctx.find(relation.getRelatedEntity().getEntityClass(), key);
+            result.add(value);
         }
-        catch (SQLException e)
+        return result;
+    }
+
+    public <C> C parse(int index, Column<T, C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        if(column instanceof RelationColumn)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            RelationInf<T, C> relationInf = findRelationInfo(column);
+            return parse(index, relationInf, rs, ctx);
+        }
+        else
+        {
+            return parse(index, column.getType(), rs, ctx);
+        }
+    }
+
+    public <C> C parse(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        if(rs.next())
+        {
+            Object value = CastUtils.castValue(type, rs.getObject(index));
+            if(value != null)
+            {
+                return (C)value;
+            }
         }
         return null;
     }
 
-    public <C> C parseColumn(int index, FieldInf<T, C> fieldInfo, ResultSet rs, EntityContextImpl ctx)
+    public <C> C parse(int index, RelationInf<T, C> relation, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        try
+        Class<?> columnType = relation.getRelatedEntity().getKeyField().getDataType();
+        Object value = parse(index, columnType, rs, ctx);
+        if(value != null)
         {
-            if(rs.next())
-            {
-                return CastUtils.castValue(fieldInfo.getDataType(), parseEntityColumn(index, rs));
-            }
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return ctx.find(relation.getRelatedEntity().getEntityClass(), value);
         }
         return null;
     }
-    
-    public int parseCount(ResultSet rs)
+
+    public int parseCount(ResultSet rs) throws SQLException
     {
-        try
+        if(rs.next())
         {
-            if(rs.next())
-            {
-                return rs.getInt(1);
-            }
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return rs.getInt(1);
         }
         return -1;
     }
 
-    private T parseEntityInternal(ResultSet rs, EntityContextImpl ctx) throws SQLException
+    private T parseNew(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         T entity = buildEntityObject();
-        fillEntity(entity, rs, ctx);
+        fill(entity, rs, ctx);
         return entity;
-    }
-
-    private Object parseEntityColumn(int index, ResultSet rs) throws SQLException
-    {
-        return rs.getObject(index);
     }
 
     public T buildEntityObject()
@@ -352,12 +303,11 @@ class EntityInf<T> implements TableData
         }
         catch (InstantiationException | IllegalAccessException ex)
         {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Cannot create Entity object for class " + entityClass.getName(), ex);
         }
-        return null;
     }
 
-    private void fillEntity(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    private void fill(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         for (FieldInf fieldInf : fields)
         {
@@ -414,7 +364,7 @@ class EntityInf<T> implements TableData
     
     public String buildOrderBy(OrderBy orderBy)
     {
-        return findFieldInfo(orderBy.getColumn()).getColumnName() + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
+        return findColumnName(orderBy.getColumn()) + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
     }
 
     public int allFieldsCount()
@@ -437,9 +387,9 @@ class EntityInf<T> implements TableData
         return keyField;
     }
 
-    public <T> T updateKeyField(T entity, ResultSet rs, EntityContextImpl entityContext)
+    public <T> T updateKeyField(T entity, ResultSet rs, EntityContextImpl entityContext) throws SQLException
     {
-        keyField.setValue(entity, parseColumn(1, keyField, rs, entityContext));
+        keyField.setValue(entity, parse(1, keyField.getDataType(), rs, entityContext));
         return entity;
     }
     

@@ -17,6 +17,7 @@
 package org.bridje.orm.impl;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class EntityContextTest
     }
 
     @Test
-    public void test1FixDataBase()
+    public void test1FixDataBase() throws SQLException
     {
         ctx.fixTable(User.class);
         ctx.fixTable(Group.class);
@@ -66,7 +67,7 @@ public class EntityContextTest
     }
 
     @Test
-    public void test2Insert()
+    public void test2Insert() throws SQLException
     {
         Group group = new Group(1l, "Admins");
         ctx.insert(group);
@@ -90,9 +91,9 @@ public class EntityContextTest
         assertEquals(1, ctx.query(Group_.table).count());
         assertEquals(1, ctx.query(User_.table).count());
     }
-    
+
     @Test
-    public void test3Select()
+    public void test3Select() throws SQLException
     {
         ctx.clearCache();
         User user = ctx.find(User.class, 1l);
@@ -119,7 +120,7 @@ public class EntityContextTest
     }
 
     @Test
-    public void test3Update()
+    public void test3Update() throws SQLException
     {
         User user = ctx.find(User.class, 1l);
         user.setAge((short)40);
@@ -165,7 +166,7 @@ public class EntityContextTest
     }
 
     @Test
-    public void test4Functions()
+    public void test4Functions() throws SQLException
     {
         User user = new User(2l, "Admin 3");
         user.setAge((short)20);
@@ -193,7 +194,7 @@ public class EntityContextTest
     }
 
     @Test
-    public void test5FetchRelations()
+    public void test5FetchRelations() throws SQLException
     {
         List<Group> groups = ctx.query(User_.table).fetchAll(User_.group);
         assertEquals(2, groups.size());
@@ -215,7 +216,7 @@ public class EntityContextTest
     }
     
     @Test
-    public void test6Delete()
+    public void test6Delete() throws SQLException
     {
         assertNotNull(ctx.find(Group.class, 1l));
         assertNotNull(ctx.find(Group.class, 2l));
@@ -234,7 +235,7 @@ public class EntityContextTest
     }
     
     @Test
-    public void test7AutoIncrement()
+    public void test7AutoIncrement() throws SQLException
     {
         ctx.fixTable(Rol.class);
         Rol rol = ctx.insert(new Rol("Admin Rol"));

@@ -41,7 +41,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
 
     private final EntityInf<T> entityInf;
     
-    private final EntityContextImpl entCtxImpl;
+    private final EntityContextImpl ctx;
 
     private Condition condition;
     
@@ -51,10 +51,10 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     
     private int pageSize;
     
-    public QueryImpl(EntityContextImpl entCtxImpl, EntityInf<T> entityInf)
+    public QueryImpl(EntityContextImpl ctx, EntityInf<T> entityInf)
     {
         this.entityInf = entityInf;
-        this.entCtxImpl = entCtxImpl;
+        this.ctx = ctx;
     }
     
     @Override
@@ -65,107 +65,75 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     }
 
     @Override
-    public List<T> fetchAll()
+    public List<T> fetchAll() throws SQLException
     {
-        try
+        List<Object> params = new ArrayList<>();
+        SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), params);
+        if(page > 0)
         {
-            List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
-            if(page > 0)
-            {
-                int index = ((page - 1) * pageSize);
-                qb.limit(index, pageSize);
-            }
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllEntitys(rs, entCtxImpl), parameters.toArray());
+            int index = ((page - 1) * pageSize);
+            qb.limit(index, pageSize);
         }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return null;
+        return ctx.doQuery(qb.toString(), 
+                        (rs) -> entityInf.parseAll(rs, ctx), 
+                        params.toArray());
     }
 
     @Override
-    public <C> List<C> fetchAll(Column<T, C> column)
+    public <C> List<C> fetchAll(Column<T, C> column) throws SQLException
     {
-        try
+        List<Object> params = new ArrayList<>();
+        if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
         {
-            List<Object> parameters = new ArrayList<>();
-            if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
-            {
-                parameters.addAll(((FunctionColumn)column).getParameters());
-            }
-            SelectBuilder qb = createQuery(findColumnName(column), parameters);
-            if(page > 0)
-            {
-                int index = ((page - 1) * pageSize);
-                qb.limit(index, pageSize);
-            }
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseAllColumns(1, column, rs, entCtxImpl), parameters.toArray());
+            params.addAll(((FunctionColumn)column).getParameters());
         }
-        catch (SQLException e)
+        SelectBuilder qb = createQuery(findColumnName(column), params);
+        if(page > 0)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            int index = ((page - 1) * pageSize);
+            qb.limit(index, pageSize);
         }
-        return null;
+        return ctx.doQuery(qb.toString(), 
+                (rs) -> entityInf.parseAll(1, column, rs, ctx), 
+                params.toArray());
     }
 
     @Override
-    public T fetchOne()
+    public T fetchOne() throws SQLException
     {
-        try
-        {
-            List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
-            qb.limit(0, 1);
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseEntity(rs, entCtxImpl), parameters.toArray());
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return null;
-    }
-    
-    @Override
-    public <C> C fetchOne(Column<T, C> column)
-    {
-        try
-        {
-            List<Object> parameters = new ArrayList<>();
-            if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
-            {
-                parameters.addAll(((FunctionColumn)column).getParameters());
-            }
-            SelectBuilder qb = createQuery(findColumnName(column), parameters);
-            qb.limit(0, 1);
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseColumn(1, column, rs, entCtxImpl),parameters.toArray());
-        }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return null;
+        List<Object> parameters = new ArrayList<>();
+        SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
+        qb.limit(0, 1);
+        return ctx.doQuery(qb.toString(), 
+                    (rs) -> entityInf.parse(rs, ctx), 
+                    parameters.toArray());
     }
 
     @Override
-    public long count()
+    public <C> C fetchOne(Column<T, C> column) throws SQLException
     {
-        try
+        List<Object> parameters = new ArrayList<>();
+        if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
         {
-            List<Object> parameters = new ArrayList<>();
-            SelectBuilder qb = createQuery("COUNT(*)", parameters);
-            return entCtxImpl.doQuery(qb.toString(), (rs) -> entityInf.parseCount(rs), parameters.toArray());
+            parameters.addAll(((FunctionColumn)column).getParameters());
         }
-        catch (SQLException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return -1;
+        SelectBuilder qb = createQuery(findColumnName(column), parameters);
+        qb.limit(0, 1);
+        return ctx.doQuery(qb.toString(), 
+                    (rs) -> entityInf.parse(1, column, rs, ctx), 
+                    parameters.toArray());
     }
 
     @Override
-    public boolean exists()
+    public long count() throws SQLException
+    {
+        List<Object> parameters = new ArrayList<>();
+        SelectBuilder qb = createQuery("COUNT(*)", parameters);
+        return ctx.doQuery(qb.toString(), (rs) -> entityInf.parseCount(rs), parameters.toArray());
+    }
+
+    @Override
+    public boolean exists() throws SQLException
     {
         return count() > 0;
     }
@@ -206,7 +174,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     @Override
     public String findColumnName(Column column)
     {
-        EntityInf<Object> eInf = entCtxImpl.getMetainf().findEntityInf(column.getTable().getEntityClass());
+        EntityInf<Object> eInf = ctx.getMetainf().findEntityInf(column.getTable().getEntityClass());
         String columnName = eInf.findColumnName(column);
         if(column instanceof FunctionColumn && ((FunctionColumn)column).getFunction() != null)
         {
