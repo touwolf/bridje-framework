@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import org.bridje.orm.Column;
 import org.bridje.orm.ColumnNameFinder;
 import org.bridje.orm.Condition;
+import org.bridje.orm.FunctionColumn;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 
@@ -90,9 +91,9 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
         try
         {
             List<Object> parameters = new ArrayList<>();
-            if(column.getParameters() != null)
+            if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
             {
-                parameters.addAll(column.getParameters());
+                parameters.addAll(((FunctionColumn)column).getParameters());
             }
             SelectBuilder qb = createQuery(findColumnName(column), parameters);
             if(page > 0)
@@ -132,9 +133,9 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
         try
         {
             List<Object> parameters = new ArrayList<>();
-            if(column.getParameters() != null)
+            if(column instanceof FunctionColumn && ((FunctionColumn)column).getParameters() != null)
             {
-                parameters.addAll(column.getParameters());
+                parameters.addAll(((FunctionColumn)column).getParameters());
             }
             SelectBuilder qb = createQuery(findColumnName(column), parameters);
             qb.limit(0, 1);
@@ -207,9 +208,9 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     {
         EntityInf<Object> eInf = entCtxImpl.getMetainf().findEntityInf(column.getTable().getEntityClass());
         String columnName = eInf.findColumnName(column);
-        if(column.getFunction() != null)
+        if(column instanceof FunctionColumn && ((FunctionColumn)column).getFunction() != null)
         {
-            return String.format(column.getFunction(), columnName);
+            return String.format(((FunctionColumn)column).getFunction(), columnName);
         }
         return columnName;
     }

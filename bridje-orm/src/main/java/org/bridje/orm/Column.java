@@ -37,10 +37,6 @@ public class Column<E, T>
 
     private final Class<T> type;
 
-    private String function;
-
-    private List<Object> parameters;
-
     /**
      * This constructor is used to create a column without any funcions, a
      * column constructed by this constructor along will represent the plain
@@ -58,43 +54,6 @@ public class Column<E, T>
         this.table = table;
         this.field = field;
         this.type = type;
-    }
-
-    /**
-     * This constructor is used to create a column with a function or operator.
-     *
-     * @param table The Table object this columns belong to.
-     * @param field The field name for the declared java field in the base
-     * entity class.
-     * @param type The java type for this column.
-     * @param function The function expresion to be use when selialize this
-     * object to a query.
-     * @param parameters The parameters list on the current query, that this
-     * column must have for correct serialization.
-     */
-    public Column(Table<E> table, String field, Class<T> type, String function, List<Object> parameters)
-    {
-        this.table = table;
-        this.field = field;
-        this.type = type;
-        this.function = function;
-        if (parameters != null)
-        {
-            this.parameters = new ArrayList<>();
-            this.parameters.addAll(parameters);
-        }
-    }
-
-    /**
-     * Gets the function expresion for this column, if any. if this functions
-     * return null or empty it means that this object represents a plain column
-     * with no functions.
-     *
-     * @return The function expression or null if none exists.
-     */
-    public String getFunction()
-    {
-        return function;
     }
 
     /**
@@ -220,33 +179,5 @@ public class Column<E, T>
     public OrderBy desc()
     {
         return new OrderBy(OrderByType.DESC, this);
-    }
-
-    /**
-     * Adds a new parameter to this column, this method should only be use in
-     * the functions columns, that needs parameters when they are serialize to
-     * create and execute the query into the database.
-     *
-     * @param param The param to be added.
-     */
-    protected void addParameter(Object param)
-    {
-        if (parameters == null)
-        {
-            parameters = new ArrayList<>();
-        }
-        parameters.add(param);
-    }
-
-    /**
-     * Gets the parameters list for the function expresion for this column, if
-     * any. if this functions return null or empty it means that this object
-     * represents that no parameter has being put into this column.
-     *
-     * @return The parameters list or null if none exists.
-     */
-    public List<Object> getParameters()
-    {
-        return parameters;
     }
 }

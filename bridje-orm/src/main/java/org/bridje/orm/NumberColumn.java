@@ -16,6 +16,7 @@
 
 package org.bridje.orm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,41 +46,17 @@ public class NumberColumn<E, T extends Number> extends Column<E, T>
     }
 
     /**
-     * This constructor is used to create a column with a function or operator.
-     *
-     * @param table The Table object this columns belong to.
-     * @param field The field name for the declared java field in the base
-     * entity class.
-     * @param type The java type for this column.
-     * @param function The function expresion to be use when selialize this
-     * object to a query.
-     * @param parameters The parameters list on the current query, that this
-     * column must have for correct serialization.
-     */
-    public NumberColumn(Table<E> table, String field, Class<T> type, String function, List<Object> parameters)
-    {
-        super(table, field, type, function, parameters);
-    }
-
-    /**
      * Creates a new column that totalize all the values of the current column.
      * Ex: if this column is some_col the resulting column will be
      * sum(some_col).
      *
      * @return The new sum column.
      */
-    public NumberColumn<E, T> sum()
+    public NumberFunctionColumn<E, T, T> sum()
     {
         String functionExp;
-        if (getFunction() == null)
-        {
-            functionExp = "SUM(%s)";
-        }
-        else
-        {
-            functionExp = "SUM(" + getFunction() + ")";
-        }
-        return new NumberColumn<>(getTable(), getField(), getType(), functionExp, getParameters());
+        functionExp = "SUM(%s)";
+        return new NumberFunctionColumn<>(this, getType(), functionExp, null);
     }
 
     /**
@@ -89,19 +66,13 @@ public class NumberColumn<E, T extends Number> extends Column<E, T>
      * @param value The value to add to the column.
      * @return The new created column.
      */
-    public NumberColumn<E, T> puls(T value)
+    public NumberFunctionColumn<E, T, T> puls(T value)
     {
         String functionExp;
-        if (getFunction() == null)
-        {
-            functionExp = "%s + ?";
-        }
-        else
-        {
-            functionExp = getFunction() + " + ?";
-        }
-        addParameter(value);
-        return new NumberColumn<>(getTable(), getField(), getType(), functionExp, getParameters());
+        functionExp = "%s + ?";
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(value);
+        return new NumberFunctionColumn<>(this, getType(), functionExp, parameters);
     }
 
     /**
@@ -111,18 +82,12 @@ public class NumberColumn<E, T extends Number> extends Column<E, T>
      * @param value The value to substract to the column.
      * @return The new created column.
      */
-    public NumberColumn<E, T> minus(T value)
+    public NumberFunctionColumn<E, T, T> minus(T value)
     {
         String functionExp;
-        if (getFunction() == null)
-        {
-            functionExp = "%s - ?";
-        }
-        else
-        {
-            functionExp = getFunction() + " - ?";
-        }
-        addParameter(value);
-        return new NumberColumn<>(getTable(), getField(), getType(), functionExp, getParameters());
+        functionExp = "%s - ?";
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(value);
+        return new NumberFunctionColumn<>(this, getType(), functionExp, parameters);
     }
 }

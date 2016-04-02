@@ -91,9 +91,13 @@ class BinaryCondition extends Condition
     private void writeColumn(Column column, List<Object> parameters, ColumnNameFinder cnf, StringBuilder sb)
     {
         sb.append(cnf.findColumnName(column));
-        if (column.getParameters() != null)
+        if(column instanceof FunctionColumn)
         {
-            parameters.addAll(column.getParameters());
+            FunctionColumn functCol = (FunctionColumn)column;
+            if (functCol.getParameters() != null)
+            {
+                parameters.addAll(functCol.getParameters());
+            }
         }
     }
 

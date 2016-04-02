@@ -48,18 +48,9 @@ public class StringColumn<E> extends Column<E, String>
      *
      * @return The new created column.
      */
-    public NumberColumn<E, Integer> length()
+    public NumberFunctionColumn<E, Integer, String> length()
     {
-        String functionExp;
-        if (getFunction() == null)
-        {
-            functionExp = "LENGTH(%s)";
-        }
-        else
-        {
-            functionExp = "LENGTH(" + getFunction() + ")";
-        }
-        return new NumberColumn<>(getTable(), getField(), Integer.class, functionExp, getParameters());
+        return new NumberFunctionColumn<>(this, Integer.class, "LENGTH(%s)", null);
     }
 
     /**
@@ -68,7 +59,7 @@ public class StringColumn<E> extends Column<E, String>
      * @param value The like expression.
      * @return The new created condition.
      */
-    public Condition minus(String value)
+    public Condition like(String value)
     {
         return new BinaryCondition(this, Operator.LIKE, value);
     }
