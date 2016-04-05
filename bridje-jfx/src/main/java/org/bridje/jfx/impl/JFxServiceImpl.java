@@ -37,13 +37,13 @@ class JFxServiceImpl implements JFxService
 
     private String title;
     
-    private MainPane mainPane;
+    private LayoutPane mainPane;
     
     @Override
     public void start(Stage stage, String title)
     {
         this.title = title;
-        mainPane = Ioc.context().find(MainPane.class);
+        mainPane = Ioc.context().find(LayoutPane.class);
         Scene scene = new Scene(mainPane);
         stage.setWidth(1024);
         stage.setHeight(768);

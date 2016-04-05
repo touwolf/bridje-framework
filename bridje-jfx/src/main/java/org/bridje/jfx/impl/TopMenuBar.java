@@ -34,7 +34,7 @@ import org.bridje.jfx.TopMenu;
  * 
  */
 @Component
-public class MainMenu extends MenuBar
+class TopMenuBar extends MenuBar
 {
     @Inject
     private IocContext context;

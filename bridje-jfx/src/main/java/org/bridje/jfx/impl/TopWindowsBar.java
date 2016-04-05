@@ -25,44 +25,25 @@ import javafx.scene.control.ToolBar;
 /**
  *
  */
-public class SideToolBar extends ToolBar
+class TopWindowsBar extends ToolBar
 {
-    public SideToolBar(Orientation orientation)
+    public TopWindowsBar(Orientation orientation)
     {
         setOrientation(orientation);
     }
 
-    public void addButton(Button button)
+    public void addButton(TopWindowButton button)
     {
-        if(this.getOrientation() == Orientation.VERTICAL)
-        {
-            Group group = new Group(button);
-            button.setRotate(-90);
-            getItems().add(group);
-        }
-        else
-        {
-            getItems().add(button);
-        }
+        getItems().add(button);
     }
 
-    public void removeButton(Button b)
+    public void removeButton(TopWindowButton button)
     {
-        if(this.getOrientation() == Orientation.VERTICAL)
-        {
-            Node toRemove = null;
-            for (Node node : getItems())
-            {
-                if( ((Group)node).getChildren().get(0).equals(b) )
-                {
-                    toRemove = node;
-                }
-            }
-            getItems().remove(toRemove);
-        }
-        else
-        {
-            getItems().remove(b);
-        }
+        getItems().remove(button);
+    }
+
+    public boolean containsButton(TopWindowButton button)
+    {
+        return getItems().contains(button);        
     }
 }
