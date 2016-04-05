@@ -17,49 +17,58 @@
 package org.bridje.orm.impl.core;
 
 /**
- *
+ * Utilities for casting values from to the database.
  */
 public class CastUtils
 {
+    /**
+     * Cast the given object to the specified class.
+     *
+     * @param <F> The type to cast to.
+     * @param fieldType The class of the type to cast to.
+     * @param value The value to be converted.
+     * @return The converted value or null if not viable convertion can be
+     * found.
+     */
     public static <F> F castValue(Class<F> fieldType, Object value)
     {
-        if(value != null)
+        if (value != null)
         {
-            if(!fieldType.isAssignableFrom(value.getClass()))
+            if (!fieldType.isAssignableFrom(value.getClass()))
             {
-                if(Character.class.isAssignableFrom(fieldType))
+                if (Character.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toCharacter(value);
+                    return (F) toCharacter(value);
                 }
-                if(Byte.class.isAssignableFrom(fieldType))
+                if (Byte.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toByte(value);
+                    return (F) toByte(value);
                 }
-                if(Short.class.isAssignableFrom(fieldType))
+                if (Short.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toShort(value);
+                    return (F) toShort(value);
                 }
-                if(Integer.class.isAssignableFrom(fieldType))
+                if (Integer.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toInteger(value);
+                    return (F) toInteger(value);
                 }
-                if(Long.class.isAssignableFrom(fieldType))
+                if (Long.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toLong(value);
+                    return (F) toLong(value);
                 }
-                if(Float.class.isAssignableFrom(fieldType))
+                if (Float.class.isAssignableFrom(fieldType))
                 {
-                    return (F)toFloat(value);
+                    return (F) toFloat(value);
                 }
             }
-            return (F)value;
+            return (F) value;
         }
         return null;
     }
 
     private static Character toCharacter(Object value)
     {
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
             return ((String) value).toCharArray()[0];
         }
@@ -68,65 +77,65 @@ public class CastUtils
 
     private static Object toByte(Object value)
     {
-        if(value instanceof Number)
+        if (value instanceof Number)
         {
-            return ((Number)value).byteValue();
+            return ((Number) value).byteValue();
         }
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
-            return Byte.valueOf((String)value);
+            return Byte.valueOf((String) value);
         }
         return null;
     }
-    
+
     private static Object toShort(Object value)
     {
-        if(value instanceof Number)
+        if (value instanceof Number)
         {
-            return ((Number)value).shortValue();
+            return ((Number) value).shortValue();
         }
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
-            return Short.valueOf((String)value);
+            return Short.valueOf((String) value);
         }
         return null;
     }
 
     private static Object toLong(Object value)
     {
-        if(value instanceof Number)
+        if (value instanceof Number)
         {
-            return ((Number)value).longValue();
+            return ((Number) value).longValue();
         }
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
-            return Long.valueOf((String)value);
+            return Long.valueOf((String) value);
         }
         return null;
     }
 
     private static Object toInteger(Object value)
     {
-        if(value instanceof Number)
+        if (value instanceof Number)
         {
-            return ((Number)value).intValue();
+            return ((Number) value).intValue();
         }
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
-            return Integer.valueOf((String)value);
+            return Integer.valueOf((String) value);
         }
         return null;
     }
-    
+
     private static Object toFloat(Object value)
     {
-        if(value instanceof Number)
+        if (value instanceof Number)
         {
-            return ((Number)value).floatValue();
+            return ((Number) value).floatValue();
         }
-        if(value instanceof String && !((String)value).isEmpty())
+        if (value instanceof String && !((String) value).isEmpty())
         {
-            return Short.valueOf((String)value);
+            return Short.valueOf((String) value);
         }
         return null;
     }

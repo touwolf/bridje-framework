@@ -63,10 +63,10 @@ public interface HttpServerResponse
     void setHeader(String name, Object value);
     
     /**
-     * 
-     * @param name
-     * @param value 
-     * @return  
+     * Adds a new HttpCookie to the response of this request.
+     * @param name The name of the cookie.
+     * @param value The value for the cookie.
+     * @return The new created HttpCookie object.
      */
     HttpCookie addCookie(String name, String value);
 }

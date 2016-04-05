@@ -28,9 +28,20 @@ import java.util.List;
  *
  * @param <E> The type for the entity that this column belongs to.
  * @param <T> The type of the column.
+ * @param <B> The type of the base column for this function column.
  */
 public class NumberFunctionColumn<E, T, B> extends FunctionColumn<E, T, B>
 {
+    /**
+     * This constructor is used to create a column with a function or operator.
+     *
+     * @param column The Table object this columns belong to.
+     * @param type The type for this column.
+     * @param function The function expresion to be use when selialize this
+     * object to a query.
+     * @param parameters The parameters list on the current query, that this
+     * column must have for correct serialization.
+     */
     public NumberFunctionColumn(Column<E, B> column, Class<T> type, String function, List<Object> parameters)
     {
         super(column, type, function, parameters);

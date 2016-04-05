@@ -27,146 +27,180 @@ public interface HttpServerRequest
 {
     /**
      * The HTTP method used to made the request.
+     *
      * @return An String representing the HTTP method used to made the request.
      */
     String getMethod();
 
     /**
      * The protocol used to made the request
+     *
      * @return An String representing the protocol used to made the request
      */
     String getProtocol();
 
     /**
      * The host of the server the client made the HTTP request to
+     *
      * @return An String representing the host name of the server.
      */
     String getHost();
 
     /**
      * The UserAgent heather from the http request if any.
-     * @return An String representing the UserAgent information from the client if is available.
+     *
+     * @return An String representing the UserAgent information from the client
+     * if is available.
      */
     String getUserAgent();
 
     /**
      * The Accept header sended by the client.
+     *
      * @return An String representing the value of the Accept header
      */
     String getAccept();
 
     /**
      * The AcceptLanguaje header sended by the client.
-     * @return An String representing the value of the AcceptLanguaje  header
+     *
+     * @return An String representing the value of the AcceptLanguaje header
      */
     String getAcceptLanguage();
 
     /**
      * The requested path asked by the client.
+     *
      * @return An String representing the requested path asked by the client.
      */
     String getPath();
 
     /**
-     * 
-     * @return 
+     * The mime/type sended by the client for this request, this method will get
+     * the Content-Type http header.
+     *
+     * @return The mime/type sended by the client for this request.
      */
     String getConentType();
 
     /**
-     * 
-     * @return 
+     * When ever this request is http method is "GET".
+     *
+     * @return true the http method for this request is "GET", false otherwise.
      */
     boolean isGet();
 
     /**
-     * 
-     * @return 
+     * When ever this request is http method is "POST".
+     *
+     * @return true the http method for this request is "GET", false otherwise.
      */
     boolean isPost();
 
     /**
-     * 
-     * @return 
+     * When ever this request is http method is "DELETE".
+     *
+     * @return true the http method for this request is "DELETE", false
+     * otherwise.
      */
     boolean isDelete();
 
     /**
-     * 
-     * @return 
+     * When ever this request is http method is "PUT".
+     *
+     * @return true the http method for this request is "PUT", false otherwise.
      */
     boolean isPut();
 
     /**
-     * 
-     * @return 
+     * When ever this request content type is a www-form or multipart-form.
+     *
+     * @return true this request content type is a www-form or multipart-form,
+     * false otherwise.
      */
     boolean isForm();
-    
+
     /**
-     * 
-     * @return 
+     * When ever this request is a "application/x-www-form-urlencoded".
+     *
+     * @return true this request is a "application/x-www-form-urlencoded", false
+     * otherwise.
      */
     boolean isWwwForm();
-    
+
     /**
-     * 
-     * @return 
+     * When ever this request is a "multipart/form-data".
+     *
+     * @return true this request is a "multipart/form-data", false otherwise.
      */
     boolean isMultipartForm();
 
     /**
-     * 
-     * @return 
+     * Gets a unmodificable map to the post parameters sended by the client. If
+     * this request is not a "application/x-www-form-urlencoded" or a
+     * multipart/form-data" the post parameters map will be empty.
+     *
+     * @return A map with all the post parameters sended by the client.
      */
     Map<String, String> getPostParameters();
 
     /**
-     * 
-     * @param parameter
-     * @return 
+     * Gets the specific post parameter from the parameters map.
+     *
+     * @param parameter The post parameter name.
+     * @return The post parameter value or null if it does not exists.
      */
     String getPostParameter(String parameter);
 
     /**
-     * 
-     * @return 
+     * Gets all the post parameters names for this request if any.
+     *
+     * @return An array of String representing all the post parameters for this
+     * request.
      */
     String[] getPostParametersNames();
 
     /**
-     * 
-     * @return 
+     * Gets the "GET" parameters that where sended by the client in the query
+     * string of the request.
+     *
+     * @return A map with all the "GET" parameters for this request.
      */
     public Map<String, List<String>> getGetParameters();
 
     /**
-     * 
-     * @param parameter
-     * @return 
+     * Gets the specific "GET" parameter from the parameters map.
+     *
+     * @param parameter The "GET" parameter name.
+     * @return The "GET" parameter value or null if it does not exists.
      */
     String getGetParameter(String parameter);
 
     /**
-     * 
-     * @return 
+     * Gets all the "GET" parameters names for this request if any.
+     *
+     * @return An array of String representing all the "GET" parameters for this
+     * request.
      */
     String[] getGetParametersNames();
-    
+
     /**
-     * 
-     * @return 
+     * Gets the uploaded files for a "multipart/form-data" request.
+     *
+     * @return The array of uploaded files if any.
      */
     UploadedFile[] getUploadedFiles();
-    
+
     /**
      * All the headers names in this request.
+     *
      * @return An String array with all the request headers names.
      */
     String[] getHeaders();
 
     /**
      * Gets the value of the especified header.
+     *
      * @param header The header name
      * @return The header value
      */
@@ -174,26 +208,31 @@ public interface HttpServerRequest
 
     /**
      * An InputStream witch allows to read the request body for this request.
+     *
      * @return The InputStream to read the request body.
      */
     InputStream getInputStream();
 
     /**
-     * 
-     * @return 
+     * Gets a map with all the cookies sended to the server by the client.
+     *
+     * @return A map with the HTTP cookies for this request.
      */
     Map<String, HttpCookie> getCookies();
-    
+
     /**
-     * 
-     * @param name
-     * @return 
+     * Gets the specified HTTP cookie.
+     *
+     * @param name The name of the HTTP cookie.
+     * @return the HttpCookie object representing the cookie or null if it does
+     * not exists.
      */
     HttpCookie getCookie(String name);
 
     /**
-     * 
-     * @return 
+     * Gets all the cookies names availables in this request.
+     *
+     * @return An array of String representing the cookies names.
      */
     String[] getCookiesNames();
 }

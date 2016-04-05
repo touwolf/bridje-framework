@@ -30,7 +30,7 @@ import org.bridje.orm.impl.sql.DDLBuilder;
  *
  */
 @Component
-public class H2Dialect implements SQLDialect
+class H2Dialect implements SQLDialect
 {
     private static final Logger LOG = Logger.getLogger(H2Dialect.class.getName());
 
@@ -49,7 +49,7 @@ public class H2Dialect implements SQLDialect
     }
 
     @Override
-    public <T> String createTable(TableData table)
+    public String createTable(TableData table)
     {
         DDLBuilder b = new DDLBuilder("");
         b.createTable(table.getTableName());
@@ -61,7 +61,7 @@ public class H2Dialect implements SQLDialect
     }
 
     @Override
-    public <T> String createColumn(ColumnData column)
+    public String createColumn(ColumnData column)
     {
         DDLBuilder b = new DDLBuilder("");
         b.alterTable(column.getTableData().getTableName())
@@ -71,7 +71,7 @@ public class H2Dialect implements SQLDialect
     }
 
     @Override
-    public <T> String createIndex(ColumnData column)
+    public String createIndex(ColumnData column)
     {
         DDLBuilder b = new DDLBuilder("");
         return b.createIndex(column.getTableData().getTableName(), column.getColumnName());

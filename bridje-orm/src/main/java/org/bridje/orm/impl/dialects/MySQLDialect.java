@@ -50,7 +50,7 @@ class MySQLDialect implements SQLDialect
 
 
     @Override
-    public <T> String createTable(TableData table)
+    public String createTable(TableData table)
     {
         DDLBuilder b = createDDLBuilder();
         b.createTable(table.getTableName());
@@ -62,7 +62,7 @@ class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public <T> String createColumn(ColumnData column)
+    public String createColumn(ColumnData column)
     {
         DDLBuilder b = createDDLBuilder();
         b.alterTable(column.getTableData().getTableName())
@@ -72,7 +72,7 @@ class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public <T> String createIndex(ColumnData column)
+    public String createIndex(ColumnData column)
     {
         DDLBuilder b = createDDLBuilder();
         return b.createIndex(column.getTableData().getTableName(), column.getColumnName());

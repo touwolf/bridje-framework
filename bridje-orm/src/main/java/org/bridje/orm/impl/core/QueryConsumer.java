@@ -33,7 +33,8 @@ public interface QueryConsumer<T>
      *
      * @param rs The result set to parse.
      * @return The resulting type.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     T parse(ResultSet rs) throws SQLException;
 }

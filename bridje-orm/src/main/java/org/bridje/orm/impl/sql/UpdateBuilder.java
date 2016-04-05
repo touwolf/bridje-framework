@@ -17,7 +17,7 @@
 package org.bridje.orm.impl.sql;
 
 /**
- *
+ * An utility class for creating UPDATE SQL querys.
  */
 public class UpdateBuilder
 {

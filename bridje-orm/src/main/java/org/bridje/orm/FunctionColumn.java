@@ -27,12 +27,13 @@ import java.util.List;
  * MyEntity.someColumn field.
  *
  * @param <E> The type for the entity that this column belongs to.
- * @param <T> The type of the column.
+ * @param <T> The type of this column.
+ * @param <B> The type for the base column.
  */
 public class FunctionColumn<E, T, B> extends Column<E, T>
 {
     private Column<E, B> column;
-    
+
     private Class<T> type;
 
     private String function;
@@ -43,13 +44,14 @@ public class FunctionColumn<E, T, B> extends Column<E, T>
      * This constructor is used to create a column with a function or operator.
      *
      * @param column The Table object this columns belong to.
+     * @param type The type for this column.
      * @param function The function expresion to be use when selialize this
      * object to a query.
      * @param parameters The parameters list on the current query, that this
      * column must have for correct serialization.
      */
-    public FunctionColumn(Column<E, B> column, Class<T> type, 
-                                    String function, List<Object> parameters)
+    public FunctionColumn(Column<E, B> column, Class<T> type,
+            String function, List<Object> parameters)
     {
         super(column.getTable(), column.getField(), type);
         this.column = column;
@@ -96,6 +98,11 @@ public class FunctionColumn<E, T, B> extends Column<E, T>
         return parameters;
     }
 
+    /**
+     * Gets the base column for this function column.
+     *
+     * @return A Column object representing the base column for this function.
+     */
     public Column<E, B> getColumn()
     {
         return column;

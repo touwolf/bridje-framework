@@ -26,6 +26,12 @@ public class OrderBy
 
     private final Column column;
 
+    /**
+     * Creates a new order by statement for the given column.
+     * 
+     * @param type The ordering type.
+     * @param column The column for this order by statement.
+     */
     protected OrderBy(OrderByType type, Column column)
     {
         this.type = type;

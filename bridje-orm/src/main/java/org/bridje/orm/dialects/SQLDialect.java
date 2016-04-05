@@ -19,15 +19,44 @@ package org.bridje.orm.dialects;
 import javax.sql.DataSource;
 
 /**
- *
+ * The interface that every SQLDialect must implement to be supported into the
+ * orm.
  */
 public interface SQLDialect
 {
+    /**
+     * Determines if this SQL dialect can handle the given DataSource object.
+     *
+     * @param dataSource The JDBC DataSource to be tested.
+     * @return true this dialect can handle the given DataSource, false
+     * otherwise.
+     */
     boolean canHandle(DataSource dataSource);
 
-    <T> String createTable(TableData table);
-    
-    <T> String createColumn(ColumnData table);
+    /**
+     * Creates the SQL statement needed to create the given table into a
+     * database.
+     *
+     * @param table The data for the table that needs to be created.
+     * @return The SQL create statement for the table.
+     */
+    String createTable(TableData table);
 
-    <T> String createIndex(ColumnData column);
+    /**
+     * Creates the SQL statement needed to create the given column into the
+     * database.
+     *
+     * @param column The data for the column that needs to be created.
+     * @return The SQL create statement for the column.
+     */
+    String createColumn(ColumnData column);
+
+    /**
+     * Creates the SQL statement needed to create the an index on the given
+     * column into the database.
+     *
+     * @param column The data for the column whos index needs to be created.
+     * @return The SQL create statement for the index.
+     */
+    String createIndex(ColumnData column);
 }

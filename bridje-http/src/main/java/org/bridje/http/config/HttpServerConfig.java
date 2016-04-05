@@ -157,7 +157,7 @@ public class HttpServerConfig
 
     /**
      * The algorithm to use to create the SSLContext.
-     * <br/>
+     * <br>
      * Note that the list of registered providers may be retrieved via the
      * Security.getProviders() method.
      *
@@ -170,7 +170,7 @@ public class HttpServerConfig
 
     /**
      * The algorithm to use to create the SSLContext.
-     * <br/>
+     * <br>
      * Note that the list of registered providers may be retrieved via the
      * Security.getProviders() method.
      *
@@ -284,7 +284,8 @@ public class HttpServerConfig
      * Creates a new SSLContext from the parameters of this configuration, that
      * can be use for the ssl codec of the http server.
      *
-     * @return @throws NoSuchAlgorithmException If a wrong algorithm is
+     * @return The new created SSLContext for the http server ssl codec.
+     * @throws NoSuchAlgorithmException If a wrong algorithm is
      * provided.
      * @throws KeyStoreException If any error occurrs with the KeyStore.
      * @throws IOException If the keystore file is not found or cannot be readed.

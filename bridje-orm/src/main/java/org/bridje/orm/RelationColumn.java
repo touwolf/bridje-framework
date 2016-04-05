@@ -45,6 +45,11 @@ public class RelationColumn<E, R> extends Column<E, R>
         super(table, field, related.getEntityClass());
     }
 
+    /**
+     * Gets the related table for this relation column.
+     * 
+     * @return A table object representing the related table for this relation.
+     */
     public Table<R> getRelatedTable()
     {
         return related;

@@ -40,7 +40,8 @@ public interface Query<T>
      * Executes the query and fetch all entitys.
      *
      * @return The list of entitys returned from the database.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     List<T> fetchAll() throws SQLException;
 
@@ -51,7 +52,8 @@ public interface Query<T>
      * @param column The column to be fetch.
      * @return A list of objects of type c representing the values of the
      * column.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <C> List<C> fetchAll(Column<T, C> column) throws SQLException;
 
@@ -59,7 +61,8 @@ public interface Query<T>
      * Executes the query and fetch the first record that the database return.
      *
      * @return The first entity returned by the query.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     T fetchOne() throws SQLException;
 
@@ -70,7 +73,8 @@ public interface Query<T>
      * @param <C> The type of the field the given column represents.
      * @param column The column to be fetch.
      * @return The first entity returned by the query.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <C> C fetchOne(Column<T, C> column) throws SQLException;
 
@@ -80,7 +84,8 @@ public interface Query<T>
      *
      * @return The number of records this query can return, 0 means that this
      * query will not return any records.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     long count() throws SQLException;
 
@@ -89,7 +94,8 @@ public interface Query<T>
      *
      * @return true the query will return 1 or more record, false the query will
      * not return any records.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     boolean exists() throws SQLException;
 

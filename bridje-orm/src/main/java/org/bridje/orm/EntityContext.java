@@ -31,7 +31,8 @@ public interface EntityContext
      *
      * @param <T> The type of the entity.
      * @param entityClass The entity class to be The class of the entity.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> void fixTable(Class<T> entityClass) throws SQLException;
 
@@ -42,7 +43,8 @@ public interface EntityContext
      * @param entityClass The entity class to be find.
      * @param id The id of the entity to be find.
      * @return The finded entity, or null if no entity can be found by that id.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T find(Class<T> entityClass, Object id) throws SQLException;
 
@@ -55,7 +57,8 @@ public interface EntityContext
      * @param entity The entity to be inserted.
      * @return The same entity passed to this method but with the values updated
      * so it mach the inserted values in the database.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T insert(T entity) throws SQLException;
 
@@ -69,7 +72,8 @@ public interface EntityContext
      * @param <T> The type of the entity.
      * @param entity The entity to be updated.
      * @return The same entity passed to this method.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T update(T entity) throws SQLException;
 
@@ -83,7 +87,8 @@ public interface EntityContext
      * @param entity The entity to be updated.
      * @param id The previous id value for the entity beign updated.
      * @return The same entity passed to this method.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T update(T entity, Object id) throws SQLException;
 
@@ -95,7 +100,8 @@ public interface EntityContext
      * @param entity The entity to be refreshed.
      * @return The same entity passed to this method but with the fields
      * refreshed.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T refresh(T entity) throws SQLException;
 
@@ -105,7 +111,8 @@ public interface EntityContext
      * @param <T> The type of the entity.
      * @param entity The entity to be
      * @return The same entity passed to this method.
-     * @throws java.sql.SQLException
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
     <T> T delete(T entity) throws SQLException;
 
