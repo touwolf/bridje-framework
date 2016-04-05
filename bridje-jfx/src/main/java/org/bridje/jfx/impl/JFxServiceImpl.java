@@ -45,6 +45,7 @@ class JFxServiceImpl implements JFxService
         this.title = title;
         mainPane = Ioc.context().find(LayoutPane.class);
         Scene scene = new Scene(mainPane);
+        scene.getStylesheets().add("org/bridje/jfx/impl/default.css");
         stage.setWidth(1024);
         stage.setHeight(768);
         stage.setScene(scene);
