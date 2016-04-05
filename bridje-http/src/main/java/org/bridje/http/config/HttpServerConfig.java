@@ -44,7 +44,7 @@ public class HttpServerConfig
     private String listen = "0.0.0.0";
 
     private String name = "Bridje HTTP Server";
-    
+
     private int port = 8080;
 
     private boolean ssl;
@@ -60,27 +60,33 @@ public class HttpServerConfig
     private String sslAlgo = "TLS";
 
     /**
-     * The listen ip on witch to start the http server, can be null witch means all ips will be allowed.
-     * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
+     * The listen ip on witch to start the http server, can be null witch means
+     * all ips will be allowed. Especify this only if you plan to restrict the
+     * ip on witch the server will accept new connections.
+     *
      * @return The listen for the HTTP server.
      */
     public String getListen()
     {
         return listen;
     }
-    
+
     /**
-     * The host on witch to start the http server, can be null witch means all ips will be allowed.
-     * Especify this only if you plan to restrict the ip on witch the server will accept new connections.
+     * The host on witch to start the http server, can be null witch means all
+     * ips will be allowed. Especify this only if you plan to restrict the ip on
+     * witch the server will accept new connections.
+     *
      * @param listen The host for the HTTP server.
      */
     public void setListen(String listen)
     {
         this.listen = listen;
     }
-    
+
     /**
-     * The HTTP server name, by default it will be "Bridje HTTP Server" but you can change that setting this property.
+     * The HTTP server name, by default it will be "Bridje HTTP Server" but you
+     * can change that setting this property.
+     *
      * @return The name of the HTTP server.
      */
     public String getName()
@@ -89,7 +95,9 @@ public class HttpServerConfig
     }
 
     /**
-     * The HTTP server name, by default it will be "Bridje HTTP Server" but you can change that setting this property.
+     * The HTTP server name, by default it will be "Bridje HTTP Server" but you
+     * can change that setting this property.
+     *
      * @param name The name of the HTTP server.
      */
     public void setName(String name)
@@ -98,12 +106,14 @@ public class HttpServerConfig
     }
 
     /**
-     * The port on witch the HTTP server will listen for new connections. By default 8080
+     * The port on witch the HTTP server will listen for new connections. By
+     * default 8080
+     *
      * @return The HTTP server port
      */
     public int getPort()
     {
-        if(port <= 0)
+        if (port <= 0)
         {
             port = 8080;
         }
@@ -111,7 +121,9 @@ public class HttpServerConfig
     }
 
     /**
-     * The port on witch the HTTP server will listen for new connections. By default 8080
+     * The port on witch the HTTP server will listen for new connections. By
+     * default 8080
+     *
      * @param port The HTTP server port
      */
     public void setPort(int port)
@@ -119,61 +131,133 @@ public class HttpServerConfig
         this.port = port;
     }
 
+    /**
+     * Gets if the server must run with ssl connector for https, if this
+     * parameter is true, the ssl parameters must be configure properly for the
+     * server to start.
+     *
+     * @return true ssl is enabled, false ssl is disabled.
+     */
     public boolean isSsl()
     {
         return ssl;
     }
 
+    /**
+     * Gets if the server must run with ssl connector for https, if this
+     * parameter is true, the ssl parameters must be configure properly for the
+     * server to start.
+     *
+     * @param ssl true ssl is enabled, false ssl is disabled.
+     */
     public void setSsl(boolean ssl)
     {
         this.ssl = ssl;
     }
 
+    /**
+     * The algorithm to use to create the SSLContext.
+     * <br/>
+     * Note that the list of registered providers may be retrieved via the
+     * Security.getProviders() method.
+     *
+     * @return The algorithm that will be use to create the SSLContext.
+     */
     public String getSslAlgo()
     {
         return sslAlgo;
     }
 
+    /**
+     * The algorithm to use to create the SSLContext.
+     * <br/>
+     * Note that the list of registered providers may be retrieved via the
+     * Security.getProviders() method.
+     *
+     * @param sslAlgo The algorithm that will be use to create the SSLContext.
+     */
     public void setSslAlgo(String sslAlgo)
     {
         this.sslAlgo = sslAlgo;
     }
 
+    /**
+     * The file that holds the keystore for the SSLContext.
+     *
+     * @return An String with the path relative to the current folder for the
+     * keystore file.
+     */
     public String getKeyStoreFile()
     {
         return keyStoreFile;
     }
 
+    /**
+     * The file that holds the keystore for the SSLContext.
+     *
+     * @param keyStoreFile An String with the path relative to the current
+     * folder for the keystore file.
+     */
     public void setKeyStoreFile(String keyStoreFile)
     {
         this.keyStoreFile = keyStoreFile;
     }
 
+    /**
+     * The password for the keystore file.
+     *
+     * @return The password for the keystore file.
+     */
     public String getKeyStorePass()
     {
         return keyStorePass;
     }
 
+    /**
+     * The password for the keystore file.
+     *
+     * @param keyStorePass The password for the keystore file.
+     */
     public void setKeyStorePass(String keyStorePass)
     {
         this.keyStorePass = keyStorePass;
     }
 
+    /**
+     * The KeyStore type to create for the SSLContext.
+     *
+     * @return The KeyStore type to create for the SSLContext.
+     */
     public String getKeyStoreType()
     {
         return keyStoreType;
     }
 
+    /**
+     * The KeyStore type to create for the SSLContext.
+     *
+     * @param keyStoreType The KeyStore type to create for the SSLContext.
+     */
     public void setKeyStoreType(String keyStoreType)
     {
         this.keyStoreType = keyStoreType;
     }
 
+    /**
+     * The algorithm for the KeyManagerFactory.
+     *
+     * @return The algorithm for the KeyManagerFactory.
+     */
     public String getKeyStoreAlgo()
     {
         return keyStoreAlgo;
     }
 
+    /**
+     * The algorithm for the KeyManagerFactory.
+     *
+     * @param keyStoreAlgo The algorithm for the KeyManagerFactory.
+     */
     public void setKeyStoreAlgo(String keyStoreAlgo)
     {
         this.keyStoreAlgo = keyStoreAlgo;
@@ -181,11 +265,12 @@ public class HttpServerConfig
 
     /**
      * Creates the InetSocketAddress to be user by the server.
-     * @return A new InetSocketAddress instance 
+     *
+     * @return A new InetSocketAddress instance
      */
     public InetSocketAddress createInetSocketAddress()
     {
-        if(listen == null || listen.trim().isEmpty())
+        if (listen == null || listen.trim().isEmpty())
         {
             return new InetSocketAddress(getPort());
         }
@@ -195,6 +280,18 @@ public class HttpServerConfig
         }
     }
 
+    /**
+     * Creates a new SSLContext from the parameters of this configuration, that
+     * can be use for the ssl codec of the http server.
+     *
+     * @return @throws NoSuchAlgorithmException If a wrong algorithm is
+     * provided.
+     * @throws KeyStoreException If any error occurrs with the KeyStore.
+     * @throws IOException If the keystore file is not found or cannot be readed.
+     * @throws UnrecoverableKeyException This exception is thrown if a key in the keystore cannot be recovered.
+     * @throws CertificateException This exception indicates one of a variety of certificate problems.
+     * @throws KeyManagementException This is the general key management exception for all operations dealing with key management.
+     */
     public SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableKeyException, CertificateException, KeyManagementException
     {
         SSLContext serverContext = SSLContext.getInstance(sslAlgo);
@@ -205,7 +302,7 @@ public class HttpServerConfig
         serverContext.init(kmf.getKeyManagers(), null, null);
         return serverContext;
     }
-    
+
     private InputStream readKeyStoreData() throws FileNotFoundException
     {
         return new FileInputStream(new File(keyStoreFile));

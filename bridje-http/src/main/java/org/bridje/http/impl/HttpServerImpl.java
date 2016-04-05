@@ -45,11 +45,8 @@ import org.bridje.http.config.HttpServerConfig;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 
-/**
- * 
- */
 @Component
-public class HttpServerImpl implements HttpServer
+class HttpServerImpl implements HttpServer
 {
     private static final Logger LOG = Logger.getLogger(HttpServerImpl.class.getName());
 

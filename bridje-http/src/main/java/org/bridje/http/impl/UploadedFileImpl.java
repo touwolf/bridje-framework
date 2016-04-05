@@ -21,13 +21,11 @@ import io.netty.handler.codec.http.multipart.FileUpload;
 import java.io.IOException;
 import java.io.InputStream;
 import org.bridje.http.UploadedFile;
-/**
- *
- */
-public class UploadedFileImpl implements UploadedFile
+
+class UploadedFileImpl implements UploadedFile
 {
     private final FileUpload fileUpload;
-    
+
     protected UploadedFileImpl(FileUpload fileUpload)
     {
         this.fileUpload = fileUpload;

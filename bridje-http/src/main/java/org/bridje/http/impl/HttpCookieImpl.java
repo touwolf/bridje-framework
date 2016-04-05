@@ -19,9 +19,6 @@ package org.bridje.http.impl;
 import io.netty.handler.codec.http.cookie.Cookie;
 import org.bridje.http.HttpCookie;
 
-/**
- *
- */
 class HttpCookieImpl implements HttpCookie
 {
     private final Cookie cookie;

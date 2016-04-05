@@ -21,15 +21,36 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * Repesents a file uploaded during a http request.
  */
 public interface UploadedFile
 {
+    /**
+     * Gets the original file name selected by the user in the browser.
+     * 
+     * @return the name of the uploaded file.
+     */
     String getFilename();
     
+    /**
+     * Gets the name of the HTML form field where this file was uploaded.
+     * 
+     * @return The name of the HTML form field for this file.
+     */
     String getName();
 
+    /**
+     * Opens a new InputStream to read the content of the file.
+     * 
+     * @return An InputStream to read the conent of the file.
+     * @throws IOException If any I/O exception occurrs
+     */
     InputStream getInputStream() throws IOException;
 
+    /**
+     * Gets the mime/type for the file.
+     * 
+     * @return The mime/type for the file.
+     */
     String getContentType();
 }
