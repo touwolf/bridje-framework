@@ -17,9 +17,6 @@
 package org.bridje.jfx.impl;
 
 import javafx.geometry.Orientation;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 
 /**

@@ -51,7 +51,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.http.HttpCookie;
 import org.bridje.ioc.Ioc;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
@@ -274,7 +273,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     }
 
     @Override
-    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception
+    public void channelUnregistered(ChannelHandlerContext ctx)
     {
         if (decoder != null)
         {

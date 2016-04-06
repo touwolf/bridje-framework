@@ -18,8 +18,6 @@ package org.bridje.jfx.impl;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.control.Button;

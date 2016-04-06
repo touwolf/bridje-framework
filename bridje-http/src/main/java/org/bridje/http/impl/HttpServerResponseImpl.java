@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerResponse;
 

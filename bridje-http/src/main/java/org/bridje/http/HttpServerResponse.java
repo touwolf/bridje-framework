@@ -16,7 +16,6 @@
 
 package org.bridje.http;
 
-import io.netty.handler.codec.http.cookie.Cookie;
 import java.io.OutputStream;
 
 /**

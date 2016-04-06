@@ -18,8 +18,6 @@ package org.bridje.jfx.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
