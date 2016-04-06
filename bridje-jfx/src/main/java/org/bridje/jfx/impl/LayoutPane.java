@@ -53,7 +53,7 @@ class LayoutPane extends BorderPane
     private SplitPane spHori;
 
     @PostConstruct
-    private void init()
+    protected void init()
     {
         setTop(mainMenu);
         createSideToolBars();

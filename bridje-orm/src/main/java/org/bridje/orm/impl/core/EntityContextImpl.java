@@ -40,8 +40,6 @@ import org.bridje.orm.dialects.SQLDialect;
  */
 class EntityContextImpl implements EntityContext
 {
-    private static final Logger LOG = Logger.getLogger(EntityContextImpl.class.getName());
-
     private final DataSource ds;
 
     private final OrmMetaInfService metainf;

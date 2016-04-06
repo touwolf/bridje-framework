@@ -30,8 +30,6 @@ import org.bridje.orm.Query;
  */
 class JoinQueryImpl<R, T> extends QueryImpl<R> implements Query<R>, ColumnNameFinder
 {
-    private static final Logger LOG = Logger.getLogger(JoinQueryImpl.class.getName());
-    
     private final QueryImpl<T> baseQuery;
     
     private final RelationInf<T, R> relationInf;

@@ -31,8 +31,6 @@ import org.bridje.jfx.PanePosition;
 @Component
 class JFxServiceImpl implements JFxService
 {
-    private static final Logger LOG = Logger.getLogger(JFxServiceImpl.class.getName());
-
     private String title;
     
     private LayoutPane mainPane;

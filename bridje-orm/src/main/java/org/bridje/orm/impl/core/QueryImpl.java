@@ -37,8 +37,6 @@ import org.bridje.orm.RelationColumn;
  */
 class QueryImpl<T> implements Query<T>, ColumnNameFinder
 {
-    private static final Logger LOG = Logger.getLogger(QueryImpl.class.getName());
-
     private final EntityInf<T> entityInf;
     
     private final EntityContextImpl ctx;
