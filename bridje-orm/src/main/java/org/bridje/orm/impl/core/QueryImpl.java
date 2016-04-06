@@ -21,7 +21,7 @@ import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.bridje.orm.Column;
@@ -30,6 +30,7 @@ import org.bridje.orm.Condition;
 import org.bridje.orm.FunctionColumn;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.RelationColumn;
 
 /**
  *
@@ -39,7 +40,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
 {
     private static final Logger LOG = Logger.getLogger(QueryImpl.class.getName());
 
-    private final EntityInf<T> entityInf;
+    final EntityInf<T> entityInf;
     
     private final EntityContextImpl ctx;
 
@@ -68,7 +69,9 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     public List<T> fetchAll() throws SQLException
     {
         List<Object> params = new ArrayList<>();
-        SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), params);
+        SelectBuilder qb = createQuery(
+                    entityInf.allFieldsCommaSep(entityInf.getTableName() + "."), 
+                    params);
         if(page > 0)
         {
             int index = ((page - 1) * pageSize);
@@ -102,7 +105,9 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     public T fetchOne() throws SQLException
     {
         List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery(entityInf.allFieldsCommaSep(), parameters);
+        SelectBuilder qb = createQuery(
+                        entityInf.allFieldsCommaSep(entityInf.getTableName() + "."), 
+                        parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
                     (rs) -> entityInf.parse(rs, ctx), 
@@ -146,13 +151,20 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     }
 
     @Override
+    public <R> Query<R> join(RelationColumn<T, R> relation)
+    {
+        RelationInf<T, R> relationInf = entityInf.findRelationInfo(relation);
+        return new JoinQueryImpl<R, T>(this, relationInf);
+    }
+    
+    @Override
     public Query<T> orderBy(OrderBy... statements)
     {
         orderBy = statements;
         return this;
     }
 
-    private SelectBuilder createQuery(String fields, List<Object> parameters)
+    protected SelectBuilder createQuery(String fields, List<Object> parameters)
     {
         SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
@@ -165,7 +177,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
         {
             qb.orderBy(Arrays
                     .asList(orderBy).stream()
-                    .map((ob) -> entityInf.buildOrderBy(ob))
+                    .map((ob) -> entityInf.buildOrderBy(ob, entityInf.getTableName() + "."))
                     .collect(Collectors.joining(", ")));
         }
         return qb;
@@ -175,11 +187,41 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
     public String findColumnName(Column column)
     {
         EntityInf<Object> eInf = ctx.getMetainf().findEntityInf(column.getTable().getEntityClass());
-        String columnName = eInf.findColumnName(column);
+        String columnName = eInf.getTableName() + "." + eInf.findColumnName(column);
         if(column instanceof FunctionColumn && ((FunctionColumn)column).getFunction() != null)
         {
             return String.format(((FunctionColumn)column).getFunction(), columnName);
         }
         return columnName;
+    }
+
+    public EntityInf<T> getEntityInf()
+    {
+        return entityInf;
+    }
+
+    public EntityContextImpl getCtx()
+    {
+        return ctx;
+    }
+
+    public Condition getCondition()
+    {
+        return condition;
+    }
+
+    public OrderBy[] getOrderBy()
+    {
+        return orderBy;
+    }
+
+    public int getPage()
+    {
+        return page;
+    }
+
+    public int getPageSize()
+    {
+        return pageSize;
     }
 }

@@ -216,7 +216,21 @@ public class EntityContextTest
     }
     
     @Test
-    public void test6Delete() throws SQLException
+    public void test6Joins() throws SQLException
+    {
+        assertNotNull(ctx.query(Group_.table)
+                .where(Group_.name.eq("Admins 2"))
+                .fetchOne());
+        assertNotNull(ctx.query(User_.table)
+                .orderBy(User_.age.asc())
+                .join(User_.group)
+                .where(Group_.name.eq("Admins 2").or(User_.name.like("%Admin%")))
+                .orderBy(Group_.name.asc())
+                .fetchOne());
+    }
+
+    @Test
+    public void test7Delete() throws SQLException
     {
         assertNotNull(ctx.find(Group.class, 1l));
         assertNotNull(ctx.find(Group.class, 2l));
@@ -235,7 +249,7 @@ public class EntityContextTest
     }
     
     @Test
-    public void test7AutoIncrement() throws SQLException
+    public void test8AutoIncrement() throws SQLException
     {
         ctx.fixTable(Rol.class);
         Rol rol = ctx.insert(new Rol("Admin Rol"));

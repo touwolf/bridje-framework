@@ -20,11 +20,11 @@ package org.bridje.orm;
  * Represents an order by statement that can be use in a query to order the
  * results.
  */
-public class OrderBy
+public class OrderBy<T>
 {
     private final OrderByType type;
 
-    private final Column column;
+    private final Column<T, ?> column;
 
     /**
      * Creates a new order by statement for the given column.
@@ -32,7 +32,7 @@ public class OrderBy
      * @param type The ordering type.
      * @param column The column for this order by statement.
      */
-    protected OrderBy(OrderByType type, Column column)
+    protected OrderBy(OrderByType type, Column<T, ?> column)
     {
         this.type = type;
         this.column = column;

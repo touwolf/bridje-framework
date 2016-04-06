@@ -139,19 +139,19 @@ class EntityInf<T> implements TableData
         relations.stream().forEach((relationInf) -> relationsMap.put(relationInf.getField().getName(), relationInf));
     }
 
-    public Stream<String> allFieldsStream()
+    public Stream<String> allFieldsStream(String prefix)
     {
         return Stream.concat(
-                    fields.stream().map((field) -> field.getColumnName()),
-                    relations.stream().map((relation) -> relation.getColumnName())
+                    fields.stream().map((field) -> prefix + field.getColumnName()),
+                    relations.stream().map((relation) -> prefix + relation.getColumnName())
                 );
     }
     
-    public String allFieldsCommaSep()
+    public String allFieldsCommaSep(String prefix)
     {
         return Stream.concat(
-                    fields.stream().map((field) -> field.getColumnName()),
-                    relations.stream().map((relation) -> relation.getColumnName())
+                    fields.stream().map((field) -> prefix + field.getColumnName()),
+                    relations.stream().map((relation) -> prefix + relation.getColumnName())
                 ).collect(Collectors.joining(", "));
     }
 
@@ -362,9 +362,9 @@ class EntityInf<T> implements TableData
         return (RelationInf<T, C>)relationsMap.get(column.getField());
     }
     
-    public String buildOrderBy(OrderBy orderBy)
+    public String buildOrderBy(OrderBy orderBy, String prefix)
     {
-        return findColumnName(orderBy.getColumn()) + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
+        return prefix + findColumnName(orderBy.getColumn()) + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
     }
 
     public int allFieldsCount()

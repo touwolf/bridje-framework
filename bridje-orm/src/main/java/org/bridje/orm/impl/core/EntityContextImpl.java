@@ -83,7 +83,7 @@ class EntityContextImpl implements EntityContext
         }
         EntityInf<T> ei = metainf.findEntityInf(entityClass);
         SelectBuilder qb = new SelectBuilder();
-        qb.select(ei.allFieldsCommaSep())
+        qb.select(ei.allFieldsCommaSep(ei.getTableName() + "."))
             .from(ei.getTableName())
             .where(ei.buildIdCondition())
             .limit(0, 1);
@@ -96,7 +96,7 @@ class EntityContextImpl implements EntityContext
     {
         EntityInf<T> ei = metainf.findEntityInf(entity.getClass());
         SelectBuilder qb = new SelectBuilder();
-        qb.select(ei.allFieldsCommaSep())
+        qb.select(ei.allFieldsCommaSep(ei.getTableName() + "."))
             .from(ei.getTableName())
             .where(ei.buildIdCondition())
             .limit(0, 1);
@@ -110,7 +110,7 @@ class EntityContextImpl implements EntityContext
         EntityInf<T> entityInf = metainf.findEntityInf(entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(entityInf.getTableName())
-                .fields(entityInf.allFieldsCommaSep())
+                .fields(entityInf.allFieldsCommaSep(""))
                 .valuesParams(entityInf.allFieldsCount());
 
         if(entityInf.getKeyField().isAutoIncrement())
@@ -138,7 +138,7 @@ class EntityContextImpl implements EntityContext
         UpdateBuilder ub = new UpdateBuilder();
 
         ub.update(entityInf.getTableName());
-        entityInf.allFieldsStream().forEach(ub::set);
+        entityInf.allFieldsStream(entityInf.getTableName() + ".").forEach(ub::set);
         ub.where(entityInf.buildIdCondition());
 
         Object updateId = id;

@@ -165,7 +165,7 @@ public class Column<E, T>
      *
      * @return The new ascending OrderBy statement.
      */
-    public OrderBy asc()
+    public OrderBy<E> asc()
     {
         return new OrderBy(OrderByType.ASC, this);
     }
@@ -176,7 +176,7 @@ public class Column<E, T>
      *
      * @return The new descending OrderBy statement.
      */
-    public OrderBy desc()
+    public OrderBy<E> desc()
     {
         return new OrderBy(OrderByType.DESC, this);
     }

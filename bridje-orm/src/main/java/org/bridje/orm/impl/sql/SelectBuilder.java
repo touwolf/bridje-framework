@@ -23,9 +23,14 @@ public class SelectBuilder
 {
     private final StringBuilder sb;
 
+    private boolean whereAdded;
+
+    private boolean orderByAdded;
+
     public SelectBuilder()
     {
         sb = new StringBuilder();
+        whereAdded = false;
     }
 
     public SelectBuilder select(String fields)
@@ -41,18 +46,29 @@ public class SelectBuilder
         sb.append(table);
         return this;
     }
+    
+    public SelectBuilder innerJoin(String table, String condition)
+    {
+        sb.append(" INNER JOIN ");
+        sb.append(table);
+        sb.append(" ON ");
+        sb.append(condition);
+        return this;
+    }
 
     public SelectBuilder where(String condition)
     {
-        sb.append(" WHERE ");
+        sb.append(!whereAdded ? " WHERE " : " AND ");
         sb.append(condition);
+        whereAdded = true;
         return this;
     }
     
     public SelectBuilder orderBy(String orderBy)
     {
-        sb.append(" ORDER BY ");
+        sb.append(!orderByAdded ? " ORDER BY " : ", ");
         sb.append(orderBy);
+        orderByAdded = true;
         return this;
     }
 
