@@ -76,11 +76,11 @@ class JoinQueryImpl<R, T> extends QueryImpl<R> implements Query<R>, ColumnNameFi
         }
         StringBuilder joinCondition = new StringBuilder();
         joinCondition.append(getEntityInf().getTableName());
-        joinCondition.append(".");
+        joinCondition.append('.');
         joinCondition.append(getEntityInf().getKeyField().getColumnName());
         joinCondition.append(" = ");
         joinCondition.append(relationInf.getEntityInf().getTableName());
-        joinCondition.append(".");
+        joinCondition.append('.');
         joinCondition.append(relationInf.getColumnName());
         qb.innerJoin(getEntityInf().getTableName(), joinCondition.toString());
     }
