@@ -19,7 +19,6 @@ package org.bridje.orm.impl.core;
 import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.bridje.orm.ColumnNameFinder;
 import org.bridje.orm.Query;

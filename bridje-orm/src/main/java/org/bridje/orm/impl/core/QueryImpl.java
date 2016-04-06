@@ -21,7 +21,6 @@ import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.bridje.orm.Column;
 import org.bridje.orm.ColumnNameFinder;
