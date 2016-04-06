@@ -303,7 +303,7 @@ class EntityInf<T> implements TableData
         }
         catch (InstantiationException | IllegalAccessException ex)
         {
-            throw new RuntimeException("Cannot create Entity object for class " + entityClass.getName(), ex);
+            throw new IllegalStateException("Cannot create Entity object for class " + entityClass.getName(), ex);
         }
     }
 

@@ -21,7 +21,6 @@ import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.bridje.orm.Column;
@@ -40,7 +39,7 @@ class QueryImpl<T> implements Query<T>, ColumnNameFinder
 {
     private static final Logger LOG = Logger.getLogger(QueryImpl.class.getName());
 
-    final EntityInf<T> entityInf;
+    private final EntityInf<T> entityInf;
     
     private final EntityContextImpl ctx;
 

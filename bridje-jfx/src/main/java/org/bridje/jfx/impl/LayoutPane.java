@@ -91,6 +91,8 @@ class LayoutPane extends BorderPane
             case CENTER:
                 center.addPane(title, pane);
                 break;
+            default:
+                throw new IllegalArgumentException("position");
         }
     }
 
@@ -123,7 +125,7 @@ class LayoutPane extends BorderPane
     
     protected void removeFromLayout(TopWindowsTabs tabs)
     {
-        if(tabs != center)
+        if(tabs != null && !tabs.equals(center))
         {
             if(spVert.getItems().contains(tabs))
             {

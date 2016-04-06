@@ -16,7 +16,6 @@
 
 package org.bridje.orm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -16,21 +16,13 @@
 
 package org.bridje.orm.impl.core;
 
-import java.sql.SQLException;
 import org.bridje.orm.impl.sql.SelectBuilder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.bridje.orm.Column;
 import org.bridje.orm.ColumnNameFinder;
-import org.bridje.orm.Condition;
-import org.bridje.orm.FunctionColumn;
-import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
-import org.bridje.orm.RelationColumn;
 
 /**
  *
