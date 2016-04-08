@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.jfx.impl;
+package org.bridje.jfx;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,32 +23,26 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javax.annotation.PostConstruct;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
-import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
-import org.bridje.jfx.TopMenu;
 
 /**
  * 
  */
-@Component
-class TopMenuBar extends MenuBar
+public class DecopMenuBar extends MenuBar
 {
-    @Inject
-    private IocContext context;
-    
-    @PostConstruct
-    public void init()
+    public void addContext(IocContext context)
     {
-        context.getClassRepository()
-                .navigateAnnotClasses(TopMenu.class, this::accept);
+        MenuItem[] items = context.findAll(MenuItem.class);
+        for (MenuItem item : items)
+        {
+            addMenuItem(item);
+        }
     }
 
-    private void accept(Class component, TopMenu annotation)
+    private void addMenuItem(MenuItem item)
     {
-        if(MenuItem.class.isAssignableFrom(component))
+        MenuPath annotation = item.getClass().getAnnotation(MenuPath.class);
+        if(annotation != null)
         {
             String path = annotation.path();
             String[] menuTitles = path.split("/");
@@ -57,7 +51,7 @@ class TopMenuBar extends MenuBar
             {
                 currentMenu = findMenu(currentMenu, menuTitle);
             }
-            addMenuItem(currentMenu, component, annotation);
+            addMenuItem(currentMenu, item, annotation);
         }
     }
 
@@ -105,20 +99,19 @@ class TopMenuBar extends MenuBar
         return result;
     }
 
-    private void addMenuItem(Menu currentMenu, Class component, TopMenu annotation)
+    private void addMenuItem(Menu currentMenu, MenuItem item, MenuPath annotation)
     {
         if(currentMenu != null)
         {
-            MenuItem menuItem = (MenuItem)Ioc.context().find(component);
             if(annotation.icon() != null && !annotation.icon().isEmpty())
             {
-                Image image = new Image(component.getResourceAsStream(annotation.icon()));
+                Image image = new Image(item.getClass().getResourceAsStream(annotation.icon()));
                 ImageView imageView = new ImageView(image);
                 imageView.setFitHeight(18);
                 imageView.setFitWidth(18);
-                menuItem.setGraphic(imageView);
+                item.setGraphic(imageView);
             }
-            currentMenu.getItems().add( menuItem );
+            currentMenu.getItems().add( item );
         }
     }
 }

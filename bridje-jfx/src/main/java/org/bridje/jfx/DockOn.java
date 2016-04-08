@@ -14,33 +14,21 @@
  * limitations under the License.
  */
 
-package org.bridje.jfx.impl;
+package org.bridje.jfx;
 
-import javafx.geometry.Orientation;
-import javafx.scene.control.ToolBar;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  */
-class TopWindowsBar extends ToolBar
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface DockOn
 {
-    public TopWindowsBar(Orientation orientation)
-    {
-        setOrientation(orientation);
-    }
-
-    public void addButton(TopWindowButton button)
-    {
-        getItems().add(button);
-    }
-
-    public void removeButton(TopWindowButton button)
-    {
-        getItems().remove(button);
-    }
-
-    public boolean containsButton(TopWindowButton button)
-    {
-        return getItems().contains(button);        
-    }
+    Position position();
+    
+    Position subPosition();
 }

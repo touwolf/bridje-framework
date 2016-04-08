@@ -19,7 +19,11 @@ package org.bridje.jfx;
 /**
  *
  */
-public enum PanePosition
+public enum Position
 {
-    CENTER, LEFT, RIGHT, BOTTOM;
+    LEFT,
+    TOP,
+    RIGHT,
+    BOTTON,
+    CENTER;
 }

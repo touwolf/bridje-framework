@@ -16,17 +16,16 @@
 
 package org.bridje.jfx;
 
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  */
-public interface JFxService
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface LoadFXML
 {
-    void start(Stage stage, String title);
-
-    String getTitle();
-
-    void addPane(String title, Pane pane, PanePosition position);
 }

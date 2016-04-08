@@ -272,9 +272,15 @@ class Instanciator
 
     private Type findGenericType(Class<? extends ContextListener> clazz)
     {
-        Type type = (((ParameterizedType)(clazz
-                        .getGenericInterfaces())[0])
-                        .getActualTypeArguments())[0];
-        return type;
+        Type[] ifcs = clazz.getGenericInterfaces();
+        for (Type ifc : ifcs)
+        {
+            if(ifc instanceof ParameterizedType 
+                    && ClassUtils.rawClass(ifc).equals(ContextListener.class))
+            {
+                return (((ParameterizedType)ifc).getActualTypeArguments())[0];
+            }
+        }
+        return Object.class;
     }
 }
