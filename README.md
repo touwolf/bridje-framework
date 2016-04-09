@@ -45,7 +45,7 @@ The project is licensed under the Apache License:
 Installation and Usage
 ======================
 
-Bridje libraries are availables on the Maven Central Repository
+Bridje libraries are availables on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
     <dependencies>
 		....
