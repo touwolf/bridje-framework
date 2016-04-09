@@ -52,27 +52,32 @@ Bridje libraries are availables on the Maven Central Repository
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-cfg</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-jfx</artifactId>
+            <version>0.1.6</version>
         </dependency>
 		....
     </dependencies>
