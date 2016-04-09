@@ -40,7 +40,8 @@ final class WorkspaceLayout<T extends Node> extends AnchorPane
     {
         hSlit = new SplitPane();
         hSlit.setOrientation(Orientation.HORIZONTAL);
-        vSlit = new SplitPane(hSlit);
+        vSlit = new SplitPane();
+        vSlit.getItems().add(hSlit);
         vSlit.setOrientation(Orientation.VERTICAL);
         getChildren().add(vSlit);
         setTopAnchor(vSlit, 0d);
