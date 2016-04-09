@@ -60,7 +60,9 @@ final class WorkspaceArea extends AnchorPane
         }
 
         TabPane tp = (TabPane)content;
-        Tab tab = new Tab(node.getTitle(), (Node)node);
+        Tab tab = new Tab();
+        tab.setText(node.getTitle());
+        tab.setContent((Node)node);
         node.setParentTab(tab);
         tp.getTabs().add(tab);
     }
