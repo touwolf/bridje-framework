@@ -18,13 +18,15 @@ package org.bridje.jfx;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
-import org.bridje.ioc.Ioc;
+import javafx.scene.layout.VBox;
+import javax.annotation.PostConstruct;
+import org.bridje.ioc.ClassRepository;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 
 /**
@@ -37,6 +39,15 @@ public class Workspace extends BorderPane
     private final Map<Node, Position> nodePositions;
 
     private final Map<Node, Position> nodeSubPosition;
+
+    private VBox topBox;
+
+    private WorkspaceMenuBar topMenu;
+    
+    private ToolBar topTools;
+
+    @Inject
+    private IocContext context;
     
     public Workspace()
     {
@@ -46,17 +57,39 @@ public class Workspace extends BorderPane
         setCenter(mainLayout);
     }
 
-    public void addContext(IocContext context)
+    @PostConstruct
+    public void init()
     {
-        WorkspacePanel[] panels = context.findAll(WorkspacePanel.class);
-        for (WorkspacePanel panel : panels)
+        if(context == null)
         {
-            DockOn dockOn = panel.getClass().getAnnotation(DockOn.class);
-            if(dockOn != null)
-            {
-                addPanel(panel, dockOn.position(), dockOn.subPosition());
-            }            
+            return;
         }
+        ClassRepository clsRepo = context.getClassRepository();
+        clsRepo.forEachClass(DockOn.class, WorkspacePanel.class, 
+            (comp, dockOn) ->
+            {
+                WorkspacePanel wsPanel = context.find(comp);
+                addPanel(wsPanel, dockOn.position(), dockOn.subPosition());
+            });
+        clsRepo.forEachMethod(MenuAction.class, 
+            (method, component, annotation) -> {
+                if( (annotation.on().equals(Object.class) 
+                        && !WorkspacePanel.class.isAssignableFrom(component)) 
+                    || annotation.on().equals(Workspace.class))
+                {
+                    addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
+                }
+            });
+
+        clsRepo.forEachMethod(ToolBarAction.class, 
+            (method, component, annotation) -> {
+                if( (annotation.on().equals(Object.class) 
+                        && !WorkspacePanel.class.isAssignableFrom(component)) 
+                    || annotation.on().equals(Workspace.class))
+                {
+                    addToolsButton(new CompMethodButton(method, component, annotation, context));
+                }
+            });
     }
     
     public void addPanel(WorkspacePanel node, Position position, Position subpos)
@@ -113,5 +146,35 @@ public class Workspace extends BorderPane
                 mainLayout.set(position, null);
             }
         }
+    }
+
+    private void addMenuItem(MenuItem menuItem, MenuAction menuAction)
+    {
+        if(topBox == null)
+        {
+            topBox = new VBox();
+            setTop(topBox);
+        }
+        if(topMenu == null)
+        {
+            topMenu = new WorkspaceMenuBar();
+            topBox.getChildren().add(0, topMenu);
+        }
+        topMenu.addMenuItem(menuItem, menuAction);
+    }
+
+    private void addToolsButton(Button button)
+    {
+        if(topBox == null)
+        {
+            topBox = new VBox();
+            setTop(topBox);
+        }
+        if(topTools == null)
+        {
+            topTools = new ToolBar();
+            topBox.getChildren().add(topTools);
+        }
+        topTools.getItems().add(button);
     }
 }

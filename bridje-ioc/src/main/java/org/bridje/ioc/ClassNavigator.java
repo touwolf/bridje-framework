@@ -28,7 +28,7 @@ import java.lang.annotation.Annotation;
  *            the navigator.
  */
 @FunctionalInterface
-public interface ClassNavigator<A extends Annotation>
+public interface ClassNavigator<A extends Annotation, T>
 {
     /**
      * This method is call when ever a class if found to have the given
@@ -37,5 +37,5 @@ public interface ClassNavigator<A extends Annotation>
      * @param component  The class of the component found.
      * @param annotation The instance of the annotation of the component.
      */
-    void accept(Class component, A annotation);
+    void accept(Class<T> component, A annotation);
 }

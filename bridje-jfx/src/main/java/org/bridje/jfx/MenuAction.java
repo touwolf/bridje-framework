@@ -25,10 +25,14 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface MenuPath
+@Target(ElementType.METHOD)
+public @interface MenuAction
 {
-    String path();
+    String title();
     
+    String path();
+
     String icon() default "";
+
+    Class<?> on() default Object.class;
 }

@@ -21,38 +21,22 @@ import java.util.stream.Collectors;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import org.bridje.ioc.IocContext;
 
 /**
  * 
  */
-public class DecopMenuBar extends MenuBar
+class WorkspaceMenuBar extends MenuBar
 {
-    public void addContext(IocContext context)
+    public void addMenuItem(MenuItem item, MenuAction action)
     {
-        MenuItem[] items = context.findAll(MenuItem.class);
-        for (MenuItem item : items)
+        String path = action.path();
+        String[] menuTitles = path.split("/");
+        Menu currentMenu = null;
+        for (String menuTitle : menuTitles)
         {
-            addMenuItem(item);
+            currentMenu = findMenu(currentMenu, menuTitle);
         }
-    }
-
-    private void addMenuItem(MenuItem item)
-    {
-        MenuPath annotation = item.getClass().getAnnotation(MenuPath.class);
-        if(annotation != null)
-        {
-            String path = annotation.path();
-            String[] menuTitles = path.split("/");
-            Menu currentMenu = null;
-            for (String menuTitle : menuTitles)
-            {
-                currentMenu = findMenu(currentMenu, menuTitle);
-            }
-            addMenuItem(currentMenu, item, annotation);
-        }
+        addMenuItem(currentMenu, item);
     }
 
     private Menu findMenu(Menu currentMenu, String menuTitle)
@@ -99,18 +83,10 @@ public class DecopMenuBar extends MenuBar
         return result;
     }
 
-    private void addMenuItem(Menu currentMenu, MenuItem item, MenuPath annotation)
+    private void addMenuItem(Menu currentMenu, MenuItem item)
     {
         if(currentMenu != null)
         {
-            if(annotation.icon() != null && !annotation.icon().isEmpty())
-            {
-                Image image = new Image(item.getClass().getResourceAsStream(annotation.icon()));
-                ImageView imageView = new ImageView(image);
-                imageView.setFitHeight(18);
-                imageView.setFitWidth(18);
-                item.setGraphic(imageView);
-            }
             currentMenu.getItems().add( item );
         }
     }

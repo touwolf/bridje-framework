@@ -16,6 +16,7 @@
 
 package org.bridje.ioc.impl;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -69,22 +70,27 @@ class Instanciator
     
     public void callPostConstruct(Class cls, Object obj)
     {
-        Method[] declaredMethods = cls.getDeclaredMethods();
-        for (Method declaredMethod : declaredMethods)
+        Class currentClass = cls;
+        while(!currentClass.equals(Object.class))
         {
-            PostConstruct annotation = declaredMethod.getAnnotation(PostConstruct.class);
-            if(annotation != null)
+            Method[] declaredMethods = currentClass.getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods)
             {
-                try
+                PostConstruct annotation = declaredMethod.getAnnotation(PostConstruct.class);
+                if(annotation != null)
                 {
-                    declaredMethod.setAccessible(true);
-                    declaredMethod.invoke(obj);
-                }
-                catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
-                {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    try
+                    {
+                        declaredMethod.setAccessible(true);
+                        declaredMethod.invoke(obj);
+                    }
+                    catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
+                    {
+                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
                 }
             }
+            currentClass = currentClass.getSuperclass();
         }
     }
 

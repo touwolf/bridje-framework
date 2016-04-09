@@ -37,7 +37,7 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated method.
      */
-    <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, MethodNavigator<A> navigator);
+    <A extends Annotation> void forEachMethod(Class<A> annotation, MethodNavigator<A> navigator);
 
     /**
      * Navigates through all fields of all component classes registred in this
@@ -51,7 +51,7 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated field.
      */
-    <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator);
+    <A extends Annotation> void forEachField(Class<A> annotation, FieldNavigator<A> navigator);
 
     /**
      * Navigates through all component classes registred in this repository,
@@ -65,5 +65,21 @@ public interface ClassRepository
      * @param navigator  Callback functional interface that handles the
      *                   annotated class.
      */
-    <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, ClassNavigator<A> navigator);
+    <A extends Annotation> void forEachClass(Class<A> annotation, ClassNavigator<A, Object> navigator);
+
+    /**
+     * Navigates through all component classes registred in this repository,
+     * that are annotated with the given annotation. This includes superclasses
+     * fields.
+     * <p>
+     * @param <A>        The type of the annotation classes must be annotated
+     *                   with.
+     * @param <T>        The type of the class the component must extends from.
+     * @param annotation The class of the annotation classes must be annotated
+     *                   with.
+     * @param service    The class the component must extends from.
+     * @param navigator  Callback functional interface that handles the
+     *                   annotated class.
+     */
+    <A extends Annotation, T> void forEachClass(Class<A> annotation, Class<T> service, ClassNavigator<A, T> navigator);
 }

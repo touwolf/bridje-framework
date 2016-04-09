@@ -22,12 +22,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -62,9 +64,14 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     private static Map<String, String> propFilesCache;
 
     /**
-     * The set of classes for this intance.
+     * The set of classes for this instance.
      */
     private final Set<Class<?>> clsSet;
+    
+    /**
+     * The ordered list of classes for this instance
+     */
+    private final List<Class<?>> sortedClasses;
 
     /**
      * Default constructor for internal use of this class only.
@@ -72,6 +79,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     private ClassSet()
     {
         clsSet = new HashSet<>();
+        sortedClasses = new ArrayList<>();
     }
 
     /**
@@ -86,6 +94,8 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         if (classes != null && !classes.isEmpty())
         {
             clsSet.addAll(classes);
+            sortedClasses.addAll(clsSet);
+            ClassUtils.sort(sortedClasses);
         }
     }
 
@@ -117,6 +127,8 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
                 }
             }
         }
+        sortedClasses.addAll(clsSet);
+        ClassUtils.sort(sortedClasses);
     }
 
     /**
@@ -148,7 +160,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     @Override
     public Iterator<Class<?>> iterator()
     {
-        return clsSet.iterator();
+        return sortedClasses.iterator();
     }
 
     /**
@@ -278,7 +290,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotMethods(Class<A> annotation, MethodNavigator<A> navigator)
+    public <A extends Annotation> void forEachMethod(Class<A> annotation, MethodNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
@@ -295,7 +307,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotFileds(Class<A> annotation, FieldNavigator<A> navigator)
+    public <A extends Annotation> void forEachField(Class<A> annotation, FieldNavigator<A> navigator)
     {
         for (Class<?> cls : this)
         {
@@ -312,14 +324,27 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     @Override
-    public <A extends Annotation> void navigateAnnotClasses(Class<A> annotation, ClassNavigator<A> navigator)
+    public <A extends Annotation> void forEachClass(Class<A> annotation, ClassNavigator<A, Object> navigator)
     {
         for (Class<?> cls : this)
         {
             A annot = cls.getAnnotation(annotation);
             if (annot != null)
             {
-                navigator.accept(cls, annot);
+                navigator.accept((Class<Object>)cls, annot);
+            }
+        }
+    }
+
+    @Override
+    public <A extends Annotation, T> void forEachClass(Class<A> annotation, Class<T> service, ClassNavigator<A, T> navigator)
+    {
+        for (Class<?> cls : this)
+        {
+            A annot = cls.getAnnotation(annotation);
+            if (annot != null && service.isAssignableFrom(cls))
+            {
+                navigator.accept((Class<T>)cls, annot);
             }
         }
     }

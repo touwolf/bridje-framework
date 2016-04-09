@@ -25,7 +25,12 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface ForToolBar
+@Target(ElementType.METHOD)
+public @interface ToolBarAction
 {
+    String title();
+
+    String icon() default "";
+
+    Class<?> on() default Object.class;
 }

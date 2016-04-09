@@ -18,6 +18,7 @@ package org.bridje.jfx;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.net.URL;
 import javafx.fxml.FXMLLoader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
@@ -39,17 +40,21 @@ public class FxContextListener implements ContextListener
         Annotation annot = clazz.getAnnotation(LoadFXML.class);
         if(annot != null)
         {
-            FXMLLoader fxmlLoader = new FXMLLoader(clazz.getResource(clazz.getSimpleName() + ".fxml"));
-            fxmlLoader.setRoot(instance);
-            fxmlLoader.setController(instance);
+            URL resource = clazz.getResource(clazz.getSimpleName() + ".fxml");
+            if(resource != null)
+            {
+                FXMLLoader fxmlLoader = new FXMLLoader(resource);
+                fxmlLoader.setRoot(instance);
+                fxmlLoader.setController(instance);
 
-            try
-            {
-                fxmlLoader.load();
-            }
-            catch (IOException exception)
-            {
-                throw new RuntimeException(exception);
+                try
+                {
+                    fxmlLoader.load();
+                }
+                catch (IOException exception)
+                {
+                    throw new RuntimeException(exception);
+                }
             }
         }
     }

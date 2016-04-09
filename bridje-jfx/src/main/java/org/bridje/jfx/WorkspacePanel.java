@@ -21,8 +21,16 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javax.annotation.PostConstruct;
+import org.bridje.ioc.ClassRepository;
+import org.bridje.ioc.Inject;
+import org.bridje.ioc.IocContext;
 
 /**
  *
@@ -32,6 +40,15 @@ public class WorkspacePanel extends BorderPane
     private final StringProperty title;
     
     private Tab parentTab;
+    
+    private VBox topBox;
+
+    private WorkspaceMenuBar topMenu;
+    
+    private ToolBar topTools;
+    
+    @Inject
+    private IocContext context;
     
     public WorkspacePanel(String title)
     {
@@ -44,6 +61,35 @@ public class WorkspacePanel extends BorderPane
             }
         });
     }    
+    
+    @PostConstruct
+    private void init()
+    {
+        if(context == null)
+        {
+            return;
+        }
+        ClassRepository clsRepo = context.getClassRepository();
+        clsRepo.forEachMethod(MenuAction.class, 
+            (method, component, annotation) -> {
+                if( (annotation.on().equals(Object.class) 
+                        && this.getClass().equals(component)) 
+                    || annotation.on().equals(this.getClass()))
+                {
+                    addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
+                }
+            });
+
+        clsRepo.forEachMethod(ToolBarAction.class, 
+            (method, component, annotation) -> {
+                if( (annotation.on().equals(Object.class) 
+                        && this.getClass().equals(component)) 
+                    || annotation.on().equals(this.getClass()))
+                {
+                    addToolsButton(new CompMethodButton(method, component, annotation, context));
+                }
+            });
+    }
     
     public WorkspacePanel(String title, Node center)
     {
@@ -74,5 +120,35 @@ public class WorkspacePanel extends BorderPane
     void setParentTab(Tab parentTab)
     {
         this.parentTab = parentTab;
+    }
+
+    private void addMenuItem(MenuItem menuItem, MenuAction menuAction)
+    {
+        if(topBox == null)
+        {
+            topBox = new VBox();
+            setTop(topBox);
+        }
+        if(topMenu == null)
+        {
+            topMenu = new WorkspaceMenuBar();
+            topBox.getChildren().add(0, topMenu);
+        }
+        topMenu.addMenuItem(menuItem, menuAction);
+    }
+
+    private void addToolsButton(Button button)
+    {
+        if(topBox == null)
+        {
+            topBox = new VBox();
+            setTop(topBox);
+        }
+        if(topTools == null)
+        {
+            topTools = new ToolBar();
+            topBox.getChildren().add(topTools);
+        }
+        topTools.getItems().add(button);
     }
 }
