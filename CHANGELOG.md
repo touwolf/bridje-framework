@@ -1,5 +1,14 @@
 # Change Log
 
+## [v0.1.6](https://github.com/bridje/bridje-framework/tree/v0.1.6) (2016-04-09)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.5-1...v0.1.6)
+
+- #18 JavaFX Docking Framework.
+- #17 Support for joins and relations in the orm framework.
+- #16 HTTP server, support for html forms, file upload, query strings and cookies.
+- #15 Bridje CFG dinamic config repositories, PropConfigAdapter, multiple configuration adapters, Configuration annotation optional.
+- #14 JDBC service max and min connections.
+
 ## [v0.1.5-1](https://github.com/bridje/bridje-framework/tree/v0.1.5-1) (2016-03-25)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.4-3...v0.1.5-1)
 
