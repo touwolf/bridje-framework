@@ -104,23 +104,26 @@ public interface Query<T>
      *
      * @param condition A condition object representing the where statement of
      * the query.
-     * 
+     *
      * @return this object.
      */
     Query<T> where(Condition condition);
 
     /**
-     * 
-     * @param <R>
-     * @param relation
-     * @return 
+     * Creates a new join query that will be able to retrive and filter from
+     * column of the main table and the related table.
+     *
+     * @param <R> The type of the related table.
+     * @param relation The relation to do the join on.
+     * @return The new created query.
      */
     <R> Query<R> join(RelationColumn<T, R> relation);
 
     /**
      * Specifies the order by statement to be use in this query.
-     * 
-     * @param statements The OrderBy objects that the query must use to order the records.
+     *
+     * @param statements The OrderBy objects that the query must use to order
+     * the records.
      * @return this object.
      */
     Query<T> orderBy(OrderBy<T>... statements);

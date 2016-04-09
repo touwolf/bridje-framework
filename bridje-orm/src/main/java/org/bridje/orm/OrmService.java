@@ -44,9 +44,10 @@ public interface OrmService
     EntityContext createContext(DataSource ds);
 
     /**
+     * Finds the key value for an entity object.
      * 
-     * @param entity
-     * @return 
+     * @param entity The entity to find the key value.
+     * @return The key value for the entity.
      */
     Object findKeyValue(Object entity);
 }

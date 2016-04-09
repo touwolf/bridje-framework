@@ -22,7 +22,7 @@ import org.bridje.ioc.Ioc;
  *
  * @param <E> The type of the entity that the field this columns represents
  * belongs to.
- * @param <R>
+ * @param <R> The related table type.
  */
 public class RelationColumn<E, R> extends Column<E, R>
 {
@@ -36,7 +36,7 @@ public class RelationColumn<E, R> extends Column<E, R>
      * and the Type of the field.
      *
      * @param table The Table object this columns belong to.
-     * @param related
+     * @param related The related table.
      * @param field The field name for the declared java field in the base
      * entity class.
      */
