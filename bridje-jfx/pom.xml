@@ -32,7 +32,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.1.6</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
