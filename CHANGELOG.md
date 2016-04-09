@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.1.7](https://github.com/bridje/bridje-framework/tree/v0.1.7) (2016-04-09)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.6...v0.1.7)
+
+- Releasing JavaFX Docking Framework.
+
 ## [v0.1.6](https://github.com/bridje/bridje-framework/tree/v0.1.6) (2016-04-09)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.5-1...v0.1.6)
 
