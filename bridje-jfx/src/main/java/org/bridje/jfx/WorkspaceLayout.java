@@ -63,8 +63,9 @@ final class WorkspaceLayout<T extends Node> extends AnchorPane
                 return getCenter();
             case BOTTOM:
                 return getBottom();
+            default:
+                return null;
         }
-        return null;
     }
 
     public void set(Position position, T node)

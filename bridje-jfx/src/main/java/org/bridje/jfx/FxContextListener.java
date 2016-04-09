@@ -19,6 +19,8 @@ package org.bridje.jfx;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
@@ -26,6 +28,8 @@ import org.bridje.ioc.ContextListener;
 @Component
 class FxContextListener implements ContextListener
 {
+    private static final Logger LOG = Logger.getLogger(FxContextListener.class.getName());
+
     @Override
     public void preCreateComponent(Class clazz)
     {
@@ -50,7 +54,7 @@ class FxContextListener implements ContextListener
                 }
                 catch (IOException exception)
                 {
-                    throw new RuntimeException(exception);
+                    LOG.log(Level.SEVERE, exception.getMessage(), exception);
                 }
             }
         }
