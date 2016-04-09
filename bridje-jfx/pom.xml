@@ -5,10 +5,12 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.1.6-SNAPSHOT</version>
+        <version>0.1.6</version>
     </parent>
 
+    <groupId>org.bridje</groupId>
     <artifactId>bridje-jfx</artifactId>
+    <version>0.1.6-SNAPSHOT</version>
 
     <name>Bridje Java FX</name>
     <description>Bridje JavaFX Platform</description>
