@@ -87,6 +87,8 @@ final class WorkspaceLayout<T extends Node> extends AnchorPane
             case BOTTOM:
                 setBottom(node);
                 break;
+            default:
+                throw new IllegalArgumentException("position");
         }
     }
 
