@@ -45,34 +45,39 @@ The project is licensed under the Apache License:
 Installation and Usage
 ======================
 
-Bridje libraries are availables on the Maven Central Repository
+Bridje libraries are availables on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
     <dependencies>
 		....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-cfg</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.1.5-1</version>
+            <version>0.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-jfx</artifactId>
+            <version>0.1.6</version>
         </dependency>
 		....
     </dependencies>
