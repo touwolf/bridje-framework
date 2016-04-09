@@ -51,7 +51,9 @@ final class WorkspaceArea extends AnchorPane
         if(! (content instanceof TabPane) )
         {
             getChildren().remove(content);
-            Tab tab = new Tab( ((WorkspacePanel)content).getTitle(), content);
+            Tab tab = new Tab();
+            tab.setText(((WorkspacePanel)content).getTitle());
+            tab.setContent(content);
             TabPane tp = new TabPane(tab);
             ((WorkspacePanel)content).setParentTab(tab);
             content = tp;
