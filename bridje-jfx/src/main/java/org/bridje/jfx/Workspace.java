@@ -30,12 +30,16 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 
 /**
- *
+ * Extending from this class will allow you to create a dockable workspace for
+ * the all the {@link WorkspacePanel} in the current
+ * {@link org.bridje.ioc.IocContext}. This component will automaticalle add all
+ * of the {@link WorkspacePanel}, {@link ToolBarAction} and {@link MenuAction}
+ * to this workspace. This must class must be extended from an IoC component.
  */
 public class Workspace extends BorderPane
 {
     private final WorkspaceLayout<WorkspaceLayout<WorkspaceArea>> mainLayout;
-    
+
     private final Map<Node, Position> nodePositions;
 
     private final Map<Node, Position> nodeSubPosition;
@@ -43,12 +47,12 @@ public class Workspace extends BorderPane
     private VBox topBox;
 
     private WorkspaceMenuBar topMenu;
-    
+
     private ToolBar topTools;
 
     @Inject
     private IocContext context;
-    
+
     public Workspace()
     {
         mainLayout = new WorkspaceLayout();
@@ -58,60 +62,72 @@ public class Workspace extends BorderPane
     }
 
     @PostConstruct
-    public void init()
+    private void init()
     {
-        if(context == null)
+        if (context == null)
         {
             return;
         }
         ClassRepository clsRepo = context.getClassRepository();
-        clsRepo.forEachClass(DockOn.class, WorkspacePanel.class, 
-            (comp, dockOn) ->
-            {
-                WorkspacePanel wsPanel = context.find(comp);
-                addPanel(wsPanel, dockOn.position(), dockOn.subPosition());
-            });
-        clsRepo.forEachMethod(MenuAction.class, 
-            (method, component, annotation) -> {
-                if( (annotation.on().equals(Object.class) 
-                        && !WorkspacePanel.class.isAssignableFrom(component)) 
-                    || annotation.on().equals(Workspace.class))
+        clsRepo.forEachClass(DockOn.class, WorkspacePanel.class,
+                (comp, dockOn)
+                -> 
                 {
-                    addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
-                }
-            });
+                    WorkspacePanel wsPanel = context.find(comp);
+                    addPanel(wsPanel, dockOn.position(), dockOn.subPosition());
+        });
+        clsRepo.forEachMethod(MenuAction.class,
+                (method, component, annotation)
+                -> 
+                {
+                    if ((annotation.on().equals(Object.class)
+                            && !WorkspacePanel.class.isAssignableFrom(component))
+                            || annotation.on().equals(Workspace.class))
+                    {
+                        addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
+                    }
+        });
 
-        clsRepo.forEachMethod(ToolBarAction.class, 
-            (method, component, annotation) -> {
-                if( (annotation.on().equals(Object.class) 
-                        && !WorkspacePanel.class.isAssignableFrom(component)) 
-                    || annotation.on().equals(Workspace.class))
+        clsRepo.forEachMethod(ToolBarAction.class,
+                (method, component, annotation)
+                -> 
                 {
-                    addToolsButton(new CompMethodButton(method, component, annotation, context));
-                }
-            });
+                    if ((annotation.on().equals(Object.class)
+                            && !WorkspacePanel.class.isAssignableFrom(component))
+                            || annotation.on().equals(Workspace.class))
+                    {
+                        addToolsButton(new CompMethodButton(method, component, annotation, context));
+                    }
+        });
     }
-    
+
+    /**
+     * Add a new {@link WorkspacePanel} to the workspace in the specified position.
+     * 
+     * @param node The panel to add.
+     * @param position The main position of the panel.
+     * @param subpos The secondary prosition of the panel.
+     */
     public void addPanel(WorkspacePanel node, Position position, Position subpos)
     {
-        if(node == null)
+        if (node == null)
         {
             throw new IllegalArgumentException("node");
         }
         WorkspaceLayout<WorkspaceArea> container = mainLayout.get(position);
-        if(container == null)
+        if (container == null)
         {
             container = new WorkspaceLayout<>();
             mainLayout.set(position, container);
         }
         Node prev = container.get(subpos);
-        if(prev != null)
+        if (prev != null)
         {
             nodePositions.remove(prev);
             nodeSubPosition.remove(prev);
         }
         WorkspaceArea area = container.get(subpos);
-        if(area == null)
+        if (area == null)
         {
             area = new WorkspaceArea();
             container.set(subpos, area);
@@ -120,28 +136,33 @@ public class Workspace extends BorderPane
         nodePositions.put(node, position);
         nodeSubPosition.put(node, subpos);
     }
-    
+
+    /**
+     * Remove the given paenl from the workspace.
+     * 
+     * @param node The panel to remove.
+     */
     public void removePanel(WorkspacePanel node)
     {
         Position position = nodePositions.get(node);
         Position subpos = nodeSubPosition.get(node);
-        if(position == null || subpos == null)
+        if (position == null || subpos == null)
         {
             return;
         }
         WorkspaceLayout<WorkspaceArea> container = mainLayout.get(position);
-        if(container != null)
+        if (container != null)
         {
             WorkspaceArea area = container.get(subpos);
-            if(area != null)
+            if (area != null)
             {
                 area.remove(node);
-                if(area.isEmpty())
+                if (area.isEmpty())
                 {
                     container.set(subpos, null);
                 }
             }
-            if(container.isEmpty())
+            if (container.isEmpty())
             {
                 mainLayout.set(position, null);
             }
@@ -150,12 +171,12 @@ public class Workspace extends BorderPane
 
     private void addMenuItem(MenuItem menuItem, MenuAction menuAction)
     {
-        if(topBox == null)
+        if (topBox == null)
         {
             topBox = new VBox();
             setTop(topBox);
         }
-        if(topMenu == null)
+        if (topMenu == null)
         {
             topMenu = new WorkspaceMenuBar();
             topBox.getChildren().add(0, topMenu);
@@ -165,12 +186,12 @@ public class Workspace extends BorderPane
 
     private void addToolsButton(Button button)
     {
-        if(topBox == null)
+        if (topBox == null)
         {
             topBox = new VBox();
             setTop(topBox);
         }
-        if(topTools == null)
+        if (topTools == null)
         {
             topTools = new ToolBar();
             topBox.getChildren().add(topTools);

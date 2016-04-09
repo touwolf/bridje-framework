@@ -22,7 +22,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * Enableds FXML on a IoC component. the fxml file must be in the same package 
+ * and have the same name as the component.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

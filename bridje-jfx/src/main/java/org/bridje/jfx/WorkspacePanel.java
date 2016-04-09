@@ -33,103 +33,137 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 
 /**
- *
+ * This is the base class for all panels that can be dock on a {@link Workspace}
+ * You can extends this component from a ioc component in order to dock the pane
+ * into a {@link Workspace}, you must put the {@link DockOn} annotation to
+ * specify the position of the panel.
  */
 public class WorkspacePanel extends BorderPane
 {
     private final StringProperty title;
-    
+
     private Tab parentTab;
-    
+
     private VBox topBox;
 
     private WorkspaceMenuBar topMenu;
-    
+
     private ToolBar topTools;
-    
+
     @Inject
     private IocContext context;
-    
+
+    /**
+     * Constructor that receives the title of the panel.
+     * 
+     * @param title The title of the panel.
+     */
     public WorkspacePanel(String title)
     {
         this.title = new SimpleStringProperty(this, "title", title);
-        this.title.addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) ->
-        {
-            if(parentTab != null)
-            {
-                parentTab.setText(newValue);
-            }
+        this.title.addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                -> 
+                {
+                    if (parentTab != null)
+                    {
+                        parentTab.setText(newValue);
+                    }
         });
-    }    
-    
+    }
+
     @PostConstruct
     private void init()
     {
-        if(context == null)
+        if (context == null)
         {
             return;
         }
         ClassRepository clsRepo = context.getClassRepository();
-        clsRepo.forEachMethod(MenuAction.class, 
-            (method, component, annotation) -> {
-                if( (annotation.on().equals(Object.class) 
-                        && this.getClass().equals(component)) 
-                    || annotation.on().equals(this.getClass()))
+        clsRepo.forEachMethod(MenuAction.class,
+                (method, component, annotation)
+                -> 
                 {
-                    addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
-                }
-            });
+                    if ((annotation.on().equals(Object.class)
+                            && this.getClass().equals(component))
+                            || annotation.on().equals(this.getClass()))
+                    {
+                        addMenuItem(new CompMethodMenuItem(method, component, annotation, context), annotation);
+                    }
+        });
 
-        clsRepo.forEachMethod(ToolBarAction.class, 
-            (method, component, annotation) -> {
-                if( (annotation.on().equals(Object.class) 
-                        && this.getClass().equals(component)) 
-                    || annotation.on().equals(this.getClass()))
+        clsRepo.forEachMethod(ToolBarAction.class,
+                (method, component, annotation)
+                -> 
                 {
-                    addToolsButton(new CompMethodButton(method, component, annotation, context));
-                }
-            });
+                    if ((annotation.on().equals(Object.class)
+                            && this.getClass().equals(component))
+                            || annotation.on().equals(this.getClass()))
+                    {
+                        addToolsButton(new CompMethodButton(method, component, annotation, context));
+                    }
+        });
     }
-    
+
+    /**
+     * Constructor that receives the titel and the center node.
+     *
+     * @param title The title of the panel.
+     * @param center The center node for the panel.
+     */
     public WorkspacePanel(String title, Node center)
     {
         super(center);
         this.title = new SimpleStringProperty(this, "title", title);
     }
 
+    /**
+     * Gets the title of the panel.
+     * 
+     * @return The title of the panel.
+     */
     public String getTitle()
     {
         return title.get();
     }
 
+    /**
+     * Sets the title of the panel.
+     * 
+     * @param title The title of the panel.
+     */
     public void setTitle(String title)
     {
         this.title.set(title);
     }
 
+    /**
+     * The title property.
+     * 
+     * @return The title propety.
+     */
     public StringProperty titleProperty()
     {
         return title;
     }
 
-    Tab getParentTab()
+    protected Tab getParentTab()
     {
         return parentTab;
     }
 
-    void setParentTab(Tab parentTab)
+    protected void setParentTab(Tab parentTab)
     {
         this.parentTab = parentTab;
     }
 
     private void addMenuItem(MenuItem menuItem, MenuAction menuAction)
     {
-        if(topBox == null)
+        if (topBox == null)
         {
             topBox = new VBox();
             setTop(topBox);
         }
-        if(topMenu == null)
+        if (topMenu == null)
         {
             topMenu = new WorkspaceMenuBar();
             topBox.getChildren().add(0, topMenu);
@@ -139,12 +173,12 @@ public class WorkspacePanel extends BorderPane
 
     private void addToolsButton(Button button)
     {
-        if(topBox == null)
+        if (topBox == null)
         {
             topBox = new VBox();
             setTop(topBox);
         }
-        if(topTools == null)
+        if (topTools == null)
         {
             topTools = new ToolBar();
             topBox.getChildren().add(topTools);

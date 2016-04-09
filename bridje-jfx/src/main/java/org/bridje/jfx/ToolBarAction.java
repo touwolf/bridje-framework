@@ -22,15 +22,37 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * This annotation allows to add a Button on the specified
+ * {@link WorkspacePanel} or the {@link Workspace} that will call the annotated
+ * method.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ToolBarAction
 {
+    /**
+     * The title of the Button.
+     *
+     * @return An String representing the title that the Button will have.
+     */
     String title() default "";
 
+    /**
+     * This attribute will allow you to add an icon to the Button object. The
+     * icon name must be a valid java classpath resource accesible from the
+     * current class.
+     *
+     * @return The icon java classpath resource path accesible fom the current
+     * class.
+     */
     String icon() default "";
 
+    /**
+     * The class that this action will be attached to, if this attribute is
+     * Object.class the action will be put in the {@link Workspace} if is a
+     * generic component or in the current {@link WorkspacePanel}.
+     *
+     * @return The class of the component that this action will be attached to.
+     */
     Class<?> on() default Object.class;
 }

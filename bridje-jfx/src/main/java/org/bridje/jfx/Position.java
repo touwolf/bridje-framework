@@ -17,13 +17,33 @@
 package org.bridje.jfx;
 
 /**
- *
+ * Represents the position or sub position of a {@link WorkspacePanel} in a
+ * {@link WorkspaceArea}.
  */
 public enum Position
 {
+    /**
+     * Dock the panel on the left area.
+     */
     LEFT,
+
+    /**
+     * Dock the panel on the top area.
+     */
     TOP,
+
+    /**
+     * Dock the panel on the right area.
+     */
     RIGHT,
-    BOTTON,
+
+    /**
+     * Dock the panel on the bottom area.
+     */
+    BOTTOM,
+
+    /**
+     * Dock the panel on the center area.
+     */
     CENTER;
 }

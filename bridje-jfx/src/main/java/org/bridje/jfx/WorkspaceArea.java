@@ -21,9 +21,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 
-/**
- *
- */
 final class WorkspaceArea extends AnchorPane
 {
     private Node content;

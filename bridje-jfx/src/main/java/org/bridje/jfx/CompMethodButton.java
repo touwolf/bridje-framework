@@ -25,9 +25,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.bridje.ioc.IocContext;
 
-/**
- *
- */
 class CompMethodButton extends Button
 {
     private static final Logger LOG = Logger.getLogger(CompMethodButton.class.getName());

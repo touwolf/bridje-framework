@@ -23,9 +23,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.bridje.ioc.IocContext;
-/**
- *
- */
+
 class CompMethodMenuItem extends MenuItem
 {
     private static final Logger LOG = Logger.getLogger(CompMethodMenuItem.class.getName());

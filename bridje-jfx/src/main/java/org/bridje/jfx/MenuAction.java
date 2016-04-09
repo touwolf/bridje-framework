@@ -22,17 +22,45 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * This annotation allows to add a MenuItem on the specified
+ * {@link WorkspacePanel} or the {@link Workspace} that will call the annotated
+ * method.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface MenuAction
 {
+    /**
+     * The title of the MenuItem button.
+     *
+     * @return An String representing the title that the MenuItem will have.
+     */
     String title();
-    
+
+    /**
+     * The path to the menu item from the root of the menu bar. The workspace
+     * will create all missing menus in the path.
+     *
+     * @return The menu path with a "/" separator.
+     */
     String path();
 
+    /**
+     * This attribute will allow you to add an icon to the MenuItem object. The
+     * icon name must be a valid java classpath resource accesible from the
+     * current class.
+     *
+     * @return The icon java classpath resource path accesible fom the current
+     * class.
+     */
     String icon() default "";
 
+    /**
+     * The class that this action will be attached to, if this attribute is
+     * Object.class the action will be put in the {@link Workspace} if is a
+     * generic component or in the current {@link WorkspacePanel}.
+     *
+     * @return The class of the component that this action will be attached to.
+     */
     Class<?> on() default Object.class;
 }

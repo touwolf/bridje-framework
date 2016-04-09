@@ -23,11 +23,8 @@ import javafx.fxml.FXMLLoader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
 
-/**
- *
- */
 @Component
-public class FxContextListener implements ContextListener
+class FxContextListener implements ContextListener
 {
     @Override
     public void preCreateComponent(Class clazz)

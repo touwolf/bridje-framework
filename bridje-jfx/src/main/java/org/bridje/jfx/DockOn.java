@@ -22,13 +22,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
+ * This annotation can be use to dock a {@link WorkspacePanel} 
+ * on a {@link Workspace}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface DockOn
 {
+    /**
+     * The main position of the {@link WorkspacePanel} in the {@link Workspace}.
+     * 
+     * @return One of the {@link Position} values.
+     */
     Position position();
-    
+
+    /**
+     * The secondary position of the {@link WorkspacePanel} in the main position.
+     * 
+     * @return One of the {@link Position} values.
+     */
     Position subPosition();
 }

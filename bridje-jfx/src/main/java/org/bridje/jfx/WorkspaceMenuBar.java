@@ -22,10 +22,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
-/**
- * 
- */
-class WorkspaceMenuBar extends MenuBar
+final class WorkspaceMenuBar extends MenuBar
 {
     public void addMenuItem(MenuItem item, MenuAction action)
     {

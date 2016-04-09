@@ -20,9 +20,6 @@ import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 
-/**
- *
- */
 final class WorkspaceLayout<T extends Node> extends AnchorPane
 {
     private T left;
@@ -64,7 +61,7 @@ final class WorkspaceLayout<T extends Node> extends AnchorPane
                 return getRight();
             case CENTER:
                 return getCenter();
-            case BOTTON:
+            case BOTTOM:
                 return getBottom();
         }
         return null;
@@ -86,7 +83,7 @@ final class WorkspaceLayout<T extends Node> extends AnchorPane
             case CENTER:
                 setCenter(node);
                 break;
-            case BOTTON:
+            case BOTTOM:
                 setBottom(node);
                 break;
         }
