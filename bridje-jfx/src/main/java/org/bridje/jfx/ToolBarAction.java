@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ToolBarAction
 {
-    String title();
+    String title() default "";
 
     String icon() default "";
 

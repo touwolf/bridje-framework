@@ -37,7 +37,7 @@ class CompMethodMenuItem extends MenuItem
         super(annotation.title());
         ImageView imgView = new ImageView(new Image(component.getResourceAsStream(annotation.icon())));
         imgView.setFitHeight(18);
-        imgView.setFitHeight(18);
+        imgView.setFitWidth(18);
         setGraphic(imgView);
         setOnAction((e) -> {
             if(compObj == null)
