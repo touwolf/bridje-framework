@@ -30,6 +30,7 @@
         <module>bridje-jdbc</module>
         <module>bridje-orm</module>
         <module>bridje-jfx</module>
+        <module>bridje-vfs</module>
     </modules>
 
     <scm>
