@@ -18,6 +18,7 @@ package org.bridje.vfs.impl;
 
 
 import java.util.List;
+import java.util.regex.Pattern;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
@@ -93,33 +94,53 @@ abstract class AbstractResource implements VirtualResource
     static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
-        if(listFolders != null)
+        for (VirtualFolder folder : listFolders)
         {
-            for (VirtualFolder folder : listFolders)
-            {
-                folder.travel(visitor);
-            }
+            travel(folder, visitor);
         }
         List<VirtualFile> listFiles = rootFolder.listFiles();
-        if(listFiles != null)
+        for (VirtualFile file : listFiles)
         {
-            for (VirtualFile file : listFiles)
-            {
-                visitor.visit(file);
-            }
+            visitor.visit(file);
         }
     }
 
     static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
-        if(listFolders != null)
+        for (VirtualFolder folder : listFolders)
         {
-            for (VirtualFolder folder : listFolders)
-            {
-                visitor.visit(folder);
-                folder.travel(visitor);
-            }
+            travel(folder, visitor);
+            visitor.visit(folder);
+        }
+    }
+
+    static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor, String query)
+    {
+        List<VirtualFolder> listFolders = rootFolder.listFolders();
+        for (VirtualFolder folder : listFolders)
+        {
+            travel(folder, visitor, query);
+        }
+        List<VirtualFile> listFiles = rootFolder.listFiles(query);
+        for (VirtualFile file : listFiles)
+        {
+            visitor.visit(file);
+        }
+    }
+
+    static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor, String query)
+    {
+        List<VirtualFolder> listFolders = rootFolder.listFolders();
+        for (VirtualFolder folder : listFolders)
+        {
+            travel(folder, visitor, query);
+        }
+
+        List<VirtualFolder> visitFolders = rootFolder.listFolders(query);
+        for (VirtualFolder folder : visitFolders)
+        {
+            visitor.visit(folder);
         }
     }
 }

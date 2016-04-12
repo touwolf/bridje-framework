@@ -16,10 +16,13 @@
 
 package org.bridje.vfs.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFileVisitor;
@@ -28,9 +31,13 @@ import org.bridje.vfs.VirtualFolderVisitor;
 
 class MemoryFolder extends AbstractResource implements VirtualFolder
 {
-    private Map<String,VirtualFolder> folders;
+    private Map<String,VirtualFolder> foldersMap;
 
-    private Map<String, VirtualFile> files;
+    private Map<String, VirtualFile> filesMap;
+    
+    private List<VirtualFolder> folders;
+    
+    private List<VirtualFile> files;
 
     MemoryFolder(Path path)
     {
@@ -40,7 +47,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     @Override
     public VirtualFolder findFolder(Path path)
     {
-        if(folders == null || path == null)
+        if(foldersMap == null || path == null)
         {
             return null;
         }
@@ -54,7 +61,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             {
                 return getParent();
             }
-            return folders.get(path.getName());
+            return foldersMap.get(path.getName());
         }
         else
         {
@@ -69,7 +76,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             }
             else
             {
-                folder = folders.get(path.getFirstElement());
+                folder = foldersMap.get(path.getFirstElement());
             }
             if(folder == null)
             {
@@ -88,15 +95,15 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         }
         if(path.isLast())
         {
-            if(files == null || path.isSelf() || path.isParent())
+            if(filesMap == null || path.isSelf() || path.isParent())
             {
                 return null;
             }
-            return files.get(path.getFirstElement());
+            return filesMap.get(path.getFirstElement());
         }
         else
         {
-            if(folders == null)
+            if(foldersMap == null)
             {
                 return null;
             }
@@ -113,7 +120,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
                 }
                 else
                 {
-                    nextFolder = folders.get(path.getFirstElement());
+                    nextFolder = foldersMap.get(path.getFirstElement());
                 }
             }
             if(nextFolder == null)
@@ -139,25 +146,45 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     @Override
     public List<VirtualFolder> listFolders()
     {
-        if(folders == null)
-        {
-            return null;
-        }
-        List<VirtualFolder> result = new LinkedList<>();
-        result.addAll(folders.values());
-        return result;
+        if(folders == null) return Collections.EMPTY_LIST;
+        return Collections.unmodifiableList(folders);
     }
-
+    
+    @Override
+    public List<VirtualFolder> listFolders(String query)
+    {
+        if(folders == null) return Collections.EMPTY_LIST;
+        List<VirtualFolder> result = new ArrayList<>();
+        for (VirtualFolder folder : folders)
+        {
+            if(query == null || folder.getPath().toString().matches(query))
+            {
+                result.add(folder);
+            }
+        }
+        return Collections.unmodifiableList(result);
+    }
+    
     @Override
     public List<VirtualFile> listFiles()
     {
-        if(files == null)
+        if(files == null) return Collections.EMPTY_LIST;
+        return Collections.unmodifiableList(files);
+    }
+
+    @Override
+    public List<VirtualFile> listFiles(String query)
+    {
+        if(files == null) return Collections.EMPTY_LIST;
+        List<VirtualFile> result = new ArrayList<>();
+        for (VirtualFile file : files)
         {
-            return null;
+            if(query == null || file.getPath().toString().matches(query))
+            {
+                result.add(file);
+            }
         }
-        List<VirtualFile> result = new LinkedList<>();
-        result.addAll(files.values());
-        return result;
+        return Collections.unmodifiableList(result);
     }
 
     <T extends VirtualFolder> T addFolder(T virtualFolder)
@@ -166,11 +193,12 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         {
             return null;
         }
-        if(folders == null)
+        if(foldersMap == null)
         {
-            folders = new LinkedHashMap<>();
+            foldersMap = new LinkedHashMap<>();
+            folders = new ArrayList<>();
         }
-        VirtualFolder vf = folders.get(virtualFolder.getName());
+        VirtualFolder vf = foldersMap.get(virtualFolder.getName());
         if(vf != null)
         {
             if(vf instanceof ProxyFolder)
@@ -179,23 +207,28 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             }
             else
             {
+                folders.remove(vf);
                 ProxyFolder pf = new ProxyFolder();
                 pf.add(vf);
                 pf.add(virtualFolder);
+                foldersMap.put(pf.getName(), pf);
+                folders.add(pf);
             }
         }
         else
         {
-            folders.put(virtualFolder.getName(), virtualFolder);
+            foldersMap.put(virtualFolder.getName(), virtualFolder);
+            folders.add(virtualFolder);
         }
         return virtualFolder;
     }
 
     void removeFolder(VirtualFolder virtualFolder)
     {
-        if(folders != null)
+        if(foldersMap != null)
         {
-            folders.remove(virtualFolder.getName());
+            folders.remove(foldersMap.get(virtualFolder.getName()));
+            foldersMap.remove(virtualFolder.getName());
         }
     }
 
@@ -205,11 +238,12 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         {
             return null;
         }
-        if(files == null)
+        if(filesMap == null)
         {
-            files = new LinkedHashMap<>();
+            filesMap = new HashMap<>();
+            files = new ArrayList<>();
         }
-        VirtualFile vf = files.get(virtualFile.getName());
+        VirtualFile vf = filesMap.get(virtualFile.getName());
         if(vf != null)
         {
             if(vf instanceof ProxyFile)
@@ -218,25 +252,30 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             }
             else
             {
+                files.remove(vf);
                 ProxyFile pf = new ProxyFile();
                 pf.add(vf);
                 pf.add(virtualFile);
+                filesMap.put(vf.getName(), pf);
+                files.add(pf);
             }
         }
         else
         {
-            files.put(virtualFile.getName(), virtualFile);
+            filesMap.put(virtualFile.getName(), virtualFile);
+            files.add(virtualFile);
         }
         return virtualFile;
     }
 
     void removeFile(VirtualFile virtualFile)
     {
-        if(files == null)
+        if(filesMap == null)
         {
-            files = new LinkedHashMap<>();
+            return;
         }
-        files.remove(virtualFile.getName());
+        files.remove(filesMap.get(virtualFile.getName()));
+        filesMap.remove(virtualFile.getName());
     }
 
     @Override
@@ -249,5 +288,17 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     public void travel(VirtualFolderVisitor visitor)
     {
         travel(this, visitor);
+    }
+
+    @Override
+    public void travel(VirtualFileVisitor visitor, String query)
+    {
+        travel(this, visitor, query);
+    }
+
+    @Override
+    public void travel(VirtualFolderVisitor visitor, String query)
+    {
+        travel(this, visitor, query);
     }
 }

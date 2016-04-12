@@ -3,18 +3,13 @@ package org.bridje.vfs;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FileVfsSource implements VfsSource
 {
-    private static final Logger LOG = Logger.getLogger(FileVfsSource.class.getName());
-
     private final File file;
 
     public FileVfsSource(File file)
@@ -36,29 +31,16 @@ public class FileVfsSource implements VfsSource
     @Override
     public List<String> listFolders(Path path) throws IOException
     {
-        File f = findRealFile(path);
-        if(!f.exists())
-        {
-            return null;
-        }
-        if(!f.isDirectory())
-        {
-            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
-        }
-        List<String> result = new LinkedList<>();
-        File[] listFiles = f.listFiles();
-        for (File listFile : listFiles)
-        {
-            if(listFile.isDirectory())
-            {
-                result.add(listFile.getName());
-            }
-        }
-        return result;
+        return listFolders(path, null);
     }
 
     @Override
     public List<String> listFiles(Path path) throws IOException
+    {
+        return listFiles(path, null);
+    }
+
+    public List<String> listFolders(Path path, String regexp) throws IOException
     {
         File f = findRealFile(path);
         if(!f.exists())
@@ -70,7 +52,36 @@ public class FileVfsSource implements VfsSource
             throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
         }
         List<String> result = new LinkedList<>();
-        File[] listFiles = f.listFiles();
+        File[] listFiles = f.listFiles((File dir, String name) ->
+        {
+            return regexp == null || name.matches(regexp);
+        });
+        for (File listFile : listFiles)
+        {
+            if(listFile.isDirectory())
+            {
+                result.add(listFile.getName());
+            }
+        }
+        return result;
+    }
+
+    public List<String> listFiles(Path path, String regexp) throws IOException
+    {
+        File f = findRealFile(path);
+        if(!f.exists())
+        {
+            return null;
+        }
+        if(!f.isDirectory())
+        {
+            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
+        }
+        List<String> result = new LinkedList<>();
+        File[] listFiles = f.listFiles((File dir, String name) ->
+        {
+            return regexp == null || name.matches(regexp);
+        });
         for (File listFile : listFiles)
         {
             if(listFile.isFile())
@@ -80,7 +91,7 @@ public class FileVfsSource implements VfsSource
         }
         return result;
     }
-
+    
     @Override
     public boolean fileExists(Path path) throws IOException
     {

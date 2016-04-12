@@ -76,6 +76,18 @@ class VfsServiceImpl implements VfsService
     {
         return root.listFiles();
     }
+    
+    @Override
+    public List<VirtualFolder> listFolders(String query)
+    {
+        return root.listFolders(query);
+    }
+
+    @Override
+    public List<VirtualFile> listFiles(String query)
+    {
+        return root.listFiles(query);
+    }
 
     @Override
     public void mount(Path path, VfsSource source)
@@ -117,5 +129,17 @@ class VfsServiceImpl implements VfsService
     public void travel(VirtualFolderVisitor visitor)
     {
         root.travel(visitor);
+    }
+
+    @Override
+    public void travel(VirtualFileVisitor visitor, String query)
+    {
+        root.travel(visitor, query);
+    }
+
+    @Override
+    public void travel(VirtualFolderVisitor visitor, String query)
+    {
+        root.travel(visitor, query);
     }
 }

@@ -17,6 +17,7 @@
 package org.bridje.vfs;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Represents a folder of the VFS tree.
@@ -70,6 +71,13 @@ public interface VirtualFolder extends VirtualResource
      *         folder.
      */
     List<VirtualFolder> listFolders();
+    
+    /**
+     * 
+     * @param query
+     * @return 
+     */
+    List<VirtualFolder> listFolders(String query);
 
     /**
      * Gets a list of all child files of this folder.
@@ -78,6 +86,12 @@ public interface VirtualFolder extends VirtualResource
      *         folder.
      */
     List<VirtualFile> listFiles();
+
+    /**
+     * 
+     * @return 
+     */
+    List<VirtualFile> listFiles(String query);
 
     /**
      * Travels through all files recursively from this folder and its children
@@ -94,4 +108,18 @@ public interface VirtualFolder extends VirtualResource
      * @param visitor The visitor to be used.
      */
     void travel(VirtualFolderVisitor visitor);
+    
+    /**
+     * 
+     * @param visitor 
+     * @param query 
+     */
+    void travel(VirtualFileVisitor visitor, String query);
+
+    /**
+     * 
+     * @param visitor 
+     * @param query 
+     */
+    void travel(VirtualFolderVisitor visitor, String query);
 }

@@ -69,6 +69,17 @@ public class ClassPathVfsSource implements VfsSource
     @Override
     public List<String> listFolders(Path path) throws IOException
     {
+        return listFolders(path, null);
+    }
+
+    @Override
+    public List<String> listFiles(Path path) throws IOException
+    {
+        return listFiles(path, null);
+    }
+
+    public List<String> listFolders(Path path, String regexp) throws IOException
+    {
         if(childs == null)
         {
             return null;
@@ -79,10 +90,13 @@ public class ClassPathVfsSource implements VfsSource
             for (Map.Entry<String, ClassPathVfsSource> entry : childs.entrySet())
             {
                 String key = entry.getKey();
-                ClassPathVfsSource value = entry.getValue();
-                if (value.isFolder())
+                if(regexp == null || key.matches(regexp))
                 {
-                    result.add(key);
+                    ClassPathVfsSource value = entry.getValue();
+                    if (value.isFolder())
+                    {
+                        result.add(key);
+                    }
                 }
             }
             return result;
@@ -92,14 +106,13 @@ public class ClassPathVfsSource implements VfsSource
             ClassPathVfsSource src = childs.get(path.getFirstElement());
             if(src != null)
             {
-                return src.listFolders(path.getNext());
+                return src.listFolders(path.getNext(), regexp);
             }
         }
         return null;
     }
 
-    @Override
-    public List<String> listFiles(Path path) throws IOException
+    public List<String> listFiles(Path path, String regexp) throws IOException
     {
         if(childs == null)
         {
@@ -111,10 +124,13 @@ public class ClassPathVfsSource implements VfsSource
             childs.entrySet().stream().forEach((entry) ->
             {
                 String key = entry.getKey();
-                ClassPathVfsSource value = entry.getValue();
-                if (!value.isFolder())
+                if(regexp == null || key.matches(regexp))
                 {
-                    result.add(key);
+                    ClassPathVfsSource value = entry.getValue();
+                    if (!value.isFolder())
+                    {
+                        result.add(key);
+                    }
                 }
             });
             return result;
@@ -124,12 +140,12 @@ public class ClassPathVfsSource implements VfsSource
             ClassPathVfsSource src = childs.get(path.getFirstElement());
             if(src != null)
             {
-                return src.listFiles(path.getNext());
+                return src.listFiles(path.getNext(), regexp);
             }
         }
         return null;
     }
-
+    
     @Override
     public boolean fileExists(Path path) throws IOException
     {

@@ -17,6 +17,7 @@
 package org.bridje.vfs;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public interface VfsService
 {
@@ -31,10 +32,18 @@ public interface VfsService
     List<VirtualFolder> listFolders();
 
     List<VirtualFile> listFiles();
+    
+    List<VirtualFolder> listFolders(String query);
+
+    List<VirtualFile> listFiles(String query);
 
     void mount(Path path, VfsSource source);
 
     void travel(VirtualFileVisitor visitor);
 
     void travel(VirtualFolderVisitor visitor);
+    
+    void travel(VirtualFileVisitor visitor, String query);
+
+    void travel(VirtualFolderVisitor visitor, String query);
 }

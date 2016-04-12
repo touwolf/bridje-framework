@@ -17,14 +17,18 @@
 package org.bridje.vfs;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class VfsServiceTest
 {
+    private static final Logger LOG = Logger.getLogger(VfsServiceTest.class.getName());
+
     @Test
-    public void testFindFolder_String()
+    public void testFindFiles()
     {
         String path = "/src/main";
         VfsService instance = Ioc.context().find(VfsService.class);
@@ -33,10 +37,17 @@ public class VfsServiceTest
         VirtualFolder result = instance.findFolder(path);
         assertNotNull(result);
         assertEquals(expResult, result.getName());
-        
+    }
+
+    @Test
+    public void testTravel()
+    {
+        VfsService instance = Ioc.context().find(VfsService.class);
         instance.travel((VirtualFile f) ->
         {
-            System.out.println(f.getPath());
-        });
+            LOG.log(Level.INFO, f.getPath().toString());
+            assertTrue(f.getName().matches("^P.+\\.java$"));
+            assertTrue(f.getParentPath().toString().matches(".+impl"));
+        }, ".+impl\\/P.+\\.java");
     }
 }

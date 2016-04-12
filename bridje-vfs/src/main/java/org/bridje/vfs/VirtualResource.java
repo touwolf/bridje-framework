@@ -30,9 +30,24 @@ public interface VirtualResource
      */
     VirtualFolder getParent();
 
+    /**
+     * The name of this file or folder.
+     * 
+     * @return An String containing the name of the file or folder.
+     */
     String getName();
 
+    /**
+     * The path to reach this resource, including the resource´s name.
+     * 
+     * @return The path to reach this resource, including the resource´s name.
+     */
     Path getPath();
 
+    /**
+     * The path to reach this resource, excluding the resource´s name.
+     * 
+     * @return The path to reach this resource, excluding the resource´s name.
+     */
     Path getParentPath();
 }

@@ -86,6 +86,18 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     @Override
     public List<VirtualFolder> listFolders()
     {
+        return listFolders(null);
+    }
+
+    @Override
+    public List<VirtualFile> listFiles()
+    {
+        return listFiles(null);
+    }
+    
+    @Override
+    public List<VirtualFolder> listFolders(String query)
+    {
         List<VirtualFolder> result = new LinkedList<>();
         try
         {
@@ -97,7 +109,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                     for (String folder : folders)
                     {
                         VirtualFolder vf = createChildFolder(new Path(folder));
-                        if(vf != null)
+                        if(vf != null && (query == null || (vf.getPath().toString().matches(query))))
                         {
                             result.add(vf);
                         }
@@ -113,20 +125,23 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VirtualFile> listFiles(String query)
     {
         List<VirtualFile> result = new LinkedList<>();
         try
         {
-            List<String> files = getSource().listFiles(getPhysicalPath());
-            if(files != null)
+            if(getSource().folderExists(getPhysicalPath()))
             {
-                for (String file : files)
+                List<String> files = getSource().listFiles(getPhysicalPath());
+                if(files != null)
                 {
-                    VirtualFile vf = createChildFile(new Path(file));
-                    if(vf != null)
+                    for (String file : files)
                     {
-                        result.add(vf);
+                        VirtualFile vf = createChildFile(new Path(file));
+                        if(vf != null && (query == null || vf.getPath().toString().matches(query)))
+                        {
+                            result.add(vf);
+                        }
                     }
                 }
             }
@@ -137,7 +152,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
         }
         return result;
     }
-
+    
     private VirtualFolder createChildFolder(Path path)
     {
         return new PhysicalFolder(getSource(), getMountPath(), getRelativePath().join(path));
@@ -185,5 +200,17 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     public void travel(VirtualFolderVisitor visitor)
     {
         travel(this, visitor);
+    }
+
+    @Override
+    public void travel(VirtualFileVisitor visitor, String query)
+    {
+        travel(this, visitor, query);
+    }
+
+    @Override
+    public void travel(VirtualFolderVisitor visitor, String query)
+    {
+        travel(this, visitor, query);
     }
 }

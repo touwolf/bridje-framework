@@ -16,6 +16,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -107,13 +108,27 @@ class ProxyFolder implements VirtualFolder
     @Override
     public List<VirtualFolder> listFolders()
     {
+        return listFolders(null);
+    }
+
+    @Override
+    public List<VirtualFile> listFiles()
+    {
+        return listFiles(null);
+    }
+    
+    @Override
+    public List<VirtualFolder> listFolders(String query)
+    {
         if(folders != null)
         {
             List<VirtualFolder> result = new LinkedList<>();
             Map<String, List<VirtualFolder>> foldersMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
-                folder.listFolders().stream().forEach((chFolder) ->
+                folder.listFolders().stream()
+                        .filter((f) -> query != null && f.getPath().toString().matches(query))
+                        .forEach((chFolder) ->
                 {
                     List<VirtualFolder> lst = foldersMap.get(chFolder.getName());
                     if(lst == null)
@@ -143,11 +158,11 @@ class ProxyFolder implements VirtualFolder
             }
             return result;
         }
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VirtualFile> listFiles(String query)
     {
         if(folders != null)
         {
@@ -155,7 +170,9 @@ class ProxyFolder implements VirtualFolder
             Map<String, List<VirtualFile>> filesMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
-                folder.listFiles().stream().forEach((chFile) ->
+                folder.listFiles().stream()
+                        .filter((f) -> query != null && f.getPath().toString().matches(query))
+                        .forEach((chFile) ->
                 {
                     List<VirtualFile> lst = filesMap.get(chFile.getName());
                     if(lst == null)
@@ -185,9 +202,9 @@ class ProxyFolder implements VirtualFolder
             }
             return result;
         }
-        return null;
+        return Collections.EMPTY_LIST;
     }
-
+    
     @Override
     public VirtualFolder getParent()
     {
@@ -243,5 +260,17 @@ class ProxyFolder implements VirtualFolder
     public void travel(VirtualFolderVisitor visitor)
     {
         AbstractResource.travel(this, visitor);
+    }
+
+    @Override
+    public void travel(VirtualFileVisitor visitor, String query)
+    {
+        AbstractResource.travel(this, visitor, query);
+    }
+
+    @Override
+    public void travel(VirtualFolderVisitor visitor, String query)
+    {
+        AbstractResource.travel(this, visitor, query);
     }
 }
