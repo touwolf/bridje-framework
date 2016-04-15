@@ -17,6 +17,7 @@
 package org.bridje.jdbc.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,12 +25,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import org.bridje.cfg.ConfigService;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.jdbc.JdbcService;
 import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
+import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VirtualFile;
 
 /**
  *
@@ -40,24 +45,17 @@ class JdbcServiceImpl implements JdbcService
     private static final Logger LOG = Logger.getLogger(JdbcServiceImpl.class.getName());
 
     @Inject
-    private ConfigService cfgServ;
+    private VfsService vfsServ;
     
     private Map<String, DataSourceImpl> dsMap;
     
     @PostConstruct
     public void init()
     {
-        try
-        {
-            dsMap = new ConcurrentHashMap<>();
-            JdbcConfig jdbcCfg = cfgServ.findOrCreateConfig(JdbcConfig.class, new JdbcConfig());
-            jdbcCfg.getDataSources().stream()
-                    .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
-        }
-        catch (IOException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
+        dsMap = new ConcurrentHashMap<>();
+        JdbcConfig jdbcCfg = findConfig();
+        jdbcCfg.getDataSources().stream()
+                .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
     }
     
     @Override
@@ -101,5 +99,29 @@ class JdbcServiceImpl implements JdbcService
             }
         }
         dsMap.clear();
+    }
+
+    private JdbcConfig findConfig()
+    {
+        VirtualFile httpConfFile = vfsServ.findFile("/etc/jdbc.xml");
+        return readConf(httpConfFile);
+    }
+    
+    private JdbcConfig readConf(VirtualFile jdbcConf)
+    {
+        if(jdbcConf != null)
+        {
+            try(InputStream is = jdbcConf.open())
+            {
+                JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
+                Unmarshaller unm = ctx.createUnmarshaller();
+                return (JdbcConfig)unm.unmarshal(is);
+            }
+            catch(IOException | JAXBException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        return new JdbcConfig();
     }
 }

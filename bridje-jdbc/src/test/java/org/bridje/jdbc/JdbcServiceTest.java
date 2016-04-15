@@ -17,6 +17,8 @@
 package org.bridje.jdbc;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,8 +32,10 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.bridje.cfg.ConfigService;
 import org.bridje.ioc.Ioc;
+import org.bridje.vfs.ClassPathVfsSource;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VfsService;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -66,12 +70,12 @@ public class JdbcServiceTest
      * @throws java.lang.InterruptedException
      */
     @Test
-    public void test1GetDataSource() throws SQLException, InterruptedException
+    public void test1GetDataSource() throws SQLException, InterruptedException, IOException, URISyntaxException
     {
         deleteDbFile("./target/dbtest.mv.db");
         deleteDbFile("./target/dbtest.trace.db");
-        ConfigService configServ = Ioc.context().find(ConfigService.class);
-        configServ.addRepository(configServ.createClassPathRepository(JdbcServiceTest.class, "/BRIDJE-INF/etc"));
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        vfsServ.mount(new Path("/etc"), new ClassPathVfsSource("/BRIDJE-INF/etc"));
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);

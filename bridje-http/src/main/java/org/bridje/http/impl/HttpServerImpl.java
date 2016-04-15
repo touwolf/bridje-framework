@@ -28,6 +28,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -38,11 +39,16 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import org.bridje.cfg.ConfigService;
+import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import org.bridje.http.HttpServer;
 import org.bridje.http.config.HttpServerConfig;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VirtualFile;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -54,7 +60,7 @@ class HttpServerImpl implements HttpServer
     private HttpServerConfig config;
     
     @Inject
-    private ConfigService cfgServ;
+    private VfsService vfsServ;
     
     private SSLContext sslContext;
 
@@ -63,9 +69,7 @@ class HttpServerImpl implements HttpServer
     {
         try
         {
-            this.config = new HttpServerConfig();
-            this.config = cfgServ.findOrCreateConfig(HttpServerConfig.class, this.config);
-            if(config.isSsl())
+            if(getConfig().isSsl())
             {
                 sslContext = config.createSSLContext();
             }
@@ -136,5 +140,30 @@ class HttpServerImpl implements HttpServer
     public String getServerName()
     {
         return config.getName();
+    }
+
+    public HttpServerConfig getConfig()
+    {
+        if(config == null)
+        {
+            VirtualFile httpConfFile = vfsServ.findFile("/etc/http.xml");
+            config = readConf(httpConfFile);
+        }
+        return config;
+    }
+
+    private HttpServerConfig readConf(VirtualFile httpConfFile)
+    {
+        try(InputStream is = httpConfFile.open())
+        {
+            JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+            Unmarshaller unm = ctx.createUnmarshaller();
+            return (HttpServerConfig)unm.unmarshal(is);
+        }
+        catch(IOException | JAXBException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return new HttpServerConfig();
     }
 }

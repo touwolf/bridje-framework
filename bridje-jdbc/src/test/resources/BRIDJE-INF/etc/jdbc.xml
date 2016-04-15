@@ -18,13 +18,15 @@ limitations under the License.
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns:jdbc='http://www.bridje.org/schemas/jdbc'>
     <jdbc:datasources>
-        <jdbc:name>H2TestDataSource</jdbc:name>
-        <jdbc:driver>org.h2.Driver</jdbc:driver>
-        <jdbc:url>jdbc:h2:./target/dbtest</jdbc:url>
-        <jdbc:username>sa</jdbc:username>
-        <jdbc:password></jdbc:password>
-        <jdbc:maxConnections>8</jdbc:maxConnections>
-        <jdbc:minConnections>3</jdbc:minConnections>
-        <jdbc:idleTime>1</jdbc:idleTime>
+        <jdbc:datasource>
+            <jdbc:name>H2TestDataSource</jdbc:name>
+            <jdbc:driver>org.h2.Driver</jdbc:driver>
+            <jdbc:url>jdbc:h2:./target/dbtest</jdbc:url>
+            <jdbc:username>sa</jdbc:username>
+            <jdbc:password></jdbc:password>
+            <jdbc:maxConnections>8</jdbc:maxConnections>
+            <jdbc:minConnections>3</jdbc:minConnections>
+            <jdbc:idleTime>1</jdbc:idleTime>
+        </jdbc:datasource>
     </jdbc:datasources>
 </jdbc:jdbc>

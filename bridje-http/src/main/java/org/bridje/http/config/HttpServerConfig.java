@@ -31,13 +31,10 @@ import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.cfg.Configuration;
-import org.bridje.cfg.adapter.XmlConfigAdapter;
 
 /**
  * Http server configuration.
  */
-@Configuration(XmlConfigAdapter.class)
 @XmlRootElement(name = "http")
 public class HttpServerConfig
 {

@@ -20,9 +20,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.cfg.Configuration;
-import org.bridje.cfg.adapter.XmlConfigAdapter;
 
 /**
  * Configuration objecto for the JdbcService. This class can be retrived by the
@@ -33,11 +33,13 @@ import org.bridje.cfg.adapter.XmlConfigAdapter;
  */
 @XmlRootElement(name = "jdbc")
 @XmlAccessorType(XmlAccessType.FIELD)
-@Configuration(XmlConfigAdapter.class)
 public class JdbcConfig
 {
-
-    @XmlElement(name = "datasources")
+    @XmlElementWrapper(name = "datasources")
+    @XmlElements(
+    {
+        @XmlElement(name = "datasource", type = DataSourceConfig.class)
+    })
     private List<DataSourceConfig> dataSources;
 
     /**
