@@ -2,8 +2,6 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/096fce438e94496185cbb855c0e16b67)](https://www.codacy.com/app/gilberto-vento/bridje-framework)
 
-![alt tag](https://raw.githubusercontent.com/bridje/bridje-framework/master/bridje-logo.svg)
-
 Introduction
 ============
 
