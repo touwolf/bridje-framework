@@ -16,7 +16,6 @@
 
 package org.bridje.orm;
 
-import org.bridje.ioc.Ioc;
 /**
  * Represents a relation column.
  *
@@ -24,41 +23,12 @@ import org.bridje.ioc.Ioc;
  * belongs to.
  * @param <R> The related table type.
  */
-public class RelationColumn<E, R> extends Column<E, R>
+public interface RelationColumn<E, R> extends Column<E, R>
 {
-    private Table<R> related;
-
-    /**
-     * This constructor is used to create a column without any funcions, a
-     * column constructed by this constructor along will represent the plain
-     * database column with no functions, columns must be created with the table
-     * object they belong to, the field name as declared in the entity class,
-     * and the Type of the field.
-     *
-     * @param table The Table object this columns belong to.
-     * @param related The related table.
-     * @param field The field name for the declared java field in the base
-     * entity class.
-     */
-    public RelationColumn(Table<E> table, Table<R> related, String field)
-    {
-        super(table, field, related.getEntityClass());
-    }
-
     /**
      * Gets the related table for this relation column.
      * 
      * @return A table object representing the related table for this relation.
      */
-    public Table<R> getRelatedTable()
-    {
-        return related;
-    }
-
-    @Override
-    public Condition eq(R value)
-    {
-        Object keyValue = Ioc.context().find(OrmService.class).findKeyValue(value);
-        return new BinaryCondition(this, Operator.EQ, keyValue);
-    }
+    Table<R> getRelatedTable();
 }

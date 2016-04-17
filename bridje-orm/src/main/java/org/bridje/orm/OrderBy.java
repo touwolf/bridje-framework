@@ -20,40 +20,18 @@ package org.bridje.orm;
  * Represents an order by statement that can be use in a query to order the
  * results.
  */
-public class OrderBy<T>
+public interface OrderBy<T>
 {
-    private final OrderByType type;
-
-    private final Column<T, ?> column;
-
-    /**
-     * Creates a new order by statement for the given column.
-     * 
-     * @param type The ordering type.
-     * @param column The column for this order by statement.
-     */
-    protected OrderBy(OrderByType type, Column<T, ?> column)
-    {
-        this.type = type;
-        this.column = column;
-    }
-
     /**
      * Gets the type of the order by ASD or DESC.
      * @return ASC the order is ascending, DESC the order is descending.
      */
-    public OrderByType getType()
-    {
-        return type;
-    }
+    OrderByType getType();
 
     /**
      * The column to be ordered.
      * 
      * @return A Column object witch represents the ordered column.
      */
-    public Column getColumn()
-    {
-        return column;
-    }
+    Column getColumn();
 }

@@ -26,42 +26,14 @@ package org.bridje.orm;
  * @param <E> The type for the entity that this column belongs to.
  * @param <T> The type of the column.
  */
-public class Column<E, T>
+public interface Column<E, T>
 {
-    private final Table<E> table;
-
-    private final String field;
-
-    private final Class<T> type;
-
-    /**
-     * This constructor is used to create a column without any funcions, a
-     * column constructed by this constructor along will represent the plain
-     * database column with no functions, columns must be created with the table
-     * object they belong to, the field name as declared in the entity class,
-     * and the Type of the field.
-     *
-     * @param table The Table object this columns belong to.
-     * @param field The field name for the declared java field in the base
-     * entity class.
-     * @param type The java type for this column.
-     */
-    public Column(Table<E> table, String field, Class<T> type)
-    {
-        this.table = table;
-        this.field = field;
-        this.type = type;
-    }
-
     /**
      * The table this column belongs to.
      *
      * @return A Table object representing the table this column belongs to.
      */
-    public Table<E> getTable()
-    {
-        return table;
-    }
+    Table<E> getTable();
 
     /**
      * Gets the field name for the declared java field in the base entity class.
@@ -69,20 +41,14 @@ public class Column<E, T>
      * @return The field name for the declared java field in the base entity
      * class.
      */
-    public String getField()
-    {
-        return field;
-    }
+    String getField();
 
     /**
      * Gets the java type for this column.
      *
      * @return The java type for this column.
      */
-    public Class<T> getType()
-    {
-        return type;
-    }
+    Class<T> getType();
 
     /**
      * Creates a new equals "=" condition with this column as a left operand and
@@ -91,10 +57,7 @@ public class Column<E, T>
      * @param value The right operaand for the condition.
      * @return The new created condition.
      */
-    public Condition eq(T value)
-    {
-        return new BinaryCondition(this, Operator.EQ, value);
-    }
+    Condition eq(T value);
 
     /**
      * Creates a new not equals "&lt;&gt;" condition with this column as a left
@@ -103,10 +66,7 @@ public class Column<E, T>
      * @param value The right operaand for the condition.
      * @return The new created condition.
      */
-    public Condition ne(T value)
-    {
-        return new BinaryCondition(this, Operator.NE, value);
-    }
+    Condition ne(T value);
 
     /**
      * Creates a new greather than "&gt;" condition with this column as a left
@@ -115,10 +75,7 @@ public class Column<E, T>
      * @param value The right operator for the condition.
      * @return The new created condition.
      */
-    public Condition gt(T value)
-    {
-        return new BinaryCondition(this, Operator.GT, value);
-    }
+    Condition gt(T value);
 
     /**
      * Creates a new greather than or equals to "&gt;=" condition with this
@@ -127,10 +84,7 @@ public class Column<E, T>
      * @param value The right operaand for the condition.
      * @return The new created condition.
      */
-    public Condition ge(T value)
-    {
-        return new BinaryCondition(this, Operator.GE, value);
-    }
+    Condition ge(T value);
 
     /**
      * Creates a new leaser than "&lt;" condition with this column as a left
@@ -139,10 +93,7 @@ public class Column<E, T>
      * @param value The right operaand for the condition.
      * @return The new created condition.
      */
-    public Condition lt(T value)
-    {
-        return new BinaryCondition(this, Operator.LT, value);
-    }
+    Condition lt(T value);
 
     /**
      * Creates a new leaser than or equals to "&lt;=" condition with this column
@@ -151,10 +102,7 @@ public class Column<E, T>
      * @param value The right operaand for the condition.
      * @return The new created condition.
      */
-    public Condition le(T value)
-    {
-        return new BinaryCondition(this, Operator.LE, value);
-    }
+    Condition le(T value);
 
     /**
      * Creates a new ascending order by statement that can be user to order a
@@ -162,10 +110,7 @@ public class Column<E, T>
      *
      * @return The new ascending OrderBy statement.
      */
-    public OrderBy<E> asc()
-    {
-        return new OrderBy(OrderByType.ASC, this);
-    }
+    OrderBy<E> asc();
 
     /**
      * Creates a new descending order by statement that can be user to order a
@@ -173,8 +118,5 @@ public class Column<E, T>
      *
      * @return The new descending OrderBy statement.
      */
-    public OrderBy<E> desc()
-    {
-        return new OrderBy(OrderByType.DESC, this);
-    }
+    OrderBy<E> desc();
 }

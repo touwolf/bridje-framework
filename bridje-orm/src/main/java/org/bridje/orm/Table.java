@@ -20,30 +20,15 @@ package org.bridje.orm;
  * Represents a database table attached to an entity of the model. This object
  * can be user to query the especific table and return the entitys atached to
  * it.
- *
+ * 
  * @param <T> The type of the entity that the table is mapped to.
  */
-public class Table<T>
+public interface Table<T>
 {
-    private final Class<T> entityClass;
-
-    /**
-     * Constructor that receives the entity class.
-     *
-     * @param entityClass The entityClass that maps to the table.
-     */
-    public Table(Class<T> entityClass)
-    {
-        this.entityClass = entityClass;
-    }
-
     /**
      * Gets the entity class mapped to this table.
-     *
+     * 
      * @return A class of type T representing the class of the entity.
      */
-    public Class<T> getEntityClass()
-    {
-        return entityClass;
-    }
+    Class<T> getEntityClass();
 }

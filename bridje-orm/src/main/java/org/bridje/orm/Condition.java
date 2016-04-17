@@ -16,27 +16,12 @@
 
 package org.bridje.orm;
 
-import java.util.List;
-
 /**
  * Represents a condition that can be use in a query. Conditions can be build
  * from objects of {@link Column} class.
  */
-public abstract class Condition
+public interface Condition
 {
-    /**
-     * This method allow to write the condition expresion that need to be used
-     * when executing the query into the database.
-     *
-     * @param parameters The list where the parameters will be put when
-     * serializing this condition.
-     * @param cnf A ColumnNameFinderInstance that can retrive the columns names
-     * involded in this condition.
-     * @return An String object representing the condition expression for this
-     * object.
-     */
-    public abstract String writeString(List<Object> parameters, ColumnNameFinder cnf);
-
     /**
      * Creates a new condition that will be the logical and between this
      * condition and the given one.
@@ -45,10 +30,7 @@ public abstract class Condition
      * logical and condition.
      * @return The new created condition.
      */
-    public Condition and(Condition otherCondition)
-    {
-        return new BinaryCondition(this, Operator.AND, otherCondition);
-    }
+    Condition and(Condition otherCondition);
 
     /**
      * Creates a new condition that will be the logical or between this
@@ -58,8 +40,5 @@ public abstract class Condition
      * logical or condition.
      * @return The new created condition.
      */
-    public Condition or(Condition otherCondition)
-    {
-        return new BinaryCondition(this, Operator.OR, otherCondition);
-    }
+    Condition or(Condition otherCondition);
 }
