@@ -48,10 +48,7 @@
                         <configuration>
                             <processors>
                                 <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
-                                <processor>org.bridje.orm.impl.annotations.EntityProcessor</processor>
-                                <!--
-                                <processor>org.bridje.orm.impl.annotations.GenerateProcessor</processor>
-                                -->
+                                <processor>org.bridje.orm.impl.EntityProcessor</processor>
                             </processors>
                         </configuration>
                     </execution>

@@ -20,10 +20,9 @@ package org.bridje.orm;
  * Represents a numeric column, numeric columns are the same as columns but they
  * got son especific funcions that can be used like sum, +, -, etc...
  *
- * @param <E> The type of the entity this columns belongs to.
  * @param <T> The type of the field this column represents.
  */
-public interface NumberColumn<E, T extends Number> extends Column<E, T>
+public interface NumberColumn<T extends Number> extends Column<T>
 {
     /**
      * Creates a new column that totalize all the values of the current column.
@@ -32,7 +31,7 @@ public interface NumberColumn<E, T extends Number> extends Column<E, T>
      *
      * @return The new sum column.
      */
-    NumberColumn<E, T> sum();
+    NumberColumn<T> sum();
 
     /**
      * Creates a new column that will return the sum of the current column plus
@@ -41,7 +40,7 @@ public interface NumberColumn<E, T extends Number> extends Column<E, T>
      * @param value The value to add to the column.
      * @return The new created column.
      */
-    NumberColumn<E, T> puls(T value);
+    NumberColumn<T> puls(T value);
 
     /**
      * Creates a new column that will return the the current column values minus
@@ -50,5 +49,5 @@ public interface NumberColumn<E, T extends Number> extends Column<E, T>
      * @param value The value to substract to the column.
      * @return The new created column.
      */
-    NumberColumn<E, T> minus(T value);
+    NumberColumn<T> minus(T value);
 }

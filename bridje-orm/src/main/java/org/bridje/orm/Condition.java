@@ -41,4 +41,10 @@ public interface Condition
      * @return The new created condition.
      */
     Condition or(Condition otherCondition);
+    
+    /**
+     * 
+     * @return 
+     */
+    Condition not();
 }

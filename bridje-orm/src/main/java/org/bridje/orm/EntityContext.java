@@ -30,23 +30,23 @@ public interface EntityContext
      * won remove any fields if the table alrready exists.
      *
      * @param <T> The type of the entity.
-     * @param entityClass The entity class to be The class of the entity.
+     * @param table The entity class to be The class of the entity.
      * @throws SQLException If any SQLException occurs during the close
      * proccess.
      */
-    <T> void fixTable(Class<T> entityClass) throws SQLException;
+    <T> void fixTable(Table<T> table) throws SQLException;
 
     /**
      * This method will find an entity given his class and id.
      *
      * @param <T> The type of the entity.
-     * @param entityClass The entity class to be find.
+     * @param table The entity class to be find.
      * @param id The id of the entity to be find.
      * @return The finded entity, or null if no entity can be found by that id.
      * @throws SQLException If any SQLException occurs during the close
      * proccess.
      */
-    <T> T find(Class<T> entityClass, Object id) throws SQLException;
+    <T> T find(Table<T> table, Object id) throws SQLException;
 
     /**
      * Inserts the given entity in the database. If the entity have an auto
@@ -122,10 +122,10 @@ public interface EntityContext
      * common querys you'l whant to execute on the database.
      *
      * @param <T> The type of the entity.
-     * @param entityTable The entityClass to be query.
+     * @param table The entity table to be query.
      * @return A new Query object.
      */
-    <T> Query<T> query(Table<T> entityTable);
+    <T> Query<T> query(Table<T> table);
 
     /**
      * Clears the internal cache of the entity context, so new querys retrive

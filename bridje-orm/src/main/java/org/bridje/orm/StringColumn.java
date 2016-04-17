@@ -23,7 +23,7 @@ package org.bridje.orm;
  * @param <E> The type of the entity that the field this columns represents
  * belongs to.
  */
-public interface StringColumn<E> extends Column<E, String>
+public interface StringColumn<E> extends Column<String>
 {
     /**
      * Creates a new column that will return the the length in characters ot
@@ -31,7 +31,7 @@ public interface StringColumn<E> extends Column<E, String>
      *
      * @return The new created column.
      */
-    NumberColumn<E, Integer> length();
+    NumberColumn<Integer> length();
 
     /**
      * Creates a new like condition for this column.

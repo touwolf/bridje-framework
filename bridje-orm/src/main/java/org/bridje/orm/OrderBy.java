@@ -20,7 +20,7 @@ package org.bridje.orm;
  * Represents an order by statement that can be use in a query to order the
  * results.
  */
-public interface OrderBy<T>
+public interface OrderBy
 {
     /**
      * Gets the type of the order by ASD or DESC.

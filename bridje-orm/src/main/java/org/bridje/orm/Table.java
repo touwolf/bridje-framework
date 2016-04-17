@@ -30,5 +30,11 @@ public interface Table<T>
      * 
      * @return A class of type T representing the class of the entity.
      */
-    Class<T> getEntityClass();
+    Class<T> getEntity();
+
+    /**
+     * 
+     * @return 
+     */
+    String getTable();
 }

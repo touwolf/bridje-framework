@@ -55,7 +55,7 @@ public interface Query<T>
      * @throws SQLException If any SQLException occurs during the close
      * proccess.
      */
-    <C> List<C> fetchAll(Column<T, C> column) throws SQLException;
+    <C> List<C> fetchAll(Column<C> column) throws SQLException;
 
     /**
      * Executes the query and fetch the first record that the database return.
@@ -76,7 +76,7 @@ public interface Query<T>
      * @throws SQLException If any SQLException occurs during the close
      * proccess.
      */
-    <C> C fetchOne(Column<T, C> column) throws SQLException;
+    <C> C fetchOne(Column<C> column) throws SQLException;
 
     /**
      * Executes a select count in the database and gets the number of records
@@ -126,5 +126,5 @@ public interface Query<T>
      * the records.
      * @return this object.
      */
-    Query<T> orderBy(OrderBy<T>... statements);
+    Query<T> orderBy(OrderBy... statements);
 }

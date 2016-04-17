@@ -23,7 +23,7 @@ package org.bridje.orm;
  * belongs to.
  * @param <R> The related table type.
  */
-public interface RelationColumn<E, R> extends Column<E, R>
+public interface RelationColumn<E, R> extends Column<R>
 {
     /**
      * Gets the related table for this relation column.
