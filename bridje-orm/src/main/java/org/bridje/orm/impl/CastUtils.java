@@ -16,6 +16,9 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.SQLException;
+import org.bridje.orm.Entity;
+
 /**
  * Utilities for casting values from to the database.
  */
@@ -27,10 +30,12 @@ public class CastUtils
      * @param <F> The type to cast to.
      * @param fieldType The class of the type to cast to.
      * @param value The value to be converted.
+     * @param ctx
      * @return The converted value or null if not viable convertion can be
      * found.
+     * @throws java.sql.SQLException
      */
-    public static <F> F castValue(Class<F> fieldType, Object value)
+    public static <F> F castValue(Class<F> fieldType, Object value, EntityContextImpl ctx) throws SQLException
     {
         if (value != null)
         {
@@ -59,6 +64,10 @@ public class CastUtils
                 if (Float.class.isAssignableFrom(fieldType))
                 {
                     return (F) toFloat(value);
+                }
+                if(fieldType.getClass().getAnnotation(Entity.class) != null)
+                {
+                    return ctx.find(fieldType, value);
                 }
             }
             return (F) value;

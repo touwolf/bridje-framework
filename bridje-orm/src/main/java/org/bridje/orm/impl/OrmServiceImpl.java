@@ -116,6 +116,7 @@ class OrmServiceImpl implements OrmService
                 .map((url) -> readFile(url))
                 .forEach((prop) -> prop.forEach(this::createTable));
         injectDbObjects();
+        tablesMap.forEach((k, v) -> v.initRelations(this));
     }
 
     private List<URL> findModelsFiles() throws IOException

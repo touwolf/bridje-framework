@@ -28,8 +28,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bridje.orm.Column;
+import org.bridje.orm.Entity;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
+import org.bridje.orm.OrmService;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
 
@@ -186,7 +188,7 @@ class TableImpl<T> implements Table<T>
         List<C> result = new ArrayList<>();
         while(rs.next())
         {
-            Object value = CastUtils.castValue(type, rs.getObject(index));
+            Object value = CastUtils.castValue(type, rs.getObject(index), ctx);
             if(value != null)
             {
                 result.add((C)value);
@@ -204,7 +206,7 @@ class TableImpl<T> implements Table<T>
     {
         if(rs.next())
         {
-            Object value = CastUtils.castValue(type, rs.getObject(index));
+            Object value = CastUtils.castValue(type, rs.getObject(index), ctx);
             if(value != null)
             {
                 return (C)value;
@@ -284,6 +286,14 @@ class TableImpl<T> implements Table<T>
         return entity;
     }
 
+    protected void initRelations(OrmService ormServ)
+    {
+        columns.stream()
+                .filter((column) -> (column instanceof TableRelationColumnImpl))
+                .map((column) -> (TableRelationColumnImpl)column)
+                .forEach((relColumn) -> relColumn.initRelation(ormServ) );
+    }
+    
     private TableColumnImpl createColumn(Field declaredField)
     {
         if(Number.class.isAssignableFrom(declaredField.getType()))
@@ -293,6 +303,10 @@ class TableImpl<T> implements Table<T>
         else if(String.class.equals(declaredField.getType()))
         {
             return new TableStringColumnImpl(this, declaredField);
+        }
+        else if(declaredField.getType().getAnnotation(Entity.class) != null)
+        {
+            return new TableRelationColumnImpl(this, declaredField, declaredField.getType());
         }
         else
         {

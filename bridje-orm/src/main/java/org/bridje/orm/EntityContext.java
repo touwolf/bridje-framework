@@ -40,13 +40,25 @@ public interface EntityContext
      * This method will find an entity given his class and id.
      *
      * @param <T> The type of the entity.
-     * @param table The entity class to be find.
+     * @param table The entity table to be find.
      * @param id The id of the entity to be find.
      * @return The finded entity, or null if no entity can be found by that id.
      * @throws SQLException If any SQLException occurs during the close
      * proccess.
      */
     <T> T find(Table<T> table, Object id) throws SQLException;
+    
+    /**
+     * This method will find an entity given his class and id.
+     *
+     * @param <T> The type of the entity.
+     * @param entity The entity class to be find.
+     * @param id The id of the entity to be find.
+     * @return The finded entity, or null if no entity can be found by that id.
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
+     */
+    <T> T find(Class<T> entity, Object id) throws SQLException;
 
     /**
      * Inserts the given entity in the database. If the entity have an auto

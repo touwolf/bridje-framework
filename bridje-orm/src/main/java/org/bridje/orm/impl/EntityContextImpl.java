@@ -67,6 +67,11 @@ class EntityContextImpl implements EntityContext
         }
     }
 
+    public <T> T find(Class<T> entity, Object id) throws SQLException
+    {
+        return find(orm.findTable(entity), id);
+    }
+    
     @Override
     public <T> T find(Table<T> table, Object id) throws SQLException
     {

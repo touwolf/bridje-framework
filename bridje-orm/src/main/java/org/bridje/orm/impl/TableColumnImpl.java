@@ -158,7 +158,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     {
         try
         {
-            this.field.set(entity, CastUtils.castValue(field.getType(), value));
+            this.field.set(entity, field.getType());
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {

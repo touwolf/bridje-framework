@@ -16,23 +16,12 @@
 
 package org.bridje.orm;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * This annotation can be use to declare an Entity class. Entity's classes will
- * be managed by the api so the user can read, insert, update, and delete it.
+ *
+ * @param <E>
+ * @param <R>
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Entity
+public interface TableRelationColumn<E, R> extends TableColumn<E, R>
 {
-    /**
-     * The name of the database table that this entity is link to.
-     *
-     * @return The name of the table.
-     */
-    String table();
+    Table<R> getRelated();
 }
