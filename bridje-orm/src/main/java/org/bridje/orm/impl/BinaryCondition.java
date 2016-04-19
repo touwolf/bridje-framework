@@ -41,7 +41,7 @@ class BinaryCondition extends AbstractCondition
     }
 
     @Override
-    public String writeString(List<Object> parameters)
+    public String writeSQL(List<Object> parameters)
     {
         StringBuilder sb = new StringBuilder();
 
@@ -88,17 +88,7 @@ class BinaryCondition extends AbstractCondition
      */
     private void writeColumn(Column column, List<Object> parameters, StringBuilder sb)
     {
-        sb.append(column.getExpression());
-        /*
-        if(column instanceof FunctionColumn)
-        {
-            FunctionColumn functCol = (FunctionColumn)column;
-            if (functCol.getParameters() != null)
-            {
-                parameters.addAll(functCol.getParameters());
-            }
-        }
-        */
+        sb.append(column.writeSQL(parameters));
     }
 
     /**
@@ -114,7 +104,7 @@ class BinaryCondition extends AbstractCondition
     private void writeCondition(Condition condition, List<Object> parameters, StringBuilder sb)
     {
         sb.append('(');
-        sb.append(condition.writeString(parameters));
+        sb.append(condition.writeSQL(parameters));
         sb.append(')');
     }
 

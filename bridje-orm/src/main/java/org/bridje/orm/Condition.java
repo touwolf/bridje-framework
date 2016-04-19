@@ -16,24 +16,12 @@
 
 package org.bridje.orm;
 
-import java.util.List;
 /**
  * Represents a condition that can be use in a query. Conditions can be build
  * from objects of {@link Column} class.
  */
-public interface Condition
+public interface Condition extends SQLWritable
 {
-    /**
-     * This method allow to write the condition expresion that need to be used
-     * when executing the query into the database.
-     *
-     * @param parameters The list where the parameters will be put when
-     * serializing this condition.
-     * @return An String object representing the condition expression for this
-     * object.
-     */
-    public abstract String writeString(List<Object> parameters);
-
     /**
      * Creates a new condition that will be the logical and between this
      * condition and the given one.

@@ -56,7 +56,7 @@ class TableImpl<T> implements Table<T>
         this.entity = entity;
         this.name = name;
         columns = new ArrayList<>();
-        key = fillFields();
+        key = createColumns();
         if(key == null)
         {
             throw new IllegalArgumentException("The class " + entity.getName() + " does not have a valid key field.");
@@ -95,7 +95,7 @@ class TableImpl<T> implements Table<T>
         return columnsMap.get(fieldName);
     }
     
-    private TableColumnImpl fillFields()
+    private TableColumnImpl createColumns()
     {
         TableColumnImpl keyInf = null;
         Field[] declaredFields = entity.getDeclaredFields();
@@ -104,7 +104,7 @@ class TableImpl<T> implements Table<T>
             org.bridje.orm.Field fieldAnnot = declaredField.getAnnotation(org.bridje.orm.Field.class);
             if(fieldAnnot != null)
             {
-                TableColumnImpl fInf = new TableColumnImpl(this, declaredField, declaredField.getType());
+                TableColumnImpl fInf = createColumn(declaredField);
                 if(fInf.isKey())
                 {
                     if(keyInf != null)
@@ -282,5 +282,17 @@ class TableImpl<T> implements Table<T>
     {
         ((TableColumnImpl)key).setValue(entity, parse(1, key.getType(), rs, entityContext));
         return entity;
+    }
+
+    private TableColumnImpl createColumn(Field declaredField)
+    {
+        if(Number.class.isAssignableFrom(declaredField.getType()))
+        {
+            return new TableNumberColumnImpl(this, declaredField, declaredField.getType());
+        }
+        else
+        {
+            return new TableColumnImpl(this, declaredField, declaredField.getType());
+        }
     }
 }

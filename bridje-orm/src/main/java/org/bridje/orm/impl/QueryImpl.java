@@ -26,7 +26,6 @@ import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
-import org.bridje.orm.TableColumn;
 
 /**
  *
@@ -80,7 +79,7 @@ class QueryImpl<T> implements Query<T>
     public <C> List<C> fetchAll(Column<C> column) throws SQLException
     {
         List<Object> params = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.getExpression(), params);
+        SelectBuilder qb = createQuery(column.writeSQL(params), params);
         if(page > 0)
         {
             int index = ((page - 1) * pageSize);
@@ -108,7 +107,7 @@ class QueryImpl<T> implements Query<T>
     public <C> C fetchOne(Column<C> column) throws SQLException
     {
         List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.getExpression(), parameters);
+        SelectBuilder qb = createQuery(column.writeSQL(parameters), parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
                     (rs) -> table.parse(1, column, rs, ctx), 
@@ -150,7 +149,7 @@ class QueryImpl<T> implements Query<T>
             .from(table.getName());
         if(condition != null)
         {
-            qb.where(condition.writeString(parameters));
+            qb.where(condition.writeSQL(parameters));
         }
         if(orderBy != null)
         {

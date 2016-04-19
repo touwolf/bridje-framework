@@ -59,15 +59,8 @@ public class OrmTests
     @Test
     public void test1FixDataBase() throws SQLException
     {
-        try
-        {
-            ctx.fixTable(User.TABLE);
-            assertEquals(0, ctx.query(User.TABLE).count());
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
+        ctx.fixTable(User.TABLE);
+        assertEquals(0, ctx.query(User.TABLE).count());
     }
 
     @Test

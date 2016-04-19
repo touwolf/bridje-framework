@@ -21,17 +21,16 @@ import java.sql.JDBCType;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.orm.Condition;
 import org.bridje.orm.Key;
-import org.bridje.orm.OrderBy;
 import org.bridje.orm.TableColumn;
 
 /**
  *
  */
-class TableColumnImpl<E, T> implements TableColumn<E, T>
+class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, T>
 {
     private static final Logger LOG = Logger.getLogger(TableColumnImpl.class.getName());
     
@@ -155,36 +154,6 @@ class TableColumnImpl<E, T> implements TableColumn<E, T>
         return field;
     }
 
-    @Override
-    public String getExpression()
-    {
-        return name;
-    }
-
-    @Override
-    public Condition eq(T value)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Condition ne(T value)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public OrderBy asc()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public OrderBy desc()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     protected void setValue(Object entity, Object value)
     {
         try
@@ -289,5 +258,11 @@ class TableColumnImpl<E, T> implements TableColumn<E, T>
             return field.getName();
         }
         return column.trim();
+    }
+
+    @Override
+    public String writeSQL(List<Object> parameters)
+    {
+        return name;
     }
 }

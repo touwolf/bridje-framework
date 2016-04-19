@@ -192,7 +192,7 @@ class OrmServiceImpl implements OrmService
                             field.set(null, findTable(ClassUtils.rawClass(param)));
                         }
                     }
-                    else if(field.getType().equals(TableColumn.class))
+                    else if(TableColumn.class.isAssignableFrom(field.getType()))
                     {
                         Type param = ClassUtils.parameterType(field.getGenericType(), 0);
                         if(param != null)
