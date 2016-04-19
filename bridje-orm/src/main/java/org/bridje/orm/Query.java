@@ -117,7 +117,7 @@ public interface Query<T>
      * @param relation The relation to do the join on.
      * @return The new created query.
      */
-    <R> Query<R> join(RelationColumn<T, R> relation);
+    //<R> Query<R> join(RelationColumn<T, R> relation);
 
     /**
      * Specifies the order by statement to be use in this query.

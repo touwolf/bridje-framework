@@ -34,11 +34,12 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Priority;
+import org.bridje.ioc.Priority;
 
 /**
  * Utility method for class and type handling.
  */
-class ClassUtils
+public class ClassUtils
 {
     /**
      * Logger for this class
@@ -168,6 +169,19 @@ class ClassUtils
             if (args.length == 2)
             {
                 return args[1];
+            }
+        }
+        return null;
+    }
+    
+    public static Type parameterType(Type service, int index)
+    {
+        if (service instanceof ParameterizedType)
+        {
+            Type[] args = ((ParameterizedType) service).getActualTypeArguments();
+            if( index < args.length )
+            {
+                return args[index];
             }
         }
         return null;

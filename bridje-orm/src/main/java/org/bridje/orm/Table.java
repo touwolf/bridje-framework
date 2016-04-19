@@ -16,6 +16,8 @@
 
 package org.bridje.orm;
 
+import java.util.List;
+
 /**
  * Represents a database table attached to an entity of the model. This object
  * can be user to query the especific table and return the entitys atached to
@@ -36,5 +38,24 @@ public interface Table<T>
      * 
      * @return 
      */
-    String getTable();
+    String getName();
+
+    /**
+     * 
+     * @return 
+     */
+    List<TableColumn<T, ?>> getColumns();
+
+    /**
+     * 
+     * @return 
+     */
+    TableColumn<T, ?> getKey();
+
+    /**
+     * 
+     * @param fieldName
+     * @return 
+     */
+    TableColumn<T, ?> findColumn(String fieldName);
 }

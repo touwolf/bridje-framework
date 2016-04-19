@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Represents a relation column.
+ * A functional interface to parse the results of a ResultSet object into the
+ * required type.
  *
- * @param <E> The type of the entity that the field this columns represents
- * belongs to.
- * @param <R> The related table type.
+ * @param <T> The type to convert the result set records to.
  */
-public interface RelationColumn<E, R> extends Column<R>
+@FunctionalInterface
+interface QueryConsumer<T>
 {
     /**
-     * Gets the related table for this relation column.
-     * 
-     * @return A table object representing the related table for this relation.
+     * Parse the result set and gets the required type.
+     *
+     * @param rs The result set to parse.
+     * @return The resulting type.
+     * @throws SQLException If any SQLException occurs during the close
+     * proccess.
      */
-    Table<R> getRelatedTable();
+    T parse(ResultSet rs) throws SQLException;
 }
