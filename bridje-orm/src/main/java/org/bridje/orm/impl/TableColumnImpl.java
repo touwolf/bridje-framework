@@ -149,12 +149,43 @@ class TableColumnImpl<E, T> implements TableColumn<E, T>
         return def;
     }
 
+    @Override
     public Field getField()
     {
         return field;
     }
 
-    public void setValue(Object entity, Object value)
+    @Override
+    public String getExpression()
+    {
+        return name;
+    }
+
+    @Override
+    public Condition eq(T value)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Condition ne(T value)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public OrderBy asc()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public OrderBy desc()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    protected void setValue(Object entity, Object value)
     {
         try
         {
@@ -166,7 +197,7 @@ class TableColumnImpl<E, T> implements TableColumn<E, T>
         }
     }
 
-    public <E> Object getValue(E entity)
+    protected <E> Object getValue(E entity)
     {
         try
         {
@@ -258,35 +289,5 @@ class TableColumnImpl<E, T> implements TableColumn<E, T>
             return field.getName();
         }
         return column.trim();
-    }
-
-    @Override
-    public Condition eq(T value)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Condition ne(T value)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public OrderBy asc()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public OrderBy desc()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getExpression()
-    {
-        return name;
     }
 }

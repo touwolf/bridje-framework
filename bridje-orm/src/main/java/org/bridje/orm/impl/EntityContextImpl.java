@@ -307,8 +307,7 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> Query<T> query(Table<T> table)
     {
-        //return new QueryImpl<>(this, table);
-        return null;
+        return new QueryImpl<>(this, (TableImpl<T>)table);
     }
 
     private void setParam(PreparedStatement stmt, Object parameter, int index) throws SQLException
