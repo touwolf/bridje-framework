@@ -17,24 +17,10 @@
 package org.bridje.orm;
 
 /**
- * Represents an string column, string columns are the same as a regular columns
- * but the ofer some unique functions like length.
+ *
+ * @param <E>
  */
-public interface StringColumn extends Column<String>
+public interface TableStringColumn<E> extends TableColumn<E, String>, StringColumn
 {
-    /**
-     * Creates a new column that will return the the length in characters ot
-     * this column.
-     *
-     * @return The new created column.
-     */
-    NumberColumn<Integer> length();
-
-    /**
-     * Creates a new like condition for this column.
-     *
-     * @param value The like expression.
-     * @return The new created condition.
-     */
-    Condition like(String value);
+    
 }

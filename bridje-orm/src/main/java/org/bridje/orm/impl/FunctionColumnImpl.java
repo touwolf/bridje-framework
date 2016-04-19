@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.orm.Column;
 
-class FunctionColumn<T, B> extends AbstractColumn<T> implements Column<T>
+class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
 {
     private final Column<B> column;
 
@@ -40,7 +40,7 @@ class FunctionColumn<T, B> extends AbstractColumn<T> implements Column<T>
      * @param parameters The parameters list on the current query, that this
      * column must have for correct serialization.
      */
-    public FunctionColumn(Column<B> column, Class<T> type, String function)
+    public FunctionColumnImpl(Column<B> column, Class<T> type, String function)
     {
         this.column = column;
         this.function = function;
@@ -107,9 +107,12 @@ class FunctionColumn<T, B> extends AbstractColumn<T> implements Column<T>
     public String writeSQL(List<Object> parameters)
     {
         String result = String.format(getFunction(), column.writeSQL(parameters));
-        for (Object parameter : getParameters())
+        if(getParameters() != null)
         {
-            parameters.add(parameter);
+            for (Object parameter : getParameters())
+            {
+                parameters.add(parameter);
+            }
         }
         return result;
     }

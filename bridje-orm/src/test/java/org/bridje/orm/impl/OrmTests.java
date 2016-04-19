@@ -37,8 +37,6 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OrmTests
 {
-    private static final Logger LOG = Logger.getLogger(OrmTests.class.getName());
-
     private EntityContext ctx;
 
     @Before
@@ -69,6 +67,7 @@ public class OrmTests
         User user = new User(1l, "Admin");
         ctx.insert(user);
         
+        System.out.println(ctx.query(User.TABLE).where(User.ID.eq(1l)).fetchOne(User.NAME.length()));
         assertEquals(1, ctx.query(User.TABLE).count());
     }
 

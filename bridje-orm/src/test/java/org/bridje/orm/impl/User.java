@@ -21,8 +21,8 @@ import org.bridje.orm.Entity;
 import org.bridje.orm.Field;
 import org.bridje.orm.Key;
 import org.bridje.orm.Table;
-import org.bridje.orm.TableColumn;
 import org.bridje.orm.TableNumberColumn;
+import org.bridje.orm.TableStringColumn;
 
 /**
  *
@@ -37,7 +37,7 @@ public class User
     public static TableNumberColumn<User, Long> ID;
 
     @DbObject("name")
-    public static TableColumn<User, String> NAME;
+    public static TableStringColumn<User> NAME;
 
     @Key
     @Field

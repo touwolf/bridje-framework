@@ -31,13 +31,13 @@ class TableNumberColumnImpl<E, T extends Number> extends TableColumnImpl<E, T> i
     @Override
     public NumberColumn<T> sum()
     {
-        return new FunctionNumberColumn<>(this,getType(), "SUM(%s)");
+        return new FunctionNumberColumnImpl<>(this,getType(), "SUM(%s)");
     }
 
     @Override
     public NumberColumn<T> puls(T value)
     {
-        FunctionNumberColumn result = new FunctionNumberColumn<>(this,getType(), "%s + ?");
+        FunctionNumberColumnImpl result = new FunctionNumberColumnImpl<>(this,getType(), "%s + ?");
         result.addParameter(value);
         return result;
     }
@@ -45,7 +45,7 @@ class TableNumberColumnImpl<E, T extends Number> extends TableColumnImpl<E, T> i
     @Override
     public NumberColumn<T> minus(T value)
     {
-        FunctionNumberColumn result = new FunctionNumberColumn<>(this,getType(), "%s + ?");
+        FunctionNumberColumnImpl result = new FunctionNumberColumnImpl<>(this,getType(), "%s + ?");
         result.addParameter(value);
         return result;
     }

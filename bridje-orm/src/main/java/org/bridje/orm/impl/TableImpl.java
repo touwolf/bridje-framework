@@ -290,6 +290,10 @@ class TableImpl<T> implements Table<T>
         {
             return new TableNumberColumnImpl(this, declaredField, declaredField.getType());
         }
+        else if(String.class.equals(declaredField.getType()))
+        {
+            return new TableStringColumnImpl(this, declaredField);
+        }
         else
         {
             return new TableColumnImpl(this, declaredField, declaredField.getType());

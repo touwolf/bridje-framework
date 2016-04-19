@@ -23,9 +23,9 @@ import org.bridje.orm.NumberColumn;
 /**
  *
  */
-class FunctionNumberColumn<T extends Number, B> extends FunctionColumn<T, B> implements NumberColumn<T>
+class FunctionNumberColumnImpl<T extends Number, B> extends FunctionColumnImpl<T, B> implements NumberColumn<T>
 {
-    public FunctionNumberColumn(Column<B> column, Class<T> type, String function)
+    public FunctionNumberColumnImpl(Column<B> column, Class<T> type, String function)
     {
         super(column, type, function);
     }
@@ -33,13 +33,13 @@ class FunctionNumberColumn<T extends Number, B> extends FunctionColumn<T, B> imp
     @Override
     public NumberColumn<T> sum()
     {
-        return new FunctionNumberColumn<>(this, getType(), "SUM(%s)");
+        return new FunctionNumberColumnImpl<>(this, getType(), "SUM(%s)");
     }
 
     @Override
     public NumberColumn<T> puls(T value)
     {
-        FunctionNumberColumn result = new FunctionNumberColumn<>(this, getType(), "%s + ?");
+        FunctionNumberColumnImpl result = new FunctionNumberColumnImpl<>(this, getType(), "%s + ?");
         result.addParameter(value);
         return result;
     }
@@ -47,7 +47,7 @@ class FunctionNumberColumn<T extends Number, B> extends FunctionColumn<T, B> imp
     @Override
     public NumberColumn<T> minus(T value)
     {
-        FunctionNumberColumn result = new FunctionNumberColumn<>(this,getType(), "%s + ?");
+        FunctionNumberColumnImpl result = new FunctionNumberColumnImpl<>(this,getType(), "%s + ?");
         result.addParameter(value);
         return result;
     }
