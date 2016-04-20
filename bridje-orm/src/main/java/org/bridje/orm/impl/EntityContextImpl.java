@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import org.bridje.orm.Entity;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Table;
 import org.bridje.orm.Query;
@@ -67,6 +68,7 @@ class EntityContextImpl implements EntityContext
         }
     }
 
+    @Override
     public <T> T find(Class<T> entity, Object id) throws SQLException
     {
         return find(orm.findTable(entity), id);
@@ -82,9 +84,9 @@ class EntityContextImpl implements EntityContext
             return cachedEntity;
         }
         SelectBuilder qb = new SelectBuilder();
-        qb.select(tableImpl.allFieldsCommaSep(tableImpl.getName() + "."))
-            .from(tableImpl.getName())
-            .where(tableImpl.buildIdCondition())
+        qb.select(tableImpl.allFieldsCommaSep(dialect.identifier(tableImpl.getName()) + ".", this))
+            .from(dialect.identifier(tableImpl.getName()))
+            .where(tableImpl.buildIdCondition(this))
             .limit(0, 1);
 
         return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs, this), id);
@@ -95,9 +97,9 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = (TableImpl<T>)orm.findTable(entity.getClass());
         SelectBuilder qb = new SelectBuilder();
-        qb.select(table.allFieldsCommaSep(table.getName() + "."))
-            .from(table.getName())
-            .where(table.buildIdCondition())
+        qb.select(table.allFieldsCommaSep(dialect.identifier(table.getName()) + ".", this))
+            .from(dialect.identifier(table.getName()))
+            .where(table.buildIdCondition(this))
             .limit(0, 1);
         Object id = ((TableColumnImpl)table.getKey()).getValue(entity);
         return doQuery(qb.toString(), (rs) -> table.parse(entity, rs, this), id);
@@ -108,13 +110,15 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         InsertBuilder ib = new InsertBuilder();
-        ib.insertInto(table.getName())
-                .fields(table.allFieldsCommaSep(""))
+        ib.insertInto(dialect.identifier(table.getName()))
+                .fields(table.allFieldsCommaSep("", this))
                 .valuesParams(table.getColumns().size());
 
         if(table.getKey().isAutoIncrement())
         {
-            doUpdate(ib.toString(), (rs) -> table.updateKeyField(entity, rs, this) , table.buildInsertParameters(entity));
+            doUpdate(ib.toString(), 
+                    (rs) -> table.updateKeyField(entity, rs, this),
+                    table.buildInsertParameters(entity));
         }
         else
         {
@@ -136,9 +140,9 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         UpdateBuilder ub = new UpdateBuilder();
 
-        ub.update(table.getName());
-        table.allFieldsStream(table.getName() + ".").forEach(ub::set);
-        ub.where(table.buildIdCondition());
+        ub.update(dialect.identifier(table.getName()));
+        table.allFieldsStream(dialect.identifier(table.getName()) + ".").forEach(ub::set);
+        ub.where(table.buildIdCondition(this));
 
         Object updateId = id;
         if(updateId == null)
@@ -157,8 +161,8 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         DeleteBuilder db = new DeleteBuilder();
 
-        db.delete(table.getName())
-            .where(table.buildIdCondition());
+        db.delete(dialect.identifier(table.getName()))
+            .where(table.buildIdCondition(this));
 
         doUpdate(db.toString(), table.findKeyValue(entity));
         cache.remove(entity.getClass(), table.findKeyValue(entity));
@@ -336,5 +340,11 @@ class EntityContextImpl implements EntityContext
     public void clearCache()
     {
         cache.clear();
+    }
+
+    @Override
+    public SQLDialect getDialect()
+    {
+        return dialect;
     }
 }

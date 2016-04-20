@@ -17,6 +17,8 @@
 package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
+import java.sql.JDBCType;
+import org.bridje.orm.Condition;
 import org.bridje.orm.OrmService;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableRelationColumn;
@@ -39,5 +41,41 @@ class TableRelationColumnImpl<E, R> extends TableColumnImpl<E, R> implements Tab
     public Table<R> getRelated()
     {
         return relatedTable;
+    }
+
+    @Override
+    public JDBCType getSqlType()
+    {
+        JDBCType sqlType = super.getSqlType();
+        if(sqlType == JDBCType.NULL)
+        {
+            return relatedTable.getKey().getSqlType();
+        }
+        return sqlType;
+    }
+
+    @Override
+    protected Object getQueryParameter(E entity)
+    {
+        R value = (R)super.getQueryParameter(entity);
+        if(value == null)
+        {
+            return null;
+        }
+        return ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
+    }
+
+    @Override
+    public Condition eq(R value)
+    {
+        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
+        return new BinaryCondition(this, Operator.EQ, idValue);
+    }
+
+    @Override
+    public Condition ne(R value)
+    {
+        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
+        return new BinaryCondition(this, Operator.NE, idValue);
     }
 }

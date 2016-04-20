@@ -59,4 +59,12 @@ public interface SQLDialect
      * @return The SQL create statement for the index.
      */
     String createIndex(TableColumn<?, ?> column);
+
+    /**
+     * Get the name of the identifier for the table
+     * 
+     * @param name
+     * @return 
+     */
+    public String identifier(String name);
 }

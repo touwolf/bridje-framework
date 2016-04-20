@@ -18,8 +18,6 @@ package org.bridje.orm.impl;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
 import org.bridje.jdbc.JdbcService;
@@ -31,6 +29,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
 /**
  *
  */
@@ -58,16 +57,22 @@ public class OrmTests
     public void test1FixDataBase() throws SQLException
     {
         ctx.fixTable(User.TABLE);
+        ctx.fixTable(User.TABLE);
+        ctx.fixTable(Group.TABLE);
         assertEquals(0, ctx.query(User.TABLE).count());
     }
 
     @Test
     public void test2Insert() throws SQLException
     {
+        Group group = new Group(1l, "Admins");
+        ctx.insert(group);
+
         User user = new User(1l, "Admin");
+        user.setGroup(group);
         ctx.insert(user);
         
-        System.out.println(ctx.query(User.TABLE).where(User.ID.eq(1l)).fetchOne(User.NAME.length()));
+        System.out.println(ctx.query(User.TABLE).where(User.GROUP.eq(group)).fetchOne(User.NAME.length()));
         assertEquals(1, ctx.query(User.TABLE).count());
     }
 

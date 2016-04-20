@@ -19,6 +19,7 @@ package org.bridje.orm.impl;
 import java.util.List;
 import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
+import org.bridje.orm.EntityContext;
 
 /**
  * A condition with two operators. This condition can be use with the binary
@@ -41,15 +42,15 @@ class BinaryCondition extends AbstractCondition
     }
 
     @Override
-    public String writeSQL(List<Object> parameters)
+    public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
         StringBuilder sb = new StringBuilder();
 
-        writeOperand(firstOperand, parameters, sb);
+        writeOperand(firstOperand, parameters, sb, ctx);
         sb.append(' ');
         sb.append(operator.toString());
         sb.append(' ');
-        writeOperand(secondOperand, parameters, sb);
+        writeOperand(secondOperand, parameters, sb, ctx);
 
         return sb.toString();
     }
@@ -62,15 +63,15 @@ class BinaryCondition extends AbstractCondition
      * @param parameters The parameters list for the query.
      * @param sb THe StringBuilder to write the result.
      */
-    private void writeOperand(Object operand, List<Object> parameters, StringBuilder sb)
+    private void writeOperand(Object operand, List<Object> parameters, StringBuilder sb, EntityContext ctx)
     {
         if (operand instanceof Column)
         {
-            writeColumn((Column) operand, parameters, sb);
+            writeColumn((Column) operand, parameters, sb, ctx);
         }
         else if (operand instanceof Condition)
         {
-            writeCondition((Condition) operand, parameters, sb);
+            writeCondition((Condition) operand, parameters, sb, ctx);
         }
         else
         {
@@ -86,9 +87,9 @@ class BinaryCondition extends AbstractCondition
      * @param parameters The parameters list for the query.
      * @param sb THe StringBuilder to write the result.
      */
-    private void writeColumn(Column column, List<Object> parameters, StringBuilder sb)
+    private void writeColumn(Column column, List<Object> parameters, StringBuilder sb, EntityContext ctx)
     {
-        sb.append(column.writeSQL(parameters));
+        sb.append(column.writeSQL(parameters, ctx));
     }
 
     /**
@@ -101,10 +102,10 @@ class BinaryCondition extends AbstractCondition
      * names in the condition.
      * @param sb THe StringBuilder to write the result.
      */
-    private void writeCondition(Condition condition, List<Object> parameters, StringBuilder sb)
+    private void writeCondition(Condition condition, List<Object> parameters, StringBuilder sb, EntityContext ctx)
     {
         sb.append('(');
-        sb.append(condition.writeSQL(parameters));
+        sb.append(condition.writeSQL(parameters, ctx));
         sb.append(')');
     }
 

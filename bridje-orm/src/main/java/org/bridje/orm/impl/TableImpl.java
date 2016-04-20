@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bridje.orm.Column;
 import org.bridje.orm.Entity;
+import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
 import org.bridje.orm.OrmService;
@@ -126,9 +127,11 @@ class TableImpl<T> implements Table<T>
         return columns.stream().map((field) -> prefix + field.getName());
     }
     
-    public String allFieldsCommaSep(String prefix)
+    public String allFieldsCommaSep(String prefix, EntityContext ctx)
     {
-        return columns.stream().map((field) -> prefix + field.getName()).collect(Collectors.joining(", "));
+        return columns.stream()
+                .map((column) -> prefix + ctx.getDialect().identifier(column.getName()))
+                .collect(Collectors.joining(", "));
     }
 
     public List<T> parseAll(ResultSet rs, EntityContextImpl ctx)
@@ -254,14 +257,18 @@ class TableImpl<T> implements Table<T>
 
     public <T> Object[] buildUpdateParameters(T entity, Object id)
     {
-        List<Object> result = columns.stream().map((fi) -> ((TableColumnImpl)fi).getValue(entity)).collect(Collectors.toList());
+        List<Object> result = columns.stream()
+                            .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
+                            .collect(Collectors.toList());
         result.add(id);
         return result.toArray();
     }
     
     public <T> Object[] buildInsertParameters(T entity)
     {
-        List<Object> result = columns.stream().map((fi) -> ((TableColumnImpl)fi).getValue(entity)).collect(Collectors.toList());
+        List<Object> result = columns.stream()
+                                .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
+                                .collect(Collectors.toList());
         return result.toArray();
     }
 
@@ -270,9 +277,9 @@ class TableImpl<T> implements Table<T>
         return ((TableColumnImpl)key).getValue(entity);
     }
 
-    public String buildIdCondition()
+    public String buildIdCondition(EntityContext ctx)
     {
-        return ((TableColumnImpl)key).getName() + " = ?";
+        return ctx.getDialect().identifier(((TableColumnImpl)key).getName()) + " = ?";
     }
     
     public String buildOrderBy(OrderBy orderBy, String prefix)

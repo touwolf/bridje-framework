@@ -146,4 +146,10 @@ public interface EntityContext
      * memory this method must be call.
      */
     void clearCache();
+    
+    /**
+     * 
+     * @return 
+     */
+    SQLDialect getDialect();
 }

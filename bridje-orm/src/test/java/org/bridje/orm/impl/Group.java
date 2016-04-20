@@ -22,26 +22,22 @@ import org.bridje.orm.Field;
 import org.bridje.orm.Key;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableNumberColumn;
-import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.TableStringColumn;
 
 /**
  *
  */
-@Entity(table = "users")
-public class User
+@Entity(table = "group")
+public class Group
 {
     @DbObject
-    public static Table<User> TABLE;
+    public static Table<Group> TABLE;
 
     @DbObject("id")
-    public static TableNumberColumn<User, Long> ID;
+    public static TableNumberColumn<Group, Long> ID;
 
     @DbObject("name")
-    public static TableStringColumn<User> NAME;
-
-    @DbObject("group")
-    public static TableRelationColumn<User, Group> GROUP;
+    public static TableStringColumn<Group> NAME;
 
     @Key
     @Field
@@ -50,14 +46,11 @@ public class User
     @Field
     private String name;
 
-    @Field(column = "id_column")
-    private Group group;
-
-    public User()
+    public Group()
     {
     }
     
-    public User(Long id, String name)
+    public Group(Long id, String name)
     {
         this.id = id;
         this.name = name;
@@ -81,15 +74,5 @@ public class User
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public Group getGroup()
-    {
-        return group;
-    }
-
-    public void setGroup(Group group)
-    {
-        this.group = group;
     }
 }

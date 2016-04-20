@@ -53,11 +53,11 @@ class MySQLDialect implements SQLDialect
     public String createTable(Table<?> table)
     {
         DDLBuilder b = createDDLBuilder();
-        b.createTable(table.getName());
+        b.createTable(identifier(table.getName()));
         table.getColumns().stream()
                 .map((f) -> buildColumnStmt(f, b))
                 .forEach(b::column);
-        b.primaryKey(table.getKey().getName());
+        b.primaryKey(identifier(table.getKey().getName()));
         return b.toString();
     }
 
@@ -65,7 +65,7 @@ class MySQLDialect implements SQLDialect
     public String createColumn(TableColumn<?, ?> column)
     {
         DDLBuilder b = createDDLBuilder();
-        b.alterTable(column.getTable().getName())
+        b.alterTable(identifier(column.getTable().getName()))
                 .addColumn(buildColumnStmt(column, b));
         
         return b.toString();
@@ -75,12 +75,12 @@ class MySQLDialect implements SQLDialect
     public String createIndex(TableColumn<?, ?> column)
     {
         DDLBuilder b = createDDLBuilder();
-        return b.createIndex(column.getTable().getName(), column.getName());
+        return b.createIndex(identifier(column.getTable().getName()), identifier(column.getName()));
     }
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
-        return b.buildColumnStmt(column.getName(), 
+        return b.buildColumnStmt(identifier(column.getName()), 
                 column.getSqlType().getName(), 
                 column.getLength(), 
                 column.getPrecision(), 
@@ -92,6 +92,12 @@ class MySQLDialect implements SQLDialect
     private DDLBuilder createDDLBuilder()
     {
         return new DDLBuilder("`");
+    }
+
+    @Override
+    public String identifier(String name)
+    {
+        return "`" + name + "`";
     }
 }
 

@@ -31,5 +31,5 @@ public interface SQLWritable
      * @return An String object representing the condition expression for this
      * object.
      */
-    public abstract String writeSQL(List<Object> parameters);
+    public abstract String writeSQL(List<Object> parameters, EntityContext ctx);
 }

@@ -63,7 +63,7 @@ class QueryImpl<T> implements Query<T>
     {
         List<Object> params = new ArrayList<>();
         SelectBuilder qb = createQuery(
-                    table.allFieldsCommaSep(table.getName() + "."), 
+                    table.allFieldsCommaSep(ctx.getDialect().identifier(table.getName()) + ".", ctx), 
                     params);
         if(page > 0)
         {
@@ -79,7 +79,7 @@ class QueryImpl<T> implements Query<T>
     public <C> List<C> fetchAll(Column<C> column) throws SQLException
     {
         List<Object> params = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.writeSQL(params), params);
+        SelectBuilder qb = createQuery(column.writeSQL(params, ctx), params);
         if(page > 0)
         {
             int index = ((page - 1) * pageSize);
@@ -95,7 +95,7 @@ class QueryImpl<T> implements Query<T>
     {
         List<Object> parameters = new ArrayList<>();
         SelectBuilder qb = createQuery(
-                        table.allFieldsCommaSep(table.getName() + "."), 
+                        table.allFieldsCommaSep(ctx.getDialect().identifier(table.getName()) + ".", ctx), 
                         parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
@@ -107,7 +107,7 @@ class QueryImpl<T> implements Query<T>
     public <C> C fetchOne(Column<C> column) throws SQLException
     {
         List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.writeSQL(parameters), parameters);
+        SelectBuilder qb = createQuery(column.writeSQL(parameters, ctx), parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
                     (rs) -> table.parse(1, column, rs, ctx), 
@@ -146,16 +146,16 @@ class QueryImpl<T> implements Query<T>
     {
         SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
-            .from(table.getName());
+            .from(ctx.getDialect().identifier(table.getName()));
         if(condition != null)
         {
-            qb.where(condition.writeSQL(parameters));
+            qb.where(condition.writeSQL(parameters, ctx));
         }
         if(orderBy != null)
         {
             qb.orderBy(Arrays
                     .asList(orderBy).stream()
-                    .map((ob) -> table.buildOrderBy(ob, table.getName() + "."))
+                    .map((ob) -> table.buildOrderBy(ob, ctx.getDialect().identifier(table.getName()) + "."))
                     .collect(Collectors.joining(", ")));
         }
         return qb;

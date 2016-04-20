@@ -19,6 +19,7 @@ package org.bridje.orm.impl;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridje.orm.Column;
+import org.bridje.orm.EntityContext;
 
 class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
 {
@@ -104,9 +105,9 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
     }
 
     @Override
-    public String writeSQL(List<Object> parameters)
+    public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
-        String result = String.format(getFunction(), column.writeSQL(parameters));
+        String result = String.format(getFunction(), column.writeSQL(parameters, ctx));
         if(getParameters() != null)
         {
             for (Object parameter : getParameters())

@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.orm.Entity;
+import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
 import org.bridje.orm.TableColumn;
 
@@ -166,7 +168,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         }
     }
 
-    protected <E> Object getValue(E entity)
+    protected Object getValue(E entity)
     {
         try
         {
@@ -177,6 +179,11 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
+    }
+    
+    protected Object getQueryParameter(E entity)
+    {
+        return getValue(entity);
     }
 
     private int findLength(int length)
@@ -261,8 +268,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     }
 
     @Override
-    public String writeSQL(List<Object> parameters)
+    public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
-        return name;
+        return ctx.getDialect().identifier(name);
     }
 }
