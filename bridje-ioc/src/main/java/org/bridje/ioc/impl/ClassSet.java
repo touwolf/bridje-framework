@@ -181,11 +181,18 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         }
         try
         {
-            ClassSet result = loadFromClassPath(scope);
-            if (result != null)
+            synchronized(classSetCache)
             {
-                classSetCache.put(scope, result);
-                return result;
+                if (classSetCache.containsKey(scope))
+                {
+                    return classSetCache.get(scope);
+                }
+                ClassSet result = loadFromClassPath(scope);
+                if (result != null)
+                {
+                    classSetCache.put(scope, result);
+                    return result;
+                }
             }
         }
         catch (IOException ex)
