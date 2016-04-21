@@ -63,7 +63,6 @@ public class UpdateBuilder
     @Override
     public String toString()
     {
-        sb.append(';');
         return sb.toString();
     }
 }

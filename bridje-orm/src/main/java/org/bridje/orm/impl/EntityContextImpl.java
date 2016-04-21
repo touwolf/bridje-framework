@@ -27,7 +27,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
-import org.bridje.orm.Entity;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Table;
 import org.bridje.orm.Query;
@@ -84,7 +83,7 @@ class EntityContextImpl implements EntityContext
             return cachedEntity;
         }
         SelectBuilder qb = new SelectBuilder();
-        qb.select(tableImpl.allFieldsCommaSep(dialect.identifier(tableImpl.getName()) + ".", this))
+        qb.select(tableImpl.allFieldsCommaSep(this))
             .from(dialect.identifier(tableImpl.getName()))
             .where(tableImpl.buildIdCondition(this))
             .limit(0, 1);
@@ -97,7 +96,7 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = (TableImpl<T>)orm.findTable(entity.getClass());
         SelectBuilder qb = new SelectBuilder();
-        qb.select(table.allFieldsCommaSep(dialect.identifier(table.getName()) + ".", this))
+        qb.select(table.allFieldsCommaSep(this))
             .from(dialect.identifier(table.getName()))
             .where(table.buildIdCondition(this))
             .limit(0, 1);
@@ -111,7 +110,7 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
-                .fields(table.allFieldsCommaSep("", this))
+                .fields(table.allFieldsCommaSepNoTable(this))
                 .valuesParams(table.getColumns().size());
 
         if(table.getKey().isAutoIncrement())
@@ -141,7 +140,7 @@ class EntityContextImpl implements EntityContext
         UpdateBuilder ub = new UpdateBuilder();
 
         ub.update(dialect.identifier(table.getName()));
-        table.allFieldsStream(dialect.identifier(table.getName()) + ".").forEach(ub::set);
+        table.allFieldsStream(dialect.identifier(table.getName()) + ".", this).forEach(ub::set);
         ub.where(table.buildIdCondition(this));
 
         Object updateId = id;

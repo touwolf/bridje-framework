@@ -27,43 +27,37 @@ import org.bridje.orm.TableStringColumn;
 /**
  *
  */
-@Entity(table = "group")
-public class Group
+@Entity(table = "roles")
+public class Rol
 {
     @DbObject
-    public static Table<Group> TABLE;
+    public static Table<Rol> TABLE;
 
     @DbObject("id")
-    public static TableNumberColumn<Group, Long> ID;
+    public static TableNumberColumn<Rol, Long> ID;
 
     @DbObject("name")
-    public static TableStringColumn<Group> NAME;
+    public static TableStringColumn<Rol> NAME;
 
-    @Key
+    @Key(autoIncrement = true)
     @Field
     private Long id;
 
-    @Field(index = true)
+    @Field
     private String name;
 
-    public Group()
+    public Rol()
     {
     }
-    
-    public Group(Long id, String name)
+
+    public Rol(String name)
     {
-        this.id = id;
         this.name = name;
     }
-    
+
     public Long getId()
     {
         return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getName()

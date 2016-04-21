@@ -20,6 +20,7 @@ import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
+
 /**
  *
  */

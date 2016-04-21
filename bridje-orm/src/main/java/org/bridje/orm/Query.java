@@ -100,6 +100,15 @@ public interface Query<T>
     boolean exists() throws SQLException;
 
     /**
+     * 
+     * 
+     * @param <R>
+     * @param relation
+     * @return 
+     */
+    <R> Query<R> join(TableRelationColumn<T,R> relation);
+    
+    /**
      * Specifies the condition to be use on this query.
      *
      * @param condition A condition object representing the where statement of

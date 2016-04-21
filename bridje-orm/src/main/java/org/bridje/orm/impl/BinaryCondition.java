@@ -20,6 +20,7 @@ import java.util.List;
 import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.TableColumn;
 
 /**
  * A condition with two operators. This condition can be use with the binary

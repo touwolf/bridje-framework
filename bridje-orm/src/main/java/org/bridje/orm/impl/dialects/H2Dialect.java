@@ -51,7 +51,7 @@ class H2Dialect implements SQLDialect
     @Override
     public String createTable(Table<?> table)
     {
-        DDLBuilder b = new DDLBuilder("");
+        DDLBuilder b = new DDLBuilder();
         b.createTable(identifier(table.getName()));
         table.getColumns().stream()
                 .map((f) -> buildColumnStmt(f, b))
@@ -63,7 +63,7 @@ class H2Dialect implements SQLDialect
     @Override
     public String createColumn(TableColumn<?, ?> column)
     {
-        DDLBuilder b = new DDLBuilder("");
+        DDLBuilder b = new DDLBuilder();
         b.alterTable(identifier(column.getTable().getName()))
                 .addColumn(buildColumnStmt(column, b));
         
@@ -73,8 +73,9 @@ class H2Dialect implements SQLDialect
     @Override
     public String createIndex(TableColumn<?, ?> column)
     {
-        DDLBuilder b = new DDLBuilder("");
-        return b.createIndex(identifier(column.getTable().getName()), identifier(column.getName()));
+        DDLBuilder b = new DDLBuilder();
+        String idxName = identifier("idx_" + column.getTable().getName() + "_" + column.getName());
+        return b.createIndex(idxName, identifier(column.getTable().getName()), identifier(column.getName()));
     }
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)

@@ -27,19 +27,16 @@ public class DDLBuilder
 
     private boolean firstColumn;
 
-    private final String idDelimiter;
-
-    public DDLBuilder(String idDelimiter)
+    public DDLBuilder()
     {
         sb = new StringBuilder();
         firstColumn = true;
-        this.idDelimiter = idDelimiter;
     }
 
     public DDLBuilder createTable(String tableName)
     {
         sb.append("CREATE TABLE ");
-        sb.append(identifier(tableName));
+        sb.append(tableName);
         sb.append("(\n");
         return this;
     }
@@ -47,22 +44,20 @@ public class DDLBuilder
     public DDLBuilder alterTable(String tableName)
     {
         sb.append("ALTER TABLE ");
-        sb.append(identifier(tableName));
+        sb.append(tableName);
         sb.append('\n');
         return this;
     }
 
-    public String createIndex(String tableName, String columnName)
+    public String createIndex(String idxName, String tableName, String columnName)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("CREATE INDEX idx_");
-        sb.append(identifier(tableName));
-        sb.append('_');
-        sb.append(identifier(columnName));
+        sb.append("CREATE INDEX ");
+        sb.append(idxName);
         sb.append(" ON ");
-        sb.append(identifier(tableName));
+        sb.append(tableName);
         sb.append(" ( ");
-        sb.append(identifier(columnName));
+        sb.append(columnName);
         sb.append(" ASC);");
         return sb.toString();
     }
@@ -91,7 +86,7 @@ public class DDLBuilder
     public DDLBuilder primaryKey(String columnName)
     {
         sb.append("    PRIMARY KEY (");
-        sb.append(identifier(columnName));
+        sb.append(columnName);
         sb.append(")\n)");
         return this;
     }
@@ -99,7 +94,6 @@ public class DDLBuilder
     @Override
     public String toString()
     {
-        sb.append(';');
         return sb.toString();
     }
     
@@ -107,7 +101,7 @@ public class DDLBuilder
     {
         StringWriter sw = new StringWriter();
         
-        sw.append(identifier(columnName));
+        sw.append(columnName);
         sw.append(' ');
         sw.append(sqlType);
         if(length > 0)
@@ -140,10 +134,5 @@ public class DDLBuilder
         }
         
         return sw.toString();
-    }
-
-    private String identifier(String name)
-    {
-        return idDelimiter + name + idDelimiter;
     }
 }

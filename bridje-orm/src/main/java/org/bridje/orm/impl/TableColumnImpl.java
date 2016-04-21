@@ -160,7 +160,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     {
         try
         {
-            this.field.set(entity, field.getType());
+            this.field.set(entity, value);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
@@ -270,6 +270,6 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     @Override
     public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
-        return ctx.getDialect().identifier(name);
+        return ctx.getDialect().identifier(table.getName()) + "." + ctx.getDialect().identifier(name);
     }
 }

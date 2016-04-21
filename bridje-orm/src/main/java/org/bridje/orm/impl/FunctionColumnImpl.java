@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.orm.Column;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.TableColumn;
 
 class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
 {
@@ -107,7 +108,17 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
     @Override
     public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
-        String result = String.format(getFunction(), column.writeSQL(parameters, ctx));
+        String result;
+        if(column instanceof TableColumn)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.append(column.writeSQL(parameters, ctx));
+            result = String.format(getFunction(), sb.toString());
+        }
+        else
+        {
+            result = String.format(getFunction(), column.writeSQL(parameters, ctx));
+        }
         if(getParameters() != null)
         {
             for (Object parameter : getParameters())

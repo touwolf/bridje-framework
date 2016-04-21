@@ -28,6 +28,7 @@ public interface SQLWritable
      *
      * @param parameters The list where the parameters will be put when
      * serializing this condition.
+     * @param ctx
      * @return An String object representing the condition expression for this
      * object.
      */

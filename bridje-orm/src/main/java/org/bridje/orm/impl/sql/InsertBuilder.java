@@ -69,7 +69,6 @@ public class InsertBuilder
     @Override
     public String toString()
     {
-        sb.append(';');
         return sb.toString();
     }
 }

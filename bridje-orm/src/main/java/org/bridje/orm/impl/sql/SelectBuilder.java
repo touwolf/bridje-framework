@@ -87,7 +87,6 @@ public class SelectBuilder
     @Override
     public String toString()
     {
-        sb.append(';');
         return sb.toString();
     }
 }

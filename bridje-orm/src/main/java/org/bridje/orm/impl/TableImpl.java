@@ -122,15 +122,22 @@ class TableImpl<T> implements Table<T>
         return keyInf;
     }
 
-    public Stream<String> allFieldsStream(String prefix)
+    public Stream<String> allFieldsStream(String prefix, EntityContext ctx)
     {
-        return columns.stream().map((field) -> prefix + field.getName());
+        return columns.stream().map((field) -> prefix + ctx.getDialect().identifier(field.getName()));
     }
     
-    public String allFieldsCommaSep(String prefix, EntityContext ctx)
+    public String allFieldsCommaSep(EntityContext ctx)
     {
         return columns.stream()
-                .map((column) -> prefix + ctx.getDialect().identifier(column.getName()))
+                .map((column) -> column.writeSQL(null, ctx))
+                .collect(Collectors.joining(", "));
+    }
+
+    public String allFieldsCommaSepNoTable(EntityContext ctx)
+    {
+        return columns.stream()
+                .map((column) -> ctx.getDialect().identifier(column.getName()))
                 .collect(Collectors.joining(", "));
     }
 
@@ -251,7 +258,8 @@ class TableImpl<T> implements Table<T>
         for (TableColumn column : columns)
         {
             Object value = rs.getObject(column.getName());
-            ((TableColumnImpl)column).setValue(entity, value);
+            Object realValue = CastUtils.castValue(column.getType(), value, ctx);
+            ((TableColumnImpl)column).setValue(entity, realValue);
         }
     }
 
@@ -282,9 +290,9 @@ class TableImpl<T> implements Table<T>
         return ctx.getDialect().identifier(((TableColumnImpl)key).getName()) + " = ?";
     }
     
-    public String buildOrderBy(OrderBy orderBy, String prefix)
+    public String buildOrderBy(OrderBy orderBy, List<Object> parameters, EntityContextImpl ctx)
     {
-        return prefix + orderBy.getColumn() + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
+        return orderBy.getColumn().writeSQL(parameters, ctx) + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
     }
 
     public <T> T updateKeyField(T entity, ResultSet rs, EntityContextImpl entityContext) throws SQLException

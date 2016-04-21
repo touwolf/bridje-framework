@@ -65,7 +65,7 @@ public class CastUtils
                 {
                     return (F) toFloat(value);
                 }
-                if(fieldType.getClass().getAnnotation(Entity.class) != null)
+                if(fieldType.getAnnotation(Entity.class) != null)
                 {
                     return ctx.find(fieldType, value);
                 }

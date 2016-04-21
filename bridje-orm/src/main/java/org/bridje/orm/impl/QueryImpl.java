@@ -16,22 +16,21 @@
 
 package org.bridje.orm.impl;
 
-import java.sql.SQLException;
 import org.bridje.orm.impl.sql.SelectBuilder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.TableColumn;
+import org.bridje.orm.TableRelationColumn;
 
 /**
  *
  * @param <T>
  */
-class QueryImpl<T> implements Query<T>
+class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
 {
     private final TableImpl<T> table;
     
@@ -59,76 +58,6 @@ class QueryImpl<T> implements Query<T>
     }
 
     @Override
-    public List<T> fetchAll() throws SQLException
-    {
-        List<Object> params = new ArrayList<>();
-        SelectBuilder qb = createQuery(
-                    table.allFieldsCommaSep(ctx.getDialect().identifier(table.getName()) + ".", ctx), 
-                    params);
-        if(page > 0)
-        {
-            int index = ((page - 1) * pageSize);
-            qb.limit(index, pageSize);
-        }
-        return ctx.doQuery(qb.toString(), 
-                        (rs) -> table.parseAll(rs, ctx), 
-                        params.toArray());
-    }
-
-    @Override
-    public <C> List<C> fetchAll(Column<C> column) throws SQLException
-    {
-        List<Object> params = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.writeSQL(params, ctx), params);
-        if(page > 0)
-        {
-            int index = ((page - 1) * pageSize);
-            qb.limit(index, pageSize);
-        }
-        return ctx.doQuery(qb.toString(), 
-                (rs) -> table.parseAll(1, column, rs, ctx), 
-                params.toArray());
-    }
-
-    @Override
-    public T fetchOne() throws SQLException
-    {
-        List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery(
-                        table.allFieldsCommaSep(ctx.getDialect().identifier(table.getName()) + ".", ctx), 
-                        parameters);
-        qb.limit(0, 1);
-        return ctx.doQuery(qb.toString(), 
-                    (rs) -> table.parse(rs, ctx), 
-                    parameters.toArray());
-    }
-
-    @Override
-    public <C> C fetchOne(Column<C> column) throws SQLException
-    {
-        List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery(column.writeSQL(parameters, ctx), parameters);
-        qb.limit(0, 1);
-        return ctx.doQuery(qb.toString(), 
-                    (rs) -> table.parse(1, column, rs, ctx), 
-                    parameters.toArray());
-    }
-
-    @Override
-    public long count() throws SQLException
-    {
-        List<Object> parameters = new ArrayList<>();
-        SelectBuilder qb = createQuery("COUNT(*)", parameters);
-        return ctx.doQuery(qb.toString(), (rs) -> table.parseCount(rs), parameters.toArray());
-    }
-
-    @Override
-    public boolean exists() throws SQLException
-    {
-        return count() > 0;
-    }
-
-    @Override
     public Query<T> where(Condition condition)
     {
         this.condition = condition;
@@ -142,6 +71,7 @@ class QueryImpl<T> implements Query<T>
         return this;
     }
 
+    @Override
     protected SelectBuilder createQuery(String fields, List<Object> parameters)
     {
         SelectBuilder qb = new SelectBuilder();
@@ -155,29 +85,51 @@ class QueryImpl<T> implements Query<T>
         {
             qb.orderBy(Arrays
                     .asList(orderBy).stream()
-                    .map((ob) -> table.buildOrderBy(ob, ctx.getDialect().identifier(table.getName()) + "."))
+                    .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
                     .collect(Collectors.joining(", ")));
         }
         return qb;
     }
 
+    @Override
     public Condition getCondition()
     {
         return condition;
     }
 
+    @Override
     public OrderBy[] getOrderBy()
     {
         return orderBy;
     }
 
+    @Override
     public int getPage()
     {
         return page;
     }
 
+    @Override
     public int getPageSize()
     {
         return pageSize;
+    }
+
+    @Override
+    public <R> Query<R> join(TableRelationColumn<T, R> relation)
+    {
+        return new JoinQueryImpl<>(this, (TableRelationColumnImpl<T, R>)relation);
+    }
+
+    @Override
+    protected TableImpl<T> getTable()
+    {
+        return table;
+    }
+
+    @Override
+    protected EntityContextImpl getCtx()
+    {
+        return ctx;
     }
 }

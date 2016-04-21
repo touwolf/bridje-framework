@@ -75,7 +75,8 @@ class MySQLDialect implements SQLDialect
     public String createIndex(TableColumn<?, ?> column)
     {
         DDLBuilder b = createDDLBuilder();
-        return b.createIndex(identifier(column.getTable().getName()), identifier(column.getName()));
+        String idxName = identifier("idx_" + column.getTable().getName() + "_" + column.getName());
+        return b.createIndex(idxName, identifier(column.getTable().getName()), identifier(column.getName()));
     }
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
@@ -91,7 +92,7 @@ class MySQLDialect implements SQLDialect
 
     private DDLBuilder createDDLBuilder()
     {
-        return new DDLBuilder("`");
+        return new DDLBuilder();
     }
 
     @Override
