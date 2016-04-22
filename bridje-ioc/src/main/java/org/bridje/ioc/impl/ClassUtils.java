@@ -40,7 +40,7 @@ import org.bridje.ioc.Priority;
  */
 public class ClassUtils
 {
-    private static String JAVA_PACKAGE_PREFIX = "java.";
+    private static final String JAVA_PACKAGE_PREFIX = "java.";
     
     /**
      * Logger for this class
