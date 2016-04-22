@@ -21,35 +21,35 @@ import org.bridje.jdbc.config.DataSourceConfig;
 
 /**
  * Provides services for JDBC data sources. {@link javax.sql.DataSource} This
- * class can be configure from the {@link org.bridje.jdbc.config.JdbcConfig}
- * class witch will be returned via bridje configuration API.
+ * class can be configured from the {@link org.bridje.jdbc.config.JdbcConfig}
+ * class which will be returned via bridje configuration API.
  */
 public interface JdbcService
 {
 
     /**
-     * Retrives a pooled DataSource object associeted with the given name.
+     * Retrives a pooled DataSource object associated with the given name.
      *
-     * @param name The name of the DataSource that was especify in the jdbc.xml
+     * @param name The name of the DataSource that was especified in the jdbc.xml
      * configuration file.
-     * @return The DataSource object if it was configure in the jdbc.xml or null
-     * the no DataSource was configure by the given name.
+     * @return The DataSource object if it was configured in the jdbc.xml or null
+     * if no DataSource was configure with the given name.
      */
     DataSource getDataSource(String name);
 
     /**
-     * Creates a new ppoled DataSource objecto out of the given configuration.
+     * Creates a new pooled DataSource object from the given configuration.
      *
      * @param config The DataSource configuration parameters.
-     * @return The new create DataSource object.
+     * @return The new created DataSource object.
      */
     DataSource createDataSource(DataSourceConfig config);
 
     /**
-     * Close the given DataSource and all of it´s connections to the database.
+     * Close the given DataSource and all its database connections.
      *
-     * @param dataSource The DataSource to be close.
-     * @throws SQLException If any SQLException occurs during the close
+     * @param dataSource The DataSource to be closed.
+     * @throws SQLException If any SQLException occurs during the closing
      * proccess.
      */
     void closeDataSource(DataSource dataSource) throws SQLException;
