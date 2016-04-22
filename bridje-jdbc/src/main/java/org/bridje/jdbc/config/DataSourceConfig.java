@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  * Represents the configuration parameters needed to initialize a DataSource
- * object in the JdbcService. The changes to this object will no have any
- * effects one the DataSource is created.
+ * object in the JdbcService. The changes to this object will not have any
+ * effects once the DataSource is created.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DataSourceConfig
@@ -66,7 +66,7 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the driver to be use for connecting the database. It must be a valid
+     * Gets the driver to be used for connecting the database. It must be a valid
      * jdbc driver class name. (ex: com.mysql.jdbc.Driver for MySQL server).
      *
      * @return The jdbc driver for this DataSource.
@@ -110,7 +110,7 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the username to be use to authenticate to the database server.
+     * Gets the username to be used to authenticate to the database server.
      *
      * @return The username for the database server authentication.
      */
@@ -120,7 +120,7 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the username to be use to authenticate to the database server.
+     * Sets the username to be used to authenticate to the database server.
      *
      * @param user The username for the database server authentication.
      */
@@ -130,7 +130,7 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the password to be use to authenticate to the database server.
+     * Gets the password to be used to authenticate to the database server.
      *
      * @return The password for the database server authentication.
      */
@@ -140,7 +140,7 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the password to be use to authenticate to the database server.
+     * Sets the password to be used to authenticate to the database server.
      *
      * @param password The password for the database server authentication.
      */
@@ -151,8 +151,8 @@ public class DataSourceConfig
 
     /**
      * Gets the maximun numer of configurations allowed in the datasource. If
-     * the current total connectios in the datasource reach this number new
-     * requests will have to way for a new connection to be released.
+     * the current total connectios in the datasource reach this number, new
+     * requests will have to wait for a new connection to be released.
      *
      * @return The maximun numer of connections in the datasource.
      */
@@ -167,8 +167,8 @@ public class DataSourceConfig
 
     /**
      * Sets the maximun numer of configurations allowed in the datasource. If
-     * the current total connectios in the datasource reach this number new
-     * requests will have to way for a new connection to be released.
+     * the current total connectios in the datasource reach this number, new
+     * requests will have to wait for a new connection to be released.
      *
      * @param maxConnections The maximun numer of connections in the datasource.
      */
@@ -179,7 +179,7 @@ public class DataSourceConfig
 
     /**
      * Gets the minimun time in seconds that a connection is unused in the
-     * datasource to be considered idle, be released from it.
+     * datasource to be considered iddle and released.
      *
      * @return The minimun amount of seconds a connection can be unused before
      * it is released.
@@ -195,7 +195,7 @@ public class DataSourceConfig
 
     /**
      * Sets the minimun time in seconds that a connection is unused in the
-     * datasource to be considered idle, be released from it.
+     * datasource to be considered iddle and released.
      *
      * @param idleTime The minimun amount of seconds a connection can be unused
      * before it is released.
@@ -206,13 +206,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the minumun amount of connections to keep in the datasource when idle
-     * connections are released. Idle connections will be released from the
+     * Gets the minumun amount of connections to keep in the datasource when iddle
+     * connections are released. Iddle connections will be released from the
      * datasource but not all, a number of connections equals to this parameter
-     * will be keep even if they are idle.
+     * will be keep even if they are iddle.
      *
      * @return The number of connections to keep in the datasource even if they
-     * are idles.
+     * are iddle.
      */
     public int getMinConnections()
     {
@@ -224,13 +224,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the minumun amount of connections to keep in the datasource when idle
-     * connections are released. Idle connections will be released from the
+     * Sets the minumun amount of connections to keep in the datasource when iddle
+     * connections are released. Iddle connections will be released from the
      * datasource but not all, a number of connections equals to this parameter
-     * will be keep even if they are idle.
+     * will be keep even if they are iddle.
      *
      * @param minConnections The number of connections to keep in the datasource even if they
-     * are idles.
+     * are iddle.
      */
     public void setMinConnections(int minConnections)
     {
