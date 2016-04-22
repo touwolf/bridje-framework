@@ -34,13 +34,14 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Priority;
-import org.bridje.ioc.Priority;
 
 /**
  * Utility method for class and type handling.
  */
 public class ClassUtils
 {
+    private static String JAVA_PACKAGE_PREFIX = "java.";
+    
     /**
      * Logger for this class
      */
@@ -564,7 +565,7 @@ public class ClassUtils
 
     private static boolean isJavaPackage(String name)
     {
-        return name.startsWith("java.");
+        return name.startsWith(JAVA_PACKAGE_PREFIX);
     }
 
 }

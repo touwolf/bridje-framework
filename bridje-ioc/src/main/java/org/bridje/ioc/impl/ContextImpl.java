@@ -42,6 +42,8 @@ class ContextImpl implements IocContext
     
     private final IocContext parent;
     
+    private final ScopeCache cache;
+    
     public ContextImpl() throws IOException
     {
         this("APPLICATION");
@@ -61,6 +63,7 @@ class ContextImpl implements IocContext
     private ContextImpl(String scope, Collection instances, IocContext parent) throws IOException
     {
         this.scope = scope;
+        this.cache = GlobalCache.instance().getScope(scope);
         this.parent = parent;
         if(instances != null && !instances.isEmpty())
         {
@@ -330,5 +333,10 @@ class ContextImpl implements IocContext
     public String toString()
     {
         return "IocContext: " + scope;
+    }
+
+    public ClassCache findCache(Class<?> cls)
+    {
+        return cache.getCache(cls);
     }
 }

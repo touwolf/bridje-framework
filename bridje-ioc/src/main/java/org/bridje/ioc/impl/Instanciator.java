@@ -35,13 +35,13 @@ class Instanciator
 {
     private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());
 
-    private final IocContext context;
+    private final ContextImpl context;
     
     private final ServiceMap serviceMap;
 
     private ContextListener[] contextListeners;
     
-    public Instanciator(IocContext context, ServiceMap serviceMap)
+    public Instanciator(ContextImpl context, ServiceMap serviceMap)
     {
         this.context = context;
         this.serviceMap = serviceMap;
@@ -52,12 +52,11 @@ class Instanciator
     {
         try
         {
-            Constructor<?> constructor = findDefaultConstructor(cls);
+            Constructor<?> constructor = context.findCache(cls).getConstructor();
             if(constructor == null)
             {
                 return null;
             }
-            constructor.setAccessible(true);
             return (T)constructor.newInstance();
         }
         catch (InstantiationException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
@@ -72,21 +71,16 @@ class Instanciator
         Class currentClass = cls;
         while(!currentClass.equals(Object.class))
         {
-            Method[] declaredMethods = currentClass.getDeclaredMethods();
-            for (Method declaredMethod : declaredMethods)
+            List<Method> methods = context.findCache(currentClass).getPostConstructs();
+            for (Method method : methods)
             {
-                PostConstruct annotation = declaredMethod.getAnnotation(PostConstruct.class);
-                if(annotation != null)
+                try
                 {
-                    try
-                    {
-                        declaredMethod.setAccessible(true);
-                        declaredMethod.invoke(obj);
-                    }
-                    catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
-                    {
-                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
+                    method.invoke(obj);
+                }
+                catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
+                {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
             currentClass = currentClass.getSuperclass();
@@ -95,18 +89,18 @@ class Instanciator
 
     public void injectDependencies(Class cls, Object obj)
     {
-        Field[] declaredFields = cls.getDeclaredFields();
-        for (Field declaredField : declaredFields)
+        List<Field> fields = context.findCache(cls).getInjectFields();
+        for (Field field : fields)
         {
-            Inject annotation = declaredField.getAnnotation(Inject.class);
+            Inject annotation = field.getAnnotation(Inject.class);
             if(annotation != null)
             {
-                injectDependency(cls, obj, declaredField, null);
+                injectDependency(cls, obj, field, null);
             }
-            InjectNext annotationNext = declaredField.getAnnotation(InjectNext.class);
+            InjectNext annotationNext = field.getAnnotation(InjectNext.class);
             if(annotationNext != null)
             {
-                injectDependency(cls, obj, declaredField, ClassUtils.findPriority(cls));
+                injectDependency(cls, obj, field, ClassUtils.findPriority(cls));
             }
         }
 
@@ -132,25 +126,12 @@ class Instanciator
                 componentObj = context.findNextGeneric(service, priority);
             }
 
-            field.setAccessible(true);
             field.set(obj, componentObj);
         }
         catch(IllegalArgumentException | IllegalAccessException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    private <T> Constructor<?> findDefaultConstructor(Class<T> cls)
-    {
-        for (Constructor<?> constructor : cls.getDeclaredConstructors())
-        {
-            if (constructor.getParameterTypes().length == 0)
-            {
-                return constructor;
-            }
-        }
-        return null;
     }
 
     private void initContextListeners()
@@ -167,7 +148,7 @@ class Instanciator
         {
             return;
         }
-       
+
         initContextListeners();
         if(null != contextListeners)
         {
