@@ -17,8 +17,9 @@
 package org.bridje.orm;
 
 import java.util.List;
+
 /**
- *
+ * Represents an SQL writable object that can be write to a SQL query.
  */
 public interface SQLWritable
 {

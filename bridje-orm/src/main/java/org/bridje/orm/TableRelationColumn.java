@@ -17,11 +17,18 @@
 package org.bridje.orm;
 
 /**
+ * Represents a column from a table that is a relation to another table in the
+ * model.
  *
- * @param <E>
- * @param <R>
+ * @param <E> The type for the base entity.
+ * @param <R> The type for the related entity.
  */
 public interface TableRelationColumn<E, R> extends TableColumn<E, R>
 {
+    /**
+     * Gets the related table object.
+     *
+     * @return The table object that this table is related to.
+     */
     Table<R> getRelated();
 }

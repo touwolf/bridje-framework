@@ -17,7 +17,7 @@
 package org.bridje.ioc;
 
 /**
- *
+ * The base interface that all bridje ioc scope classes must implement.
  */
 public interface Scope extends ContextListener<Object>
 {

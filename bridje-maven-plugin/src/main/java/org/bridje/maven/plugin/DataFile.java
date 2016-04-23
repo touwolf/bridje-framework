@@ -26,7 +26,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * Represents a data file from witch the data will be taken to generate the
+ * code.
  */
 public class DataFile
 {
@@ -34,17 +35,25 @@ public class DataFile
 
     private Node[] nodes;
 
+    /**
+     * The path of the file.
+     * @return An String representing the path of the data file.
+     */
     public String getPath()
     {
         return path;
     }
 
+    /**
+     * The nodes expression for this data file.
+     * @return An array with all the xml nodes configuration for the code generation.
+     */
     public Node[] getNodes()
     {
         return nodes;
     }
 
-    public void generate(GenerateMojo mojo) throws MojoExecutionException
+    protected void generate(GenerateMojo mojo) throws MojoExecutionException
     {
         try
         {

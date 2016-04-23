@@ -17,7 +17,8 @@
 package org.bridje.ioc;
 
 /**
- *
+ * This class represents the application scope wich is the root context of
+ * bridje ioc.
  */
 public final class Application implements Scope
 {

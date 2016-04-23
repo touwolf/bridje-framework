@@ -20,12 +20,21 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 /**
- *
+ * Indicates that this annotated field must be injected with the database object
+ * corresponding to it by the orm framework. This annotation must be use with
+ * Table and TableColumn clases.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface DbObject
 {
+    /**
+     * This field represents the name of the java field that corresponds to the
+     * injected TableColumn.
+     *
+     * @return The field name for the TableColumn object.
+     */
     String value() default "";
 }

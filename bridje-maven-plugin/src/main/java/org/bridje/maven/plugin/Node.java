@@ -25,7 +25,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
- * 
+ * An xml xpath expresion with represents the dom nodes that will be taken for
+ * the source code generation in a data file.
  */
 public class Node
 {
@@ -33,32 +34,34 @@ public class Node
 
     private WriteFile[] files;
 
+    /**
+     * The xpath expresion for this node configuration.
+     *
+     * @return An string representing the actual xpath to apply to find the
+     * nodes for the source code generation.
+     */
     public String getExpression()
     {
         return expression;
     }
 
-    public void setExpression(String expression)
-    {
-        this.expression = expression;
-    }
-
+    /**
+     * The files to generate for each node.
+     *
+     * @return An array of files that will be generated for each node that the
+     * xpath expresion returns from the data file.
+     */
     public WriteFile[] getFiles()
     {
         return files;
     }
 
-    public void setFiles(WriteFile[] files)
-    {
-        this.files = files;
-    }
-
-    public void generate(GenerateMojo mojo, Document doc) throws MojoExecutionException
+    protected void generate(GenerateMojo mojo, Document doc) throws MojoExecutionException
     {
         try
         {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodes = (NodeList)xPath.evaluate(expression,
+            NodeList nodes = (NodeList) xPath.evaluate(expression,
                     doc.getDocumentElement(), XPathConstants.NODESET);
 
             for (int i = 0; i < nodes.getLength(); ++i)

@@ -58,27 +58,27 @@ public class GenerateMojo extends AbstractMojo
         project.addCompileSourceRoot(outputBasePath);
     }
 
-    public String getDataFilesBasePath()
+    protected String getDataFilesBasePath()
     {
         return dataFilesBasePath;
     }
 
-    public String getTemplatesBasePath()
+    protected String getTemplatesBasePath()
     {
         return templatesBasePath;
     }
 
-    public String getOutputBasePath()
+    protected String getOutputBasePath()
     {
         return outputBasePath;
     }
 
-    public DataFile[] getDataFiles()
+    protected DataFile[] getDataFiles()
     {
         return dataFiles;
     }
 
-    public MavenProject getProject()
+    protected MavenProject getProject()
     {
         return project;
     }

@@ -28,8 +28,8 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param path The string representation of the path to the folder.
      * @return A VirtualFolder object representing the folder mapped to the path
-     *         argument or null if the specified path is not a valid folder in
-     *         the vfs tree.
+     * argument or null if the specified path is not a valid folder in the vfs
+     * tree.
      */
     VirtualFolder findFolder(String path);
 
@@ -38,8 +38,8 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param path The path to the folder.
      * @return A VirtualFolder object representing the folder mapped to the path
-     *         argument or {@literal null} if the specified path is not a valid
-     *         folder in the vfs tree.
+     * argument or {@literal null} if the specified path is not a valid folder
+     * in the vfs tree.
      */
     VirtualFolder findFolder(Path path);
 
@@ -48,8 +48,8 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param path The string representation of the path to the file.
      * @return A VirtualFile object representing the file mapped to the path
-     *         argument or null if the specified path is not a valid folder in
-     *         the vfs tree.
+     * argument or null if the specified path is not a valid folder in the vfs
+     * tree.
      */
     VirtualFile findFile(String path);
 
@@ -58,8 +58,8 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param path The path to the file.
      * @return A VirtualFile object representing the file mapped to the path
-     *         argument or null if the specified path is not a valid folder in
-     *         the vfs tree.
+     * argument or null if the specified path is not a valid folder in the vfs
+     * tree.
      */
     VirtualFile findFile(Path path);
 
@@ -67,14 +67,14 @@ public interface VirtualFolder extends VirtualResource
      * Gets a list of all child folders of this folder.
      * <p>
      * @return A List of VirtualFolders representing the child folders of this
-     *         folder.
+     * folder.
      */
     List<VirtualFolder> listFolders();
-    
+
     /**
-     * 
+     *
      * @param query
-     * @return 
+     * @return
      */
     List<VirtualFolder> listFolders(String query);
 
@@ -82,13 +82,17 @@ public interface VirtualFolder extends VirtualResource
      * Gets a list of all child files of this folder.
      * <p>
      * @return A List of VirtualFiles representing the child files of this
-     *         folder.
+     * folder.
      */
     List<VirtualFile> listFiles();
 
     /**
-     * 
-     * @return 
+     * Gets a list of all child files of this folder.
+     * <p>
+     * @param query The regular expresion to match the files full path that will
+     * be listed with this method.
+     * @return A List of VirtualFiles representing the child files of this
+     * folder.
      */
     List<VirtualFile> listFiles(String query);
 
@@ -107,18 +111,24 @@ public interface VirtualFolder extends VirtualResource
      * @param visitor The visitor to be used.
      */
     void travel(VirtualFolderVisitor visitor);
-    
+
     /**
-     * 
-     * @param visitor 
-     * @param query 
+     * Travels through all folders recursively from this folder and its children
+     * folders.
+     * <p>
+     * @param visitor The visitor to be used.
+     * @param query The regular expresion to match the files full path that will
+     * be listed with this method.
      */
     void travel(VirtualFileVisitor visitor, String query);
 
     /**
-     * 
-     * @param visitor 
-     * @param query 
+     * Travels through all folders recursively from this folder and its children
+     * folders.
+     * <p>
+     * @param visitor The visitor to be used.
+     * @param query The regular expresion to match the folders full path that will
+     * be listed with this method.
      */
     void travel(VirtualFolderVisitor visitor, String query);
 }

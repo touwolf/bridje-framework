@@ -47,7 +47,10 @@ public class EntityProcessor extends AbstractProcessor
 
     private static final Logger LOG = Logger.getLogger(EntityProcessor.class.getName());
 
-    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
+    /**
+     * The bridje orm entitys resources file path.
+     */
+    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
@@ -59,7 +62,7 @@ public class EntityProcessor extends AbstractProcessor
         {
             Filer filer = processingEnv.getFiler();
             //Creating output file
-            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", COMPONENTS_RESOURCE_FILE);
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", ENTITYS_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
         catch (IOException e)
@@ -100,14 +103,6 @@ public class EntityProcessor extends AbstractProcessor
         return false;
     }
 
-    /**
-     * This method appends class=table to the output file.
-     * <p>
-     * @param clsName The full class name of the entity to append
-     * @param table   The table name for the entity
-     * <p>
-     * @throws IOException If any IO error prevents the writing.
-     */
     private void appendClass(String clsName, String table) throws IOException
     {
         writer.append(clsName);

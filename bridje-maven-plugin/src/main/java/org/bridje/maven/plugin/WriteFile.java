@@ -34,35 +34,36 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- *
+ * A file to generate.
  */
 public class WriteFile
 {
     private String name;
-    
+
     private String template;
 
+    /**
+     * The name of the file to generate, it can contain freemarker expresions.
+     *
+     * @return The file name template in freemarker.
+     */
     public String getName()
     {
         return name;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
+    /**
+     * The path to the template to be use to generate this file.
+     *
+     * @return An String representing the relative path to the template to be
+     * use in the generation.
+     */
     public String getTemplate()
     {
         return template;
     }
 
-    public void setTemplate(String template)
-    {
-        this.template = template;
-    }
-
-    public void generate(GenerateMojo mojo, Node node, Document doc) throws MojoExecutionException
+    protected void generate(GenerateMojo mojo, Node node, Document doc) throws MojoExecutionException
     {
         try
         {
@@ -83,10 +84,10 @@ public class WriteFile
             StringWriter out = new StringWriter();
             fileNameTpl.process(model, out);
             String fileName = out.toString();
-            
+
             //Generate file
             File toGenerate = new File(mojo.getOutputBasePath() + "/" + fileName);
-            if(toGenerate.exists())
+            if (toGenerate.exists())
             {
                 toGenerate.delete();
             }

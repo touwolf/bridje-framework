@@ -64,11 +64,6 @@ public class JdbcServiceTest
         }
     }
 
-    /**
-     * Test of getDataSource method, of class JdbcService.
-     * @throws java.sql.SQLException
-     * @throws java.lang.InterruptedException
-     */
     @Test
     public void test1GetDataSource() throws SQLException, InterruptedException, IOException, URISyntaxException
     {

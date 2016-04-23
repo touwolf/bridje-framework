@@ -22,6 +22,9 @@ import java.util.logging.Logger;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.IocContext;
 
+/**
+ * Factory object to create the application context.
+ */
 public class ContextFactory
 {
     private static final Logger LOG = Logger.getLogger(ContextFactory.class.getName());
@@ -33,6 +36,12 @@ public class ContextFactory
     {
     }
 
+    /**
+     * Creates the application scoped IocContext.
+     * 
+     * @param application The application scope object.
+     * @return The created IocContext object.
+     */
     public static IocContext<Application> createApplicationContext(Application application)
     {
         try

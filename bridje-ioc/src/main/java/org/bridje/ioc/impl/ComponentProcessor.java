@@ -48,6 +48,9 @@ public class ComponentProcessor extends AbstractProcessor
 
     private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
 
+    /**
+     * The bridje ioc components resource file path.
+     */
     public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/components.properties";
 
     @Override

@@ -41,7 +41,7 @@ import org.bridje.ioc.Priority;
 public class ClassUtils
 {
     private static final String JAVA_PACKAGE_PREFIX = "java.";
-    
+
     /**
      * Logger for this class
      */
@@ -174,13 +174,21 @@ public class ClassUtils
         }
         return null;
     }
-    
+
+    /**
+     * Returns the specified parameter from the ParameterizedType.
+     *
+     * @param service The ParameterizedType type to search the parameter.
+     * @param index The index of the actual parameter.
+     * @return If service is a ParameterizedType and the parameter is available
+     * it will return it, or null otherwise.
+     */
     public static Type parameterType(Type service, int index)
     {
         if (service instanceof ParameterizedType)
         {
             Type[] args = ((ParameterizedType) service).getActualTypeArguments();
-            if( index < args.length )
+            if (index < args.length)
             {
                 return args[index];
             }
@@ -524,11 +532,12 @@ public class ClassUtils
      */
     public static void sort(List<Class<?>> value)
     {
-        Collections.sort(value, (Class<?> c1, Class<?> c2) -> 
-        {
-            int v1 = ClassUtils.findPriority(c1);
-            int v2 = ClassUtils.findPriority(c2);
-            return v1 - v2;
+        Collections.sort(value, (Class<?> c1, Class<?> c2)
+                -> 
+                {
+                    int v1 = ClassUtils.findPriority(c1);
+                    int v2 = ClassUtils.findPriority(c2);
+                    return v1 - v2;
         });
     }
 
