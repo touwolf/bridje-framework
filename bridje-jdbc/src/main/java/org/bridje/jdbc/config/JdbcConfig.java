@@ -25,11 +25,9 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Configuration objecto for the JdbcService. This class can be retrived by the
- * {@link org.bridje.cfg.ConfigService} class like this.
- * Ioc.context().find(ConfigService.class).find(JdbcConfig.class); It specify
- * all the datasources availables for the application. Users can specify their
- * configurations by putting the jdbc.xml file into the configuration folder.
+ * Configuration object for the JdbcService. It specify all the datasources
+ * availables for the application. Users can specify their configurations by
+ * putting the jdbc.xml file into the configuration folder.
  */
 @XmlRootElement(name = "jdbc")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -37,9 +35,9 @@ public class JdbcConfig
 {
     @XmlElementWrapper(name = "datasources")
     @XmlElements(
-    {
-        @XmlElement(name = "datasource", type = DataSourceConfig.class)
-    })
+            {
+                @XmlElement(name = "datasource", type = DataSourceConfig.class)
+            })
     private List<DataSourceConfig> dataSources;
 
     /**
@@ -58,7 +56,8 @@ public class JdbcConfig
     }
 
     /**
-     * Sets all the DataSourceConfig objects that can be user by the JdbcService.
+     * Sets all the DataSourceConfig objects that can be user by the
+     * JdbcService.
      *
      * @param dataSources A list of DataSorucesConfig objects to be use by the
      * JdbcService.
