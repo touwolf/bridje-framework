@@ -208,7 +208,7 @@ class OrmServiceImpl implements OrmService
                 }
             }
         }
-        catch (Exception e)
+        catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

@@ -186,11 +186,12 @@ public class ClassPathVfsSource implements VfsSource
 
     private List<String> getResourceListing(Class clazz, String path) throws URISyntaxException, IOException
     {
-        if(path.startsWith("/"))
+        String currentPath = path;
+        if(currentPath.startsWith("/"))
         {
-            path = path.substring(1);
+            currentPath = currentPath.substring(1);
         }
-        Enumeration<URL> resources = clazz.getClassLoader().getResources(path);
+        Enumeration<URL> resources = clazz.getClassLoader().getResources(currentPath);
         Set<String> result = new HashSet<>(); //avoid duplicates in case it is a subdirectory
         while (resources.hasMoreElements())
         {
@@ -226,10 +227,10 @@ public class ClassPathVfsSource implements VfsSource
                 while (entries.hasMoreElements())
                 {
                     String name = entries.nextElement().getName().trim();
-                    if (name.startsWith(path))
+                    if (name.startsWith(currentPath))
                     {
                         //filter according to the path
-                        String entry = name.trim().substring(path.length());
+                        String entry = name.trim().substring(currentPath.length());
                         int checkSubdir = entry.indexOf("/");
                         if (checkSubdir >= 0)
                         {
