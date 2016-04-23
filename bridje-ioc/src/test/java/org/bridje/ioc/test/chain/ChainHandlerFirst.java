@@ -20,10 +20,6 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 
-/**
- *
- * @author Gilberto
- */
 @Component
 @Priority(1)
 public class ChainHandlerFirst implements MyChainHandler<String>

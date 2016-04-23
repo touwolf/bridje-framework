@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="380mm"
+   height="297mm"
+   viewBox="0 0 1346.4562 1052.3622"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="bridje-apis.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.80010475"
+     inkscape:cx="551.58587"
+     inkscape:cy="547.53869"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#666666;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3336"
+       width="671.92914"
+       height="156.2292"
+       x="328.98959"
+       y="749.97717"
+       rx="1.3"
+       ry="1.3" />
+    <rect
+       style="opacity:1;fill:#009700;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4138"
+       width="671.42853"
+       height="125.71429"
+       x="328.88965"
+       y="609.16333"
+       rx="2.2137682"
+       ry="1.3" />
+    <rect
+       style="opacity:1;fill:#009700;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4144"
+       width="342.85715"
+       height="125.71399"
+       x="328.88965"
+       y="340.03735"
+       rx="2.2137699"
+       ry="0.87999797" />
+    <rect
+       style="opacity:1;fill:#009700;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4146"
+       width="318.92758"
+       height="125.71399"
+       x="681.39056"
+       y="340.03741"
+       rx="2.4226599"
+       ry="0.89374787" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:63.91000748px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="457.01483"
+       y="937.96063"
+       id="text4148"
+       sodipodi:linespacing="125%"
+       transform="scale(1.0798082,0.92609039)"><tspan
+         sodipodi:role="line"
+         id="tspan4150"
+         x="457.01483"
+         y="937.96063"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:143.79751587px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start">JVM</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:161.63891602px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="328.57916"
+       y="983.4624"
+       id="text4148-9"
+       sodipodi:linespacing="125%"
+       transform="scale(1.3843264,0.72237298)"><tspan
+         sodipodi:role="line"
+         x="328.57916"
+         y="983.4624"
+         id="tspan4205">IoC</tspan></text>
+    <rect
+       style="opacity:1;fill:#009700;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4138-2"
+       width="671.42853"
+       height="125.71429"
+       x="328.43216"
+       y="473.01022"
+       rx="2.2137682"
+       ry="1.3" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:153.69844055px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="330.34625"
+       y="816.88971"
+       id="text4148-9-0"
+       sodipodi:linespacing="125%"
+       transform="scale(1.4178632,0.70528665)"><tspan
+         sodipodi:role="line"
+         id="tspan4209"
+         x="330.34625"
+         y="816.88971">VFS</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:113.42294312px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="280.55331"
+       y="529.35425"
+       id="text4148-9-0-5"
+       sodipodi:linespacing="125%"
+       transform="scale(1.1978863,0.83480378)"><tspan
+         sodipodi:role="line"
+         id="tspan4209-0"
+         x="280.55331"
+         y="529.35425">HTTP</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:106.240448px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="595.82117"
+       y="507.43512"
+       id="text4148-9-0-5-4"
+       sodipodi:linespacing="125%"
+       transform="scale(1.1610351,0.86130041)"><tspan
+         sodipodi:role="line"
+         id="tspan4209-0-2"
+         x="595.82117"
+         y="507.43512">JDBC</tspan></text>
+    <rect
+       style="opacity:1;fill:#009700;fill-opacity:1;fill-rule:nonzero;stroke:#bdbdbd;stroke-width:0;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4146-1"
+       width="318.92758"
+       height="125.71399"
+       x="681.67578"
+       y="208.35751"
+       rx="2.4226599"
+       ry="0.89374787" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:110.4986496px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="647.73529"
+       y="346.62759"
+       id="text4148-9-0-5-4-7"
+       sodipodi:linespacing="125%"
+       transform="scale(1.126218,0.88792755)"><tspan
+         sodipodi:role="line"
+         id="tspan4209-0-2-0"
+         x="647.73529"
+         y="346.62759">ORM</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.4492588px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1095.7426"
+       y="619.3045"
+       id="text4310"
+       sodipodi:linespacing="125%"
+       transform="scale(0.93383212,1.0708563)"><tspan
+         sodipodi:role="line"
+         id="tspan4312"
+         x="1095.7426"
+         y="619.3045">Inversion of Control</tspan><tspan
+         sodipodi:role="line"
+         x="1095.7426"
+         y="647.36609"
+         id="tspan4314">and Dependency Injection</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.4492588px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="23.009893"
+       y="508.63455"
+       id="text4310-6"
+       sodipodi:linespacing="125%"
+       transform="scale(0.93383212,1.0708563)"><tspan
+         sodipodi:role="line"
+         x="23.009893"
+         y="508.63455"
+         id="tspan4314-3">Application's File Tree</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.4492588px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1124.5092"
+       y="366.24384"
+       id="text4310-5"
+       sodipodi:linespacing="125%"
+       transform="scale(0.93383212,1.0708563)"><tspan
+         sodipodi:role="line"
+         x="1124.5092"
+         y="366.24384"
+         id="tspan4314-9">Connection Pooled </tspan><tspan
+         sodipodi:role="line"
+         x="1124.5092"
+         y="394.30542"
+         id="tspan4362">JDBC DataSources</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.4492588px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="67.973091"
+       y="380.09103"
+       id="text4310-5-0"
+       sodipodi:linespacing="125%"
+       transform="scale(0.93383212,1.0708563)"><tspan
+         sodipodi:role="line"
+         x="67.973091"
+         y="380.09103"
+         id="tspan4362-7">Netty HTTP Server</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.4492588px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1094.5221"
+       y="247.03743"
+       id="text4310-5-2"
+       sodipodi:linespacing="125%"
+       transform="scale(0.93383212,1.0708563)"><tspan
+         sodipodi:role="line"
+         x="1094.5221"
+         y="247.03743"
+         id="tspan4362-3">JPA like </tspan><tspan
+         sodipodi:role="line"
+         x="1094.5221"
+         y="275.099"
+         id="tspan4410">Object Relational Mapping</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:38.58216476px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="543.28577"
+       y="99.754364"
+       id="text4310-5-2-1"
+       sodipodi:linespacing="125%"
+       transform="scale(0.90953783,1.0994595)"><tspan
+         sodipodi:role="line"
+         x="543.28577"
+         y="99.754364"
+         id="tspan4410-2">Bridje 0.2.0 APIs</tspan></text>
+  </g>
+</svg>
