@@ -36,7 +36,7 @@ public @interface Component
      * <p>
      * @return String that represents the scope of the component.
      */
-    String scope() default "APPLICATION";
+    Class<? extends Scope> scope() default Application.class;
 
     /**
      * If the component must be instantiate eager or lazy

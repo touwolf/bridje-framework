@@ -19,6 +19,7 @@ package org.bridje.ioc.impl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Application;
 import org.bridje.ioc.IocContext;
 
 public class ContextFactory
@@ -26,37 +27,17 @@ public class ContextFactory
     private static final Logger LOG = Logger.getLogger(ContextFactory.class.getName());
 
     /**
-     * Internal holder for the single APPLICATION scoped IocContext instance.
-     */
-    private static IocContext context;
-
-    /**
      * Private constructor so this object cannot be instantiated.
      */
     private ContextFactory()
     {
-
     }
 
-    /**
-     * This method returns the IocContext for the application scope.
-     *
-     * @return An object providing de IocContext for the application scope.
-     */
-    public static IocContext context()
-    {
-        if (context == null)
-        {
-            context = createApplicationContext();
-        }
-        return context;
-    }
-
-    private static IocContext createApplicationContext()
+    public static IocContext<Application> createApplicationContext(Application application)
     {
         try
         {
-            return new ContextImpl();
+            return new ContextImpl<>(application);
         }
         catch (IOException ex)
         {

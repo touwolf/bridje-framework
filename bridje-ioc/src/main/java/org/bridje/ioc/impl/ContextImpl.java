@@ -19,20 +19,21 @@ package org.bridje.ioc.impl;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import org.bridje.ioc.Application;
 import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.IocContext;
+import org.bridje.ioc.Scope;
 import static org.bridje.ioc.impl.ClassUtils.*;
 
-class ContextImpl implements IocContext
+final class ContextImpl<S extends Scope> implements IocContext<S>
 {
     private static final Logger LOG = Logger.getLogger(ContextImpl.class.getName());
     
-    private final String scope;
+    private final S scope;
 
     private final ClassSet classSet;
 
@@ -40,50 +41,26 @@ class ContextImpl implements IocContext
     
     private final Container container;
     
-    private final IocContext parent;
+    private final IocContext<?> parent;
     
     private final ScopeCache cache;
     
-    public ContextImpl() throws IOException
+    protected ContextImpl(S scope) throws IOException
     {
-        this("APPLICATION");
-    }
-    
-    private ContextImpl(String scope) throws IOException
-    {
-        this(scope, null, null);
-    }
-    
-    private ContextImpl(String scope, Collection instances) throws IOException
-    {
-        this(scope, instances, null);
+        this(scope, null);
     }
 
     @SuppressWarnings("LeakingThisInConstructor")
-    private ContextImpl(String scope, Collection instances, IocContext parent) throws IOException
+    private ContextImpl(S scope, IocContext parent) throws IOException
     {
         this.scope = scope;
-        this.cache = GlobalCache.instance().getScope(scope);
+        this.cache = GlobalCache.instance().getScope(getScopeClass());
         this.parent = parent;
-        if(instances != null && !instances.isEmpty())
-        {
-            ClassSet cs = new ClassSet(toClasses(instances));
-            classSet = new ClassSet(ClassSet.findByScope(scope), cs);
-            serviceMap = new ServiceMap(ServiceMap.findByScope(scope), cs);
-        }
-        else
-        {
-            classSet = ClassSet.findByScope(scope);
-            serviceMap = ServiceMap.findByScope(scope);
-        }
+        ClassSet cs = new ClassSet(scope.getClass());
+        classSet = new ClassSet(ClassSet.findByScope(getScopeClass()), cs);
+        serviceMap = new ServiceMap(ServiceMap.findByScope(getScopeClass()), cs);
         Instanciator creator = new Instanciator(this, serviceMap);
-        List allInstances = new ArrayList(instances != null ? instances.size() + 1 : 1);
-        allInstances.add(this);
-        if(instances != null)
-        {
-            allInstances.addAll(instances);
-        }
-        container = new Container(creator, allInstances);
+        container = new Container(creator, scope);
     }
 
     @Override
@@ -198,17 +175,15 @@ class ContextImpl implements IocContext
     }
 
     @Override
-    public IocContext createChild(String scope)
+    public <T extends Scope> IocContext<T> createChild(T scope)
     {
-        return createChild(scope, null);
-    }
-
-    @Override
-    public IocContext createChild(String scope, Collection instances)
-    {
+        if(scope == null || scope.getClass().equals(Object.class) || scope.getClass().equals(Application.class))
+        {
+            throw new IllegalArgumentException("scope");
+        }
         try
         {
-            return new ContextImpl(scope, instances, this);
+            return new ContextImpl(scope, this);
         }
         catch (IOException ex)
         {
@@ -239,15 +214,10 @@ class ContextImpl implements IocContext
         List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
-            ArrayList resultList = new ArrayList(components.size());
-            for (Class component : components)
-            {
-                Object compInstance = container.create(component);
-                if(compInstance != null)
-                {
-                    resultList.add(compInstance);
-                }
-            }
+            List resultList = components.stream()
+                    .map((component) -> container.create(component))
+                    .filter((compInstance) -> (compInstance != null))
+                    .collect(Collectors.toList());
             T[] result = (T[])Array.newInstance(service, components.size());
             return (T[])resultList.toArray(result);
         }
@@ -294,19 +264,14 @@ class ContextImpl implements IocContext
         {
             return null;
         }
-        Object[] result = null;
+        Object[] result;
         List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
-            List resultList = new ArrayList(components.size());
-            for (Class<?> component : components)
-            {
-                Object compInstance = container.create(component);
-                if(compInstance != null)
-                {
-                    resultList.add(compInstance);
-                }
-            }
+            List resultList = components.stream()
+                    .map((component) -> container.create(component))
+                    .filter((compInstance) -> (compInstance != null))
+                    .collect(Collectors.toList());
             result = (Object[])Array.newInstance(resultClass, resultList.size());
             result = resultList.toArray(result);
         }
@@ -324,7 +289,13 @@ class ContextImpl implements IocContext
     }
 
     @Override
-    public String getScope()
+    public Class<S> getScopeClass()
+    {
+        return (Class<S>)scope.getClass();
+    }
+
+    @Override
+    public S getScope()
     {
         return scope;
     }

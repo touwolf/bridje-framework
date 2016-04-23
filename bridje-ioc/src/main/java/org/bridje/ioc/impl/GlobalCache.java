@@ -23,7 +23,7 @@ class GlobalCache
 {
     private static GlobalCache instance;
 
-    private final Map<String, ScopeCache> scopeMap;
+    private final Map<Class<?>, ScopeCache> scopeMap;
 
     public static GlobalCache instance()
     {
@@ -39,7 +39,7 @@ class GlobalCache
         scopeMap = new ConcurrentHashMap<>();
     }
 
-    public ScopeCache getScope(String scope)
+    public ScopeCache getScope(Class<?> scope)
     {
         ScopeCache cache = scopeMap.get(scope);
         if(cache == null)

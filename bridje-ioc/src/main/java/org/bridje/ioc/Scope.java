@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.ioc.test;
+package org.bridje.ioc;
 
-public class ComponentBaseClass implements ComponentBaseInterface
+/**
+ *
+ */
+public interface Scope extends ContextListener<Object>
 {
-    
 }

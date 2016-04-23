@@ -26,6 +26,8 @@ import org.bridje.ioc.impl.ContextFactory;
  */
 public class Ioc
 {
+    private static IocContext<Application> appContext;
+
     /**
      * Private constructor so this object cannot be instantiated.
      */
@@ -40,8 +42,12 @@ public class Ioc
      * @return The APPLICATION scoped {@link IocContext} instance for this
      * application.
      */
-    public static IocContext context()
+    public static IocContext<Application> context()
     {
-        return ContextFactory.context();
+        if(appContext == null)
+        {
+            appContext = ContextFactory.createApplicationContext(new Application());
+        }
+        return appContext;
     }
 }

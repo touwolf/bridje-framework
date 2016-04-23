@@ -44,7 +44,7 @@ class Container
      * create the components.
      * @param instances The components that are already instantiated.
      */
-    public Container(Instanciator creator, List instances)
+    public Container(Instanciator creator, Object... instances)
     {
         this.components = new ConcurrentHashMap<>();
         this.instanciator = creator;

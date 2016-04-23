@@ -33,7 +33,7 @@ class ServiceMap
     /**
      * A cache for the ServiceMap of all scopes.
      */
-    private static Map<String, ServiceMap> serviceMapCache;
+    private static Map<Class<?>, ServiceMap> serviceMapCache;
 
     /**
      * The service map, who links a services to a list of components.
@@ -164,7 +164,7 @@ class ServiceMap
      * @return A service map with all the service in the given scope or null if
      * the given scope has no components.
      */
-    public static ServiceMap findByScope(String scope)
+    public static ServiceMap findByScope(Class<?> scope)
     {
         if (serviceMapCache == null)
         {

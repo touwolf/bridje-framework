@@ -25,17 +25,15 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.InjectNext;
 
 class Instanciator
 {
     private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());
 
-    private final ContextImpl context;
+    private final ContextImpl<?> context;
     
     private final ServiceMap serviceMap;
 

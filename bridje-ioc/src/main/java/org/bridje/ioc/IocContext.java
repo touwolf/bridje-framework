@@ -17,7 +17,6 @@
 package org.bridje.ioc;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 
 /**
  * Represents a context in witch components are managed. This interface is mean
@@ -27,8 +26,9 @@ import java.util.Collection;
  * An implementation of this interface can be obtained via the Ioc interface or
  * by injecting {@link org.bridje.ioc.Inject} it in any component
  * you want.
+ * @param <S>
  */
-public interface IocContext
+public interface IocContext<S extends Scope>
 {
     /**
      * Gets the scope of the current context.
@@ -36,7 +36,15 @@ public interface IocContext
      * @return An string object representing the scope name used for this
      * context.
      */
-    String getScope();
+    public S getScope();
+
+    /**
+     * Gets the scope of the current context.
+     *
+     * @return An string object representing the scope name used for this
+     * context.
+     */
+    Class<S> getScopeClass();
 
     /**
      * This method finds the highest priority component that provides the given
@@ -137,25 +145,16 @@ public interface IocContext
      * @return The IocContext instance representing the parent of this context,
      * or null if this context has no parent.
      */
-    IocContext getParent();
+    IocContext<?> getParent();
 
     /**
      * Create a child IocContext of this context.
      * <p>
+     * @param <T>
      * @param scope The scope of the new context.
      * @return The new IocContext instance created as child of this context.
      */
-    IocContext createChild(String scope);
-
-    /**
-     * Create a child IocContext of this context.
-     * <p>
-     * @param scope The scope of the new context.
-     * @param instances A collection of objects that will be components of the
-     * new context.
-     * @return The new IocContext instance created as child of this context.
-     */
-    IocContext createChild(String scope, Collection instances);
+    <T extends Scope> IocContext<T> createChild(T scope);
 
     /**
      * Obtains the class repository associated with this context. that allows to

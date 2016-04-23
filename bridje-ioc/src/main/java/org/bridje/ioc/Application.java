@@ -14,9 +14,29 @@
  * limitations under the License.
  */
 
-package org.bridje.ioc.test;
+package org.bridje.ioc;
 
-public class ComponentBaseClass implements ComponentBaseInterface
+/**
+ *
+ */
+public final class Application implements Scope
 {
-    
+    protected Application()
+    {
+    }
+
+    @Override
+    public void preCreateComponent(Class<Object> clazz)
+    {
+    }
+
+    @Override
+    public void preInitComponent(Class<Object> clazz, Object instance)
+    {
+    }
+
+    @Override
+    public void postInitComponent(Class<Object> clazz, Object instance)
+    {
+    }
 }

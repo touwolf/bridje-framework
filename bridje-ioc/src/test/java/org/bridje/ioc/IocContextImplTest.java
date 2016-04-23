@@ -26,7 +26,7 @@ public class IocContextImplTest
     @Test
     public void testFind() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
         DummyComponent result = instance.find(DummyComponent.class);
         assertNotNull(result);
     }
@@ -34,7 +34,7 @@ public class IocContextImplTest
     @Test
     public void testFindByService() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
         SomeService result = instance.find(SomeService.class);
         assertNotNull(result);
         assertTrue(result instanceof DummyServiceProvider);
@@ -49,7 +49,7 @@ public class IocContextImplTest
     @Test
     public void testInjectAndHerarchy() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
         ConcreteComponent conComp = instance.find(ConcreteComponent.class);
         assertNotNull(conComp.getDummyComponent());
         assertNotNull(conComp.getServices());
@@ -60,7 +60,7 @@ public class IocContextImplTest
     @Test
     public void testInjectGeneric() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
         GenericInjectComponent giComp = instance.find(GenericInjectComponent.class);
         assertNotNull(giComp);
         assertNotNull(giComp.getGsOfStr());
@@ -73,7 +73,7 @@ public class IocContextImplTest
     @Test
     public void testPriority() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
         PriorityService[] prorityArr = instance.findAll(PriorityService.class);
         assertTrue(prorityArr[0] instanceof PriorityComp3);
         assertTrue(prorityArr[1] instanceof PriorityComp1);
@@ -87,7 +87,7 @@ public class IocContextImplTest
     @Test
     public void testChain() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
 
         ChainTest chainTest = instance.find(ChainTest.class);
 
@@ -97,7 +97,7 @@ public class IocContextImplTest
     @Test
     public void testComponentChild() throws IOException
     {
-        IocContext instance = Ioc.context();
+        IocContext<Application> instance = Ioc.context();
 
         ComponentBaseInterface childTest = instance.find(ComponentBaseInterface.class);
         

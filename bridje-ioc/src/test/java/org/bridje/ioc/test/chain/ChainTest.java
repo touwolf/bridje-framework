@@ -19,10 +19,6 @@ package org.bridje.ioc.test.chain;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 
-/**
- *
- * @author Gilberto
- */
 @Component
 public class ChainTest
 {

@@ -56,7 +56,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     /**
      * All ClassSets availables by scope.
      */
-    private static Map<String, ClassSet> classSetCache;
+    private static final Map<Class<?>, ClassSet> CLS_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Al the components declared in the components.properties files.
@@ -169,28 +169,24 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * @param scope The scope of the classes to lookup.
      * @return A ClassSet containing all the classes in the especified scope.
      */
-    public static ClassSet findByScope(String scope)
+    public static ClassSet findByScope(Class<?> scope)
     {
-        if (classSetCache == null)
+        if (CLS_CACHE.containsKey(scope))
         {
-            classSetCache = new ConcurrentHashMap<>();
-        }
-        if (classSetCache.containsKey(scope))
-        {
-            return classSetCache.get(scope);
+            return CLS_CACHE.get(scope);
         }
         try
         {
-            synchronized(classSetCache)
+            synchronized(CLS_CACHE)
             {
-                if (classSetCache.containsKey(scope))
+                if (CLS_CACHE.containsKey(scope))
                 {
-                    return classSetCache.get(scope);
+                    return CLS_CACHE.get(scope);
                 }
                 ClassSet result = loadFromClassPath(scope);
                 if (result != null)
                 {
-                    classSetCache.put(scope, result);
+                    CLS_CACHE.put(scope, result);
                     return result;
                 }
             }
@@ -210,7 +206,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * found in the classpath.
      * @throws IOException If something whent wrong.
      */
-    private static ClassSet loadFromClassPath(String scope) throws IOException
+    private static ClassSet loadFromClassPath(Class<?> scope) throws IOException
     {
         Set<Class<?>> clsList = new HashSet<>();
         //An instance of IocContextImpl is always a component in every scope.
@@ -219,11 +215,9 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         {
             propFilesCache = loadPropFilesCache();
         }
-        for (Map.Entry<String, String> entrySet : propFilesCache.entrySet())
+        propFilesCache.forEach((clsName, compScope) ->
         {
-            String clsName = entrySet.getKey();
-            String compScope = entrySet.getValue();
-            if (null != compScope && compScope.equalsIgnoreCase(scope))
+            if (compScope != null && scope.getName().equalsIgnoreCase(compScope))
             {
                 try
                 {
@@ -234,7 +228,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
-        }
+        });
         if (clsList.isEmpty())
         {
             return null;

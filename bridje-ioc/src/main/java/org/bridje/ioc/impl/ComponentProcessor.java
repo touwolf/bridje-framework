@@ -31,6 +31,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -86,7 +87,15 @@ public class ComponentProcessor extends AbstractProcessor
                         //Get the @Component annotation for the current element.
                         Component annot = element.getAnnotation(Component.class);
                         String clsName = element.toString();
-                        String scope = annot.scope();
+                        String scope = "";
+                        try
+                        {
+                            annot.scope();
+                        }
+                        catch (MirroredTypeException e)
+                        {
+                            scope = e.getTypeMirror().toString();
+                        }
                         appendClass(clsName, scope);
                     }
                 }
