@@ -53,8 +53,9 @@ public interface TableColumn<E, T> extends Column<T>
     JDBCType getSqlType();
 
     /**
+     * Gets the Entity´s field associeted with this column.
      * 
-     * @return 
+     * @return The field associeted with this column.
      */
     java.lang.reflect.Field getField();
     
