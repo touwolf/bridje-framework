@@ -213,8 +213,8 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
         List<Class<?>> components = serviceMap.findAll(service);
         if(components != null)
         {
-            List resultList = components.stream()
-                    .map((component) -> container.create(component))
+            List<T> resultList = components.stream()
+                    .map((component) -> (T)container.create(component))
                     .filter((compInstance) -> (compInstance != null))
                     .collect(Collectors.toList());
             T[] result = (T[])Array.newInstance(service, components.size());
