@@ -29,7 +29,6 @@
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
         <module>bridje-orm</module>
-        <module>bridje-jfx</module>
         <module>bridje-maven-plugin</module>
     </modules>
 
