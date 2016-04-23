@@ -75,7 +75,7 @@ abstract class AbstractResource implements VirtualResource
         return getPath().getParent();
     }
 
-    static VfsService vfs()
+    protected static VfsService vfs()
     {
         if(VFS == null)
         {
@@ -90,7 +90,7 @@ abstract class AbstractResource implements VirtualResource
         return getPath().toString();
     }
     
-    static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor)
+    protected static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
         for (VirtualFolder folder : listFolders)
@@ -104,7 +104,7 @@ abstract class AbstractResource implements VirtualResource
         }
     }
 
-    static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor)
+    protected static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
         for (VirtualFolder folder : listFolders)
@@ -114,7 +114,7 @@ abstract class AbstractResource implements VirtualResource
         }
     }
 
-    static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor, String query)
+    protected static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor, String query)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
         for (VirtualFolder folder : listFolders)
@@ -128,7 +128,7 @@ abstract class AbstractResource implements VirtualResource
         }
     }
 
-    static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor, String query)
+    protected static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor, String query)
     {
         List<VirtualFolder> listFolders = rootFolder.listFolders();
         for (VirtualFolder folder : listFolders)
