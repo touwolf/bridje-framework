@@ -67,7 +67,7 @@ class Container
 
     /**
      * Gets a component´s instance by it´s class.
-     *
+     * 
      * @param <T> The type of the component.
      * @param cls The class of the component.
      * @return The component´s instance, or null if it does not exists.
@@ -80,7 +80,7 @@ class Container
     /**
      * Creates a component using the internar instanciator, and put it in the
      * internal map for future use.
-     *
+     * 
      * @param <T> The type of the component.
      * @param cls The class of the component.
      * @return The new create component of null if the component cannot be

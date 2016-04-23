@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
  * An implementation of this interface can be obtained via the Ioc interface or
  * by injecting {@link org.bridje.ioc.Inject} it in any component
  * you want.
- * @param <S>
+ * @param <S> The type for the scope class for this context.
  */
 public interface IocContext<S extends Scope>
 {
@@ -150,7 +150,7 @@ public interface IocContext<S extends Scope>
     /**
      * Create a child IocContext of this context.
      * <p>
-     * @param <T>
+     * @param <T> The type of the scope.
      * @param scope The scope of the new context.
      * @return The new IocContext instance created as child of this context.
      */

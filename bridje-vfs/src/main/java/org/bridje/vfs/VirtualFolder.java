@@ -72,9 +72,12 @@ public interface VirtualFolder extends VirtualResource
     List<VirtualFolder> listFolders();
 
     /**
-     *
-     * @param query
-     * @return
+     * Gets a list of all child folders of this folder.
+     * <p>
+     * @param query The regular expresion to match the folders full path that will
+     * be listed with this method.
+     * @return A List of VirtualFolders representing the child folders of this
+     * folder.
      */
     List<VirtualFolder> listFolders(String query);
 

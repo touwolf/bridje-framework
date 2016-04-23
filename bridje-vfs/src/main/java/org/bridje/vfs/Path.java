@@ -28,7 +28,7 @@ public class Path implements Iterable<Path>
     /**
      * Internal constructor that creates a Path from it´s elements.
      * <p>
-     * @param pathElements
+     * @param pathElements The elements for the path.
      */
     private Path(String[] pathElements)
     {
@@ -167,7 +167,7 @@ public class Path implements Iterable<Path>
      * (..) identifiers.
      * <p>
      * For example, if the path represented by this element equals to {@literal "usr/./local/../etc"},
-     * this method will return {@link "usr/etc"}.
+     * this method will return {@literal "usr/etc"}.
      * <p>
      * @return A new Path object representing the canonical path of this object.
      */

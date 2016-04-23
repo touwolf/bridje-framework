@@ -200,14 +200,14 @@ public class ClassUtils
      * Determines whenever the passed type is an array, a java collection like
      * List or Set, or a java Map.
      * <pre>
-     * SomeService                      = false
-     * SomeService[]                    = true
-     * List&lt;SomeService&gt;          = true
-     * Map&lt;Class, SomeService&gt;    = true
-     * MyListImpl&lt;SomeService&gt;    = false
-     * HashMap&lt;Class, SomeService&gt = true
+     * SomeService                       = false
+     * SomeService[]                     = true
+     * List&lt;SomeService&gt;           = true
+     * Map&lt;Class, SomeService&gt;     = true
+     * MyListImpl&lt;SomeService&gt;     = false
+     * HashMap&lt;Class, SomeService&gt; = true
      * </pre>
-     *
+     * 
      * @param service The type to inspect.
      * @return true if the especified type is an array, a collection or map from
      * java languaje.
@@ -220,13 +220,13 @@ public class ClassUtils
     /**
      * Determines whenever the passed type is an array.
      * <pre>
-     * SomeService                      = false
-     * SomeService[]                    = true
-     * List&lt;SomeService&gt;          = false
-     * List&lt;SomeService&gt;[]        = true
-     * Map&lt;Class, SomeService&gt;    = false
-     * MyListImpl&lt;SomeService&gt;    = false
-     * HashMap&lt;Class, SomeService&gt = false
+     * SomeService                       = false
+     * SomeService[]                     = true
+     * List&lt;SomeService&gt;           = false
+     * List&lt;SomeService&gt;[]         = true
+     * Map&lt;Class, SomeService&gt;     = false
+     * MyListImpl&lt;SomeService&gt;     = false
+     * HashMap&lt;Class, SomeService&gt; = false
      * </pre>
      *
      * @param service The type to inspect.
@@ -247,13 +247,13 @@ public class ClassUtils
     /**
      * Determines whenever the passed type is a collection.
      * <pre>
-     * SomeService                      = false
-     * SomeService[]                    = false
-     * List&lt;SomeService&gt;          = true
-     * List&lt;SomeService&gt;[]        = true
-     * Map&lt;Class, SomeService&gt;    = false
-     * MyListImpl&lt;SomeService&gt;    = false
-     * HashMap&lt;Class, SomeService&gt = false
+     * SomeService                       = false
+     * SomeService[]                     = false
+     * List&lt;SomeService&gt;           = true
+     * List&lt;SomeService&gt;[]         = true
+     * Map&lt;Class, SomeService&gt;     = false
+     * MyListImpl&lt;SomeService&gt;     = false
+     * HashMap&lt;Class, SomeService&gt; = false
      * </pre>
      *
      * @param service The type to inspect.
@@ -275,13 +275,13 @@ public class ClassUtils
     /**
      * Determines whenever the passed type is a map.
      * <pre>
-     * SomeService                      = false
-     * SomeService[]                    = false
-     * List&lt;SomeService&gt;          = false
-     * List&lt;SomeService&gt;[]        = false
-     * Map&lt;Class, SomeService&gt;    = true
-     * MyListImpl&lt;SomeService&gt;    = false
-     * HashMap&lt;Class, SomeService&gt = true
+     * SomeService                       = false
+     * SomeService[]                     = false
+     * List&lt;SomeService&gt;           = false
+     * List&lt;SomeService&gt;[]         = false
+     * Map&lt;Class, SomeService&gt;     = true
+     * MyListImpl&lt;SomeService&gt;     = false
+     * HashMap&lt;Class, SomeService&gt; = true
      * </pre>
      *
      * @param service The type to inspect.
@@ -301,17 +301,17 @@ public class ClassUtils
     /**
      * Gets the raw class for the especified Type.
      * <pre>
-     * SomeService                      = SomeService
-     * SomeService[]                    = SomeService[]
-     * List&lt;SomeService&gt;          = List
-     * List&lt;SomeService&gt;[]        = List[]
-     * Map&lt;Class, SomeService&gt;    = Map
-     * MyListImpl&lt;SomeService&gt;    = MyListImpl
-     * HashMap&lt;Class, SomeService&gt = HashMap
+     * SomeService                       = SomeService
+     * SomeService[]                     = SomeService[]
+     * List&lt;SomeService&gt;           = List
+     * List&lt;SomeService&gt;[]         = List[]
+     * Map&lt;Class, SomeService&gt;     = Map
+     * MyListImpl&lt;SomeService&gt;     = MyListImpl
+     * HashMap&lt;Class, SomeService&gt; = HashMap
      * </pre>
      *
-     * @param service
-     * @return
+     * @param service The type to take the raw class from.
+     * @return The raw class for the given type.
      */
     public static Class rawClass(Type service)
     {
@@ -376,13 +376,13 @@ public class ClassUtils
      * Given a multiple type, (array, collection, or map) this method will
      * return the appropied instance for it.
      * <pre>
-     * SomeService                      = null
-     * SomeService[]                    = SomeService[]
-     * List&lt;SomeService&gt;          = ArrayList
-     * List&lt;SomeService&gt;[]        = List[]
-     * Map&lt;Class, SomeService&gt;    = Map
-     * MyListImpl&lt;SomeService&gt;    = null
-     * HashMap&lt;Class, SomeService&gt = HashMap
+     * SomeService                       = null
+     * SomeService[]                     = SomeService[]
+     * List&lt;SomeService&gt;           = ArrayList
+     * List&lt;SomeService&gt;[]         = List[]
+     * Map&lt;Class, SomeService&gt;     = Map
+     * MyListImpl&lt;SomeService&gt;     = null
+     * HashMap&lt;Class, SomeService&gt; = HashMap
      * </pre>
      *
      * @param service The type of the array, collection or map.
@@ -422,21 +422,21 @@ public class ClassUtils
      * Given a collection type this method will return the appropied instance
      * for it.
      * <pre>
-     * SomeService                      = null
-     * SomeService[]                    = null
-     * List&lt;SomeService&gt;          = ArrayList
-     * LinkedList&lt;SomeService&gt;    = LinkedList
-     * List&lt;SomeService&gt;[]        = null
-     * Map&lt;Class, SomeService&gt;    = null
-     * MyListImpl&lt;SomeService&gt;    = null
-     * HashMap&lt;Class, SomeService&gt = null
+     * SomeService                       = null
+     * SomeService[]                     = null
+     * List&lt;SomeService&gt;           = ArrayList
+     * LinkedList&lt;SomeService&gt;     = LinkedList
+     * List&lt;SomeService&gt;[]         = null
+     * Map&lt;Class, SomeService&gt;     = null
+     * MyListImpl&lt;SomeService&gt;     = null
+     * HashMap&lt;Class, SomeService&gt; = null
      * </pre>
      *
-     * @param collectionCls
-     * @param data
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
+     * @param collectionCls The class for the collection.
+     * @param data The data for the collection.
+     * @return The collection.
+     * @throws InstantiationException if the collection cannot be instance.
+     * @throws IllegalAccessException security exception.
      */
     public static Collection createCollection(Class collectionCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
@@ -468,20 +468,20 @@ public class ClassUtils
     /**
      * Given a map type this method will return the appropied instance for it.
      * <pre>
-     * SomeService                      = null
-     * SomeService[]                    = null
-     * List&lt;SomeService&gt;          = null
-     * List&lt;SomeService&gt;[]        = null
-     * Map&lt;Class, SomeService&gt;    = Map
-     * MyListImpl&lt;SomeService&gt;    = null
-     * HashMap&lt;Class, SomeService&gt = HashMapl
+     * SomeService                       = null
+     * SomeService[]                     = null
+     * List&lt;SomeService&gt;           = null
+     * List&lt;SomeService&gt;[]         = null
+     * Map&lt;Class, SomeService&gt;     = Map
+     * MyListImpl&lt;SomeService&gt;     = null
+     * HashMap&lt;Class, SomeService&gt; = HashMapl
      * </pre>
      *
-     * @param mapCls
-     * @param data
-     * @return
-     * @throws InstantiationException
-     * @throws IllegalAccessException
+     * @param mapCls The clss for the map.
+     * @param data The data for the map.
+     * @return The map.
+     * @throws InstantiationException if the collection cannot be instance.
+     * @throws IllegalAccessException security exception.
      */
     public static Map createMap(Class mapCls, Object[] data) throws InstantiationException, IllegalAccessException
     {
