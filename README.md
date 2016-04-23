@@ -94,12 +94,21 @@ Bridje libraries are availables on the [Maven Central Repository](https://maven-
 Dependencies
 ============
 
-## Runtime Dependencies (Your application will include the framework's librarys as well as this dependencies at runtime)
+## Runtime Dependencies 
+
+Your application will include the framework's librarys as well as this dependencies at runtime
+
  * [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html) Netty is grate network framework, the http server is build on top of it.
 
-## Compile Dependencies (Your application does not need to depend on this libraries unless you sspecifically inclide then)
+## Compile Dependencies 
+
+Your application does not need to depend on this libraries unless you sspecifically inclide then
+
  * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in the bridje-maven-plugin for generating code.
 
 ## Framework Build Dependencies
+
+The libraries that the framework uses in the build proccess.
+
  * [Apache Maven 3.3+](https://maven.apache.org/) The framework is build with maven, it´s mean to be use with it but nothing stop you from using it from gradle, ivy, ant, or whatever build system you choose, that supports the JVM languages.
  * [Junit 4](http://junit.org/junit4/) The framework is tested with junit.
