@@ -117,7 +117,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                 }
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -146,7 +146,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                 }
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -183,7 +183,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                 }
             }
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

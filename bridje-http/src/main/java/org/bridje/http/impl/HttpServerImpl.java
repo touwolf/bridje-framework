@@ -39,7 +39,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;

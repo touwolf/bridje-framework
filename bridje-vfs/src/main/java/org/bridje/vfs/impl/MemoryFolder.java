@@ -186,7 +186,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return Collections.unmodifiableList(result);
     }
 
-    <T extends VirtualFolder> T addFolder(T virtualFolder)
+    protected <T extends VirtualFolder> T addFolder(T virtualFolder)
     {
         if(virtualFolder == null || virtualFolder.getName() == null || virtualFolder.getName().trim().isEmpty())
         {
@@ -222,7 +222,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return virtualFolder;
     }
 
-    void removeFolder(VirtualFolder virtualFolder)
+    protected void removeFolder(VirtualFolder virtualFolder)
     {
         if(foldersMap != null)
         {
@@ -231,7 +231,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         }
     }
 
-    <T extends VirtualFile> T addFile(T virtualFile)
+    protected <T extends VirtualFile> T addFile(T virtualFile)
     {
         if(virtualFile == null || virtualFile.getName() == null || virtualFile.getName().trim().isEmpty())
         {
@@ -267,7 +267,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return virtualFile;
     }
 
-    void removeFile(VirtualFile virtualFile)
+    protected void removeFile(VirtualFile virtualFile)
     {
         if(filesMap == null)
         {
