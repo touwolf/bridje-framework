@@ -36,10 +36,4 @@ abstract class AbstractCondition implements Condition
     {
         return new BinaryCondition(this, Operator.OR, otherCondition);
     }
-
-    @Override
-    public Condition not()
-    {
-        throw new UnsupportedOperationException("not method not supporter yet");
-    }
 }

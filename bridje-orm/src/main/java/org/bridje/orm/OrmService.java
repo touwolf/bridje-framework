@@ -42,12 +42,13 @@ public interface OrmService
      * @return The new created entity context.
      */
     EntityContext createContext(DataSource ds);
-    
+
     /**
-     * 
-     * @param <T>
-     * @param entity
-     * @return 
+     * Finds the table for the given entity.
+     *
+     * @param <T> The type of the entity.
+     * @param entity The class of the entity.
+     * @return The table object for the given entity.
      */
     <T> Table<T> findTable(Class<T> entity);
 }

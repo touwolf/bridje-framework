@@ -22,7 +22,7 @@ import org.bridje.orm.Entity;
 /**
  * Utilities for casting values from to the database.
  */
-public class CastUtils
+class CastUtils
 {
     /**
      * Cast the given object to the specified class.
@@ -30,10 +30,10 @@ public class CastUtils
      * @param <F> The type to cast to.
      * @param fieldType The class of the type to cast to.
      * @param value The value to be converted.
-     * @param ctx
+     * @param ctx The current entity context.
      * @return The converted value or null if not viable convertion can be
      * found.
-     * @throws java.sql.SQLException
+     * @throws java.sql.SQLException if a related entity cannot be found.
      */
     public static <F> F castValue(Class<F> fieldType, Object value, EntityContextImpl ctx) throws SQLException
     {

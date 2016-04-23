@@ -17,8 +17,8 @@
 package org.bridje.orm;
 
 /**
- *
- * @param <E>
+ * A table column whos type is String.
+ * @param <E> The table entity type.
  */
 public interface TableStringColumn<E> extends TableColumn<E, String>, StringColumn
 {

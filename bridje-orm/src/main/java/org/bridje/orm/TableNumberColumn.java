@@ -17,9 +17,10 @@
 package org.bridje.orm;
 
 /**
- *
- * @param <E>
- * @param <T>
+ * Represents a table column whos type is a number.
+ * 
+ * @param <E> The type for the entity that this table belongs to.
+ * @param <T> The type of the column.
  */
 public interface TableNumberColumn<E, T extends Number> extends TableColumn<E, T>, NumberColumn<T>
 {

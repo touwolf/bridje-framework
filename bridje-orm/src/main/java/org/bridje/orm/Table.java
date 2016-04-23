@@ -35,14 +35,16 @@ public interface Table<T>
     Class<T> getEntity();
 
     /**
+     * The table name as it is created in the database.
      * 
-     * @return 
+     * @return The name for this table.
      */
     String getName();
 
     /**
+     * All the columns of the table.
      * 
-     * @return 
+     * @return The list of all the columns for this table.
      */
     List<TableColumn<T, ?>> getColumns();
 
@@ -53,9 +55,10 @@ public interface Table<T>
     TableColumn<T, ?> getKey();
 
     /**
+     * Finds the column for the given field name.
      * 
-     * @param fieldName
-     * @return 
+     * @param fieldName The name of the field attached to the column.
+     * @return The column object for the given field.
      */
     TableColumn<T, ?> findColumn(String fieldName);
 }

@@ -62,9 +62,9 @@ public interface SQLDialect
 
     /**
      * Get the name of the identifier for the table
-     * 
-     * @param name
-     * @return 
+     *
+     * @param name The name of the object.
+     * @return The correct object string to be writen to the sql statement.
      */
     public String identifier(String name);
 }

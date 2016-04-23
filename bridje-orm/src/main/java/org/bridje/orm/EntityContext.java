@@ -47,7 +47,7 @@ public interface EntityContext
      * proccess.
      */
     <T> T find(Table<T> table, Object id) throws SQLException;
-    
+
     /**
      * This method will find an entity given his class and id.
      *
@@ -146,10 +146,11 @@ public interface EntityContext
      * memory this method must be call.
      */
     void clearCache();
-    
+
     /**
-     * 
-     * @return 
+     * Gets the current SQL dialect for the entitys context.
+     *
+     * @return The current SQL dialect.
      */
     SQLDialect getDialect();
 }
