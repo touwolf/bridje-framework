@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.2.0](https://github.com/bridje/bridje-framework/tree/v0.2.0) (2016-04-23)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.7...v0.2.0)
+
+- #23 The ioc scope concept was remaked, now scopes are clases that extends from Scope interface.
+- #22 Varios performace fixes where made to the bridje ioc api, including components meta data cache to decrease memory consuption and increase scalability.
+- #21 A new source code generation maven plugin is available now.
+- #20 Several fixes to the architecture and performace of the orm framework were made.
+- #19 A new API is now available, the VFS api serves as a common interface for accesing applications files.
+- The bridje-cfg api was removed in favor of the new bridje vfs api.
+- The bridje-jfx api was removed as the current version is no usefull and it needs to be rethink with a better aproach.
+
 ## [v0.1.7](https://github.com/bridje/bridje-framework/tree/v0.1.7) (2016-04-09)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.6...v0.1.7)
 
