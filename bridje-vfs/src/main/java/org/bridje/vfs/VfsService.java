@@ -17,7 +17,6 @@
 package org.bridje.vfs;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public interface VfsService
 {

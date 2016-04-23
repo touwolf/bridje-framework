@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.orm.Entity;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
 import org.bridje.orm.TableColumn;

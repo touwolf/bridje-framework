@@ -18,7 +18,6 @@ package org.bridje.vfs.impl;
 
 
 import java.util.List;
-import java.util.regex.Pattern;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;

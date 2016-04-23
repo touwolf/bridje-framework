@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
-import org.bridje.orm.TableColumn;
 import org.bridje.orm.TableRelationColumn;
 
 /**
