@@ -16,9 +16,6 @@
 
 package org.bridje.maven.plugin;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -52,23 +49,13 @@ public class GenerateMojo extends AbstractMojo
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        try
+        getLog().info("Generating Classes");
+        for (DataFile dataFile : dataFiles)
         {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            
-            getLog().info("Generating Classes");
-            for (DataFile dataFile : dataFiles)
-            {
-                dataFile.generate(this);
-            }
-            
-            project.addCompileSourceRoot(outputBasePath);
+            dataFile.generate(this);
         }
-        catch (ParserConfigurationException ex)
-        {
-            throw new MojoExecutionException(ex.getMessage(), ex);
-        }
+
+        project.addCompileSourceRoot(outputBasePath);
     }
 
     public String getDataFilesBasePath()
