@@ -211,6 +211,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
         Set<Class<?>> clsList = new HashSet<>();
         //An instance of IocContextImpl is always a component in every scope.
         clsList.add(ContextImpl.class);
+        clsList.add(scope);
         if (propFilesCache == null)
         {
             propFilesCache = loadPropFilesCache();

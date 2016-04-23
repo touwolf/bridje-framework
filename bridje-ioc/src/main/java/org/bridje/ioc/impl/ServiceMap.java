@@ -33,7 +33,7 @@ class ServiceMap
     /**
      * A cache for the ServiceMap of all scopes.
      */
-    private static Map<Class<?>, ServiceMap> serviceMapCache;
+    private static final Map<Class<?>, ServiceMap> SERVICES_MAP = new ConcurrentHashMap<>();
 
     /**
      * The service map, who links a services to a list of components.
@@ -49,33 +49,26 @@ class ServiceMap
      * Constructor for this class.
      *
      * @param baseMap A service map to base this service map from.
-     * @param list The components to create this services map for.
+     * @param clsSet The components to create this services map for.
      */
-    public ServiceMap(ServiceMap baseMap, ClassSet list)
+    public ServiceMap(ClassSet clsSet)
     {
-        map = new HashMap<>();
-        compMap = new HashMap<>();
-        if (baseMap != null)
+        Map<Type, List<Class<?>>> servMap  = new HashMap<>();
+        Map<Class<?>, List<Type>> compsMap = new HashMap<>();
+        if (clsSet != null)
         {
-            map.putAll(baseMap.map);
-            compMap.putAll(baseMap.compMap);
-        }
-        if (list != null)
-        {
-            for (Class component : list)
+            for (Class component : clsSet)
             {
                 List<Type> services = findServices(component);
-                compMap.put(component, services);
-                for (Type service : services)
-                {
-                    addComponentToService(service, component);
-                }
+                compsMap.put(component, services);
+                services.stream()
+                        .forEach((service) -> addComponentToService(servMap, service, component) );
             }
         }
-        for (List<Class<?>> value : map.values())
-        {
-            ClassUtils.sort(value);
-        }
+        servMap.values().stream()
+                .forEach((value) -> ClassUtils.sort(value) );
+        this.map = servMap;
+        this.compMap = compsMap;
     }
 
     /**
@@ -166,22 +159,18 @@ class ServiceMap
      */
     public static ServiceMap findByScope(Class<?> scope)
     {
-        if (serviceMapCache == null)
-        {
-            serviceMapCache = new ConcurrentHashMap<>();
-        }
-        if (!serviceMapCache.containsKey(scope))
+        if (!SERVICES_MAP.containsKey(scope))
         {
             ClassSet classSet = ClassSet.findByScope(scope);
             if (classSet != null)
             {
-                ServiceMap result = new ServiceMap(null, classSet);
-                serviceMapCache.put(scope, result);
+                ServiceMap result = new ServiceMap(classSet);
+                SERVICES_MAP.put(scope, result);
                 return result;
             }
             return null;
         }
-        return serviceMapCache.get(scope);
+        return SERVICES_MAP.get(scope);
     }
 
     /**
@@ -273,13 +262,13 @@ class ServiceMap
      * @param service The service provided
      * @param component The component who provides the given services.
      */
-    private void addComponentToService(Type service, Class<?> component)
+    private static void addComponentToService(Map<Type, List<Class<?>>> servMap, Type service, Class<?> component)
     {
-        List<Class<?>> components = map.get(service);
+        List<Class<?>> components = servMap.get(service);
         if (components == null)
         {
             components = new ArrayList<>();
-            map.put(service, components);
+            servMap.put(service, components);
         }
         if (!components.contains(component))
         {

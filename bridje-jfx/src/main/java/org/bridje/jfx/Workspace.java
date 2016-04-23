@@ -25,6 +25,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javax.annotation.PostConstruct;
+import org.bridje.ioc.Application;
 import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
@@ -51,7 +52,7 @@ public class Workspace extends BorderPane
     private ToolBar topTools;
 
     @Inject
-    private IocContext context;
+    private IocContext<Application> context;
 
     public Workspace()
     {

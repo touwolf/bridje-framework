@@ -51,14 +51,13 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
     }
 
     @SuppressWarnings("LeakingThisInConstructor")
-    private ContextImpl(S scope, IocContext parent) throws IOException
+    private ContextImpl(S scope, IocContext<?> parent) throws IOException
     {
         this.scope = scope;
         this.cache = GlobalCache.instance().getScope(getScopeClass());
         this.parent = parent;
-        ClassSet cs = new ClassSet(scope.getClass());
-        classSet = new ClassSet(ClassSet.findByScope(getScopeClass()), cs);
-        serviceMap = new ServiceMap(ServiceMap.findByScope(getScopeClass()), cs);
+        classSet = ClassSet.findByScope(getScopeClass());
+        serviceMap = ServiceMap.findByScope(getScopeClass());
         Instanciator creator = new Instanciator(this, serviceMap);
         container = new Container(creator, scope);
     }
