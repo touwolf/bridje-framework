@@ -268,7 +268,7 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
         if(components != null)
         {
             List resultList = components.stream()
-                    .map((component) -> container.create(component))
+                    .map((component) -> (Object)container.create(component))
                     .filter((compInstance) -> (compInstance != null))
                     .collect(Collectors.toList());
             result = (Object[])Array.newInstance(resultClass, resultList.size());
