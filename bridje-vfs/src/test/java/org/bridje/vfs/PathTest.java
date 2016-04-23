@@ -175,7 +175,7 @@ public class PathTest
     public void testJoin_String()
     {
         String path = "/html/public";
-        Path instance = new Path("/var/www");;
+        Path instance = new Path("/var/www");
         Path expResult = new Path("/var/www/html/public");
         Path result = instance.join(path);
         assertEquals(expResult, result);
