@@ -104,7 +104,6 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
         }
         if(getOrderBy() != null)
         {
-            String prefix = getCtx().getDialect().identifier(getTable().getName()) + ".";
             qb.orderBy(Arrays
                     .asList(getOrderBy()).stream()
                     .map((ob) -> getTable().buildOrderBy(ob, parameters, getCtx()))

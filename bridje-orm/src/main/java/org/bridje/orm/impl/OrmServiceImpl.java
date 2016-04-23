@@ -171,10 +171,10 @@ class OrmServiceImpl implements OrmService
 
     private void injectDbObjects()
     {
-        tablesMap.forEach(this::injectDbObject);
+        tablesMap.forEach((entity, table) -> this.injectDbObject(entity));
     }
 
-    private void injectDbObject(Class<?> entity, TableImpl<?> table)
+    private void injectDbObject(Class<?> entity)
     {
         try
         {

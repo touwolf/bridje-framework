@@ -71,7 +71,7 @@ public class WorkspacePanel extends BorderPane
     }
 
     @PostConstruct
-    private void init()
+    protected void init()
     {
         if (context == null)
         {

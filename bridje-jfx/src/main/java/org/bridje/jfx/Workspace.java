@@ -63,7 +63,7 @@ public class Workspace extends BorderPane
     }
 
     @PostConstruct
-    private void init()
+    protected void init()
     {
         if (context == null)
         {
