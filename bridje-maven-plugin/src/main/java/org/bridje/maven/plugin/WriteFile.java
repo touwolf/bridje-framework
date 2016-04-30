@@ -71,13 +71,7 @@ public class WriteFile
             Map model = new HashMap();
             model.put("doc", NodeModel.wrap(doc));
             model.put("node", wrap);
-            //Freemarker configuration
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-            File tplFile = new File(template);
-            cfg.setDirectoryForTemplateLoading(new File(mojo.getTemplatesBasePath()));
-            cfg.setDefaultEncoding("UTF-8");
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            cfg.setLogTemplateExceptions(false);
+            Configuration cfg = mojo.getFreeMarkerConfiguration();
 
             //File name
             Template fileNameTpl = new Template(name, new StringReader(name), cfg);
@@ -93,7 +87,7 @@ public class WriteFile
             }
             toGenerate.getAbsoluteFile().getParentFile().mkdirs();
             toGenerate.createNewFile();
-            Template tmpl = cfg.getTemplate(tplFile.getName());
+            Template tmpl = cfg.getTemplate(template);
             tmpl.process(model, new OutputStreamWriter(new FileOutputStream(toGenerate), "UTF-8"));
         }
         catch (TemplateException | IOException ex)
