@@ -13,6 +13,7 @@ import org.bridje.ioc.test.GenericComponent;
 import org.bridje.ioc.test.GenericInjectComponent;
 import org.bridje.ioc.test.SomeService;
 import org.bridje.ioc.test.chain.ChainTest;
+import org.bridje.ioc.test.context.ContextInject;
 import org.bridje.ioc.test.priority.PriorityComp1;
 import org.bridje.ioc.test.priority.PriorityComp2;
 import org.bridje.ioc.test.priority.PriorityComp3;
@@ -103,5 +104,15 @@ public class IocContextImplTest
         
         assertNotNull(childTest);
         assertTrue(childTest instanceof ComponentChild);
+    }
+    
+    @Test
+    public void testInjectContext() throws Exception
+    {
+        IocContext<Application> instance = Ioc.context();
+
+        ContextInject ctxInj = instance.find(ContextInject.class);
+        assertNotNull(ctxInj.getAppCtx());
+        assertEquals(instance, ctxInj.getAppCtx());
     }
 }

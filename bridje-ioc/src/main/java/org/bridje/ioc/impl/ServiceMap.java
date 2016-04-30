@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.bridje.ioc.IocContext;
 
 /**
  * An object to keep track of the services of the components.
@@ -91,6 +92,10 @@ class ServiceMap
      */
     public Class<?> findOne(Type service, Integer priority)
     {
+        if(ClassUtils.rawClass(service).equals(IocContext.class))
+        {
+            return map.get(ClassUtils.rawClass(service)).get(0);
+        }
         List<Class<?>> lst = map.get(service);
         if (lst == null || lst.isEmpty())
         {

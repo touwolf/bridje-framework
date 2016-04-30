@@ -59,7 +59,7 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
         classSet = ClassSet.findByScope(getScopeClass());
         serviceMap = ServiceMap.findByScope(getScopeClass());
         Instanciator creator = new Instanciator(this, serviceMap);
-        container = new Container(creator, scope);
+        container = new Container(creator, scope, this);
     }
 
     @Override
