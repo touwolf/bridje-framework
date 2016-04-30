@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,19 +52,24 @@ public class FileVfsSource implements VfsSource
         {
             throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
         }
-        List<String> result = new LinkedList<>();
+        
         File[] listFiles = f.listFiles((File dir, String name) ->
         {
             return regexp == null || name.matches(regexp);
         });
-        for (File listFile : listFiles)
+        if(listFiles != null)
         {
-            if(listFile.isDirectory())
+            List<String> result = new LinkedList<>();
+            for (File listFile : listFiles)
             {
-                result.add(listFile.getName());
+                if(listFile.isDirectory())
+                {
+                    result.add(listFile.getName());
+                }
             }
+            return result;
         }
-        return result;
+        return Collections.EMPTY_LIST;
     }
 
     public List<String> listFiles(Path path, String regexp) throws IOException
@@ -77,19 +83,23 @@ public class FileVfsSource implements VfsSource
         {
             throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
         }
-        List<String> result = new LinkedList<>();
         File[] listFiles = f.listFiles((File dir, String name) ->
         {
             return regexp == null || name.matches(regexp);
         });
-        for (File listFile : listFiles)
+        if(listFiles != null)
         {
-            if(listFile.isFile())
+            List<String> result = new LinkedList<>();
+            for (File listFile : listFiles)
             {
-                result.add(listFile.getName());
+                if(listFile.isFile())
+                {
+                    result.add(listFile.getName());
+                }
             }
+            return result;
         }
-        return result;
+        return Collections.EMPTY_LIST;
     }
     
     @Override
