@@ -24,12 +24,14 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.IOException;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.classworlds.DuplicateRealmException;
 
 /**
  *
@@ -56,14 +58,17 @@ public class GenerateMojo extends AbstractMojo
     
     private ClassLoader clsRealm;
     
+    private Configuration cfg;
+    
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
         {
+            createFreeMarkerConfiguration();
             clsRealm = ClassPathUtils.createClassPath(project);
         }
-        catch (Exception e)
+        catch (IOException | DuplicateRealmException | DependencyResolutionRequiredException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
@@ -101,10 +106,10 @@ public class GenerateMojo extends AbstractMojo
         return project;
     }
 
-    public Configuration getFreeMarkerConfiguration() throws IOException
+    public void createFreeMarkerConfiguration() throws IOException
     {
         //Freemarker configuration
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+        cfg = new Configuration(Configuration.VERSION_2_3_23);
         TemplateLoader fileLoader = new FileTemplateLoader(new File(getTemplatesBasePath()));
         TemplateLoader cpLoader = new ClassTemplateLoader(clsRealm, "/BRIDJE-INF/srcgen/");
         TemplateLoader tplLoader = new MultiTemplateLoader(new TemplateLoader[]
@@ -115,6 +120,10 @@ public class GenerateMojo extends AbstractMojo
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
+    }
+
+    public Configuration getFreeMarkerConfiguration() throws IOException
+    {
         return cfg;
     }
 }
