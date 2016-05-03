@@ -24,8 +24,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +33,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -43,6 +43,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.http.HttpServer;
+import org.bridje.http.WsServerHandler;
 import org.bridje.http.config.HttpServerConfig;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
@@ -60,6 +61,9 @@ class HttpServerImpl implements HttpServer
     
     @Inject
     private VfsService vfsServ;
+    
+    @Inject
+    private List<WsServerHandler> handlers;
     
     private SSLContext sslContext;
 
@@ -97,14 +101,15 @@ class HttpServerImpl implements HttpServer
                             @Override
                             public void initChannel(SocketChannel ch)
                             {
+                                System.out.println("InitChannel");
                                 if(sslContext != null)
                                 {
                                     SSLEngine engine = sslContext.createSSLEngine();
                                     engine.setUseClientMode(false);
                                     ch.pipeline().addLast("ssl", new SslHandler(engine));
                                 }
-                                ch.pipeline().addLast("decoder", new HttpRequestDecoder());
-                                ch.pipeline().addLast("encoder", new HttpResponseEncoder());
+                                ch.pipeline().addLast("codec", new HttpServerCodec());
+                                ch.pipeline().addLast("switch", new HttpWsSwitch(handlers));
                                 ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
                                 ch.pipeline().addLast("compressor", new HttpContentCompressor());
                             }
@@ -153,6 +158,10 @@ class HttpServerImpl implements HttpServer
 
     private HttpServerConfig readConf(VirtualFile httpConfFile)
     {
+        if(httpConfFile == null)
+        {
+            return new HttpServerConfig();
+        }
         try(InputStream is = httpConfFile.open())
         {
             JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
