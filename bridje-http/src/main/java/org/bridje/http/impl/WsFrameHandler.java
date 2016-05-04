@@ -15,23 +15,15 @@
  */
 package org.bridje.http.impl;
 
-import java.util.Locale;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bridje.http.WsServerHandler;
 
-/**
- * Echoes uppercase content of text frames.
- */
-public class WsFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame>
+class WsFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame>
 {
-    private static final Logger LOG = Logger.getLogger(WsFrameHandler.class.getName());
-
     private final WsServerHandler handler;
 
     public WsFrameHandler(WsServerHandler handler)
@@ -47,11 +39,7 @@ public class WsFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame>
         {
             // Send the uppercase string back.
             String request = ((TextWebSocketFrame) frame).text();
-            LOG.log(Level.INFO, "{0} received {1}", new Object[]
-            {
-                ctx.channel(), request
-            });
-            ctx.channel().writeAndFlush(new TextWebSocketFrame(request.toUpperCase(Locale.US)));
+            handler.onText(new WsChannelImpl(ctx.channel()), request);
         }
         else
         {

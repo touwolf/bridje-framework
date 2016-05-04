@@ -16,14 +16,22 @@
 
 package org.bridje.http.impl;
 
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.bridje.http.WsChannel;
 
-public class WsChannelImpl implements WsChannel
+class WsChannelImpl implements WsChannel
 {
+    private final Channel channel;
+
+    public WsChannelImpl(Channel channel)
+    {
+        this.channel = channel;
+    }
+    
     @Override
     public void send(String text)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        channel.writeAndFlush(new TextWebSocketFrame(text));
     }
-    
 }

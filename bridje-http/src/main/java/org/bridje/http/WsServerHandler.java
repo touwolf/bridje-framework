@@ -20,5 +20,5 @@ public interface WsServerHandler
 {
     boolean canHandle(String path);
     
-    void onText(String text);
+    void onText(WsChannel ch, String text);
 }

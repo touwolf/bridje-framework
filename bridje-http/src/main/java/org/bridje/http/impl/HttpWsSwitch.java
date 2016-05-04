@@ -29,7 +29,7 @@ class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
 {
     private boolean added = false;
     
-    private List<WsServerHandler> handlers;
+    private final List<WsServerHandler> handlers;
 
     public HttpWsSwitch(List<WsServerHandler> handlers)
     {
