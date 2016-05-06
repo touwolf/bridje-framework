@@ -60,6 +60,8 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
         serviceMap = ServiceMap.findByScope(getScopeClass());
         Instanciator creator = new Instanciator(this, serviceMap);
         container = new Container(creator, scope, this);
+        //Inject dependencies on the scope component.
+        creator.injectDependencies(scope.getClass(), scope);
     }
 
     @Override

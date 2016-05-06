@@ -51,7 +51,7 @@ class OrmServiceImpl implements OrmService
 {
     private static final Logger LOG = Logger.getLogger(OrmServiceImpl.class.getName());
 
-    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
+    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
 
     private Map<Class<?>, TableImpl<?>> tablesMap;
 
@@ -122,7 +122,7 @@ class OrmServiceImpl implements OrmService
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(COMPONENTS_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ENTITYS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

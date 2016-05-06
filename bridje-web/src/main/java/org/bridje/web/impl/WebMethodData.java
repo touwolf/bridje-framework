@@ -1,0 +1,93 @@
+/*
+ * Copyright 2016 Bridje Framework.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.bridje.web.impl;
+
+import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+class WebMethodData
+{
+    private final String expression;
+
+    private final Class<?> component;
+    
+    private final Method method;
+
+    private final String regExp;
+
+    private final Pattern pattern;
+
+    public WebMethodData(String expression, Class<?> component, Method method)
+    {
+        this.expression = expression;
+        this.component = component;
+        this.method = method;
+        this.regExp = toRegExp(expression);
+        pattern = Pattern.compile(regExp);
+    }
+
+    public String getExpression()
+    {
+        return expression;
+    }
+
+    public Class<?> getComponent()
+    {
+        return component;
+    }
+
+    public Method getMethod()
+    {
+        return method;
+    }
+
+    public String getRegExp()
+    {
+        return regExp;
+    }
+    
+    public Object[] matches(String path)
+    {
+        Matcher matcher = pattern.matcher(path);
+        if(matcher.matches())
+        {
+            if(matcher.groupCount() >= 1)
+            {
+                String[] result = new String[matcher.groupCount()];
+                for(int i = 0; i < matcher.groupCount(); i++)
+                {
+                    String value = matcher.group(i+1);
+                    result[i] = value;
+                }
+                return result;
+            }
+            return new String[0];
+        }
+        return null;
+    }
+
+    public static String toRegExp(String path)
+    {
+        String result = path;
+        result = result.replaceAll("[\\/]", "\\\\/");
+        result = result.replaceAll("\\$\\{[a-zA-Z0-9]+\\}", "([^\\\\/]+)");
+        result = "^" + result + "$";
+        System.out.println("toRegExp(" + path + ") => " + result);
+        return result;
+    }
+}

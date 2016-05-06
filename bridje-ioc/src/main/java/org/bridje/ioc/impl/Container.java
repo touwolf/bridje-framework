@@ -50,7 +50,6 @@ class Container
         for (Object instance : instances)
         {
             components.put(instance.getClass(), instance);
-            instanciator.injectDependencies(instance.getClass(), instance);
         }
     }
 
