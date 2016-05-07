@@ -18,7 +18,6 @@ package org.bridje.web;
 
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
