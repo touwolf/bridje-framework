@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.2.1](https://github.com/bridje/bridje-framework/tree/v0.2.1) (2016-05-06)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.0...v0.2.1)
+
+- #40 The root handler of the HTTP server now has the Integer.MIN_VALUE priority.
+- #39 The VFS now has some helper methods to easily mount class path resources and file system folders.
+- #33 The maven plugin now has the functionality to load templates from the projects class path.
+- #31 The HTTP server now supports web sockets.
+- #29 The initial version for the web framework is now available.
+- #28 The VFS now supports Files readers, that allows you to read a file by specifiying the result class.
+- #27 FIXED java.lang.NullPointerException in the VFS API bug
+- #26 FIXED The IocContext is not being injected.
+
 ## [v0.2.0](https://github.com/bridje/bridje-framework/tree/v0.2.0) (2016-04-23)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.1.7...v0.2.0)
 
