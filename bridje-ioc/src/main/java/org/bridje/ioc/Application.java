@@ -24,20 +24,24 @@ public final class Application implements Scope
 {
     protected Application()
     {
+        //Protected constructor
     }
 
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
+        //Before creating an Application scoped component
     }
 
     @Override
     public void preInitComponent(Class<Object> clazz, Object instance)
     {
+        //Before init an Application scoped component
     }
 
     @Override
     public void postInitComponent(Class<Object> clazz, Object instance)
     {
+        //After init an Application scoped component
     }
 }

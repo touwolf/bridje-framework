@@ -39,19 +39,16 @@ class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
     @Override
     protected void decode(ChannelHandlerContext ctx, HttpObject msg, List<Object> out)
     {
-        if(!added)
+        if(!added && msg instanceof HttpRequest)
         {
-            if(msg instanceof HttpRequest)
+            String path = ((HttpRequest)msg).getUri();
+            WsServerHandler handler = findHandler(path);
+            if(handler != null)
             {
-                String path = ((HttpRequest)msg).getUri();
-                WsServerHandler handler = findHandler(path);
-                if(handler != null)
-                {
-                    ctx.pipeline().addAfter("switch", "aggregator", new HttpObjectAggregator(65536));
-                    ctx.pipeline().addAfter("aggregator", "wsprotocol", new WebSocketServerProtocolHandler(path, null, true));
-                    ctx.pipeline().addAfter("wsprotocol", "wshandler", new WsFrameHandler(handler));
-                    added = true;
-                }
+                ctx.pipeline().addAfter("switch", "aggregator", new HttpObjectAggregator(65536));
+                ctx.pipeline().addAfter("aggregator", "wsprotocol", new WebSocketServerProtocolHandler(path, null, true));
+                ctx.pipeline().addAfter("wsprotocol", "wshandler", new WsFrameHandler(handler));
+                added = true;
             }
         }
         out.add(msg);
