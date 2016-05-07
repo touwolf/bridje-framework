@@ -37,7 +37,7 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 /**
- * Annotations processor for the {@link Entity} annotation.
+ * Annotations processor for the Web Components.
  */
 @SupportedAnnotationTypes("javax.xml.bind.annotation.XmlRootElement")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
