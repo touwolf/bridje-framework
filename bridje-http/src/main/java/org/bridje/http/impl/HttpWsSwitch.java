@@ -27,7 +27,7 @@ import org.bridje.http.WsServerHandler;
 
 class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
 {
-    private boolean added = false;
+    private boolean added;
     
     private final List<WsServerHandler> handlers;
 

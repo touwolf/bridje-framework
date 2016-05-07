@@ -167,14 +167,20 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     @Override
     public List<VirtualFile> listFiles()
     {
-        if(files == null) return Collections.EMPTY_LIST;
+        if(files == null)
+        {
+            return Collections.EMPTY_LIST;
+        }
         return Collections.unmodifiableList(files);
     }
 
     @Override
     public List<VirtualFile> listFiles(String query)
     {
-        if(files == null) return Collections.EMPTY_LIST;
+        if(files == null)
+        {
+            return Collections.EMPTY_LIST;
+        }
         List<VirtualFile> result = new ArrayList<>();
         for (VirtualFile file : files)
         {
