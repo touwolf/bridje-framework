@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2015 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.el;
 
-public class UIExpression
+public interface ElEnviroment
 {
-    private final String expression;
+    <T> T get(String expression, Class<T> resultCls);
 
-    UIExpression(String expression)
-    {
-        this.expression = expression;
-    }
+    <T> void set(String expression, T value);
 
-    public String getExpression()
-    {
-        return expression;
-    }
-    
-    public <T> T get(Class<T> resultClasss)
-    {
-        return ViewHandler.getEnv().get(expression, resultClasss);
-    }
+    <T> T getVar(String name, Class<T> resultCls);
+
+    <T> void setVar(String name, T value);
 }

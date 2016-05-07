@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.el;
 
-public class UIExpression
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Model
 {
-    private final String expression;
-
-    UIExpression(String expression)
-    {
-        this.expression = expression;
-    }
-
-    public String getExpression()
-    {
-        return expression;
-    }
-    
-    public <T> T get(Class<T> resultClasss)
-    {
-        return ViewHandler.getEnv().get(expression, resultClasss);
-    }
+    String value();
 }

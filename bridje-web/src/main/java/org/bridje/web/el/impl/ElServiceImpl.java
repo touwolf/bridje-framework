@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2015 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,20 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.el.impl;
 
+import org.bridje.ioc.Component;
+import org.bridje.web.el.ElEnviroment;
 import org.bridje.ioc.IocContext;
 import org.bridje.web.WebRequestScope;
+import org.bridje.web.el.ElService;
 
-class UIExpContext
+@Component
+class ElServiceImpl implements ElService
 {
-    static final ThreadLocal<UIExpContext> TL_CTXS = new ThreadLocal<>();
-
-    public static UIExpContext getCurrent()
+    @Override
+    public ElEnviroment createElEnviroment(IocContext<WebRequestScope> context)
     {
-        return TL_CTXS.get();
-    }
-    
-    private final IocContext<WebRequestScope> iocCtx;
-
-    public UIExpContext(IocContext<WebRequestScope> iocCtx)
-    {
-        this.iocCtx = iocCtx;
-    }
-    
-    public <T> T eval(String exp, Class<T> result)
-    {
-        return null;
-    }
-
-    public <T> void update(String expression, T value)
-    {
-        
+        return new IocEnviromentImpl(context);
     }
 }

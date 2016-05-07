@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl;
+package org.bridje.web.view;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -47,13 +47,16 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Ioc;
+import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFolder;
+import org.bridje.web.WebRequestScope;
+import org.bridje.web.el.ElEnviroment;
+import org.bridje.web.el.ElService;
 import static org.bridje.web.view.WebCompProcessor.ENTITYS_RESOURCE_FILE;
-import org.bridje.web.view.WebView;
 
 @Component
 @Priority(15)
@@ -67,6 +70,9 @@ class ViewHandler implements HttpServerHandler
     @Inject
     private VfsService vfsServ;
 
+    @Inject
+    private ElService elServ;
+    
     private Map<String, WebView> views;
 
     private final Path basePath = new Path("/web/public");
@@ -76,6 +82,13 @@ class ViewHandler implements HttpServerHandler
     private Unmarshaller webViewUnmarsh;
 
     private Configuration ftlCfg;
+    
+    static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();
+
+    public static ElEnviroment getEnv()
+    {
+        return ENVS.get();
+    }
     
     @PostConstruct
     public void init()
@@ -102,8 +115,13 @@ class ViewHandler implements HttpServerHandler
             WebView view = views.get(req.getPath());
             if(view != null)
             {
+                IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
                 HttpServerResponse resp = context.get(HttpServerResponse.class);
-                render(view, resp.getOutputStream());
+                try(OutputStream os = resp.getOutputStream())
+                {
+                    render(wrsCtx, view, os);
+                    os.flush();
+                }
                 return true;
             }
         }
@@ -151,10 +169,11 @@ class ViewHandler implements HttpServerHandler
         return viewPath;
     }
 
-    private void render(WebView view, OutputStream os)
+    private void render(IocContext<WebRequestScope> wrsCtx, WebView view, OutputStream os)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
+            ENVS.set(elServ.createElEnviroment(wrsCtx));
             String themeName = "default";
             String templatePath = themeName + "/view.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);

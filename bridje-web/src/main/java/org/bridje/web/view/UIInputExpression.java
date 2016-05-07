@@ -25,6 +25,6 @@ public class UIInputExpression extends UIExpression
 
     public <T> void set(T value)
     {
-        UIExpContext.getCurrent().update(getExpression(), value);
+        ViewHandler.getEnv().set(getExpression(), value);
     }
 }

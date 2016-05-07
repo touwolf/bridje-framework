@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.el;
 
-public class UIExpression
+import org.bridje.ioc.IocContext;
+import org.bridje.web.WebRequestScope;
+
+public interface ElService
 {
-    private final String expression;
-
-    UIExpression(String expression)
-    {
-        this.expression = expression;
-    }
-
-    public String getExpression()
-    {
-        return expression;
-    }
-    
-    public <T> T get(Class<T> resultClasss)
-    {
-        return ViewHandler.getEnv().get(expression, resultClasss);
-    }
+    ElEnviroment createElEnviroment(IocContext<WebRequestScope> context);
 }
