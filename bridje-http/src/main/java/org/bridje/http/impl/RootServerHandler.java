@@ -32,7 +32,7 @@ import org.bridje.ioc.Priority;
  *
  */
 @Component
-@Priority(0)
+@Priority(Integer.MIN_VALUE)
 class RootServerHandler implements HttpServerHandler
 {
     private static final Logger LOG = Logger.getLogger(RootServerHandler.class.getName());
