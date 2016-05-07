@@ -16,7 +16,6 @@
 
 package org.bridje.web.el.impl;
 
-import org.bridje.web.el.ElTypeConverter;
 import de.odysseus.el.misc.TypeConverter;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.el.ELException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.web.el.ElTypeConverter;
 
 @Component
 class TypeConverterImpl implements TypeConverter

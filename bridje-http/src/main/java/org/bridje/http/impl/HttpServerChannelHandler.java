@@ -18,16 +18,15 @@ package org.bridje.http.impl;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpHeaders;
-import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
 import static io.netty.handler.codec.http.HttpHeaders.Names.COOKIE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.SERVER;
 import static io.netty.handler.codec.http.HttpHeaders.Names.SET_COOKIE;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
@@ -35,8 +34,9 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
+import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
+import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.DiskAttribute;
@@ -51,10 +51,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.Ioc;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.http.HttpServerResponse;
+import org.bridje.ioc.Ioc;
 
 /**
  *

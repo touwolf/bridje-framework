@@ -16,9 +16,8 @@
 
 package org.bridje.vfs;
 
-import org.bridje.vfs.Path;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class PathTest
 {

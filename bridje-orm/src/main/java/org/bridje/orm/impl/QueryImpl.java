@@ -16,7 +16,6 @@
 
 package org.bridje.orm.impl;
 
-import org.bridje.orm.impl.sql.SelectBuilder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,7 @@ import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 import org.bridje.orm.TableRelationColumn;
+import org.bridje.orm.impl.sql.SelectBuilder;
 
 /**
  *

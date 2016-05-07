@@ -16,11 +16,11 @@
 
 package org.bridje.web.el.impl;
 
-import org.bridje.web.el.ElEnviroment;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
+import org.bridje.web.el.ElEnviroment;
 
 class IocEnviromentImpl implements ElEnviroment
 {

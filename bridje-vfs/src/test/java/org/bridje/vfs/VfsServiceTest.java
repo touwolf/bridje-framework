@@ -19,13 +19,12 @@ package org.bridje.vfs;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class VfsServiceTest
 {

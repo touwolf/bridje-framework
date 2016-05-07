@@ -16,10 +16,6 @@
 
 package org.bridje.orm.impl;
 
-import org.bridje.orm.impl.sql.SelectBuilder;
-import org.bridje.orm.impl.sql.InsertBuilder;
-import org.bridje.orm.impl.sql.DeleteBuilder;
-import org.bridje.orm.impl.sql.UpdateBuilder;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -28,10 +24,14 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import org.bridje.orm.EntityContext;
-import org.bridje.orm.Table;
 import org.bridje.orm.Query;
 import org.bridje.orm.SQLDialect;
+import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
+import org.bridje.orm.impl.sql.DeleteBuilder;
+import org.bridje.orm.impl.sql.InsertBuilder;
+import org.bridje.orm.impl.sql.SelectBuilder;
+import org.bridje.orm.impl.sql.UpdateBuilder;
 
 /**
  * 

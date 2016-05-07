@@ -36,10 +36,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.ClassNavigator;
-import org.bridje.ioc.MethodNavigator;
+import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.FieldNavigator;
+import org.bridje.ioc.MethodNavigator;
 
 /**
  * This class represents a set of classes, his propouse is to serve as a

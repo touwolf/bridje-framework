@@ -36,9 +36,9 @@ import org.bridje.ioc.Ioc;
 import org.bridje.vfs.ClassPathVfsSource;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  *

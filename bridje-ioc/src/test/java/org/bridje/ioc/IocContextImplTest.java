@@ -19,8 +19,8 @@ import org.bridje.ioc.test.priority.PriorityComp2;
 import org.bridje.ioc.test.priority.PriorityComp3;
 import org.bridje.ioc.test.priority.PriorityComp4;
 import org.bridje.ioc.test.priority.PriorityService;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class IocContextImplTest
 {

@@ -17,8 +17,8 @@ package org.bridje.ioc.test;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.ContextListener;
 
 @Component
 public class ContextListenerGeneric implements ContextListener<Object>

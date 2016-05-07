@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.Component;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.http.HttpServerResponse;
+import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 
