@@ -84,4 +84,15 @@ public class ProxyFile implements MultiVirtualFile
     {
         return files.get(files.size()-1);
     }
+
+    @Override
+    public String getExtension()
+    {
+        int lastIndexOf = getName().lastIndexOf(".");
+        if(lastIndexOf > -1)
+        {
+            return getName().substring(lastIndexOf+1);
+        }
+        return "";
+    }
 }

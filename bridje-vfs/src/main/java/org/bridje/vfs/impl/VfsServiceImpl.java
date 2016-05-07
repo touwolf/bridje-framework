@@ -19,15 +19,20 @@ package org.bridje.vfs.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.vfs.ClassPathVfsSource;
 import org.bridje.vfs.FileVfsSource;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VirtualFileReader;
 import org.bridje.vfs.VirtualFileVisitor;
 import org.bridje.vfs.VirtualFolder;
 import org.bridje.vfs.VirtualFolderVisitor;
@@ -36,14 +41,17 @@ import org.bridje.vfs.VirtualFolderVisitor;
 class VfsServiceImpl implements VfsService
 {
     private MemoryFolder root;
+    
+    @Inject
+    private VirtualFileReader[] readers;
+    
+    private Map<String, Map<Class<?>, List<VirtualFileReader>>> readersMap;
 
     @PostConstruct
     public void init()
     {
-        if(root == null)
-        {
-            root = new MemoryFolder(null);
-        }
+        root = new MemoryFolder(null);
+        initReaders();
     }
 
     @Override
@@ -177,5 +185,68 @@ class VfsServiceImpl implements VfsService
     public void travel(VirtualFolderVisitor visitor, String query)
     {
         root.travel(visitor, query);
+    }
+
+    @Override
+    public <T> T findFile(String path, Class<T> resultCls)
+    {
+        VirtualFile file = findFile(path);
+        return readFile(file, resultCls);
+    }
+
+    @Override
+    public <T> T findFile(Path path, Class<T> resultCls)
+    {
+        VirtualFile file = findFile(path);
+        return readFile(file, resultCls);
+    }
+    
+    public <T> T readFile(VirtualFile file, Class<T> resultCls)
+    {
+        if(file != null)
+        {
+            Map<Class<?>, List<VirtualFileReader>> map = readersMap.get(file.getExtension());
+            if(map != null)
+            {
+                List<VirtualFileReader> lst = map.get(resultCls);
+                for (VirtualFileReader reader : lst)
+                {
+                    if(reader.canRead(file, resultCls))
+                    {
+                        return reader.read(file, resultCls);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void initReaders()
+    {
+        readersMap = new HashMap<>();
+        for (VirtualFileReader reader : readers)
+        {
+            String[] extensions = reader.getExtensions();
+            for (String extension : extensions)
+            {
+                Map<Class<?>, List<VirtualFileReader>> clsMap = readersMap.get(extension);
+                if(clsMap == null)
+                {
+                    clsMap = new HashMap<>();
+                    readersMap.put(extension, clsMap);
+                }
+                Class<?>[] clsArray = reader.getClasses();
+                for (Class<?> cls : clsArray)
+                {
+                    List<VirtualFileReader> lst = clsMap.get(cls);
+                    if(lst == null)
+                    {
+                        lst = new ArrayList<>();
+                        clsMap.put(cls, lst);
+                    }
+                    lst.add(reader);
+                }
+            }
+        }
     }
 }

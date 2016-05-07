@@ -37,4 +37,15 @@ class PhysicalFile extends PhysicalResource implements VirtualFile
     {
         return getSource().open(data);
     }
+
+    @Override
+    public String getExtension()
+    {
+        int lastIndexOf = getName().lastIndexOf(".");
+        if(lastIndexOf > -1)
+        {
+            return getName().substring(lastIndexOf+1);
+        }
+        return "";
+    }
 }

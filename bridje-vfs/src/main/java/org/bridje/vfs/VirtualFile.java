@@ -32,4 +32,11 @@ public interface VirtualFile extends VirtualResource
      *         exception may be throw if any input output operation fails.
      */
     InputStream open() throws IOException;
+
+    /**
+     * Gets the extension part of the name of the file.
+     * 
+     * @return The extension part of the name of the file.
+     */
+    public String getExtension();
 }

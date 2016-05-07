@@ -60,6 +60,30 @@ public interface VfsService
     VirtualFile findFile(Path path);
 
     /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be unserialize
+     * to.
+     * @return The file finded or null if it does not exists.
+     */
+    <T> T findFile(String path, Class<T> resultCls);
+
+    /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be unserialize
+     * to.
+     * @return The file finded or null if it does not exists.
+     */
+    <T> T findFile(Path path, Class<T> resultCls);
+
+    /**
      * List all the folders children to this folder.
      *
      * @return The childs folders of this folder.
@@ -104,7 +128,7 @@ public interface VfsService
      * @param source The virtual file system source object to be mounted.
      */
     void mount(String path, VfsSource source);
-    
+
     /**
      * Mounts a new class path resource vfs source into the given path.
      *
@@ -124,7 +148,7 @@ public interface VfsService
      * @throws java.net.URISyntaxException If an invalid resource is provided.
      */
     void mountResource(String path, String resource) throws IOException, URISyntaxException;
-    
+
     /**
      * Mounts a new file vfs source into the given path.
      *
