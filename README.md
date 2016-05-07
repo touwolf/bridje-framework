@@ -52,27 +52,27 @@ Bridje libraries are availables on the [Maven Central Repository](https://maven-
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-vfs</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1</version>
         </dependency>
 		....
     </dependencies>
@@ -83,7 +83,7 @@ Bridje libraries are availables on the [Maven Central Repository](https://maven-
             <plugin>
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
-                <version>0.2.0</version>
+                <version>0.2.1</version>
                 <configuration>
                 	....
                 </configuration>
@@ -99,10 +99,12 @@ Dependencies
 Your application will include the framework's librarys as well as this dependencies at runtime
 
  * [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html) Netty is grate network framework, the http server is build on top of it.
+ * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in render the views in the bridje-web framework.
+ * [Java Unified Expression Language 2.2.7](http://juel.sourceforge.net/) The expression language used in bridje-web.
 
 ## Compile Dependencies 
 
-Your application does not need to depend on this libraries unless you sspecifically inclide then
+Your application does not need to depend on this libraries unless you specifically include then
 
  * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in the bridje-maven-plugin for generating code.
 
