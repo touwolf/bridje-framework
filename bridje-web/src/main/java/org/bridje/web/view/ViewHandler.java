@@ -64,6 +64,13 @@ class ViewHandler implements HttpServerHandler
 {
     private static final Logger LOG = Logger.getLogger(ViewHandler.class.getName());
 
+    private static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();
+
+    public static ElEnviroment getEnv()
+    {
+        return ENVS.get();
+    }
+
     @InjectNext
     private HttpServerHandler nextHandler;
 
@@ -83,13 +90,6 @@ class ViewHandler implements HttpServerHandler
 
     private Configuration ftlCfg;
     
-    static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();
-
-    public static ElEnviroment getEnv()
-    {
-        return ENVS.get();
-    }
-    
     @PostConstruct
     public void init()
     {
@@ -99,7 +99,7 @@ class ViewHandler implements HttpServerHandler
             initViews();
             initThemes();
         }
-        catch (Exception e)
+        catch (JAXBException | IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
