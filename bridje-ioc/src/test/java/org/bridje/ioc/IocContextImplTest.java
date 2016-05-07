@@ -107,7 +107,7 @@ public class IocContextImplTest
     }
     
     @Test
-    public void testInjectContext() throws Exception
+    public void testInjectContext()
     {
         IocContext<Application> instance = Ioc.context();
 

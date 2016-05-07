@@ -21,13 +21,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class UIEventAdapter extends XmlAdapter<String, UIEvent>
 {
     @Override
-    public String marshal(UIEvent v) throws Exception
+    public String marshal(UIEvent v)
     {
         return v.getExpression();
     }
 
     @Override
-    public UIEvent unmarshal(String v) throws Exception
+    public UIEvent unmarshal(String v)
     {
         return new UIEvent(v);
     }

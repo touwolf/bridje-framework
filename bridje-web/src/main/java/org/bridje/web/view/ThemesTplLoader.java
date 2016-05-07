@@ -65,14 +65,7 @@ class ThemesTplLoader implements TemplateLoader
     @Override
     public void closeTemplateSource(Object templateSource) throws IOException
     {
-        try
-        {
-            InputStream is = (InputStream)templateSource;
-            is.close();
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
+        InputStream is = (InputStream)templateSource;
+        is.close();
     }
 }

@@ -21,13 +21,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class UIExpressionAdapter extends XmlAdapter<String, UIExpression>
 {
     @Override
-    public UIExpression unmarshal(String v) throws Exception
+    public UIExpression unmarshal(String v)
     {
         return new UIExpression(v);
     }
 
     @Override
-    public String marshal(UIExpression v) throws Exception
+    public String marshal(UIExpression v)
     {
         return v.getExpression();
     }

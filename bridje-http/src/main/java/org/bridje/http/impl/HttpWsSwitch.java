@@ -37,7 +37,7 @@ class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, HttpObject msg, List<Object> out) throws Exception
+    protected void decode(ChannelHandlerContext ctx, HttpObject msg, List<Object> out)
     {
         if(!added)
         {

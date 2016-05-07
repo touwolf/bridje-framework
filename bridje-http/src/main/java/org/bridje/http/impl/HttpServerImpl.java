@@ -101,7 +101,6 @@ class HttpServerImpl implements HttpServer
                             @Override
                             public void initChannel(SocketChannel ch)
                             {
-                                System.out.println("InitChannel");
                                 if(sslContext != null)
                                 {
                                     SSLEngine engine = sslContext.createSSLEngine();

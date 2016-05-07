@@ -87,7 +87,6 @@ class WebMethodData
         result = result.replaceAll("[\\/]", "\\\\/");
         result = result.replaceAll("\\$\\{[a-zA-Z0-9]+\\}", "([^\\\\/]+)");
         result = "^" + result + "$";
-        System.out.println("toRegExp(" + path + ") => " + result);
         return result;
     }
 }
