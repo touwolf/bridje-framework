@@ -25,20 +25,14 @@ import org.bridje.ioc.Scope;
 
 public class WebRequestScope implements Scope
 {
-    private HttpServerContext ctx;
-
-    private HttpServerRequest req;
-
-    private HttpServerResponse resp;
+    private final HttpServerRequest req;
 
     @Inject
     private IocContext<WebRequestScope> wrsCxt;
     
     public WebRequestScope(HttpServerContext ctx)
     {
-        this.ctx = ctx;
-        this.req = this.ctx.get(HttpServerRequest.class);
-        this.resp = this.ctx.get(HttpServerResponse.class);
+        this.req = ctx.get(HttpServerRequest.class);
     }
 
     public IocContext<WebRequestScope> getIocContext()
@@ -122,15 +116,18 @@ public class WebRequestScope implements Scope
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
+        //Before creating a web request scoped component
     }
 
     @Override
     public void preInitComponent(Class<Object> clazz, Object instance)
     {
+        //Before init a web request scoped component
     }
 
     @Override
     public void postInitComponent(Class<Object> clazz, Object instance)
     {
+        //After init a web request scoped component
     }
 }
