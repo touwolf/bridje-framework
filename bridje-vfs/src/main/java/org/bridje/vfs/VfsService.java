@@ -68,8 +68,9 @@ public interface VfsService
      * @param resultCls The result class that the files need to be unserialize
      * to.
      * @return The file finded or null if it does not exists.
+     * @throws java.io.IOException If any io error ocurr reading the file.
      */
-    <T> T findFile(String path, Class<T> resultCls);
+    <T> T findFile(String path, Class<T> resultCls) throws IOException;
 
     /**
      * Finds the virtual file by the given path. And reads it content to a new
@@ -80,8 +81,9 @@ public interface VfsService
      * @param resultCls The result class that the files need to be unserialize
      * to.
      * @return The file finded or null if it does not exists.
+     * @throws java.io.IOException If any io error ocurr reading the file.
      */
-    <T> T findFile(Path path, Class<T> resultCls);
+    <T> T findFile(Path path, Class<T> resultCls) throws IOException;
 
     /**
      * List all the folders children to this folder.

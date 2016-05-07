@@ -17,6 +17,10 @@
 package org.bridje.vfs;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
@@ -49,5 +53,26 @@ public class VfsServiceTest
             assertTrue(f.getName().matches("^P.+\\.java$"));
             assertTrue(f.getParentPath().toString().matches(".+impl"));
         }, ".+impl\\/P.+\\.java");
+    }
+    
+    @Test
+    public void testRead() throws IOException
+    {
+        File f = new File("./target/tmptests/someprop.properties");
+        if(f.exists())
+        {
+           f.delete();
+        }
+        f.getParentFile().mkdirs();
+        f.createNewFile();
+        Properties prop = new Properties();
+        prop.put("prop1", "val1");
+        prop.store(new FileWriter(f), "A properties file");
+        
+        VfsService instance = Ioc.context().find(VfsService.class);
+        instance.mountFile("/tests", f.getParentFile());
+        Properties readedProp = instance.findFile("tests/someprop.properties", Properties.class);
+        assertNotNull(readedProp);
+        assertEquals(prop.get("prop1"), readedProp.getProperty("prop1"));
     }
 }

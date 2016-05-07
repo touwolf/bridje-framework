@@ -16,6 +16,8 @@
 
 package org.bridje.vfs;
 
+import java.io.IOException;
+
 public interface VirtualFileReader
 {
     String[] getExtensions();
@@ -24,5 +26,5 @@ public interface VirtualFileReader
     
     boolean canRead(VirtualFile vf, Class<?> resultCls);
 
-    <T> T read(VirtualFile vf, Class<?> resultCls);
+    <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException;
 }

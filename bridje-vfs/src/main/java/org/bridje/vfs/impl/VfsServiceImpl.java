@@ -188,20 +188,20 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public <T> T findFile(String path, Class<T> resultCls)
+    public <T> T findFile(String path, Class<T> resultCls) throws IOException
     {
         VirtualFile file = findFile(path);
         return readFile(file, resultCls);
     }
 
     @Override
-    public <T> T findFile(Path path, Class<T> resultCls)
+    public <T> T findFile(Path path, Class<T> resultCls) throws IOException
     {
         VirtualFile file = findFile(path);
         return readFile(file, resultCls);
     }
     
-    public <T> T readFile(VirtualFile file, Class<T> resultCls)
+    public <T> T readFile(VirtualFile file, Class<T> resultCls) throws IOException
     {
         if(file != null)
         {
