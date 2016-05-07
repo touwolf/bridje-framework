@@ -16,6 +16,9 @@
 
 package org.bridje.vfs;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -93,6 +96,50 @@ public interface VfsService
      * @param source The virtual file system source object to be mounted.
      */
     void mount(Path path, VfsSource source);
+
+    /**
+     * Mounts a new source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param source The virtual file system source object to be mounted.
+     */
+    void mount(String path, VfsSource source);
+    
+    /**
+     * Mounts a new class path resource vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param resource The class path resource folder to be mounted.
+     * @throws java.io.IOException If any io exception ocurrs.
+     * @throws java.net.URISyntaxException If an invalid resource is provided.
+     */
+    void mountResource(Path path, String resource) throws IOException, URISyntaxException;
+
+    /**
+     * Mounts a new class path resource vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param resource The class path resource folder to be mounted.
+     * @throws java.io.IOException If any io exception ocurrs.
+     * @throws java.net.URISyntaxException If an invalid resource is provided.
+     */
+    void mountResource(String path, String resource) throws IOException, URISyntaxException;
+    
+    /**
+     * Mounts a new file vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param file The folder to be mounted.
+     */
+    void mountFile(Path path, File file);
+
+    /**
+     * Mounts a new file vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param file The folder to be mounted.
+     */
+    void mountFile(String path, File file);
 
     /**
      * Navigates the vfs tree from this folder, matching all the child folders

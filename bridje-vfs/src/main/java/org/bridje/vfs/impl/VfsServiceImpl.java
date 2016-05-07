@@ -16,9 +16,14 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
+import org.bridje.vfs.ClassPathVfsSource;
+import org.bridje.vfs.FileVfsSource;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VfsSource;
@@ -119,6 +124,37 @@ class VfsServiceImpl implements VfsService
         currentFolder.addFolder(new PhysicalFolder(source, mountPath, new Path(mountName)));
     }
 
+
+    @Override
+    public void mount(String path, VfsSource source)
+    {
+        mount(new Path(path), source);
+    }
+
+    @Override
+    public void mountResource(Path path, String resource) throws IOException, URISyntaxException
+    {
+        mount(path, new ClassPathVfsSource(resource));
+    }
+
+    @Override
+    public void mountResource(String path, String resource) throws IOException, URISyntaxException
+    {
+        mount(new Path(path), new ClassPathVfsSource(resource));
+    }
+
+    @Override
+    public void mountFile(Path path, File file)
+    {
+        mount(path, new FileVfsSource(file));
+    }
+
+    @Override
+    public void mountFile(String path, File file)
+    {
+        mount(new Path(path), new FileVfsSource(file));
+    }
+    
     @Override
     public void travel(VirtualFileVisitor visitor)
     {
