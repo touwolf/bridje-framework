@@ -149,9 +149,9 @@ class ViewHandler implements HttpServerHandler
                 return (WebView)unmObj;
             }
         }
-        catch (Exception e)
+        catch (JAXBException | IOException ex)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return result;
     }
