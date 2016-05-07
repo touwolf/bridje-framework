@@ -84,8 +84,6 @@ class ViewHandler implements HttpServerHandler
 
     private final Path basePath = new Path("/web/public");
 
-    private JAXBContext webViewJaxbCtx;
-
     private Unmarshaller webViewUnmarsh;
 
     private Configuration ftlCfg;
@@ -158,7 +156,7 @@ class ViewHandler implements HttpServerHandler
 
     private void initJaxb() throws JAXBException, IOException
     {
-        webViewJaxbCtx = JAXBContext.newInstance(findComponentsClasses());
+        JAXBContext webViewJaxbCtx = JAXBContext.newInstance(findComponentsClasses());
         webViewUnmarsh= webViewJaxbCtx.createUnmarshaller();
     }
 
