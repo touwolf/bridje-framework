@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * This interface represents the virtual file system for bridje, it provides
+ * This interface represents the virtual file system for Bridje, it provides
  * methods to mount and file files and folder into the system.
  */
 public interface VfsService
@@ -31,7 +31,7 @@ public interface VfsService
      * Finds the virtual folder by the given path.
      *
      * @param path the path of the folder.
-     * @return The folder finded or null if it does not exists.
+     * @return The folder founded or {@literal null} if it does not exists.
      */
     VirtualFolder findFolder(String path);
 
@@ -39,7 +39,7 @@ public interface VfsService
      * Finds the virtual folder by the given path.
      *
      * @param path the path of the folder.
-     * @return The folder finded or null if it does not exists.
+     * @return The folder founded or null if it does not exists.
      */
     VirtualFolder findFolder(Path path);
 
@@ -47,7 +47,7 @@ public interface VfsService
      * Finds the virtual file by the given path.
      *
      * @param path the path of the file.
-     * @return The file finded or null if it does not exists.
+     * @return The file founded or null if it does not exists.
      */
     VirtualFile findFile(String path);
 
@@ -55,7 +55,7 @@ public interface VfsService
      * Finds the virtual file by the given path.
      *
      * @param path the path of the file.
-     * @return The file finded or null if it does not exists.
+     * @return The file founded or null if it does not exists.
      */
     VirtualFile findFile(Path path);
 
@@ -65,10 +65,10 @@ public interface VfsService
      *
      * @param <T> The type of the result class.
      * @param path the path of the file.
-     * @param resultCls The result class that the files need to be unserialize
-     * to.
-     * @return The file finded or null if it does not exists.
-     * @throws java.io.IOException If any io error ocurr reading the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     *
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
      */
     <T> T findFile(String path, Class<T> resultCls) throws IOException;
 
@@ -78,24 +78,23 @@ public interface VfsService
      *
      * @param <T> The type of the result class.
      * @param path the path of the file.
-     * @param resultCls The result class that the files need to be unserialize
-     * to.
-     * @return The file finded or null if it does not exists.
-     * @throws java.io.IOException If any io error ocurr reading the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
      */
     <T> T findFile(Path path, Class<T> resultCls) throws IOException;
 
     /**
      * List all the folders children to this folder.
      *
-     * @return The childs folders of this folder.
+     * @return The children folders of this folder.
      */
     List<VirtualFolder> listFolders();
 
     /**
      * List all the files children to this folder.
      *
-     * @return The childs files of this folder.
+     * @return The children files of this folder.
      */
     List<VirtualFile> listFiles();
 
@@ -103,7 +102,7 @@ public interface VfsService
      * List all the folders children to this folder.
      *
      * @param query The regular expression to filter the folders names.
-     * @return The childs folders of this folder.
+     * @return The children folders of this folder.
      */
     List<VirtualFolder> listFolders(String query);
 
@@ -111,7 +110,7 @@ public interface VfsService
      * List all the files children to this folder.
      *
      * @param query The regular expression to filter the files names.
-     * @return The childs files of this folder.
+     * @return The children files of this folder.
      */
     List<VirtualFile> listFiles(String query);
 
@@ -136,7 +135,7 @@ public interface VfsService
      *
      * @param path The path to mount the source.
      * @param resource The class path resource folder to be mounted.
-     * @throws java.io.IOException If any io exception ocurrs.
+     * @throws java.io.IOException If any input-output exception occurs.
      * @throws java.net.URISyntaxException If an invalid resource is provided.
      */
     void mountResource(Path path, String resource) throws IOException, URISyntaxException;
@@ -146,7 +145,7 @@ public interface VfsService
      *
      * @param path The path to mount the source.
      * @param resource The class path resource folder to be mounted.
-     * @throws java.io.IOException If any io exception ocurrs.
+     * @throws java.io.IOException If any input-output exception occurs.
      * @throws java.net.URISyntaxException If an invalid resource is provided.
      */
     void mountResource(String path, String resource) throws IOException, URISyntaxException;
@@ -188,7 +187,7 @@ public interface VfsService
      * recursively.
      *
      * @param visitor The visitor to accept the files.
-     * @param query The regular expresion to math the files full path.
+     * @param query The regular expression to math the files full path.
      */
     void travel(VirtualFileVisitor visitor, String query);
 
@@ -197,7 +196,7 @@ public interface VfsService
      * recursively.
      *
      * @param visitor The visitor to accept the folders.
-     * @param query The regular expresion to math the folders full path.
+     * @param query The regular expression to math the folders full path.
      */
     void travel(VirtualFolderVisitor visitor, String query);
 }
