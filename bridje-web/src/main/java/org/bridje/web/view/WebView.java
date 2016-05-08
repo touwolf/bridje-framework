@@ -16,6 +16,8 @@
 
 package org.bridje.web.view;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,8 +27,48 @@ public class WebView
     @XmlAnyElement(lax = true)
     private WebComponent root;
 
+    private Map<String, UIEvent> events;
+
+    private Map<String, UIInputExpression> inputs;
+
     public WebComponent getRoot()
     {
         return root;
+    }
+
+    public UIInputExpression findInput(String exp)
+    {
+        if(inputs == null)
+        {
+            initInputs();
+        }
+        return inputs.get(exp);
+    }
+
+    public UIEvent findEvent(String action)
+    {
+        if(events == null)
+        {
+            initEvents();
+        }
+        return events.get(action);
+    }
+
+    private synchronized void initEvents()
+    {
+        if(events == null)
+        {
+            //TODO find events
+            events = new HashMap<>();
+        }
+    }
+
+    private synchronized void initInputs()
+    {
+        if(inputs == null)
+        {
+            //TODO find inputs
+            inputs = new HashMap<>();
+        }
     }
 }

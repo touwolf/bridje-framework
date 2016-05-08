@@ -66,6 +66,11 @@ Bridje libraries are availables on the [Maven Central Repository](https://maven-
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
+            <artifactId>bridje-web</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
             <version>0.2.1</version>
         </dependency>

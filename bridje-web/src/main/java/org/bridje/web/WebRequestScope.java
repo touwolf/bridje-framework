@@ -16,6 +16,7 @@
 
 package org.bridje.web;
 
+import java.util.Map;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.ioc.Inject;
@@ -111,7 +112,81 @@ public class WebRequestScope implements Scope
         return req.getConentType();
     }
 
-    
+    /**
+     * When ever this request is http method is "GET".
+     *
+     * @return true the http method for this request is "GET", false otherwise.
+     */
+    public boolean isGet()
+    {
+        return req.isGet();
+    }
+
+    /**
+     * When ever this request is http method is "POST".
+     *
+     * @return true the http method for this request is "GET", false otherwise.
+     */
+    public boolean isPost()
+    {
+        return req.isPost();
+    }
+
+    /**
+     * When ever this request is http method is "DELETE".
+     *
+     * @return true the http method for this request is "DELETE", false
+     * otherwise.
+     */
+    public boolean isDelete()
+    {
+        return req.isDelete();
+    }
+
+    /**
+     * When ever this request is http method is "PUT".
+     *
+     * @return true the http method for this request is "PUT", false otherwise.
+     */
+    public boolean isPut()
+    {
+        return req.isPut();
+    }
+
+    /**
+     * Gets a unmodificable map to the post parameters sended by the client. If
+     * this request is not a "application/x-www-form-urlencoded" or a
+     * multipart/form-data" the post parameters map will be empty.
+     *
+     * @return A map with all the post parameters sended by the client.
+     */
+    public Map<String, String> getPostParameters()
+    {
+        return req.getPostParameters();
+    }
+
+    /**
+     * Gets the specific post parameter from the parameters map.
+     *
+     * @param parameter The post parameter name.
+     * @return The post parameter value or null if it does not exists.
+     */
+    public String getPostParameter(String parameter)
+    {
+        return req.getPostParameter(parameter);
+    }
+
+    /**
+     * Gets all the post parameters names for this request if any.
+     *
+     * @return An array of String representing all the post parameters for this
+     * request.
+     */
+    public String[] getPostParametersNames()
+    {
+        return req.getPostParametersNames();
+    }
+
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
