@@ -33,9 +33,9 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     private Map<String,VirtualFolder> foldersMap;
 
     private Map<String, VirtualFile> filesMap;
-    
+
     private List<VirtualFolder> folders;
-    
+
     private List<VirtualFile> files;
 
     MemoryFolder(Path path)
@@ -129,7 +129,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             return nextFolder.findFile(path.getNext());
         }
     }
-    
+
     @Override
     public VirtualFolder findFolder(String path)
     {
@@ -148,22 +148,23 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         if(folders == null) return Collections.EMPTY_LIST;
         return Collections.unmodifiableList(folders);
     }
-    
+
     @Override
     public List<VirtualFolder> listFolders(String query)
     {
-        if(folders == null) return Collections.EMPTY_LIST;
+        if (folders == null) return Collections.EMPTY_LIST;
         List<VirtualFolder> result = new ArrayList<>();
         for (VirtualFolder folder : folders)
         {
-            if(query == null || folder.getPath().toString().matches(query))
+            if(query == null || folder.getPath().globMatches(query))
             {
                 result.add(folder);
             }
         }
+
         return Collections.unmodifiableList(result);
     }
-    
+
     @Override
     public List<VirtualFile> listFiles()
     {
@@ -184,7 +185,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         List<VirtualFile> result = new ArrayList<>();
         for (VirtualFile file : files)
         {
-            if(query == null || file.getPath().toString().matches(query))
+            if(query == null || file.getPath().globMatches(query))
             {
                 result.add(file);
             }

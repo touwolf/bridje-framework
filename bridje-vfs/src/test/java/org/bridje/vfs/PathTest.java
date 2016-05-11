@@ -19,10 +19,13 @@ package org.bridje.vfs;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+/**
+ * Tests for {@link Path}
+ */
 public class PathTest
 {
     /**
-     * Test of getFirstElement method, of class Path.
+     * Test of {@link Path#getFirstElement()}
      */
     @Test
     public void testGetFirstElement()
@@ -34,7 +37,7 @@ public class PathTest
     }
 
     /**
-     * Test of getName method, of class Path.
+     * Test of {@link Path#getName()}
      */
     @Test
     public void testGetName()
@@ -46,7 +49,7 @@ public class PathTest
     }
 
     /**
-     * Test of getParent method, of class Path.
+     * Test of {@link Path#getParent()}
      */
     @Test
     public void testGetParent()
@@ -58,7 +61,7 @@ public class PathTest
     }
 
     /**
-     * Test of getNext method, of class Path.
+     * Test of {@link Path#getNext()}
      */
     @Test
     public void testGetNext()
@@ -70,7 +73,7 @@ public class PathTest
     }
 
     /**
-     * Test of hasNext method, of class Path.
+     * Test of {@link Path#hasNext()}
      */
     @Test
     public void testHasNext()
@@ -82,7 +85,7 @@ public class PathTest
     }
 
     /**
-     * Test of isSelf method, of class Path.
+     * Test of {@link Path#isSelf()}
      */
     @Test
     public void testIsSelf()
@@ -94,7 +97,7 @@ public class PathTest
     }
 
     /**
-     * Test of isParent method, of class Path.
+     * Test of {@link Path#isParent()}
      */
     @Test
     public void testIsParent()
@@ -106,7 +109,7 @@ public class PathTest
     }
 
     /**
-     * Test of isLast method, of class Path.
+     * Test of {@link Path#isLast()}
      */
     @Test
     public void testIsLast()
@@ -118,7 +121,7 @@ public class PathTest
     }
 
     /**
-     * Test of getCanonicalPath method, of class Path.
+     * Test of {@link Path#getCanonicalPath()}
      */
     @Test
     public void testGetCanonicalPath()
@@ -130,7 +133,7 @@ public class PathTest
     }
 
     /**
-     * Test of toString method, of class Path.
+     * Test of {@link Path#toString()]}
      */
     @Test
     public void testToString_0args()
@@ -142,7 +145,7 @@ public class PathTest
     }
 
     /**
-     * Test of toString method, of class Path.
+     * Test of {@link Path#toString(java.lang.String)}
      */
     @Test
     public void testToStringString()
@@ -155,7 +158,7 @@ public class PathTest
     }
 
     /**
-     * Test of join method, of class Path.
+     * Test of {@link Path#join(org.bridje.vfs.Path)}
      */
     @Test
     public void testJoin_Path()
@@ -168,7 +171,7 @@ public class PathTest
     }
 
     /**
-     * Test of join method, of class Path.
+     * Test of {@link Path#join(java.lang.String)}
      */
     @Test
     public void testJoin_String()
@@ -178,5 +181,52 @@ public class PathTest
         Path expResult = new Path("/var/www/html/public");
         Path result = instance.join(path);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of {@link Path#globMatches(java.lang.String)}
+     */
+    @Test
+    public void testGlob_Matches()
+    {
+        Path folder = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje");
+        // ok
+        assertTrue(folder.globMatches("/usr/dev/**"));
+        assertTrue(folder.globMatches("/usr/dev/**/src/**/bridje"));
+        assertTrue(folder.globMatches("/usr/**/main/java/**"));
+        assertTrue(folder.globMatches("/usr/**/main/{java,js,php}/**"));
+        assertTrue(folder.globMatches("/usr/**/main/{j?va,js,php}/**"));
+        assertTrue(folder.globMatches("/usr/**/main/{j*}/**"));
+        assertTrue(folder.globMatches("/usr/**/main/{*ava}/**"));
+        assertTrue(folder.globMatches("/usr/**/main/{?ava}/**"));
+        assertTrue(folder.globMatches("/usr/**/src/**/[maven,java]/**"));
+        assertTrue(folder.globMatches("/usr/**/src/**/[a-z]ava/**"));
+        // not ok
+        assertFalse(folder.globMatches("/usr/**/main/js/**"));
+        assertFalse(folder.globMatches("/usr/**/main/{css,js,php}/**"));
+        assertFalse(folder.globMatches("/usr/dev/?"));
+        assertFalse(folder.globMatches("/usr/**/main/{j?ava,js,php}/**"));
+        assertFalse(folder.globMatches("/usr/**/main/java/*"));
+        assertFalse(folder.globMatches("/usr/**/main/{p*}/**"));
+        assertFalse(folder.globMatches("/usr/**/main/*/bridje"));
+        assertFalse(folder.globMatches("/usr/**/src/**/[?ava]/**"));
+
+        Path file = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje/main.java");
+        // ok
+        assertTrue(file.globMatches("/usr/dev/**/*.*"));
+        assertTrue(file.globMatches("/usr/dev/**/*.java"));
+        assertTrue(file.globMatches("/usr/dev/**/main.*"));
+        assertTrue(file.globMatches("/usr/dev/**/ma?n.*"));
+        assertTrue(file.globMatches("/usr/dev/**/[a-z]???.*"));
+        assertTrue(file.globMatches("/usr/dev/**/java/**/bridje/{main,Class,Interface}.java"));
+        assertTrue(file.globMatches("/usr/dev/**/java/**/{m*}.java"));
+        assertTrue(file.globMatches("/usr/dev/**/java/**/*.*"));
+        assertTrue(file.globMatches("/usr/dev/**/java/**/*"));
+        // not ok
+        assertFalse(file.globMatches("/usr/dev/**/[0-9]???.*"));
+        assertFalse(file.globMatches("/usr/dev/**/[a-z]??.*"));
+        assertFalse(file.globMatches("/usr/dev/**/java/**/{l*}.java"));
+        assertFalse(file.globMatches("/usr/dev/**/php/**/*.*"));
+        assertFalse(file.globMatches("/usr/dev/**/java/**/*."));
     }
 }
