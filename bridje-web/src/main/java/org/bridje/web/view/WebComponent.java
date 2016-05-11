@@ -16,6 +16,8 @@
 
 package org.bridje.web.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -59,5 +61,20 @@ public abstract class WebComponent
             }
         }
         return def;
+    }
+    
+    public List<UIInputExpression> inputs()
+    {
+        return new ArrayList<>();
+    }
+
+    public List<UIEvent> events()
+    {
+        return new ArrayList<>();
+    }
+
+    public List<? extends WebComponent> childs()
+    {
+        return new ArrayList<>();
     }
 }

@@ -79,6 +79,7 @@ public class ViewsManager
             if(view != null)
             {
                 String viewPath = toViewPath(f.getPath());
+                view.setName(viewPath);
                 views.put(viewPath, view);
             }
         }

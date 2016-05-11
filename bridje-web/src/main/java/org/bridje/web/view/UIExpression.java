@@ -16,8 +16,13 @@
 
 package org.bridje.web.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class UIExpression
 {
+    private static final Logger LOG = Logger.getLogger(UIExpression.class.getName());
+
     private final String expression;
 
     UIExpression(String expression)
@@ -32,6 +37,14 @@ public class UIExpression
     
     public <T> T get(Class<T> resultClasss)
     {
-        return ViewHandler.getEnv().get(expression, resultClasss);
+        try
+        {
+            return ViewHandler.getEnv().get(expression, resultClasss);
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
     }
 }

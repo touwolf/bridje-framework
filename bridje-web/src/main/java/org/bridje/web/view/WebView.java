@@ -18,18 +18,37 @@ package org.bridje.web.view;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "view")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WebView
 {
+    @XmlTransient
+    private String name;
+
     @XmlAnyElement(lax = true)
     private WebComponent root;
 
+    @XmlTransient
     private Map<String, UIEvent> events;
 
+    @XmlTransient
     private Map<String, UIInputExpression> inputs;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    void setName(String name)
+    {
+        this.name = name;
+    }
 
     public WebComponent getRoot()
     {
@@ -58,8 +77,9 @@ public class WebView
     {
         if(events == null)
         {
-            //TODO find events
-            events = new HashMap<>();
+            Map<String, UIEvent> eventsMap = new HashMap<>();
+            findEvents(root, eventsMap);
+            events = eventsMap;
         }
     }
 
@@ -67,8 +87,21 @@ public class WebView
     {
         if(inputs == null)
         {
-            //TODO find inputs
+            Map<String, UIEvent> inputsMap = new HashMap<>();
+            findInputs(root, inputsMap);
             inputs = new HashMap<>();
         }
+    }
+
+    private void findEvents(WebComponent comp, Map<String, UIEvent> eventsMap)
+    {
+        comp.events().stream().forEach((ev) -> eventsMap.put(ev.getExpression(), ev) );
+        comp.childs().stream().forEach((child) -> findEvents(child, eventsMap) );
+    }
+
+    private void findInputs(WebComponent comp, Map<String, UIEvent> inputsMap)
+    {
+        comp.events().stream().forEach((ev) -> inputsMap.put(ev.getExpression(), ev) );
+        comp.childs().stream().forEach((child) -> findInputs(child, inputsMap) );
     }
 }

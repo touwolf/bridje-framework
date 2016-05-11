@@ -32,7 +32,7 @@ import org.bridje.web.el.ElEnviroment;
 import org.bridje.web.el.ElService;
 
 @Component
-@Priority(15)
+@Priority(50)
 class ViewHandler implements HttpServerHandler
 {
     private static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();

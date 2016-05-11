@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -30,8 +31,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
+import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VirtualFile;
 
 @Component
 class ThemesManager
@@ -39,6 +44,9 @@ class ThemesManager
     private static final Logger LOG = Logger.getLogger(ThemesManager.class.getName());
 
     private Configuration ftlCfg;
+    
+    @Inject
+    private VfsService vfs;
     
     @PostConstruct
     public void init()
@@ -85,5 +93,28 @@ class ThemesManager
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    }
+
+    public boolean serveResource(String themeName, String resPath, HttpServerResponse resp) throws IOException
+    {
+        VirtualFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
+        if(f != null)
+        {
+            try(InputStream is = f.open())
+            {
+                try(OutputStream os = resp.getOutputStream())
+                {
+                    int ch = is.read();
+                    while(ch != -1)
+                    {
+                        os.write(ch);
+                        ch = is.read();
+                    }
+                    os.flush();
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
