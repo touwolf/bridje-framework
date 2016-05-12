@@ -102,16 +102,14 @@ class ThemesManager
         {
             try(InputStream is = f.open())
             {
-                try(OutputStream os = resp.getOutputStream())
+                OutputStream os = resp.getOutputStream();
+                int ch = is.read();
+                while(ch != -1)
                 {
-                    int ch = is.read();
-                    while(ch != -1)
-                    {
-                        os.write(ch);
-                        ch = is.read();
-                    }
-                    os.flush();
+                    os.write(ch);
+                    ch = is.read();
                 }
+                os.flush();
                 return true;
             }
         }

@@ -37,7 +37,9 @@ class ExpressionFactoryImpl extends ExpressionFactory
     @PostConstruct
     public void init()
     {
-        factory = new de.odysseus.el.ExpressionFactoryImpl(de.odysseus.el.ExpressionFactoryImpl.Profile.JEE5, new Properties(), typeConverter);
+        Properties prop = new Properties();
+        prop.setProperty("javax.el.methodInvocations", "true");
+        factory = new de.odysseus.el.ExpressionFactoryImpl(de.odysseus.el.ExpressionFactoryImpl.Profile.JEE6, prop, typeConverter);
     }
     
     @Override

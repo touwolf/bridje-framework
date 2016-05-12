@@ -59,7 +59,7 @@ class ViewHandler implements HttpServerHandler
     {
         HttpServerRequest req = context.get(HttpServerRequest.class);
         String viewUpdate = req.getPostParameter("__view");
-        if(viewUpdate != null && viewUpdate.isEmpty())
+        if(viewUpdate != null && !viewUpdate.isEmpty())
         {
             WebView view = viewsMang.findView(viewUpdate);
             if(view != null)
@@ -118,7 +118,8 @@ class ViewHandler implements HttpServerHandler
         for (String name : names)
         {
             if(!name.startsWith("__state.")
-                    && !name.startsWith("__view"))
+                    && !name.startsWith("__view")
+                    && !name.startsWith("__action"))
             {
                 String paramExp = name;
                 paramExp = "${" + paramExp + "}";
@@ -129,7 +130,7 @@ class ViewHandler implements HttpServerHandler
 
     private void invokeAction(HttpServerRequest req, WebView view)
     {
-        String action = req.getPostParameter("__view.action");
+        String action = req.getPostParameter("__action");
         UIEvent event = view.findEvent(action);
         event.invoke();
     }

@@ -22,6 +22,7 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.util.ReferenceCountUtil;
 import java.util.List;
 import org.bridje.http.WsServerHandler;
 
@@ -51,6 +52,7 @@ class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
                 added = true;
             }
         }
+        ReferenceCountUtil.retain(msg);
         out.add(msg);
     }
 

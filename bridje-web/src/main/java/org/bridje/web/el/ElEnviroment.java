@@ -25,4 +25,6 @@ public interface ElEnviroment
     <T> T getVar(String name, Class<T> resultCls);
 
     <T> void setVar(String name, T value);
+
+    Object invoke(String method);
 }

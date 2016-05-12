@@ -44,21 +44,24 @@ class StateManager
             initStateFields(ctx);
         }
         Map<Field, String> lst = stateFields.get(clazz);
-        lst.forEach((field, stateName) ->
+        if(lst != null)
         {
-            try
+            lst.forEach((field, stateName) ->
             {
-                String value = req.getPostParameter("__state." + stateName);
-                if(value != null)
+                try
                 {
-                    field.set(instance, value);
+                    String value = req.getPostParameter("__state." + stateName);
+                    if(value != null)
+                    {
+                        field.set(instance, value);
+                    }
                 }
-            }
-            catch (IllegalArgumentException | IllegalAccessException e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
-        });
+                catch (IllegalArgumentException | IllegalAccessException e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            });
+        }
     }
 
     private synchronized void initStateFields(IocContext<WebRequestScope> ctx)

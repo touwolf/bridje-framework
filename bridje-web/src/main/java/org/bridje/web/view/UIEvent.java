@@ -16,6 +16,9 @@
 
 package org.bridje.web.view;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 public class UIEvent
 {
     private final String expression;
@@ -32,6 +35,6 @@ public class UIEvent
 
     public void invoke()
     {
-        
+        ViewHandler.getEnv().get("${" + expression + "}", Object.class);
     }
 }

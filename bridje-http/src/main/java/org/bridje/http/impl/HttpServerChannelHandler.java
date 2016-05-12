@@ -18,6 +18,7 @@ package org.bridje.http.impl;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
@@ -31,7 +32,9 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.SET_COOKIE;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
 import io.netty.handler.codec.http.HttpVersion;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.Cookie;
@@ -94,13 +97,24 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws IOException
     {
+        if(!msg.getDecoderResult().isSuccess())
+        {
+            sendBadRequest(ctx);
+            return;
+        }
         if(msg instanceof HttpRequest)
         {
-            readHeaders(ctx, (HttpRequest)msg);
+            HttpRequest httpReq = (HttpRequest)msg;
+            if(HttpHeaders.is100ContinueExpected(httpReq))
+            {
+                ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
+            }
+            readHeaders(ctx, httpReq);
         }
         else if(msg instanceof HttpContent)
         {
-            readContent(ctx, (HttpContent)msg);
+            HttpContent httpCont = (HttpContent)msg;
+            readContent(ctx, httpCont);
         }
         else
         {
@@ -161,7 +175,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
     private void readHeaders(ChannelHandlerContext ctx, HttpRequest msg)
     {
-        if(req == null && context == null && msg.getDecoderResult().isSuccess())
+        if(req == null && context == null)
         {
             context = new HttpServerContextImpl();
             req = new HttpServerRequestImpl( msg );
@@ -183,12 +197,26 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
     private void readContent(ChannelHandlerContext ctx, HttpContent msg) throws IOException
     {
-        if(req != null && msg.getDecoderResult().isSuccess())
+        if(req != null)
         {
             if(req.isForm())
             {
-                decoder.offer(msg);
-                readHttpDataChunkByChunk();
+                try
+                {
+                    decoder.offer(msg);
+                    readHttpDataChunkByChunk();
+                }
+                catch(HttpPostRequestDecoder.EndOfDataDecoderException ex)
+                {
+                    handleRequest(ctx);
+                    return;
+                }
+                catch (DecoderException e)
+                {
+                    LOG.log(Level.WARNING, e.getMessage());
+                    sendBadRequest(ctx);
+                    return;
+                }
             }
             else
             {
@@ -265,9 +293,15 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
     private void closeAll()
     {
+        if(resp != null)
+        {
+            resp.release();
+        }
+        if(req != null)
+        {
+            req.release();
+        }
         context = null;
-        resp.release();
-        req.release();
         req = null;
         resp = null;
     }
