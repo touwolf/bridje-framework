@@ -17,7 +17,6 @@
 package org.bridje.web.el.impl;
 
 import javax.el.ExpressionFactory;
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
@@ -66,12 +65,5 @@ class IocEnviromentImpl implements ElEnviroment
     public <T> T getVar(String name, Class<T> resultCls)
     {
         return get("${" + name + "}", resultCls);
-    }
-    
-    @Override
-    public Object invoke(String method)
-    {
-        MethodExpression methodExp = factory.createMethodExpression(context, method, null, null);
-        return methodExp.invoke(context, null);
     }
 }
