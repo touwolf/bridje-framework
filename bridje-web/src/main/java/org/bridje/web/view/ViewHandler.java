@@ -68,7 +68,7 @@ class ViewHandler implements HttpServerHandler
                 try
                 {
                     ENVS.set(elServ.createElEnviroment(wrsCtx));
-                    updateParameters(req);
+                    updateParameters(view, req);
                     invokeAction(req, view);
                     HttpServerResponse resp = context.get(HttpServerResponse.class);
                     try(OutputStream os = resp.getOutputStream())
@@ -111,9 +111,8 @@ class ViewHandler implements HttpServerHandler
         return false;
     }
 
-    private void updateParameters(HttpServerRequest req)
+    private void updateParameters(WebView view, HttpServerRequest req)
     {
-        ElEnviroment env = ENVS.get();
         String[] names = req.getPostParametersNames();
         for (String name : names)
         {
@@ -121,9 +120,11 @@ class ViewHandler implements HttpServerHandler
                     && !name.startsWith("__view")
                     && !name.startsWith("__action"))
             {
-                String paramExp = name;
-                paramExp = "${" + paramExp + "}";
-                env.set(paramExp, req.getPostParameter(name));
+                UIInputExpression input = view.findInput(name);
+                if(input != null)
+                {
+                    input.set(req.getPostParameter(name));
+                }
             }
         }
     }

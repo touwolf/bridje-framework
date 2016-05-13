@@ -18,6 +18,8 @@ package org.bridje.web.view;
 
 public class UIInputExpression extends UIExpression
 {
+    private String parameter;
+
     UIInputExpression(String expression)
     {
         super(expression);
@@ -26,5 +28,14 @@ public class UIInputExpression extends UIExpression
     public <T> void set(T value)
     {
         ViewHandler.getEnv().set(getExpression(), value);
+    }
+    
+    public String getParameter()
+    {
+        if(parameter == null)
+        {
+            parameter = getExpression().substring(2, getExpression().length()-1);
+        }
+        return parameter;
     }
 }

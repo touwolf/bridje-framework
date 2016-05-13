@@ -87,9 +87,9 @@ public class WebView
     {
         if(inputs == null)
         {
-            Map<String, UIEvent> inputsMap = new HashMap<>();
+            Map<String, UIInputExpression> inputsMap = new HashMap<>();
             findInputs(root, inputsMap);
-            inputs = new HashMap<>();
+            inputs = inputsMap;
         }
     }
 
@@ -99,9 +99,9 @@ public class WebView
         comp.childs().stream().forEach((child) -> findEvents(child, eventsMap) );
     }
 
-    private void findInputs(WebComponent comp, Map<String, UIEvent> inputsMap)
+    private void findInputs(WebComponent comp, Map<String, UIInputExpression> inputsMap)
     {
-        comp.events().stream().forEach((ev) -> inputsMap.put(ev.getExpression(), ev) );
+        comp.inputs().stream().forEach((in) -> inputsMap.put(in.getParameter(), in) );
         comp.childs().stream().forEach((child) -> findInputs(child, inputsMap) );
     }
 }
