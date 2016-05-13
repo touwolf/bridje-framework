@@ -27,10 +27,34 @@ public class DDLBuilder
 
     private boolean firstColumn;
 
+    private boolean skipNullStmtInColumns = false;
+
+    private String autoIncrementStmt = "AUTO_INCREMENT";
+    
     public DDLBuilder()
     {
         sb = new StringBuilder();
         firstColumn = true;
+    }
+
+    public boolean isSkipNullStmtInColumns()
+    {
+        return skipNullStmtInColumns;
+    }
+
+    public void setSkipNullStmtInColumns(boolean skipNullStmtInColumns)
+    {
+        this.skipNullStmtInColumns = skipNullStmtInColumns;
+    }
+
+    public String getAutoIncrementStmt()
+    {
+        return autoIncrementStmt;
+    }
+
+    public void setAutoIncrementStmt(String autoIncrementStmt)
+    {
+        this.autoIncrementStmt = autoIncrementStmt;
     }
 
     public DDLBuilder createTable(String tableName)
@@ -58,7 +82,7 @@ public class DDLBuilder
         sb.append(tableName);
         sb.append(" ( ");
         sb.append(columnName);
-        sb.append(" ASC);");
+        sb.append(" ASC)");
         return sb.toString();
     }
     
@@ -120,12 +144,16 @@ public class DDLBuilder
             sw.append(" NOT NULL");
             if(autoIncement)
             {
-                sw.append(" AUTO_INCREMENT");
+                sw.append(' ');
+                sw.append(autoIncrementStmt);
             }
         }
         else
         {
-            sw.append(" NULL");
+            if(!skipNullStmtInColumns)
+            {
+                sw.append(" NULL");
+            }
             if(def != null)
             {
                 sw.append(" DEFAULT ");

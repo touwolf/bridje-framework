@@ -16,6 +16,8 @@
 package org.bridje.orm.impl.dialects;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,16 +29,17 @@ import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.DDLBuilder;
 
 @Component
-class H2Dialect implements SQLDialect
+class DerbyDialect implements SQLDialect
 {
-    private static final Logger LOG = Logger.getLogger(H2Dialect.class.getName());
+    private static final Logger LOG = Logger.getLogger(DerbyDialect.class.getName());
 
     @Override
     public boolean canHandle(DataSource dataSource)
     {
         try(Connection conn = dataSource.getConnection())
         {
-            return "H2 JDBC Driver".equalsIgnoreCase(conn.getMetaData().getDriverName());
+            return conn.getMetaData().getDriverName().contains("Derby")
+                    || conn.getMetaData().getDriverName().contains("JavaDB");
         }
         catch (SQLException ex)
         {
@@ -48,7 +51,7 @@ class H2Dialect implements SQLDialect
     @Override
     public String createTable(Table<?> table)
     {
-        DDLBuilder b = new DDLBuilder();
+        DDLBuilder b = createDDLBuilder();
         b.createTable(identifier(table.getName()));
         table.getColumns().stream()
                 .map((f) -> buildColumnStmt(f, b))
@@ -60,7 +63,7 @@ class H2Dialect implements SQLDialect
     @Override
     public String createColumn(TableColumn<?, ?> column)
     {
-        DDLBuilder b = new DDLBuilder();
+        DDLBuilder b = createDDLBuilder();
         b.alterTable(identifier(column.getTable().getName()))
                 .addColumn(buildColumnStmt(column, b));
         
@@ -70,7 +73,7 @@ class H2Dialect implements SQLDialect
     @Override
     public String createIndex(TableColumn<?, ?> column)
     {
-        DDLBuilder b = new DDLBuilder();
+        DDLBuilder b = createDDLBuilder();
         String idxName = identifier("idx_" + column.getTable().getName() + "_" + column.getName());
         return b.createIndex(idxName, identifier(column.getTable().getName()), identifier(column.getName()));
     }
@@ -78,12 +81,20 @@ class H2Dialect implements SQLDialect
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
         return b.buildColumnStmt(identifier(column.getName()), 
-                column.getSqlType().getName(), 
+                findType(column.getSqlType()), 
                 column.getLength(), 
                 column.getPrecision(), 
                 column.isKey(), 
-                column.isAutoIncrement(),
+                column.isAutoIncrement(), 
                 column.getDefaultValue());
+    }
+
+    private DDLBuilder createDDLBuilder()
+    {
+        DDLBuilder b = new DDLBuilder();
+        b.setSkipNullStmtInColumns(true);
+        b.setAutoIncrementStmt("GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1)");
+        return b;
     }
 
     @Override
@@ -91,4 +102,14 @@ class H2Dialect implements SQLDialect
     {
         return "\"" + name + "\"";
     }
+
+    private String findType(JDBCType sqlType)
+    {
+        if(sqlType == JDBCType.TINYINT)
+        {
+            return JDBCType.SMALLINT.getName();
+        }
+        return sqlType.getName();
+    }
 }
+

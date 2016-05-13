@@ -26,9 +26,6 @@ import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.DDLBuilder;
 
-/**
- *
- */
 @Component
 class MySQLDialect implements SQLDialect
 {

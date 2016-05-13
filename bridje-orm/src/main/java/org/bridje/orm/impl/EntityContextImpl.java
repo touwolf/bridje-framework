@@ -22,6 +22,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Query;
@@ -38,6 +40,8 @@ import org.bridje.orm.impl.sql.UpdateBuilder;
  */
 class EntityContextImpl implements EntityContext
 {
+    private static final Logger LOG = Logger.getLogger(EntityContextImpl.class.getName());
+
     private final DataSource ds;
 
     private final EntitysCache cache;
@@ -182,6 +186,11 @@ class EntityContextImpl implements EntityContext
                 result = consumer.parse(resultSet);
             }
         }
+        catch(SQLException e)
+        {
+            LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
+            throw e;
+        }
         return result;
     }
 
@@ -202,6 +211,11 @@ class EntityContextImpl implements EntityContext
                 }
             }
         }
+        catch(SQLException e)
+        {
+            LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
+            throw e;
+        }
         return result;
     }
 
@@ -214,6 +228,11 @@ class EntityContextImpl implements EntityContext
                 setParam(stmt, parameters[i], i + 1);
             }
             return stmt.executeUpdate();
+        }
+        catch(SQLException e)
+        {
+            LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
+            throw e;
         }
     }
 

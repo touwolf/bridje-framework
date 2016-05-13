@@ -162,7 +162,19 @@ class VfsServiceImpl implements VfsService
     {
         mount(new Path(path), new FileVfsSource(file));
     }
-    
+
+    @Override
+    public void mountFile(Path path, String file)
+    {
+        mountFile(path, new File(file));
+    }
+
+    @Override
+    public void mountFile(String path, String file)
+    {
+        mountFile(path, new File(file));
+    }
+
     @Override
     public void travel(VirtualFileVisitor visitor)
     {

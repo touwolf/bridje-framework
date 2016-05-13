@@ -165,6 +165,23 @@ public interface VfsService
      * @param file The folder to be mounted.
      */
     void mountFile(String path, File file);
+    
+
+    /**
+     * Mounts a new file vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param file The folder to be mounted.
+     */
+    void mountFile(Path path, String file);
+
+    /**
+     * Mounts a new file vfs source into the given path.
+     *
+     * @param path The path to mount the source.
+     * @param file The folder to be mounted.
+     */
+    void mountFile(String path, String file);
 
     /**
      * Navigates the vfs tree from this folder, matching all the child folders
