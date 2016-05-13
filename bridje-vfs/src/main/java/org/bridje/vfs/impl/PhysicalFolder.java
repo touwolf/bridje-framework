@@ -109,7 +109,8 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                     for (String folder : folders)
                     {
                         VirtualFolder vf = createChildFolder(new Path(folder));
-                        if(vf != null && (query == null || (vf.getPath().toString().matches(query))))
+                        if(vf != null && (query == null 
+                                || (vf.getPath().globMatches(query))))
                         {
                             result.add(vf);
                         }
@@ -138,7 +139,8 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                     for (String file : files)
                     {
                         VirtualFile vf = createChildFile(new Path(file));
-                        if(vf != null && (query == null || vf.getPath().toString().matches(query)))
+                        if(vf != null && (query == null 
+                                || vf.getPath().globMatches(query)))
                         {
                             result.add(vf);
                         }

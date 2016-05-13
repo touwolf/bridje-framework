@@ -19,6 +19,8 @@ package org.bridje.vfs;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,12 +48,15 @@ public class VfsServiceTest
     public void testTravel()
     {
         VfsService instance = Ioc.context().find(VfsService.class);
+        List<VirtualFile> res = new ArrayList<>();
         instance.travel((VirtualFile f) ->
         {
             LOG.log(Level.INFO, f.getPath().toString());
             assertTrue(f.getName().matches("^P.+\\.java$"));
             assertTrue(f.getParentPath().toString().matches(".+impl"));
-        }, ".+impl\\/P.+\\.java");
+            res.add(f);
+        }, "**/impl/P*.java");
+        assertFalse(res.isEmpty());
     }
     
     @Test

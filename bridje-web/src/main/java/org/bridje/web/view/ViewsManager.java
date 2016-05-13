@@ -60,7 +60,7 @@ public class ViewsManager
         VirtualFolder publicFolder = vfsServ.findFolder(basePath);
         if(publicFolder != null)
         {
-            publicFolder.travel(this::readView, "(.*)\\.view\\.xml$");
+            publicFolder.travel(this::readView, "**/*.view.xml");
         }
     }
 

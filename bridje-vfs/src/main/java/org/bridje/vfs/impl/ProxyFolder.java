@@ -127,7 +127,7 @@ class ProxyFolder implements VirtualFolder
             folders.stream().forEach((folder) ->
             {
                 folder.listFolders().stream()
-                        .filter((f) -> query != null && f.getPath().toString().matches(query))
+                        .filter((f) -> query != null && f.getPath().globMatches(query))
                         .forEach((chFolder) ->
                 {
                     List<VirtualFolder> lst = foldersMap.get(chFolder.getName());
@@ -171,7 +171,7 @@ class ProxyFolder implements VirtualFolder
             folders.stream().forEach((folder) ->
             {
                 folder.listFiles().stream()
-                        .filter((f) -> query != null && f.getPath().toString().matches(query))
+                        .filter((f) -> query != null && f.getPath().globMatches(query))
                         .forEach((chFile) ->
                 {
                     List<VirtualFile> lst = filesMap.get(chFile.getName());
