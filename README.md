@@ -5,7 +5,7 @@
 Introduction
 ============
 
-This package contains the Bridje Java Applications Framework. A project that provides a set of Java APIs to be use in Java projects. Bridje can be compared to Spring but it´s more simplistic and lightweight. The project bring you a way of doing thinks that is not compromised by any JSR. The goals for this project are:
+This package contains the Bridje Java Applications Framework. A project that provides a set of Java APIs to be use in Java projects. Bridje can be compared to Spring but it´s more simplistic and lightweight. The project bring you a way of doing things that is not compromised by any JSR. The goals for this project are:
 
 - Simple: We try to follow the KISS principle, we avoid providing too much ways of resolving the same problem. 
 - Reuse: We try to reuse concepts as much as possible in the framework internals and in your apps, so they both use the same things .
