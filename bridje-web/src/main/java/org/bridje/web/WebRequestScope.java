@@ -18,6 +18,7 @@ package org.bridje.web;
 
 import java.util.List;
 import java.util.Map;
+import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.ioc.Inject;
@@ -219,6 +220,39 @@ public class WebRequestScope implements Scope
     public String[] getGetParametersNames()
     {
         return req.getGetParametersNames();
+    }
+
+
+    /**
+     * Gets a map with all the cookies sended to the server by the client.
+     *
+     * @return A map with the HTTP cookies for this request.
+     */
+    public Map<String, HttpCookie> getCookies()
+    {
+        return req.getCookies();
+    }
+
+    /**
+     * Gets the specified HTTP cookie.
+     *
+     * @param name The name of the HTTP cookie.
+     * @return the HttpCookie object representing the cookie or null if it does
+     * not exists.
+     */
+    public HttpCookie getCookie(String name)
+    {
+        return req.getCookie(name);
+    }
+
+    /**
+     * Gets all the cookies names availables in this request.
+     *
+     * @return An array of String representing the cookies names.
+     */
+    public String[] getCookiesNames()
+    {
+        return req.getCookiesNames();
     }
 
     @Override

@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
 import org.bridje.http.HttpServerRequest;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
+import org.bridje.web.WebCookie;
 import org.bridje.web.WebMethod;
 import org.bridje.web.WebParameter;
 import org.bridje.web.WebRequestScope;
@@ -99,24 +101,55 @@ class ControllerHandler implements HttpServerHandler
             WebParameter param = field.getAnnotation(WebParameter.class);
             if(param != null)
             {
-                String name = param.value();
-                String paramVal = wrsCtx.getScope().getPostParameter(name);
-                if(paramVal == null)
+                injectParameter(wrsCtx, cmp, field, param);
+            }
+            else
+            {
+                WebCookie cookie = field.getAnnotation(WebCookie.class);
+                if(cookie != null)
                 {
-                    paramVal = wrsCtx.getScope().getGetParameter(name);
-                    if(paramVal != null)
-                    {
-                        try
-                        {
-                            field.setAccessible(true);
-                            field.set(cmp,paramVal);
-                        }
-                        catch (Exception e)
-                        {
-                            LOG.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    }
+                    injectCookie(wrsCtx, cmp, field, cookie);
                 }
+            }
+        }
+    }
+
+    private void injectParameter(IocContext<WebRequestScope> wrsCtx, Object cmp, Field field, WebParameter param)
+    {
+        String name = param.value();
+        String paramVal = wrsCtx.getScope().getPostParameter(name);
+        if(paramVal == null)
+        {
+            paramVal = wrsCtx.getScope().getGetParameter(name);
+            if(paramVal != null)
+            {
+                try
+                {
+                    field.setAccessible(true);
+                    field.set(cmp,paramVal);
+                }
+                catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    private void injectCookie(IocContext<WebRequestScope> wrsCtx, Object cmp, Field field, WebCookie cookie)
+    {
+        String name = cookie.value();
+        HttpCookie cookieVal = wrsCtx.getScope().getCookie(name);
+        if(cookieVal == null)
+        {
+            try
+            {
+                field.setAccessible(true);
+                field.set(cmp,cookieVal.getValue());
+            }
+            catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }
