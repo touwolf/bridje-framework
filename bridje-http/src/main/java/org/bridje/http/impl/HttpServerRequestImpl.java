@@ -65,6 +65,8 @@ class HttpServerRequestImpl implements HttpServerRequest
 
     private String[] cookiesNames;
 
+    private String path;
+
     public HttpServerRequestImpl(HttpRequest headers)
     {
         this.headers = headers;
@@ -145,7 +147,15 @@ class HttpServerRequestImpl implements HttpServerRequest
     @Override
     public String getPath()
     {
-        return this.headers.getUri();
+        if(path == null)
+        {
+            path = this.headers.getUri();
+            if(path.contains("?"))
+            {
+                path = path.substring(0, path.indexOf("?"));
+            }
+        }
+        return path;
     }
 
     @Override

@@ -16,6 +16,7 @@
 
 package org.bridje.web;
 
+import java.util.List;
 import java.util.Map;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
@@ -185,6 +186,39 @@ public class WebRequestScope implements Scope
     public String[] getPostParametersNames()
     {
         return req.getPostParametersNames();
+    }
+
+    /**
+     * Gets the "GET" parameters that where sended by the client in the query
+     * string of the request.
+     *
+     * @return A map with all the "GET" parameters for this request.
+     */
+    public Map<String, List<String>> getGetParameters()
+    {
+        return req.getGetParameters();
+    }
+
+    /**
+     * Gets the specific "GET" parameter from the parameters map.
+     *
+     * @param parameter The "GET" parameter name.
+     * @return The "GET" parameter value or null if it does not exists.
+     */
+    public String getGetParameter(String parameter)
+    {
+        return req.getGetParameter(parameter);
+    }
+
+    /**
+     * Gets all the "GET" parameters names for this request if any.
+     *
+     * @return An array of String representing all the "GET" parameters for this
+     * request.
+     */
+    public String[] getGetParametersNames()
+    {
+        return req.getGetParametersNames();
     }
 
     @Override

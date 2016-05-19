@@ -17,6 +17,7 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.WebMethod;
+import org.bridje.web.WebParameter;
 import org.bridje.web.WebRequestScope;
 
 @Component
@@ -75,6 +77,7 @@ class ControllerHandler implements HttpServerHandler
             if(matches != null)
             {
                 Object cmp = wrsCtx.find(methodData.getComponent());
+                injectParameters(wrsCtx, cmp);
                 try
                 {
                     return methodData.getMethod().invoke(cmp, matches);
@@ -86,5 +89,35 @@ class ControllerHandler implements HttpServerHandler
             }
         }
         return null;
+    }
+
+    private void injectParameters(IocContext<WebRequestScope> wrsCtx, Object cmp)
+    {
+        Field[] fields = cmp.getClass().getDeclaredFields();
+        for (Field field : fields)
+        {
+            WebParameter param = field.getAnnotation(WebParameter.class);
+            if(param != null)
+            {
+                String name = param.value();
+                String paramVal = wrsCtx.getScope().getPostParameter(name);
+                if(paramVal == null)
+                {
+                    paramVal = wrsCtx.getScope().getGetParameter(name);
+                    if(paramVal != null)
+                    {
+                        try
+                        {
+                            field.setAccessible(true);
+                            field.set(cmp,paramVal);
+                        }
+                        catch (Exception e)
+                        {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
