@@ -18,6 +18,9 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+/**
+ * Adapter to map from String to UIEvents objects.
+ */
 public class UIEventAdapter extends XmlAdapter<String, UIEvent>
 {
     @Override

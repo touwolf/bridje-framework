@@ -19,6 +19,9 @@ package org.bridje.web.el;
 import org.bridje.ioc.IocContext;
 import org.bridje.web.WebRequestScope;
 
+/**
+ * A service for the expression lenguage system.
+ */
 public interface ElService
 {
     ElEnviroment createElEnviroment(IocContext<WebRequestScope> context);

@@ -16,13 +16,48 @@
 
 package org.bridje.web.el;
 
+/**
+ * Represents an enviroment that holds the variables that can be evaluated and
+ * asigned in the expression language execution context.
+ */
 public interface ElEnviroment
 {
+    /**
+     * Evaluates the given expression and cast the result of it to the given
+     * result class.
+     *
+     * @param <T> The type of the result of the expression.
+     * @param expression The expression.
+     * @param resultCls The result class for the expression.
+     * @return An object of the given resultClss.
+     */
     <T> T get(String expression, Class<T> resultCls);
 
+    /**
+     * Sets the given expression to the especified value.
+     * 
+     * @param <T> The type of the value.
+     * @param expression The expression to assign.
+     * @param value The value to assign.
+     */
     <T> void set(String expression, T value);
 
+    /**
+     * Gets the value of the especified variable.
+     * 
+     * @param <T> The type of the variable.
+     * @param name The name of the variable.
+     * @param resultCls The result class for the variable.
+     * @return The value of the variable.
+     */
     <T> T getVar(String name, Class<T> resultCls);
 
+    /**
+     * Sets the value of the especified variable.
+     * 
+     * @param <T> The type of the variable.
+     * @param name The name of the variable.
+     * @param value The value of the variable.
+     */
     <T> void setVar(String name, T value);
 }

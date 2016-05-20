@@ -21,9 +21,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation defines a model that has visibility in the expression language context.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Model
 {
+    /**
+     * The name for this model.
+     * 
+     * @return The name for this model.
+     */
     String value();
 }

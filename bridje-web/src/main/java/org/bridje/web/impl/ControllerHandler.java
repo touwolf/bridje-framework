@@ -140,7 +140,7 @@ class ControllerHandler implements HttpServerHandler
     {
         String name = cookie.value();
         HttpCookie cookieVal = wrsCtx.getScope().getCookie(name);
-        if(cookieVal == null)
+        if(cookieVal != null)
         {
             try
             {

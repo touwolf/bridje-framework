@@ -24,6 +24,11 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Represents a view of the application, views are render by themes and are
+ * compoused from components. The views are inmutables so once defined they will
+ * stay the same at runtime.
+ */
 @XmlRootElement(name = "view")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WebView
@@ -40,6 +45,11 @@ public class WebView
     @XmlTransient
     private Map<String, UIInputExpression> inputs;
 
+    /**
+     * The name of this view.
+     *
+     * @return The name of this view.
+     */
     public String getName()
     {
         return name;
@@ -50,23 +60,41 @@ public class WebView
         this.name = name;
     }
 
+    /**
+     * The root component of this view.
+     *
+     * @return The root component.
+     */
     public WebComponent getRoot()
     {
         return root;
     }
 
+    /**
+     * Finds the input expression that match the given string.
+     *
+     * @param exp The expression.
+     * @return The UIInputExpression object that match whit the given String if
+     * any.
+     */
     public UIInputExpression findInput(String exp)
     {
-        if(inputs == null)
+        if (inputs == null)
         {
             initInputs();
         }
         return inputs.get(exp);
     }
 
+    /**
+     * Finds the event that match with the given action.
+     * 
+     * @param action The name of the action.
+     * @return The UIEvent object that match the given expression.
+     */
     public UIEvent findEvent(String action)
     {
-        if(events == null)
+        if (events == null)
         {
             initEvents();
         }
@@ -75,7 +103,7 @@ public class WebView
 
     private synchronized void initEvents()
     {
-        if(events == null)
+        if (events == null)
         {
             Map<String, UIEvent> eventsMap = new HashMap<>();
             findEvents(root, eventsMap);
@@ -85,7 +113,7 @@ public class WebView
 
     private synchronized void initInputs()
     {
-        if(inputs == null)
+        if (inputs == null)
         {
             Map<String, UIInputExpression> inputsMap = new HashMap<>();
             findInputs(root, inputsMap);
@@ -95,13 +123,13 @@ public class WebView
 
     private void findEvents(WebComponent comp, Map<String, UIEvent> eventsMap)
     {
-        comp.events().stream().forEach((ev) -> eventsMap.put(ev.getExpression(), ev) );
-        comp.childs().stream().forEach((child) -> findEvents(child, eventsMap) );
+        comp.events().stream().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
+        comp.childs().stream().forEach((child) -> findEvents(child, eventsMap));
     }
 
     private void findInputs(WebComponent comp, Map<String, UIInputExpression> inputsMap)
     {
-        comp.inputs().stream().forEach((in) -> inputsMap.put(in.getParameter(), in) );
-        comp.childs().stream().forEach((child) -> findInputs(child, inputsMap) );
+        comp.inputs().stream().forEach((in) -> inputsMap.put(in.getParameter(), in));
+        comp.childs().stream().forEach((child) -> findInputs(child, inputsMap));
     }
 }

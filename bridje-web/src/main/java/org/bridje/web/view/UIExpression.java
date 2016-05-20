@@ -19,6 +19,10 @@ package org.bridje.web.view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Represents an expression that can be use in a view to pull a value from the
+ * model during a view render.
+ */
 public class UIExpression
 {
     private static final Logger LOG = Logger.getLogger(UIExpression.class.getName());
@@ -30,11 +34,23 @@ public class UIExpression
         this.expression = expression;
     }
 
+    /**
+     * The value of the expression.
+     *
+     * @return The value of the expression.
+     */
     public String getExpression()
     {
         return expression;
     }
-    
+
+    /**
+     * Evaluates the expression and return the result casted to the given class.
+     *
+     * @param <T> The type for the result of this expression.
+     * @param resultClasss The class for the result of this expression.
+     * @return The result of the expression evaluation.
+     */
     public <T> T get(Class<T> resultClasss)
     {
         try

@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/**
+ * Base class for all the web components.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlTransient
 public abstract class WebComponent
@@ -35,21 +38,45 @@ public abstract class WebComponent
     @XmlAttribute(name = "class")
     private UIExpression styleClass;
 
+    /**
+     * Gets the component`s id.
+     * 
+     * @return The component´s id.
+     */
     public String getId()
     {
         return id;
     }
 
+    /**
+     * Sets the component`s id.
+     * 
+     * @param id The component´s id.
+     */
     public void setId(String id)
     {
         this.id = id;
     }
 
+    /**
+     * Gets the html style class for this component.
+     * 
+     * @return The space separated html style classes.
+     */
     public String getStyleClass()
     {
         return get(styleClass, String.class, "");
     }
     
+    /**
+     * Evals the given expression in the current ElEnviroment.
+     * 
+     * @param <T> The type for the result.
+     * @param expression The expression to evaluate.
+     * @param resultClasss The class for the result.
+     * @param def The default value.
+     * @return The result of the evaluation.
+     */
     protected <T> T get(UIExpression expression, Class<T> resultClasss, T def)
     {
         if(expression != null)
@@ -63,16 +90,31 @@ public abstract class WebComponent
         return def;
     }
     
+    /**
+     * Gets all the UIInputExpressions in this component.
+     * 
+     * @return A list of the UIInputExpressions availables in this component.
+     */
     public List<UIInputExpression> inputs()
     {
         return new ArrayList<>();
     }
 
+    /**
+     * Gets all the UIEvents in this component.
+     * 
+     * @return A list of the UIInputExpressions availables in this component.
+     */
     public List<UIEvent> events()
     {
         return new ArrayList<>();
     }
 
+    /**
+     * Gets all child components for this component.
+     * 
+     * @return A list of all child components.
+     */
     public List<? extends WebComponent> childs()
     {
         return new ArrayList<>();

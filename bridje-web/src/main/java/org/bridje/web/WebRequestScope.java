@@ -25,6 +25,9 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
 
+/**
+ * Represents the IoC scope for the web request IocContext.
+ */
 public class WebRequestScope implements Scope
 {
     private final HttpServerRequest req;

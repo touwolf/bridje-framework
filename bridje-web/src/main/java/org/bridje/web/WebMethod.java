@@ -21,9 +21,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation allows you to define a method that should be call when the
+ * especified pattern is requested on the web server.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface WebMethod
 {
+    /**
+     * The pattern for this web method.
+     * 
+     * @return The pattern for this web method.
+     */
     String value();
 }

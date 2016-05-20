@@ -16,9 +16,9 @@
 
 package org.bridje.web.view;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
+/**
+ * The data for the events of the components that can be render in a WebView.
+ */
 public class UIEvent
 {
     private final String expression;
@@ -28,11 +28,19 @@ public class UIEvent
         this.expression = expression;
     }
 
+    /**
+     * Gets the event´s expression.
+     * 
+     * @return The event´s expressino.
+     */
     public String getExpression()
     {
         return expression;
     }
 
+    /**
+     * Invokes the method defined by this event.
+     */
     public void invoke()
     {
         ViewHandler.getEnv().get("${" + expression + "}", Object.class);

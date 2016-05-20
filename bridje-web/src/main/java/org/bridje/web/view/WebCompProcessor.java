@@ -48,9 +48,9 @@ public class WebCompProcessor extends AbstractProcessor
     private static final Logger LOG = Logger.getLogger(WebCompProcessor.class.getName());
 
     /**
-     * The bridje orm entitys resources file path.
+     * The bridje web components resources file path.
      */
-    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
+    public static final String WEBCOMP_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
@@ -62,7 +62,7 @@ public class WebCompProcessor extends AbstractProcessor
         {
             Filer filer = processingEnv.getFiler();
             //Creating output file
-            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", ENTITYS_RESOURCE_FILE);
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", WEBCOMP_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
         catch (IOException e)

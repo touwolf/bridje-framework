@@ -32,7 +32,7 @@ import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFileReader;
-import static org.bridje.web.view.WebCompProcessor.ENTITYS_RESOURCE_FILE;
+import static org.bridje.web.view.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
 
 @Component
 class WebComponentsManager implements VirtualFileReader
@@ -108,7 +108,7 @@ class WebComponentsManager implements VirtualFileReader
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ENTITYS_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(WEBCOMP_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

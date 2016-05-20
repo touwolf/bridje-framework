@@ -21,9 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Defines a parameter for the request, a field annotated with this annotation
+ * will receive the value of the post or get parameter send by the user in the
+ * request.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface WebParameter
 {
+    /**
+     * The name of the parameter.
+     * 
+     * @return The name of the parameter.
+     */
     String value();
 }

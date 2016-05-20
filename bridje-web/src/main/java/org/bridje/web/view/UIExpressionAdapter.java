@@ -18,6 +18,9 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+/**
+ * XML Adapter for the UIExpression class.
+ */
 public class UIExpressionAdapter extends XmlAdapter<String, UIExpression>
 {
     @Override
