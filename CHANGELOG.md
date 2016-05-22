@@ -3,7 +3,10 @@
 ## [v0.2.2](https://github.com/bridje/bridje-framework/tree/v0.2.2) (2016-05-22)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.1...v0.2.2)
 
-- #40 The root handler of the HTTP server now has the Integer.MIN_VALUE priority.
+- #43 Replace the regular expressions querys in the VFS. enhancement.
+- #42 Add support for injecting cookies in the bridje-web enhancement
+- #41 Add support for get and post parameters in the bridje-web enhancement
+- #30 Support for more databases in the orm.
 
 ## [v0.2.1](https://github.com/bridje/bridje-framework/tree/v0.2.1) (2016-05-06)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.0...v0.2.1)
