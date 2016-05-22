@@ -73,7 +73,7 @@ class ViewHandler implements HttpServerHandler
                     HttpServerResponse resp = context.get(HttpServerResponse.class);
                     try(OutputStream os = resp.getOutputStream())
                     {
-                        themesMang.render(findComponent(req, view), view, os);
+                        themesMang.render(view.getRoot(), view, os);
                         os.flush();
                     }
                 }
@@ -134,10 +134,5 @@ class ViewHandler implements HttpServerHandler
         String action = req.getPostParameter("__action");
         UIEvent event = view.findEvent(action);
         event.invoke();
-    }
-
-    private WebComponent findComponent(HttpServerRequest req, WebView view)
-    {
-        return view.getRoot();
     }
 }
