@@ -32,8 +32,8 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.SET_COOKIE;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
-import io.netty.handler.codec.http.HttpVersion;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -134,7 +134,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         resp.close();
         int length = resp.getBuffer().readableBytes();
-        DefaultHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(resp.getStatusCode()), resp.getBuffer());
+        DefaultHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.valueOf(resp.getStatusCode()), resp.getBuffer());
         resp.setHeader(SERVER, server.getServerName());
         resp.setHeader(CONTENT_TYPE, resp.getContentType());
         resp.setHeader(CONTENT_LENGTH, length);
@@ -163,7 +163,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         LOG.log(Level.WARNING, "Bad Request Received....");
         DefaultHttpResponse response = 
-                new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
+                new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST);
         response.headers().set(SERVER, server.getServerName());
         response.headers().set(CONTENT_TYPE, "text/html");
         response.headers().set(CONTENT_LENGTH, 0);

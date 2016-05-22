@@ -16,7 +16,6 @@
 package org.bridje.orm.impl.dialects;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
