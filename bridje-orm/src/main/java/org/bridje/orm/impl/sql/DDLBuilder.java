@@ -27,7 +27,7 @@ public class DDLBuilder
 
     private boolean firstColumn;
 
-    private boolean skipNullStmtInColumns = false;
+    private boolean skipNullStmtInColumns;
 
     private String autoIncrementStmt = "AUTO_INCREMENT";
     

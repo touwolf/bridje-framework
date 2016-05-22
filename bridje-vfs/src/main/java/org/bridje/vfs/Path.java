@@ -258,7 +258,7 @@ public class Path implements Iterable<Path>
     {
         return new Iterator<Path>()
         {
-            private int currentIndex = 0;
+            private int currentIndex;
 
             @Override
             public boolean hasNext()

@@ -34,7 +34,17 @@ import org.bridje.web.el.Model;
 class IocElContext extends ELContext
 {
     private static Map<String, Class<?>> MODELS;
-    
+
+    private final ExpressionFactory factory;
+
+    private Functions functions;
+
+    private Variables variables;
+
+    private ELResolver resolver;
+
+    private final IocContext context;
+
     private static Map<String, Class<?>> getModels(IocContext<WebRequestScope> ctx)
     {
         if(MODELS == null)
@@ -54,16 +64,6 @@ class IocElContext extends ELContext
             MODELS = result;
         }
     }
-    
-    private final ExpressionFactory factory;
-
-    private Functions functions;
-
-    private Variables variables;
-
-    private ELResolver resolver;
-
-    private final IocContext context;
 
     public IocElContext(IocContext context, ExpressionFactory factory)
     {

@@ -50,6 +50,7 @@ class StateListener implements ContextListener<Object>
     @Override
     public void preCreateComponent(Class<Object> clazz)
     {
+        //Empty
     }
 
     @Override
@@ -64,5 +65,6 @@ class StateListener implements ContextListener<Object>
     @Override
     public void postInitComponent(Class<Object> clazz, Object instance)
     {
+        //Empty
     }
 }

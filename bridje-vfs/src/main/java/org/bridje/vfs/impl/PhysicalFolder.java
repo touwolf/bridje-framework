@@ -165,23 +165,20 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
         try
         {
             Object[] files = getSource().getFiles(getPhysicalPath(path));
-            if(files != null)
+            if(files != null && files.length > 0)
             {
-                if(files.length > 0)
+                if(files.length == 1)
                 {
-                    if(files.length == 1)
+                    return new PhysicalFile(files[0], getSource(), getMountPath(), getRelativePath().join(path));
+                }
+                if(files.length > 1)
+                {
+                    ProxyFile pf = new ProxyFile();
+                    for (Object file : files)
                     {
-                        return new PhysicalFile(files[0], getSource(), getMountPath(), getRelativePath().join(path));
+                        pf.add(new PhysicalFile(file, getSource(), getMountPath(), getRelativePath().join(path)));
                     }
-                    if(files.length > 1)
-                    {
-                        ProxyFile pf = new ProxyFile();
-                        for (Object file : files)
-                        {
-                            pf.add(new PhysicalFile(file, getSource(), getMountPath(), getRelativePath().join(path)));
-                        }
-                        return pf;
-                    }
+                    return pf;
                 }
             }
         }
