@@ -16,6 +16,10 @@ public class ${node.@name}
 
     </#list>
     <#list node.* as field>
+    <#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true") 
+            || (field.@key[0]?? && field.@key == "true")>
+    @Key<#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true")>(autoIncrement = true)</#if>
+    </#if>
     @Field
     private ${findType(field)} ${field.@name};
 
