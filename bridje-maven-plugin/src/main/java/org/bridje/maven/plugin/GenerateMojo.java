@@ -24,6 +24,16 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -65,20 +75,43 @@ public class GenerateMojo extends AbstractMojo
     {
         try
         {
-            createFreeMarkerConfiguration();
             clsRealm = ClassPathUtils.createClassPath(project);
+            createFreeMarkerConfiguration();
         }
         catch (IOException | DuplicateRealmException | DependencyResolutionRequiredException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
         getLog().info("Generating Classes");
-        for (DataFile dataFile : dataFiles)
+        try
         {
-            dataFile.generate(this);
+            List<GenerationConfig> genConfigs = readAllConfigs();
+            for (GenerationConfig genConfig : genConfigs)
+            {
+                DataFile[] df = genConfig.getDataFiles();
+                if(df != null)
+                {
+                    for (DataFile dataFile : df)
+                    {
+                        dataFile.generate(this);
+                    }
+                }
+            }
+            if(dataFiles != null)
+            {
+                for (DataFile dataFile : dataFiles)
+                {
+                    dataFile.generate(this);
+                }
+            }
+
+            project.addCompileSourceRoot(outputBasePath);
         }
-        
-        project.addCompileSourceRoot(outputBasePath);
+        catch (MojoExecutionException e)
+        {
+            getLog().error(e.getMessage(), e);
+            throw  e;
+        }
     }
 
     protected String getDataFilesBasePath()
@@ -125,5 +158,37 @@ public class GenerateMojo extends AbstractMojo
     public Configuration getFreeMarkerConfiguration() throws IOException
     {
         return cfg;
+    }
+
+    private List<GenerationConfig> readAllConfigs()
+    {
+        List<GenerationConfig> result = new LinkedList<>();
+        String file = "BRIDJE-INF/srcgen/generation.xml";
+        try
+        {
+            Enumeration<URL> resources = clsRealm.getResources(file);
+            while (resources.hasMoreElements())
+            {
+                URL url = resources.nextElement();
+                GenerationConfig cfg = readConfig(url);
+                if(cfg != null)
+                {
+                    result.add(cfg);
+                }
+            }
+        }
+        catch (IOException | JAXBException ex)
+        {
+            getLog().error(ex.getMessage(), ex);
+        }
+        return result;
+    }
+
+    private GenerationConfig readConfig(URL url) throws JAXBException, IOException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(GenerationConfig.class);
+        Unmarshaller unm = ctx.createUnmarshaller();
+        Object result = unm.unmarshal(url.openStream());
+        return (GenerationConfig)result;
     }
 }

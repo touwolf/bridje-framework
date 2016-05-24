@@ -28,6 +28,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -35,6 +37,7 @@ import org.w3c.dom.Node;
 /**
  * A file to generate.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WriteFile
 {
     private String name;

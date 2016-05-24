@@ -16,6 +16,11 @@
 
 package org.bridje.maven.plugin;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -28,10 +33,16 @@ import org.w3c.dom.NodeList;
  * An xml xpath expresion with represents the dom nodes that will be taken for
  * the source code generation in a data file.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Node
 {
     private String expression;
 
+    @XmlElementWrapper(name = "files")
+    @XmlElements(
+    {
+        @XmlElement(name = "file", type = WriteFile.class)
+    })
     private WriteFile[] files;
 
     /**

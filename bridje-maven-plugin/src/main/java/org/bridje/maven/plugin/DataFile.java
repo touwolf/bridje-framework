@@ -18,6 +18,11 @@ package org.bridje.maven.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,14 +34,21 @@ import org.xml.sax.SAXException;
  * Represents a data file from witch the data will be taken to generate the
  * code.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DataFile
 {
     private String path;
 
+    @XmlElementWrapper(name = "nodes")
+    @XmlElements(
+    {
+        @XmlElement(name = "node", type = Node.class)
+    })
     private Node[] nodes;
 
     /**
      * The path of the file.
+     *
      * @return An String representing the path of the data file.
      */
     public String getPath()
@@ -46,7 +58,9 @@ public class DataFile
 
     /**
      * The nodes expression for this data file.
-     * @return An array with all the xml nodes configuration for the code generation.
+     *
+     * @return An array with all the xml nodes configuration for the code
+     * generation.
      */
     public Node[] getNodes()
     {
@@ -57,6 +71,10 @@ public class DataFile
     {
         try
         {
+            if(path == null || nodes == null)
+            {
+                return;
+            }
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(new File(mojo.getDataFilesBasePath() + "/" + path));
