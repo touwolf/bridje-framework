@@ -1,31 +1,32 @@
- 
+<#include "./EntityUtils.ftl" />
+
 package ${doc.model.@package};
 
-import org.bridje.orm.Entity;
-import org.bridje.orm.Field;
-import org.bridje.orm.DbObject;
-import org.bridje.orm.TableColumn;
+import org.bridje.orm.*;
+<#if hasType("date") >
+import java.util.Date;
+</#if>
 
 @Entity(table = "${node.@name?uncap_first}")
 public class ${node.@name}
 {
     <#list node.* as field>
     @DbObject("${field.@name}")
-    private TableColumn<${field?node_name?cap_first}, ${field?node_name?cap_first}> ${field.@name?upper_case};
+    public ${findTableColumn(field)}<${findType(field)}, ${findType(field)}> ${field.@name?upper_case};
 
     </#list>
     <#list node.* as field>
     @Field
-    private ${field?node_name?cap_first} ${field.@name};
+    private ${findType(field)} ${field.@name};
 
     </#list>
     <#list node.* as field>
-    private ${field?node_name?cap_first} get${field.@name?cap_first}()
+    public ${findType(field)} get${field.@name?cap_first}()
     {
         return this.${field.@name};
     }
 
-    private void set${field.@name?cap_first}(${field?node_name?cap_first} ${field.@name})
+    public void set${field.@name?cap_first}(${findType(field)} ${field.@name})
     {
         this.${field.@name} = ${field.@name};
     }
