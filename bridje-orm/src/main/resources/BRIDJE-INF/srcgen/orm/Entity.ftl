@@ -10,15 +10,17 @@ import java.util.Date;
 @Entity(table = "${node.@name?uncap_first}")
 public class ${node.@name}
 {
+    @DbObject
+    public static Table<${node.@name}> TABLE;
+
     <#list node.* as field>
     @DbObject("${field.@name}")
-    public ${findTableColumn(field)}<${findType(field)}, ${findType(field)}> ${field.@name?upper_case};
+    public static ${findTableColumn(field)}<${node.@name}, ${findType(field)}> ${field.@name?upper_case};
 
     </#list>
     <#list node.* as field>
-    <#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true") 
-            || (field.@key[0]?? && field.@key == "true")>
-    @Key<#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true")>(autoIncrement = true)</#if>
+    <#if isKey(field) >
+    @Key<#if isAutoIncrement(field)>(autoIncrement = true)</#if>
     </#if>
     @Field
     private ${findType(field)} ${field.@name};

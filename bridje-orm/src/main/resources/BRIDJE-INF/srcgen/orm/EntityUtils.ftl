@@ -35,3 +35,18 @@
     </#if>
     <#return false />
 </#function>
+
+<#function isKey field>
+    <#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true") 
+            || (field.@key[0]?? && field.@key == "true")>
+        <#return true />
+    </#if>
+    <#return false />
+</#function>
+
+<#function isAutoIncrement field>
+    <#if (field.@autoIncrement[0]?? && field.@autoIncrement == "true") >
+        <#return true />
+    </#if>
+    <#return false />
+</#function>
