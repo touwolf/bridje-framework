@@ -69,13 +69,13 @@ class TableRelationColumnImpl<E, R> extends TableColumnImpl<E, R> implements Tab
     public Condition eq(R value)
     {
         Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
-        return new BinaryCondition(this, Operator.EQ, idValue);
+        return new BinaryCondition(this, Operator.EQ, serialize(idValue));
     }
 
     @Override
     public Condition ne(R value)
     {
         Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
-        return new BinaryCondition(this, Operator.NE, idValue);
+        return new BinaryCondition(this, Operator.NE, serialize(idValue));
     }
 }

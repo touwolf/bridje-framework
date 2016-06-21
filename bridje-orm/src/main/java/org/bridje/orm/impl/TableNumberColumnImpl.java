@@ -53,24 +53,24 @@ class TableNumberColumnImpl<E, T extends Number> extends TableColumnImpl<E, T> i
     @Override
     public Condition gt(T value)
     {
-        return new BinaryCondition(this, Operator.GT, value);
+        return new BinaryCondition(this, Operator.GT, serialize(value));
     }
 
     @Override
     public Condition ge(T value)
     {
-        return new BinaryCondition(this, Operator.GE, value);
+        return new BinaryCondition(this, Operator.GE, serialize(value));
     }
 
     @Override
     public Condition lt(T value)
     {
-        return new BinaryCondition(this, Operator.LT, value);
+        return new BinaryCondition(this, Operator.LT, serialize(value));
     }
 
     @Override
     public Condition le(T value)
     {
-        return new BinaryCondition(this, Operator.LE, value);
+        return new BinaryCondition(this, Operator.LE, serialize(value));
     }
 }

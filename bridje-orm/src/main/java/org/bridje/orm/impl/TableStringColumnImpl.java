@@ -37,6 +37,6 @@ class TableStringColumnImpl<E> extends TableColumnImpl<E, String> implements Tab
     @Override
     public Condition like(String value)
     {
-        return new BinaryCondition(this, Operator.LIKE, value);
+        return new BinaryCondition(this, Operator.LIKE, serialize(value));
     }
 }

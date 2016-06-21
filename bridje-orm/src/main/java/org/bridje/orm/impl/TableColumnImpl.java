@@ -24,8 +24,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Ioc;
+import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
+import org.bridje.orm.SQLAdapter;
 import org.bridje.orm.TableColumn;
 
 /**
@@ -55,6 +58,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     
     private final boolean autoIncrement;
     
+    private SQLAdapter adapter;
+    
     public TableColumnImpl(TableImpl<E> table, Field field, Class<T> type)
     {
         this.table = table;
@@ -73,6 +78,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         this.length = findLength(annotation.length());
         this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? annotation.precision() : 0;
         this.indexed = annotation.index();
+        if(annotation.adapter() != SQLAdapter.class)
+        {
+            this.adapter = Ioc.context().find(annotation.adapter());
+        }
     }
 
     @Override
@@ -159,7 +168,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     {
         try
         {
-            this.field.set(entity, value);
+            this.field.set(entity, unserialize(value));
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
@@ -182,7 +191,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     
     protected Object getQueryParameter(E entity)
     {
-        return getValue(entity);
+        return serialize(getValue(entity));
     }
 
     private int findLength(int length)
@@ -270,5 +279,35 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     public String writeSQL(List<Object> parameters, EntityContext ctx)
     {
         return ctx.getDialect().identifier(table.getName()) + "." + ctx.getDialect().identifier(name);
+    }
+
+    @Override
+    public Condition eq(T value)
+    {
+        return new BinaryCondition(this, Operator.EQ, serialize(value));
+    }
+
+    @Override
+    public Condition ne(T value)
+    {
+        return new BinaryCondition(this, Operator.NE, serialize(value));
+    }
+    
+    public Object serialize(Object value)
+    {
+        if(adapter != null)
+        {
+            return adapter.serialize(value);
+        }
+        return value;
+    }
+
+    public Object unserialize(Object value)
+    {
+        if(adapter != null)
+        {
+            return adapter.unserialize(value);
+        }
+        return value;
     }
 }

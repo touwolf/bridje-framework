@@ -68,4 +68,6 @@ public @interface Field
      * automatically created on the column of this field.
      */
     boolean index() default false;
+    
+    Class<? extends SQLAdapter> adapter() default SQLAdapter.class;
 }
