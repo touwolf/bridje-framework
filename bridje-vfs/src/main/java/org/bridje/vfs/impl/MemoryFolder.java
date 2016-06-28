@@ -16,6 +16,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -309,5 +310,29 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     public void travel(VirtualFolderVisitor visitor, String query)
     {
         travel(this, visitor, query);
+    }
+
+    @Override
+    public VirtualFile createPhysicalFile(String fileName) throws IOException
+    {
+        throw new IOException("Cannot create physical file here.");
+    }
+
+    @Override
+    public VirtualFolder createPhysicalFolder(String folderName) throws IOException
+    {
+        throw new IOException("Cannot create physical folder here.");
+    }
+
+    @Override
+    public boolean canCreatePhysicalFile(String fileName)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canCreatePhysicalFolder(String folderName)
+    {
+        return false;
     }
 }

@@ -46,6 +46,8 @@ class VfsServiceImpl implements VfsService
     private VirtualFileReader[] readers;
     
     private Map<String, Map<Class<?>, List<VirtualFileReader>>> readersMap;
+    
+    private Map<String, List<VirtualFileReader>> genericReadersMap;
 
     @PostConstruct
     public void init()
@@ -229,32 +231,58 @@ class VfsServiceImpl implements VfsService
                     }
                 }
             }
+            
+            List<VirtualFileReader> lst = genericReadersMap.get(file.getExtension());
+            if(lst != null)
+            {
+                for (VirtualFileReader reader : lst)
+                {
+                    if(reader.canRead(file, resultCls))
+                    {
+                        return reader.read(file, resultCls);
+                    }
+                }
+            }
         }
         return null;
     }
 
     private void initReaders()
     {
+        genericReadersMap = new HashMap<>();
         readersMap = new HashMap<>();
         for (VirtualFileReader reader : readers)
         {
             String[] extensions = reader.getExtensions();
             for (String extension : extensions)
             {
-                Map<Class<?>, List<VirtualFileReader>> clsMap = readersMap.get(extension);
-                if(clsMap == null)
-                {
-                    clsMap = new HashMap<>();
-                    readersMap.put(extension, clsMap);
-                }
                 Class<?>[] clsArray = reader.getClasses();
-                for (Class<?> cls : clsArray)
+                if(clsArray != null)
                 {
-                    List<VirtualFileReader> lst = clsMap.get(cls);
+                    Map<Class<?>, List<VirtualFileReader>> clsMap = readersMap.get(extension);
+                    if(clsMap == null)
+                    {
+                        clsMap = new HashMap<>();
+                        readersMap.put(extension, clsMap);
+                    }
+                    for (Class<?> cls : clsArray)
+                    {
+                        List<VirtualFileReader> lst = clsMap.get(cls);
+                        if(lst == null)
+                        {
+                            lst = new ArrayList<>();
+                            clsMap.put(cls, lst);
+                        }
+                        lst.add(reader);
+                    }
+                }
+                else
+                {
+                    List<VirtualFileReader> lst = genericReadersMap.get(extension);
                     if(lst == null)
                     {
                         lst = new ArrayList<>();
-                        clsMap.put(cls, lst);
+                        genericReadersMap.put(extension, lst);
                     }
                     lst.add(reader);
                 }

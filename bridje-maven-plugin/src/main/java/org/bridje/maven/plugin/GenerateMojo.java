@@ -24,13 +24,10 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -54,14 +51,8 @@ public class GenerateMojo extends AbstractMojo
     @Parameter(defaultValue = "src/main/bridje", readonly = false)
     private String dataFilesBasePath;
 
-    @Parameter(defaultValue = "src/main/bridje", readonly = false)
-    private String templatesBasePath;
-
     @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)
     private String outputBasePath;
-    
-    @Parameter(readonly = false)
-    private DataFile[] dataFiles;
     
     @Parameter(defaultValue="${project}", readonly=true, required=true)
     private MavenProject project;
@@ -70,9 +61,21 @@ public class GenerateMojo extends AbstractMojo
     
     private Configuration cfg;
     
+    @Parameter(defaultValue = "true", readonly = false)
+    private boolean autoCreate;
+    
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
+        File f = new File(getDataFilesBasePath());
+        if(!f.exists())
+        {
+            if(autoCreate)
+            {
+                f.getAbsoluteFile().mkdirs();
+            }
+        }
+
         try
         {
             clsRealm = ClassPathUtils.createClassPath(project);
@@ -93,18 +96,24 @@ public class GenerateMojo extends AbstractMojo
                 {
                     for (DataFile dataFile : df)
                     {
-                        dataFile.generate(this);
+                        try
+                        {
+                            if(!dataFile.exists(this))
+                            {
+                                if(autoCreate)
+                                {
+                                    dataFile.create(this);
+                                }
+                            }
+                            dataFile.generate(this);
+                        }
+                        catch (IOException e)
+                        {
+                            throw new MojoExecutionException(e.getMessage(), e);
+                        }
                     }
                 }
             }
-            if(dataFiles != null)
-            {
-                for (DataFile dataFile : dataFiles)
-                {
-                    dataFile.generate(this);
-                }
-            }
-
             project.addCompileSourceRoot(outputBasePath);
         }
         catch (MojoExecutionException e)
@@ -119,19 +128,9 @@ public class GenerateMojo extends AbstractMojo
         return dataFilesBasePath;
     }
 
-    protected String getTemplatesBasePath()
-    {
-        return templatesBasePath;
-    }
-
     protected String getOutputBasePath()
     {
         return outputBasePath;
-    }
-
-    protected DataFile[] getDataFiles()
-    {
-        return dataFiles;
     }
 
     protected MavenProject getProject()
@@ -143,13 +142,8 @@ public class GenerateMojo extends AbstractMojo
     {
         //Freemarker configuration
         cfg = new Configuration(Configuration.VERSION_2_3_23);
-        TemplateLoader fileLoader = new FileTemplateLoader(new File(getTemplatesBasePath()));
         TemplateLoader cpLoader = new ClassTemplateLoader(clsRealm, "/BRIDJE-INF/srcgen/");
-        TemplateLoader tplLoader = new MultiTemplateLoader(new TemplateLoader[]
-        {
-            fileLoader, cpLoader
-        });
-        cfg.setTemplateLoader(tplLoader);
+        cfg.setTemplateLoader(cpLoader);
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);

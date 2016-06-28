@@ -16,6 +16,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -272,5 +273,45 @@ class ProxyFolder implements VirtualFolder
     public void travel(VirtualFolderVisitor visitor, String query)
     {
         AbstractResource.travel(this, visitor, query);
+    }
+
+    @Override
+    public VirtualFile createPhysicalFile(String fileName) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).createPhysicalFile(fileName);
+        }
+        throw new IOException("Cannot create physical file here.");
+    }
+
+    @Override
+    public VirtualFolder createPhysicalFolder(String folderName) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).createPhysicalFolder(folderName);
+        }
+        throw new IOException("Cannot create physical folder here.");
+    }
+
+    @Override
+    public boolean canCreatePhysicalFile(String fileName)
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).canCreatePhysicalFile(fileName);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canCreatePhysicalFolder(String folderName)
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).canCreatePhysicalFolder(folderName);
+        }
+        return false;
     }
 }

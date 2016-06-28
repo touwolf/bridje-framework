@@ -266,4 +266,28 @@ public class ClassPathVfsSource implements VfsSource
         URL url = (URL)data;
         return url.openStream();
     }
+
+    @Override
+    public Object createPhysicalFile(Path join) throws IOException
+    {
+        throw new IOException("Cannot create physical file here.");
+    }
+
+    @Override
+    public String createPhysicalFolder(Path join) throws IOException
+    {
+        throw new IOException("Cannot create physical folder here.");
+    }
+
+    @Override
+    public boolean canCreatePhysicalFolder(Path join)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canCreatePhysicalFile(Path join)
+    {
+        return false;
+    }
 }

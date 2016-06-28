@@ -17,6 +17,7 @@
 package org.bridje.maven.plugin;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,6 +47,9 @@ public class DataFile
     })
     private Node[] nodes;
 
+    private String defContent;
+
+    
     /**
      * The path of the file.
      *
@@ -87,5 +91,34 @@ public class DataFile
         {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
+    }
+    
+    public boolean exists(GenerateMojo mojo)
+    {
+        return new File(mojo.getDataFilesBasePath() + "/" + path).exists();
+    }
+    
+    public void create(GenerateMojo mojo) throws IOException
+    {
+        File f = new File(mojo.getDataFilesBasePath() + "/" + path);
+        f.createNewFile();
+        if(getDefContent() != null)
+        {
+            try(FileOutputStream fos = new FileOutputStream(f))
+            {
+                fos.write(getDefContent().getBytes());
+                fos.flush();
+            }
+        }
+    }
+
+    public String getDefContent()
+    {
+        return defContent;
+    }
+
+    public void setDefContent(String defContent)
+    {
+        this.defContent = defContent;
     }
 }

@@ -99,4 +99,34 @@ public interface VfsSource
      * exception may be throw if any input output operation fails.
      */
     InputStream open(Object data) throws IOException;
+
+    /**
+     * 
+     * @param filePath
+     * @return 
+     * @throws java.io.IOException 
+     */
+    Object createPhysicalFile(Path filePath) throws IOException;
+
+    /**
+     * 
+     * @param folderPath
+     * @return 
+     * @throws java.io.IOException 
+     */
+    String createPhysicalFolder(Path folderPath) throws IOException;
+
+    /**
+     * 
+     * @param folderPath
+     * @return 
+     */
+    boolean canCreatePhysicalFolder(Path folderPath);
+
+    /**
+     * 
+     * @param filePath
+     * @return 
+     */
+    boolean canCreatePhysicalFile(Path filePath);
 }

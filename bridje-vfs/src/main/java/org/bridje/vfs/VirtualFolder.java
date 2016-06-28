@@ -16,6 +16,7 @@
 
 package org.bridje.vfs;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -98,6 +99,36 @@ public interface VirtualFolder extends VirtualResource
      * folder.
      */
     List<VirtualFile> listFiles(String query);
+    
+    /**
+     * 
+     * @param fileName
+     * @return
+     * @throws IOException 
+     */
+    VirtualFile createPhysicalFile(String fileName) throws IOException;
+
+    /**
+     * 
+     * @param folderName
+     * @return
+     * @throws IOException 
+     */
+    VirtualFolder createPhysicalFolder(String folderName) throws IOException;
+
+    /**
+     * 
+     * @param fileName
+     * @return 
+     */
+    boolean canCreatePhysicalFile(String fileName);
+
+    /**
+     * 
+     * @param folderName
+     * @return 
+     */
+    boolean canCreatePhysicalFolder(String folderName);
 
     /**
      * Travels through all files recursively from this folder and its children
