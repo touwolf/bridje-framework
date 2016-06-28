@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -318,6 +319,10 @@ class TableImpl<T> implements Table<T>
         else if(String.class.equals(declaredField.getType()))
         {
             return new TableStringColumnImpl(this, declaredField);
+        }
+        else if(Date.class.isAssignableFrom(declaredField.getType()))
+        {
+            return new TableDateColumnImpl(this, declaredField, declaredField.getType());
         }
         else if(declaredField.getType().getAnnotation(Entity.class) != null)
         {
