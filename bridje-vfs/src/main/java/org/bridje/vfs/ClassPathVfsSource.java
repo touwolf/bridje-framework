@@ -4,6 +4,7 @@ package org.bridje.vfs;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -261,32 +262,44 @@ public class ClassPathVfsSource implements VfsSource
     }
 
     @Override
-    public InputStream open(Object data) throws IOException
+    public InputStream openForRead(Object data) throws IOException
     {
         URL url = (URL)data;
         return url.openStream();
     }
 
     @Override
-    public Object createPhysicalFile(Path join) throws IOException
+    public OutputStream openForWrite(Object data) throws IOException
+    {
+        return null;
+    }
+    
+    @Override
+    public boolean canOpenForWrite(Object data)
+    {
+        return false;
+    }
+    
+    @Override
+    public Object createNewFile(Path join) throws IOException
     {
         throw new IOException("Cannot create physical file here.");
     }
 
     @Override
-    public String createPhysicalFolder(Path join) throws IOException
+    public String mkDir(Path join) throws IOException
     {
         throw new IOException("Cannot create physical folder here.");
     }
 
     @Override
-    public boolean canCreatePhysicalFolder(Path join)
+    public boolean canMkDir(Path join)
     {
         return false;
     }
 
     @Override
-    public boolean canCreatePhysicalFile(Path join)
+    public boolean canCreateNewFile(Path join)
     {
         return false;
     }

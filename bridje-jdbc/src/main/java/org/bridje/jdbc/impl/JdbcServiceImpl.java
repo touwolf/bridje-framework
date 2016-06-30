@@ -16,8 +16,6 @@
 
 package org.bridje.jdbc.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,9 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.jdbc.JdbcService;
@@ -35,6 +30,7 @@ import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VirtualFolder;
 
 /**
  *
@@ -103,25 +99,35 @@ class JdbcServiceImpl implements JdbcService
 
     private JdbcConfig findConfig()
     {
-        VirtualFile httpConfFile = vfsServ.findFile("/etc/jdbc.xml");
-        return readConf(httpConfFile);
-    }
-    
-    private JdbcConfig readConf(VirtualFile jdbcConf)
-    {
-        if(jdbcConf != null)
+        JdbcConfig config = null;
+        try
         {
-            try(InputStream is = jdbcConf.open())
+            config = vfsServ.readFile("/etc/jdbc.xml", JdbcConfig.class);
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        if(config == null)
+        {
+            config = new JdbcConfig();
+            try
             {
-                JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
-                Unmarshaller unm = ctx.createUnmarshaller();
-                return (JdbcConfig)unm.unmarshal(is);
+                VirtualFolder etc = vfsServ.findFolder("/etc");
+                if(etc.canCreateNewFile("jdbc.xml"))
+                {
+                    VirtualFile jdbc = etc.createNewFile("jdbc.xml");
+                    if(jdbc.canOpenForWrite())
+                    {
+                        vfsServ.writeFile("/etc/jdbc.xml", config);
+                    }
+                }
             }
-            catch(IOException | JAXBException ex)
+            catch (Exception e)
             {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
-        return new JdbcConfig();
+        return config;
     }
 }

@@ -3,8 +3,10 @@ package org.bridje.vfs;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,14 +133,27 @@ public class FileVfsSource implements VfsSource
     }
 
     @Override
-    public InputStream open(Object data) throws IOException
+    public InputStream openForRead(Object data) throws IOException
     {
         File f = (File)data;
         return new FileInputStream(f);
     }
 
     @Override
-    public Object createPhysicalFile(Path filePath) throws IOException
+    public OutputStream openForWrite(Object data) throws IOException
+    {
+        File f = (File)data;
+        return new FileOutputStream(f);
+    }
+    
+    @Override
+    public boolean canOpenForWrite(Object data)
+    {
+        return false;
+    }
+
+    @Override
+    public Object createNewFile(Path filePath) throws IOException
     {
         try
         {
@@ -157,7 +172,7 @@ public class FileVfsSource implements VfsSource
     }
 
     @Override
-    public String createPhysicalFolder(Path folderPath) throws IOException
+    public String mkDir(Path folderPath) throws IOException
     {
         try
         {
@@ -176,7 +191,7 @@ public class FileVfsSource implements VfsSource
     }
 
     @Override
-    public boolean canCreatePhysicalFolder(Path folderPath)
+    public boolean canMkDir(Path folderPath)
     {
         try
         {
@@ -191,7 +206,7 @@ public class FileVfsSource implements VfsSource
     }
 
     @Override
-    public boolean canCreatePhysicalFile(Path filePath)
+    public boolean canCreateNewFile(Path filePath)
     {
         try
         {

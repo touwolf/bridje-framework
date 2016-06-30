@@ -313,25 +313,25 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFile createPhysicalFile(String fileName) throws IOException
+    public VirtualFile createNewFile(String fileName) throws IOException
     {
         throw new IOException("Cannot create physical file here.");
     }
 
     @Override
-    public VirtualFolder createPhysicalFolder(String folderName) throws IOException
+    public VirtualFolder mkDir(String folderName) throws IOException
     {
         throw new IOException("Cannot create physical folder here.");
     }
 
     @Override
-    public boolean canCreatePhysicalFile(String fileName)
+    public boolean canCreateNewFile(String fileName)
     {
         return false;
     }
 
     @Override
-    public boolean canCreatePhysicalFolder(String folderName)
+    public boolean canMkDir(String folderName)
     {
         return false;
     }

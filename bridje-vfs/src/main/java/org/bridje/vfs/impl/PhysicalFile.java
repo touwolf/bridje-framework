@@ -18,6 +18,7 @@ package org.bridje.vfs.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VirtualFile;
@@ -33,9 +34,21 @@ class PhysicalFile extends PhysicalResource implements VirtualFile
     }
 
     @Override
-    public InputStream open() throws IOException
+    public InputStream openForRead() throws IOException
     {
-        return getSource().open(data);
+        return getSource().openForRead(data);
+    }
+
+    @Override
+    public OutputStream openForWrite() throws IOException
+    {
+        return getSource().openForWrite(data);
+    }
+
+    @Override
+    public boolean canOpenForWrite()
+    {
+        return getSource().canOpenForWrite(data);
     }
 
     @Override

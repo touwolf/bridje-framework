@@ -42,7 +42,7 @@ class ThemesTplLoader implements TemplateLoader
         {
             return null;
         }
-        return tpl.open();
+        return tpl.openForRead();
     }
 
     @Override

@@ -31,7 +31,7 @@ import org.junit.Test;
 public class VfsServiceTest
 {
     private static final Logger LOG = Logger.getLogger(VfsServiceTest.class.getName());
-
+    
     @Test
     public void testFindFiles()
     {
@@ -73,9 +73,30 @@ public class VfsServiceTest
         prop.put("prop1", "val1");
         prop.store(new FileWriter(f), "A properties file");
         
-        VfsService instance = Ioc.context().find(VfsService.class);
-        instance.mountFile("/tests", f.getParentFile());
-        Properties readedProp = instance.findFile("tests/someprop.properties", Properties.class);
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        vfsServ.mountFile("/tests", f.getParentFile());
+        Properties readedProp = vfsServ.readFile("tests/someprop.properties", Properties.class);
+        assertNotNull(readedProp);
+        assertEquals(prop.get("prop1"), readedProp.getProperty("prop1"));
+    }
+
+    @Test
+    public void testWrite() throws IOException
+    {
+        File f = new File("./target/tmptests/someprop1.properties");
+        if(f.exists())
+        {
+           f.delete();
+        }
+        f.getParentFile().mkdirs();
+        Properties prop = new Properties();
+        prop.put("prop1", "val1");
+        
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        vfsServ.mountFile("/tests", f.getParentFile());
+        vfsServ.findFolder("/tests").createNewFile("someprop1.properties");
+        vfsServ.writeFile("tests/someprop1.properties", prop);
+        Properties readedProp = vfsServ.readFile("tests/someprop1.properties", Properties.class);
         assertNotNull(readedProp);
         assertEquals(prop.get("prop1"), readedProp.getProperty("prop1"));
     }

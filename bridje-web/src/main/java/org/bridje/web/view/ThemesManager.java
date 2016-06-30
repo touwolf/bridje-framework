@@ -100,7 +100,7 @@ class ThemesManager
         VirtualFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
         if(f != null)
         {
-            try(InputStream is = f.open())
+            try(InputStream is = f.openForRead())
             {
                 OutputStream os = resp.getOutputStream();
                 int ch = is.read();

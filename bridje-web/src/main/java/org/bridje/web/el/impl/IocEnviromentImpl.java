@@ -35,16 +35,16 @@ class IocEnviromentImpl implements ElEnviroment
     }
 
     @Override
-    public <T> T get(String expresion, Class<T> resultCls)
+    public <T> T get(String expression, Class<T> resultCls)
     {
-        ValueExpression valueExp = factory.createValueExpression(context, expresion, resultCls);
+        ValueExpression valueExp = factory.createValueExpression(context, expression, resultCls);
         return (T)valueExp.getValue(context);
     }
 
     @Override
-    public <T> void set(String expresion, T value)
+    public <T> void set(String expression, T value)
     {
-        ValueExpression valueExp = factory.createValueExpression(context, expresion, value.getClass());
+        ValueExpression valueExp = factory.createValueExpression(context, expression, value.getClass());
         valueExp.setValue(context, value);
     }
 

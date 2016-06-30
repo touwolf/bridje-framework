@@ -49,6 +49,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VirtualFolder;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -149,28 +150,36 @@ class HttpServerImpl implements HttpServer
     {
         if(config == null)
         {
-            VirtualFile httpConfFile = vfsServ.findFile("/etc/http.xml");
-            config = readConf(httpConfFile);
+            try
+            {
+                config = vfsServ.readFile("/etc/http.xml", HttpServerConfig.class);
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+            if(config == null)
+            {
+                config = new HttpServerConfig();
+                try
+                {
+                    VirtualFolder etc = vfsServ.findFolder("/etc");
+                    if(etc.canCreateNewFile("http.xml"))
+                    {
+                        VirtualFile http = etc.createNewFile("http.xml");
+                        if(http.canOpenForWrite())
+                        {
+                            vfsServ.writeFile("/etc/http.xml", config);
+                        }
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
         }
         return config;
-    }
-
-    private HttpServerConfig readConf(VirtualFile httpConfFile)
-    {
-        if(httpConfFile == null)
-        {
-            return new HttpServerConfig();
-        }
-        try(InputStream is = httpConfFile.open())
-        {
-            JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
-            Unmarshaller unm = ctx.createUnmarshaller();
-            return (HttpServerConfig)unm.unmarshal(is);
-        }
-        catch(IOException | JAXBException ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return new HttpServerConfig();
     }
 }

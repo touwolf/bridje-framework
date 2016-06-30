@@ -18,6 +18,7 @@ package org.bridje.vfs.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import org.bridje.vfs.MultiVirtualFile;
@@ -46,9 +47,21 @@ public class ProxyFile implements MultiVirtualFile
     }
 
     @Override
-    public InputStream open() throws IOException
+    public InputStream openForRead() throws IOException
     {
-        return getDefFile().open();
+        return getDefFile().openForRead();
+    }
+
+    @Override
+    public OutputStream openForWrite() throws IOException
+    {
+        return getDefFile().openForWrite();
+    }
+
+    @Override
+    public boolean canOpenForWrite()
+    {
+        return getDefFile().canOpenForWrite();
     }
 
     @Override

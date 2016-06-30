@@ -18,6 +18,7 @@ package org.bridje.web.view;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -28,18 +29,21 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileReader;
 import static org.bridje.web.view.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
+import org.bridje.vfs.VirtualFileAdapter;
 
 @Component
-class WebComponentsManager implements VirtualFileReader
+class WebComponentsManager implements VirtualFileAdapter
 {
     private static final Logger LOG = Logger.getLogger(WebComponentsManager.class.getName());
 
     private Unmarshaller webViewUnmarsh;
+    
+    private Marshaller webViewMarsh;
 
     @PostConstruct
     public void init()
@@ -47,7 +51,8 @@ class WebComponentsManager implements VirtualFileReader
         try
         {
             JAXBContext webViewJaxbCtx = JAXBContext.newInstance(findComponentsClasses());
-            webViewUnmarsh= webViewJaxbCtx.createUnmarshaller();
+            webViewUnmarsh = webViewJaxbCtx.createUnmarshaller();
+            webViewMarsh = webViewJaxbCtx.createMarshaller();
         }
         catch (JAXBException | IOException e)
         {
@@ -68,7 +73,7 @@ class WebComponentsManager implements VirtualFileReader
     }
 
     @Override
-    public boolean canRead(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
     {
         return vf.getName().endsWith(".view.xml");
     }
@@ -77,6 +82,12 @@ class WebComponentsManager implements VirtualFileReader
     public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
     {
         return (T)toWebView(vf);
+    }
+
+    @Override
+    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    {
+        writeWebView(vf, (WebView)contentObj);
     }
 
     private Class<?>[] findComponentsClasses() throws IOException
@@ -138,7 +149,7 @@ class WebComponentsManager implements VirtualFileReader
     private WebView toWebView(VirtualFile f)
     {
         WebView result = null;
-        try(InputStream is = f.open())
+        try(InputStream is = f.openForRead())
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
             if(unmObj instanceof WebView)
@@ -151,5 +162,17 @@ class WebComponentsManager implements VirtualFileReader
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return result;
+    }
+
+    private void writeWebView(VirtualFile f, WebView view)
+    {
+        try(OutputStream os = f.openForWrite())
+        {
+            webViewMarsh.marshal(view, os);
+        }
+        catch (JAXBException | IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }
 }

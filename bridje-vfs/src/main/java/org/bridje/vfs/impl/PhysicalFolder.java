@@ -214,44 +214,44 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFile createPhysicalFile(String fileName) throws IOException
+    public VirtualFile createNewFile(String fileName) throws IOException
     {
         if(!new Path(fileName).isLast())
         {
             throw new IllegalArgumentException(fileName);
         }
-        Object file = getSource().createPhysicalFile(getPhysicalPath().join(fileName));
+        Object file = getSource().createNewFile(getPhysicalPath(new Path(fileName)));
         return new PhysicalFile(file, getSource(), getMountPath(), getRelativePath().join(fileName));
     }
 
     @Override
-    public VirtualFolder createPhysicalFolder(String folderName) throws IOException
+    public VirtualFolder mkDir(String folderName) throws IOException
     {
         if(!new Path(folderName).isLast())
         {
             throw new IllegalArgumentException(folderName);
         }
-        String folder = getSource().createPhysicalFolder(getPhysicalPath().join(folderName));
+        String folder = getSource().mkDir(getPhysicalPath(new Path(folderName)));
         return new PhysicalFolder(getSource(), getMountPath(), getRelativePath().join(folder));
     }
 
     @Override
-    public boolean canCreatePhysicalFile(String fileName)
+    public boolean canCreateNewFile(String fileName)
     {
         if(!new Path(fileName).isLast())
         {
             return false;
         }
-        return getSource().canCreatePhysicalFile(getPhysicalPath().join(fileName));
+        return getSource().canCreateNewFile(getPhysicalPath(new Path(fileName)));
     }
 
     @Override
-    public boolean canCreatePhysicalFolder(String folderName)
+    public boolean canMkDir(String folderName)
     {
         if(!new Path(folderName).isLast())
         {
             return false;
         }
-        return getSource().canCreatePhysicalFolder(getPhysicalPath().join(folderName));
+        return getSource().canMkDir(getPhysicalPath(new Path(folderName)));
     }
 }

@@ -1,21 +1,23 @@
 
-package org.bridje.vfs.impl;
+package org.bridje.vfs.impl.adapters;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileReader;
+import org.bridje.vfs.VirtualFileAdapter;
 
 @Component
-class JaxbXmlReader implements VirtualFileReader
+class JaxbXmlAdapter implements VirtualFileAdapter
 {
-    private static final Logger LOG = Logger.getLogger(JaxbXmlReader.class.getName());
+    private static final Logger LOG = Logger.getLogger(JaxbXmlAdapter.class.getName());
 
     @Override
     public String[] getExtensions()
@@ -30,7 +32,7 @@ class JaxbXmlReader implements VirtualFileReader
     }
 
     @Override
-    public boolean canRead(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
     {
         return (resultCls.getAnnotation(XmlRootElement.class) != null);
     }
@@ -38,7 +40,7 @@ class JaxbXmlReader implements VirtualFileReader
     @Override
     public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
     {
-        try(InputStream is = vf.open())
+        try(InputStream is = vf.openForRead())
         {
             JAXBContext ctx = JAXBContext.newInstance(resultCls);
             Unmarshaller unm = ctx.createUnmarshaller();
@@ -50,5 +52,27 @@ class JaxbXmlReader implements VirtualFileReader
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
+    }
+
+    @Override
+    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    {
+        if(vf.canOpenForWrite())
+        {
+            try(OutputStream os = vf.openForWrite())
+            {
+                JAXBContext ctx = JAXBContext.newInstance(contentObj.getClass());
+                Marshaller unm = ctx.createMarshaller();
+                unm.marshal(contentObj, os);
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        else
+        {
+            throw new IOException("Cannot open the file for writing.");
+        }
     }
 }

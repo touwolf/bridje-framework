@@ -18,6 +18,7 @@ package org.bridje.vfs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -98,7 +99,27 @@ public interface VfsSource
      * @throws IOException This method may access to physical device so this
      * exception may be throw if any input output operation fails.
      */
-    InputStream open(Object data) throws IOException;
+    InputStream openForRead(Object data) throws IOException;
+
+    /**
+     * Open a file's OutputStream for writing it's content.
+     * <p>
+     * @param data The file identifier retrieve from this VfsSource by the
+     * getFiles method.
+     * @return An OutputStream to the file.
+     * @throws IOException This method may access to physical device so this
+     * exception may be throw if any input output operation fails.
+     */
+    OutputStream openForWrite(Object data) throws IOException;
+    
+    /**
+     * Determines when ever the file can or not be open for writing.
+     * <p>
+     * @param data The file identifier retrieve from this VfsSource by the
+     * getFiles method.
+     * @return true if the file can be open for writing false otherwise.
+     */
+    boolean canOpenForWrite(Object data);
 
     /**
      * 
@@ -106,7 +127,7 @@ public interface VfsSource
      * @return 
      * @throws java.io.IOException 
      */
-    Object createPhysicalFile(Path filePath) throws IOException;
+    Object createNewFile(Path filePath) throws IOException;
 
     /**
      * 
@@ -114,19 +135,19 @@ public interface VfsSource
      * @return 
      * @throws java.io.IOException 
      */
-    String createPhysicalFolder(Path folderPath) throws IOException;
+    String mkDir(Path folderPath) throws IOException;
 
     /**
      * 
      * @param folderPath
      * @return 
      */
-    boolean canCreatePhysicalFolder(Path folderPath);
+    boolean canMkDir(Path folderPath);
 
     /**
      * 
      * @param filePath
      * @return 
      */
-    boolean canCreatePhysicalFile(Path filePath);
+    boolean canCreateNewFile(Path filePath);
 }

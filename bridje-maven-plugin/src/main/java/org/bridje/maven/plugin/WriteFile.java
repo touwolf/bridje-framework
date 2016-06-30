@@ -45,7 +45,7 @@ public class WriteFile
     private String template;
 
     /**
-     * The name of the file to generate, it can contain freemarker expresions.
+     * The name of the file to generate, it can contain freemarker expressions.
      *
      * @return The file name template in freemarker.
      */

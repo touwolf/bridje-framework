@@ -276,41 +276,41 @@ class ProxyFolder implements VirtualFolder
     }
 
     @Override
-    public VirtualFile createPhysicalFile(String fileName) throws IOException
+    public VirtualFile createNewFile(String fileName) throws IOException
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).createPhysicalFile(fileName);
+            return folders.get(0).createNewFile(fileName);
         }
         throw new IOException("Cannot create physical file here.");
     }
 
     @Override
-    public VirtualFolder createPhysicalFolder(String folderName) throws IOException
+    public VirtualFolder mkDir(String folderName) throws IOException
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).createPhysicalFolder(folderName);
+            return folders.get(0).mkDir(folderName);
         }
         throw new IOException("Cannot create physical folder here.");
     }
 
     @Override
-    public boolean canCreatePhysicalFile(String fileName)
+    public boolean canCreateNewFile(String fileName)
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).canCreatePhysicalFile(fileName);
+            return folders.get(0).canCreateNewFile(fileName);
         }
         return false;
     }
 
     @Override
-    public boolean canCreatePhysicalFolder(String folderName)
+    public boolean canMkDir(String folderName)
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).canCreatePhysicalFolder(folderName);
+            return folders.get(0).canMkDir(folderName);
         }
         return false;
     }

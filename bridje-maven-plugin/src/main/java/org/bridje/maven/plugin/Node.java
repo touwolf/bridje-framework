@@ -30,7 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
- * An xml xpath expresion with represents the dom nodes that will be taken for
+ * An xml xpath expression with represents the dom nodes that will be taken for
  * the source code generation in a data file.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -46,7 +46,7 @@ public class Node
     private WriteFile[] files;
 
     /**
-     * The xpath expresion for this node configuration.
+     * The xpath expression for this node configuration.
      *
      * @return An string representing the actual xpath to apply to find the
      * nodes for the source code generation.
@@ -60,7 +60,7 @@ public class Node
      * The files to generate for each node.
      *
      * @return An array of files that will be generated for each node that the
-     * xpath expresion returns from the data file.
+     * xpath expression returns from the data file.
      */
     public WriteFile[] getFiles()
     {

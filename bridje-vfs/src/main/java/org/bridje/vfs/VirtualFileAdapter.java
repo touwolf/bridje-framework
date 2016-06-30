@@ -18,13 +18,47 @@ package org.bridje.vfs;
 
 import java.io.IOException;
 
-public interface VirtualFileReader
+/**
+ * 
+ */
+public interface VirtualFileAdapter
 {
+    /**
+     * 
+     * @return 
+     */
     String[] getExtensions();
 
+    /**
+     * 
+     * @return 
+     */
     Class<?>[] getClasses();
     
-    boolean canRead(VirtualFile vf, Class<?> resultCls);
+    /**
+     * 
+     * @param vf
+     * @param resultCls
+     * @return 
+     */
+    boolean canHandle(VirtualFile vf, Class<?> resultCls);
 
+    /**
+     * 
+     * @param <T>
+     * @param vf
+     * @param resultCls
+     * @return
+     * @throws IOException 
+     */
     <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException;
+
+    /**
+     * 
+     * @param <T>
+     * @param vf
+     * @param contentObj
+     * @throws IOException 
+     */
+    <T> void write(VirtualFile vf, T contentObj) throws IOException;
 }

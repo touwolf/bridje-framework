@@ -24,7 +24,7 @@ import java.util.List;
 public interface SQLWritable
 {
     /**
-     * This method allow to write the condition expresion that need to be used
+     * This method allow to write the condition expression that need to be used
      * when executing the query into the database.
      *
      * @param parameters The list where the parameters will be put when

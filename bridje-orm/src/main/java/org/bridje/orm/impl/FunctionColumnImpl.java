@@ -37,7 +37,7 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
      *
      * @param column The Table object this columns belong to.
      * @param type The type for this column.
-     * @param function The function expresion to be use when selialize this
+     * @param function The function expression to be use when selialize this
      * object to a query.
      * @param parameters The parameters list on the current query, that this
      * column must have for correct serialization.
@@ -56,7 +56,7 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
     }
 
     /**
-     * Gets the function expresion for this column, if any. if this functions
+     * Gets the function expression for this column, if any. if this functions
      * return null or empty it means that this object represents a plain column
      * with no functions.
      *
@@ -68,7 +68,7 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
     }
 
     /**
-     * Gets the parameters list for the function expresion for this column, if
+     * Gets the parameters list for the function expression for this column, if
      * any. if this functions return null or empty it means that this object
      * represents that no parameter has being put into this column.
      *

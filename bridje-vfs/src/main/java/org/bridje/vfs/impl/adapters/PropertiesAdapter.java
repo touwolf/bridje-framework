@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package org.bridje.vfs.impl;
+package org.bridje.vfs.impl.adapters;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileReader;
+import org.bridje.vfs.VirtualFileAdapter;
 
 @Component
-class PropertiesReader implements VirtualFileReader
+class PropertiesAdapter implements VirtualFileAdapter
 {
     @Override
     public String[] getExtensions()
@@ -39,7 +40,7 @@ class PropertiesReader implements VirtualFileReader
     }
 
     @Override
-    public boolean canRead(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
     {
         return true;
     }
@@ -47,11 +48,21 @@ class PropertiesReader implements VirtualFileReader
     @Override
     public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
     {
-        try(InputStream is = vf.open())
+        try(InputStream is = vf.openForRead())
         {
             Properties prop = new Properties();
             prop.load(is);
             return (T)prop;
+        }
+    }
+
+    @Override
+    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    {
+        try(OutputStream os = vf.openForWrite())
+        {
+            Properties prop = (Properties)contentObj;
+            prop.store(os, null);
         }
     }
 }

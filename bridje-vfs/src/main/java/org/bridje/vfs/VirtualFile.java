@@ -18,6 +18,7 @@ package org.bridje.vfs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Represents a file of the VFS tree.
@@ -31,7 +32,23 @@ public interface VirtualFile extends VirtualResource
      * @throws IOException This method may access to physical device so this
      *         exception may be throw if any input output operation fails.
      */
-    InputStream open() throws IOException;
+    InputStream openForRead() throws IOException;
+    
+    /**
+     * Open a file's OutputStream for writing it's content.
+     * <p>
+     * @return An OutputStream to the file.
+     * @throws IOException This method may access to physical device so this
+     *         exception may be throw if any input output operation fails.
+     */
+    OutputStream openForWrite() throws IOException;
+
+    /**
+     * Determines when ever the file can be open for writing.
+     * <p>
+     * @return true the file can be open for writing.
+     */
+    boolean canOpenForWrite();
 
     /**
      * Gets the extension part of the name of the file.

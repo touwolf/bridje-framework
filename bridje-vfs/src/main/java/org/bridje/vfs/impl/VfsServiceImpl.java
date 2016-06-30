@@ -32,10 +32,10 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileReader;
 import org.bridje.vfs.VirtualFileVisitor;
 import org.bridje.vfs.VirtualFolder;
 import org.bridje.vfs.VirtualFolderVisitor;
+import org.bridje.vfs.VirtualFileAdapter;
 
 @Component
 class VfsServiceImpl implements VfsService
@@ -43,11 +43,11 @@ class VfsServiceImpl implements VfsService
     private MemoryFolder root;
     
     @Inject
-    private VirtualFileReader[] readers;
+    private VirtualFileAdapter[] readers;
     
-    private Map<String, Map<Class<?>, List<VirtualFileReader>>> readersMap;
+    private Map<String, Map<Class<?>, List<VirtualFileAdapter>>> readersMap;
     
-    private Map<String, List<VirtualFileReader>> genericReadersMap;
+    private Map<String, List<VirtualFileAdapter>> genericReadersMap;
 
     @PostConstruct
     public void init()
@@ -202,56 +202,101 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public <T> T findFile(String path, Class<T> resultCls) throws IOException
+    public <T> T readFile(String path, Class<T> resultCls) throws IOException
     {
         VirtualFile file = findFile(path);
         return readFile(file, resultCls);
     }
 
     @Override
-    public <T> T findFile(Path path, Class<T> resultCls) throws IOException
+    public <T> T readFile(Path path, Class<T> resultCls) throws IOException
     {
         VirtualFile file = findFile(path);
         return readFile(file, resultCls);
     }
-    
+
+    @Override
+    public <T> void writeFile(String path, T contentObj) throws IOException
+    {
+        VirtualFile file = findFile(path);
+        writeFile(file, contentObj);
+    }
+
+    @Override
+    public <T> void writeFile(Path path, T contentObj) throws IOException
+    {
+        VirtualFile file = findFile(path);
+        writeFile(file, contentObj);
+    }
+
     public <T> T readFile(VirtualFile file, Class<T> resultCls) throws IOException
     {
         if(file != null)
         {
-            Map<Class<?>, List<VirtualFileReader>> map = readersMap.get(file.getExtension());
+            Map<Class<?>, List<VirtualFileAdapter>> map = readersMap.get(file.getExtension());
             if(map != null)
             {
-                List<VirtualFileReader> lst = map.get(resultCls);
-                for (VirtualFileReader reader : lst)
+                List<VirtualFileAdapter> lst = map.get(resultCls);
+                for (VirtualFileAdapter adapter : lst)
                 {
-                    if(reader.canRead(file, resultCls))
+                    if(adapter.canHandle(file, resultCls))
                     {
-                        return reader.read(file, resultCls);
+                        return adapter.read(file, resultCls);
                     }
                 }
             }
             
-            List<VirtualFileReader> lst = genericReadersMap.get(file.getExtension());
+            List<VirtualFileAdapter> lst = genericReadersMap.get(file.getExtension());
             if(lst != null)
             {
-                for (VirtualFileReader reader : lst)
+                for (VirtualFileAdapter adapter : lst)
                 {
-                    if(reader.canRead(file, resultCls))
+                    if(adapter.canHandle(file, resultCls))
                     {
-                        return reader.read(file, resultCls);
+                        return adapter.read(file, resultCls);
                     }
                 }
             }
         }
         return null;
     }
-
+    
+    public <T> void writeFile(VirtualFile file, T contentObj) throws IOException
+    {
+        if(file != null)
+        {
+            Map<Class<?>, List<VirtualFileAdapter>> map = readersMap.get(file.getExtension());
+            if(map != null)
+            {
+                List<VirtualFileAdapter> lst = map.get(contentObj.getClass());
+                for (VirtualFileAdapter adapter : lst)
+                {
+                    if(adapter.canHandle(file, contentObj.getClass()))
+                    {
+                        adapter.write(file, contentObj);
+                    }
+                }
+            }
+            
+            List<VirtualFileAdapter> lst = genericReadersMap.get(file.getExtension());
+            if(lst != null)
+            {
+                for (VirtualFileAdapter adapter : lst)
+                {
+                    if(adapter.canHandle(file, contentObj.getClass()))
+                    {
+                        adapter.write(file, contentObj);
+                    }
+                }
+            }
+        }
+    }
+    
     private void initReaders()
     {
         genericReadersMap = new HashMap<>();
         readersMap = new HashMap<>();
-        for (VirtualFileReader reader : readers)
+        for (VirtualFileAdapter reader : readers)
         {
             String[] extensions = reader.getExtensions();
             for (String extension : extensions)
@@ -259,7 +304,7 @@ class VfsServiceImpl implements VfsService
                 Class<?>[] clsArray = reader.getClasses();
                 if(clsArray != null)
                 {
-                    Map<Class<?>, List<VirtualFileReader>> clsMap = readersMap.get(extension);
+                    Map<Class<?>, List<VirtualFileAdapter>> clsMap = readersMap.get(extension);
                     if(clsMap == null)
                     {
                         clsMap = new HashMap<>();
@@ -267,7 +312,7 @@ class VfsServiceImpl implements VfsService
                     }
                     for (Class<?> cls : clsArray)
                     {
-                        List<VirtualFileReader> lst = clsMap.get(cls);
+                        List<VirtualFileAdapter> lst = clsMap.get(cls);
                         if(lst == null)
                         {
                             lst = new ArrayList<>();
@@ -278,7 +323,7 @@ class VfsServiceImpl implements VfsService
                 }
                 else
                 {
-                    List<VirtualFileReader> lst = genericReadersMap.get(extension);
+                    List<VirtualFileAdapter> lst = genericReadersMap.get(extension);
                     if(lst == null)
                     {
                         lst = new ArrayList<>();
