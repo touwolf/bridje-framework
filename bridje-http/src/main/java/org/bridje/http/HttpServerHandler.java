@@ -21,9 +21,9 @@ import java.io.IOException;
 /**
  * Represents a handler of HTTP request, this interface must be implemented by
  * components that will be call in chain to handle the request. Handlers must
- * provide a Priority grether than 0 and it is recomended that it is used with
+ * provide a Priority greater than 0 and it is recommended that it is used with
  * the @InjectNext annotation to create a chain of handlers that can handler
- * properly all http request for the application.
+ * properly all HTTP request for the application.
  */
 public interface HttpServerHandler
 {

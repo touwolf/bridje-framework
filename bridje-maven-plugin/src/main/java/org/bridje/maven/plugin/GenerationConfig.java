@@ -23,6 +23,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Represents a source code generation configuration data.
+ */
 @XmlRootElement(name = "generation")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GenerationConfig
@@ -34,6 +37,11 @@ public class GenerationConfig
     })
     private DataFile[] dataFiles;
 
+    /**
+     * Gets all the data files for this configuration.
+     * 
+     * @return The data files for this configuration.
+     */
     public DataFile[] getDataFiles()
     {
         return dataFiles;

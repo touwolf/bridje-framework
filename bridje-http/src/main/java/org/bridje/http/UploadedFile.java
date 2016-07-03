@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Repesents a file uploaded during a http request.
+ * Represents a file uploaded during a HTTP request.
  */
 public interface UploadedFile
 {

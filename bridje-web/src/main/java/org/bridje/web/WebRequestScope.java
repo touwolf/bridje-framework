@@ -44,7 +44,7 @@ public class WebRequestScope implements Scope
     {
         return wrsCxt;
     }
-    
+
     /**
      * The HTTP method used to made the request.
      *
@@ -76,7 +76,7 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * The UserAgent heather from the http request if any.
+     * The UserAgent heather from the HTTP request if any.
      *
      * @return An String representing the UserAgent information from the client
      * if is available.
@@ -87,7 +87,7 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * The Accept header sended by the client.
+     * The Accept header sent by the client.
      *
      * @return An String representing the value of the Accept header
      */
@@ -107,10 +107,10 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * The mime/type sended by the client for this request, this method will get
-     * the Content-Type http header.
+     * The mime/type sent by the client for this request, this method will get
+     * the Content-Type HTTP header.
      *
-     * @return The mime/type sended by the client for this request.
+     * @return The mime/type sent by the client for this request.
      */
     public String getConentType()
     {
@@ -118,9 +118,9 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * When ever this request is http method is "GET".
+     * When ever this request is HTTP method is "GET".
      *
-     * @return true the http method for this request is "GET", false otherwise.
+     * @return true the HTTP method for this request is "GET", false otherwise.
      */
     public boolean isGet()
     {
@@ -128,9 +128,9 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * When ever this request is http method is "POST".
+     * When ever this request is HTTP method is "POST".
      *
-     * @return true the http method for this request is "GET", false otherwise.
+     * @return true the HTTP method for this request is "GET", false otherwise.
      */
     public boolean isPost()
     {
@@ -149,9 +149,9 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * When ever this request is http method is "PUT".
+     * When ever this request is HTTP method is "PUT".
      *
-     * @return true the http method for this request is "PUT", false otherwise.
+     * @return true the HTTP method for this request is "PUT", false otherwise.
      */
     public boolean isPut()
     {
@@ -159,11 +159,11 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * Gets a unmodificable map to the post parameters sended by the client. If
+     * Gets a unmodificable map to the post parameters sent by the client. If
      * this request is not a "application/x-www-form-urlencoded" or a
      * multipart/form-data" the post parameters map will be empty.
      *
-     * @return A map with all the post parameters sended by the client.
+     * @return A map with all the post parameters sent by the client.
      */
     public Map<String, String> getPostParameters()
     {
@@ -193,7 +193,7 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * Gets the "GET" parameters that where sended by the client in the query
+     * Gets the "GET" parameters that where sent by the client in the query
      * string of the request.
      *
      * @return A map with all the "GET" parameters for this request.
@@ -227,7 +227,7 @@ public class WebRequestScope implements Scope
 
 
     /**
-     * Gets a map with all the cookies sended to the server by the client.
+     * Gets a map with all the cookies sent to the server by the client.
      *
      * @return A map with the HTTP cookies for this request.
      */
@@ -249,7 +249,7 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * Gets all the cookies names availables in this request.
+     * Gets all the cookies names available in this request.
      *
      * @return An array of String representing the cookies names.
      */

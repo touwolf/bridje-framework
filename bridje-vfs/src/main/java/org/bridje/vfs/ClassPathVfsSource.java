@@ -20,7 +20,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- *
+ * A virtual file system source to mount java classpath base resources.
  */
 public class ClassPathVfsSource implements VfsSource
 {
@@ -28,6 +28,13 @@ public class ClassPathVfsSource implements VfsSource
 
     private Map<String, ClassPathVfsSource> childs;
 
+    /**
+     * The only constructor for this object, the resource path needs to be specified.
+     * 
+     * @param resource The path to the resource folder to be mount.
+     * @throws IOException If any IO exception occurs scanning the resource.
+     * @throws URISyntaxException If the specified resource has an invalid URI.
+     */
     public ClassPathVfsSource(String resource) throws IOException, URISyntaxException
     {
         this.resource = new Path(resource).toString();
@@ -79,7 +86,7 @@ public class ClassPathVfsSource implements VfsSource
         return listFiles(path, null);
     }
 
-    public List<String> listFolders(Path path, String regexp) throws IOException
+    private List<String> listFolders(Path path, String regexp) throws IOException
     {
         if(childs == null)
         {
@@ -113,7 +120,7 @@ public class ClassPathVfsSource implements VfsSource
         return null;
     }
 
-    public List<String> listFiles(Path path, String regexp) throws IOException
+    private List<String> listFiles(Path path, String regexp) throws IOException
     {
         if(childs == null)
         {
@@ -182,6 +189,49 @@ public class ClassPathVfsSource implements VfsSource
         {
             return src.folderExists(path.getNext());
         }
+        return false;
+    }
+
+    @Override
+    public InputStream openForRead(Object data) throws IOException
+    {
+        URL url = (URL)data;
+        return url.openStream();
+    }
+
+    @Override
+    public OutputStream openForWrite(Object data) throws IOException
+    {
+        return null;
+    }
+    
+    @Override
+    public boolean canOpenForWrite(Object data)
+    {
+        return false;
+    }
+    
+    @Override
+    public Object createNewFile(Path join) throws IOException
+    {
+        throw new IOException("Cannot create physical file here.");
+    }
+
+    @Override
+    public String mkDir(Path join) throws IOException
+    {
+        throw new IOException("Cannot create physical folder here.");
+    }
+
+    @Override
+    public boolean canMkDir(Path join)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canCreateNewFile(Path join)
+    {
         return false;
     }
 
@@ -259,48 +309,5 @@ public class ClassPathVfsSource implements VfsSource
     private boolean isFolder()
     {
         return childs != null;
-    }
-
-    @Override
-    public InputStream openForRead(Object data) throws IOException
-    {
-        URL url = (URL)data;
-        return url.openStream();
-    }
-
-    @Override
-    public OutputStream openForWrite(Object data) throws IOException
-    {
-        return null;
-    }
-    
-    @Override
-    public boolean canOpenForWrite(Object data)
-    {
-        return false;
-    }
-    
-    @Override
-    public Object createNewFile(Path join) throws IOException
-    {
-        throw new IOException("Cannot create physical file here.");
-    }
-
-    @Override
-    public String mkDir(Path join) throws IOException
-    {
-        throw new IOException("Cannot create physical folder here.");
-    }
-
-    @Override
-    public boolean canMkDir(Path join)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canCreateNewFile(Path join)
-    {
-        return false;
     }
 }

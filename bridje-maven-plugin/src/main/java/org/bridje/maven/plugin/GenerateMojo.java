@@ -17,8 +17,6 @@
 package org.bridje.maven.plugin;
 
 import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
@@ -41,7 +39,9 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.classworlds.DuplicateRealmException;
 
 /**
- *
+ * This MOJO is responsible for generating the code specified by the other APIs.
+ * Each API defines the code that it needs and the user need`s only to define the 
+ * data for the code.
  */
 @Mojo(
     name = "generate-sources"
@@ -53,17 +53,17 @@ public class GenerateMojo extends AbstractMojo
 
     @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)
     private String outputBasePath;
-    
+
     @Parameter(defaultValue="${project}", readonly=true, required=true)
     private MavenProject project;
-    
-    private ClassLoader clsRealm;
-    
-    private Configuration cfg;
-    
+
     @Parameter(defaultValue = "true", readonly = false)
     private boolean autoCreate;
-    
+
+    private ClassLoader clsRealm;
+
+    private Configuration cfg;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -123,22 +123,47 @@ public class GenerateMojo extends AbstractMojo
         }
     }
 
+    /**
+     * The current data files input folder path for this mojo.
+     * 
+     * @return The current data files input folder path for this mojo.
+     */
     protected String getDataFilesBasePath()
     {
         return dataFilesBasePath;
     }
 
+    /**
+     * The current output folder path for this mojo.
+     * 
+     * @return The current output folder path for this mojo.
+     */
     protected String getOutputBasePath()
     {
         return outputBasePath;
     }
 
+    /**
+     * The current maven project.
+     * 
+     * @return The maven project.
+     */
     protected MavenProject getProject()
     {
         return project;
     }
 
-    public void createFreeMarkerConfiguration() throws IOException
+    /**
+     * Gets the current freemarker configuration object.
+     * 
+     * @return The freemarker Configuration object for this MOJO.
+     */
+    public Configuration getFreeMarkerConfiguration() throws IOException
+    {
+        return cfg;
+    }
+
+    private void createFreeMarkerConfiguration() throws IOException
     {
         //Freemarker configuration
         cfg = new Configuration(Configuration.VERSION_2_3_23);
@@ -147,11 +172,6 @@ public class GenerateMojo extends AbstractMojo
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
-    }
-
-    public Configuration getFreeMarkerConfiguration() throws IOException
-    {
-        return cfg;
     }
 
     private List<GenerationConfig> readAllConfigs()

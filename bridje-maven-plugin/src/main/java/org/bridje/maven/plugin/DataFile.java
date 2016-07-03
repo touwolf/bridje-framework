@@ -42,14 +42,13 @@ public class DataFile
 
     @XmlElementWrapper(name = "nodes")
     @XmlElements(
-    {
-        @XmlElement(name = "node", type = Node.class)
-    })
+            {
+                @XmlElement(name = "node", type = Node.class)
+            })
     private Node[] nodes;
 
     private String defContent;
 
-    
     /**
      * The path of the file.
      *
@@ -71,11 +70,17 @@ public class DataFile
         return nodes;
     }
 
+    /**
+     * Generates the files described by this data file.
+     *
+     * @param mojo The GenerateMojo instance.
+     * @throws MojoExecutionException If any exception occurs.
+     */
     protected void generate(GenerateMojo mojo) throws MojoExecutionException
     {
         try
         {
-            if(path == null || nodes == null)
+            if (path == null || nodes == null)
             {
                 return;
             }
@@ -92,31 +97,58 @@ public class DataFile
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
     }
-    
+
+    /**
+     * Determines when ever the data file given by this object exists or not.
+     *
+     * @param mojo The GenerateMojo instance.
+     * @return true the data file exists, false otherwise.
+     */
     public boolean exists(GenerateMojo mojo)
     {
         return new File(mojo.getDataFilesBasePath() + "/" + path).exists();
     }
-    
+
+    /**
+     * Create the data file specified by this object if it does not exists.
+     *
+     * @param mojo The GenerateMojo instance.
+     * @throws IOException If any exception occurs.
+     */
     public void create(GenerateMojo mojo) throws IOException
     {
         File f = new File(mojo.getDataFilesBasePath() + "/" + path);
-        f.createNewFile();
-        if(getDefContent() != null)
+        if (!f.exists())
         {
-            try(FileOutputStream fos = new FileOutputStream(f))
+            f.createNewFile();
+            if (getDefContent() != null)
             {
-                fos.write(getDefContent().getBytes());
-                fos.flush();
+                try (FileOutputStream fos = new FileOutputStream(f))
+                {
+                    fos.write(getDefContent().getBytes());
+                    fos.flush();
+                }
             }
         }
     }
 
+    /**
+     * Gets the default content that this data object will have in case it need
+     * to be created.
+     * 
+     * @return The default content o the file.
+     */
     public String getDefContent()
     {
         return defContent;
     }
 
+    /**
+     * Sets the default content that this data object will have in case it need
+     * to be created.
+     * 
+     * @param defContent The default content o the file.
+     */
     public void setDefContent(String defContent)
     {
         this.defContent = defContent;

@@ -54,7 +54,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
 
     /**
-     * All ClassSets availables by scope.
+     * All ClassSets available by scope.
      */
     private static final Map<Class<?>, ClassSet> CLS_CACHE = new ConcurrentHashMap<>();
 

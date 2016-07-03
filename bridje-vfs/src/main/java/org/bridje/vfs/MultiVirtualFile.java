@@ -18,7 +18,16 @@ package org.bridje.vfs;
 
 import java.util.List;
 
+/**
+ * This interface represents a list of virtual files that share the same
+ * location and can be view as one.
+ */
 public interface MultiVirtualFile extends VirtualFile
 {
+    /**
+     * All the files in this multiple virtual file.
+     * 
+     * @return A list with all the files.
+     */
     List<VirtualFile> getFiles();
 }

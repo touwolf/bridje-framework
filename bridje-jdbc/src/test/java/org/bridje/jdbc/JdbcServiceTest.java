@@ -40,9 +40,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- */
 public class JdbcServiceTest
 {
     private static final Logger LOG = Logger.getLogger(JdbcServiceTest.class.getName());

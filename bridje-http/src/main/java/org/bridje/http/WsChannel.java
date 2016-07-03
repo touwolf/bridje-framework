@@ -16,7 +16,15 @@
 
 package org.bridje.http;
 
+/**
+ * The interface to communicate with the remote web socket endpoint.
+ */
 public interface WsChannel
 {
+    /**
+     * Sends a text message to the remote endpoint.
+     * 
+     * @param text The text message to send.
+     */
     public void send(String text);
 }

@@ -26,7 +26,7 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFolder;
 
-public class ProxyFile implements MultiVirtualFile
+class ProxyFile implements MultiVirtualFile
 {
     private final List<VirtualFile> files;
 

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Configuration object for the JdbcService. It specify all the datasources
- * availables for the application. Users can specify their configurations by
+ * available for the application. Users can specify their configurations by
  * putting the jdbc.xml file into the configuration folder.
  */
 @XmlRootElement(name = "jdbc")

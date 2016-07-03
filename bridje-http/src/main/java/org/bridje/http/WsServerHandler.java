@@ -16,9 +16,29 @@
 
 package org.bridje.http;
 
+/**
+ * Represents a handler for web sockets request, this interface must be
+ * implemented by components that will be responsible to handle the messages
+ * send to the given path by different clients.
+ */
 public interface WsServerHandler
 {
+    /**
+     * Determines when ever the given path will be handled by this web socket
+     * handler or not.
+     *
+     * @param path The path to test for.
+     * @return true this web socket handler can handle the given path, false
+     * otherwise.
+     */
     boolean canHandle(String path);
-    
+
+    /**
+     * This method will be call for each text message received from any client
+     * endpoint connected to the web socket managed by this handler.
+     *
+     * @param ch The client endpoint channel.
+     * @param text The text message received.
+     */
     void onText(WsChannel ch, String text);
 }

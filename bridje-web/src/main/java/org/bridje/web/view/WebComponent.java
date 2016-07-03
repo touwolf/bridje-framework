@@ -93,7 +93,7 @@ public abstract class WebComponent
     /**
      * Gets all the UIInputExpressions in this component.
      * 
-     * @return A list of the UIInputExpressions availables in this component.
+     * @return A list of the UIInputExpressions available in this component.
      */
     public List<UIInputExpression> inputs()
     {
@@ -103,7 +103,7 @@ public abstract class WebComponent
     /**
      * Gets all the UIEvents in this component.
      * 
-     * @return A list of the UIInputExpressions availables in this component.
+     * @return A list of the UIInputExpressions available in this component.
      */
     public List<UIEvent> events()
     {

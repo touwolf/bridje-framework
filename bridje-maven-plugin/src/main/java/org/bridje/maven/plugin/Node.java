@@ -67,6 +67,13 @@ public class Node
         return files;
     }
 
+    /**
+     * Generates the files described by this data file.
+     *
+     * @param mojo The GenerateMojo instance.
+     * @param doc The xml document.
+     * @throws MojoExecutionException If any exception occurs.
+     */
     protected void generate(GenerateMojo mojo, Document doc) throws MojoExecutionException
     {
         try

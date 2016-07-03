@@ -27,7 +27,7 @@ import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
 
-public class ClassPathUtils
+class ClassPathUtils
 {
     public static ClassLoader createClassPath(MavenProject project)
                 throws MalformedURLException, DuplicateRealmException, DependencyResolutionRequiredException

@@ -55,14 +55,14 @@ public interface HttpServerRequest
     String getUserAgent();
 
     /**
-     * The Accept header sended by the client.
+     * The Accept header sent by the client.
      *
      * @return An String representing the value of the Accept header
      */
     String getAccept();
 
     /**
-     * The AcceptLanguaje header sended by the client.
+     * The AcceptLanguaje header sent by the client.
      *
      * @return An String representing the value of the AcceptLanguaje header
      */
@@ -76,10 +76,10 @@ public interface HttpServerRequest
     String getPath();
 
     /**
-     * The mime/type sended by the client for this request, this method will get
+     * The mime/type sent by the client for this request, this method will get
      * the Content-Type http header.
      *
-     * @return The mime/type sended by the client for this request.
+     * @return The mime/type sent by the client for this request.
      */
     String getConentType();
 
@@ -136,11 +136,11 @@ public interface HttpServerRequest
     boolean isMultipartForm();
 
     /**
-     * Gets a unmodificable map to the post parameters sended by the client. If
+     * Gets a unmodificable map to the post parameters sent by the client. If
      * this request is not a "application/x-www-form-urlencoded" or a
      * multipart/form-data" the post parameters map will be empty.
      *
-     * @return A map with all the post parameters sended by the client.
+     * @return A map with all the post parameters sent by the client.
      */
     Map<String, String> getPostParameters();
 
@@ -161,7 +161,7 @@ public interface HttpServerRequest
     String[] getPostParametersNames();
 
     /**
-     * Gets the "GET" parameters that where sended by the client in the query
+     * Gets the "GET" parameters that where sent by the client in the query
      * string of the request.
      *
      * @return A map with all the "GET" parameters for this request.
@@ -214,7 +214,7 @@ public interface HttpServerRequest
     InputStream getInputStream();
 
     /**
-     * Gets a map with all the cookies sended to the server by the client.
+     * Gets a map with all the cookies sent to the server by the client.
      *
      * @return A map with the HTTP cookies for this request.
      */
@@ -230,7 +230,7 @@ public interface HttpServerRequest
     HttpCookie getCookie(String name);
 
     /**
-     * Gets all the cookies names availables in this request.
+     * Gets all the cookies names available in this request.
      *
      * @return An array of String representing the cookies names.
      */

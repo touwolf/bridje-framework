@@ -46,67 +46,6 @@ public class FileVfsSource implements VfsSource
     {
         return listFiles(path, null);
     }
-
-    public List<String> listFolders(Path path, String regexp) throws IOException
-    {
-        File f = findRealFile(path);
-        if(!f.exists())
-        {
-            return null;
-        }
-        if(!f.isDirectory())
-        {
-            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
-        }
-        
-        File[] listFiles = f.listFiles((File dir, String name) ->
-        {
-            return regexp == null || name.matches(regexp);
-        });
-        if(listFiles != null)
-        {
-            List<String> result = new LinkedList<>();
-            for (File listFile : listFiles)
-            {
-                if(listFile.isDirectory())
-                {
-                    result.add(listFile.getName());
-                }
-            }
-            return result;
-        }
-        return Collections.EMPTY_LIST;
-    }
-
-    public List<String> listFiles(Path path, String regexp) throws IOException
-    {
-        File f = findRealFile(path);
-        if(!f.exists())
-        {
-            return null;
-        }
-        if(!f.isDirectory())
-        {
-            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
-        }
-        File[] listFiles = f.listFiles((File dir, String name) ->
-        {
-            return regexp == null || name.matches(regexp);
-        });
-        if(listFiles != null)
-        {
-            List<String> result = new LinkedList<>();
-            for (File listFile : listFiles)
-            {
-                if(listFile.isFile())
-                {
-                    result.add(listFile.getName());
-                }
-            }
-            return result;
-        }
-        return Collections.EMPTY_LIST;
-    }
     
     @Override
     public boolean fileExists(Path path) throws IOException
@@ -120,16 +59,6 @@ public class FileVfsSource implements VfsSource
     {
         File f = findRealFile(path);
         return (f.exists() && f.isDirectory());
-    }
-
-    private File findRealFile(Path path) throws IOException
-    {
-        File f = file;
-        if(path != null)
-        {
-            f = new File(file.getCanonicalPath() + File.separator + path.toString(File.separator));
-        }
-        return f;
     }
 
     @Override
@@ -218,5 +147,76 @@ public class FileVfsSource implements VfsSource
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return false;
+    }
+
+    private List<String> listFolders(Path path, String regexp) throws IOException
+    {
+        File f = findRealFile(path);
+        if(!f.exists())
+        {
+            return null;
+        }
+        if(!f.isDirectory())
+        {
+            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
+        }
+        
+        File[] listFiles = f.listFiles((File dir, String name) ->
+        {
+            return regexp == null || name.matches(regexp);
+        });
+        if(listFiles != null)
+        {
+            List<String> result = new LinkedList<>();
+            for (File listFile : listFiles)
+            {
+                if(listFile.isDirectory())
+                {
+                    result.add(listFile.getName());
+                }
+            }
+            return result;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    private List<String> listFiles(Path path, String regexp) throws IOException
+    {
+        File f = findRealFile(path);
+        if(!f.exists())
+        {
+            return null;
+        }
+        if(!f.isDirectory())
+        {
+            throw new IOException("Can´t open " + f.getCanonicalPath() + ". is not a folder.");
+        }
+        File[] listFiles = f.listFiles((File dir, String name) ->
+        {
+            return regexp == null || name.matches(regexp);
+        });
+        if(listFiles != null)
+        {
+            List<String> result = new LinkedList<>();
+            for (File listFile : listFiles)
+            {
+                if(listFile.isFile())
+                {
+                    result.add(listFile.getName());
+                }
+            }
+            return result;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    private File findRealFile(Path path) throws IOException
+    {
+        File f = file;
+        if(path != null)
+        {
+            f = new File(file.getCanonicalPath() + File.separator + path.toString(File.separator));
+        }
+        return f;
     }
 }
