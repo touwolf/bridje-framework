@@ -34,7 +34,7 @@ public class WebRequestScope implements Scope
 
     @Inject
     private IocContext<WebRequestScope> wrsCxt;
-    
+
     public WebRequestScope(HttpServerContext ctx)
     {
         this.req = ctx.get(HttpServerRequest.class);
@@ -112,9 +112,9 @@ public class WebRequestScope implements Scope
      *
      * @return The mime/type sent by the client for this request.
      */
-    public String getConentType()
+    public String getContentType()
     {
-        return req.getConentType();
+        return req.getContentType();
     }
 
     /**

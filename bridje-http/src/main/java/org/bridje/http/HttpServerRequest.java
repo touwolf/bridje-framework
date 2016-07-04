@@ -81,7 +81,7 @@ public interface HttpServerRequest
      *
      * @return The mime/type sent by the client for this request.
      */
-    String getConentType();
+    String getContentType();
 
     /**
      * When ever this request is http method is "GET".

@@ -44,19 +44,19 @@ class HttpServerRequestImpl implements HttpServerRequest
     private ByteBuf buffer;
 
     private final HttpRequest headers;
-    
+
     private String[] headersArr;
-    
+
     private InputStream inputStream;
-    
+
     private final List<FileUpload> uploadedFiles;
 
     private String contentType;
-    
+
     private Map<String, String> postParameters;
 
     private Map<String, List<String>> getParameters;
-    
+
     private String[] postParamsNames;
 
     private String[] getParamsNames;
@@ -143,7 +143,7 @@ class HttpServerRequestImpl implements HttpServerRequest
     {
         return this.headers.headers().get("Accept-Language");
     }
-    
+
     @Override
     public String getPath()
     {
@@ -175,7 +175,7 @@ class HttpServerRequestImpl implements HttpServerRequest
         }
         return headersArr;
     }
-    
+
     protected void release()
     {
         uploadedFiles.stream().forEach((f) -> f.release());
@@ -186,7 +186,7 @@ class HttpServerRequestImpl implements HttpServerRequest
     }
 
     @Override
-    public String getConentType()
+    public String getContentType()
     {
         if(contentType == null)
         {
@@ -230,7 +230,7 @@ class HttpServerRequestImpl implements HttpServerRequest
     {
         return getMethod().equals(HttpMethod.PUT.name());
     }
-    
+
 
     @Override
     public boolean isForm()
@@ -241,14 +241,14 @@ class HttpServerRequestImpl implements HttpServerRequest
     @Override
     public boolean isWwwForm()
     {
-        String ctType = getConentType();
+        String ctType = getContentType();
         return HttpHeaders.Values.APPLICATION_X_WWW_FORM_URLENCODED.equalsIgnoreCase(ctType);
     }
 
     @Override
     public boolean isMultipartForm()
     {
-        String ctType = getConentType();
+        String ctType = getContentType();
         return HttpHeaders.Values.MULTIPART_FORM_DATA.equalsIgnoreCase(ctType);
     }
 
@@ -257,7 +257,7 @@ class HttpServerRequestImpl implements HttpServerRequest
         fileUpload.retain();
         this.uploadedFiles.add(fileUpload);
     }
-    
+
     protected void addPostParameter(String name, String value)
     {
         if(postParameters == null)
@@ -312,7 +312,7 @@ class HttpServerRequestImpl implements HttpServerRequest
         }
         return Collections.unmodifiableMap(getParameters);
     }
-    
+
 
     @Override
     public String getGetParameter(String parameter)
@@ -335,7 +335,7 @@ class HttpServerRequestImpl implements HttpServerRequest
         }
         return getParamsNames;
     }
-    
+
     protected void setQueryString(Map<String, List<String>> parameters)
     {
         this.getParameters = parameters;
