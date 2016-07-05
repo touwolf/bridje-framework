@@ -27,7 +27,6 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -39,9 +38,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import org.bridje.http.HttpServer;
 import org.bridje.http.WsServerHandler;
 import org.bridje.http.config.HttpServerConfig;
@@ -57,15 +53,15 @@ class HttpServerImpl implements HttpServer
     private static final Logger LOG = Logger.getLogger(HttpServerImpl.class.getName());
 
     private EventLoopGroup group;
-    
+
     private HttpServerConfig config;
-    
+
     @Inject
     private VfsService vfsServ;
-    
+
     @Inject
     private List<WsServerHandler> handlers;
-    
+
     private SSLContext sslContext;
 
     @PostConstruct
@@ -83,7 +79,7 @@ class HttpServerImpl implements HttpServer
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
     @Override
     public void start()
     {
@@ -172,7 +168,7 @@ class HttpServerImpl implements HttpServer
                             vfsServ.writeFile("/etc/http.xml", config);
                         }
                     }
-                    
+
                 }
                 catch (Exception e)
                 {
