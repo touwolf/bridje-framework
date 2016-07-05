@@ -103,8 +103,8 @@ Dependencies
 
 Your application will include the framework's librarys as well as this dependencies at runtime
 
- * [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html) Netty is grate network framework, the http server is build on top of it.
- * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in render the views in the bridje-web framework.
+ * [Netty](http://netty.io/) [4.0.34](http://netty.io/wiki/user-guide-for-4.x.html) Netty is a great network framework, the http server is build on top of it.
+ * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in render the views on the bridje-web framework.
  * [Java Unified Expression Language 2.2.7](http://juel.sourceforge.net/) The expression language used in bridje-web.
 
 ## Compile Dependencies 
