@@ -114,7 +114,7 @@ class JdbcServiceImpl implements JdbcService
             try
             {
                 VirtualFolder etc = vfsServ.findFolder("/etc");
-                if(etc.canCreateNewFile("jdbc.xml"))
+                if(etc != null && etc.canCreateNewFile("jdbc.xml"))
                 {
                     VirtualFile jdbc = etc.createNewFile("jdbc.xml");
                     if(jdbc.canOpenForWrite())
