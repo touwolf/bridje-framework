@@ -16,9 +16,23 @@
 
 package org.bridje.orm;
 
+/**
+ * Represents an adapter that can be use in a field to serialize, unserialize
+ * the value to/from the database.
+ */
 public interface SQLAdapter
 {
+    /**
+     * 
+     * @param value
+     * @return
+     */
     Object serialize(Object value);
 
+    /**
+     * 
+     * @param value
+     * @return
+     */
     Object unserialize(Object value);
 }
