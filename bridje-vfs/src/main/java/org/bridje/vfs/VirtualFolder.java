@@ -101,32 +101,36 @@ public interface VirtualFolder extends VirtualResource
     List<VirtualFile> listFiles(String query);
     
     /**
-     * 
-     * @param fileName
-     * @return
-     * @throws IOException 
+     * Creates a new physical file on this folder.
+     * <p>
+     * @param fileName The name to the file to be created.
+     * @return The file representation according this source.
+     * @throws java.io.IOException If any I/O exception occurs.
      */
     VirtualFile createNewFile(String fileName) throws IOException;
 
     /**
-     * 
-     * @param folderName
-     * @return
-     * @throws IOException 
+     * Creates a new directory on this folder.
+     * <p>
+     * @param folderName The name to the folder to be created.
+     * @return The name of the folder created.
+     * @throws java.io.IOException If any I/O exception occurs. 
      */
     VirtualFolder mkDir(String folderName) throws IOException;
 
     /**
-     * 
-     * @param fileName
-     * @return 
+     * Determines if a file can be created on the given path.
+     * <p>
+     * @param fileName The name to the file to be created.
+     * @return true if a folder can be created on this path.
      */
     boolean canCreateNewFile(String fileName);
 
     /**
-     * 
-     * @param folderName
-     * @return 
+     * Determines if a folder can be created on the given path.
+     * <p>
+     * @param folderName The path to the folder to be created.
+     * @return true if a folder can be created on this path.
      */
     boolean canMkDir(String folderName);
 

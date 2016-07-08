@@ -31,7 +31,9 @@
         <module>bridje-orm</module>
         <module>bridje-maven-plugin</module>
         <module>bridje-web</module>
+        <!--
         <module>bridje-webui</module>
+        -->
     </modules>
 
     <scm>

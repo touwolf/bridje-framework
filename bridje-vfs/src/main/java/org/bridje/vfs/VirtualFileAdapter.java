@@ -46,7 +46,8 @@ public interface VirtualFileAdapter
      *
      * @param vf The virtual file to serialize/deserialize.
      * @param resultCls The result class for the content of the file.
-     * @return
+     * @return true this adapter can handle the given file into the
+     * given result class.
      */
     boolean canHandle(VirtualFile vf, Class<?> resultCls);
 

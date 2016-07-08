@@ -158,7 +158,7 @@ public class GenerateMojo extends AbstractMojo
      * 
      * @return The freemarker Configuration object for this MOJO.
      */
-    public Configuration getFreeMarkerConfiguration() throws IOException
+    public Configuration getFreeMarkerConfiguration()
     {
         return cfg;
     }

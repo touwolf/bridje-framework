@@ -122,32 +122,36 @@ public interface VfsSource
     boolean canOpenForWrite(Object data);
 
     /**
-     * 
-     * @param filePath
-     * @return 
-     * @throws java.io.IOException 
+     * Creates a new physical file on this source.
+     * <p>
+     * @param filePath The path to the file to be created.
+     * @return The file representation according this source.
+     * @throws java.io.IOException If any I/O exception occurs.
      */
     Object createNewFile(Path filePath) throws IOException;
 
     /**
-     * 
-     * @param folderPath
-     * @return 
-     * @throws java.io.IOException 
+     * Creates a new directory on this source.
+     * <p>
+     * @param folderPath The path to the folder to be created.
+     * @return The name of the folder created.
+     * @throws java.io.IOException If any I/O exception occurs. 
      */
     String mkDir(Path folderPath) throws IOException;
 
     /**
-     * 
-     * @param folderPath
-     * @return 
+     * Determines if a folder can be created on the given path.
+     * <p>
+     * @param folderPath The path to the folder to be created.
+     * @return true if a folder can be created on this path.
      */
     boolean canMkDir(Path folderPath);
 
     /**
-     * 
-     * @param filePath
-     * @return 
+     * Determines if a file can be created on the given path.
+     * <p>
+     * @param filePath The path to the file to be created.
+     * @return true if a folder can be created on this path.
      */
     boolean canCreateNewFile(Path filePath);
 }

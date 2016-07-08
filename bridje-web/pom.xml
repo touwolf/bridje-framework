@@ -31,7 +31,6 @@
                     <processors>
                         <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
                         <processor>org.bridje.web.view.WebCompProcessor</processor>
-                        
                     </processors>
                 </configuration>
                 <executions>
