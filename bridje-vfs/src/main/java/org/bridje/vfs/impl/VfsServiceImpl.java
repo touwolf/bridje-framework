@@ -237,11 +237,14 @@ class VfsServiceImpl implements VfsService
             if(map != null)
             {
                 List<VirtualFileAdapter> lst = map.get(resultCls);
-                for (VirtualFileAdapter adapter : lst)
+                if(lst != null)
                 {
-                    if(adapter.canHandle(file, resultCls))
+                    for (VirtualFileAdapter adapter : lst)
                     {
-                        return adapter.read(file, resultCls);
+                        if(adapter.canHandle(file, resultCls))
+                        {
+                            return adapter.read(file, resultCls);
+                        }
                     }
                 }
             }

@@ -31,6 +31,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
@@ -123,9 +124,13 @@ public class WebCompProcessor extends AbstractProcessor
         {
             return false;
         }
-        if(superclass instanceof TypeElement)
+        if(superclass instanceof DeclaredType)
         {
-            return isWebComponent((TypeElement)superclass);
+            Element el = ((DeclaredType)superclass).asElement();
+            if(el instanceof TypeElement)
+            {
+                return isWebComponent((TypeElement)el);
+            }
         }
         return false;
     }
