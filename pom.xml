@@ -62,14 +62,14 @@
 
     <developers>
         <developer>
-            <name>Gilberto Vento</name>
             <id>gilbertovento</id>
+            <name>Gilberto Vento</name>
             <email>gilberto.vento@gmail.com</email>
             <timezone>-5</timezone>
         </developer>
         <developer>
-            <name>Alejandro Ferrandiz</name>
             <id>gorums</id>
+            <name>Alejandro Ferrandiz</name>
             <email>gorumlabmatcom@gmail.com</email>
             <timezone>-5</timezone>
         </developer>
@@ -81,8 +81,8 @@
         </developer>
         <developer>
             <id>miche.atucha</id>
-            <name>Gilberto Vento</name>
-            <email>miche.atucha@touwolf.com</email>
+            <name>Michel Atucha</name>
+            <email>miche.atucha@gmail.com</email>
             <timezone>-5</timezone>
         </developer>
     </developers>
