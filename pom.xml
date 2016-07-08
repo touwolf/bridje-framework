@@ -73,6 +73,18 @@
             <email>gorumlabmatcom@gmail.com</email>
             <timezone>-5</timezone>
         </developer>
+        <developer>
+            <id>lrdluis</id>
+            <name>Luis Rojas</name>
+            <email>luis@touwolf.com</email>
+            <timezone>-5</timezone>
+        </developer>
+        <developer>
+            <id>miche.atucha</id>
+            <name>Gilberto Vento</name>
+            <email>miche.atucha@touwolf.com</email>
+            <timezone>-5</timezone>
+        </developer>
     </developers>
 
     <licenses>
