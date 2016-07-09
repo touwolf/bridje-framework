@@ -44,7 +44,7 @@ class ThreadLocalStorage
         return null;
     }
     
-    public void pop(Class cls)
+    public <T> void pop(Class<T> cls)
     {
         Map<Class, List<Object>> map = threadLocalStorage.get();
         if(map != null)
@@ -57,9 +57,8 @@ class ThreadLocalStorage
         }
     }
 
-    public void put(Object obj)
+    public <T> void put(Class<T> cls, T obj)
     {
-        Class cls = obj.getClass();
         Map<Class, List<Object>> map = threadLocalStorage.get();
         if(map == null)
         {

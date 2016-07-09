@@ -49,19 +49,21 @@ public class Thls
      * local storage an executes the {@link ThlsAction}.
      * <p>
      * @param <T>    The type of the resulting object for the action.
+     * @param <D>    The type of the data to be put in the thread.
      * @param action The action to be executed.
+     * @param cls    The class of the data to be put in the thread.
      * @param data   The data that must be available for the action.
      * <p>
      * @return The object returned by the {@link ThlsAction#execute()} method.
      * <p>
      * @throws Exception If {@link ThlsAction#execute()} throw an exception.
      */
-    public static <T> T doAs(ThlsAction<T> action, Object... data) throws Exception
+    public static <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception
     {
         if (thlsServ == null)
         {
             thlsServ = Ioc.context().find(ThlsService.class);
         }
-        return thlsServ.doAs(action, data);
+        return thlsServ.doAs(action, cls, data);
     }
 }

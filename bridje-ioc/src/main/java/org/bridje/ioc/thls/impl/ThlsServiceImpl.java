@@ -31,12 +31,9 @@ class ThlsServiceImpl implements ThlsService
     }
     
     @Override
-    public <T> T doAs(ThlsAction<T> action, Object... data) throws Exception
+    public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception
     {
-        for (Object obj : data)
-        {
-            threadLocalStorage.put(obj);
-        }
+        threadLocalStorage.put(cls, data);
         try
         {
             return action.execute();
@@ -47,10 +44,7 @@ class ThlsServiceImpl implements ThlsService
         }
         finally
         {
-            for (Object obj : data)
-            {
-                threadLocalStorage.pop(obj.getClass());
-            }
+            threadLocalStorage.pop(cls);
         }
     }
 

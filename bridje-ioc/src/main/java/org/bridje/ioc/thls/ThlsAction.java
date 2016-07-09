@@ -19,7 +19,7 @@ package org.bridje.ioc.thls;
 /**
  * Represents an action that can be executed and can access to the data of the
  * current thread, that was made available on the
- * {@link ThlsService#doAs(org.bridje.thls.ThlsAction, java.lang.Object...) doAs}
+ * {@link ThlsService#doAs() doAs}
  * method.
  * <p>
  * @param <T> The type of the returning object for the action.
