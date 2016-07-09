@@ -53,7 +53,11 @@ class ControllerHandler implements HttpServerHandler
         {
             initMethods(wrsCtx);
         }
-        invokeMethod(wrsCtx, req.getPath());
+        Object result = invokeMethod(wrsCtx, req.getPath());
+        if(result != null)
+        {
+            context.set((Class)result.getClass(), result);
+        }
         return false;
     }
 

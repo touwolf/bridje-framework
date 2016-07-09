@@ -89,7 +89,7 @@ class ViewHandler implements HttpServerHandler
             boolean handled = nextHandler.handle(context);
             if(!handled)
             {
-                WebView view = viewsMang.findView("/public" + req.getPath());
+                WebView view = viewsMang.findView(getViewName(context, req));
                 if(view != null)
                 {
                     IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
@@ -134,5 +134,15 @@ class ViewHandler implements HttpServerHandler
         String action = req.getPostParameter("__action");
         UIEvent event = view.findEvent(action);
         event.invoke();
+    }
+
+    private String getViewName(HttpServerContext context, HttpServerRequest req)
+    {
+        ViewRef viewRef = context.get(ViewRef.class);
+        if(viewRef != null && viewRef.getViewPath() != null)
+        {
+            return viewRef.getViewPath();
+        }
+        return "/public" + req.getPath();
     }
 }
