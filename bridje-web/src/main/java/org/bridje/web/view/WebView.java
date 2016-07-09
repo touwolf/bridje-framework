@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,6 +37,9 @@ public class WebView
     @XmlTransient
     private String name;
 
+    @XmlAttribute(name = "title")
+    private String title;
+
     @XmlAnyElement(lax = true)
     private WebComponent root;
 
@@ -45,6 +49,15 @@ public class WebView
     @XmlTransient
     private Map<String, UIInputExpression> inputs;
 
+    /**
+     * 
+     * @return 
+     */
+    public String getTitle()
+    {
+        return title;
+    }
+    
     /**
      * The name of this view.
      *

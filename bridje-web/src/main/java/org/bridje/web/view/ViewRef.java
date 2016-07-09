@@ -20,6 +20,11 @@ public class ViewRef
 {
     private String viewPath;
 
+    public ViewRef(String viewPath)
+    {
+        this.viewPath = viewPath;
+    }
+    
     public String getViewPath()
     {
         return viewPath;

@@ -31,13 +31,14 @@ import org.bridje.http.HttpServerRequest;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
+import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebCookie;
 import org.bridje.web.WebMethod;
 import org.bridje.web.WebParameter;
 import org.bridje.web.WebRequestScope;
 
 @Component
-@Priority(100)
+@Priority(500)
 class ControllerHandler implements HttpServerHandler
 {
     private static final Logger LOG = Logger.getLogger(ControllerHandler.class.getName());
@@ -53,7 +54,7 @@ class ControllerHandler implements HttpServerHandler
         {
             initMethods(wrsCtx);
         }
-        Object result = invokeMethod(wrsCtx, req.getPath());
+        Object result = invokeMethod(wrsCtx, ReqPathRef.findCurrentPath(context));
         if(result != null)
         {
             context.set((Class)result.getClass(), result);

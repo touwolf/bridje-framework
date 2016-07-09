@@ -27,12 +27,13 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
+import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
 import org.bridje.web.el.ElEnviroment;
 import org.bridje.web.el.ElService;
 
 @Component
-@Priority(50)
+@Priority(200)
 class ViewHandler implements HttpServerHandler
 {
     private static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();
@@ -143,6 +144,6 @@ class ViewHandler implements HttpServerHandler
         {
             return viewRef.getViewPath();
         }
-        return "/public" + req.getPath();
+        return "/public" + ReqPathRef.findCurrentPath(context);
     }
 }

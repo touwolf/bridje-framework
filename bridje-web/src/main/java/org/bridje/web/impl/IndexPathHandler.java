@@ -19,31 +19,26 @@ package org.bridje.web.impl;
 import java.io.IOException;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
-import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.ReqPathRef;
 
 @Component
-@Priority(50)
-class ScopeHandler implements HttpServerHandler
+@Priority(100)
+class IndexPathHandler implements HttpServerHandler
 {
-    @Inject
-    private IocContext<Application> appCtx;
-    
     @InjectNext
     private HttpServerHandler nextHandler;
 
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        WebRequestScope scope = new WebRequestScope(context);
-        IocContext<WebRequestScope> wrsCtx = appCtx.createChild(scope);
-        context.set(WebRequestScope.class, scope);
-        context.set(IocContext.class, wrsCtx);
+        String currPath = ReqPathRef.findCurrentPath(context);
+        if(currPath == null || currPath.trim().isEmpty() || currPath.trim().equalsIgnoreCase("/"))
+        {
+            context.set(ReqPathRef.class, new ReqPathRef("/index"));
+        }
         return nextHandler.handle(context);
     }
     

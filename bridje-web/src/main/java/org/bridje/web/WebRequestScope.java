@@ -128,6 +128,15 @@ public class WebRequestScope implements Scope
      */
     public String getPath()
     {
+        return ReqPathRef.findCurrentPath(srvCtx);
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public String getOrigPath()
+    {
         return req.getPath();
     }
 

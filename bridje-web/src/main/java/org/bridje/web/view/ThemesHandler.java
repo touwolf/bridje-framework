@@ -26,9 +26,10 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
+import org.bridje.web.ReqPathRef;
 
 @Component
-@Priority(40)
+@Priority(150)
 class ThemesHandler implements HttpServerHandler
 {
     @Inject
@@ -43,7 +44,7 @@ class ThemesHandler implements HttpServerHandler
         HttpServerRequest req = context.get(HttpServerRequest.class);
         if(req.getPath().startsWith("/__themes"))
         {
-            String[] arrPath = req.getPath().split("[//]");
+            String[] arrPath = ReqPathRef.findCurrentPath(context).split("[//]");
             if(arrPath.length > 3)
             {
                 String themeName = arrPath[2];
