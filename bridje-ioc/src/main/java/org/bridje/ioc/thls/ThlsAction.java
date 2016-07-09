@@ -29,7 +29,7 @@ public interface ThlsAction<T>
 {
     /**
      * Executes the action. this method is called on the
-     * {@link ThlsService#doAs(org.bridje.thls.ThlsAction, java.lang.Object...) doAs}
+     * {@link ThlsService#doAs() doAs}
      * method.
      * <p>
      * @return The action result.
