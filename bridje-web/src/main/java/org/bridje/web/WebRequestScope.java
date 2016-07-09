@@ -21,6 +21,7 @@ import java.util.Map;
 import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerRequest;
+import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
@@ -33,16 +34,40 @@ public class WebRequestScope implements Scope
     private final HttpServerRequest req;
 
     @Inject
-    private IocContext<WebRequestScope> wrsCxt;
+    private IocContext<WebRequestScope> iocCtx;
+    
+    private HttpServerContext srvCtx;
 
     public WebRequestScope(HttpServerContext ctx)
     {
+        this.srvCtx = ctx;
         this.req = ctx.get(HttpServerRequest.class);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public IocContext<WebRequestScope> getIocContext()
     {
-        return wrsCxt;
+        return iocCtx;
+    }
+
+    /**
+     * Gets an instance of the specified class if an instance of it was added
+     * previously to this context.
+     *
+     * @param <T> The type of the class to search for.
+     * @param cls The class to search for.
+     * @return The previuosly set instance of the class or null if none can be found.
+     */
+    public <T> T get(Class<T> cls)
+    {
+        if(cls == HttpServerRequest.class || cls == HttpServerResponse.class)
+        {
+            return null;
+        }
+        return srvCtx.get(cls);
     }
 
     /**
