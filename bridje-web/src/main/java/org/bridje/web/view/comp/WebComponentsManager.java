@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,11 +33,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VirtualFile;
-import static org.bridje.web.view.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
+import static org.bridje.web.view.comp.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
 import org.bridje.vfs.VirtualFileAdapter;
+import org.bridje.web.view.WebView;
 
 @Component
-class WebComponentsManager implements VirtualFileAdapter
+public class WebComponentsManager implements VirtualFileAdapter
 {
     private static final Logger LOG = Logger.getLogger(WebComponentsManager.class.getName());
 

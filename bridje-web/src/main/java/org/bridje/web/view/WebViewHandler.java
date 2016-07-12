@@ -16,8 +16,13 @@
 
 package org.bridje.web.view;
 
+import org.bridje.web.view.comp.UIEvent;
+import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
 import org.bridje.http.HttpServerRequest;
@@ -27,6 +32,8 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
 import org.bridje.web.el.ElEnviroment;
@@ -34,17 +41,12 @@ import org.bridje.web.el.ElService;
 
 @Component
 @Priority(200)
-class ViewHandler implements HttpServerHandler
+class WebViewHandler implements HttpServerHandler
 {
-    private static final ThreadLocal<ElEnviroment> ENVS = new ThreadLocal<>();
-
-    public static ElEnviroment getEnv()
-    {
-        return ENVS.get();
-    }
+    private static final Logger LOG = Logger.getLogger(WebViewHandler.class.getName());
 
     @Inject
-    private ViewsManager viewsMang;
+    private WebViewsManager viewsMang;
     
     @InjectNext
     private HttpServerHandler nextHandler;
@@ -68,19 +70,23 @@ class ViewHandler implements HttpServerHandler
                 IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
                 try
                 {
-                    ENVS.set(elServ.createElEnviroment(wrsCtx));
-                    updateParameters(view, req);
-                    invokeAction(req, view);
-                    HttpServerResponse resp = context.get(HttpServerResponse.class);
-                    try(OutputStream os = resp.getOutputStream())
+                    Thls.doAs(() ->
                     {
-                        themesMang.render(view.getRoot(), view, os);
-                        os.flush();
-                    }
+                        updateParameters(view, req);
+                        invokeAction(req, view);
+                        HttpServerResponse resp = context.get(HttpServerResponse.class);
+                        try(OutputStream os = resp.getOutputStream())
+                        {
+                            themesMang.render(view.getRoot(), view, os);
+                            os.flush();
+                        }
+                        return null;
+                    },
+                    ElEnviroment.class, elServ.createElEnviroment(wrsCtx));
                 }
-                finally
+                catch(Exception ex)
                 {
-                    ENVS.remove();
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
             return true;
@@ -97,13 +103,17 @@ class ViewHandler implements HttpServerHandler
                     HttpServerResponse resp = context.get(HttpServerResponse.class);
                     try(OutputStream os = resp.getOutputStream())
                     {
-                        ENVS.set(elServ.createElEnviroment(wrsCtx));
-                        themesMang.render(view, os);
-                        os.flush();
+                        Thls.doAs(() ->
+                        {
+                            themesMang.render(view, os);
+                            os.flush();
+                            return null;
+                        },
+                        ElEnviroment.class, elServ.createElEnviroment(wrsCtx));
                     }
-                    finally
+                    catch(Exception ex)
                     {
-                        ENVS.remove();
+                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                     return true;
                 }
@@ -139,7 +149,7 @@ class ViewHandler implements HttpServerHandler
 
     private String getViewName(HttpServerContext context, HttpServerRequest req)
     {
-        ViewRef viewRef = context.get(ViewRef.class);
+        WebViewRef viewRef = context.get(WebViewRef.class);
         if(viewRef != null && viewRef.getViewPath() != null)
         {
             return viewRef.getViewPath();

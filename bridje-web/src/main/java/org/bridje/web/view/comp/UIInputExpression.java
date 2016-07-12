@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
+
+import org.bridje.ioc.thls.Thls;
+import org.bridje.web.el.ElEnviroment;
 
 public class UIInputExpression extends UIExpression
 {
@@ -27,7 +30,7 @@ public class UIInputExpression extends UIExpression
 
     public <T> void set(T value)
     {
-        ViewHandler.getEnv().set(getExpression(), value);
+        Thls.get(ElEnviroment.class).set(getExpression(), value);
     }
     
     public String getParameter()

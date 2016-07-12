@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.state;
 
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
+
+import org.bridje.ioc.thls.Thls;
+import org.bridje.web.el.ElEnviroment;
 
 /**
  * The data for the events of the components that can be render in a WebView.
@@ -31,7 +34,7 @@ public class UIEvent
     /**
      * Gets the event´s expression.
      * 
-     * @return The event´s expressino.
+     * @return The event´s expression.
      */
     public String getExpression()
     {
@@ -43,6 +46,6 @@ public class UIEvent
      */
     public void invoke()
     {
-        ViewHandler.getEnv().get("${" + expression + "}", Object.class);
+        Thls.get(ElEnviroment.class).get("${" + expression + "}", Object.class);
     }
 }

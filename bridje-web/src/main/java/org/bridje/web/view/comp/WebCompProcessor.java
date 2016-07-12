@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
 
 import java.io.IOException;
 import java.io.Writer;

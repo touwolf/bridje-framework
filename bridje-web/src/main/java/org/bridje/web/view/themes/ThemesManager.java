@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.themes;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -37,9 +37,11 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
+import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.WebView;
 
 @Component
-class ThemesManager
+public class ThemesManager
 {
     private static final Logger LOG = Logger.getLogger(ThemesManager.class.getName());
 

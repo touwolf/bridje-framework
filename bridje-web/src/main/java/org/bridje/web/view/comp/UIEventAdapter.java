@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * XML Adapter for the UIExpression class.
+ * Adapter to map from String to UIEvents objects.
  */
-public class UIExpressionAdapter extends XmlAdapter<String, UIExpression>
+public class UIEventAdapter extends XmlAdapter<String, UIEvent>
 {
     @Override
-    public UIExpression unmarshal(String v)
+    public String marshal(UIEvent v)
     {
-        return new UIExpression(v);
+        return v.getExpression();
     }
 
     @Override
-    public String marshal(UIExpression v)
+    public UIEvent unmarshal(String v)
     {
-        return v.getExpression();
+        return new UIEvent(v);
     }
 }

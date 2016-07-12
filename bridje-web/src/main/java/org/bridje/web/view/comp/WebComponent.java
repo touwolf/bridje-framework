@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.comp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +59,9 @@ public abstract class WebComponent
     }
 
     /**
-     * Gets the html style class for this component.
+     * Gets the HTML style class for this component.
      * 
-     * @return The space separated html style classes.
+     * @return The space separated HTML style classes.
      */
     public String getStyleClass()
     {

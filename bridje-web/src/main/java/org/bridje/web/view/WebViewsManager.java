@@ -27,11 +27,12 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFolder;
+import org.bridje.web.view.comp.WebComponentsManager;
 
 @Component
-public class ViewsManager
+public class WebViewsManager
 {
-    private static final Logger LOG = Logger.getLogger(ViewsManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(WebViewsManager.class.getName());
 
     @Inject
     private VfsService vfsServ;

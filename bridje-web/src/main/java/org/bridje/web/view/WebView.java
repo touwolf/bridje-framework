@@ -16,6 +16,9 @@
 
 package org.bridje.web.view;
 
+import org.bridje.web.view.comp.UIEvent;
+import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.comp.WebComponent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * compoused from components. The views are inmutables so once defined they will
+ * composed from components. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
 @XmlRootElement(name = "view")

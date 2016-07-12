@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.view.state;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

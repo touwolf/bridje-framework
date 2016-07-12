@@ -16,11 +16,11 @@
 
 package org.bridje.web.view;
 
-public class ViewRef
+public class WebViewRef
 {
     private String viewPath;
 
-    public ViewRef(String viewPath)
+    public WebViewRef(String viewPath)
     {
         this.viewPath = viewPath;
     }
