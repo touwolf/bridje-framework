@@ -116,11 +116,11 @@ public class WebCompProcessor extends AbstractProcessor
     private boolean isWebComponent(TypeElement element)
     {
         TypeMirror superclass = element.getSuperclass();
-        if(superclass.toString().equalsIgnoreCase("org.bridje.web.view.WebComponent"))
+        if(superclass.toString().equalsIgnoreCase(WebComponent.class.getName()))
         {
             return true;
         }
-        if(superclass.toString().equalsIgnoreCase("java.lang.Object"))
+        if(superclass.toString().equalsIgnoreCase(Object.class.getName()))
         {
             return false;
         }
