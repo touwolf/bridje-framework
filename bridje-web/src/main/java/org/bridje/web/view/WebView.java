@@ -17,11 +17,13 @@
 package org.bridje.web.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,6 +42,10 @@ public class WebView
     @XmlAttribute(name = "title")
     private String title;
 
+    @XmlElementWrapper(name = "meta")
+    @XmlAnyElement(lax = true)
+    private List<MetaTag> metaTags;
+
     @XmlAnyElement(lax = true)
     private WebComponent root;
 
@@ -49,6 +55,15 @@ public class WebView
     @XmlTransient
     private Map<String, UIInputExpression> inputs;
 
+    /**
+     * 
+     * @return 
+     */
+    public List<MetaTag> getMetaTags()
+    {
+        return metaTags;
+    }
+    
     /**
      * 
      * @return 
