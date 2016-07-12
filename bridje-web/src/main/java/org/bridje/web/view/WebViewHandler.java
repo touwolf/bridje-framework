@@ -33,7 +33,6 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
 import org.bridje.web.el.ElEnviroment;
