@@ -58,7 +58,6 @@
     <#return false />
 </#function>
 
-
 <#function isString field>
     <#if field?node_name == "string" >
         <#return true />
@@ -97,6 +96,9 @@
 
 <#function isIndex field>
     <#if (field.@index[0]?? && field.@index == "true") >
+        <#return true />
+    </#if>
+    <#if (field.@indexed[0]?? && field.@indexed == "true") >
         <#return true />
     </#if>
     <#return false />

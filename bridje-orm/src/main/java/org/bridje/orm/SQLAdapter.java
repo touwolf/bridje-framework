@@ -25,14 +25,16 @@ public interface SQLAdapter
     /**
      * 
      * @param value
+     * @param column
      * @return
      */
-    Object serialize(Object value);
+    Object serialize(Object value, Column column);
 
     /**
      * 
      * @param value
+     * @param column
      * @return
      */
-    Object unserialize(Object value);
+    Object unserialize(Object value, Column column);
 }

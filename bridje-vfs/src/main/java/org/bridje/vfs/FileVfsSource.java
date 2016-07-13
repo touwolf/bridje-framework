@@ -78,7 +78,7 @@ public class FileVfsSource implements VfsSource
     @Override
     public boolean canOpenForWrite(Object data)
     {
-        return false;
+        return true;
     }
 
     @Override
