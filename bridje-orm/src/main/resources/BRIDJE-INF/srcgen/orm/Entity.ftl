@@ -2,12 +2,15 @@
 
 package ${doc.model.@package};
 
+<#if hasAtLeastOneSqlType() >
+import java.sql.JDBCType;
+</#if>
 import org.bridje.orm.*;
-<#if hasType("date") >
+<#if hasAtLeastOneType("date") >
 import java.util.Date;
 </#if>
 
-@Entity(table = "${node.@name?uncap_first}")
+@Entity(table = "${findTableName(node)}")
 public class ${node.@name}
 {
     @DbObject
@@ -15,14 +18,14 @@ public class ${node.@name}
 
     <#list node.* as field>
     @DbObject("${field.@name}")
-    public static ${findTableColumn(field)}<${node.@name}, ${findType(field)}> ${field.@name?upper_case};
+    public static ${findTableColumn(field)}<${node.@name}<#if !isString(field)>, ${findType(field)}</#if>> ${field.@name?upper_case};
 
     </#list>
     <#list node.* as field>
     <#if isKey(field) >
     @Key<#if isAutoIncrement(field)>(autoIncrement = true)</#if>
     </#if>
-    @Field
+    @Field(column = "${findColumnName(field)}"<#if isIndex(field)>, index = true</#if><#if hasSqlType(field)>, type = JDBCType.${getSqlType(field)}</#if><#if hasAdapter(field)>, adapter = ${getAdapter(field)}.class</#if>)
     private ${findType(field)} ${field.@name};
 
     </#list>
