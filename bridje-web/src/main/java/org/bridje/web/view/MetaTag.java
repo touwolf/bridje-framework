@@ -16,6 +16,35 @@
 
 package org.bridje.web.view;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "meta")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MetaTag
 {
+    @XmlAttribute(name = "name")
+    private String name;
+
+    @XmlValue
+    private String content;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
+    }
 }

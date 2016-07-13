@@ -16,19 +16,13 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.comp.UIEvent;
-import org.bridje.web.view.comp.UIInputExpression;
-import org.bridje.web.view.comp.WebComponent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
+import org.bridje.web.view.comp.UIEvent;
+import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.comp.WebComponent;
 
 /**
  * Represents a view of the application, views are render by themes and are
@@ -45,8 +39,9 @@ public class WebView
     @XmlAttribute(name = "title")
     private String title;
 
-    @XmlElementWrapper(name = "meta")
-    @XmlAnyElement(lax = true)
+    @XmlElements(
+        @XmlElement(name = "meta", type = MetaTag.class)
+    )
     private List<MetaTag> metaTags;
 
     @XmlAnyElement(lax = true)
@@ -59,23 +54,23 @@ public class WebView
     private Map<String, UIInputExpression> inputs;
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<MetaTag> getMetaTags()
     {
         return metaTags;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getTitle()
     {
         return title;
     }
-    
+
     /**
      * The name of this view.
      *
@@ -119,7 +114,7 @@ public class WebView
 
     /**
      * Finds the event that match with the given action.
-     * 
+     *
      * @param action The name of the action.
      * @return The UIEvent object that match the given expression.
      */
