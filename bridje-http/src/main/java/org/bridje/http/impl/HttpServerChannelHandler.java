@@ -262,7 +262,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             Attribute attribute = (Attribute) data;
             String value = attribute.getValue();
 
-            if (value.length() > 100)
+            if (value.length() > 1024)
             {
                 throw new IOException("Data too long");
             }
