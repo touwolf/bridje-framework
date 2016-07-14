@@ -78,7 +78,7 @@ public class ThemesManager
         }
     }
 
-    public void render(WebComponent comp, WebView view, OutputStream os)
+    public void render(WebComponent comp, WebView view, OutputStream os, Object result)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -88,6 +88,7 @@ public class ThemesManager
             Map data = new HashMap();
             data.put("view", view);
             data.put("component", comp);
+            data.put("result", result);
             tpl.process(data, w);
             w.flush();
         }

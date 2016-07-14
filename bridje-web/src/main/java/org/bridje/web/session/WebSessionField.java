@@ -1,3 +1,11 @@
+
+package org.bridje.web.session;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /*
  * Copyright 2016 Bridje Framework.
  *
@@ -14,19 +22,9 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.state;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Defines a field as an state field for the view, fields market with this
- * annotation will persist between several web request in the same view.
- */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface State
+@Target(ElementType.FIELD)
+public @interface WebSessionField
 {
+    String value();
 }

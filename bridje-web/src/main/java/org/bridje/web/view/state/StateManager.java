@@ -69,7 +69,7 @@ class StateManager
         if(stateFields == null)
         {
             Map<Class<?>, Map<Field, String>> result = new HashMap<>();
-            ctx.getClassRepository().forEachField(State.class, (field, component, annot) ->
+            ctx.getClassRepository().forEachField(StateField.class, (field, component, annot) ->
             {
                 Map<Field, String> lst = result.get(component);
                 if(lst == null)

@@ -44,8 +44,8 @@ public class UIEvent
     /**
      * Invokes the method defined by this event.
      */
-    public void invoke()
+    public Object invoke()
     {
-        Thls.get(ElEnviroment.class).get("${" + expression + "}", Object.class);
+        return Thls.get(ElEnviroment.class).get("${" + expression + "}", Object.class);
     }
 }

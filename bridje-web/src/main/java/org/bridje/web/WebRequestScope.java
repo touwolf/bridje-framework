@@ -25,6 +25,7 @@ import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
+import org.bridje.web.session.WebSession;
 
 /**
  * Represents the IoC scope for the web request IocContext.
@@ -33,15 +34,20 @@ public class WebRequestScope implements Scope
 {
     private final HttpServerRequest req;
 
+    private final HttpServerResponse resp;
+
     @Inject
     private IocContext<WebRequestScope> iocCtx;
     
-    private HttpServerContext srvCtx;
+    private final HttpServerContext srvCtx;
 
+    private WebSession session;
+    
     public WebRequestScope(HttpServerContext ctx)
     {
         this.srvCtx = ctx;
         this.req = ctx.get(HttpServerRequest.class);
+        this.resp = ctx.get(HttpServerResponse.class);
     }
 
     /**
@@ -51,23 +57,6 @@ public class WebRequestScope implements Scope
     public IocContext<WebRequestScope> getIocContext()
     {
         return iocCtx;
-    }
-
-    /**
-     * Gets an instance of the specified class if an instance of it was added
-     * previously to this context.
-     *
-     * @param <T> The type of the class to search for.
-     * @param cls The class to search for.
-     * @return The previuosly set instance of the class or null if none can be found.
-     */
-    public <T> T get(Class<T> cls)
-    {
-        if(cls == HttpServerRequest.class || cls == HttpServerResponse.class)
-        {
-            return null;
-        }
-        return srvCtx.get(cls);
     }
 
     /**
@@ -283,6 +272,17 @@ public class WebRequestScope implements Scope
     }
 
     /**
+     * 
+     * @param name
+     * @param value
+     * @return 
+     */
+    public HttpCookie addCookie(String name, String value)
+    {
+        return resp.addCookie(name, value);
+    }
+    
+    /**
      * Gets all the cookies names available in this request.
      *
      * @return An array of String representing the cookies names.
@@ -308,5 +308,14 @@ public class WebRequestScope implements Scope
     public void postInitComponent(Class<Object> clazz, Object instance)
     {
         //After init a web request scoped component
+    }
+
+    public WebSession getSession()
+    {
+        if(session == null)
+        {
+            session = srvCtx.get(WebSession.class);
+        }
+        return session;
     }
 }
