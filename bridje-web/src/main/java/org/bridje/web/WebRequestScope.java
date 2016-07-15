@@ -182,6 +182,16 @@ public class WebRequestScope implements Scope
     }
 
     /**
+     * When ever this request is HTTP method is "PATCH".
+     *
+     * @return true the HTTP method for this request is "PATCH", false otherwise.
+     */
+    public boolean isPatch()
+    {
+        return req.isPatch();
+    }
+
+    /**
      * Gets a unmodificable map to the post parameters sent by the client. If
      * this request is not a "application/x-www-form-urlencoded" or a
      * multipart/form-data" the post parameters map will be empty.
