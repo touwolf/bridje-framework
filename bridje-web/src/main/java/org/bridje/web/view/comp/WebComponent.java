@@ -77,7 +77,7 @@ public abstract class WebComponent
      * @param def The default value.
      * @return The result of the evaluation.
      */
-    protected <T> T get(UIExpression expression, Class<T> resultClasss, T def)
+    public static <T> T get(UIExpression expression, Class<T> resultClasss, T def)
     {
         if(expression != null)
         {
