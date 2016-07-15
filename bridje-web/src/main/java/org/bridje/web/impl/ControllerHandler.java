@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
-import org.bridje.http.HttpServerRequest;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
@@ -48,7 +47,6 @@ class ControllerHandler implements HttpServerHandler
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        HttpServerRequest req = context.get(HttpServerRequest.class);
         IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
         if(methodsData == null)
         {

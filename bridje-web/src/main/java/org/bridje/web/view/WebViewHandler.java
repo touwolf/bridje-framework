@@ -33,6 +33,7 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
 import org.bridje.web.el.ElEnviroment;
@@ -72,11 +73,11 @@ class WebViewHandler implements HttpServerHandler
                     Thls.doAs(() ->
                     {
                         updateParameters(view, req);
-                        invokeAction(req, view);
+                        Object result = invokeAction(req, view);
                         HttpServerResponse resp = context.get(HttpServerResponse.class);
                         try(OutputStream os = resp.getOutputStream())
                         {
-                            themesMang.render(view.getRoot(), view, os);
+                            themesMang.render(view.getRoot(), view, os, result);
                             os.flush();
                         }
                         return null;
@@ -139,11 +140,11 @@ class WebViewHandler implements HttpServerHandler
         }
     }
 
-    private void invokeAction(HttpServerRequest req, WebView view)
+    private Object invokeAction(HttpServerRequest req, WebView view)
     {
         String action = req.getPostParameter("__action");
         UIEvent event = view.findEvent(action);
-        event.invoke();
+        return event.invoke();
     }
 
     private String getViewName(HttpServerContext context, HttpServerRequest req)

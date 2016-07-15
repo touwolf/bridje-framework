@@ -19,32 +19,31 @@ package org.bridje.web.impl;
 import java.io.IOException;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
-import org.bridje.ioc.Application;
+import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.RedirectTo;
 
 @Component
-@Priority(0)
-class ScopeHandler implements HttpServerHandler
+@Priority(480)
+class RedirectHandler implements HttpServerHandler
 {
-    @Inject
-    private IocContext<Application> appCtx;
-    
     @InjectNext
     private HttpServerHandler nextHandler;
 
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        WebRequestScope scope = new WebRequestScope(context);
-        IocContext<WebRequestScope> wrsCtx = appCtx.createChild(scope);
-        context.set(WebRequestScope.class, scope);
-        context.set(IocContext.class, wrsCtx);
-        return nextHandler.handle(context);
+        boolean result = nextHandler.handle(context);
+        RedirectTo r = context.get(RedirectTo.class);
+        if(r != null && r.getResource() != null && !r.getResource().isEmpty())
+        {
+            HttpServerResponse resp = context.get(HttpServerResponse.class);
+            resp.setHeader("Location", r.getResource());
+            resp.setStatusCode(r.getStatus());
+        }
+        return result;
     }
     
 }
