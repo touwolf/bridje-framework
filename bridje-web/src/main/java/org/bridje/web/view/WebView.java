@@ -149,13 +149,13 @@ public class WebView
 
     private void findEvents(WebComponent comp, Map<String, UIEvent> eventsMap)
     {
-        comp.events().stream().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
-        comp.childs().stream().forEach((child) -> findEvents(child, eventsMap));
+        comp.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
+        comp.childs().forEach((child) -> findEvents(child, eventsMap));
     }
 
     private void findInputs(WebComponent comp, Map<String, UIInputExpression> inputsMap)
     {
-        comp.inputs().stream().forEach((in) -> inputsMap.put(in.getParameter(), in));
-        comp.childs().stream().forEach((child) -> findInputs(child, inputsMap));
+        comp.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
+        comp.childs().forEach((child) -> findInputs(child, inputsMap));
     }
 }

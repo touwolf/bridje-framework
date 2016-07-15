@@ -71,13 +71,13 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     private HttpServerRequestImpl req;
 
     private HttpServerResponseImpl resp;
-    
+
     private final HttpServerImpl server;
-    
+
     private HttpPostRequestDecoder decoder;
-    
+
     private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk if size exceed
-    
+
     static
     {
         DiskFileUpload.deleteOnExitTemporaryFile = true; // should delete file
@@ -88,7 +88,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
                                                         // exit (in normal exit)
         DiskAttribute.baseDirectory = null; // system temp directory
     }
-    
+
     public HttpServerChannelHandler(HttpServerImpl server)
     {
         this.server = server;
@@ -162,7 +162,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     private void sendBadRequest(ChannelHandlerContext ctx)
     {
         LOG.log(Level.WARNING, "Bad Request Received....");
-        DefaultHttpResponse response = 
+        DefaultHttpResponse response =
                 new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST);
         response.headers().set(SERVER, server.getServerName());
         response.headers().set(CONTENT_TYPE, "text/html");
@@ -222,7 +222,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             {
                 req.setContent(msg.content());
             }
-            
+
             //if is the last http content
             if(msg instanceof LastHttpContent)
             {
@@ -234,7 +234,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             sendBadRequest(ctx);
         }
     }
-    
+
     private void readHttpDataChunkByChunk() throws IOException
     {
         while (decoder.hasNext())
@@ -262,7 +262,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             Attribute attribute = (Attribute) data;
             String value = attribute.getValue();
 
-            if (value.length() > 1024)
+            if (value.length() > 65535)
             {
                 throw new IOException("Data too long");
             }
@@ -277,7 +277,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             }
         }
     }
-    
+
     private void handleRequest(ChannelHandlerContext ctx) throws IOException
     {
         if(resp == null)
@@ -314,7 +314,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             decoder.cleanFiles();
         }
     }
-    
+
     public Set<Cookie> parseCookies(String cookiesHeader)
     {
         Set<Cookie> cookies;

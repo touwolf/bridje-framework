@@ -20,9 +20,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.bridje.web.view.UIInputExpression;
-import org.bridje.web.view.UIInputExpressionAdapter;
-import org.bridje.web.view.WebComponent;
+import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.comp.UIInputExpressionAdapter;
+import org.bridje.web.view.comp.WebComponent;
 
 @XmlRootElement(name = "textbox")
 public class TextBox extends WebComponent
