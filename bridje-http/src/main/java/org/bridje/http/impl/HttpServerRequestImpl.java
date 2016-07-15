@@ -231,6 +231,11 @@ class HttpServerRequestImpl implements HttpServerRequest
         return getMethod().equals(HttpMethod.PUT.name());
     }
 
+    @Override
+    public boolean isPatch()
+    {
+        return getMethod().equals(HttpMethod.PATCH.name());
+    }
 
     @Override
     public boolean isForm()

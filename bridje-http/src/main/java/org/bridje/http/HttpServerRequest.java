@@ -113,6 +113,13 @@ public interface HttpServerRequest
     boolean isPut();
 
     /**
+     * When ever this request is http method is "PATCH".
+     *
+     * @return true the http method for this request is "PATCH", false otherwise.
+     */
+    boolean isPatch();
+
+    /**
      * When ever this request content type is a www-form or multipart-form.
      *
      * @return true this request content type is a www-form or multipart-form,
