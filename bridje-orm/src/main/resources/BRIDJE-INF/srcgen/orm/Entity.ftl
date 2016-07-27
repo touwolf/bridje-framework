@@ -9,6 +9,9 @@ import org.bridje.orm.*;
 <#if hasAtLeastOneType("date") >
 import java.util.Date;
 </#if>
+<#if hasAtLeastOneType("time") >
+import java.sql.Time;
+</#if>
 
 @Entity(table = "${findTableName(node)}")
 public class ${node.@name}
