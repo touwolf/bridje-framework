@@ -48,7 +48,7 @@ import org.codehaus.classworlds.DuplicateRealmException;
 )
 public class GenerateMojo extends AbstractMojo
 {
-    @Parameter(defaultValue = "src/main/bridje", readonly = false)
+    @Parameter(defaultValue = "${project.basedir}/src/main/bridje", readonly = false)
     private String dataFilesBasePath;
 
     @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)

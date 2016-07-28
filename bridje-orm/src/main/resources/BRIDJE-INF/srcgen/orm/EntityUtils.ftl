@@ -46,6 +46,13 @@
     <#return false />
 </#function>
 
+<#function isTime field>
+    <#if field?node_name == "time" >
+        <#return true />
+    </#if>
+    <#return false />
+</#function>
+
 <#function isNumber field>
     <#if field?node_name == "byte" 
             || field?node_name == "short"
