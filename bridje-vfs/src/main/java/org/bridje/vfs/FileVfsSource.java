@@ -13,12 +13,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A VfsSource base on phisical file system object.
+ */
 public class FileVfsSource implements VfsSource
 {
     private static final Logger LOG = Logger.getLogger(FileVfsSource.class.getName());
 
     private final File file;
 
+    /**
+     * The only constructor for this class, with the base folder for it.
+     * 
+     * @param file The file object representing the phisical folder for 
+     * this VfsSource.
+     */
     public FileVfsSource(File file)
     {
         this.file = file;

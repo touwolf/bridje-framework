@@ -17,7 +17,7 @@
 package org.bridje.orm.impl.sql;
 
 /**
- *
+ * A helper class for building SELECT statements more easy.
  */
 public class SelectBuilder
 {
@@ -27,12 +27,21 @@ public class SelectBuilder
 
     private boolean orderByAdded;
 
+    /**
+     * Default constructor.
+     */
     public SelectBuilder()
     {
         sb = new StringBuilder();
         whereAdded = false;
     }
 
+    /**
+     * Begins this builder whit the select clause.
+     * 
+     * @param fields The list of fields to retrive.
+     * @return this builder.
+     */
     public SelectBuilder select(String fields)
     {
         sb.append("SELECT ");
@@ -40,6 +49,12 @@ public class SelectBuilder
         return this;
     }
     
+    /**
+     * Adds the FROM clause to this builder.
+     * 
+     * @param table The name of the table.
+     * @return this builder.
+     */
     public SelectBuilder from(String table)
     {
         sb.append(" FROM ");
@@ -47,6 +62,13 @@ public class SelectBuilder
         return this;
     }
     
+    /**
+     * Adds a new INNER JOIN clause to after the FROM statement.
+     * 
+     * @param table The name of the table to join.
+     * @param condition The on condition for the join.
+     * @return this builder.
+     */
     public SelectBuilder innerJoin(String table, String condition)
     {
         sb.append(" INNER JOIN ");
@@ -56,6 +78,13 @@ public class SelectBuilder
         return this;
     }
 
+    /**
+     * Adds a new WHERE clause to this SELECT statement. It can be used 
+     * multiple times after the first time it will add as an AND.
+     * 
+     * @param condition The condition to filter this select.
+     * @return this builder.
+     */
     public SelectBuilder where(String condition)
     {
         sb.append(!whereAdded ? " WHERE " : " AND ");
@@ -64,6 +93,13 @@ public class SelectBuilder
         return this;
     }
     
+    /**
+     * Adds a new ORDER BY clause to this statement. It can be used multiple 
+     * times.
+     * 
+     * @param orderBy The ORDER BY statement to add.
+     * @return this builder.
+     */
     public SelectBuilder orderBy(String orderBy)
     {
         sb.append(!orderByAdded ? " ORDER BY " : ", ");
@@ -72,6 +108,13 @@ public class SelectBuilder
         return this;
     }
 
+    /**
+     * Adds a new limit statement to this builder.
+     * 
+     * @param index The index for the limit.
+     * @param size The size of the limit.
+     * @return this builder.
+     */
     public SelectBuilder limit(int index, int size)
     {
         if(index >= 0 && size >= 0)

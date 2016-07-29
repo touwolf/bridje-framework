@@ -17,24 +17,39 @@
 package org.bridje.orm.impl.sql;
 
 /**
- *
+ * A helper class for building DELETE statements more easy.
  */
 public class DeleteBuilder
 {
     private final StringBuilder sb;
 
+    /**
+     * Default constructor.
+     */
     public DeleteBuilder()
     {
         sb = new StringBuilder();
     }
-
-    public DeleteBuilder delete(String fields)
+    
+    /**
+     * Starts the DELETE FROM statement.
+     * 
+     * @param table The table to delete.
+     * @return this builder.
+     */
+    public DeleteBuilder delete(String table)
     {
         sb.append("DELETE FROM ");
-        sb.append(fields);
+        sb.append(table);
         return this;
     }
-    
+
+    /**
+     * Adds the where statement to this builder.
+     * 
+     * @param condition The where condition for this DELETE statement.
+     * @return this builder.
+     */
     public DeleteBuilder where(String condition)
     {
         sb.append(" WHERE ");

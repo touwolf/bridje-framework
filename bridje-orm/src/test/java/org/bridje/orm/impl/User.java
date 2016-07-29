@@ -29,9 +29,6 @@ import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.TableStringColumn;
 
-/**
- *
- */
 @Entity(table = "users")
 public class User
 {

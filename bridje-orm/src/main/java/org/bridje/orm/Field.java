@@ -23,8 +23,8 @@ import java.lang.annotation.Target;
 import java.sql.JDBCType;
 
 /**
- * This annotation can be use on a field of an entity class to especify that the
- * field should be mapped to a especific column in the target table of the
+ * This annotation can be use on a field of an entity class to specify that the
+ * field should be mapped to a specific column in the target table of the
  * entity.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -69,5 +69,11 @@ public @interface Field
      */
     boolean index() default false;
     
+    /**
+     * Defines the adapter to be use by this field to serialize/deserialize
+     * from the database value. To create a new SQLAdapter 
+     * 
+     * @return The class of the SQLAdapter to be use.
+     */
     Class<? extends SQLAdapter> adapter() default SQLAdapter.class;
 }

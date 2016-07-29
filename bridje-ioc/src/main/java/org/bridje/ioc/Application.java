@@ -22,6 +22,9 @@ package org.bridje.ioc;
  */
 public final class Application implements Scope
 {
+    /**
+     * Default constructor protected, Only for package access.
+     */
     protected Application()
     {
         //Protected constructor

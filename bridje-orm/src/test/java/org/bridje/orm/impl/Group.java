@@ -24,9 +24,6 @@ import org.bridje.orm.Table;
 import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.TableStringColumn;
 
-/**
- *
- */
 @Entity(table = "group")
 public class Group
 {

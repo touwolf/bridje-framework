@@ -17,7 +17,7 @@
 package org.bridje.orm.impl.sql;
 
 /**
- * An utility class for creating UPDATE SQL querys.
+ * A helper class for building UPDATE statements more easy.
  */
 public class UpdateBuilder
 {
@@ -30,6 +30,12 @@ public class UpdateBuilder
         sb = new StringBuilder();
     }
 
+    /**
+     * Begins this builder by adding the UPDATE statement.
+     * 
+     * @param table The table to update.
+     * @return this builder.
+     */
     public UpdateBuilder update(String table)
     {
         sb.append("UPDATE ");
@@ -37,6 +43,13 @@ public class UpdateBuilder
         return this;
     }
     
+    /**
+     * Sets the value of a field to update, this add the "field = ?" statement 
+     * to the builder. It can be used multiple times to add several fields updates.
+     * 
+     * @param field The field to update.
+     * @return this builder.
+     */
     public UpdateBuilder set(String field)
     {
         if(isFirst)
@@ -53,6 +66,12 @@ public class UpdateBuilder
         return this;
     }
     
+    /**
+     * Adds a where clause to this UPDATE statement.
+     * 
+     * @param condition The condition of the where clause.
+     * @return this builder.
+     */
     public UpdateBuilder where(String condition)
     {
         sb.append(" WHERE ");

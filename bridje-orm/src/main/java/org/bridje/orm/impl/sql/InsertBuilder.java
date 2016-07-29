@@ -17,17 +17,26 @@
 package org.bridje.orm.impl.sql;
 
 /**
- *
+ * A helper class for building INSERT statements more easy.
  */
 public class InsertBuilder
 {
     private final StringBuilder sb;
 
+    /**
+     * Default constructor.
+     */
     public InsertBuilder()
     {
         sb = new StringBuilder();
     }
 
+    /**
+     * Begins the INSERT INTO statement.
+     * 
+     * @param table The name of the table to insert into.
+     * @return this builder.
+     */
     public InsertBuilder insertInto(String table)
     {
         sb.append("INSERT INTO ");
@@ -35,6 +44,12 @@ public class InsertBuilder
         return this;
     }
     
+    /**
+     * Adds the list of fields to insert into.
+     * 
+     * @param fields The list of fields to insert into.
+     * @return this builder.
+     */
     public InsertBuilder fields(String fields)
     {
         sb.append(" (");
@@ -42,7 +57,13 @@ public class InsertBuilder
         sb.append(") ");
         return this;
     }
-    
+
+    /**
+     * Adds the values to be inserted.
+     * 
+     * @param values The values to insert.
+     * @return this builder.
+     */
     public InsertBuilder values(String values)
     {
         sb.append(" VALUES (");
@@ -50,7 +71,13 @@ public class InsertBuilder
         sb.append(')');
         return this;
     }
-    
+
+    /**
+     * Adds the parameters values "?" to the insert statement.
+     * 
+     * @param count The number of parameters to insert.
+     * @return this builder.
+     */
     public InsertBuilder valuesParams(int count)
     {
         sb.append(" VALUES (");
@@ -65,7 +92,7 @@ public class InsertBuilder
         sb.append(')');
         return this;
     }
-    
+
     @Override
     public String toString()
     {

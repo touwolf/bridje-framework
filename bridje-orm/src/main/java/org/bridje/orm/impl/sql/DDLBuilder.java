@@ -19,7 +19,7 @@ package org.bridje.orm.impl.sql;
 import java.io.StringWriter;
 
 /**
- *
+ * A helper class for building DDL statements more easy.
  */
 public class DDLBuilder
 {
@@ -31,32 +31,61 @@ public class DDLBuilder
 
     private String autoIncrementStmt = "AUTO_INCREMENT";
     
+    /**
+     * Default Constructor
+     */
     public DDLBuilder()
     {
         sb = new StringBuilder();
         firstColumn = true;
     }
 
+    /**
+     * If the NULL statement must be add or not to the COLUMNS statement.
+     * 
+     * @return true the NULL statement will be skipped false the NULL statement will be present.
+     */
     public boolean isSkipNullStmtInColumns()
     {
         return skipNullStmtInColumns;
     }
 
+    /**
+     * If the NULL statement must be add or not to the COLUMNS statement.
+     * 
+     * @param skipNullStmtInColumns true the NULL statement will be skipped false the NULL statement will be present.
+     */
     public void setSkipNullStmtInColumns(boolean skipNullStmtInColumns)
     {
         this.skipNullStmtInColumns = skipNullStmtInColumns;
     }
 
+    /**
+     * Get the string representing the auto increment field clause in the COLUMN statement.
+     * 
+     * @return The auto increment statement to be use by this builder.
+     */
     public String getAutoIncrementStmt()
     {
         return autoIncrementStmt;
     }
 
+    /**
+     * Set the string representing the auto increment field clause in the COLUMN statement.
+     * 
+     * @param autoIncrementStmt The auto increment statement to be use by this builder.
+     */
     public void setAutoIncrementStmt(String autoIncrementStmt)
     {
         this.autoIncrementStmt = autoIncrementStmt;
     }
 
+    /**
+     * Adds the CREATE TABLE statement to the builder.
+     * 
+     * @param tableName The name of the table to create.
+     * @return this builder.
+     */
     public DDLBuilder createTable(String tableName)
     {
         sb.append("CREATE TABLE ");
@@ -65,6 +94,12 @@ public class DDLBuilder
         return this;
     }
     
+    /**
+     * Adds the ALTER TABLE statement to the builder.
+     * 
+     * @param tableName The name of the table to alter.
+     * @return this builder.
+     */
     public DDLBuilder alterTable(String tableName)
     {
         sb.append("ALTER TABLE ");
@@ -73,19 +108,33 @@ public class DDLBuilder
         return this;
     }
 
+    /**
+     * Adds the CREATE INDEX statement to the builder.
+     * 
+     * @param idxName The index name.
+     * @param tableName The name of the table to alter.
+     * @param columnName The column for the index.
+     * @return this builder.
+     */
     public String createIndex(String idxName, String tableName, String columnName)
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("CREATE INDEX ");
-        sb.append(idxName);
-        sb.append(" ON ");
-        sb.append(tableName);
-        sb.append(" ( ");
-        sb.append(columnName);
-        sb.append(" ASC)");
-        return sb.toString();
+        StringBuilder stb = new StringBuilder();
+        stb.append("CREATE INDEX ");
+        stb.append(idxName);
+        stb.append(" ON ");
+        stb.append(tableName);
+        stb.append(" ( ");
+        stb.append(columnName);
+        stb.append(" ASC)");
+        return stb.toString();
     }
     
+    /**
+     * Adds a new column statement to the builder.
+     * 
+     * @param columnStmt The column statement to add.
+     * @return this builder.
+     */
     public DDLBuilder column(String columnStmt)
     {
         sb.append("    ");
@@ -94,6 +143,12 @@ public class DDLBuilder
         return this;
     }
 
+    /**
+     * Adds a new ADD COLUMN statement to the builder.
+     * 
+     * @param columnStmt The column statement to add.
+     * @return this builder.
+     */
     public DDLBuilder addColumn(String columnStmt)
     {
         if(!firstColumn)
@@ -107,6 +162,12 @@ public class DDLBuilder
         return this;
     }
     
+    /**
+     * Adds the PRIMARY KEY statement to the column.
+     * 
+     * @param columnName The primary key column name.
+     * @return this builder.
+     */
     public DDLBuilder primaryKey(String columnName)
     {
         sb.append("    PRIMARY KEY (");
@@ -121,6 +182,18 @@ public class DDLBuilder
         return sb.toString();
     }
     
+    /**
+     * Creates a new column statement.
+     * 
+     * @param columnName The column name.
+     * @param sqlType The SQL type.
+     * @param length The length for char and numeric base types
+     * @param precision The precision for decimal types.
+     * @param isKey If this column is a key column.
+     * @param autoIncement If this column is auto increment column.
+     * @param def The default value for the column.
+     * @return The column statement.
+     */
     public String buildColumnStmt(String columnName, String sqlType, int length, int precision, boolean isKey, boolean autoIncement, String def)
     {
         StringWriter sw = new StringWriter();
