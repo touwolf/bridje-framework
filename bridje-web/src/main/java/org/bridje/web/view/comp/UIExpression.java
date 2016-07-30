@@ -19,7 +19,7 @@ package org.bridje.web.view.comp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnviroment;
+import org.bridje.web.el.ElEnvironment;
 
 /**
  * Represents an expression that can be use in a view to pull a value from the
@@ -57,7 +57,7 @@ public class UIExpression
     {
         try
         {
-            return Thls.get(ElEnviroment.class).get(expression, resultClasss);
+            return Thls.get(ElEnvironment.class).get(expression, resultClasss);
         }
         catch (Exception e)
         {

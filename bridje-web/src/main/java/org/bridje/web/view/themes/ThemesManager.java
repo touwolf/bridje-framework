@@ -38,9 +38,9 @@ import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
-import org.bridje.web.el.ElEnviroment;
 import org.bridje.web.view.comp.WebComponent;
 import org.bridje.web.view.WebView;
+import org.bridje.web.el.ElEnvironment;
 
 @Component
 public class ThemesManager
@@ -71,7 +71,7 @@ public class ThemesManager
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
             data.put("view", view);
-            data.put("env", Thls.get(ElEnviroment.class));
+            data.put("env", Thls.get(ElEnvironment.class));
             tpl.process(data, w);
             w.flush();
         }
@@ -92,7 +92,7 @@ public class ThemesManager
             data.put("view", view);
             data.put("component", comp);
             data.put("result", result);
-            data.put("env", Thls.get(ElEnviroment.class));
+            data.put("env", Thls.get(ElEnvironment.class));
             tpl.process(data, w);
             w.flush();
         }

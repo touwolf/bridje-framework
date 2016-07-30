@@ -38,11 +38,11 @@ public class WebRequestScope implements Scope
 
     @Inject
     private IocContext<WebRequestScope> iocCtx;
-    
+
     private final HttpServerContext srvCtx;
 
     private WebSession session;
-    
+
     public WebRequestScope(HttpServerContext ctx)
     {
         this.srvCtx = ctx;
@@ -51,8 +51,9 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * 
-     * @return 
+     * The IoC context for this web request.
+     *
+     * @return The instance of IocContext created for this HTTP request.
      */
     public IocContext<WebRequestScope> getIocContext()
     {
@@ -111,7 +112,9 @@ public class WebRequestScope implements Scope
     }
 
     /**
-     * The requested path asked by the client.
+     * The current requested path, this method finds a ReqPathRef instance if
+     * any and retrieve the path specified there, if no instance is available it
+     * returns the requested path.
      *
      * @return An String representing the requested path asked by the client.
      */
@@ -119,10 +122,11 @@ public class WebRequestScope implements Scope
     {
         return ReqPathRef.findCurrentPath(srvCtx);
     }
-    
+
     /**
-     * 
-     * @return 
+     * The requested path asked by the client.
+     *
+     * @return An String representing the requested path asked by the client.
      */
     public String getOrigPath()
     {
@@ -184,7 +188,8 @@ public class WebRequestScope implements Scope
     /**
      * When ever this request is HTTP method is "PATCH".
      *
-     * @return true the HTTP method for this request is "PATCH", false otherwise.
+     * @return true the HTTP method for this request is "PATCH", false
+     * otherwise.
      */
     public boolean isPatch()
     {
@@ -258,7 +263,6 @@ public class WebRequestScope implements Scope
         return req.getGetParametersNames();
     }
 
-
     /**
      * Gets a map with all the cookies sent to the server by the client.
      *
@@ -282,16 +286,17 @@ public class WebRequestScope implements Scope
     }
 
     /**
+     * Adds a cookie to the HTTP response.
      * 
-     * @param name
-     * @param value
-     * @return 
+     * @param name The name of the HTTP Cookie.
+     * @param value The value of the HTTP Cookie.
+     * @return The HTTP Cookie added.
      */
     public HttpCookie addCookie(String name, String value)
     {
         return resp.addCookie(name, value);
     }
-    
+
     /**
      * Gets all the cookies names available in this request.
      *
@@ -320,9 +325,14 @@ public class WebRequestScope implements Scope
         //After init a web request scoped component
     }
 
+    /**
+     * Gets the current WebSession for this HTTP request.
+     * 
+     * @return The current WebSession for this HTTP request.
+     */
     public WebSession getSession()
     {
-        if(session == null)
+        if (session == null)
         {
             session = srvCtx.get(WebSession.class);
         }

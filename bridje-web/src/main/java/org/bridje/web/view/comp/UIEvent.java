@@ -17,7 +17,7 @@
 package org.bridje.web.view.comp;
 
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnviroment;
+import org.bridje.web.el.ElEnvironment;
 
 /**
  * The data for the events of the components that can be render in a WebView.
@@ -46,6 +46,6 @@ public class UIEvent
      */
     public Object invoke()
     {
-        return Thls.get(ElEnviroment.class).get("${" + expression + "}", Object.class);
+        return Thls.get(ElEnvironment.class).get("${" + expression + "}", Object.class);
     }
 }

@@ -33,11 +33,10 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
-import org.bridje.web.el.ElEnviroment;
 import org.bridje.web.el.ElService;
+import org.bridje.web.el.ElEnvironment;
 
 @Component
 @Priority(200)
@@ -82,7 +81,7 @@ class WebViewHandler implements HttpServerHandler
                         }
                         return null;
                     },
-                    ElEnviroment.class, elServ.createElEnviroment(wrsCtx));
+                    ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
                 }
                 catch(Exception ex)
                 {
@@ -109,7 +108,7 @@ class WebViewHandler implements HttpServerHandler
                             os.flush();
                             return null;
                         },
-                        ElEnviroment.class, elServ.createElEnviroment(wrsCtx));
+                        ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
                     }
                     catch(Exception ex)
                     {

@@ -20,9 +20,17 @@ import org.bridje.ioc.IocContext;
 import org.bridje.web.WebRequestScope;
 
 /**
- * A service for the expression lenguage system.
+ * A service for the expression language system.
  */
 public interface ElService
 {
-    ElEnviroment createElEnviroment(IocContext<WebRequestScope> context);
+    /**
+     * Creates a new expression language environment.
+     *
+     * @param context The IocContext instance for the current request. The new
+     * created EL environment will take the values from the components of this
+     * context.
+     * @return The new create expression language environment.
+     */
+    ElEnvironment createElEnvironment(IocContext<WebRequestScope> context);
 }

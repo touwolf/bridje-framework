@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation allows you to define a method that should be call when the
- * especified pattern is requested on the web server.
+ * specified pattern is requested on the web server.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

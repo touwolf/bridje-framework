@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation allows you to define a field that will receive the value of
- * the especified cookie when a WebMethod of the same component is call.
+ * the specified cookie when a WebMethod of the same component is call.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

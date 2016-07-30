@@ -17,7 +17,7 @@
 package org.bridje.web.view.comp;
 
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnviroment;
+import org.bridje.web.el.ElEnvironment;
 
 public class UIInputExpression extends UIExpression
 {
@@ -30,7 +30,7 @@ public class UIInputExpression extends UIExpression
 
     public <T> void set(T value)
     {
-        Thls.get(ElEnviroment.class).set(getExpression(), value);
+        Thls.get(ElEnvironment.class).set(getExpression(), value);
     }
     
     public String getParameter()

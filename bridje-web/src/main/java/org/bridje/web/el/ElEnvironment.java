@@ -17,10 +17,10 @@
 package org.bridje.web.el;
 
 /**
- * Represents an enviroment that holds the variables that can be evaluated and
- * asigned in the expression language execution context.
+ * Represents an environment that holds the variables that can be evaluated and
+ * assigned in the expression language execution context.
  */
-public interface ElEnviroment
+public interface ElEnvironment
 {
     /**
      * Evaluates the given expression and cast the result of it to the given
@@ -34,7 +34,7 @@ public interface ElEnviroment
     <T> T get(String expression, Class<T> resultCls);
 
     /**
-     * Sets the given expression to the especified value.
+     * Sets the given expression to the specified value.
      * 
      * @param <T> The type of the value.
      * @param expression The expression to assign.
@@ -43,7 +43,7 @@ public interface ElEnviroment
     <T> void set(String expression, T value);
 
     /**
-     * Gets the value of the especified variable.
+     * Gets the value of the specified variable.
      * 
      * @param <T> The type of the variable.
      * @param name The name of the variable.
@@ -53,7 +53,7 @@ public interface ElEnviroment
     <T> T getVar(String name, Class<T> resultCls);
 
     /**
-     * Sets the value of the especified variable.
+     * Sets the value of the specified variable.
      * 
      * @param <T> The type of the variable.
      * @param name The name of the variable.
