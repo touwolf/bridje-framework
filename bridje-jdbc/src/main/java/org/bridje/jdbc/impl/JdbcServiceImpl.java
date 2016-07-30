@@ -32,9 +32,6 @@ import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFolder;
 
-/**
- *
- */
 @Component
 class JdbcServiceImpl implements JdbcService
 {

@@ -85,7 +85,7 @@ class WebSessionManager
                 try
                 {
                     Object value = field.get(instance);
-                    session.save(sessName, serialize(value, field));
+                    session.save(sessName, serialize(value));
                     result.add(field);
                 }
                 catch (IllegalArgumentException | IllegalAccessException e)
@@ -118,7 +118,7 @@ class WebSessionManager
         }
     }
 
-    private String serialize(Object value, Field field)
+    private String serialize(Object value)
     {
         if(value == null)
         {

@@ -35,8 +35,6 @@ import org.bridje.web.WebRequestScope;
 @Priority(20)
 class WebSessionHandler implements HttpServerHandler
 {
-    private static final Logger LOG = Logger.getLogger(WebSessionHandler.class.getName());
-
     @InjectNext
     private HttpServerHandler nextHandler;
     
