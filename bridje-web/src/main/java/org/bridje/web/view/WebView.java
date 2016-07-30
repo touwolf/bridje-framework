@@ -54,8 +54,10 @@ public class WebView
     private Map<String, UIInputExpression> inputs;
 
     /**
-     *
-     * @return
+     * Gets a list of meta information tags information to be rendered with 
+     * this view.
+     * 
+     * @return A list of meta information tags assigned to this view.
      */
     public List<MetaTag> getMetaTags()
     {
@@ -63,8 +65,9 @@ public class WebView
     }
 
     /**
-     *
-     * @return
+     * The title for this view.
+     * 
+     * @return The title for this view.
      */
     public String getTitle()
     {
@@ -81,6 +84,11 @@ public class WebView
         return name;
     }
 
+    /**
+     * Sets the name of this view. for internal use of this API only.
+     * 
+     * @param name The name to be set.
+     */
     void setName(String name)
     {
         this.name = name;

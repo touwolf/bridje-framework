@@ -23,18 +23,20 @@ package org.bridje.orm;
 public interface SQLAdapter
 {
     /**
+     * Converts the value from the java type to the SQL equivalent type.
      * 
-     * @param value
-     * @param column
-     * @return
+     * @param value The value to serialize.
+     * @param column The column for this value.
+     * @return The SQL type to write to the database.
      */
     Object serialize(Object value, Column column);
 
     /**
+     * Converts the value from the the SQL type to the java type.
      * 
-     * @param value
-     * @param column
-     * @return
+     * @param value The value readed from the database.
+     * @param column The column for this value.
+     * @return The java type to write to the java object field.
      */
     Object unserialize(Object value, Column column);
 }

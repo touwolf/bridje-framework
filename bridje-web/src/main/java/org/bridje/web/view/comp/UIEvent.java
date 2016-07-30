@@ -43,6 +43,8 @@ public class UIEvent
 
     /**
      * Invokes the method defined by this event.
+     * 
+     * @return The object returned when invoking the method of the event.
      */
     public Object invoke()
     {
