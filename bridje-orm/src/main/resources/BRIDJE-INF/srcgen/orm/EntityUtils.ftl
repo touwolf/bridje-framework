@@ -26,6 +26,15 @@
     <#return false />
 </#function>
 
+<#function findKeyField>
+    <#list node.* as field>
+        <#if isKey(field)>
+            <#return field />
+        </#if>
+    </#list>
+</#function>
+
+
 <#function findTableColumn field>
     <#if field?node_name == "relation">
         <#return "TableRelationColumn" />

@@ -12,6 +12,7 @@ import java.util.Date;
 <#if hasAtLeastOneType("time") >
 import java.sql.Time;
 </#if>
+import java.util.Objects;
 
 @Entity(table = "${findTableName(node)}")
 public class ${node.@name}
@@ -44,4 +45,32 @@ public class ${node.@name}
     }
 
     </#list>
+    @Override
+    public int hashCode()
+    {
+        if(get${findKeyField().@name?cap_first}() == null)
+        {
+            return super.hashCode();
+        }
+        return get${findKeyField().@name?cap_first}().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ${node.@name}Proxy other = (${node.@name}Proxy) obj;
+        return Objects.equals(this.get${findKeyField().@name?cap_first}(), other.get${findKeyField().@name?cap_first}());
+    }
 }
