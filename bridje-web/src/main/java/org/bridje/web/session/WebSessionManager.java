@@ -17,6 +17,8 @@
 package org.bridje.web.session;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,7 +59,7 @@ class WebSessionManager
                     result.add(field);
                     if(value != null)
                     {
-                        field.set(instance, value);
+                        field.set(instance, unserialize(value, field));
                     }
                 }
                 catch (IllegalArgumentException | IllegalAccessException e)
@@ -125,5 +127,30 @@ class WebSessionManager
             return null;
         }
         return value.toString();
+    }
+
+    private Object unserialize(String value, Field field)
+    {
+        if(value == null)
+        {
+            return null;
+        }
+        if(field.getType().equals(String.class))
+        {
+            return value;
+        }
+        try
+        {
+            Method method = field.getType().getMethod("valueOf", String.class);
+            if(method != null)
+            {
+                return method.invoke(null, value);
+            }
+        }
+        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
     }
 }

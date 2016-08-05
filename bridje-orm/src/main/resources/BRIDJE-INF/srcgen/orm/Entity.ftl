@@ -29,7 +29,7 @@ public class ${node.@name}
     <#if isKey(field) >
     @Key<#if isAutoIncrement(field)>(autoIncrement = true)</#if>
     </#if>
-    @Field(column = "${findColumnName(field)}"<#if isIndex(field)>, index = true</#if><#if hasSqlType(field)>, type = JDBCType.${getSqlType(field)}</#if><#if hasAdapter(field)>, adapter = ${getAdapter(field)}.class</#if>)
+    @Field(column = "${findColumnName(field)}"<#if hasLength(field)>, length = ${field.@length}</#if><#if isIndex(field)>, index = true</#if><#if hasSqlType(field)>, type = JDBCType.${getSqlType(field)}</#if><#if hasAdapter(field)>, adapter = ${getAdapter(field)}.class</#if>)
     private ${findType(field)} ${field.@name};
 
     </#list>
@@ -70,7 +70,7 @@ public class ${node.@name}
         {
             return false;
         }
-        final ${node.@name}Proxy other = (${node.@name}Proxy) obj;
+        final ${node.@name} other = (${node.@name}) obj;
         return Objects.equals(this.get${findKeyField().@name?cap_first}(), other.get${findKeyField().@name?cap_first}());
     }
 }

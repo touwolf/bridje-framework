@@ -120,6 +120,13 @@
     <#return false />
 </#function>
 
+<#function hasLength field>
+    <#if (field.@length[0]??) >
+        <#return true />
+    </#if>
+    <#return false />
+</#function>
+
 <#function hasSqlType field>
     <#if (field.@sqlType[0]??) >
         <#return true />
