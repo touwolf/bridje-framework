@@ -24,7 +24,7 @@ public interface ElTypeConverter
     public Class[] getToClasses();
 
     /**
-     * Performs the convertion of the given value to the given type.
+     * Performs the conversion of the given value to the given type.
      * 
      * @param <T> The type of the result.
      * @param value The value to convert.
