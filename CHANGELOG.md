@@ -1,6 +1,6 @@
 # Change Log
 
-## [v0.2.3](https://github.com/bridje/bridje-framework/tree/v0.2.3) (2016-05-22)
+## [v0.2.3](https://github.com/bridje/bridje-framework/tree/v0.2.3) (2016-07-29)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.2...v0.2.3)
 
  - Enhances to the mecanism that use the maven plugin to generate code.
