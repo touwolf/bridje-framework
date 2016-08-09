@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      HTTP://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,9 +33,9 @@ import javax.net.ssl.SSLContext;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Http server configuration.
+ * HTTP server configuration.
  */
-@XmlRootElement(name = "http")
+@XmlRootElement(name = "HTTP")
 public class HttpServerConfig
 {
     private String listen = "0.0.0.0";
@@ -57,9 +57,9 @@ public class HttpServerConfig
     private String sslAlgo = "TLS";
 
     /**
-     * The listen ip on witch to start the http server, can be null witch means
-     * all ips will be allowed. Especify this only if you plan to restrict the
-     * ip on witch the server will accept new connections.
+     * The listen IP on witch to start the HTTP server, can be null witch means
+     * all IPs will be allowed. Specify this only if you plan to restrict the
+     * IP on witch the server will accept new connections.
      *
      * @return The listen for the HTTP server.
      */
@@ -69,8 +69,8 @@ public class HttpServerConfig
     }
 
     /**
-     * The host on witch to start the http server, can be null witch means all
-     * ips will be allowed. Especify this only if you plan to restrict the ip on
+     * The host on witch to start the HTTP server, can be null witch means all
+     * IPs will be allowed. Specify this only if you plan to restrict the IP on
      * witch the server will accept new connections.
      *
      * @param listen The host for the HTTP server.
@@ -129,11 +129,11 @@ public class HttpServerConfig
     }
 
     /**
-     * Gets if the server must run with ssl connector for https, if this
-     * parameter is true, the ssl parameters must be configure properly for the
+     * Gets if the server must run with SSL connector for HTTPs, if this
+     * parameter is true, the SSL parameters must be configure properly for the
      * server to start.
      *
-     * @return true ssl is enabled, false ssl is disabled.
+     * @return true SSL is enabled, false SSL is disabled.
      */
     public boolean isSsl()
     {
@@ -141,11 +141,11 @@ public class HttpServerConfig
     }
 
     /**
-     * Gets if the server must run with ssl connector for https, if this
-     * parameter is true, the ssl parameters must be configure properly for the
+     * Gets if the server must run with SSL connector for HTTPs, if this
+     * parameter is true, the SSL parameters must be configure properly for the
      * server to start.
      *
-     * @param ssl true ssl is enabled, false ssl is disabled.
+     * @param ssl true SSL is enabled, false SSL is disabled.
      */
     public void setSsl(boolean ssl)
     {
@@ -179,10 +179,10 @@ public class HttpServerConfig
     }
 
     /**
-     * The file that holds the keystore for the SSLContext.
+     * The file that holds the key store for the SSLContext.
      *
      * @return An String with the path relative to the current folder for the
-     * keystore file.
+     * key store file.
      */
     public String getKeyStoreFile()
     {
@@ -190,10 +190,10 @@ public class HttpServerConfig
     }
 
     /**
-     * The file that holds the keystore for the SSLContext.
+     * The file that holds the key store for the SSLContext.
      *
      * @param keyStoreFile An String with the path relative to the current
-     * folder for the keystore file.
+     * folder for the key store file.
      */
     public void setKeyStoreFile(String keyStoreFile)
     {
@@ -201,9 +201,9 @@ public class HttpServerConfig
     }
 
     /**
-     * The password for the keystore file.
+     * The password for the key store file.
      *
-     * @return The password for the keystore file.
+     * @return The password for the key store file.
      */
     public String getKeyStorePass()
     {
@@ -211,9 +211,9 @@ public class HttpServerConfig
     }
 
     /**
-     * The password for the keystore file.
+     * The password for the key store file.
      *
-     * @param keyStorePass The password for the keystore file.
+     * @param keyStorePass The password for the key store file.
      */
     public void setKeyStorePass(String keyStorePass)
     {
@@ -279,14 +279,14 @@ public class HttpServerConfig
 
     /**
      * Creates a new SSLContext from the parameters of this configuration, that
-     * can be use for the ssl codec of the http server.
+     * can be use for the SSL codec of the HTTP server.
      *
-     * @return The new created SSLContext for the http server ssl codec.
+     * @return The new created SSLContext for the HTTP server SSL codec.
      * @throws NoSuchAlgorithmException If a wrong algorithm is
      * provided.
-     * @throws KeyStoreException If any error occurrs with the KeyStore.
-     * @throws IOException If the keystore file is not found or cannot be readed.
-     * @throws UnrecoverableKeyException This exception is thrown if a key in the keystore cannot be recovered.
+     * @throws KeyStoreException If any error occurs with the KeyStore.
+     * @throws IOException If the key store file is not found or cannot be read.
+     * @throws UnrecoverableKeyException This exception is thrown if a key in the key store cannot be recovered.
      * @throws CertificateException This exception indicates one of a variety of certificate problems.
      * @throws KeyManagementException This is the general key management exception for all operations dealing with key management.
      */
