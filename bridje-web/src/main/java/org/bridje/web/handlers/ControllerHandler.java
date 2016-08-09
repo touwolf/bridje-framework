@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl;
+package org.bridje.web.handlers;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

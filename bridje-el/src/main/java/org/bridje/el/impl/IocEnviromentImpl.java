@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.bridje.web.el.impl;
+package org.bridje.el.impl;
 
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.el.ElEnvironment;
+import org.bridje.el.ElEnvironment;
 
 class IocEnviromentImpl implements ElEnvironment
 {

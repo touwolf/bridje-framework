@@ -35,6 +35,7 @@
         <!--
         <module>bridje-webui</module>
         -->
+        <module>bridje-el</module>
     </modules>
 
     <scm>

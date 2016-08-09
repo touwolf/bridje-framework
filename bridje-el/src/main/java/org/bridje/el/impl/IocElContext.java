@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.el.impl;
+package org.bridje.el.impl;
 
 import de.odysseus.el.util.SimpleResolver;
 import java.lang.reflect.Method;
@@ -28,8 +28,7 @@ import javax.el.FunctionMapper;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
-import org.bridje.web.el.Model;
+import org.bridje.el.Model;
 
 class IocElContext extends ELContext
 {
@@ -45,7 +44,7 @@ class IocElContext extends ELContext
 
     private final IocContext context;
 
-    private static Map<String, Class<?>> getModels(IocContext<WebRequestScope> ctx)
+    private static Map<String, Class<?>> getModels(IocContext<?> ctx)
     {
         if(MODELS == null)
         {
@@ -54,7 +53,7 @@ class IocElContext extends ELContext
         return MODELS;
     }
     
-    private static synchronized void initModels(IocContext<WebRequestScope> ctx)
+    private static synchronized void initModels(IocContext<?> ctx)
     {
         if(MODELS == null)
         {
@@ -157,9 +156,9 @@ class IocElContext extends ELContext
 
         private final Map<String, ValueExpression> map = new HashMap<>();
         
-        private final IocContext<WebRequestScope> context;
+        private final IocContext<?> context;
 
-        public Variables(IocContext<WebRequestScope> context, ExpressionFactory factory)
+        public Variables(IocContext<?> context, ExpressionFactory factory)
         {
             this.context = context;
             this.factory = factory;

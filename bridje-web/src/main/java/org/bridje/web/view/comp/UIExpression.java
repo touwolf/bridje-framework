@@ -18,8 +18,8 @@ package org.bridje.web.view.comp;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnvironment;
 
 /**
  * Represents an expression that can be use in a view to pull a value from the

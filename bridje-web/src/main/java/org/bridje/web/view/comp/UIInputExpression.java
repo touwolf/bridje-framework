@@ -16,8 +16,8 @@
 
 package org.bridje.web.view.comp;
 
+import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnvironment;
 
 public class UIInputExpression extends UIExpression
 {

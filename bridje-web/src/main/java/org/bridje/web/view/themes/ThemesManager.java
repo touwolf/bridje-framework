@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import org.bridje.el.ElEnvironment;
 import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
@@ -40,7 +41,6 @@ import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.web.view.comp.WebComponent;
 import org.bridje.web.view.WebView;
-import org.bridje.web.el.ElEnvironment;
 
 @Component
 public class ThemesManager

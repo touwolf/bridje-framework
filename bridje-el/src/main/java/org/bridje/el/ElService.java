@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package org.bridje.web.el.impl;
+package org.bridje.el;
 
-import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
-import org.bridje.web.el.ElService;
-import org.bridje.web.el.ElEnvironment;
 
-@Component
-class ElServiceImpl implements ElService
+/**
+ * A service for the expression language system.
+ */
+public interface ElService
 {
-    @Override
-    public ElEnvironment createElEnvironment(IocContext<WebRequestScope> context)
-    {
-        return new IocEnviromentImpl(context);
-    }
+    /**
+     * Creates a new expression language environment.
+     *
+     * @param context The IocContext instance to find the models. The new
+     * created EL environment will take the values from the components of this
+     * context.
+     * @return The new create expression language environment.
+     */
+    ElEnvironment createElEnvironment(IocContext<?> context);
 }

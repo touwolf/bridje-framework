@@ -16,8 +16,8 @@
 
 package org.bridje.web.view.comp;
 
+import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.el.ElEnvironment;
 
 /**
  * The data for the events of the components that can be render in a WebView.

@@ -14,7 +14,6 @@
     <description>Bridje Web Framework</description>
     <url>http://www.bridje.org</url>
 
-
     <build>
         <plugins>
             <plugin>
@@ -75,14 +74,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>de.odysseus.juel</groupId>
-            <artifactId>juel-impl</artifactId>
-            <version>2.2.7</version>
-        </dependency>
-        <dependency>
-            <groupId>de.odysseus.juel</groupId>
-            <artifactId>juel-api</artifactId>
-            <version>2.2.7</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-el</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>

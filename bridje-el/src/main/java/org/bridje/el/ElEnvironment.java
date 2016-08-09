@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.el;
+package org.bridje.el;
 
 /**
  * Represents an environment that holds the variables that can be evaluated and

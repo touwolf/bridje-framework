@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl;
+package org.bridje.web.handlers;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;

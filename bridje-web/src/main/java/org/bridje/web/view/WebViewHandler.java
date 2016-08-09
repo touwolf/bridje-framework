@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.el.ElEnvironment;
+import org.bridje.el.ElService;
 import org.bridje.http.HttpServerContext;
 import org.bridje.http.HttpServerHandler;
 import org.bridje.http.HttpServerRequest;
@@ -35,8 +37,6 @@ import org.bridje.ioc.Priority;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebRequestScope;
-import org.bridje.web.el.ElService;
-import org.bridje.web.el.ElEnvironment;
 
 @Component
 @Priority(200)

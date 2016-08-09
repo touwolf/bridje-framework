@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.el.impl;
+package org.bridje.el.impl;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.util.Properties;
