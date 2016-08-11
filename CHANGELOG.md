@@ -1,5 +1,25 @@
 # Change Log
 
+## [v0.2.3](https://github.com/bridje/bridje-framework/tree/v0.2.3) (2016-07-29)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.2...v0.2.3)
+
+ - Enhances to the mecanism that use the maven plugin to generate code.
+ - Enhances to the ORM code generation. 		
+ - Adding initial version of webui api (Not released yet).
+ - Adding SQL Adapters for PostgreSQL and Derby (Java DB).
+ - Fixes to the VFS, to allow files creation and writing. 		
+ - Web framework enhaces: web view reference, request path reference.
+ - Adding get data method to the web scope.
+ - Adding Thread Local Storage into the IoC framework.
+ - Adding meta tags to the web views.
+ - Refactoring web views.
+ - Web view meta data feature.
+ - ORM code generation templates.
+ - VFS null pointer error.
+ - HTTP request's size limit increased.
+ - Implementing web session in the web api.
+ - Add patch method to the HTTP server.
+
 ## [v0.2.2](https://github.com/bridje/bridje-framework/tree/v0.2.2) (2016-05-22)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.1...v0.2.2)
 
