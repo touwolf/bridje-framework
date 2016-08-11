@@ -16,12 +16,14 @@
 
 package org.bridje.web.view.comp;
 
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
 /**
  * The data for the events of the components that can be render in a WebView.
  */
+@XmlTransient
 public class UIEvent
 {
     private final String expression;

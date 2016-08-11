@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

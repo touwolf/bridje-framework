@@ -16,6 +16,9 @@
 
 package org.bridje.web.view;
 
+import javax.xml.bind.annotation.XmlTransient;
+
+@XmlTransient
 public class WebViewRef
 {
     private String viewPath;

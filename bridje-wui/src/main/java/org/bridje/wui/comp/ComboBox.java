@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,9 +10,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.web.view.comp.UIInputExpression;
 import org.bridje.web.view.comp.UIInputExpressionAdapter;
 
-@XmlRootElement(name = "textbox")
+@XmlRootElement(name = "combobox")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TextBox extends BaseComponent
+public class ComboBox extends BaseComponent
 {
     @XmlAttribute(name = "value")
     @XmlJavaTypeAdapter(UIInputExpressionAdapter.class)

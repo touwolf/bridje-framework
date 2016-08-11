@@ -16,9 +16,11 @@
 
 package org.bridje.web.view.comp;
 
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
+@XmlTransient
 public class UIInputExpression extends UIExpression
 {
     private String parameter;

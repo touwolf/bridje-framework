@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@XmlSchema(namespace = "http://www.bridje.org/schemas/http-server",
+@XmlSchema(namespace = "http://www.bridje.org/schemas/http/config",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
 package org.bridje.http.config;

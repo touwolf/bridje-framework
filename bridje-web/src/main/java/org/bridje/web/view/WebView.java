@@ -16,13 +16,13 @@
 
 package org.bridje.web.view;
 
+import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.comp.UIEvent;
+import org.bridje.web.view.comp.UIInputExpression;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.*;
-import org.bridje.web.view.comp.UIEvent;
-import org.bridje.web.view.comp.UIInputExpression;
-import org.bridje.web.view.comp.WebComponent;
 
 /**
  * Represents a view of the application, views are render by themes and are

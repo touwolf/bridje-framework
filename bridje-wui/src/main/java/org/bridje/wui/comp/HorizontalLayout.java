@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.web.view.comp.WebComponent;
 
-@XmlRootElement(name = "vlayout")
+@XmlRootElement(name = "hlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VerticalLayout extends BaseContainer
+public class HorizontalLayout extends WebComponent
 {
     @XmlAnyElement(lax = true)
     private List<WebComponent> children;

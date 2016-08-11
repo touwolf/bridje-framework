@@ -18,6 +18,7 @@ package org.bridje.web.view.comp;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
@@ -25,6 +26,7 @@ import org.bridje.ioc.thls.Thls;
  * Represents an expression that can be use in a view to pull a value from the
  * model during a view render.
  */
+@XmlTransient
 public class UIExpression
 {
     private static final Logger LOG = Logger.getLogger(UIExpression.class.getName());

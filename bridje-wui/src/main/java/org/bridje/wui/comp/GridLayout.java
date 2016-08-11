@@ -1,17 +1,21 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.web.view.comp.WebComponent;
 
-@XmlRootElement(name = "hlayout")
+@XmlRootElement(name = "grid")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HorizontalLayout extends WebComponent
+public class GridLayout extends BaseContainer
 {
+    @XmlAttribute(name = "columns")
+    private int columns;
+    
     @XmlAnyElement(lax = true)
     private List<WebComponent> children;
 
@@ -20,9 +24,13 @@ public class HorizontalLayout extends WebComponent
         return children;
     }
 
-    public void setChildren(List<WebComponent> children)
+    public int getColumns()
     {
-        this.children = children;
+        if(columns <= 0)
+        {
+            return 1;
+        }
+        return columns;
     }
 
     @Override

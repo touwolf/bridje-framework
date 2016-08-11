@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.el.ElService;
 import org.bridje.http.HttpServerContext;
@@ -40,6 +41,7 @@ import org.bridje.web.WebRequestScope;
 
 @Component
 @Priority(200)
+@XmlTransient
 class WebViewHandler implements HttpServerHandler
 {
     private static final Logger LOG = Logger.getLogger(WebViewHandler.class.getName());

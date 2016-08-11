@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import java.util.Collection;
 import java.util.Collections;

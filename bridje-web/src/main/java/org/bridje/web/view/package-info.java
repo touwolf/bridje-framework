@@ -14,36 +14,11 @@
  * limitations under the License.
  */
 
+@XmlSchema(namespace = "http://www.bridje.org/schemas/web/view",
+        attributeFormDefault = XmlNsForm.UNQUALIFIED,
+        elementFormDefault = XmlNsForm.QUALIFIED)
 package org.bridje.web.view;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlSchema;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class MetaTag
-{
-    @XmlAttribute(name = "name")
-    private String name;
-
-    @XmlValue
-    private String content;
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getContent()
-    {
-        return content;
-    }
-
-    public void setContent(String content)
-    {
-        this.content = content;
-    }
-}

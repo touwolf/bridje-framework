@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@XmlSchema(namespace = "http://www.bridje.org/schemas/jdbc",
+@XmlSchema(namespace = "http://www.bridje.org/schemas/jdbc/config",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
 package org.bridje.jdbc.config;

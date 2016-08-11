@@ -16,20 +16,22 @@
 
 package org.bridje.web.view;
 
+import org.bridje.web.view.comp.WebComponentsManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VirtualFile;
 import org.bridje.vfs.VirtualFolder;
-import org.bridje.web.view.comp.WebComponentsManager;
 
 @Component
+@XmlTransient
 public class WebViewsManager
 {
     private static final Logger LOG = Logger.getLogger(WebViewsManager.class.getName());

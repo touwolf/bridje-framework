@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.comp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.web.view.comp.UIExpression;
 import org.bridje.web.view.comp.UIExpressionAdapter;
 
-@XmlRootElement(name = "header")
+@XmlRootElement(name = "para")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Header extends BaseComponent
+public class Paragraph extends BaseComponent
 {
     @XmlValue
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)
