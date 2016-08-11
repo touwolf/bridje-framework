@@ -11,7 +11,7 @@ import org.bridje.web.view.comp.WebComponent;
 /**
  * A layout that contains a central region and 4 regions surronding it.
  */
-@XmlRootElement(name = "border")
+@XmlRootElement(name = "borderlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BorderLayout extends BaseContainer
 {

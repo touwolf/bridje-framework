@@ -170,83 +170,42 @@
 
 <#macro render c>
     <#if !(c.visible??) || c.visible>
-        <#if c.class.simpleName == "Button">
-            <@button c />
-        <#elseif c.class.simpleName == "ComboBox">
-            <@combobox c />
-        <#elseif c.class.simpleName == "Header">
-            <@header c />
-        <#elseif c.class.simpleName == "Text">
-            <@text c />
-        <#elseif c.class.simpleName == "Image">
-            <@image c />
-        <#elseif c.class.simpleName == "Link">
-            <@link c />
-        <#elseif c.class.simpleName == "Paragraph">
-            <@paragraph c />
-        <#elseif c.class.simpleName == "TextArea">
-            <@textarea c />
-        <#elseif c.class.simpleName == "TextBox">
-            <@textbox c />
-        <#elseif c.class.simpleName == "Password">
-            <@password c />
-        <#elseif c.class.simpleName == "Empty">
-            <@empty c />
-        <#elseif c.class.simpleName == "Table">
-            <@table c />
-        <#elseif c.class.simpleName == "BorderLayout">
-            <@borderlayout c />
-        <#elseif c.class.simpleName == "GridLayout">
-            <@gridlayout c />
-        <#elseif c.class.simpleName == "HorizontalLayout">
-            <@horizontallayout c />
-        <#elseif c.class.simpleName == "VerticalLayout">
-            <@verticallayout c />
-        <#elseif c.class.simpleName == "CheckBox">
-            <@checkbox c />
+        <#if c.class.package.name == "org.bridje.wui.comp">
+            <#if c.class.simpleName == "Button">
+                <@button c />
+            <#elseif c.class.simpleName == "ComboBox">
+                <@combobox c />
+            <#elseif c.class.simpleName == "Header">
+                <@header c />
+            <#elseif c.class.simpleName == "Text">
+                <@text c />
+            <#elseif c.class.simpleName == "Image">
+                <@image c />
+            <#elseif c.class.simpleName == "Link">
+                <@link c />
+            <#elseif c.class.simpleName == "Paragraph">
+                <@paragraph c />
+            <#elseif c.class.simpleName == "TextArea">
+                <@textarea c />
+            <#elseif c.class.simpleName == "TextBox">
+                <@textbox c />
+            <#elseif c.class.simpleName == "Password">
+                <@password c />
+            <#elseif c.class.simpleName == "Empty">
+                <@empty c />
+            <#elseif c.class.simpleName == "Table">
+                <@table c />
+            <#elseif c.class.simpleName == "BorderLayout">
+                <@borderlayout c />
+            <#elseif c.class.simpleName == "GridLayout">
+                <@gridlayout c />
+            <#elseif c.class.simpleName == "HorizontalLayout">
+                <@horizontallayout c />
+            <#elseif c.class.simpleName == "VerticalLayout">
+                <@verticallayout c />
+            <#elseif c.class.simpleName == "CheckBox">
+                <@checkbox c />
+            </#if>
         </#if>
     </#if>
-</#macro>
-
-<#macro renderThemeStyle theme style>
-    <link rel="stylesheet" href="/__themes/${theme}/${style}" />
-</#macro>
-
-<#macro renderThemeScript theme script>
-    <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
-</#macro>
-
-<#macro renderMetaTag view>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <#list view.metaTags![] as meta>
-    <meta name="${meta.name!}" content="${meta.content!}">
-    </#list>
-</#macro>
-
-<#macro renderFullView>
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>${view.title!}</title>
-            <@renderMetaTag view />
-            <@renderThemeStyle themeName "bridje-wui.css" />
-        </head>
-        <body class="${themeName}-theme">
-            <form id="view-form" >
-                <#if view.root??>
-                    <@renderPartialView view.root />
-                </#if>
-            </form>
-
-            <@renderThemeScript themeName "jquery-min.js" />
-            <@renderThemeScript themeName "bridje-wui.js" />
-        </body>
-    </html>
-</#macro>
-
-<#macro renderPartialView component>
-    <input type="hidden" name="__view" value="${view.name}" />
-    <input type="hidden" name="__action" value="" />
-    <@render component />
 </#macro>

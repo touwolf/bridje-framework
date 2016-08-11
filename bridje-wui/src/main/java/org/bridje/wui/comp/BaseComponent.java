@@ -22,6 +22,4 @@ public class BaseComponent extends WebComponent
     {
         return get(visible, Boolean.class, true);
     }
-
-    
 }

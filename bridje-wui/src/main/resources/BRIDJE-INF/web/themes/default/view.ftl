@@ -1,21 +1,15 @@
 <#ftl encoding="UTF-8">
 
-<#include "./components.ftl"/>
+<#include "../base/utils.ftl"/>
+<#include "../base/views.ftl"/>
 
-<#if component??>
-    <@renderPartialView component />
-<#else>
-    <@renderFullView />
-</#if>
+<#macro renderThemeScripts themeName>
+    <@renderScript "default" "jquery-min.js" />
+    <@renderScript "default" "bridje-wui.js" />
+</#macro>
 
-<#if result??
-     && result.class.simpleName == "RedirectTo"
-     && result.status??
-     && result.resource??>
-    <script>
-        window.location = '${result.resource}';
-    </script>
-<#else>
-    <#assign themeName = "default" />
-    <@renderAll />
-</#if>
+<#macro renderThemeStyles themeName>
+    <@renderStyle "default" "bridje-wui.css" />
+</#macro>
+
+<@renderMain "default" />
