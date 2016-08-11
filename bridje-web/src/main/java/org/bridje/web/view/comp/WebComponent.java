@@ -69,7 +69,7 @@ public abstract class WebComponent
     }
     
     /**
-     * Evals the given expression in the current ElEnviroment.
+     * Evaluates the given expression in the current ElEnviroment.
      * 
      * @param <T> The type for the result.
      * @param expression The expression to evaluate.

@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.2.3-SNAPSHOT</version>
+        <version>0.2.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bridje-webui</artifactId>
+    <artifactId>bridje-wui</artifactId>
 
-    <name>Bridje WebUI</name>
-    <description>Bridje Web UI Components</description>
+    <name>Bridje WUI</name>
+    <description>Bridje Web User Interface Components</description>
     <url>http://www.bridje.org</url>
 
     <dependencies>
