@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * HTTP server configuration.
  */
-@XmlRootElement(name = "HTTP")
+@XmlRootElement(name = "http")
 public class HttpServerConfig
 {
     private String listen = "0.0.0.0";

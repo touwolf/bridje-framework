@@ -54,3 +54,4 @@ junit*.properties
 .settings
 .classpath
 /bridje-el/nbproject/
+/bridje-web/nbproject/

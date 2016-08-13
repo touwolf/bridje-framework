@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.web.view.comp.WebComponent;
 
-@XmlRootElement(name = "vertlayout")
+@XmlRootElement(name = "vlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VerticalLayout extends BaseContainer
 {

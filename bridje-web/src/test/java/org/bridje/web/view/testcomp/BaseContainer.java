@@ -1,5 +1,5 @@
 
-package org.bridje.wui.comp;
+package org.bridje.web.view.testcomp;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

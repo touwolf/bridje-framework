@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.web.view.comp.WebComponent;
 
-@XmlRootElement(name = "horizlayout")
+@XmlRootElement(name = "hlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HorizontalLayout extends WebComponent
 {
@@ -24,7 +24,7 @@ public class HorizontalLayout extends WebComponent
         @XmlElementRef(name = "empty", type = Empty.class),
         @XmlElementRef(name = "gridlayout", type = GridLayout.class),
         @XmlElementRef(name = "header", type = Header.class),
-        @XmlElementRef(name = "horizLayout", type = HorizontalLayout.class),
+        @XmlElementRef(name = "hLayout", type = HorizontalLayout.class),
         @XmlElementRef(name = "image", type = Image.class),
         @XmlElementRef(name = "link", type = Link.class),
         @XmlElementRef(name = "paragraph", type = Paragraph.class),
@@ -33,7 +33,7 @@ public class HorizontalLayout extends WebComponent
         @XmlElementRef(name = "text", type = Text.class),
         @XmlElementRef(name = "textarea", type = TextArea.class),
         @XmlElementRef(name = "textbox", type = TextBox.class),
-        @XmlElementRef(name = "vertlayout", type = VerticalLayout.class)
+        @XmlElementRef(name = "vlayout", type = VerticalLayout.class)
     })
     private List<WebComponent> children;
 
