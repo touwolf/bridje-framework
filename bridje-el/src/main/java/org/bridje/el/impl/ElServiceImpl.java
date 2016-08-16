@@ -20,13 +20,23 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.el.ElService;
 import org.bridje.el.ElEnvironment;
+import org.bridje.ioc.Inject;
 
 @Component
 class ElServiceImpl implements ElService
 {
+    @Inject
+    private TypeConverterImpl typeConv;
+    
     @Override
     public ElEnvironment createElEnvironment(IocContext<?> context)
     {
         return new IocEnviromentImpl(context);
+    }
+
+    @Override
+    public <T> T convert(Object value, Class<T> type)
+    {
+        return typeConv.convert(value, type);
     }
 }

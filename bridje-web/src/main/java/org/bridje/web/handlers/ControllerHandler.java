@@ -34,7 +34,7 @@ import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebCookie;
 import org.bridje.web.WebMethod;
 import org.bridje.web.WebParameter;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
 @Component
 @Priority(500)
@@ -47,7 +47,7 @@ class ControllerHandler implements HttpServerHandler
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
+        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         if(methodsData == null)
         {
             initMethods(wrsCtx);
@@ -60,7 +60,7 @@ class ControllerHandler implements HttpServerHandler
         return false;
     }
 
-    private synchronized void initMethods(IocContext<WebRequestScope> wrsCtx)
+    private synchronized void initMethods(IocContext<WebScope> wrsCtx)
     {
         if(methodsData == null)
         {
@@ -74,7 +74,7 @@ class ControllerHandler implements HttpServerHandler
         }
     }
 
-    private Object invokeMethod(IocContext<WebRequestScope> wrsCtx, String path)
+    private Object invokeMethod(IocContext<WebScope> wrsCtx, String path)
     {
         for (WebMethodData methodData : methodsData)
         {
@@ -96,7 +96,7 @@ class ControllerHandler implements HttpServerHandler
         return null;
     }
 
-    private void injectParameters(IocContext<WebRequestScope> wrsCtx, Object cmp)
+    private void injectParameters(IocContext<WebScope> wrsCtx, Object cmp)
     {
         Field[] fields = cmp.getClass().getDeclaredFields();
         for (Field field : fields)
@@ -117,7 +117,7 @@ class ControllerHandler implements HttpServerHandler
         }
     }
 
-    private void injectParameter(IocContext<WebRequestScope> wrsCtx, Object cmp, Field field, WebParameter param)
+    private void injectParameter(IocContext<WebScope> wrsCtx, Object cmp, Field field, WebParameter param)
     {
         String name = param.value();
         String paramVal = wrsCtx.getScope().getPostParameter(name);
@@ -139,7 +139,7 @@ class ControllerHandler implements HttpServerHandler
         }
     }
 
-    private void injectCookie(IocContext<WebRequestScope> wrsCtx, Object cmp, Field field, WebCookie cookie)
+    private void injectCookie(IocContext<WebScope> wrsCtx, Object cmp, Field field, WebCookie cookie)
     {
         String name = cookie.value();
         HttpCookie cookieVal = wrsCtx.getScope().getCookie(name);

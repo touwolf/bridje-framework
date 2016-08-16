@@ -25,7 +25,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
 @Component
 @Priority(0)
@@ -40,9 +40,9 @@ class ScopeHandler implements HttpServerHandler
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        WebRequestScope scope = new WebRequestScope(context);
-        IocContext<WebRequestScope> wrsCtx = appCtx.createChild(scope);
-        context.set(WebRequestScope.class, scope);
+        WebScope scope = new WebScope(context);
+        IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
+        context.set(WebScope.class, scope);
         context.set(IocContext.class, wrsCtx);
         return nextHandler.handle(context);
     }

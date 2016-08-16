@@ -62,7 +62,7 @@ public class ThemesManager
         ftlCfg.setLogTemplateExceptions(false);
     }
 
-    public void render(WebView view, OutputStream os)
+    public void render(WebView view, OutputStream os, Map<String, String> state)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -72,6 +72,7 @@ public class ThemesManager
             Map data = new HashMap();
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
+            data.put("state", state);
             tpl.process(data, w);
             w.flush();
         }
@@ -81,7 +82,7 @@ public class ThemesManager
         }
     }
 
-    public void render(WebComponent comp, WebView view, OutputStream os, Object result)
+    public void render(WebComponent comp, WebView view, OutputStream os, Object result, Map<String, String> state)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -93,6 +94,7 @@ public class ThemesManager
             data.put("component", comp);
             data.put("result", result);
             data.put("env", Thls.get(ElEnvironment.class));
+            data.put("state", state);
             tpl.process(data, w);
             w.flush();
         }

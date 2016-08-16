@@ -81,7 +81,10 @@ class TypeConverterImpl implements TypeConverter
             ElTypeConverter converter = map.get(type);
             if(converter != null)
             {
-                return converter.convert(value, type);
+                if(converter.canConvert(value, type))
+                {
+                    return converter.convert(value, type);
+                }
             }
         }
 

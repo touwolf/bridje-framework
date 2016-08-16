@@ -25,16 +25,16 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
-@Component(scope = WebRequestScope.class)
+@Component(scope = WebScope.class)
 class WebSessionListener implements ContextListener<Object>
 {
     @Inject
-    private IocContext<WebRequestScope> ctx;
+    private IocContext<WebScope> ctx;
 
     @Inject
-    private WebRequestScope scope;
+    private WebScope scope;
     
     @Inject
     private WebSessionManager sessionMang;

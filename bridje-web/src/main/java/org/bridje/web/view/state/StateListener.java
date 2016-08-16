@@ -16,27 +16,31 @@
 
 package org.bridje.web.view.state;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
-@Component(scope = WebRequestScope.class)
+@Component(scope = WebScope.class)
 class StateListener implements ContextListener<Object>
 {
     @Inject
-    private IocContext<WebRequestScope> ctx;
+    private IocContext<WebScope> ctx;
 
     @Inject
-    private WebRequestScope scope;
-    
+    private WebScope scope;
+
     @Inject
     private StateManager stateMang;
-    
+
     private boolean isViewUpdate;
-    
+
+    private Map<Class<?>, Object> stateComps;
+
     @PostConstruct
     public void init()
     {
@@ -59,6 +63,7 @@ class StateListener implements ContextListener<Object>
         if(isViewUpdate)
         {
             stateMang.injectState(ctx, clazz, instance, scope);
+            addStateComp(clazz, instance);
         }
     }
 
@@ -66,5 +71,19 @@ class StateListener implements ContextListener<Object>
     public void postInitComponent(Class<Object> clazz, Object instance)
     {
         //Empty
+    }
+
+    private void addStateComp(Class<Object> cls, Object instance)
+    {
+        if(stateComps == null)
+        {
+            stateComps = new HashMap<>();
+        }
+        stateComps.put(cls, instance);
+    }
+
+    public Map<Class<?>, Object> getStateComps()
+    {
+        return stateComps;
     }
 }

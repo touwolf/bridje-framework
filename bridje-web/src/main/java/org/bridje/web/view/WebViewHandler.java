@@ -21,6 +21,7 @@ import org.bridje.web.view.comp.UIInputExpression;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,7 +38,8 @@ import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.web.ReqPathRef;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
+import org.bridje.web.view.state.StateManager;
 
 @Component
 @Priority(200)
@@ -57,6 +59,9 @@ class WebViewHandler implements HttpServerHandler
 
     @Inject
     private ThemesManager themesMang;
+    
+    @Inject
+    private StateManager stateManag;
 
     @Override
     public boolean handle(HttpServerContext context) throws IOException
@@ -68,7 +73,7 @@ class WebViewHandler implements HttpServerHandler
             WebView view = viewsMang.findView(viewUpdate);
             if(view != null)
             {
-                IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
+                IocContext<WebScope> wrsCtx = context.get(IocContext.class);
                 try
                 {
                     Thls.doAs(() ->
@@ -78,7 +83,8 @@ class WebViewHandler implements HttpServerHandler
                         HttpServerResponse resp = context.get(HttpServerResponse.class);
                         try(OutputStream os = resp.getOutputStream())
                         {
-                            themesMang.render(view.getRoot(), view, os, result);
+                            Map<String, String> state = stateManag.createViewState(wrsCtx);
+                            themesMang.render(view.getRoot(), view, os, result, state);
                             os.flush();
                         }
                         return null;
@@ -100,13 +106,14 @@ class WebViewHandler implements HttpServerHandler
                 WebView view = viewsMang.findView(getViewName(context));
                 if(view != null)
                 {
-                    IocContext<WebRequestScope> wrsCtx = context.get(IocContext.class);
+                    IocContext<WebScope> wrsCtx = context.get(IocContext.class);
                     HttpServerResponse resp = context.get(HttpServerResponse.class);
                     try(OutputStream os = resp.getOutputStream())
                     {
                         Thls.doAs(() ->
                         {
-                            themesMang.render(view, os);
+                            Map<String, String> state = stateManag.createViewState(wrsCtx);
+                            themesMang.render(view, os, state);
                             os.flush();
                             return null;
                         },

@@ -29,7 +29,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
 @Component
 @Priority(20)
@@ -47,7 +47,7 @@ class WebSessionHandler implements HttpServerHandler
     @Override
     public boolean handle(HttpServerContext context) throws IOException
     {
-        IocContext<WebRequestScope> ctx = context.get(IocContext.class);
+        IocContext<WebScope> ctx = context.get(IocContext.class);
         String sessionId = findSessionId(ctx.getScope());
         WebSessionImpl webSess = new WebSessionImpl(sessionId, sessionProvider);
         context.set(WebSession.class, webSess);
@@ -67,7 +67,7 @@ class WebSessionHandler implements HttpServerHandler
         return false;
     }
 
-    public String findSessionId(WebRequestScope req)
+    public String findSessionId(WebScope req)
     {
         HttpCookie sessionIdCookie = req.getCookie("sessionid");
         if(sessionIdCookie != null)

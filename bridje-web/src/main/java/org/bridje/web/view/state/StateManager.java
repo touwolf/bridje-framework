@@ -18,26 +18,32 @@ package org.bridje.web.view.state;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.el.ElService;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
 @Component
-class StateManager
+public class StateManager
 {
     private static final Logger LOG = Logger.getLogger(StateManager.class.getName());
+    
+    @Inject
+    private ElService elServ;
 
     private Map<Class<?>, Map<Field, String>> stateFields;
 
-    public String findStateFieldName(Class<Object> clazz, Field field)
+    String findStateFieldName(Class<Object> clazz, Field field)
     {
         return clazz.getName().replaceAll("\\.", "_") + field.getName();
     }
 
-    public void injectState(IocContext<WebRequestScope> ctx, Class<Object> clazz, Object instance, WebRequestScope req)
+    void injectState(IocContext<WebScope> ctx, Class<Object> clazz, Object instance, WebScope req)
     {
         if(stateFields == null)
         {
@@ -53,7 +59,7 @@ class StateManager
                     String value = req.getPostParameter("__state." + stateName);
                     if(value != null)
                     {
-                        field.set(instance, value);
+                        field.set(instance, elServ.convert(value, field.getType()));
                     }
                 }
                 catch (IllegalArgumentException | IllegalAccessException e)
@@ -64,7 +70,35 @@ class StateManager
         }
     }
 
-    private synchronized void initStateFields(IocContext<WebRequestScope> ctx)
+    public Map<String,String> createViewState(IocContext<WebScope> ctx)
+    {
+        Map<Class<?>, Object> comps = ctx.find(StateListener.class).getStateComps();
+        Map<String,String> result = new LinkedHashMap<>();
+        
+        comps.forEach((c, i) -> 
+        {
+            Map<Field, String> map = stateFields.get(c);
+            if(map != null)
+            {
+                map.forEach((field, state) -> 
+                {
+                    try
+                    {
+                        Object val = field.get(i);
+                        result.put(state, elServ.convert(val, String.class));
+                    }
+                    catch (IllegalArgumentException | IllegalAccessException e)
+                    {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                });
+            }
+        });
+        
+        return result;
+    }
+    
+    private synchronized void initStateFields(IocContext<WebScope> ctx)
     {
         if(stateFields == null)
         {

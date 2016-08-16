@@ -30,20 +30,20 @@ import org.bridje.web.session.WebSession;
 /**
  * Represents the IoC scope for the web request IocContext.
  */
-public class WebRequestScope implements Scope
+public class WebScope implements Scope
 {
     private final HttpServerRequest req;
 
     private final HttpServerResponse resp;
 
     @Inject
-    private IocContext<WebRequestScope> iocCtx;
+    private IocContext<WebScope> iocCtx;
 
     private final HttpServerContext srvCtx;
 
     private WebSession session;
 
-    public WebRequestScope(HttpServerContext ctx)
+    public WebScope(HttpServerContext ctx)
     {
         this.srvCtx = ctx;
         this.req = ctx.get(HttpServerRequest.class);
@@ -55,7 +55,7 @@ public class WebRequestScope implements Scope
      *
      * @return The instance of IocContext created for this HTTP request.
      */
-    public IocContext<WebRequestScope> getIocContext()
+    public IocContext<WebScope> getIocContext()
     {
         return iocCtx;
     }

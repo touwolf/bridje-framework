@@ -32,4 +32,16 @@ public interface ElService
      * @return The new create expression language environment.
      */
     ElEnvironment createElEnvironment(IocContext<?> context);
+
+    /**
+     * Converts the given value to the given class using the internal convert
+     * system.
+     *
+     * @param <T> The type of the result.
+     * @param value The value to convert.
+     * @param type The type to convert to.
+     * @return true if this converter can convert the given value to the given
+     * class.
+     */
+    <T> T convert(Object value, Class<T> type);
 }

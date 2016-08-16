@@ -25,9 +25,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.el.ElService;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.web.WebRequestScope;
+import org.bridje.web.WebScope;
 
 @Component
 class WebSessionManager
@@ -35,13 +37,16 @@ class WebSessionManager
     private static final Logger LOG = Logger.getLogger(WebSessionManager.class.getName());
 
     private Map<Class<?>, Map<Field, String>> sessionFields;
+    
+    @Inject
+    private ElService elServ;
 
     public String findSessionFieldName(Class<Object> clazz, Field field)
     {
         return field.getAnnotation(WebSessionField.class).value();
     }
     
-    public Set<Field> injectValue(IocContext<WebRequestScope> ctx, Class<?> clazz, Object instance, WebSession session)
+    public Set<Field> injectValue(IocContext<WebScope> ctx, Class<?> clazz, Object instance, WebSession session)
     {
         if(sessionFields == null)
         {
@@ -72,7 +77,7 @@ class WebSessionManager
         return null;
     }
     
-    public Set<Field> storeValue(IocContext<WebRequestScope> ctx, Class<?> clazz, Object instance, WebSession session)
+    public Set<Field> storeValue(IocContext<WebScope> ctx, Class<?> clazz, Object instance, WebSession session)
     {
         if(sessionFields == null)
         {
@@ -99,7 +104,7 @@ class WebSessionManager
         return result;
     }
 
-    private synchronized void initSessionFields(IocContext<WebRequestScope> ctx)
+    private synchronized void initSessionFields(IocContext<WebScope> ctx)
     {
         if(sessionFields == null)
         {
@@ -126,7 +131,11 @@ class WebSessionManager
         {
             return null;
         }
-        return value.toString();
+        if(value instanceof String)
+        {
+            return (String)value;
+        }
+        return elServ.convert(value, String.class);
     }
 
     private Object unserialize(String value, Field field)
@@ -139,18 +148,6 @@ class WebSessionManager
         {
             return value;
         }
-        try
-        {
-            Method method = field.getType().getMethod("valueOf", String.class);
-            if(method != null)
-            {
-                return method.invoke(null, value);
-            }
-        }
-        catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return null;
+        return elServ.convert(value, field.getType());
     }
 }
