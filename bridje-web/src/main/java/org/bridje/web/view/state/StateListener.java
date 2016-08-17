@@ -63,8 +63,8 @@ class StateListener implements ContextListener<Object>
         if(isViewUpdate)
         {
             stateMang.injectState(ctx, clazz, instance, scope);
-            addStateComp(clazz, instance);
         }
+        addStateComp(clazz, instance);
     }
 
     @Override

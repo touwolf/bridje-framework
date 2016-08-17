@@ -40,7 +40,14 @@
 <#macro renderPartialView component>
     <input type="hidden" name="__view" value="${view.name}" />
     <input type="hidden" name="__action" value="" />
+    <@renderState />
     <@render component />
+</#macro>
+
+<#macro renderState>
+    <#list state?keys as k>
+        <input type="hidden" name="__state.${k}" value="${state[k]}" />
+    </#list>
 </#macro>
 
 <#macro renderMain themeName >

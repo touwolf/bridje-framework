@@ -59,7 +59,11 @@ public class StateManager
                     String value = req.getPostParameter("__state." + stateName);
                     if(value != null)
                     {
-                        field.set(instance, elServ.convert(value, field.getType()));
+                        Object cv = elServ.convert(value, field.getType());
+                        if(cv != null)
+                        {
+                            field.set(instance, cv);
+                        }
                     }
                 }
                 catch (IllegalArgumentException | IllegalAccessException e)
@@ -72,28 +76,39 @@ public class StateManager
 
     public Map<String,String> createViewState(IocContext<WebScope> ctx)
     {
+        if(stateFields == null)
+        {
+            initStateFields(ctx);
+        }
         Map<Class<?>, Object> comps = ctx.find(StateListener.class).getStateComps();
         Map<String,String> result = new LinkedHashMap<>();
         
-        comps.forEach((c, i) -> 
+        if(comps != null)
         {
-            Map<Field, String> map = stateFields.get(c);
-            if(map != null)
+            comps.forEach((c, i) -> 
             {
-                map.forEach((field, state) -> 
+                Map<Field, String> map = stateFields.get(c);
+                if(map != null)
                 {
-                    try
+                    map.forEach((field, state) -> 
                     {
-                        Object val = field.get(i);
-                        result.put(state, elServ.convert(val, String.class));
-                    }
-                    catch (IllegalArgumentException | IllegalAccessException e)
-                    {
-                        LOG.log(Level.SEVERE, e.getMessage(), e);
-                    }
-                });
-            }
-        });
+                        try
+                        {
+                            Object val = field.get(i);
+                            String cv = elServ.convert(val, String.class);
+                            if(cv != null)
+                            {
+                                result.put(state, cv);
+                            }
+                        }
+                        catch (IllegalArgumentException | IllegalAccessException e)
+                        {
+                            LOG.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    });
+                }
+            });
+        }
         
         return result;
     }
