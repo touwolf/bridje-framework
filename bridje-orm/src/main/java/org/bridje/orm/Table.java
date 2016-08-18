@@ -62,4 +62,12 @@ public interface Table<T>
      * @return The column object for the given field.
      */
     TableColumn<T, ?> findColumn(String fieldName);
+    
+    /**
+     * Finds the key value for the given entity.
+     * 
+     * @param entity The entity to find the key value from.
+     * @return The current key value for the entity.
+     */
+    Object findKeyValue(T entity);
 }

@@ -38,8 +38,12 @@ public class StateManager
 
     private Map<Class<?>, Map<Field, String>> stateFields;
 
-    String findStateFieldName(Class<Object> clazz, Field field)
+    String findStateFieldName(Class<Object> clazz, Field field, StateField stateField)
     {
+        if(stateField != null && stateField.name() != null && !stateField.name().trim().isEmpty())
+        {
+            return stateField.name();
+        }
         return clazz.getName().replaceAll("\\.", "_") + field.getName();
     }
 
@@ -127,7 +131,7 @@ public class StateManager
                     result.put(component, lst);
                 }
                 field.setAccessible(true);
-                String name = findStateFieldName(component, field);
+                String name = findStateFieldName(component, field, annot);
                 lst.put(field, name);
             });
             stateFields = result;

@@ -281,7 +281,7 @@ class TableImpl<T> implements Table<T>
         return result.toArray();
     }
 
-    public <T> Object findKeyValue(T entity)
+    public Object findKeyValue(T entity)
     {
         return ((TableColumnImpl)key).getValue(entity);
     }

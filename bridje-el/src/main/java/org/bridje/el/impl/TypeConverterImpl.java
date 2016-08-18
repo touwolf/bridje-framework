@@ -19,6 +19,7 @@ package org.bridje.el.impl;
 import de.odysseus.el.misc.TypeConverter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.el.ELException;
 import org.bridje.ioc.Component;
@@ -29,32 +30,14 @@ import org.bridje.el.ElTypeConverter;
 class TypeConverterImpl implements TypeConverter
 {
     @Inject
-    private ElTypeConverter[] typeConverter;
+    private ElTypeConverter[] typeConverters;
     
     private Map<Class,Map<Class,ElTypeConverter>> convertMap;
     
     @PostConstruct
     public void init()
     {
-        convertMap = new HashMap<>();
-        for (ElTypeConverter converter : typeConverter)
-        {
-            Class[] toClasses = converter.getToClasses();
-            Class[] fromClasses = converter.getFromClasses();
-            for (Class fromClasse : fromClasses)
-            {
-                Map<Class, ElTypeConverter> map = convertMap.get(fromClasse);
-                if(map == null)
-                {
-                    map = new HashMap<>();
-                    convertMap.put(fromClasse, map);
-                }
-                for (Class toClazz : toClasses)
-                {
-                    map.put(toClazz, converter);
-                }
-            }
-        }
+        convertMap = new ConcurrentHashMap<>();
     }
     
     @Override
@@ -81,13 +64,25 @@ class TypeConverterImpl implements TypeConverter
             ElTypeConverter converter = map.get(type);
             if(converter != null)
             {
-                if(converter.canConvert(value, type))
-                {
-                    return converter.convert(value, type);
-                }
+                return converter.convert(value, type);
             }
         }
 
+        for (ElTypeConverter typeConverter : typeConverters)
+        {
+            if(typeConverter.canConvert(value.getClass(), type))
+            {
+                map = convertMap.get(value.getClass());
+                if(map == null)
+                {
+                    map = new ConcurrentHashMap<>();
+                    convertMap.put(value.getClass(), map);
+                }
+                map.put(type, typeConverter);
+                return typeConverter.convert(value, type);
+            }
+        }
+        
         return TypeConverter.DEFAULT.convert(value, type);
     }
     

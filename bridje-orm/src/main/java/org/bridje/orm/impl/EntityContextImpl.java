@@ -71,7 +71,6 @@ class EntityContextImpl implements EntityContext
         }
     }
 
-    @Override
     public <T> T find(Class<T> entity, Object id) throws SQLException
     {
         return find(orm.findTable(entity), id);
@@ -364,5 +363,11 @@ class EntityContextImpl implements EntityContext
     public SQLDialect getDialect()
     {
         return dialect;
+    }
+
+    @Override
+    public <T> Table<T> findTable(Class<T> entity)
+    {
+        return orm.findTable(entity);
     }
 }

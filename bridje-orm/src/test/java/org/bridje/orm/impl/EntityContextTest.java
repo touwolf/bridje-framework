@@ -96,7 +96,7 @@ public class EntityContextTest
     public void test3Select() throws SQLException
     {
         ctx.clearCache();
-        User user = ctx.find(User.class, 1l);
+        User user = ctx.find(User.TABLE, 1l);
         assertNotNull(user);
 
         assertEquals((short)30, user.getAge().shortValue());
@@ -122,7 +122,7 @@ public class EntityContextTest
     @Test
     public void test3Update() throws SQLException
     {
-        User user = ctx.find(User.class, 1l);
+        User user = ctx.find(User.TABLE, 1l);
         user.setAge((short)40);
         user.setBrithday(new Date());
         user.setClasif('B');
@@ -140,7 +140,7 @@ public class EntityContextTest
 
         ctx.update(user);
         ctx.clearCache();
-        user = ctx.find(User.class, 1l);
+        user = ctx.find(User.TABLE, 1l);
 
         assertEquals((short)40, user.getAge().shortValue());
         assertNotNull(user.getBrithday());
@@ -181,7 +181,7 @@ public class EntityContextTest
         user.setMoney(150.40d);
         user.setUpdated(new java.sql.Date(System.currentTimeMillis()));
         user.setYear(2018l);
-        user.setGroup(ctx.find(Group.class, 1l));
+        user.setGroup(ctx.find(Group.TABLE, 1l));
         assertNotNull(ctx.insert(user));
 
         assertEquals(60, ctx.query(User.TABLE).fetchOne(User.AGE.sum()).shortValue());
@@ -232,20 +232,20 @@ public class EntityContextTest
     @Test
     public void test7Delete() throws SQLException
     {
-        assertNotNull(ctx.find(Group.class, 1l));
-        assertNotNull(ctx.find(Group.class, 2l));
-        assertNotNull(ctx.find(User.class, 1l));
-        assertNotNull(ctx.find(User.class, 2l));
+        assertNotNull(ctx.find(Group.TABLE, 1l));
+        assertNotNull(ctx.find(Group.TABLE, 2l));
+        assertNotNull(ctx.find(User.TABLE, 1l));
+        assertNotNull(ctx.find(User.TABLE, 2l));
         
-        ctx.delete(ctx.find(Group.class, 1l));
-        ctx.delete(ctx.find(User.class, 1l));
-        ctx.delete(ctx.find(Group.class, 2l));
-        ctx.delete(ctx.find(User.class, 2l));
+        ctx.delete(ctx.find(Group.TABLE, 1l));
+        ctx.delete(ctx.find(User.TABLE, 1l));
+        ctx.delete(ctx.find(Group.TABLE, 2l));
+        ctx.delete(ctx.find(User.TABLE, 2l));
         
-        assertNull(ctx.find(Group.class, 1l));
-        assertNull(ctx.find(Group.class, 2l));
-        assertNull(ctx.find(User.class, 1l));
-        assertNull(ctx.find(User.class, 2l));
+        assertNull(ctx.find(Group.TABLE, 1l));
+        assertNull(ctx.find(Group.TABLE, 2l));
+        assertNull(ctx.find(User.TABLE, 1l));
+        assertNull(ctx.find(User.TABLE, 2l));
     }
     
     @Test

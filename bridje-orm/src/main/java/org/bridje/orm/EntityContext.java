@@ -49,18 +49,6 @@ public interface EntityContext
     <T> T find(Table<T> table, Object id) throws SQLException;
 
     /**
-     * This method will find an entity given his class and id.
-     *
-     * @param <T> The type of the entity.
-     * @param entity The entity class to be find.
-     * @param id The id of the entity to be find.
-     * @return The finded entity, or null if no entity can be found by that id.
-     * @throws SQLException If any SQLException occurs during the close
-     * proccess.
-     */
-    <T> T find(Class<T> entity, Object id) throws SQLException;
-
-    /**
      * Inserts the given entity in the database. If the entity have an auto
      * increment key field this method will fill the new generated value for
      * that field.
@@ -153,4 +141,14 @@ public interface EntityContext
      * @return The current SQL dialect.
      */
     SQLDialect getDialect();
+
+
+    /**
+     * Finds the table for the given entity.
+     *
+     * @param <T> The type of the entity.
+     * @param entity The class of the entity.
+     * @return The table object for the given entity.
+     */
+    <T> Table<T> findTable(Class<T> entity);
 }
