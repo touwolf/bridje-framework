@@ -32,13 +32,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
-import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VFile;
 import static org.bridje.web.view.comp.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
-import org.bridje.vfs.VirtualFileAdapter;
+import org.bridje.vfs.VFileAdapter;
 import org.bridje.web.view.WebView;
 
 @Component
-public class WebComponentsManager implements VirtualFileAdapter
+public class WebComponentsManager implements VFileAdapter
 {
     private static final Logger LOG = Logger.getLogger(WebComponentsManager.class.getName());
 
@@ -74,19 +74,19 @@ public class WebComponentsManager implements VirtualFileAdapter
     }
 
     @Override
-    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VFile vf, Class<?> resultCls)
     {
         return vf.getName().endsWith(".view.xml");
     }
 
     @Override
-    public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
+    public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
         return (T)toWebView(vf);
     }
 
     @Override
-    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    public <T> void write(VFile vf, T contentObj) throws IOException
     {
         writeWebView(vf, (WebView)contentObj);
     }
@@ -147,7 +147,7 @@ public class WebComponentsManager implements VirtualFileAdapter
         });
     }
 
-    private WebView toWebView(VirtualFile f)
+    private WebView toWebView(VFile f)
     {
         WebView result = null;
         try(InputStream is = f.openForRead())
@@ -165,7 +165,7 @@ public class WebComponentsManager implements VirtualFileAdapter
         return result;
     }
 
-    private void writeWebView(VirtualFile f, WebView view)
+    private void writeWebView(VFile f, WebView view)
     {
         try(OutputStream os = f.openForWrite())
         {

@@ -21,14 +21,14 @@ package org.bridje.vfs;
  * <p>
  * This interface represents a file or folder in the VFS tree.
  */
-public interface VirtualResource
+public interface VResource
 {
     /**
      * The parent folder of this resource.
      * <p>
-     * @return A VirtualFlder representing the parent folder of this resource.
+     * @return A VFlder representing the parent folder of this resource.
      */
-    VirtualFolder getParent();
+    VFolder getParent();
 
     /**
      * The name of this file or folder.

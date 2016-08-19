@@ -23,7 +23,7 @@ import java.io.OutputStream;
 /**
  * Represents a file of the VFS tree.
  */
-public interface VirtualFile extends VirtualResource
+public interface VFile extends VResource
 {
     /**
      * Open a file's InputStream for reading it's content.
@@ -56,4 +56,25 @@ public interface VirtualFile extends VirtualResource
      * @return The extension part of the name of the file.
      */
     public String getExtension();
+
+    /**
+     * Reads it content to a new instance of the result class.
+     *
+     * @param <T> The type of the result class.
+     * @param resultCls The result class that the files need to be parsed to.
+     *
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
+     */
+    <T> T readFile(Class<T> resultCls) throws IOException;
+
+    /**
+     * Writes it's content with the instance of the given object.
+     *
+     * @param <T> The type of the result class.
+     * @param contentObj The object to be serialize to the file.
+     *
+     * @throws java.io.IOException If any input-output error occurs writing the file.
+     */
+    <T> void writeFile(T contentObj) throws IOException;
 }

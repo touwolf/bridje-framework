@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 /**
  * A VfsSource base on phisical file system object.
  */
-public class FileVfsSource implements VfsSource
+public class FileSource implements VfsSource
 {
-    private static final Logger LOG = Logger.getLogger(FileVfsSource.class.getName());
+    private static final Logger LOG = Logger.getLogger(FileSource.class.getName());
 
     private final File file;
 
@@ -28,7 +28,7 @@ public class FileVfsSource implements VfsSource
      * @param file The file object representing the phisical folder for 
      * this VfsSource.
      */
-    public FileVfsSource(File file)
+    public FileSource(File file)
     {
         this.file = file;
     }
@@ -96,8 +96,9 @@ public class FileVfsSource implements VfsSource
         try
         {
             File f = findRealFile(filePath);
-            if(f != null && !f.exists() && f.getAbsoluteFile().getParentFile().exists())
+            if(f != null && !f.exists())
             {
+                f.getParentFile().getAbsoluteFile().mkdirs();
                 f.createNewFile();
                 return f.getName();
             }
@@ -115,9 +116,9 @@ public class FileVfsSource implements VfsSource
         try
         {
             File f = findRealFile(folderPath);
-            if(f != null && !f.exists() && f.getAbsoluteFile().getParentFile().exists())
+            if(f != null && !f.exists())
             {
-                f.mkdir();
+                f.mkdirs();
                 return f.getName();
             }
         }
@@ -134,7 +135,7 @@ public class FileVfsSource implements VfsSource
         try
         {
             File f = findRealFile(folderPath);
-            return f != null && !f.exists() && f.getAbsoluteFile().getParentFile().exists();
+            return f != null && !f.exists();
         }
         catch (Exception e)
         {
@@ -149,7 +150,7 @@ public class FileVfsSource implements VfsSource
         try
         {
             File f = findRealFile(filePath);
-            return f != null && !f.exists() && f.getAbsoluteFile().getParentFile().exists();
+            return f != null && !f.exists();
         }
         catch (Exception e)
         {

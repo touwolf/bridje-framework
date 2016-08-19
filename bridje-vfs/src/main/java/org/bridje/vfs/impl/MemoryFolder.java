@@ -24,20 +24,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileVisitor;
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VirtualFolderVisitor;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileVisitor;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VFolderVisitor;
 
-class MemoryFolder extends AbstractResource implements VirtualFolder
+class MemoryFolder extends AbstractResource implements VFolder
 {
-    private Map<String,VirtualFolder> foldersMap;
+    private Map<String,VFolder> foldersMap;
 
-    private Map<String, VirtualFile> filesMap;
+    private Map<String, VFile> filesMap;
 
-    private List<VirtualFolder> folders;
+    private List<VFolder> folders;
 
-    private List<VirtualFile> files;
+    private List<VFile> files;
 
     MemoryFolder(Path path)
     {
@@ -45,7 +45,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFolder findFolder(Path path)
+    public VFolder findFolder(Path path)
     {
         if(foldersMap == null || path == null)
         {
@@ -65,7 +65,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         }
         else
         {
-            VirtualFolder folder;
+            VFolder folder;
             if(path.isSelf())
             {
                 folder = this;
@@ -87,7 +87,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFile findFile(Path path)
+    public VFile findFile(Path path)
     {
         if(path == null)
         {
@@ -107,7 +107,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             {
                 return null;
             }
-            VirtualFolder nextFolder;
+            VFolder nextFolder;
             if(path.isSelf())
             {
                 nextFolder = this;
@@ -132,19 +132,19 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFolder findFolder(String path)
+    public VFolder findFolder(String path)
     {
         return findFolder(new Path(path));
     }
 
     @Override
-    public VirtualFile findFile(String path)
+    public VFile findFile(String path)
     {
         return findFile(new Path(path));
     }
 
     @Override
-    public List<VirtualFolder> listFolders()
+    public List<VFolder> listFolders()
     {
         if(folders == null)
         {
@@ -154,11 +154,11 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFolder> listFolders(String query)
+    public List<VFolder> listFolders(String query)
     {
         if (folders == null) return Collections.EMPTY_LIST;
-        List<VirtualFolder> result = new ArrayList<>();
-        for (VirtualFolder folder : folders)
+        List<VFolder> result = new ArrayList<>();
+        for (VFolder folder : folders)
         {
             if(query == null || folder.getPath().globMatches(query))
             {
@@ -170,7 +170,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VFile> listFiles()
     {
         if(files == null)
         {
@@ -180,14 +180,14 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFile> listFiles(String query)
+    public List<VFile> listFiles(String query)
     {
         if(files == null)
         {
             return Collections.EMPTY_LIST;
         }
-        List<VirtualFile> result = new ArrayList<>();
-        for (VirtualFile file : files)
+        List<VFile> result = new ArrayList<>();
+        for (VFile file : files)
         {
             if(query == null || file.getPath().globMatches(query))
             {
@@ -197,7 +197,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return Collections.unmodifiableList(result);
     }
 
-    protected <T extends VirtualFolder> T addFolder(T virtualFolder)
+    protected <T extends VFolder> T addFolder(T virtualFolder)
     {
         if(virtualFolder == null || virtualFolder.getName() == null || virtualFolder.getName().trim().isEmpty())
         {
@@ -208,7 +208,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             foldersMap = new LinkedHashMap<>();
             folders = new ArrayList<>();
         }
-        VirtualFolder vf = foldersMap.get(virtualFolder.getName());
+        VFolder vf = foldersMap.get(virtualFolder.getName());
         if(vf != null)
         {
             if(vf instanceof ProxyFolder)
@@ -233,7 +233,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return virtualFolder;
     }
 
-    protected void removeFolder(VirtualFolder virtualFolder)
+    protected void removeFolder(VFolder virtualFolder)
     {
         if(foldersMap != null)
         {
@@ -242,7 +242,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         }
     }
 
-    protected <T extends VirtualFile> T addFile(T virtualFile)
+    protected <T extends VFile> T addFile(T virtualFile)
     {
         if(virtualFile == null || virtualFile.getName() == null || virtualFile.getName().trim().isEmpty())
         {
@@ -253,7 +253,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
             filesMap = new HashMap<>();
             files = new ArrayList<>();
         }
-        VirtualFile vf = filesMap.get(virtualFile.getName());
+        VFile vf = filesMap.get(virtualFile.getName());
         if(vf != null)
         {
             if(vf instanceof ProxyFile)
@@ -278,7 +278,7 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
         return virtualFile;
     }
 
-    protected void removeFile(VirtualFile virtualFile)
+    protected void removeFile(VFile virtualFile)
     {
         if(filesMap == null)
         {
@@ -289,50 +289,82 @@ class MemoryFolder extends AbstractResource implements VirtualFolder
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor)
+    public void travel(VFileVisitor visitor)
     {
         travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor)
+    public void travel(VFolderVisitor visitor)
     {
         travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor, String query)
+    public void travel(VFileVisitor visitor, String query)
     {
         travel(this, visitor, query);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor, String query)
+    public void travel(VFolderVisitor visitor, String query)
     {
         travel(this, visitor, query);
     }
 
     @Override
-    public VirtualFile createNewFile(String fileName) throws IOException
+    public VFile createNewFile(Path filePath) throws IOException
     {
+        if(!filePath.isLast())
+        {
+            VFolder f = findFolder(filePath.getFirstElement());
+            if(f != null)
+            {
+                return f.createNewFile(filePath.getNext());
+            }
+        }
         throw new IOException("Cannot create physical file here.");
     }
 
     @Override
-    public VirtualFolder mkDir(String folderName) throws IOException
+    public VFolder mkDir(Path folderPath) throws IOException
     {
+        if(!folderPath.isLast())
+        {
+            VFolder f = findFolder(folderPath.getFirstElement());
+            if(f != null)
+            {
+                return f.mkDir(folderPath.getNext());
+            }
+        }
         throw new IOException("Cannot create physical folder here.");
     }
 
     @Override
-    public boolean canCreateNewFile(String fileName)
+    public boolean canCreateNewFile(Path filePath)
     {
+        if(!filePath.isLast())
+        {
+            VFolder f = findFolder(filePath.getFirstElement());
+            if(f != null)
+            {
+                return f.canCreateNewFile(filePath.getNext());
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean canMkDir(String folderName)
+    public boolean canMkDir(Path folderPath)
     {
+        if(!folderPath.isLast())
+        {
+            VFolder f = findFolder(folderPath.getFirstElement());
+            if(f != null)
+            {
+                return f.canMkDir(folderPath.getNext());
+            }
+        }
         return false;
     }
 }

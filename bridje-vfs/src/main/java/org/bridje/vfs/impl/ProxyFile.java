@@ -21,27 +21,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import org.bridje.vfs.MultiVirtualFile;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFolder;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.MultiVFile;
 
-class ProxyFile implements MultiVirtualFile
+class ProxyFile implements MultiVFile
 {
-    private final List<VirtualFile> files;
+    private final List<VFile> files;
 
     public ProxyFile()
     {
         this.files = new LinkedList<>();
     }
 
-    public ProxyFile(List<VirtualFile> files)
+    public ProxyFile(List<VFile> files)
     {
         this.files = files;
     }
 
     @Override
-    public List<VirtualFile> getFiles()
+    public List<VFile> getFiles()
     {
         return files;
     }
@@ -65,7 +65,7 @@ class ProxyFile implements MultiVirtualFile
     }
 
     @Override
-    public VirtualFolder getParent()
+    public VFolder getParent()
     {
         return getDefFile().getParent();
     }
@@ -88,12 +88,12 @@ class ProxyFile implements MultiVirtualFile
         return getDefFile().getParentPath();
     }
     
-    public void add(VirtualFile vf)
+    public void add(VFile vf)
     {
         files.add(vf);
     }
 
-    private VirtualFile getDefFile()
+    private VFile getDefFile()
     {
         return files.get(files.size()-1);
     }
@@ -107,5 +107,17 @@ class ProxyFile implements MultiVirtualFile
             return getName().substring(lastIndexOf+1);
         }
         return "";
+    }
+
+    @Override
+    public <T> T readFile(Class<T> resultCls) throws IOException
+    {
+        return getDefFile().readFile(resultCls);
+    }
+
+    @Override
+    public <T> void writeFile(T contentObj) throws IOException
+    {
+        getDefFile().writeFile(contentObj);
     }
 }

@@ -23,12 +23,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileVisitor;
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VirtualFolderVisitor;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileVisitor;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VFolderVisitor;
 
-class PhysicalFolder extends PhysicalResource implements VirtualFolder
+class PhysicalFolder extends PhysicalResource implements VFolder
 {
     private static final Logger LOG = Logger.getLogger(PhysicalFolder.class.getName());
 
@@ -38,13 +38,13 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFolder findFolder(String path)
+    public VFolder findFolder(String path)
     {
         return findFolder(new Path(path));
     }
 
     @Override
-    public VirtualFolder findFolder(Path path)
+    public VFolder findFolder(Path path)
     {
         try
         {
@@ -61,13 +61,13 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public VirtualFile findFile(String path)
+    public VFile findFile(String path)
     {
         return findFile(new Path(path));
     }
 
     @Override
-    public VirtualFile findFile(Path path)
+    public VFile findFile(Path path)
     {
         try
         {
@@ -84,21 +84,21 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFolder> listFolders()
+    public List<VFolder> listFolders()
     {
         return listFolders(null);
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VFile> listFiles()
     {
         return listFiles(null);
     }
     
     @Override
-    public List<VirtualFolder> listFolders(String query)
+    public List<VFolder> listFolders(String query)
     {
-        List<VirtualFolder> result = new LinkedList<>();
+        List<VFolder> result = new LinkedList<>();
         try
         {
             if(getSource().folderExists(getPhysicalPath()))
@@ -108,7 +108,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                 {
                     for (String folder : folders)
                     {
-                        VirtualFolder vf = instantiateChildFolder(new Path(folder));
+                        VFolder vf = instantiateChildFolder(new Path(folder));
                         if(vf != null && (query == null 
                                 || (vf.getPath().globMatches(query))))
                         {
@@ -126,9 +126,9 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFile> listFiles(String query)
+    public List<VFile> listFiles(String query)
     {
-        List<VirtualFile> result = new LinkedList<>();
+        List<VFile> result = new LinkedList<>();
         try
         {
             if(getSource().folderExists(getPhysicalPath()))
@@ -138,7 +138,7 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
                 {
                     for (String file : files)
                     {
-                        VirtualFile vf = instantiateChildFile(new Path(file));
+                        VFile vf = instantiateChildFile(new Path(file));
                         if(vf != null && (query == null 
                                 || vf.getPath().globMatches(query)))
                         {
@@ -155,12 +155,12 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
         return result;
     }
     
-    private VirtualFolder instantiateChildFolder(Path path)
+    private VFolder instantiateChildFolder(Path path)
     {
         return new PhysicalFolder(getSource(), getMountPath(), getRelativePath().join(path));
     }
 
-    private VirtualFile instantiateChildFile(Path path)
+    private VFile instantiateChildFile(Path path)
     {
         try
         {
@@ -190,68 +190,52 @@ class PhysicalFolder extends PhysicalResource implements VirtualFolder
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor)
+    public void travel(VFileVisitor visitor)
     {
         travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor)
+    public void travel(VFolderVisitor visitor)
     {
         travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor, String query)
+    public void travel(VFileVisitor visitor, String query)
     {
         travel(this, visitor, query);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor, String query)
+    public void travel(VFolderVisitor visitor, String query)
     {
         travel(this, visitor, query);
     }
 
     @Override
-    public VirtualFile createNewFile(String fileName) throws IOException
+    public VFile createNewFile(Path filePath) throws IOException
     {
-        if(!new Path(fileName).isLast())
-        {
-            throw new IllegalArgumentException(fileName);
-        }
-        Object file = getSource().createNewFile(getPhysicalPath(new Path(fileName)));
-        return new PhysicalFile(file, getSource(), getMountPath(), getRelativePath().join(fileName));
+        Object file = getSource().createNewFile(getPhysicalPath(filePath));
+        return new PhysicalFile(file, getSource(), getMountPath(), getRelativePath().join(filePath));
     }
 
     @Override
-    public VirtualFolder mkDir(String folderName) throws IOException
+    public VFolder mkDir(Path folderPath) throws IOException
     {
-        if(!new Path(folderName).isLast())
-        {
-            throw new IllegalArgumentException(folderName);
-        }
-        String folder = getSource().mkDir(getPhysicalPath(new Path(folderName)));
+        String folder = getSource().mkDir(getPhysicalPath(folderPath));
         return new PhysicalFolder(getSource(), getMountPath(), getRelativePath().join(folder));
     }
 
     @Override
-    public boolean canCreateNewFile(String fileName)
+    public boolean canCreateNewFile(Path filePath)
     {
-        if(!new Path(fileName).isLast())
-        {
-            return false;
-        }
-        return getSource().canCreateNewFile(getPhysicalPath(new Path(fileName)));
+        return getSource().canCreateNewFile(getPhysicalPath(filePath));
     }
 
     @Override
-    public boolean canMkDir(String folderName)
+    public boolean canMkDir(Path folderPath)
     {
-        if(!new Path(folderName).isLast())
-        {
-            return false;
-        }
-        return getSource().canMkDir(getPhysicalPath(new Path(folderName)));
+        return getSource().canMkDir(getPhysicalPath(folderPath));
     }
 }

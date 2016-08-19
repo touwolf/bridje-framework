@@ -24,7 +24,7 @@ import java.io.Reader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VFile;
 
 @Component
 class ThemesTplLoader implements TemplateLoader
@@ -37,7 +37,7 @@ class ThemesTplLoader implements TemplateLoader
     @Override
     public Object findTemplateSource(String name) throws IOException
     {
-        VirtualFile tpl = vfs.findFile("/web/themes/" + name);
+        VFile tpl = vfs.findFile("/web/themes/" + name);
         if(tpl == null)
         {
             return null;

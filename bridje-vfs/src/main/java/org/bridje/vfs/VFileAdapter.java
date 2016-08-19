@@ -24,7 +24,7 @@ import java.io.IOException;
  * implementations of this interface to covert the content of the files to the
  * required classes.
  */
-public interface VirtualFileAdapter
+public interface VFileAdapter
 {
     /**
      * Gets all the file extensions that this adapter can handle.
@@ -49,7 +49,7 @@ public interface VirtualFileAdapter
      * @return true this adapter can handle the given file into the
      * given result class.
      */
-    boolean canHandle(VirtualFile vf, Class<?> resultCls);
+    boolean canHandle(VFile vf, Class<?> resultCls);
 
     /**
      * Read the content of the given file into the result class.
@@ -61,7 +61,7 @@ public interface VirtualFileAdapter
      * @return An object of the result class with the content of the file.
      * @throws IOException If any exception occurs reading the file.
      */
-    <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException;
+    <T> T read(VFile vf, Class<T> resultCls) throws IOException;
 
     /**
      * Read the content of the given file into the result class.
@@ -71,5 +71,5 @@ public interface VirtualFileAdapter
      * @param contentObj The object to be write to the file.
      * @throws IOException If any exception occurs reading the file.
      */
-    <T> void write(VirtualFile vf, T contentObj) throws IOException;
+    <T> void write(VFile vf, T contentObj) throws IOException;
 }

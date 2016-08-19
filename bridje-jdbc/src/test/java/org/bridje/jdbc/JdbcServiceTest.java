@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
-import org.bridje.vfs.ClassPathVfsSource;
+import org.bridje.vfs.CpSource;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import static org.junit.Assert.*;
@@ -67,7 +67,7 @@ public class JdbcServiceTest
         deleteDbFile("./target/dbtest.mv.db");
         deleteDbFile("./target/dbtest.trace.db");
         VfsService vfsServ = Ioc.context().find(VfsService.class);
-        vfsServ.mount(new Path("/etc"), new ClassPathVfsSource("/BRIDJE-INF/etc"));
+        vfsServ.mount(new Path("/etc"), new CpSource("/BRIDJE-INF/etc"));
         JdbcService instance = Ioc.context().find(JdbcService.class);
         DataSource result = instance.getDataSource(DS_NAME);
         assertNotNull(result);

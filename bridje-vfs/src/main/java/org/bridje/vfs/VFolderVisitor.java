@@ -20,12 +20,12 @@ package org.bridje.vfs;
  * A functional interface to navigates folders in the vfs tree.
  */
 @FunctionalInterface
-public interface VirtualFolderVisitor
+public interface VFolderVisitor
 {
     /**
      * Called when a match is hit in the navigation method.
      * <p>
      * @param folder The file matched.
      */
-    public void visit(VirtualFolder folder);
+    public void visit(VFolder folder);
 }

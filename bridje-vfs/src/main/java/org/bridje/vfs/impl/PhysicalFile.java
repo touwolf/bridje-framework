@@ -19,11 +19,12 @@ package org.bridje.vfs.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
-import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VFile;
 
-class PhysicalFile extends PhysicalResource implements VirtualFile
+class PhysicalFile extends PhysicalResource implements VFile
 {
     private final Object data;
 
@@ -60,5 +61,17 @@ class PhysicalFile extends PhysicalResource implements VirtualFile
             return getName().substring(lastIndexOf+1);
         }
         return "";
+    }
+
+    @Override
+    public <T> T readFile(Class<T> resultCls) throws IOException
+    {
+        return Ioc.context().find(VfsServiceImpl.class).readFile(this, resultCls);
+    }
+
+    @Override
+    public <T> void writeFile(T contentObj) throws IOException
+    {
+        Ioc.context().find(VfsServiceImpl.class).writeFile(this, contentObj);
     }
 }

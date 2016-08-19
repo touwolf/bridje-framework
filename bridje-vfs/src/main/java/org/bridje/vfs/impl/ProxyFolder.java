@@ -23,40 +23,40 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileVisitor;
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VirtualFolderVisitor;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileVisitor;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VFolderVisitor;
 
-class ProxyFolder implements VirtualFolder
+class ProxyFolder implements VFolder
 {
-    private final List<VirtualFolder> folders;
+    private final List<VFolder> folders;
 
     public ProxyFolder()
     {
         folders = new LinkedList<>();
     }
 
-    public ProxyFolder(List<VirtualFolder> folders)
+    public ProxyFolder(List<VFolder> folders)
     {
         this.folders = folders;
     }
     
     @Override
-    public VirtualFolder findFolder(String path)
+    public VFolder findFolder(String path)
     {
         return findFolder(new Path(path));
     }
 
     @Override
-    public VirtualFolder findFolder(Path path)
+    public VFolder findFolder(Path path)
     {
-        List<VirtualFolder> result = new LinkedList<>();
+        List<VFolder> result = new LinkedList<>();
         if(folders != null)
         {
-            for (VirtualFolder folder : folders)
+            for (VFolder folder : folders)
             {
-                VirtualFolder ff = folder.findFolder(path);
+                VFolder ff = folder.findFolder(path);
                 if(ff != null)
                 {
                     result.add(ff);
@@ -75,20 +75,20 @@ class ProxyFolder implements VirtualFolder
     }
 
     @Override
-    public VirtualFile findFile(String path)
+    public VFile findFile(String path)
     {
         return findFile(new Path(path));
     }
 
     @Override
-    public VirtualFile findFile(Path path)
+    public VFile findFile(Path path)
     {
-        List<VirtualFile> result = new LinkedList<>();
+        List<VFile> result = new LinkedList<>();
         if(folders != null)
         {
-            for (VirtualFolder folder : folders)
+            for (VFolder folder : folders)
             {
-                VirtualFile ff = folder.findFile(path);
+                VFile ff = folder.findFile(path);
                 if(ff != null)
                 {
                     result.add(ff);
@@ -107,31 +107,31 @@ class ProxyFolder implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFolder> listFolders()
+    public List<VFolder> listFolders()
     {
         return listFolders(null);
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VFile> listFiles()
     {
         return listFiles(null);
     }
     
     @Override
-    public List<VirtualFolder> listFolders(String query)
+    public List<VFolder> listFolders(String query)
     {
         if(folders != null)
         {
-            List<VirtualFolder> result = new LinkedList<>();
-            Map<String, List<VirtualFolder>> foldersMap = new LinkedHashMap<>();
+            List<VFolder> result = new LinkedList<>();
+            Map<String, List<VFolder>> foldersMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
                 folder.listFolders().stream()
                         .filter((f) -> query != null && f.getPath().globMatches(query))
                         .forEach((chFolder) ->
                 {
-                    List<VirtualFolder> lst = foldersMap.get(chFolder.getName());
+                    List<VFolder> lst = foldersMap.get(chFolder.getName());
                     if(lst == null)
                     {
                         lst = new LinkedList<>();
@@ -141,9 +141,9 @@ class ProxyFolder implements VirtualFolder
                 });
             });
             
-            for (Map.Entry<String, List<VirtualFolder>> entry : foldersMap.entrySet())
+            for (Map.Entry<String, List<VFolder>> entry : foldersMap.entrySet())
             {
-                List<VirtualFolder> value = entry.getValue();
+                List<VFolder> value = entry.getValue();
                 if(value == null || value.isEmpty())
                 {
                     continue;
@@ -163,19 +163,19 @@ class ProxyFolder implements VirtualFolder
     }
 
     @Override
-    public List<VirtualFile> listFiles(String query)
+    public List<VFile> listFiles(String query)
     {
         if(folders != null)
         {
-            List<VirtualFile> result = new LinkedList<>();
-            Map<String, List<VirtualFile>> filesMap = new LinkedHashMap<>();
+            List<VFile> result = new LinkedList<>();
+            Map<String, List<VFile>> filesMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
                 folder.listFiles().stream()
                         .filter((f) -> query != null && f.getPath().globMatches(query))
                         .forEach((chFile) ->
                 {
-                    List<VirtualFile> lst = filesMap.get(chFile.getName());
+                    List<VFile> lst = filesMap.get(chFile.getName());
                     if(lst == null)
                     {
                         lst = new LinkedList<>();
@@ -185,9 +185,9 @@ class ProxyFolder implements VirtualFolder
                 });
             });
             
-            for (Map.Entry<String, List<VirtualFile>> entry : filesMap.entrySet())
+            for (Map.Entry<String, List<VFile>> entry : filesMap.entrySet())
             {
-                List<VirtualFile> value = entry.getValue();
+                List<VFile> value = entry.getValue();
                 if(value == null || value.isEmpty())
                 {
                     continue;
@@ -207,7 +207,7 @@ class ProxyFolder implements VirtualFolder
     }
     
     @Override
-    public VirtualFolder getParent()
+    public VFolder getParent()
     {
         if(folders == null || folders.isEmpty())
         {
@@ -246,71 +246,71 @@ class ProxyFolder implements VirtualFolder
         return folders.get(0).getParentPath();
     }
     
-    public void add(VirtualFolder vf)
+    public void add(VFolder vf)
     {
         folders.add(vf);
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor)
+    public void travel(VFileVisitor visitor)
     {
         AbstractResource.travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor)
+    public void travel(VFolderVisitor visitor)
     {
         AbstractResource.travel(this, visitor);
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor, String query)
+    public void travel(VFileVisitor visitor, String query)
     {
         AbstractResource.travel(this, visitor, query);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor, String query)
+    public void travel(VFolderVisitor visitor, String query)
     {
         AbstractResource.travel(this, visitor, query);
     }
 
     @Override
-    public VirtualFile createNewFile(String fileName) throws IOException
+    public VFile createNewFile(Path filePath) throws IOException
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).createNewFile(fileName);
+            return folders.get(0).createNewFile(filePath);
         }
         throw new IOException("Cannot create physical file here.");
     }
 
     @Override
-    public VirtualFolder mkDir(String folderName) throws IOException
+    public VFolder mkDir(Path folderPath) throws IOException
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).mkDir(folderName);
+            return folders.get(0).mkDir(folderPath);
         }
         throw new IOException("Cannot create physical folder here.");
     }
 
     @Override
-    public boolean canCreateNewFile(String fileName)
+    public boolean canCreateNewFile(Path filePath)
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).canCreateNewFile(fileName);
+            return folders.get(0).canCreateNewFile(filePath);
         }
         return false;
     }
 
     @Override
-    public boolean canMkDir(String folderName)
+    public boolean canMkDir(Path folderPath)
     {
         if(folders != null && folders.size() >= 1)
         {
-            return folders.get(0).canMkDir(folderName);
+            return folders.get(0).canMkDir(folderPath);
         }
         return false;
     }

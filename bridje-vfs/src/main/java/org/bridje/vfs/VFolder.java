@@ -22,117 +22,117 @@ import java.util.List;
 /**
  * Represents a folder of the VFS tree.
  */
-public interface VirtualFolder extends VirtualResource
+public interface VFolder extends VResource
 {
     /**
      * Finds a folder mapped to the specified path.
      * <p>
      * @param path The string representation of the path to the folder.
-     * @return A VirtualFolder object representing the folder mapped to the path
-     * argument or null if the specified path is not a valid folder in the vfs
+     * @return A VFolder object representing the folder mapped to the path
+     * argument or null if the specified path is not a valid folder in the VFS.
      * tree.
      */
-    VirtualFolder findFolder(String path);
+    VFolder findFolder(String path);
 
     /**
      * Finds a folder mapped to the specified path.
      * <p>
      * @param path The path to the folder.
-     * @return A VirtualFolder object representing the folder mapped to the path
+     * @return A VFolder object representing the folder mapped to the path
      * argument or {@literal null} if the specified path is not a valid folder
      * in the VFS tree.
      */
-    VirtualFolder findFolder(Path path);
+    VFolder findFolder(Path path);
 
     /**
      * Finds a file mapped to the specified path.
      * <p>
      * @param path The string representation of the path to the file.
-     * @return A VirtualFile object representing the file mapped to the path
-     * argument or null if the specified path is not a valid folder in the vfs
+     * @return A VFile object representing the file mapped to the path
+     * argument or null if the specified path is not a valid folder in the VFS.
      * tree.
      */
-    VirtualFile findFile(String path);
+    VFile findFile(String path);
 
     /**
      * Finds a file mapped to the specified path.
      * <p>
      * @param path The path to the file.
-     * @return A VirtualFile object representing the file mapped to the path
-     * argument or null if the specified path is not a valid folder in the vfs
+     * @return A VFile object representing the file mapped to the path
+     * argument or null if the specified path is not a valid folder in the VFS.
      * tree.
      */
-    VirtualFile findFile(Path path);
+    VFile findFile(Path path);
 
     /**
      * Gets a list of all child folders of this folder.
      * <p>
-     * @return A List of VirtualFolders representing the child folders of this
+     * @return A List of VFolders representing the child folders of this
      * folder.
      */
-    List<VirtualFolder> listFolders();
+    List<VFolder> listFolders();
 
     /**
      * Gets a list of all child folders of this folder.
      * <p>
      * @param query The regular expression to match the folders full path that will
      * be listed with this method.
-     * @return A List of VirtualFolders representing the child folders of this
+     * @return A List of VFolders representing the child folders of this
      * folder.
      */
-    List<VirtualFolder> listFolders(String query);
+    List<VFolder> listFolders(String query);
 
     /**
      * Gets a list of all child files of this folder.
      * <p>
-     * @return A List of VirtualFiles representing the child files of this
+     * @return A List of VFiles representing the child files of this
      * folder.
      */
-    List<VirtualFile> listFiles();
+    List<VFile> listFiles();
 
     /**
      * Gets a list of all child files of this folder.
      * <p>
      * @param query The regular expression to match the files full path that will
      * be listed with this method.
-     * @return A List of VirtualFiles representing the child files of this
+     * @return A List of VFiles representing the child files of this
      * folder.
      */
-    List<VirtualFile> listFiles(String query);
+    List<VFile> listFiles(String query);
     
     /**
      * Creates a new physical file on this folder.
      * <p>
-     * @param fileName The name to the file to be created.
+     * @param filePath The path and name to the file to be created.
      * @return The file representation according this source.
      * @throws java.io.IOException If any I/O exception occurs.
      */
-    VirtualFile createNewFile(String fileName) throws IOException;
+    VFile createNewFile(Path filePath) throws IOException;
 
     /**
      * Creates a new directory on this folder.
      * <p>
-     * @param folderName The name to the folder to be created.
+     * @param folderPath The path and name to the folder to be created.
      * @return The name of the folder created.
      * @throws java.io.IOException If any I/O exception occurs. 
      */
-    VirtualFolder mkDir(String folderName) throws IOException;
+    VFolder mkDir(Path folderPath) throws IOException;
 
     /**
      * Determines if a file can be created on the given path.
      * <p>
-     * @param fileName The name to the file to be created.
+     * @param filePath The path and name to the file to be created.
      * @return true if a folder can be created on this path.
      */
-    boolean canCreateNewFile(String fileName);
+    boolean canCreateNewFile(Path filePath);
 
     /**
      * Determines if a folder can be created on the given path.
      * <p>
-     * @param folderName The path to the folder to be created.
+     * @param folderPath The path and name to the folder to be created.
      * @return true if a folder can be created on this path.
      */
-    boolean canMkDir(String folderName);
+    boolean canMkDir(Path folderPath);
 
     /**
      * Travels through all files recursively from this folder and its children
@@ -140,7 +140,7 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param visitor The visitor to be used.
      */
-    void travel(VirtualFileVisitor visitor);
+    void travel(VFileVisitor visitor);
 
     /**
      * Travels through all folders recursively from this folder and its children
@@ -148,7 +148,7 @@ public interface VirtualFolder extends VirtualResource
      * <p>
      * @param visitor The visitor to be used.
      */
-    void travel(VirtualFolderVisitor visitor);
+    void travel(VFolderVisitor visitor);
 
     /**
      * Travels through all folders recursively from this folder and its children
@@ -158,7 +158,7 @@ public interface VirtualFolder extends VirtualResource
      * @param query The regular expression to match the files full path that will
      * be listed with this method.
      */
-    void travel(VirtualFileVisitor visitor, String query);
+    void travel(VFileVisitor visitor, String query);
 
     /**
      * Travels through all folders recursively from this folder and its children
@@ -168,5 +168,5 @@ public interface VirtualFolder extends VirtualResource
      * @param query The regular expression to match the folders full path that will
      * be listed with this method.
      */
-    void travel(VirtualFolderVisitor visitor, String query);
+    void travel(VFolderVisitor visitor, String query);
 }

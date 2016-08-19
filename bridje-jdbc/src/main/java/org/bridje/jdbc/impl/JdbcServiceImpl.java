@@ -28,9 +28,10 @@ import org.bridje.ioc.Inject;
 import org.bridje.jdbc.JdbcService;
 import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
+import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFolder;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFolder;
 
 @Component
 class JdbcServiceImpl implements JdbcService
@@ -110,13 +111,12 @@ class JdbcServiceImpl implements JdbcService
             config = new JdbcConfig();
             try
             {
-                VirtualFolder etc = vfsServ.findFolder("/etc");
-                if(etc != null && etc.canCreateNewFile("jdbc.xml"))
+                if(vfsServ.canCreateNewFile(new Path("/etc/jdbc.xml")))
                 {
-                    VirtualFile jdbc = etc.createNewFile("jdbc.xml");
+                    VFile jdbc = vfsServ.createNewFile(new Path("/etc/jdbc.xml"));
                     if(jdbc.canOpenForWrite())
                     {
-                        vfsServ.writeFile("/etc/jdbc.xml", config);
+                        jdbc.writeFile(config);
                     }
                 }
             }

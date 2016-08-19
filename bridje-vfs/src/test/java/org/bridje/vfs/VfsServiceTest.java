@@ -37,9 +37,9 @@ public class VfsServiceTest
     {
         String path = "/src/main";
         VfsService instance = Ioc.context().find(VfsService.class);
-        instance.mount(new Path("/src"), new FileVfsSource(new File("./src")));
+        instance.mount(new Path("/src"), new FileSource(new File("./src")));
         String expResult = "main";
-        VirtualFolder result = instance.findFolder(path);
+        VFolder result = instance.findFolder(path);
         assertNotNull(result);
         assertEquals(expResult, result.getName());
     }
@@ -48,8 +48,8 @@ public class VfsServiceTest
     public void testTravel()
     {
         VfsService instance = Ioc.context().find(VfsService.class);
-        List<VirtualFile> res = new ArrayList<>();
-        instance.travel((VirtualFile f) ->
+        List<VFile> res = new ArrayList<>();
+        instance.travel((VFile f) ->
         {
             LOG.log(Level.INFO, f.getPath().toString());
             assertTrue(f.getName().matches("^P.+\\.java$"));
@@ -94,7 +94,7 @@ public class VfsServiceTest
         
         VfsService vfsServ = Ioc.context().find(VfsService.class);
         vfsServ.mountFile("/tests", f.getParentFile());
-        vfsServ.findFolder("/tests").createNewFile("someprop1.properties");
+        vfsServ.findFolder("/tests").createNewFile(new Path("someprop1.properties"));
         vfsServ.writeFile("tests/someprop1.properties", prop);
         Properties readedProp = vfsServ.readFile("tests/someprop1.properties", Properties.class);
         assertNotNull(readedProp);

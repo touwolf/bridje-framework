@@ -17,9 +17,9 @@
 package org.bridje.vfs.impl;
 
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VFile;
 
-abstract class MemoryFile extends AbstractResource implements VirtualFile
+abstract class MemoryFile extends AbstractResource implements VFile
 {
     public MemoryFile(Path path)
     {

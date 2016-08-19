@@ -11,11 +11,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.ioc.Component;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileAdapter;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileAdapter;
 
 @Component
-class JaxbXmlAdapter implements VirtualFileAdapter
+class JaxbXmlAdapter implements VFileAdapter
 {
     private static final Logger LOG = Logger.getLogger(JaxbXmlAdapter.class.getName());
 
@@ -32,13 +32,13 @@ class JaxbXmlAdapter implements VirtualFileAdapter
     }
 
     @Override
-    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VFile vf, Class<?> resultCls)
     {
         return (resultCls.getAnnotation(XmlRootElement.class) != null);
     }
 
     @Override
-    public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
+    public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
         try(InputStream is = vf.openForRead())
         {
@@ -55,7 +55,7 @@ class JaxbXmlAdapter implements VirtualFileAdapter
     }
 
     @Override
-    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    public <T> void write(VFile vf, T contentObj) throws IOException
     {
         if(vf.canOpenForWrite())
         {

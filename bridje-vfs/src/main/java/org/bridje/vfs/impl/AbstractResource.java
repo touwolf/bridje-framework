@@ -21,13 +21,13 @@ import java.util.List;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileVisitor;
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VirtualFolderVisitor;
-import org.bridje.vfs.VirtualResource;
+import org.bridje.vfs.VResource;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileVisitor;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VFolderVisitor;
 
-abstract class AbstractResource implements VirtualResource
+abstract class AbstractResource implements VResource
 {
     private static VfsService VFS;
 
@@ -39,7 +39,7 @@ abstract class AbstractResource implements VirtualResource
     }
 
     @Override
-    public VirtualFolder getParent()
+    public VFolder getParent()
     {
         if (getPath() == null)
         {
@@ -90,54 +90,54 @@ abstract class AbstractResource implements VirtualResource
         return getPath().toString();
     }
     
-    protected static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor)
+    protected static void travel(VFolder rootFolder, VFileVisitor visitor)
     {
-        List<VirtualFolder> listFolders = rootFolder.listFolders();
-        for (VirtualFolder folder : listFolders)
+        List<VFolder> listFolders = rootFolder.listFolders();
+        for (VFolder folder : listFolders)
         {
             travel(folder, visitor);
         }
-        List<VirtualFile> listFiles = rootFolder.listFiles();
-        for (VirtualFile file : listFiles)
+        List<VFile> listFiles = rootFolder.listFiles();
+        for (VFile file : listFiles)
         {
             visitor.visit(file);
         }
     }
 
-    protected static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor)
+    protected static void travel(VFolder rootFolder, VFolderVisitor visitor)
     {
-        List<VirtualFolder> listFolders = rootFolder.listFolders();
-        for (VirtualFolder folder : listFolders)
+        List<VFolder> listFolders = rootFolder.listFolders();
+        for (VFolder folder : listFolders)
         {
             travel(folder, visitor);
             visitor.visit(folder);
         }
     }
 
-    protected static void travel(VirtualFolder rootFolder, VirtualFileVisitor visitor, String query)
+    protected static void travel(VFolder rootFolder, VFileVisitor visitor, String query)
     {
-        List<VirtualFolder> listFolders = rootFolder.listFolders();
-        for (VirtualFolder folder : listFolders)
+        List<VFolder> listFolders = rootFolder.listFolders();
+        for (VFolder folder : listFolders)
         {
             travel(folder, visitor, query);
         }
-        List<VirtualFile> listFiles = rootFolder.listFiles(query);
-        for (VirtualFile file : listFiles)
+        List<VFile> listFiles = rootFolder.listFiles(query);
+        for (VFile file : listFiles)
         {
             visitor.visit(file);
         }
     }
 
-    protected static void travel(VirtualFolder rootFolder, VirtualFolderVisitor visitor, String query)
+    protected static void travel(VFolder rootFolder, VFolderVisitor visitor, String query)
     {
-        List<VirtualFolder> listFolders = rootFolder.listFolders();
-        for (VirtualFolder folder : listFolders)
+        List<VFolder> listFolders = rootFolder.listFolders();
+        for (VFolder folder : listFolders)
         {
             travel(folder, visitor, query);
         }
 
-        List<VirtualFolder> visitFolders = rootFolder.listFolders(query);
-        for (VirtualFolder folder : visitFolders)
+        List<VFolder> visitFolders = rootFolder.listFolders(query);
+        for (VFolder folder : visitFolders)
         {
             visitor.visit(folder);
         }

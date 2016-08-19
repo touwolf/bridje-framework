@@ -21,11 +21,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 import org.bridje.ioc.Component;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileAdapter;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileAdapter;
 
 @Component
-class PropertiesAdapter implements VirtualFileAdapter
+class PropertiesAdapter implements VFileAdapter
 {
     @Override
     public String[] getExtensions()
@@ -40,13 +40,13 @@ class PropertiesAdapter implements VirtualFileAdapter
     }
 
     @Override
-    public boolean canHandle(VirtualFile vf, Class<?> resultCls)
+    public boolean canHandle(VFile vf, Class<?> resultCls)
     {
         return true;
     }
 
     @Override
-    public <T> T read(VirtualFile vf, Class<T> resultCls) throws IOException
+    public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
         try(InputStream is = vf.openForRead())
         {
@@ -57,7 +57,7 @@ class PropertiesAdapter implements VirtualFileAdapter
     }
 
     @Override
-    public <T> void write(VirtualFile vf, T contentObj) throws IOException
+    public <T> void write(VFile vf, T contentObj) throws IOException
     {
         try(OutputStream os = vf.openForWrite())
         {

@@ -38,7 +38,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
+import org.bridje.vfs.VFile;
 import org.bridje.web.view.comp.WebComponent;
 import org.bridje.web.view.WebView;
 
@@ -106,7 +106,7 @@ public class ThemesManager
 
     public boolean serveResource(String themeName, String resPath, HttpServerResponse resp) throws IOException
     {
-        VirtualFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
+        VFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
         if(f != null)
         {
             try(InputStream is = f.openForRead())

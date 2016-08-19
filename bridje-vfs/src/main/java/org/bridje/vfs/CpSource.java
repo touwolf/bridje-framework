@@ -22,11 +22,11 @@ import java.util.jar.JarFile;
 /**
  * A virtual file system source to mount java classpath base resources.
  */
-public class ClassPathVfsSource implements VfsSource
+public class CpSource implements VfsSource
 {
     private final String resource;
 
-    private Map<String, ClassPathVfsSource> childs;
+    private Map<String, CpSource> childs;
 
     /**
      * The only constructor for this object, the resource path needs to be specified.
@@ -35,7 +35,7 @@ public class ClassPathVfsSource implements VfsSource
      * @throws IOException If any IO exception occurs scanning the resource.
      * @throws URISyntaxException If the specified resource has an invalid URI.
      */
-    public ClassPathVfsSource(String resource) throws IOException, URISyntaxException
+    public CpSource(String resource) throws IOException, URISyntaxException
     {
         this.resource = new Path(resource).toString();
         List<String> resourceListing = getResourceListing(getClass(), resource);
@@ -44,7 +44,7 @@ public class ClassPathVfsSource implements VfsSource
             this.childs = new HashMap<>();
             for (String childName : resourceListing)
             {
-                this.childs.put(childName, new ClassPathVfsSource(resource + "/" + childName));
+                this.childs.put(childName, new CpSource(resource + "/" + childName));
             }
         }
     }
@@ -95,12 +95,12 @@ public class ClassPathVfsSource implements VfsSource
         if(path == null)
         {
             List<String> result = new LinkedList<>();
-            for (Map.Entry<String, ClassPathVfsSource> entry : childs.entrySet())
+            for (Map.Entry<String, CpSource> entry : childs.entrySet())
             {
                 String key = entry.getKey();
                 if(regexp == null || key.matches(regexp))
                 {
-                    ClassPathVfsSource value = entry.getValue();
+                    CpSource value = entry.getValue();
                     if (value.isFolder())
                     {
                         result.add(key);
@@ -111,7 +111,7 @@ public class ClassPathVfsSource implements VfsSource
         }
         else
         {
-            ClassPathVfsSource src = childs.get(path.getFirstElement());
+            CpSource src = childs.get(path.getFirstElement());
             if(src != null)
             {
                 return src.listFolders(path.getNext(), regexp);
@@ -134,7 +134,7 @@ public class ClassPathVfsSource implements VfsSource
                 String key = entry.getKey();
                 if(regexp == null || key.matches(regexp))
                 {
-                    ClassPathVfsSource value = entry.getValue();
+                    CpSource value = entry.getValue();
                     if (!value.isFolder())
                     {
                         result.add(key);
@@ -145,7 +145,7 @@ public class ClassPathVfsSource implements VfsSource
         }
         else
         {
-            ClassPathVfsSource src = childs.get(path.getFirstElement());
+            CpSource src = childs.get(path.getFirstElement());
             if(src != null)
             {
                 return src.listFiles(path.getNext(), regexp);
@@ -165,7 +165,7 @@ public class ClassPathVfsSource implements VfsSource
         {
             return false;
         }
-        ClassPathVfsSource src = childs.get(path.getFirstElement());
+        CpSource src = childs.get(path.getFirstElement());
         if(src != null)
         {
             return src.fileExists(path.getNext());
@@ -184,7 +184,7 @@ public class ClassPathVfsSource implements VfsSource
         {
             return false;
         }
-        ClassPathVfsSource src = childs.get(path.getFirstElement());
+        CpSource src = childs.get(path.getFirstElement());
         if(src != null)
         {
             return src.folderExists(path.getNext());

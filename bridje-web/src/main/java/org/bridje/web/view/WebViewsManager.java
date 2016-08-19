@@ -27,8 +27,8 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFolder;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFolder;
 
 @Component
 @XmlTransient
@@ -60,7 +60,7 @@ public class WebViewsManager
     private void initViews()
     {
         views = new HashMap<>();
-        VirtualFolder publicFolder = vfsServ.findFolder(basePath);
+        VFolder publicFolder = vfsServ.findFolder(basePath);
         if(publicFolder != null)
         {
             publicFolder.travel(this::readView, "**/*.view.xml");
@@ -74,7 +74,7 @@ public class WebViewsManager
         return viewPath;
     }
 
-    private void readView(VirtualFile f)
+    private void readView(VFile f)
     {
         try
         {

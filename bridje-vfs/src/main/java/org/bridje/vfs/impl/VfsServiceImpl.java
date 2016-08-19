@@ -26,16 +26,16 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.vfs.ClassPathVfsSource;
-import org.bridje.vfs.FileVfsSource;
+import org.bridje.vfs.CpSource;
+import org.bridje.vfs.FileSource;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VfsSource;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFileVisitor;
-import org.bridje.vfs.VirtualFolder;
-import org.bridje.vfs.VirtualFolderVisitor;
-import org.bridje.vfs.VirtualFileAdapter;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileAdapter;
+import org.bridje.vfs.VFileVisitor;
+import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VFolderVisitor;
 
 @Component
 class VfsServiceImpl implements VfsService
@@ -43,11 +43,11 @@ class VfsServiceImpl implements VfsService
     private MemoryFolder root;
     
     @Inject
-    private VirtualFileAdapter[] readers;
+    private VFileAdapter[] readers;
     
-    private Map<String, Map<Class<?>, List<VirtualFileAdapter>>> readersMap;
+    private Map<String, Map<Class<?>, List<VFileAdapter>>> readersMap;
     
-    private Map<String, List<VirtualFileAdapter>> genericReadersMap;
+    private Map<String, List<VFileAdapter>> genericReadersMap;
 
     @PostConstruct
     public void init()
@@ -57,49 +57,49 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public VirtualFolder findFolder(String path)
+    public VFolder findFolder(String path)
     {
         return root.findFolder(path);
     }
 
     @Override
-    public VirtualFolder findFolder(Path path)
+    public VFolder findFolder(Path path)
     {
         return root.findFolder(path);
     }
 
     @Override
-    public VirtualFile findFile(String path)
+    public VFile findFile(String path)
     {
         return root.findFile(path);
     }
 
     @Override
-    public VirtualFile findFile(Path path)
+    public VFile findFile(Path path)
     {
         return root.findFile(path);
     }
 
     @Override
-    public List<VirtualFolder> listFolders()
+    public List<VFolder> listFolders()
     {
         return root.listFolders();
     }
 
     @Override
-    public List<VirtualFile> listFiles()
+    public List<VFile> listFiles()
     {
         return root.listFiles();
     }
     
     @Override
-    public List<VirtualFolder> listFolders(String query)
+    public List<VFolder> listFolders(String query)
     {
         return root.listFolders(query);
     }
 
     @Override
-    public List<VirtualFile> listFiles(String query)
+    public List<VFile> listFiles(String query)
     {
         return root.listFiles(query);
     }
@@ -119,7 +119,7 @@ class VfsServiceImpl implements VfsService
         {
             for (Path currentPath : mountPath)
             {
-                VirtualFolder currVFolder = root.findFolder(currentPath);
+                VFolder currVFolder = root.findFolder(currentPath);
                 if(currVFolder != null && (currVFolder instanceof MemoryFolder))
                 {
                     currentFolder = (MemoryFolder)currVFolder;
@@ -144,25 +144,25 @@ class VfsServiceImpl implements VfsService
     @Override
     public void mountResource(Path path, String resource) throws IOException, URISyntaxException
     {
-        mount(path, new ClassPathVfsSource(resource));
+        mount(path, new CpSource(resource));
     }
 
     @Override
     public void mountResource(String path, String resource) throws IOException, URISyntaxException
     {
-        mount(new Path(path), new ClassPathVfsSource(resource));
+        mount(new Path(path), new CpSource(resource));
     }
 
     @Override
     public void mountFile(Path path, File file)
     {
-        mount(path, new FileVfsSource(file));
+        mount(path, new FileSource(file));
     }
 
     @Override
     public void mountFile(String path, File file)
     {
-        mount(new Path(path), new FileVfsSource(file));
+        mount(new Path(path), new FileSource(file));
     }
 
     @Override
@@ -178,25 +178,25 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor)
+    public void travel(VFileVisitor visitor)
     {
         root.travel(visitor);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor)
+    public void travel(VFolderVisitor visitor)
     {
         root.travel(visitor);
     }
 
     @Override
-    public void travel(VirtualFileVisitor visitor, String query)
+    public void travel(VFileVisitor visitor, String query)
     {
         root.travel(visitor, query);
     }
 
     @Override
-    public void travel(VirtualFolderVisitor visitor, String query)
+    public void travel(VFolderVisitor visitor, String query)
     {
         root.travel(visitor, query);
     }
@@ -204,42 +204,42 @@ class VfsServiceImpl implements VfsService
     @Override
     public <T> T readFile(String path, Class<T> resultCls) throws IOException
     {
-        VirtualFile file = findFile(path);
+        VFile file = findFile(path);
         return readFile(file, resultCls);
     }
 
     @Override
     public <T> T readFile(Path path, Class<T> resultCls) throws IOException
     {
-        VirtualFile file = findFile(path);
+        VFile file = findFile(path);
         return readFile(file, resultCls);
     }
 
     @Override
     public <T> void writeFile(String path, T contentObj) throws IOException
     {
-        VirtualFile file = findFile(path);
+        VFile file = findFile(path);
         writeFile(file, contentObj);
     }
 
     @Override
     public <T> void writeFile(Path path, T contentObj) throws IOException
     {
-        VirtualFile file = findFile(path);
+        VFile file = findFile(path);
         writeFile(file, contentObj);
     }
 
-    public <T> T readFile(VirtualFile file, Class<T> resultCls) throws IOException
+    public <T> T readFile(VFile file, Class<T> resultCls) throws IOException
     {
         if(file != null)
         {
-            Map<Class<?>, List<VirtualFileAdapter>> map = readersMap.get(file.getExtension());
+            Map<Class<?>, List<VFileAdapter>> map = readersMap.get(file.getExtension());
             if(map != null)
             {
-                List<VirtualFileAdapter> lst = map.get(resultCls);
+                List<VFileAdapter> lst = map.get(resultCls);
                 if(lst != null)
                 {
-                    for (VirtualFileAdapter adapter : lst)
+                    for (VFileAdapter adapter : lst)
                     {
                         if(adapter.canHandle(file, resultCls))
                         {
@@ -249,10 +249,10 @@ class VfsServiceImpl implements VfsService
                 }
             }
             
-            List<VirtualFileAdapter> lst = genericReadersMap.get(file.getExtension());
+            List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
             if(lst != null)
             {
-                for (VirtualFileAdapter adapter : lst)
+                for (VFileAdapter adapter : lst)
                 {
                     if(adapter.canHandle(file, resultCls))
                     {
@@ -264,17 +264,17 @@ class VfsServiceImpl implements VfsService
         return null;
     }
     
-    public <T> void writeFile(VirtualFile file, T contentObj) throws IOException
+    public <T> void writeFile(VFile file, T contentObj) throws IOException
     {
         if(file != null)
         {
-            Map<Class<?>, List<VirtualFileAdapter>> map = readersMap.get(file.getExtension());
+            Map<Class<?>, List<VFileAdapter>> map = readersMap.get(file.getExtension());
             if(map != null)
             {
-                List<VirtualFileAdapter> lst = map.get(contentObj.getClass());
+                List<VFileAdapter> lst = map.get(contentObj.getClass());
                 if(lst != null)
                 {
-                    for (VirtualFileAdapter adapter : lst)
+                    for (VFileAdapter adapter : lst)
                     {
                         if(adapter.canHandle(file, contentObj.getClass()))
                         {
@@ -284,10 +284,10 @@ class VfsServiceImpl implements VfsService
                 }
             }
             
-            List<VirtualFileAdapter> lst = genericReadersMap.get(file.getExtension());
+            List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
             if(lst != null)
             {
-                for (VirtualFileAdapter adapter : lst)
+                for (VFileAdapter adapter : lst)
                 {
                     if(adapter.canHandle(file, contentObj.getClass()))
                     {
@@ -302,7 +302,7 @@ class VfsServiceImpl implements VfsService
     {
         genericReadersMap = new HashMap<>();
         readersMap = new HashMap<>();
-        for (VirtualFileAdapter reader : readers)
+        for (VFileAdapter reader : readers)
         {
             String[] extensions = reader.getExtensions();
             for (String extension : extensions)
@@ -310,7 +310,7 @@ class VfsServiceImpl implements VfsService
                 Class<?>[] clsArray = reader.getClasses();
                 if(clsArray != null)
                 {
-                    Map<Class<?>, List<VirtualFileAdapter>> clsMap = readersMap.get(extension);
+                    Map<Class<?>, List<VFileAdapter>> clsMap = readersMap.get(extension);
                     if(clsMap == null)
                     {
                         clsMap = new HashMap<>();
@@ -318,7 +318,7 @@ class VfsServiceImpl implements VfsService
                     }
                     for (Class<?> cls : clsArray)
                     {
-                        List<VirtualFileAdapter> lst = clsMap.get(cls);
+                        List<VFileAdapter> lst = clsMap.get(cls);
                         if(lst == null)
                         {
                             lst = new ArrayList<>();
@@ -329,7 +329,7 @@ class VfsServiceImpl implements VfsService
                 }
                 else
                 {
-                    List<VirtualFileAdapter> lst = genericReadersMap.get(extension);
+                    List<VFileAdapter> lst = genericReadersMap.get(extension);
                     if(lst == null)
                     {
                         lst = new ArrayList<>();
@@ -339,5 +339,53 @@ class VfsServiceImpl implements VfsService
                 }
             }
         }
+    }
+
+    @Override
+    public VFile createNewFile(Path filePath) throws IOException
+    {
+        return root.createNewFile(filePath);
+    }
+
+    @Override
+    public VFolder mkDir(Path folderPath) throws IOException
+    {
+        return root.mkDir(folderPath);
+    }
+
+    @Override
+    public boolean canCreateNewFile(Path filePath)
+    {
+        return root.canCreateNewFile(filePath);
+    }
+
+    @Override
+    public boolean canMkDir(Path folderPath)
+    {
+        return root.canMkDir(folderPath);
+    }
+
+    @Override
+    public VFolder getParent()
+    {
+        return root.getParent();
+    }
+
+    @Override
+    public String getName()
+    {
+        return root.getName();
+    }
+
+    @Override
+    public Path getPath()
+    {
+        return root.getPath();
+    }
+
+    @Override
+    public Path getParentPath()
+    {
+        return root.getParentPath();
     }
 }

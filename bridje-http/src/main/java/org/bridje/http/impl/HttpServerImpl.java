@@ -43,9 +43,10 @@ import org.bridje.http.WsServerHandler;
 import org.bridje.http.config.HttpServerConfig;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VirtualFile;
-import org.bridje.vfs.VirtualFolder;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFolder;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -159,10 +160,9 @@ class HttpServerImpl implements HttpServer
                 config = new HttpServerConfig();
                 try
                 {
-                    VirtualFolder etc = vfsServ.findFolder("/etc");
-                    if(etc.canCreateNewFile("http.xml"))
+                    if(vfsServ.canCreateNewFile(new Path("/etc/http.xml")))
                     {
-                        VirtualFile http = etc.createNewFile("http.xml");
+                        VFile http = vfsServ.createNewFile(new Path("/etc/http.xml"));
                         if(http.canOpenForWrite())
                         {
                             vfsServ.writeFile("/etc/http.xml", config);
