@@ -263,7 +263,7 @@ class VfsServiceImpl implements VfsService
         }
         return null;
     }
-    
+
     public <T> void writeFile(VFile file, T contentObj) throws IOException
     {
         if(file != null)
@@ -297,7 +297,7 @@ class VfsServiceImpl implements VfsService
             }
         }
     }
-    
+
     private void initReaders()
     {
         genericReadersMap = new HashMap<>();
@@ -387,5 +387,17 @@ class VfsServiceImpl implements VfsService
     public Path getParentPath()
     {
         return root.getParentPath();
+    }
+
+    @Override
+    public <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException
+    {
+        VFile file = createNewFile(filePath);
+        if(!file.canOpenForWrite())
+        {
+            throw new IOException("The file cannot be open for writing");
+        }
+        writeFile(filePath, contentObj);
+        return file;
     }
 }

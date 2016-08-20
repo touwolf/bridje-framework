@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileVisitor;
@@ -289,6 +290,34 @@ class MemoryFolder extends AbstractResource implements VFolder
     }
 
     @Override
+    public <T> T readFile(String path, Class<T> resultCls) throws IOException
+    {
+        VFile file = findFile(path);
+        return Ioc.context().find(VfsServiceImpl.class).readFile(file, resultCls);
+    }
+
+    @Override
+    public <T> T readFile(Path path, Class<T> resultCls) throws IOException
+    {
+        VFile file = findFile(path);
+        return Ioc.context().find(VfsServiceImpl.class).readFile(file, resultCls);
+    }
+
+    @Override
+    public <T> void writeFile(String path, T contentObj) throws IOException
+    {
+        VFile file = findFile(path);
+        Ioc.context().find(VfsServiceImpl.class).writeFile(file, contentObj);
+    }
+
+    @Override
+    public <T> void writeFile(Path path, T contentObj) throws IOException
+    {
+        VFile file = findFile(path);
+        Ioc.context().find(VfsServiceImpl.class).writeFile(file, contentObj);
+    }
+
+    @Override
     public void travel(VFileVisitor visitor)
     {
         travel(this, visitor);
@@ -366,5 +395,17 @@ class MemoryFolder extends AbstractResource implements VFolder
             }
         }
         return false;
+    }
+
+    @Override
+    public <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException
+    {
+        VFile file = createNewFile(filePath);
+        if(!file.canOpenForWrite())
+        {
+            throw new IOException("The file cannot be open for writing");
+        }
+        writeFile(filePath, contentObj);
+        return file;
     }
 }

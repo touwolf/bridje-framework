@@ -99,7 +99,56 @@ public interface VFolder extends VResource
      * folder.
      */
     List<VFile> listFiles(String query);
-    
+
+    /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     *
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
+     */
+    <T> T readFile(String path, Class<T> resultCls) throws IOException;
+
+    /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
+     */
+    <T> T readFile(Path path, Class<T> resultCls) throws IOException;
+
+    /**
+     * Finds the virtual file by the given path. And writes it's content with the
+     * instance of the given object.
+     *
+     * @param <T> The type of the result class.
+     * @param path The path of the file.
+     * @param contentObj The object to be serialize to the file.
+     *
+     * @throws java.io.IOException If any input-output error occurs writing the file.
+     */
+    <T> void writeFile(String path, T contentObj) throws IOException;
+
+    /**
+     * Finds the virtual file by the given path. And writes it's content with the
+     * instance of the given object.
+     *
+     * @param <T> The type of the result class.
+     * @param path The path of the file.
+     * @param contentObj The object to be serialize to the file.
+     * 
+     * @throws java.io.IOException If any input-output error occurs writing the file.
+     */
+    <T> void writeFile(Path path, T contentObj) throws IOException;
+
     /**
      * Creates a new physical file on this folder.
      * <p>
@@ -122,7 +171,7 @@ public interface VFolder extends VResource
      * Determines if a file can be created on the given path.
      * <p>
      * @param filePath The path and name to the file to be created.
-     * @return true if a folder can be created on this path.
+     * @return true if a file can be created on this path.
      */
     boolean canCreateNewFile(Path filePath);
 
@@ -134,6 +183,17 @@ public interface VFolder extends VResource
      */
     boolean canMkDir(Path folderPath);
 
+    /**
+     * Creates and writes a new physical file on this folder, with the given content.
+     * <p>
+     * @param <T> The type of the result class.
+     * @param filePath The path and name to the file to be created.
+     * @param contentObj 
+     * @return The file representation according this source.
+     * @throws java.io.IOException If any I/O exception occurs.
+     */
+    <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException;
+    
     /**
      * Travels through all files recursively from this folder and its children
      * folders.

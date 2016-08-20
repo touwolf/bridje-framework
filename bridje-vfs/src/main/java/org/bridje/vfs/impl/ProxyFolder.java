@@ -314,4 +314,56 @@ class ProxyFolder implements VFolder
         }
         return false;
     }
+
+    @Override
+    public <T> T readFile(String path, Class<T> resultCls) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).readFile(path, resultCls);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T readFile(Path path, Class<T> resultCls) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            return folders.get(0).readFile(path, resultCls);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> void writeFile(String path, T contentObj) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            folders.get(0).writeFile(path, contentObj);
+        }
+        throw new IOException("Invalid proxy folder.");
+    }
+
+    @Override
+    public <T> void writeFile(Path path, T contentObj) throws IOException
+    {
+        if(folders != null && folders.size() >= 1)
+        {
+            folders.get(0).writeFile(path, contentObj);
+        }
+        throw new IOException("Invalid proxy folder.");
+    }
+
+    @Override
+    public <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException
+    {
+        VFile file = createNewFile(filePath);
+        if(!file.canOpenForWrite())
+        {
+            throw new IOException("The file cannot be open for writing");
+        }
+        writeFile(filePath, contentObj);
+        return file;
+    }
 }

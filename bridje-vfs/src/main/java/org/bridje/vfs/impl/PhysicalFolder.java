@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
@@ -190,6 +191,34 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     }
 
     @Override
+    public <T> T readFile(String path, Class<T> resultCls) throws IOException
+    {
+        VFile file = findFile(path);
+        return Ioc.context().find(VfsServiceImpl.class).readFile(file, resultCls);
+    }
+
+    @Override
+    public <T> T readFile(Path path, Class<T> resultCls) throws IOException
+    {
+        VFile file = findFile(path);
+        return Ioc.context().find(VfsServiceImpl.class).readFile(file, resultCls);
+    }
+
+    @Override
+    public <T> void writeFile(String path, T contentObj) throws IOException
+    {
+        VFile file = findFile(path);
+        Ioc.context().find(VfsServiceImpl.class).writeFile(file, contentObj);
+    }
+
+    @Override
+    public <T> void writeFile(Path path, T contentObj) throws IOException
+    {
+        VFile file = findFile(path);
+        Ioc.context().find(VfsServiceImpl.class).writeFile(file, contentObj);
+    }
+
+    @Override
     public void travel(VFileVisitor visitor)
     {
         travel(this, visitor);
@@ -237,5 +266,17 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     public boolean canMkDir(Path folderPath)
     {
         return getSource().canMkDir(getPhysicalPath(folderPath));
+    }
+
+    @Override
+    public <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException
+    {
+        VFile file = createNewFile(filePath);
+        if(!file.canOpenForWrite())
+        {
+            throw new IOException("The file cannot be open for writing");
+        }
+        writeFile(filePath, contentObj);
+        return file;
     }
 }
