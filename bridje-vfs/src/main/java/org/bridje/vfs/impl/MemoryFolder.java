@@ -342,6 +342,30 @@ class MemoryFolder extends AbstractResource implements VFolder
     }
 
     @Override
+    public VFile createNewFile(String filePath) throws IOException
+    {
+        return createNewFile(new Path(filePath));
+    }
+
+    @Override
+    public VFolder mkDir(String folderPath) throws IOException
+    {
+        return mkDir(new Path(folderPath));
+    }
+
+    @Override
+    public boolean canCreateNewFile(String filePath)
+    {
+        return canCreateNewFile(new Path(filePath));
+    }
+
+    @Override
+    public boolean canMkDir(String folderPath)
+    {
+        return canMkDir(new Path(folderPath));
+    }
+    
+    @Override
     public VFile createNewFile(Path filePath) throws IOException
     {
         if(!filePath.isLast())
@@ -407,5 +431,11 @@ class MemoryFolder extends AbstractResource implements VFolder
         }
         writeFile(filePath, contentObj);
         return file;
+    }
+
+    @Override
+    public <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException
+    {
+        return createAndWriteNewFile(new Path(filePath), contentObj);
     }
 }

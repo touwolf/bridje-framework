@@ -184,16 +184,61 @@ public interface VFolder extends VResource
     boolean canMkDir(Path folderPath);
 
     /**
+     * Creates a new physical file on this folder.
+     * <p>
+     * @param filePath The path and name to the file to be created.
+     * @return The file representation according this source.
+     * @throws java.io.IOException If any I/O exception occurs.
+     */
+    VFile createNewFile(String filePath) throws IOException;
+
+    /**
+     * Creates a new directory on this folder.
+     * <p>
+     * @param folderPath The path and name to the folder to be created.
+     * @return The name of the folder created.
+     * @throws java.io.IOException If any I/O exception occurs. 
+     */
+    VFolder mkDir(String folderPath) throws IOException;
+
+    /**
+     * Determines if a file can be created on the given path.
+     * <p>
+     * @param filePath The path and name to the file to be created.
+     * @return true if a file can be created on this path.
+     */
+    boolean canCreateNewFile(String filePath);
+
+    /**
+     * Determines if a folder can be created on the given path.
+     * <p>
+     * @param folderPath The path and name to the folder to be created.
+     * @return true if a folder can be created on this path.
+     */
+    boolean canMkDir(String folderPath);
+
+    /**
      * Creates and writes a new physical file on this folder, with the given content.
      * <p>
      * @param <T> The type of the result class.
      * @param filePath The path and name to the file to be created.
-     * @param contentObj 
+     * @param contentObj The object representing the content of the file.
      * @return The file representation according this source.
      * @throws java.io.IOException If any I/O exception occurs.
      */
     <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException;
-    
+
+    /**
+     * Creates and writes a new physical file on this folder, with the given content.
+     * <p>
+     * @param <T> The type of the result class.
+     * @param filePath The path and name to the file to be created.
+     * @param contentObj The object representing the content of the file.
+     * @return The file representation according this source.
+     * @throws java.io.IOException If any I/O exception occurs.
+     */
+    <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException;
+
     /**
      * Travels through all files recursively from this folder and its children
      * folders.

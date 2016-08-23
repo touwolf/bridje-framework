@@ -100,4 +100,52 @@ public class VfsServiceTest
         assertNotNull(readedProp);
         assertEquals(prop.get("prop1"), readedProp.getProperty("prop1"));
     }
+    
+    @Test
+    public void testCreateAndWrite() throws IOException
+    {
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        vfsServ.mountFile("/etc", "./target");
+
+        deleteDirectory(new File("./target/someTestFolder")); //delete the main dir
+        assertFalse(vfsServ.canMkDir("/etc")); //etc is main mounted folder.
+        assertTrue(vfsServ.canMkDir("/etc/someTestFolder")); // someTestFolder does not exists so it can be created
+        assertTrue(vfsServ.canMkDir("/etc/someTestFolder/xmlwrtext")); // someTestFolder/xmlwrtext does not exists so it can be created
+        SomeData someData = new SomeData();// sample data
+        someData.setName("Data File");// sample data
+        assertTrue(vfsServ.canCreateNewFile("/etc/someTestFolder/xmlwrtext/someData.xml")); //the file someTestFolder/xmlwrtext/someData.xml does not exists.
+        assertNotNull(vfsServ.createAndWriteNewFile("/etc/someTestFolder/xmlwrtext/someData.xml", someData)); //create and serialize with the xml
+        SomeData someData1 = vfsServ.readFile("/etc/someTestFolder/xmlwrtext/someData.xml", SomeData.class); //reed the serialized file.
+        assertNotNull(someData1);//the data must not be null
+        assertEquals(someData.getName(), someData1.getName());//must have the same value.
+        
+        
+        //testing if the file can be create, someTestFolder exists but xmlwrtext1 does not.
+        assertTrue(vfsServ.canCreateNewFile("/etc/someTestFolder/xmlwrtext1/someData2.xml"));
+
+        deleteDirectory(new File("./target/someTestFolder1")); // deleting testing dir 
+        assertTrue(vfsServ.canCreateNewFile("/etc/someTestFolder1/xmlwrtext1/someData2.xml"));
+        VFolder fold = vfsServ.mkDir("/etc/someTestFolder1");
+        assertTrue(fold.canCreateNewFile("/xmlwrtext1/someData2.xml"));
+        assertNotNull(fold.createAndWriteNewFile("/xmlwrtext1/someData2.xml", someData));
+        SomeData someData2 = fold.readFile("/xmlwrtext1/someData2.xml", SomeData.class);
+        assertNotNull(someData2);
+        assertEquals(someData.getName(), someData2.getName());
+        assertFalse(fold.canCreateNewFile("/xmlwrtext1/someData2.xml"));
+    }
+
+    static public boolean deleteDirectory(File path)
+    {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
+    }
 }
