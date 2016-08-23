@@ -45,8 +45,6 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFolder;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -143,37 +141,16 @@ class HttpServerImpl implements HttpServer
         return config.getName();
     }
 
-    public HttpServerConfig getConfig()
+    private HttpServerConfig getConfig() throws IOException
     {
+        Path path = new Path("/etc/http.xml");
+        HttpServerConfig config = vfsServ.readFile(path, HttpServerConfig.class);
         if(config == null)
         {
-            try
+            config = new HttpServerConfig();
+            if(vfsServ.canCreateNewFile(path))
             {
-                config = vfsServ.readFile("/etc/http.xml", HttpServerConfig.class);
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
-            if(config == null)
-            {
-                config = new HttpServerConfig();
-                try
-                {
-                    if(vfsServ.canCreateNewFile(new Path("/etc/http.xml")))
-                    {
-                        VFile http = vfsServ.createNewFile(new Path("/etc/http.xml"));
-                        if(http.canOpenForWrite())
-                        {
-                            vfsServ.writeFile("/etc/http.xml", config);
-                        }
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
+                vfsServ.createAndWriteNewFile(path, config);
             }
         }
         return config;

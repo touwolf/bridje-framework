@@ -16,6 +16,7 @@
 
 package org.bridje.jdbc.impl;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,8 +31,6 @@ import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFolder;
 
 @Component
 class JdbcServiceImpl implements JdbcService
@@ -46,10 +45,17 @@ class JdbcServiceImpl implements JdbcService
     @PostConstruct
     public void init()
     {
-        dsMap = new ConcurrentHashMap<>();
-        JdbcConfig jdbcCfg = findConfig();
-        jdbcCfg.getDataSources().stream()
-                .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
+        try
+        {
+            dsMap = new ConcurrentHashMap<>();
+            JdbcConfig jdbcCfg = findConfig();
+            jdbcCfg.getDataSources().stream()
+                    .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
+        }
+        catch (IOException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
     
     @Override
@@ -95,34 +101,16 @@ class JdbcServiceImpl implements JdbcService
         dsMap.clear();
     }
 
-    private JdbcConfig findConfig()
+    private JdbcConfig findConfig() throws IOException
     {
-        JdbcConfig config = null;
-        try
-        {
-            config = vfsServ.readFile("/etc/jdbc.xml", JdbcConfig.class);
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
+        Path path = new Path("/etc/jdbc.xml");
+        JdbcConfig config = vfsServ.readFile(path, JdbcConfig.class);
         if(config == null)
         {
             config = new JdbcConfig();
-            try
+            if(vfsServ.canCreateNewFile(path))
             {
-                if(vfsServ.canCreateNewFile(new Path("/etc/jdbc.xml")))
-                {
-                    VFile jdbc = vfsServ.createNewFile(new Path("/etc/jdbc.xml"));
-                    if(jdbc.canOpenForWrite())
-                    {
-                        jdbc.writeFile(config);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
+                vfsServ.createAndWriteNewFile(path, config);
             }
         }
         return config;
