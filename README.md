@@ -10,7 +10,7 @@ This package contains the Bridje Java Applications Framework. A project that pro
 - Simple: We try to follow the KISS principle, we avoid providing too much ways of resolving the same problem. 
 - Reuse: We try to reuse concepts as much as possible in the framework internals and in your apps, so they both use the same things .
 - Minimal: We try to reduce the dependencies of both the framework and your application to the minimum necessary. This means that for many things we make our own implementations instead of using a third-party APIs. 
-- Multipurpose: The framework is mean to be use in CLI, desktop, web and mobile apps. 
+- Multipurpose: The framework is mean to be use in CLI, desktop and web apps. 
 - Standalone: Your applications can run by themselves, no further server or container is needed besides the Java Virtual Machine. 
 - Embedded: The APIs are designed to be embedded in your applications and not the other way around.
 - Modular: You must use what you need, and in some case some unavoidable dependencies but you are not force by any means to put in your classpath any library that it´s not absolutely necessary, for the framework or your app. 
