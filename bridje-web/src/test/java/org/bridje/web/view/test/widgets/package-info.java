@@ -17,7 +17,7 @@
 @XmlSchema(namespace = "http://www.bridje.org/schemas/web/view/testcomp",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
-package org.bridje.web.view.testcomp;
+package org.bridje.web.view.test.widgets;
 
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

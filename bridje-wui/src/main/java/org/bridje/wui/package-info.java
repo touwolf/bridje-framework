@@ -17,7 +17,7 @@
 @XmlSchema(namespace = "http://www.bridje.org/schemas/wui/comp",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

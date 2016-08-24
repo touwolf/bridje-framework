@@ -1,5 +1,5 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.widgets.Widget;
 
 @XmlRootElement(name = "hlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HorizontalLayout extends WebComponent
+public class HorizontalLayout extends Widget
 {
     @XmlAnyElement(lax = true)
     @XmlElementRefs(
@@ -35,20 +35,20 @@ public class HorizontalLayout extends WebComponent
         @XmlElementRef(name = "textbox", type = TextBox.class),
         @XmlElementRef(name = "vlayout", type = VerticalLayout.class)
     })
-    private List<WebComponent> children;
+    private List<Widget> children;
 
-    public List<WebComponent> getChildren()
+    public List<Widget> getChildren()
     {
         return children;
     }
 
-    public void setChildren(List<WebComponent> children)
+    public void setChildren(List<Widget> children)
     {
         this.children = children;
     }
 
     @Override
-    public List<? extends WebComponent> childs()
+    public List<? extends Widget> childs()
     {
         return getChildren();
     }

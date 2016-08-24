@@ -1,14 +1,14 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.bridje.web.view.comp.UIEvent;
-import org.bridje.web.view.comp.UIEventAdapter;
-import org.bridje.web.view.comp.UIExpression;
-import org.bridje.web.view.comp.UIExpressionAdapter;
+import org.bridje.web.view.widgets.UIEvent;
+import org.bridje.web.view.widgets.UIEventAdapter;
+import org.bridje.web.view.widgets.UIExpression;
+import org.bridje.web.view.widgets.UIExpressionAdapter;
 
 /**
  * Represents a simple button, that can be clicked by the user and it will
@@ -16,7 +16,7 @@ import org.bridje.web.view.comp.UIExpressionAdapter;
  */
 @XmlRootElement(name = "button")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Button extends BaseComponent
+public class Button extends BaseWidget
 {
     @XmlValue
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)

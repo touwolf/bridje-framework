@@ -1,15 +1,15 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.widgets.Widget;
 
 /**
- * A layout that contains a central region and 4 regions surronding it.
+ * A layout that contains a central region and 4 regions surrounding it.
  */
 @XmlRootElement(name = "borderlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -26,99 +26,99 @@ public class BorderLayout extends BaseContainer
     private BorderLayoutRegion bottom;
 
     /**
-     * Gets the web component at the top region.
+     * Gets the widget at the top region.
      * 
-     * @return The web component at the top region.
+     * @return The widget at the top region.
      */
-    public WebComponent getTop()
+    public Widget getTop()
     {
         if (top != null)
         {
-            return top.getComponent();
+            return top.getContent();
         }
         return null;
     }
 
     /**
-     * Gets the web component at the left region.
+     * Gets the widget at the left region.
      * 
-     * @return The web component at the left region.
+     * @return The widget at the left region.
      */
-    public WebComponent getLeft()
+    public Widget getLeft()
     {
         if (left != null)
         {
-            return left.getComponent();
+            return left.getContent();
         }
         return null;
     }
 
     /**
-     * Gets the web component at the center region.
+     * Gets the widget at the center region.
      * 
-     * @return The web component at the center region.
+     * @return The widget at the center region.
      */
-    public WebComponent getCenter()
+    public Widget getCenter()
     {
         if (center != null)
         {
-            return center.getComponent();
+            return center.getContent();
         }
         return null;
     }
 
     /**
-     * Gets the web component at the right region.
+     * Gets the widget at the right region.
      * 
-     * @return The web component at the right region.
+     * @return The widget at the right region.
      */
-    public WebComponent getRight()
+    public Widget getRight()
     {
         if (right != null)
         {
-            return right.getComponent();
+            return right.getContent();
         }
         return null;
     }
 
     /**
-     * Gets the web component at the bottom region.
+     * Gets the widget at the bottom region.
      * 
-     * @return The web component at the bottom region.
+     * @return The widget at the bottom region.
      */
-    public WebComponent getBottom()
+    public Widget getBottom()
     {
         if (bottom != null)
         {
-            return bottom.getComponent();
+            return bottom.getContent();
         }
         return null;
     }
 
     @Override
-    public List<? extends WebComponent> childs()
+    public List<? extends Widget> childs()
     {
-        List<WebComponent> comps = new ArrayList<>();
+        List<Widget> widgets = new ArrayList<>();
         if (getTop() != null)
         {
-            comps.add(getTop());
+            widgets.add(getTop());
         }
         if (getLeft() != null)
         {
-            comps.add(getLeft());
+            widgets.add(getLeft());
         }
         if (getRight() != null)
         {
-            comps.add(getRight());
+            widgets.add(getRight());
         }
         if (getBottom() != null)
         {
-            comps.add(getBottom());
+            widgets.add(getBottom());
         }
         if (getCenter() != null)
         {
-            comps.add(getCenter());
+            widgets.add(getCenter());
         }
-        return comps;
+        return widgets;
     }
 }

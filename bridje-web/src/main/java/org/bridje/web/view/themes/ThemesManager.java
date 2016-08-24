@@ -39,7 +39,7 @@ import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VFile;
-import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.widgets.Widget;
 import org.bridje.web.view.WebView;
 
 @Component
@@ -82,7 +82,7 @@ public class ThemesManager
         }
     }
 
-    public void render(WebComponent comp, WebView view, OutputStream os, Object result, Map<String, String> state)
+    public void render(Widget widget, WebView view, OutputStream os, Object result, Map<String, String> state)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -91,7 +91,7 @@ public class ThemesManager
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
             data.put("view", view);
-            data.put("component", comp);
+            data.put("widget", widget);
             data.put("result", result);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("state", state);

@@ -1,6 +1,6 @@
 <#ftl encoding="UTF-8">
 
-<#include "./comps.ftl" />
+<#include "./widgets.ftl" />
 
 <#macro renderStyle theme style>
     <link rel="stylesheet" href="/__themes/${theme}/${style}" />

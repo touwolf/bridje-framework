@@ -16,9 +16,9 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.comp.WebComponent;
-import org.bridje.web.view.comp.UIEvent;
-import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.widgets.UIEvent;
+import org.bridje.web.view.widgets.UIInputExpression;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.*;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from components. The views are inmutables so once defined they will
+ * composed from widgets. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
 @XmlRootElement(name = "view")
@@ -45,7 +45,7 @@ public class WebView
     private List<MetaTag> metaTags;
 
     @XmlAnyElement(lax = true)
-    private WebComponent root;
+    private Widget root;
 
     @XmlTransient
     private Map<String, UIEvent> events;
@@ -95,11 +95,11 @@ public class WebView
     }
 
     /**
-     * The root component of this view.
+     * The root widget of this view.
      *
-     * @return The root component.
+     * @return The root widget.
      */
-    public WebComponent getRoot()
+    public Widget getRoot()
     {
         return root;
     }
@@ -155,15 +155,15 @@ public class WebView
         }
     }
 
-    private void findEvents(WebComponent comp, Map<String, UIEvent> eventsMap)
+    private void findEvents(Widget widget, Map<String, UIEvent> eventsMap)
     {
-        comp.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
-        comp.childs().forEach((child) -> findEvents(child, eventsMap));
+        widget.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
+        widget.childs().forEach((child) -> findEvents(child, eventsMap));
     }
 
-    private void findInputs(WebComponent comp, Map<String, UIInputExpression> inputsMap)
+    private void findInputs(Widget widget, Map<String, UIInputExpression> inputsMap)
     {
-        comp.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
-        comp.childs().forEach((child) -> findInputs(child, inputsMap));
+        widget.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
+        widget.childs().forEach((child) -> findInputs(child, inputsMap));
     }
 }

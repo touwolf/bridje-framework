@@ -1,17 +1,17 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.bridje.web.view.comp.UIExpression;
-import org.bridje.web.view.comp.UIExpressionAdapter;
+import org.bridje.web.view.widgets.UIExpression;
+import org.bridje.web.view.widgets.UIExpressionAdapter;
 
 @XmlRootElement(name = "image")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Image extends BaseComponent
+public class Image extends BaseWidget
 {
     @XmlAttribute(name = "src")
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)

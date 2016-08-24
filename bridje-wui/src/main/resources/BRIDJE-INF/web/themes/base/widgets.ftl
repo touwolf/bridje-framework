@@ -93,7 +93,7 @@
             <#if c.top??>
                 <tr class="borderlayout borderlayout-top">
                     <td class="borderlayout borderlayout-top">
-                        <@render c.top.component />
+                        <@render c.top.content />
                     </td>
                 </tr>
             </#if>
@@ -101,17 +101,17 @@
                 <tr class="borderlayout borderlayout-middle">
                     <#if c.left??>
                         <td class="borderlayout borderlayout-left">
-                            <@render c.left.component />
+                            <@render c.left.content />
                         </td>
                     </#if>
                     <#if c.center??>
                         <td class="borderlayout borderlayout-center">
-                            <@render c.center.component />
+                            <@render c.center.content />
                         </td>
                     </#if>
                     <#if c.right??>
                         <td class="borderlayout borderlayout-right">
-                            <@render c.right.component />
+                            <@render c.right.content />
                         </td>
                     </#if>
                 </tr>
@@ -119,7 +119,7 @@
             <#if c.bottom??>
                 <tr class="borderlayout borderlayout-bottom">
                     <td class="borderlayout borderlayout-bottom">
-                        <@render c.bottom.component />
+                        <@render c.bottom.content />
                     </td>
                 </tr>
             </#if>
@@ -170,7 +170,7 @@
 
 <#macro render c>
     <#if !(c.visible??) || c.visible>
-        <#if c.class.package.name == "org.bridje.wui.comp">
+        <#if c.class.package.name == "org.bridje.wui">
             <#if c.class.simpleName == "Button">
                 <@button c />
             <#elseif c.class.simpleName == "ComboBox">

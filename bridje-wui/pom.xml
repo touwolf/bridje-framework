@@ -28,7 +28,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <sources>
-                                <source>src/main/java/org/bridje/wui/comp</source>
+                                <source>src/main/java/org/bridje/wui</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -50,7 +50,7 @@
                                 <artifact>
                                     <file>target/generated-resources/schemagen/schema1.xsd</file>
                                     <type>xsd</type>
-                                    <classifier>comp</classifier>
+                                    <classifier>widgets</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.comp;
+package org.bridje.web.view.widgets;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,14 +33,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VFile;
-import static org.bridje.web.view.comp.WebCompProcessor.WEBCOMP_RESOURCE_FILE;
 import org.bridje.vfs.VFileAdapter;
 import org.bridje.web.view.WebView;
 
 @Component
-public class WebComponentsManager implements VFileAdapter
+public class WidgetManager implements VFileAdapter
 {
-    private static final Logger LOG = Logger.getLogger(WebComponentsManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(WidgetManager.class.getName());
 
     private Unmarshaller webViewUnmarsh;
     
@@ -120,7 +119,7 @@ public class WebComponentsManager implements VFileAdapter
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(WEBCOMP_RESOURCE_FILE);
+        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(WidgetProcessor.WIDGETS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

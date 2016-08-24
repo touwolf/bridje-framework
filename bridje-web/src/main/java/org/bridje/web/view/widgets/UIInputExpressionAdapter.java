@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.comp;
+package org.bridje.web.view.widgets;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

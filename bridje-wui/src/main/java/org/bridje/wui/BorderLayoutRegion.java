@@ -1,12 +1,12 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
-import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.widgets.Widget;
 
 /**
  * A region for the border layout, each region contains one component.
@@ -35,15 +35,15 @@ public class BorderLayoutRegion
         @XmlElementRef(name = "textbox", type = TextBox.class),
         @XmlElementRef(name = "vertlayout", type = VerticalLayout.class)
     })
-    private WebComponent component;
+    private Widget content;
 
     /**
-     * Gets the component of this region.
+     * Gets the widget of this region.
      * 
-     * @return The component of this region.
+     * @return The widget of this region.
      */
-    public WebComponent getComponent()
+    public Widget getContent()
     {
-        return component;
+        return content;
     }
 }

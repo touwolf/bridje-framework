@@ -1,5 +1,5 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.web.view.comp.WebComponent;
+import org.bridje.web.view.widgets.Widget;
 
 @XmlRootElement(name = "gridlayout")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,9 +39,9 @@ public class GridLayout extends BaseContainer
         @XmlElementRef(name = "textbox", type = TextBox.class),
         @XmlElementRef(name = "vertlayout", type = VerticalLayout.class)
     })
-    private List<WebComponent> children;
+    private List<Widget> children;
 
-    public List<WebComponent> getChildren()
+    public List<Widget> getChildren()
     {
         return children;
     }
@@ -56,7 +56,7 @@ public class GridLayout extends BaseContainer
     }
 
     @Override
-    public List<? extends WebComponent> childs()
+    public List<? extends Widget> childs()
     {
         return getChildren();
     }

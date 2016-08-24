@@ -1,5 +1,5 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,12 +11,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.bridje.web.view.comp.UIExpression;
-import org.bridje.web.view.comp.UIExpressionAdapter;
+import org.bridje.web.view.widgets.UIExpression;
+import org.bridje.web.view.widgets.UIExpressionAdapter;
 
 @XmlRootElement(name = "table")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Table extends BaseComponent
+public class Table extends BaseWidget
 {
     @XmlAttribute(name = "data")
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)

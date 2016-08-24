@@ -16,7 +16,7 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.comp.WebComponentsManager;
+import org.bridje.web.view.widgets.WidgetManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -40,7 +40,7 @@ public class WebViewsManager
     private VfsService vfsServ;
     
     @Inject
-    private WebComponentsManager compMang;
+    private WidgetManager widgetManag;
 
     private Map<String, WebView> views;
 
@@ -78,7 +78,7 @@ public class WebViewsManager
     {
         try
         {
-            WebView view = compMang.read(f, WebView.class);
+            WebView view = widgetManag.read(f, WebView.class);
             if(view != null)
             {
                 String viewPath = toViewPath(f.getPath());

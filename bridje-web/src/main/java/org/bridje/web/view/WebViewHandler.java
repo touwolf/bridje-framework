@@ -16,8 +16,8 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.comp.UIEvent;
-import org.bridje.web.view.comp.UIInputExpression;
+import org.bridje.web.view.widgets.UIEvent;
+import org.bridje.web.view.widgets.UIInputExpression;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;

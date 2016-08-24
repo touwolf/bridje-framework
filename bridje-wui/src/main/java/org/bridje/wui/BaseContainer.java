@@ -1,13 +1,13 @@
 
-package org.bridje.wui.comp;
+package org.bridje.wui;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.bridje.web.view.comp.UIExpression;
-import org.bridje.web.view.comp.UIExpressionAdapter;
+import org.bridje.web.view.widgets.UIExpression;
+import org.bridje.web.view.widgets.UIExpressionAdapter;
 
 /**
  * Base class for all container components. A container is a component that has
@@ -15,7 +15,7 @@ import org.bridje.web.view.comp.UIExpressionAdapter;
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseContainer extends BaseComponent
+public class BaseContainer extends BaseWidget
 {
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)
     @XmlAttribute(name = "childClass")

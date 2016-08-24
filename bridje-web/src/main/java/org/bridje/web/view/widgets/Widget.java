@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.comp;
+package org.bridje.web.view.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * Base class for all the web components.
+ * Base class for all the widgets.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlTransient
-public abstract class WebComponent
+public abstract class Widget
 {
     @XmlAttribute
     private String id;
@@ -39,9 +39,9 @@ public abstract class WebComponent
     private UIExpression styleClass;
 
     /**
-     * Gets the component`s id.
+     * Gets the widget`s id.
      * 
-     * @return The component´s id.
+     * @return The widget´s id.
      */
     public String getId()
     {
@@ -49,9 +49,9 @@ public abstract class WebComponent
     }
 
     /**
-     * Sets the component`s id.
+     * Sets the widget`s id.
      * 
-     * @param id The component´s id.
+     * @param id The widget´s id.
      */
     public void setId(String id)
     {
@@ -91,9 +91,9 @@ public abstract class WebComponent
     }
     
     /**
-     * Gets all the UIInputExpressions in this component.
+     * Gets all the UIInputExpressions in this widget.
      * 
-     * @return A list of the UIInputExpressions available in this component.
+     * @return A list of the UIInputExpressions available in this widget.
      */
     public List<UIInputExpression> inputs()
     {
@@ -101,9 +101,9 @@ public abstract class WebComponent
     }
 
     /**
-     * Gets all the UIEvents in this component.
+     * Gets all the UIEvents in this widget.
      * 
-     * @return A list of the UIInputExpressions available in this component.
+     * @return A list of the UIInputExpressions available in this widget.
      */
     public List<UIEvent> events()
     {
@@ -111,11 +111,11 @@ public abstract class WebComponent
     }
 
     /**
-     * Gets all child components for this component.
+     * Gets all child widget for this widget.
      * 
-     * @return A list of all child components.
+     * @return A list of all child widget.
      */
-    public List<? extends WebComponent> childs()
+    public List<? extends Widget> childs()
     {
         return new ArrayList<>();
     }

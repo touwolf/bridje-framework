@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.comp;
+package org.bridje.web.view.widgets;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -42,16 +42,16 @@ import javax.tools.StandardLocation;
  */
 @SupportedAnnotationTypes("javax.xml.bind.annotation.XmlRootElement")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class WebCompProcessor extends AbstractProcessor
+public class WidgetProcessor extends AbstractProcessor
 {
     private Writer writer;
 
-    private static final Logger LOG = Logger.getLogger(WebCompProcessor.class.getName());
+    private static final Logger LOG = Logger.getLogger(WidgetProcessor.class.getName());
 
     /**
-     * The bridje web components resources file path.
+     * The bridje widgets resources file path.
      */
-    public static final String WEBCOMP_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
+    public static final String WIDGETS_RESOURCE_FILE = "BRIDJE-INF/web/widgets.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
@@ -63,7 +63,7 @@ public class WebCompProcessor extends AbstractProcessor
         {
             Filer filer = processingEnv.getFiler();
             //Creating output file
-            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", WEBCOMP_RESOURCE_FILE);
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", WIDGETS_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
         catch (IOException e)
@@ -87,7 +87,7 @@ public class WebCompProcessor extends AbstractProcessor
                 {
                     if (element.getKind() == ElementKind.CLASS)
                     {
-                        if(isWebComponent((TypeElement)element))
+                        if(isWidget((TypeElement)element))
                         {
                             String clsName = element.toString();
                             appendClass(clsName, "");
@@ -113,10 +113,10 @@ public class WebCompProcessor extends AbstractProcessor
         writer.flush();
     }
 
-    private boolean isWebComponent(TypeElement element)
+    private boolean isWidget(TypeElement element)
     {
         TypeMirror superclass = element.getSuperclass();
-        if(superclass.toString().equalsIgnoreCase(WebComponent.class.getName()))
+        if(superclass.toString().equalsIgnoreCase(Widget.class.getName()))
         {
             return true;
         }
@@ -129,7 +129,7 @@ public class WebCompProcessor extends AbstractProcessor
             Element el = ((DeclaredType)superclass).asElement();
             if(el instanceof TypeElement)
             {
-                return isWebComponent((TypeElement)el);
+                return isWidget((TypeElement)el);
             }
         }
         return false;

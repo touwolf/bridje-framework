@@ -1,7 +1,7 @@
 <#ftl encoding="UTF-8">
 
 <#include "./utils.ftl" />
-<#include "./comps.ftl" />
+<#include "./widgets.ftl" />
 
 <#macro renderThemeScripts themeName>
 </#macro>
@@ -37,11 +37,11 @@
     </html>
 </#macro>
 
-<#macro renderPartialView component>
+<#macro renderPartialView currentWidget>
     <input type="hidden" name="__view" value="${view.name}" />
     <input type="hidden" name="__action" value="" />
     <@renderState />
-    <@render component />
+    <@render currentWidget />
 </#macro>
 
 <#macro renderState>
@@ -59,8 +59,8 @@
             window.location = '${result.resource}';
         </script>
     <#else>
-        <#if component??>
-            <@renderPartialView component />
+        <#if widget??>
+            <@renderPartialView widget />
         <#else>
             <@renderFullView themeName />
         </#if>
