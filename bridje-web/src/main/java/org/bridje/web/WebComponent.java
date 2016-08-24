@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Defines a web component, a web component is just an standard component but instead of being annotated with like this
- * @Component(scope = WebScope.class), it can be annotated with @WebComponent directly.
+ * {@literal @}Component(scope = WebScope.class), it can be annotated with {@literal @}WebComponent directly.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
