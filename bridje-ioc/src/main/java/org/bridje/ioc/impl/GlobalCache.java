@@ -21,20 +21,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class GlobalCache
 {
-    private static GlobalCache instance;
+    private static GlobalCache INSTANCE;
 
     private final Map<Class<?>, ScopeCache> scopeMap;
 
     public static GlobalCache instance()
     {
-        if(instance == null)
+        if(INSTANCE == null)
         {
-            instance = new GlobalCache();
+            INSTANCE = new GlobalCache();
         }
-        return instance;
+        return INSTANCE;
     }
 
-    public GlobalCache()
+    private GlobalCache()
     {
         scopeMap = new ConcurrentHashMap<>();
     }

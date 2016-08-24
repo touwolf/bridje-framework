@@ -16,25 +16,16 @@
 
 package org.bridje.ioc.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.ClassNavigator;
 import org.bridje.ioc.ClassRepository;
@@ -52,17 +43,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * Logger for this class
      */
     private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
-
-    /**
-     * All ClassSets available by scope.
-     */
-    private static final Map<Class<?>, ClassSet> CLS_CACHE = new ConcurrentHashMap<>();
-
-    /**
-     * Al the components declared in the components.properties files.
-     */
-    private static Map<String, String> propFilesCache;
-
+    
     /**
      * The set of classes for this instance.
      */
@@ -164,108 +145,16 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
     }
 
     /**
-     * Finds a ClassSet that contains all the classes in the especified scope.
+     * Finds a ClassSet that contains all the classes in the specified scope.
      *
      * @param scope The scope of the classes to lookup.
-     * @return A ClassSet containing all the classes in the especified scope.
+     * @return A ClassSet containing all the classes in the specified scope.
      */
     public static ClassSet findByScope(Class<?> scope)
     {
-        if (CLS_CACHE.containsKey(scope))
-        {
-            return CLS_CACHE.get(scope);
-        }
-        try
-        {
-            synchronized(CLS_CACHE)
-            {
-                if (CLS_CACHE.containsKey(scope))
-                {
-                    return CLS_CACHE.get(scope);
-                }
-                ClassSet result = loadFromClassPath(scope);
-                if (result != null)
-                {
-                    CLS_CACHE.put(scope, result);
-                    return result;
-                }
-            }
-        }
-        catch (IOException ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return null;
+        return ClassSetLoader.instance().findByScope(scope);
     }
-
-    /**
-     * Load all classes of the especified scope from the class path.
-     *
-     * @param scope The scope to load.
-     * @return A ClassSet containing all the classes in the scope, that where
-     * found in the classpath.
-     * @throws IOException If something whent wrong.
-     */
-    private static ClassSet loadFromClassPath(Class<?> scope) throws IOException
-    {
-        Set<Class<?>> clsList = new HashSet<>();
-        //An instance of IocContextImpl is always a component in every scope.
-        clsList.add(ContextImpl.class);
-        clsList.add(scope);
-        if (propFilesCache == null)
-        {
-            propFilesCache = loadPropFilesCache();
-        }
-        propFilesCache.forEach((clsName, compScope) ->
-        {
-            if (compScope != null && scope.getName().equalsIgnoreCase(compScope))
-            {
-                try
-                {
-                    clsList.add(Class.forName(clsName));
-                }
-                catch (ClassNotFoundException ex)
-                {
-                    LOG.log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        if (clsList.isEmpty())
-        {
-            return null;
-        }
-        return new ClassSet(clsList);
-    }
-
-    /**
-     * Loads all of the components.properties files in the class path.
-     *
-     * @return A map containing the combination of all the components.properties
-     * files present in the class path.
-     * @throws IOException If a file cannot be readed.
-     */
-    private static Map<String, String> loadPropFilesCache() throws IOException
-    {
-        Map<String, String> result = new HashMap<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(ComponentProcessor.COMPONENTS_RESOURCE_FILE);
-        while (resources.hasMoreElements())
-        {
-            URL nextElement = resources.nextElement();
-            Properties prop = new Properties();
-            try (InputStream is = nextElement.openStream())
-            {
-                prop.load(is);
-            }
-            prop.forEach((key, value) -> 
-            {
-                String clsName = (String) key;
-                String compScope = (String) value;
-                result.put(clsName, compScope);
-            });
-        }
-        return result;
-    }
-
+    
     /**
      * The size of this ClassSet.
      *
