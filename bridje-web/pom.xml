@@ -29,6 +29,7 @@
                 <configuration>
                     <processors>
                         <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
+                        <processor>org.bridje.web.WebComponentProcessor</processor>
                         <processor>org.bridje.web.view.widgets.WidgetProcessor</processor>
                     </processors>
                 </configuration>

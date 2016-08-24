@@ -22,18 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines a parameter for the request, a field annotated with this annotation
- * will receive the value of the post or get parameter send by the user in the
- * request.
+ * Defines a web component, a web component is just an standard component but instead of being annotated with like this
+ * @Component(scope = WebScope.class), it can be annotated with @WebComponent directly.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface WebParameter
+public @interface WebComponent
 {
     /**
-     * The name of the parameter.
+     * The name of the web component.
      * 
-     * @return The name of the parameter.
+     * @return The name of the web component.
      */
-    String value();
+    String name() default "";
 }
