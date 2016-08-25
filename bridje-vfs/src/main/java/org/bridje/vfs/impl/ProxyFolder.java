@@ -17,11 +17,14 @@
 package org.bridje.vfs.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.bridje.ioc.Ioc;
+import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileVisitor;
@@ -128,7 +131,7 @@ class ProxyFolder implements VFolder
             folders.stream().forEach((folder) ->
             {
                 folder.listFolders().stream()
-                        .filter((f) -> query != null && f.getPath().globMatches(query))
+                        .filter((f) -> query == null || f.getPath().globMatches(query))
                         .forEach((chFolder) ->
                 {
                     List<VFolder> lst = foldersMap.get(chFolder.getName());
@@ -172,7 +175,7 @@ class ProxyFolder implements VFolder
             folders.stream().forEach((folder) ->
             {
                 folder.listFiles().stream()
-                        .filter((f) -> query != null && f.getPath().globMatches(query))
+                        .filter((f) -> query == null || f.getPath().globMatches(query))
                         .forEach((chFile) ->
                 {
                     List<VFile> lst = filesMap.get(chFile.getName());
@@ -396,5 +399,41 @@ class ProxyFolder implements VFolder
     public <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException
     {
         return createAndWriteNewFile(new Path(filePath), contentObj);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(String path, Class<T> resultCls) throws IOException
+    {
+        return readAllFiles(new Path(path), resultCls);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(Path path, Class<T> resultCls) throws IOException
+    {
+        VfsServiceImpl vfsServ = Ioc.context().find(VfsServiceImpl.class);
+        List<T> result = new ArrayList<>();
+        VFile file = findFile(path);
+        if(file instanceof MultiVFile)
+        {
+            MultiVFile mvf = (MultiVFile)file;
+            List<VFile> files = mvf.getFiles();
+            for (VFile f : files)
+            {
+                T content = vfsServ.readFile(f, resultCls);
+                if(content != null)
+                {
+                    result.add(content);
+                }
+            }
+        }
+        else
+        {
+            T content = vfsServ.readFile(file, resultCls);
+            if(content != null)
+            {
+                result.add(content);
+            }
+        }
+        return result;
     }
 }

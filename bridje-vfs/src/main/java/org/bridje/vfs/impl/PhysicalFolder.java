@@ -17,11 +17,13 @@
 package org.bridje.vfs.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
+import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
@@ -308,5 +310,41 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     public <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException
     {
         return createAndWriteNewFile(new Path(filePath), contentObj);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(String path, Class<T> resultCls) throws IOException
+    {
+        return readAllFiles(new Path(path), resultCls);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(Path path, Class<T> resultCls) throws IOException
+    {
+        VfsServiceImpl vfsServ = Ioc.context().find(VfsServiceImpl.class);
+        List<T> result = new ArrayList<>();
+        VFile file = findFile(path);
+        if(file instanceof MultiVFile)
+        {
+            MultiVFile mvf = (MultiVFile)file;
+            List<VFile> files = mvf.getFiles();
+            for (VFile f : files)
+            {
+                T content = vfsServ.readFile(f, resultCls);
+                if(content != null)
+                {
+                    result.add(content);
+                }
+            }
+        }
+        else
+        {
+            T content = vfsServ.readFile(file, resultCls);
+            if(content != null)
+            {
+                result.add(content);
+            }
+        }
+        return result;
     }
 }

@@ -28,7 +28,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <sources>
-                                <source>src/main/java/org/bridje/wui</source>
+                                <source>src/main/java/org/bridje/wui/widgets</source>
                             </sources>
                         </configuration>
                     </execution>

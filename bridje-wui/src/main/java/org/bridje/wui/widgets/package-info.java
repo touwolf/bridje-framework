@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-@XmlSchema(namespace = "http://www.bridje.org/schemas/wui/comp",
+@XmlSchema(namespace = "http://www.bridje.org/schemas/wui/widgets",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
-package org.bridje.wui;
+package org.bridje.wui.widgets;
 
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

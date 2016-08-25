@@ -20,7 +20,7 @@ public class FileSource implements VfsSource
 {
     private static final Logger LOG = Logger.getLogger(FileSource.class.getName());
 
-    private final File file;
+    private File file;
 
     /**
      * The only constructor for this class, with the base folder for it.
@@ -30,7 +30,14 @@ public class FileSource implements VfsSource
      */
     public FileSource(File file)
     {
-        this.file = file;
+        try
+        {
+            this.file = file.getAbsoluteFile().getCanonicalFile();
+        }
+        catch (IOException e)
+        {
+            this.file = file;
+        }
     }
 
     @Override

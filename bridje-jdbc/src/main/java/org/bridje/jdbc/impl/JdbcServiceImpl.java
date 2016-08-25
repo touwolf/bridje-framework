@@ -42,15 +42,17 @@ class JdbcServiceImpl implements JdbcService
     
     private Map<String, DataSourceImpl> dsMap;
     
+    private JdbcConfig config;
+    
     @PostConstruct
     public void init()
     {
         try
         {
             dsMap = new ConcurrentHashMap<>();
-            JdbcConfig jdbcCfg = findConfig();
-            jdbcCfg.getDataSources().stream()
-                    .forEach((config) ->dsMap.put(config.getName(), new DataSourceImpl(config)) );
+            initConfig();
+            config.getDataSources().stream()
+                    .forEach((cfg) ->dsMap.put(cfg.getName(), new DataSourceImpl(cfg)) );
         }
         catch (IOException e)
         {
@@ -101,10 +103,10 @@ class JdbcServiceImpl implements JdbcService
         dsMap.clear();
     }
 
-    private JdbcConfig findConfig() throws IOException
+    private void initConfig() throws IOException
     {
         Path path = new Path("/etc/jdbc.xml");
-        JdbcConfig config = vfsServ.readFile(path, JdbcConfig.class);
+        config = vfsServ.readFile(path, JdbcConfig.class);
         if(config == null)
         {
             config = new JdbcConfig();
@@ -113,6 +115,5 @@ class JdbcServiceImpl implements JdbcService
                 vfsServ.createAndWriteNewFile(path, config);
             }
         }
-        return config;
     }
 }

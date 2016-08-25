@@ -23,11 +23,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.FileSource;
+import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VfsSource;
@@ -40,20 +44,45 @@ import org.bridje.vfs.VFolderVisitor;
 @Component
 class VfsServiceImpl implements VfsService
 {
+    private static final Logger LOG = Logger.getLogger(VfsServiceImpl.class.getName());
+
     private MemoryFolder root;
-    
+
     @Inject
-    private VFileAdapter[] readers;
-    
-    private Map<String, Map<Class<?>, List<VFileAdapter>>> readersMap;
-    
+    private VFileAdapter[] fileAdapters;
+
+    private Map<String, Map<Class<?>, List<VFileAdapter>>> adaptersMap;
+
     private Map<String, List<VFileAdapter>> genericReadersMap;
 
     @PostConstruct
     public void init()
     {
         root = new MemoryFolder(null);
-        initReaders();
+        initFileAdapters();
+        try
+        {
+            mountResource("/vfs", "/BRIDJE-INF/vfs");
+            List<Properties> mountCpList = readAllFiles("/vfs/classpath-sources.properties", Properties.class);
+            for (Properties mountCp : mountCpList)
+            {
+                mountCp.forEach((p, r) ->
+                {
+                    try
+                    {
+                        mountResource((String)p, (String)r);
+                    }
+                    catch (IOException | URISyntaxException e)
+                    {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                });
+            }
+        }
+        catch (IOException | URISyntaxException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     @Override
@@ -233,7 +262,7 @@ class VfsServiceImpl implements VfsService
     {
         if(file != null)
         {
-            Map<Class<?>, List<VFileAdapter>> map = readersMap.get(file.getExtension());
+            Map<Class<?>, List<VFileAdapter>> map = adaptersMap.get(file.getExtension());
             if(map != null)
             {
                 List<VFileAdapter> lst = map.get(resultCls);
@@ -268,7 +297,7 @@ class VfsServiceImpl implements VfsService
     {
         if(file != null)
         {
-            Map<Class<?>, List<VFileAdapter>> map = readersMap.get(file.getExtension());
+            Map<Class<?>, List<VFileAdapter>> map = adaptersMap.get(file.getExtension());
             if(map != null)
             {
                 List<VFileAdapter> lst = map.get(contentObj.getClass());
@@ -298,11 +327,11 @@ class VfsServiceImpl implements VfsService
         }
     }
 
-    private void initReaders()
+    private void initFileAdapters()
     {
         genericReadersMap = new HashMap<>();
-        readersMap = new HashMap<>();
-        for (VFileAdapter reader : readers)
+        adaptersMap = new HashMap<>();
+        for (VFileAdapter reader : fileAdapters)
         {
             String[] extensions = reader.getExtensions();
             for (String extension : extensions)
@@ -310,11 +339,11 @@ class VfsServiceImpl implements VfsService
                 Class<?>[] clsArray = reader.getClasses();
                 if(clsArray != null)
                 {
-                    Map<Class<?>, List<VFileAdapter>> clsMap = readersMap.get(extension);
+                    Map<Class<?>, List<VFileAdapter>> clsMap = adaptersMap.get(extension);
                     if(clsMap == null)
                     {
                         clsMap = new HashMap<>();
-                        readersMap.put(extension, clsMap);
+                        adaptersMap.put(extension, clsMap);
                     }
                     for (Class<?> cls : clsArray)
                     {
@@ -430,5 +459,40 @@ class VfsServiceImpl implements VfsService
     public <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException
     {
         return createAndWriteNewFile(new Path(filePath), contentObj);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(String path, Class<T> resultCls) throws IOException
+    {
+        return readAllFiles(new Path(path), resultCls);
+    }
+
+    @Override
+    public <T> List<T> readAllFiles(Path path, Class<T> resultCls) throws IOException
+    {
+        List<T> result = new ArrayList<>();
+        VFile file = findFile(path);
+        if(file instanceof MultiVFile)
+        {
+            MultiVFile mvf = (MultiVFile)file;
+            List<VFile> files = mvf.getFiles();
+            for (VFile f : files)
+            {
+                T content = readFile(f, resultCls);
+                if(content != null)
+                {
+                    result.add(content);
+                }
+            }
+        }
+        else
+        {
+            T content = readFile(file, resultCls);
+            if(content != null)
+            {
+                result.add(content);
+            }
+        }
+        return result;
     }
 }

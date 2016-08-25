@@ -68,7 +68,8 @@ class HttpServerImpl implements HttpServer
     {
         try
         {
-            if(getConfig().isSsl())
+            initConfig();
+            if(config.isSsl())
             {
                 sslContext = config.createSSLContext();
             }
@@ -141,10 +142,10 @@ class HttpServerImpl implements HttpServer
         return config.getName();
     }
 
-    private HttpServerConfig getConfig() throws IOException
+    private void initConfig() throws IOException
     {
         Path path = new Path("/etc/http.xml");
-        HttpServerConfig config = vfsServ.readFile(path, HttpServerConfig.class);
+        config = vfsServ.readFile(path, HttpServerConfig.class);
         if(config == null)
         {
             config = new HttpServerConfig();
@@ -153,6 +154,5 @@ class HttpServerImpl implements HttpServer
                 vfsServ.createAndWriteNewFile(path, config);
             }
         }
-        return config;
     }
 }

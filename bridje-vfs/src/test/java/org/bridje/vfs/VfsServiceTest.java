@@ -100,6 +100,13 @@ public class VfsServiceTest
         assertNotNull(readedProp);
         assertEquals(prop.get("prop1"), readedProp.getProperty("prop1"));
     }
+
+    @Test
+    public void testMountDefault() throws IOException
+    {
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        assertNotNull(vfsServ.findFile("/other/testfile"));
+    }
     
     @Test
     public void testCreateAndWrite() throws IOException

@@ -1,4 +1,19 @@
 <#ftl encoding="UTF-8">
+<#-- 
+ # Copyright 2016 Bridje Framework.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #      http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+-->
 
 <#macro button c>
     <button <#if c.id??>id="${c.id}" </#if>class="action ${c.styleClass!}"
@@ -7,7 +22,7 @@
 
 <#macro combobox c>
     <select <#if c.id??>id="${c.id}" </#if>class="${c.styleClass!}"
-            name="${c.valueExpression.parameter}">
+            <#if c.valueExpression??>name="${c.valueExpression.parameter}"</#if>>
         <option></option>
     </select>
 </#macro>
@@ -49,16 +64,17 @@
 
 <#macro textbox c>
     <input <#if c.id??>id="${c.id}" </#if>class="textbox ${c.styleClass!}" type="text"
-                       name="${c.valueExpression.parameter}" value="${c.value!}" />
+                       <#if c.valueExpression??>name="${c.valueExpression.parameter}"</#if> value="${c.value!}" />
 </#macro>
 
 <#macro checkbox c>
     <input <#if c.id??>id="${c.id}" </#if>class="checkbox ${c.styleClass!}" type="checkbox"
-                       name="${c.valueExpression.parameter}" value="${c.value!}" />
+                       <#if c.valueExpression??>name="${c.valueExpression.parameter}"</#if> value="${c.value!}" />
 </#macro>
 
 <#macro password c>
-    <input <#if c.id??>id="${c.id}" </#if>class="textbox password ${c.styleClass!}" type="password" name="${c.valueExpression.parameter}" value="${c.value!}" />
+    <input <#if c.id??>id="${c.id}" </#if>class="textbox password ${c.styleClass!}" type="password" 
+                            <#if c.valueExpression??>name="${c.valueExpression.parameter}"</#if> value="${c.value!}" />
 </#macro>
 
 <#macro empty c>
@@ -170,7 +186,7 @@
 
 <#macro render c>
     <#if !(c.visible??) || c.visible>
-        <#if c.class.package.name == "org.bridje.wui">
+        <#if c.class.package.name == "org.bridje.wui.widgets">
             <#if c.class.simpleName == "Button">
                 <@button c />
             <#elseif c.class.simpleName == "ComboBox">

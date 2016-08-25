@@ -124,6 +124,33 @@ public interface VFolder extends VResource
      * @throws java.io.IOException If any input-output error occurs reading the file.
      */
     <T> T readFile(Path path, Class<T> resultCls) throws IOException;
+    
+    /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class, if the file is a MultiVFile it reads the 
+     * content of all the files represented by it.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     *
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
+     */
+    <T> List<T> readAllFiles(String path, Class<T> resultCls) throws IOException;
+
+    /**
+     * Finds the virtual file by the given path. And reads it content to a new
+     * instance of the result class. if the file is a MultiVFile it reads the 
+     * content of all the files represented by it.
+     *
+     * @param <T> The type of the result class.
+     * @param path the path of the file.
+     * @param resultCls The result class that the files need to be parsed to.
+     * @return The file founded or null if it does not exists.
+     * @throws java.io.IOException If any input-output error occurs reading the file.
+     */
+    <T> List<T> readAllFiles(Path path, Class<T> resultCls) throws IOException;
 
     /**
      * Finds the virtual file by the given path. And writes it's content with the

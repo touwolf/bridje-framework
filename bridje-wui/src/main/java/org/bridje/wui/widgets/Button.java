@@ -1,5 +1,5 @@
 
-package org.bridje.wui;
+package org.bridje.wui.widgets;
 
 import java.util.Collections;
 import java.util.List;
