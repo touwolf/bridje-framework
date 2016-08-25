@@ -18,30 +18,30 @@ package org.bridje.web.view.themes;
 
 import java.io.IOException;
 import java.util.Arrays;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
-import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.ReqPathRef;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(150)
-class ThemesHandler implements HttpServerHandler
+class ThemesHandler implements HttpBridlet
 {
     @Inject
     private ThemesManager themesMang;
     
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
     
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
-        HttpServerRequest req = context.get(HttpServerRequest.class);
+        HttpBridletRequest req = context.get(HttpBridletRequest.class);
         if(req.getPath().startsWith("/__themes"))
         {
             String[] arrPath = ReqPathRef.findCurrentPath(context).split("[//]");
@@ -50,7 +50,7 @@ class ThemesHandler implements HttpServerHandler
                 String themeName = arrPath[2];
                 String[] arrResPath = Arrays.copyOfRange(arrPath, 3, arrPath.length);
                 String resPath = String.join("/", arrResPath);
-                HttpServerResponse resp = context.get(HttpServerResponse.class);
+                HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                 return themesMang.serveResource(themeName, resPath, resp);
             }
         }

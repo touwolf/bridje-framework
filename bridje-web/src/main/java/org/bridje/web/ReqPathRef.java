@@ -16,8 +16,8 @@
 
 package org.bridje.web;
 
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerRequest;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
 
 /**
  *
@@ -49,13 +49,13 @@ public class ReqPathRef
         this.reqPath = reqPath;
     }
     
-    public static String findCurrentPath(HttpServerContext ctx)
+    public static String findCurrentPath(HttpBridletContext ctx)
     {
         ReqPathRef ref = ctx.get(ReqPathRef.class);
         if(ref != null)
         {
             return ref.getReqPath();
         }
-        return ctx.get(HttpServerRequest.class).getPath();
+        return ctx.get(HttpBridletRequest.class).getPath();
     }
 }

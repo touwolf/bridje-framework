@@ -20,31 +20,31 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
-import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
+import org.bridje.http.HttpBridlet;
 
 /**
  *
  */
 @Component
 @Priority(Integer.MIN_VALUE)
-class RootServerHandler implements HttpServerHandler
+class RootHttpBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(RootServerHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(RootHttpBridlet.class.getName());
 
     @InjectNext
-    private HttpServerHandler handler;
+    private HttpBridlet handler;
     
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
-        HttpServerRequest req = context.get(HttpServerRequest.class);
-        HttpServerResponse resp = context.get(HttpServerResponse.class);
+        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
         LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
         if(handler == null || !handler.handle(context))
         {

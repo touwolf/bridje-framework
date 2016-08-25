@@ -19,35 +19,35 @@ package org.bridje.web;
 import java.util.List;
 import java.util.Map;
 import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
 import org.bridje.web.session.WebSession;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
 
 /**
  * Represents the IoC scope for the web request IocContext.
  */
 public class WebScope implements Scope
 {
-    private final HttpServerRequest req;
+    private final HttpBridletRequest req;
 
-    private final HttpServerResponse resp;
+    private final HttpBridletResponse resp;
 
     @Inject
     private IocContext<WebScope> iocCtx;
 
-    private final HttpServerContext srvCtx;
+    private final HttpBridletContext srvCtx;
 
     private WebSession session;
 
-    public WebScope(HttpServerContext ctx)
+    public WebScope(HttpBridletContext ctx)
     {
         this.srvCtx = ctx;
-        this.req = ctx.get(HttpServerRequest.class);
-        this.resp = ctx.get(HttpServerResponse.class);
+        this.req = ctx.get(HttpBridletRequest.class);
+        this.resp = ctx.get(HttpBridletResponse.class);
     }
 
     /**

@@ -25,7 +25,7 @@ import java.io.IOException;
  * the @InjectNext annotation to create a chain of handlers that can handler
  * properly all HTTP request for the application.
  */
-public interface HttpServerHandler
+public interface HttpBridlet
 {
     /**
      * Handles the HTTP request, This method must call the same method from the
@@ -37,5 +37,5 @@ public interface HttpServerHandler
      * was not handled by any handler whiting this call.
      * @throws IOException If any IOException occurs during this call.
      */
-    boolean handle(HttpServerContext context) throws IOException;
+    boolean handle(HttpBridletContext context) throws IOException;
 }

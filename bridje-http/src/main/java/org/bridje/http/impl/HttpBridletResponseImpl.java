@@ -25,12 +25,12 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpServerResponse;
+import org.bridje.http.HttpBridletResponse;
 
 /**
  *
  */
-class HttpServerResponseImpl implements HttpServerResponse
+class HttpBridletResponseImpl implements HttpBridletResponse
 {
     private final ByteBuf buffer;
 
@@ -44,7 +44,7 @@ class HttpServerResponseImpl implements HttpServerResponse
 
     private Map<String, HttpCookieImpl> cookies;
 
-    public HttpServerResponseImpl(ByteBuf buffer)
+    public HttpBridletResponseImpl(ByteBuf buffer)
     {
         this.buffer = buffer;
         this.buffer.retain();

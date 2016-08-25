@@ -54,10 +54,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Ioc;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
 
 /**
  *
@@ -66,17 +66,17 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
 
-    private HttpServerContext context;
+    private HttpBridletContext context;
 
-    private HttpServerRequestImpl req;
+    private HttpBridletRequestImpl req;
 
-    private HttpServerResponseImpl resp;
+    private HttpBridletResponseImpl resp;
 
     private final HttpServerImpl server;
 
     private HttpPostRequestDecoder decoder;
 
-    private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk if size exceed
+    private static final HttpDataFactory FACTORY = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); // Disk if size exceed
 
     static
     {
@@ -177,8 +177,8 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if(req == null && context == null)
         {
-            context = new HttpServerContextImpl();
-            req = new HttpServerRequestImpl( msg );
+            context = new HttpBridletContextImpl();
+            req = new HttpBridletRequestImpl( msg );
             QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.getUri());
             req.setQueryString(decoderQuery.parameters());
             req.setCookies(parseCookies(msg.headers().get(COOKIE)));
@@ -186,7 +186,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
             if(req.isForm())
             {
-                decoder = new HttpPostRequestDecoder(factory, msg);
+                decoder = new HttpPostRequestDecoder(FACTORY, msg);
             }
         }
         else
@@ -282,11 +282,11 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if(resp == null)
         {
-            resp = new HttpServerResponseImpl(ctx.alloc().buffer());
+            resp = new HttpBridletResponseImpl(ctx.alloc().buffer());
         }
-        RootServerHandler rootHandler = Ioc.context().find(RootServerHandler.class);
-        context.set(HttpServerRequest.class, req);
-        context.set(HttpServerResponse.class, resp);
+        RootHttpBridlet rootHandler = Ioc.context().find(RootHttpBridlet.class);
+        context.set(HttpBridletRequest.class, req);
+        context.set(HttpBridletResponse.class, resp);
         rootHandler.handle(context);
         sendResponse(ctx);
     }

@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package org.bridje.web.handlers;
+package org.bridje.web.impl;
 
 import java.io.IOException;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.ReqPathRef;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(100)
-class IndexPathHandler implements HttpServerHandler
+class IndexPathHttpBridlet implements HttpBridlet
 {
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
         String currPath = ReqPathRef.findCurrentPath(context);
         if(currPath == null || currPath.trim().isEmpty() || currPath.trim().equalsIgnoreCase("/"))

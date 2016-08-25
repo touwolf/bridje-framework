@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Represents an HTTP request being made to the server.
  */
-public interface HttpServerRequest
+public interface HttpBridletRequest
 {
     /**
      * The HTTP method used to made the request.

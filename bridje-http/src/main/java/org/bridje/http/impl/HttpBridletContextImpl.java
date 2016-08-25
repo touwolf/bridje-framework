@@ -18,16 +18,16 @@ package org.bridje.http.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.bridje.http.HttpServerContext;
+import org.bridje.http.HttpBridletContext;
 
 /**
  *
  */
-class HttpServerContextImpl implements HttpServerContext
+class HttpBridletContextImpl implements HttpBridletContext
 {
     private final Map<Class<?>, Object> dataMap;
 
-    public HttpServerContextImpl()
+    public HttpBridletContextImpl()
     {
         this.dataMap = new HashMap<>();
     }

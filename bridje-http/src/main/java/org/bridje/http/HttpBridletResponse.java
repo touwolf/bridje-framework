@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * Represents the response made by the server to the client in the HTTP request.
  * This object allows you to control the response of the HTTP request.
  */
-public interface HttpServerResponse
+public interface HttpBridletResponse
 {
     /**
      * The OutputStream to print the response body.

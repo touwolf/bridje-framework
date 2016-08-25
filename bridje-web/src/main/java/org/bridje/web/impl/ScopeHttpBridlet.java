@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.web.handlers;
+package org.bridje.web.impl;
 
 import java.io.IOException;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
@@ -26,19 +24,21 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.WebScope;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(0)
-class ScopeHandler implements HttpServerHandler
+class ScopeHttpBridlet implements HttpBridlet
 {
     @Inject
     private IocContext<Application> appCtx;
     
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
         WebScope scope = new WebScope(context);
         IocContext<WebScope> wrsCtx = appCtx.createChild(scope);

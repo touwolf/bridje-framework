@@ -27,10 +27,6 @@ import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.el.ElService;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
-import org.bridje.http.HttpServerRequest;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
@@ -40,11 +36,15 @@ import org.bridje.ioc.thls.Thls;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.state.StateManager;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(200)
 @XmlTransient
-class WebViewHandler implements HttpServerHandler
+class WebViewHandler implements HttpBridlet
 {
     private static final Logger LOG = Logger.getLogger(WebViewHandler.class.getName());
 
@@ -52,7 +52,7 @@ class WebViewHandler implements HttpServerHandler
     private WebViewsManager viewsMang;
     
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
 
     @Inject
     private ElService elServ;
@@ -64,9 +64,9 @@ class WebViewHandler implements HttpServerHandler
     private StateManager stateManag;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
-        HttpServerRequest req = context.get(HttpServerRequest.class);
+        HttpBridletRequest req = context.get(HttpBridletRequest.class);
         String viewUpdate = req.getPostParameter("__view");
         if(viewUpdate != null && !viewUpdate.isEmpty())
         {
@@ -80,7 +80,7 @@ class WebViewHandler implements HttpServerHandler
                     {
                         updateParameters(view, req);
                         Object result = invokeAction(req, view);
-                        HttpServerResponse resp = context.get(HttpServerResponse.class);
+                        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                         try(OutputStream os = resp.getOutputStream())
                         {
                             Map<String, String> state = stateManag.createViewState(wrsCtx);
@@ -107,7 +107,7 @@ class WebViewHandler implements HttpServerHandler
                 if(view != null)
                 {
                     IocContext<WebScope> wrsCtx = context.get(IocContext.class);
-                    HttpServerResponse resp = context.get(HttpServerResponse.class);
+                    HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                     try(OutputStream os = resp.getOutputStream())
                     {
                         Thls.doAs(() ->
@@ -130,7 +130,7 @@ class WebViewHandler implements HttpServerHandler
         return false;
     }
 
-    private void updateParameters(WebView view, HttpServerRequest req)
+    private void updateParameters(WebView view, HttpBridletRequest req)
     {
         String[] names = req.getPostParametersNames();
         for (String name : names)
@@ -148,14 +148,14 @@ class WebViewHandler implements HttpServerHandler
         }
     }
 
-    private Object invokeAction(HttpServerRequest req, WebView view)
+    private Object invokeAction(HttpBridletRequest req, WebView view)
     {
         String action = req.getPostParameter("__action");
         UIEvent event = view.findEvent(action);
         return event.invoke();
     }
 
-    private String getViewName(HttpServerContext context)
+    private String getViewName(HttpBridletContext context)
     {
         WebViewRef viewRef = context.get(WebViewRef.class);
         if(viewRef != null && viewRef.getViewPath() != null)

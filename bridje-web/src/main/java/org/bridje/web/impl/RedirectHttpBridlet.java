@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package org.bridje.web.handlers;
+package org.bridje.web.impl;
 
 import java.io.IOException;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.RedirectTo;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletResponse;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(480)
-class RedirectHandler implements HttpServerHandler
+class RedirectHttpBridlet implements HttpBridlet
 {
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
         boolean result = nextHandler.handle(context);
         RedirectTo r = context.get(RedirectTo.class);
         if(r != null && r.getResource() != null && !r.getResource().isEmpty())
         {
-            HttpServerResponse resp = context.get(HttpServerResponse.class);
+            HttpBridletResponse resp = context.get(HttpBridletResponse.class);
             resp.setHeader("Location", r.getResource());
             resp.setStatusCode(r.getStatus());
         }

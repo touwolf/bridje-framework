@@ -22,21 +22,21 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.WebScope;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(20)
-class WebSessionHandler implements HttpServerHandler
+class WebSessionHandler implements HttpBridlet
 {
     @InjectNext
-    private HttpServerHandler nextHandler;
+    private HttpBridlet nextHandler;
     
     @Inject
     private WebSessionManager sessionManager;
@@ -45,7 +45,7 @@ class WebSessionHandler implements HttpServerHandler
     private WebSessionProvider sessionProvider;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
         IocContext<WebScope> ctx = context.get(IocContext.class);
         String sessionId = findSessionId(ctx.getScope());

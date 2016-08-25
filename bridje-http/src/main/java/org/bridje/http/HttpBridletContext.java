@@ -21,7 +21,7 @@ package org.bridje.http;
  * interface allows to set and get data that is specific to the request being
  * made to the server. handlers can share information using this interface.
  */
-public interface HttpServerContext
+public interface HttpBridletContext
 {
     /**
      * Gets an instance of the specified class if an instance of it was added

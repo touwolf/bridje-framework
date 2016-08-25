@@ -32,7 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.el.ElEnvironment;
-import org.bridje.http.HttpServerResponse;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
@@ -41,6 +40,7 @@ import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VFile;
 import org.bridje.web.view.widgets.Widget;
 import org.bridje.web.view.WebView;
+import org.bridje.http.HttpBridletResponse;
 
 @Component
 public class ThemesManager
@@ -104,7 +104,7 @@ public class ThemesManager
         }
     }
 
-    public boolean serveResource(String themeName, String resPath, HttpServerResponse resp) throws IOException
+    public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
         VFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
         if(f != null)

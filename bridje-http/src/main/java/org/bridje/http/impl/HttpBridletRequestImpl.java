@@ -33,13 +33,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpServerRequest;
 import org.bridje.http.UploadedFile;
+import org.bridje.http.HttpBridletRequest;
 
 /**
  *
  */
-class HttpServerRequestImpl implements HttpServerRequest
+class HttpBridletRequestImpl implements HttpBridletRequest
 {
     private ByteBuf buffer;
 
@@ -67,7 +67,7 @@ class HttpServerRequestImpl implements HttpServerRequest
 
     private String path;
 
-    public HttpServerRequestImpl(HttpRequest headers)
+    public HttpBridletRequestImpl(HttpRequest headers)
     {
         this.headers = headers;
         this.uploadedFiles = new ArrayList<>();

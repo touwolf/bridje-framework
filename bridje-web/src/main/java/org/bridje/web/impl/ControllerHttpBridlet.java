@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.handlers;
+package org.bridje.web.impl;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpServerContext;
-import org.bridje.http.HttpServerHandler;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
@@ -35,17 +33,19 @@ import org.bridje.web.WebCookie;
 import org.bridje.web.WebMethod;
 import org.bridje.web.WebParameter;
 import org.bridje.web.WebScope;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridlet;
 
 @Component
 @Priority(500)
-class ControllerHandler implements HttpServerHandler
+class ControllerHttpBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(ControllerHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(ControllerHttpBridlet.class.getName());
 
     private List<WebMethodData> methodsData;
 
     @Override
-    public boolean handle(HttpServerContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException
     {
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         if(methodsData == null)
