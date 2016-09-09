@@ -30,6 +30,11 @@ import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
 
+/**
+ * A manager for all the web views present in the application. with this
+ * component you can get access to the list of web views that the current
+ * application has.
+ */
 @Component
 @XmlTransient
 public class WebViewsManager
@@ -38,7 +43,7 @@ public class WebViewsManager
 
     @Inject
     private VfsService vfsServ;
-    
+
     @Inject
     private WidgetManager widgetManag;
 
@@ -46,22 +51,31 @@ public class WebViewsManager
 
     private final Path basePath = new Path("/web");
 
+    /**
+     * IoC init method do not call this manually.
+     */
     @PostConstruct
     public void init()
     {
         initViews();
     }
 
+    /**
+     * Finds the view by the given path.
+     * 
+     * @param path The web view path to be found.
+     * @return The web view founded or null if it does not exists.
+     */
     public WebView findView(String path)
     {
         return views.get(path);
     }
-    
+
     private void initViews()
     {
         views = new HashMap<>();
         VFolder publicFolder = vfsServ.findFolder(basePath);
-        if(publicFolder != null)
+        if (publicFolder != null)
         {
             publicFolder.travel(this::readView, "**/*.view.xml");
         }
@@ -79,7 +93,7 @@ public class WebViewsManager
         try
         {
             WebView view = widgetManag.read(f, WebView.class);
-            if(view != null)
+            if (view != null)
             {
                 String viewPath = toViewPath(f.getPath());
                 view.setName(viewPath);

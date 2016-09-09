@@ -18,21 +18,41 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * This object represents a reference to the web view to be rendered by the
+ * current http request. Bridlets may override this object in the current web
+ * context to change the current web view that will be rendered to the client.
+ */
 @XmlTransient
 public class WebViewRef
 {
     private String viewPath;
 
+    /**
+     * Constructor with the view path.
+     * 
+     * @param viewPath The path for the view.
+     */
     public WebViewRef(String viewPath)
     {
         this.viewPath = viewPath;
     }
-    
+
+    /**
+     * The path for the web view.
+     * 
+     * @return The path for the web view.
+     */
     public String getViewPath()
     {
         return viewPath;
     }
 
+    /**
+     * The path for the web view.
+     * 
+     * @param viewPath The path for the web view.
+     */
     public void setViewPath(String viewPath)
     {
         this.viewPath = viewPath;

@@ -16,11 +16,35 @@
 
 package org.bridje.web.session;
 
+/**
+ * Represents a web session, this interface can be used to save and retreive
+ * data for the current session, all session data will be store as string and
+ * will be identified by a another string.
+ */
 public interface WebSession
 {
+    /**
+     * The identifier for this session.
+     *
+     * @return An string by witch this session can be identified.
+     */
     String getId();
 
+    /**
+     * Finds the given data in this session.
+     *
+     * @param name The name of the data that must be found.
+     * @return The value of the specified data if it exists or null if it does
+     * not.
+     */
     String find(String name);
 
+    /**
+     * Stores the given data into the specified name in this session. The data
+     * store with this method can be retreived with the find method later.
+     *
+     * @param name The name of the data to be store.
+     * @param value The data to be store.
+     */
     void save(String name, String value);
 }

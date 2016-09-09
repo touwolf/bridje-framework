@@ -18,6 +18,9 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.*;
 
+/**
+ * Defines a meta information for the current view.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MetaTag
 {
@@ -27,21 +30,41 @@ public class MetaTag
     @XmlValue
     private String content;
 
+    /**
+     * The name of the meta tag.
+     * 
+     * @return The name of the meta tag.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the meta tag.
+     * 
+     * @param name The name of the meta tag.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The content of the meta tag.
+     * 
+     * @return The content of the meta tag.
+     */
     public String getContent()
     {
         return content;
     }
 
+    /**
+     * The name of the meta tag.
+     * 
+     * @param content The content of the meta tag.
+     */
     public void setContent(String content)
     {
         this.content = content;

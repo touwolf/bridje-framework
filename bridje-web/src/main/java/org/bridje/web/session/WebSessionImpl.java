@@ -16,11 +16,11 @@
 
 package org.bridje.web.session;
 
-public class WebSessionImpl implements WebSession
+class WebSessionImpl implements WebSession
 {
-    private String id;
+    private final String id;
     
-    private WebSessionProvider provider;
+    private final WebSessionProvider provider;
 
     public WebSessionImpl(String id, WebSessionProvider provider)
     {

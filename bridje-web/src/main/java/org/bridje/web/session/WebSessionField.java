@@ -21,10 +21,21 @@ import java.lang.annotation.Target;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/**
+ * This annotation can be use with the fields of web components to mark then as
+ * web session fields. web session fields will be persisted amoung diferent
+ * requests, this is thwy will be loaded and saved to the current web session on
+ * each http request, when ever they are requested.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface WebSessionField
 {
+    /**
+     * The name for this web session field. The data for this field will be
+     * stored in the web session with this name.
+     *
+     * @return The name for this web session field.
+     */
     String value();
 }

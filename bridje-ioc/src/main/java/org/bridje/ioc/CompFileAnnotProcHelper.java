@@ -32,14 +32,30 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
+/**
+ * Base class for the annotations processors that handle components declaration files.
+ */
 public abstract class CompFileAnnotProcHelper extends AbstractProcessor
 {
     private Writer writer;
 
     private static final Logger LOG = Logger.getLogger(CompFileAnnotProcHelper.class.getName());
 
+    /**
+     * Gets the name for the file that will be writed by this annotation procesor.
+     * 
+     * @return The name of the file for this annotation proceso.
+     */
     public abstract String getFileName();
     
+    /**
+     * This method will be called for each component class found by this procesor.
+     * the implementation of this method must call the appendClass method to write
+     * the component reference to de file.
+     * 
+     * @param element The element representing the current component class.
+     * @throws IOException If the component cannot be writed to the file.
+     */
     public abstract void processElement(Element element) throws IOException;
     
     @Override

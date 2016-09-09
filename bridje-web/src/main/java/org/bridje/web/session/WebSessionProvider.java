@@ -16,9 +16,31 @@
 
 package org.bridje.web.session;
 
+/**
+ * This interface represents a web session provider, by implementing this
+ * interface you can define the way in witch data will be stored and loaded from
+ * the web sessions.
+ */
 public interface WebSessionProvider
 {
+    /**
+     * Finds the given data in specified web session.
+     *
+     * @param sessionId The id of the web session.
+     * @param name The name of the data that must be found.
+     * @return The value of the specified data if it exists or null if it does
+     * not.
+     */
     String find(String sessionId, String name);
 
+    /**
+     * Stores the given data into the specified name for the given web session.
+     * The data store with this method can be retreived with the find method
+     * later.
+     *
+     * @param sessionId The id of the web session.
+     * @param name The name of the data to be store.
+     * @param value The data to be store.
+     */
     void save(String sessionId, String name, String value);
 }

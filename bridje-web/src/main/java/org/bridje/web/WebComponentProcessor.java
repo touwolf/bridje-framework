@@ -30,12 +30,15 @@ import org.bridje.ioc.CompFileAnnotProcHelper;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class WebComponentProcessor extends CompFileAnnotProcHelper
 {
-    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
+    /**
+     * The web components resource file.
+     */
+    public static final String WEB_COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
 
     @Override
     public String getFileName()
     {
-        return COMPONENTS_RESOURCE_FILE;
+        return WEB_COMPONENTS_RESOURCE_FILE;
     }
 
     @Override

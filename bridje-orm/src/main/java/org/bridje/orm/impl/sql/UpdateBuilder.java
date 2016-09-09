@@ -25,6 +25,9 @@ public class UpdateBuilder
     
     private boolean isFirst = true;
 
+    /**
+     * Default constructor
+     */
     public UpdateBuilder()
     {
         sb = new StringBuilder();

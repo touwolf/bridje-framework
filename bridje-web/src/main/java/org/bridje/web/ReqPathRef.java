@@ -20,39 +20,69 @@ import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 
 /**
- *
+ * This object represents a reference to the path to be handle by the current
+ * http request. Bridlets may override this object in the current web context to
+ * change the requested path asked by the client.
  */
-public class ReqPathRef
+public final class ReqPathRef
 {
     private String reqPath;
 
+    /**
+     * The only constructor for this object, an string representing the path
+     * must be provided.
+     *
+     * @param reqPath An string representing the path.
+     */
     public ReqPathRef(String reqPath)
     {
         setReqPath(reqPath);
     }
-    
+
+    /**
+     * Gets the string representation of the current path for the request.
+     *
+     * @return The string representation of the current path for the request.
+     */
     public String getReqPath()
     {
         return reqPath;
     }
 
+    /**
+     * Sets the string representation of the current path for the request.
+     *
+     * @param reqPath The string representation of the current path for the
+     * request.
+     */
     public void setReqPath(String reqPath)
     {
-        if(reqPath == null || reqPath.trim().isEmpty())
+        if (reqPath == null || reqPath.trim().isEmpty())
         {
             this.reqPath = "/";
+            return;
         }
-        if(!reqPath.startsWith("/"))
+        if (!reqPath.startsWith("/"))
         {
             this.reqPath = "/" + reqPath;
+            return;
         }
         this.reqPath = reqPath;
     }
-    
+
+    /**
+     * A convinient method that returns the current path for the http request,
+     * if any ReqPathRef was put in the HttpBridletContext this method will
+     * return the path for that object, if no ReqPathRef was HttpBridletContext
+     * this method will return the original requested path.
+     *
+     * @param ctx The current bridlet context.
+     * @return The path that must be used to handle the current http request.
+     */
     public static String findCurrentPath(HttpBridletContext ctx)
     {
         ReqPathRef ref = ctx.get(ReqPathRef.class);
-        if(ref != null)
+        if (ref != null)
         {
             return ref.getReqPath();
         }
