@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.el;
 
-import java.io.IOException;
-import org.bridje.ioc.Ioc;
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.Map;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.IocContext;
 
-public class WebViewTest
+@Component
+public class ModelResolverImpl implements ModelResolver
 {
-    @Test
-    public void testReadView() throws IOException
+    @Override
+    public void resolveAllModels(IocContext<?> ctx, Map<String, Class<?>> result)
     {
-        WebView view = Ioc.context().find(WebViewsManager.class).findView("/public/index");
-        Assert.assertNotNull(view);
-        Assert.assertNotNull(view.getRoot());
+        ctx.getClassRepository()
+                .forEachClass(ElModel.class, (c, a) -> result.put(a.value(), c) );
     }
+    
 }

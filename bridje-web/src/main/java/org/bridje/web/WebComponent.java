@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * {@literal @}Component(scope = WebScope.class), it can be annotated with {@literal @}WebComponent directly.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 public @interface WebComponent
 {
     /**

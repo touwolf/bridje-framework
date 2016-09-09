@@ -16,22 +16,10 @@
 
 package org.bridje.el;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Map;
+import org.bridje.ioc.IocContext;
 
-/**
- * This annotation defines a model that has visibility in the expression language context.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Model
+public interface ModelResolver
 {
-    /**
-     * The name for this model.
-     * 
-     * @return The name for this model.
-     */
-    String value();
+    void resolveAllModels(IocContext<?> ctx, Map<String, Class<?>> result);
 }

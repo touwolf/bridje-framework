@@ -30,7 +30,7 @@ import org.bridje.http.HttpBridletResponse;
 /**
  * Represents the IoC scope for the web request IocContext.
  */
-public class WebScope implements Scope
+public final class WebScope implements Scope
 {
     private final HttpBridletRequest req;
 

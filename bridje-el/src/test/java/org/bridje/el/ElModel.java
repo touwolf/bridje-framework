@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.el;
 
-import java.io.IOException;
-import org.bridje.ioc.Ioc;
-import org.junit.Assert;
-import org.junit.Test;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class WebViewTest
+/**
+ * This annotation defines a model that has visibility in the expression language context.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ElModel
 {
-    @Test
-    public void testReadView() throws IOException
-    {
-        WebView view = Ioc.context().find(WebViewsManager.class).findView("/public/index");
-        Assert.assertNotNull(view);
-        Assert.assertNotNull(view.getRoot());
-    }
+    /**
+     * The name for this model.
+     * 
+     * @return The name for this model.
+     */
+    String value();
 }

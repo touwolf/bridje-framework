@@ -21,7 +21,7 @@ import java.util.List;
 import org.bridje.ioc.Component;
 
 @Component
-@Model("myModel")
+@ElModel("myModel")
 public class MyModel
 {
     public String getName()

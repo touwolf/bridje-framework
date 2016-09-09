@@ -28,7 +28,7 @@ import javax.el.FunctionMapper;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 import org.bridje.ioc.IocContext;
-import org.bridje.el.Model;
+import org.bridje.el.ModelResolver;
 
 class IocElContext extends ELContext
 {
@@ -43,7 +43,7 @@ class IocElContext extends ELContext
     private ELResolver resolver;
 
     private final IocContext context;
-
+    
     private static Map<String, Class<?>> getModels(IocContext<?> ctx)
     {
         if(MODELS == null)
@@ -58,8 +58,11 @@ class IocElContext extends ELContext
         if(MODELS == null)
         {
             Map<String, Class<?>> result = new HashMap<>();
-            ctx.getClassRepository()
-                    .forEachClass(Model.class, (c, a) -> result.put(a.value(), c) );
+            ModelResolver resolver = ctx.find(ModelResolver.class);
+            if(resolver != null)
+            {
+                resolver.resolveAllModels(ctx, result);
+            }
             MODELS = result;
         }
     }
