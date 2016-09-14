@@ -115,7 +115,7 @@ Your application does not need to depend on this libraries unless you specifical
 
 ## Framework Build Dependencies
 
-The libraries that the framework uses in the build proccess.
+The libraries that the framework uses in the build process.
 
  * [Apache Maven 3.3+](https://maven.apache.org/) The framework is build with maven, it´s mean to be use with it but nothing stop you from using it from gradle, ivy, ant, or whatever build system you choose, that supports the JVM languages.
  * [Junit 4](http://junit.org/junit4/) The framework is tested with junit.

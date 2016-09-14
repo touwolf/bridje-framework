@@ -51,7 +51,7 @@ class OrmServiceImpl implements OrmService
 {
     private static final Logger LOG = Logger.getLogger(OrmServiceImpl.class.getName());
 
-    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
+    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entities.properties";
 
     private Map<Class<?>, TableImpl<?>> tablesMap;
 

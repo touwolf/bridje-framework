@@ -50,7 +50,7 @@ public interface JdbcService
      *
      * @param dataSource The DataSource to be closed.
      * @throws SQLException If any SQLException occurs during the closing
-     * proccess.
+     * process.
      */
     void closeDataSource(DataSource dataSource) throws SQLException;
 

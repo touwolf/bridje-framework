@@ -24,11 +24,11 @@ import java.util.Map;
  */
 class EntitysCache
 {
-    private final Map<Class<?>, Map<Object, Object>> entitysMap = new HashMap<>();
+    private final Map<Class<?>, Map<Object, Object>> entitiesMap = new HashMap<>();
 
     public <T> T get(Class<T> entityClass, Object id)
     {
-        Map<Object, Object> map = entitysMap.get(entityClass);
+        Map<Object, Object> map = entitiesMap.get(entityClass);
         if(map != null)
         {
             return (T)map.get(id);
@@ -38,7 +38,7 @@ class EntitysCache
 
     public <T> boolean exists(Class<T> entityClass, Object id)
     {
-        Map<Object, Object> map = entitysMap.get(entityClass);
+        Map<Object, Object> map = entitiesMap.get(entityClass);
         if(map != null)
         {
             return map.containsKey(id);
@@ -48,11 +48,11 @@ class EntitysCache
 
     public <T> void put(T entity, Object id)
     {
-        Map<Object, Object> map = entitysMap.get(entity.getClass());
+        Map<Object, Object> map = entitiesMap.get(entity.getClass());
         if(map == null)
         {
             map = new HashMap<>();
-            entitysMap.put(entity.getClass(), map);
+            entitiesMap.put(entity.getClass(), map);
         }
         if(map.get(id) == null)
         {
@@ -62,7 +62,7 @@ class EntitysCache
     
     public <T> void remove(Class<T> entityClass, Object id)
     {
-        Map<Object, Object> map = entitysMap.get(entityClass);
+        Map<Object, Object> map = entitiesMap.get(entityClass);
         if(map != null && map.containsKey(id))
         {
             map.remove(id);
@@ -71,6 +71,6 @@ class EntitysCache
 
     public void clear()
     {
-        entitysMap.clear();
+        entitiesMap.clear();
     }
 }

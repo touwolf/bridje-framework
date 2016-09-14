@@ -39,7 +39,7 @@ public class SelectBuilder
     /**
      * Begins this builder whit the select clause.
      * 
-     * @param fields The list of fields to retrive.
+     * @param fields The list of fields to retrieve.
      * @return this builder.
      */
     public SelectBuilder select(String fields)

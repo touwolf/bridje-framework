@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Represents a database table attached to an entity of the model. This object
- * can be user to query the especific table and return the entitys atached to
+ * can be user to query the especific table and return the entities atached to
  * it.
  *
  * @param <T> The type of the entity that the table is mapped to.

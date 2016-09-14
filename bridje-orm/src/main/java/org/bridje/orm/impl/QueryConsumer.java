@@ -34,7 +34,7 @@ interface QueryConsumer<T>
      * @param rs The result set to parse.
      * @return The resulting type.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     T parse(ResultSet rs) throws SQLException;
 }

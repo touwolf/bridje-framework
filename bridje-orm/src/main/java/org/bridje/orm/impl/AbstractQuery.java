@@ -23,11 +23,9 @@ import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.Table;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
-/**
- *
- */
 abstract class AbstractQuery<T> implements Query<T>
 {
 
@@ -91,6 +89,39 @@ abstract class AbstractQuery<T> implements Query<T>
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
                     (rs) -> table.parse(1, column, rs, ctx), 
+                    parameters.toArray());
+    }
+    
+    @Override
+    public <R> List<R> fetchAll(Table<R> table) throws SQLException
+    {
+        TableImpl<R> tableImpl = (TableImpl<R>)table;
+        List<Object> params = new ArrayList<>();
+        EntityContextImpl ctx = getCtx();
+        String columns = tableImpl.allFieldsCommaSep(ctx);
+        SelectBuilder qb = createQuery(columns, params);
+        if(getPage() > 0)
+        {
+            int index = ((getPage() - 1) * getPageSize());
+            qb.limit(index, getPageSize());
+        }
+        return ctx.doQuery(qb.toString(), 
+                        (rs) -> tableImpl.parseAll(rs, ctx), 
+                        params.toArray());
+    }
+
+    @Override
+    public <R> R fetchOne(Table<R> table) throws SQLException
+    {
+        TableImpl<R> tableImpl = (TableImpl<R>)table;
+        List<Object> parameters = new ArrayList<>();
+        EntityContextImpl ctx = getCtx();
+        SelectBuilder qb = createQuery(
+                        tableImpl.allFieldsCommaSep(ctx), 
+                        parameters);
+        qb.limit(0, 1);
+        return ctx.doQuery(qb.toString(), 
+                    (rs) -> tableImpl.parse(rs, ctx), 
                     parameters.toArray());
     }
 

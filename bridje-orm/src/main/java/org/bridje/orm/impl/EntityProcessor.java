@@ -48,9 +48,9 @@ public class EntityProcessor extends AbstractProcessor
     private static final Logger LOG = Logger.getLogger(EntityProcessor.class.getName());
 
     /**
-     * The bridje orm entitys resources file path.
+     * The bridje orm entities resources file path.
      */
-    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entitys.properties";
+    public static final String ENTITYS_RESOURCE_FILE = "BRIDJE-INF/orm/entities.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)

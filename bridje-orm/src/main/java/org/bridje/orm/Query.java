@@ -20,8 +20,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Represents a query that can be execute in an entity context to retrive
- * entitys from the database.
+ * Represents a query that can be execute in an entity context to retrieve
+ * entities from the database.
  *
  * @param <T> The type of the base entity for the query.
  */
@@ -31,17 +31,17 @@ public interface Query<T>
      * The page that must be fetch from the database.
      *
      * @param page The page number where 1 is the first page, 0 or less means no
-     * page, so all the entitys will be returned.
+     * page, so all the entities will be returned.
      * @param size The size in records of a page.
      */
     void paging(int page, int size);
 
     /**
-     * Executes the query and fetch all entitys.
+     * Executes the query and fetch all entities.
      *
-     * @return The list of entitys returned from the database.
+     * @return The list of entities returned from the database.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     List<T> fetchAll() throws SQLException;
 
@@ -53,16 +53,41 @@ public interface Query<T>
      * @return A list of objects of type c representing the values of the
      * column.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     <C> List<C> fetchAll(Column<C> column) throws SQLException;
+
+
+    /**
+     * Executes the query and fetch the first value of the given table returned
+     * by the database.
+     *
+     * @param <R> The entity of the given table.
+     * @param table The table to be fetch.
+     * @return The first entity returned by the query.
+     * @throws SQLException If any SQLException occurs during the close
+     * process.
+     */
+    <R> R fetchOne(Table<R> table) throws SQLException;
+
+    /**
+     * Executes the query and fetch the given table.
+     *
+     * @param <R> The entity of the given table represents.
+     * @param table The table to be fetch.
+     * @return A list of objects of type R representing the values of the
+     * result entity.
+     * @throws SQLException If any SQLException occurs during the close
+     * process.
+     */
+    <R> List<R> fetchAll(Table<R> table) throws SQLException;
 
     /**
      * Executes the query and fetch the first record that the database return.
      *
      * @return The first entity returned by the query.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     T fetchOne() throws SQLException;
 
@@ -74,7 +99,7 @@ public interface Query<T>
      * @param column The column to be fetch.
      * @return The first entity returned by the query.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     <C> C fetchOne(Column<C> column) throws SQLException;
 
@@ -85,7 +110,7 @@ public interface Query<T>
      * @return The number of records this query can return, 0 means that this
      * query will not return any records.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     long count() throws SQLException;
 
@@ -95,7 +120,7 @@ public interface Query<T>
      * @return true the query will return 1 or more record, false the query will
      * not return any records.
      * @throws SQLException If any SQLException occurs during the close
-     * proccess.
+     * process.
      */
     boolean exists() throws SQLException;
 

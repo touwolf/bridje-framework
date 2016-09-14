@@ -59,15 +59,21 @@ class EntityContextImpl implements EntityContext
     }
 
     @Override
-    public <T> void fixTable(Table<T> table) throws SQLException
+    public <T> void fixTable(Table<T>... tables) throws SQLException
     {
-        if(tableExists(table))
+        if(tables != null)
         {
-            fixColumns(table);
-        }
-        else
-        {
-            createTable(table);
+            for (Table<T> table : tables)
+            {
+                if(tableExists(table))
+                {
+                    fixColumns(table);
+                }
+                else
+                {
+                    createTable(table);
+                }
+            }
         }
     }
 
