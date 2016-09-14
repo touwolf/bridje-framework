@@ -23,16 +23,29 @@ import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * A file to generate.
@@ -43,6 +56,13 @@ public class WriteFile
     private String name;
 
     private String template;
+    
+    @XmlElementWrapper(name = "resources")
+    @XmlElements(
+    {
+        @XmlElement(name = "resource", type = String.class)
+    })
+    private List<String> resources;
 
     /**
      * The name of the file to generate, it can contain freemarker expressions.
@@ -66,11 +86,21 @@ public class WriteFile
     }
 
     /**
+     * A list of resource files that must be loaded to generate this file.
+     * 
+     * @return A list of resource files that must be loaded to generate this file.
+     */
+    public List<String> getResources()
+    {
+        return resources;
+    }
+
+    /**
      * Generates the files described by this data file.
      *
      * @param mojo The GenerateMojo instance.
-     * @param node The current xml node.
-     * @param doc The xml document.
+     * @param node The current XML node.
+     * @param doc The XML document.
      * @throws MojoExecutionException If any exception occurs.
      */
     protected void generate(GenerateMojo mojo, Node node, Document doc) throws MojoExecutionException
@@ -81,6 +111,7 @@ public class WriteFile
             Map model = new HashMap();
             model.put("doc", NodeModel.wrap(doc));
             model.put("node", wrap);
+            model.put("resources", loadResources(mojo));
             Configuration cfg = mojo.getFreeMarkerConfiguration();
 
             //File name
@@ -104,5 +135,40 @@ public class WriteFile
         {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
+    }
+
+    private List<NodeModel> loadResources(GenerateMojo mojo)
+    {
+        List<NodeModel> models = new LinkedList<>();
+        for (String resource : resources)
+        {
+            try
+            {
+                Enumeration<URL> urls = mojo.findResources(resource);
+                if(urls != null)
+                {
+                    models.addAll(parseAll(urls));
+                }
+            }
+            catch (Exception e)
+            {
+                mojo.getLog().error(e.getMessage(), e);
+            }
+        }
+        return models;
+    }
+
+    private Collection<? extends NodeModel> parseAll(Enumeration<URL> urls) throws IOException, SAXException, ParserConfigurationException
+    {
+        List<NodeModel> result = new ArrayList<>();
+        while (urls.hasMoreElements())
+        {
+            URL nextElement = urls.nextElement();
+            try(InputStream is = nextElement.openStream())
+            {
+                result.add(NodeModel.parse(new InputSource(is)));
+            }
+        }
+        return result;
     }
 }

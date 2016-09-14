@@ -37,6 +37,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.classworlds.DuplicateRealmException;
+import org.xml.sax.InputSource;
 
 /**
  * This MOJO is responsible for generating the code specified by the other APIs.
@@ -204,5 +205,10 @@ public class GenerateMojo extends AbstractMojo
         Unmarshaller unm = ctx.createUnmarshaller();
         Object result = unm.unmarshal(url.openStream());
         return (GenerationConfig)result;
+    }
+
+    public Enumeration<URL> findResources(String resource) throws IOException
+    {
+        return clsRealm.getResources(resource);
     }
 }
