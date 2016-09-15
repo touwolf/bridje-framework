@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datatypes>
+    <localDate class="java.time.LocalDate" adapter="org.bridje.orm.adpaters.LocalDateAdapter" sqlType="DATE" columnType="TableComparableColumn" />
+    <localTime class="java.time.LocalTime" adapter="org.bridje.orm.adpaters.LocalTimeAdapter" sqlType="TIME" columnType="TableComparableColumn" />
+    <localDateTime class="java.time.LocalDateTime" adapter="org.bridje.orm.adpaters.LocalDateTimeAdapter" sqlType="DATETIME" columnType="TableComparableColumn" />
+</datatypes>

@@ -16,15 +16,13 @@
 
 package org.bridje.orm;
 
-import java.util.Date;
-
 /**
- * Represents a table column whos type is a date type.
+ * Represents a table column whos type is a comparable type.
  * 
  * @param <E> The type for the entity that this table belongs to.
  * @param <T> The type of the column.
  */
-public interface TableDateColumn<E, T extends Date> extends TableColumn<E, T>, DateColumn<T>
+public interface TableComparableColumn<E, T> extends TableColumn<E, T>, ComparableColumn<T>
 {
     
 }

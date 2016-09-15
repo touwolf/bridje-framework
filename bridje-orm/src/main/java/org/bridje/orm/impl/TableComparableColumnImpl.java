@@ -17,13 +17,12 @@
 package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 import org.bridje.orm.Condition;
-import org.bridje.orm.TableDateColumn;
+import org.bridje.orm.TableComparableColumn;
 
-class TableDateColumnImpl<E, T extends Date> extends TableColumnImpl<E, T> implements TableDateColumn<E, T>
+class TableComparableColumnImpl<E, T> extends TableColumnImpl<E, T> implements TableComparableColumn<E, T>
 {
-    public TableDateColumnImpl(TableImpl<E> table, Field field, Class<T> type)
+    public TableComparableColumnImpl(TableImpl<E> table, Field field, Class<T> type)
     {
         super(table, field, type);
     }

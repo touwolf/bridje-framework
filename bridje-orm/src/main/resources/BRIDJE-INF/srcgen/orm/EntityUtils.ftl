@@ -1,8 +1,18 @@
+<#assign custTypes = {} />
+<#list resources as r>
+    <#list r.datatypes.* as e>
+        <#assign custTypes = custTypes + {e?node_name: e} />
+    </#list>
+</#list>
+
 <#function findType field>
     <#if field?node_name == "relation">
         <#return field.@with />
     <#elseif field?node_name == "enum">
         <#return field.@type />
+    <#elseif custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#return ct.@class />
     <#else>
         <#return field?node_name?cap_first />
     </#if>
@@ -34,7 +44,6 @@
     </#list>
 </#function>
 
-
 <#function findTableColumn field>
     <#if field?node_name == "relation">
         <#return "TableRelationColumn" />
@@ -42,8 +51,11 @@
         <#return "TableNumberColumn" />
     <#elseif isString(field) >
         <#return "TableStringColumn" />
-    <#elseif isDate(field) >
-        <#return "TableDateColumn" />
+    <#elseif custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if ct.@columnType[0]??>
+            <#return ct.@columnType />
+        </#if>
     </#if>
     <#return "TableColumn" />
 </#function>
@@ -124,12 +136,37 @@
     <#if (field.@length[0]??) >
         <#return true />
     </#if>
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@length[0]??) >
+            <#return true />
+        </#if>
+    </#if>
     <#return false />
+</#function>
+
+<#function getLength field>
+    <#if (field.@length[0]??) >
+        <#return field.@length />
+    </#if>
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@length[0]??) >
+            <#return ct.@length />
+        </#if>
+    </#if>
+    <#return 0 />
 </#function>
 
 <#function hasSqlType field>
     <#if (field.@sqlType[0]??) >
         <#return true />
+    </#if>
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@sqlType[0]??) >
+            <#return true />
+        </#if>
     </#if>
     <#return false />    
 </#function>
@@ -138,12 +175,24 @@
     <#if (field.@sqlType[0]??) >
         <#return field.@sqlType />
     </#if>
-    <#return field.@sqlType />
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@sqlType[0]??) >
+            <#return ct.@sqlType />
+        </#if>
+    </#if>
+    <#return "" />
 </#function>
 
 <#function hasAdapter field>
     <#if (field.@adapter[0]??) >
         <#return true />
+    </#if>
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@adapter[0]??) >
+            <#return true />
+        </#if>
     </#if>
     <#return false />    
 </#function>
@@ -152,5 +201,11 @@
     <#if (field.@adapter[0]??) >
         <#return field.@adapter />
     </#if>
-    <#return field.@adapter />
+    <#if custTypes[field?node_name]?? >
+        <#assign ct = custTypes[field?node_name] />
+        <#if (ct.@adapter[0]??) >
+            <#return ct.@adapter />
+        </#if>
+    </#if>
+    <#return "" />
 </#function>

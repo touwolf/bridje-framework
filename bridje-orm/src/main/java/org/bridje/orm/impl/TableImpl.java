@@ -312,7 +312,11 @@ class TableImpl<T> implements Table<T>
     
     private TableColumnImpl createColumn(Field declaredField)
     {
-        if(Number.class.isAssignableFrom(declaredField.getType()))
+        if(declaredField.getType().getAnnotation(Entity.class) != null)
+        {
+            return new TableRelationColumnImpl(this, declaredField, declaredField.getType());
+        }
+        else if(Number.class.isAssignableFrom(declaredField.getType()))
         {
             return new TableNumberColumnImpl(this, declaredField, declaredField.getType());
         }
@@ -320,13 +324,9 @@ class TableImpl<T> implements Table<T>
         {
             return new TableStringColumnImpl(this, declaredField);
         }
-        else if(Date.class.isAssignableFrom(declaredField.getType()))
+        else if(Comparable.class.isAssignableFrom(declaredField.getType()))
         {
-            return new TableDateColumnImpl(this, declaredField, declaredField.getType());
-        }
-        else if(declaredField.getType().getAnnotation(Entity.class) != null)
-        {
-            return new TableRelationColumnImpl(this, declaredField, declaredField.getType());
+            return new TableComparableColumnImpl(this, declaredField, declaredField.getType());
         }
         else
         {
