@@ -29,12 +29,11 @@ public interface EntityContext
      * future queries to the database involving this entity won fail. This method
      * won remove any fields if the table already exists.
      *
-     * @param <T> The type of the entity.
      * @param tables The tables to be created.
      * @throws SQLException If any SQLException occurs during the close
      * process.
      */
-    <T> void fixTable(Table<T>... tables) throws SQLException;
+    void fixTable(Table<?>... tables) throws SQLException;
 
     /**
      * This method will find an entity given his class and id.

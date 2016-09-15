@@ -59,11 +59,11 @@ class EntityContextImpl implements EntityContext
     }
 
     @Override
-    public <T> void fixTable(Table<T>... tables) throws SQLException
+    public void fixTable(Table<?>... tables) throws SQLException
     {
         if(tables != null)
         {
-            for (Table<T> table : tables)
+            for (Table<?> table : tables)
             {
                 if(tableExists(table))
                 {

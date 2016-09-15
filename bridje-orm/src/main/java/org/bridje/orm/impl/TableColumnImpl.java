@@ -145,15 +145,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         String def = null;
         if(!isKey())
         {
-            if(getSqlType() == JDBCType.TIMESTAMP
-                    || getSqlType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
-            {
-                def = "'0000-00-00 00:00:00'";
-            }
-            else
-            {
-                def = "NULL";
-            }
+            def = "NULL";
         }
         return def;
     }

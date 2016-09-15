@@ -16,6 +16,7 @@
 package org.bridje.orm.impl.dialects;
 
 import java.sql.Connection;
+import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,7 +85,7 @@ class MySQLDialect implements SQLDialect
                 column.getPrecision(), 
                 column.isKey(), 
                 column.isAutoIncrement(), 
-                column.getDefaultValue());
+                findDefaultValue(column));
     }
 
     private DDLBuilder createDDLBuilder()
@@ -96,6 +97,24 @@ class MySQLDialect implements SQLDialect
     public String identifier(String name)
     {
         return "`" + name + "`";
+    }
+
+    public String findDefaultValue(TableColumn col)
+    {
+        String def = null;
+        if(!col.isKey())
+        {
+            if(col.getSqlType() == JDBCType.TIMESTAMP
+                    || col.getSqlType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
+            {
+                def = "'0000-00-00 00:00:00'";
+            }
+            else
+            {
+                def = "NULL";
+            }
+        }
+        return def;
     }
 }
 
