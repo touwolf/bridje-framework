@@ -120,4 +120,28 @@ class ProxyFile implements MultiVFile
     {
         getDefFile().writeFile(contentObj);
     }
+
+    @Override
+    public boolean canDelete()
+    {
+        return getDefFile().canDelete();
+    }
+
+    @Override
+    public void delete() throws IOException
+    {
+        getDefFile().delete();
+    }
+
+    @Override
+    public void copyTo(VFolder folder) throws IOException
+    {
+        getDefFile().copyTo(folder);
+    }
+
+    @Override
+    public void moveTo(VFolder folder) throws IOException
+    {
+        getDefFile().moveTo(folder);
+    }
 }

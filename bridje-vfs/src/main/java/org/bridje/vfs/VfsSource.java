@@ -154,4 +154,18 @@ public interface VfsSource
      * @return true if a folder can be created on this path.
      */
     boolean canCreateNewFile(Path filePath);
+
+    /**
+     * 
+     * @param data
+     * @return 
+     */
+    boolean canDelete(Object data);
+
+    /**
+     * 
+     * @param data 
+     * @throws java.io.IOException 
+     */
+    void delete(Object data) throws IOException;
 }

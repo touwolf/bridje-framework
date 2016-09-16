@@ -19,13 +19,18 @@ package org.bridje.vfs.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFolder;
 
 class PhysicalFile extends PhysicalResource implements VFile
 {
+    private static final Logger LOG = Logger.getLogger(PhysicalFile.class.getName());
+
     private final Object data;
 
     public PhysicalFile(Object data, VfsSource source, Path mountPath, Path path)
@@ -73,5 +78,79 @@ class PhysicalFile extends PhysicalResource implements VFile
     public <T> void writeFile(T contentObj) throws IOException
     {
         Ioc.context().find(VfsServiceImpl.class).writeFile(this, contentObj);
+    }
+
+    @Override
+    public boolean canDelete()
+    {
+        return getSource().canDelete(data);
+    }
+
+    @Override
+    public void delete() throws IOException
+    {
+        getSource().delete(data);
+    }
+
+    @Override
+    public void copyTo(VFolder folder) throws IOException
+    {
+        if(!folder.canCreateNewFile(getName()))
+        {
+            throw new IOException("The given file cannot be created on the destiny folder.");
+        }
+        VFile file = folder.createNewFile(getName());
+        if(!file.canOpenForWrite())
+        {
+            throw new IOException("The given file cannot be open for writing.");
+        }
+        try(OutputStream os = file.openForWrite())
+        {
+            try(InputStream is = openForRead())
+            {
+                copy(is, os);
+            }
+        }
+    }
+
+    @Override
+    public void moveTo(VFolder folder) throws IOException
+    {
+        if(!canDelete())
+        {
+            throw new IOException("The file cannot be moved");
+        }
+        try
+        {
+            copyTo(folder);
+            delete();
+        }
+        catch(IOException ex)
+        {
+            try
+            {
+                VFile f = folder.findFile(getName());
+                if(f != null)
+                {
+                    f.delete();
+                }
+            }
+            catch (IOException e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+            throw ex;
+        }
+    }
+
+    private void copy(InputStream is, OutputStream os) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        int bytesCount = is.read(buffer);
+        while(bytesCount > -1)
+        {
+            os.write(buffer, 0, bytesCount);
+            bytesCount = is.read(buffer);
+        }
     }
 }

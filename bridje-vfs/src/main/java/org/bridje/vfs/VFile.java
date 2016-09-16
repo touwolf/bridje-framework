@@ -49,7 +49,33 @@ public interface VFile extends VResource
      * @return true the file can be open for writing.
      */
     boolean canOpenForWrite();
+    
+    /**
+     * 
+     * @return 
+     */
+    boolean canDelete();
 
+    /**
+     * 
+     * @throws java.io.IOException
+     */
+    void delete() throws IOException;
+
+    /**
+     * 
+     * @param folder 
+     * @throws java.io.IOException 
+     */
+    void copyTo(VFolder folder) throws IOException;
+
+    /**
+     * 
+     * @param folder 
+     * @throws java.io.IOException 
+     */
+    void moveTo(VFolder folder) throws IOException;
+    
     /**
      * Gets the extension part of the name of the file.
      * 

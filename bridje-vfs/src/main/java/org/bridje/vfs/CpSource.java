@@ -310,4 +310,16 @@ public class CpSource implements VfsSource
     {
         return childs != null;
     }
+
+    @Override
+    public boolean canDelete(Object data)
+    {
+        return false;
+    }
+
+    @Override
+    public void delete(Object data) throws IOException
+    {
+        throw new IOException("Cannot delete a physical file here.");
+    }
 }

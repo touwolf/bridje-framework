@@ -30,14 +30,7 @@ public class FileSource implements VfsSource
      */
     public FileSource(File file)
     {
-        try
-        {
-            this.file = file.getAbsoluteFile().getCanonicalFile();
-        }
-        catch (IOException e)
-        {
-            this.file = file;
-        }
+        this.file = toAbsCanFile(file);
     }
 
     @Override
@@ -107,7 +100,7 @@ public class FileSource implements VfsSource
             {
                 f.getParentFile().getAbsoluteFile().mkdirs();
                 f.createNewFile();
-                return f.getName();
+                return f;
             }
         }
         catch (Exception e)
@@ -235,5 +228,30 @@ public class FileSource implements VfsSource
             f = new File(file.getCanonicalPath() + File.separator + path.toString(File.separator));
         }
         return f;
+    }
+
+    @Override
+    public boolean canDelete(Object data)
+    {
+        return true;
+    }
+
+    @Override
+    public void delete(Object data)
+    {
+        File f = (File)data;
+        f.delete();
+    }
+
+    private static File toAbsCanFile(File file)
+    {
+        try
+        {
+            return file.getAbsoluteFile().getCanonicalFile();
+        }
+        catch (IOException e)
+        {
+            return file;
+        }
     }
 }
