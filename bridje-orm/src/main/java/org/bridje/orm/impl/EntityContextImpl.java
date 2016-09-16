@@ -21,6 +21,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -202,7 +203,7 @@ class EntityContextImpl implements EntityContext
     public <T> T doUpdate(String query, QueryConsumer<T> consumer, Object... parameters) throws SQLException
     {
         T result = null;
-        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query))
+        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS))
         {
             for (int i = 0; i < parameters.length; i++)
             {
