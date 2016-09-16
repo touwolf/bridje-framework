@@ -30,6 +30,7 @@ import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
 import org.bridje.orm.SQLAdapter;
 import org.bridje.orm.TableColumn;
+import org.bridje.orm.adpaters.EnumAdapter;
 
 /**
  *
@@ -78,9 +79,16 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         this.length = findLength(annotation.length());
         this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? annotation.precision() : 0;
         this.indexed = annotation.index();
-        if(annotation.adapter() != SQLAdapter.class)
+        if(annotation.adapter() == SQLAdapter.class)
         {
-            this.adapter = Ioc.context().find(annotation.adapter());
+            if(Enum.class.isAssignableFrom(this.type))
+            {
+                this.adapter = findAdapter(EnumAdapter.class);
+            }
+        }
+        else
+        {
+            this.adapter = findAdapter(annotation.adapter());
         }
     }
 
@@ -301,5 +309,28 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             return adapter.unserialize(value, this);
         }
         return value;
+    }
+
+    private SQLAdapter instantiate(Class<? extends SQLAdapter> adapter)
+    {
+        try
+        {
+            return (SQLAdapter)adapter.newInstance();
+        }
+        catch (InstantiationException | IllegalAccessException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    private SQLAdapter findAdapter(Class<? extends SQLAdapter> sqlAdapt)
+    {
+        SQLAdapter sqlAdapter = Ioc.context().find(sqlAdapt);
+        if(sqlAdapter == null)
+        {
+            sqlAdapter = instantiate(sqlAdapt);
+        }
+        return sqlAdapter;
     }
 }
