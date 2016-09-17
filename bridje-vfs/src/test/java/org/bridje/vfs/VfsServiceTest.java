@@ -31,7 +31,7 @@ import org.junit.Test;
 public class VfsServiceTest
 {
     private static final Logger LOG = Logger.getLogger(VfsServiceTest.class.getName());
-    
+
     @Test
     public void testFindFiles()
     {
@@ -58,7 +58,7 @@ public class VfsServiceTest
         }, "**/impl/P*.java");
         assertFalse(res.isEmpty());
     }
-    
+
     @Test
     public void testRead() throws IOException
     {
@@ -72,7 +72,7 @@ public class VfsServiceTest
         Properties prop = new Properties();
         prop.put("prop1", "val1");
         prop.store(new FileWriter(f), "A properties file");
-        
+
         VfsService vfsServ = Ioc.context().find(VfsService.class);
         vfsServ.mountFile("/tests", f.getParentFile());
         Properties readedProp = vfsServ.readFile("tests/someprop.properties", Properties.class);
@@ -91,7 +91,7 @@ public class VfsServiceTest
         f.getParentFile().mkdirs();
         Properties prop = new Properties();
         prop.put("prop1", "val1");
-        
+
         VfsService vfsServ = Ioc.context().find(VfsService.class);
         vfsServ.mountFile("/tests", f.getParentFile());
         vfsServ.findFolder("/tests").createNewFile(new Path("someprop1.properties"));
@@ -107,7 +107,7 @@ public class VfsServiceTest
         VfsService vfsServ = Ioc.context().find(VfsService.class);
         assertNotNull(vfsServ.findFile("/other/testfile"));
     }
-    
+
     @Test
     public void testCreateAndWrite() throws IOException
     {
@@ -125,12 +125,11 @@ public class VfsServiceTest
         SomeData someData1 = vfsServ.readFile("/etc/someTestFolder/xmlwrtext/someData.xml", SomeData.class); //reed the serialized file.
         assertNotNull(someData1);//the data must not be null
         assertEquals(someData.getName(), someData1.getName());//must have the same value.
-        
-        
+
         //testing if the file can be create, someTestFolder exists but xmlwrtext1 does not.
         assertTrue(vfsServ.canCreateNewFile("/etc/someTestFolder/xmlwrtext1/someData2.xml"));
 
-        deleteDirectory(new File("./target/someTestFolder1")); // deleting testing dir 
+        deleteDirectory(new File("./target/someTestFolder1")); // deleting testing dir
         assertTrue(vfsServ.canCreateNewFile("/etc/someTestFolder1/xmlwrtext1/someData2.xml"));
         VFolder fold = vfsServ.mkDir("/etc/someTestFolder1");
         assertTrue(fold.canCreateNewFile("/xmlwrtext1/someData2.xml"));
@@ -141,15 +140,26 @@ public class VfsServiceTest
         assertFalse(fold.canCreateNewFile("/xmlwrtext1/someData2.xml"));
     }
 
+    @Test
+    public void testListFiles()
+    {
+        //todo
+    }
+
     static public boolean deleteDirectory(File path)
     {
-        if (path.exists()) {
+        if (path.exists())
+        {
             File[] files = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    deleteDirectory(files[i]);
-                } else {
-                    files[i].delete();
+            for (File file : files)
+            {
+                if (file.isDirectory())
+                {
+                    deleteDirectory(file);
+                }
+                else
+                {
+                    file.delete();
                 }
             }
         }
