@@ -36,6 +36,7 @@ public interface HttpBridlet
      * @return true the request was handler withing this call, false the request
      * was not handled by any handler whiting this call.
      * @throws IOException If any IOException occurs during this call.
+     * @throws org.bridje.http.HttpException
      */
-    boolean handle(HttpBridletContext context) throws IOException;
+    boolean handle(HttpBridletContext context) throws IOException, HttpException;
 }

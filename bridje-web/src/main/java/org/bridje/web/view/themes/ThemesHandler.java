@@ -27,6 +27,7 @@ import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpException;
 
 @Component
 @Priority(150)
@@ -39,7 +40,7 @@ class ThemesHandler implements HttpBridlet
     private HttpBridlet nextHandler;
     
     @Override
-    public boolean handle(HttpBridletContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         HttpBridletRequest req = context.get(HttpBridletRequest.class);
         if(req.getPath().startsWith("/__themes"))

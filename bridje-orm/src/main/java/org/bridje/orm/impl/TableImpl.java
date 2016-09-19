@@ -281,11 +281,12 @@ class TableImpl<T> implements Table<T>
         return result.toArray();
     }
 
+    @Override
     public Object findKeyValue(T entity)
     {
         return ((TableColumnImpl)key).getValue(entity);
     }
-
+    
     public String buildIdCondition(EntityContext ctx)
     {
         return ctx.getDialect().identifier(((TableColumnImpl)key).getName()) + " = ?";

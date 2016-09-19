@@ -158,7 +158,8 @@ class EntityContextImpl implements EntityContext
         {
             updateId = table.findKeyValue(entity);
         }
-        doUpdate(ub.toString(), table.buildUpdateParameters(entity, updateId));
+        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(updateId);
+        doUpdate(ub.toString(), table.buildUpdateParameters(entity, serializedId));
         cache.remove(entity.getClass(), updateId);
         cache.put(entity, id);
         return entity;
@@ -174,7 +175,8 @@ class EntityContextImpl implements EntityContext
             .where(table.buildIdCondition(this));
 
         doUpdate(db.toString(), table.findKeyValue(entity));
-        cache.remove(entity.getClass(), table.findKeyValue(entity));
+        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(table.findKeyValue(entity));
+        cache.remove(entity.getClass(), serializedId);
         return entity;
     }
 

@@ -35,6 +35,7 @@ import org.bridje.web.WebParameter;
 import org.bridje.web.WebScope;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpException;
 
 @Component
 @Priority(500)
@@ -45,7 +46,7 @@ class ControllerHttpBridlet implements HttpBridlet
     private List<WebMethodData> methodsData;
 
     @Override
-    public boolean handle(HttpBridletContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         if(methodsData == null)
@@ -74,7 +75,7 @@ class ControllerHttpBridlet implements HttpBridlet
         }
     }
 
-    private Object invokeMethod(IocContext<WebScope> wrsCtx, String path)
+    private Object invokeMethod(IocContext<WebScope> wrsCtx, String path) throws HttpException
     {
         for (WebMethodData methodData : methodsData)
         {
@@ -87,9 +88,16 @@ class ControllerHttpBridlet implements HttpBridlet
                 {
                     return methodData.getMethod().invoke(cmp, matches);
                 }
-                catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+                catch (InvocationTargetException e)
                 {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    if(e.getCause() instanceof HttpException)
+                    {
+                        throw (HttpException)e.getCause();
+                    }
+                }
+                catch (IllegalAccessException | IllegalArgumentException e)
+                {
+                    throw new HttpException(500, e.getMessage(), e);
                 }
             }
         }

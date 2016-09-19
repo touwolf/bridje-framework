@@ -24,6 +24,7 @@ import org.bridje.web.RedirectTo;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpException;
 
 @Component
 @Priority(480)
@@ -33,7 +34,7 @@ class RedirectHttpBridlet implements HttpBridlet
     private HttpBridlet nextHandler;
 
     @Override
-    public boolean handle(HttpBridletContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         boolean result = nextHandler.handle(context);
         RedirectTo r = context.get(RedirectTo.class);

@@ -23,6 +23,7 @@ import org.bridje.ioc.Priority;
 import org.bridje.web.ReqPathRef;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpException;
 
 @Component
 @Priority(100)
@@ -32,7 +33,7 @@ class IndexPathHttpBridlet implements HttpBridlet
     private HttpBridlet nextHandler;
 
     @Override
-    public boolean handle(HttpBridletContext context) throws IOException
+    public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         String currPath = ReqPathRef.findCurrentPath(context);
         if(currPath == null || currPath.trim().isEmpty() || currPath.trim().equalsIgnoreCase("/"))

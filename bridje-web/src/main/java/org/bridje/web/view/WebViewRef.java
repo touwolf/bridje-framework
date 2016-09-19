@@ -35,7 +35,7 @@ public class WebViewRef
      */
     public WebViewRef(String viewPath)
     {
-        this.viewPath = viewPath;
+        setViewPath(viewPath);
     }
 
     /**
@@ -56,5 +56,13 @@ public class WebViewRef
     public void setViewPath(String viewPath)
     {
         this.viewPath = viewPath;
+        if(this.viewPath == null || this.viewPath.trim().isEmpty())
+        {
+            this.viewPath = "/index";
+        }
+        if(!this.viewPath.startsWith("/"))
+        {
+            this.viewPath = "/" + this.viewPath;
+        }
     }
 }
