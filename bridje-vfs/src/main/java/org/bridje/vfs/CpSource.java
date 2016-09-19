@@ -38,7 +38,7 @@ public class CpSource implements VfsSource
     public CpSource(String resource) throws IOException, URISyntaxException
     {
         this.resource = new Path(resource).toString();
-        List<String> resourceListing = getResourceListing(getClass(), resource);
+        List<String> resourceListing = getResourceListing(getClass(), this.resource + "/");
         if(resourceListing != null && !resourceListing.isEmpty())
         {
             this.childs = new HashMap<>();
@@ -277,7 +277,8 @@ public class CpSource implements VfsSource
                 Set<String> currentProjectResource = new HashSet<>(); //avoid duplicates in case it is a subdirectory
                 while (entries.hasMoreElements())
                 {
-                    String name = entries.nextElement().getName().trim();
+                    JarEntry jarEntry = entries.nextElement();
+                    String name = jarEntry.getName().trim();
                     if (name.startsWith(currentPath))
                     {
                         //filter according to the path

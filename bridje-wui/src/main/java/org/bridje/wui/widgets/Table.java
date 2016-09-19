@@ -24,7 +24,7 @@ public class Table extends BaseWidget
 
     @XmlAttribute(name = "var")
     private String var;
-
+    
     @XmlElements(
     {
         @XmlElement(name = "column", type = TableColumn.class)

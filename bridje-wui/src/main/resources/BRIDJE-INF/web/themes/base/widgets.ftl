@@ -86,16 +86,18 @@
         <thead>
             <tr>
                 <#list c.columns as c>
-                    <th>${c.title}<th>
+                    <th>${c.title}</th>
                 </#list>
             </tr>
         </thead>
         <tbody>
             <#list c.data as row>
-                ${env.setVar(table.var, row)!}
+                ${env.setVar(c.var, row)!}
                 <tr>
                     <#list c.columns as c>
-                        <td>${c.value}</td>
+                        <td>
+                            <@render c.content />
+                        </td>
                     </#list>
                 </tr>
             </#list>
