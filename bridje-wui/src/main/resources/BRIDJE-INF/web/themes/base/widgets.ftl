@@ -188,42 +188,46 @@
 
 <#macro render c>
     <#if !(c.visible??) || c.visible>
-        <#if c.class.package.name == "org.bridje.wui.widgets">
-            <#if c.class.simpleName == "Button">
-                <@button c />
-            <#elseif c.class.simpleName == "ComboBox">
-                <@combobox c />
-            <#elseif c.class.simpleName == "Header">
-                <@header c />
-            <#elseif c.class.simpleName == "Text">
-                <@text c />
-            <#elseif c.class.simpleName == "Image">
-                <@image c />
-            <#elseif c.class.simpleName == "Link">
-                <@link c />
-            <#elseif c.class.simpleName == "Paragraph">
-                <@paragraph c />
-            <#elseif c.class.simpleName == "TextArea">
-                <@textarea c />
-            <#elseif c.class.simpleName == "TextBox">
-                <@textbox c />
-            <#elseif c.class.simpleName == "Password">
-                <@password c />
-            <#elseif c.class.simpleName == "Empty">
-                <@empty c />
-            <#elseif c.class.simpleName == "Table">
-                <@table c />
-            <#elseif c.class.simpleName == "BorderLayout">
-                <@borderlayout c />
-            <#elseif c.class.simpleName == "GridLayout">
-                <@gridlayout c />
-            <#elseif c.class.simpleName == "HorizontalLayout">
-                <@horizontallayout c />
-            <#elseif c.class.simpleName == "VerticalLayout">
-                <@verticallayout c />
-            <#elseif c.class.simpleName == "CheckBox">
-                <@checkbox c />
-            </#if>
+        <@renderComponent />
+    </#if>
+</#macro>
+
+<#macro renderComponent c>
+    <#if c.class.package.name == "org.bridje.wui.widgets">
+        <#if c.class.simpleName == "Button">
+            <@button c />
+        <#elseif c.class.simpleName == "ComboBox">
+            <@combobox c />
+        <#elseif c.class.simpleName == "Header">
+            <@header c />
+        <#elseif c.class.simpleName == "Text">
+            <@text c />
+        <#elseif c.class.simpleName == "Image">
+            <@image c />
+        <#elseif c.class.simpleName == "Link">
+            <@link c />
+        <#elseif c.class.simpleName == "Paragraph">
+            <@paragraph c />
+        <#elseif c.class.simpleName == "TextArea">
+            <@textarea c />
+        <#elseif c.class.simpleName == "TextBox">
+            <@textbox c />
+        <#elseif c.class.simpleName == "Password">
+            <@password c />
+        <#elseif c.class.simpleName == "Empty">
+            <@empty c />
+        <#elseif c.class.simpleName == "Table">
+            <@table c />
+        <#elseif c.class.simpleName == "BorderLayout">
+            <@borderlayout c />
+        <#elseif c.class.simpleName == "GridLayout">
+            <@gridlayout c />
+        <#elseif c.class.simpleName == "HorizontalLayout">
+            <@horizontallayout c />
+        <#elseif c.class.simpleName == "VerticalLayout">
+            <@verticallayout c />
+        <#elseif c.class.simpleName == "CheckBox">
+            <@checkbox c />
         </#if>
     </#if>
 </#macro>
