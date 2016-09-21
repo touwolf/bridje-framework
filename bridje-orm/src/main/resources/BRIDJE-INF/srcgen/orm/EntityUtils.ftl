@@ -245,14 +245,20 @@
     <#if field.@description[0]?? >
         <#return field.@description />
     </#if>
-    <#return (field?parent?parent.@defaultFieldDescription)!"" />
+    <#if field?parent?parent.@defaultFieldDescription[0]?? >
+        <#return field?parent?parent.@defaultFieldDescription />
+    </#if>
+    <#return "" />
 </#function>
 
 <#function findEntityDescription entity>
     <#if entity.@description[0]?? >
         <#return entity.@description />
     </#if>
-    <#return (entity?parent.@defaultEntityDescription)!"" />
+    <#if entity?parent.@defaultEntityDescription[0]?? >
+        <#return entity?parent.@defaultEntityDescription />
+    </#if>
+    <#return "" />
 </#function>
 
 <#function findTablePrefix model>
