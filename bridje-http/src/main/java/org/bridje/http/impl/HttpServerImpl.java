@@ -83,45 +83,48 @@ class HttpServerImpl implements HttpServer
     @Override
     public void start()
     {
-        try
+        new Thread(() ->
         {
-            LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
-            group = new NioEventLoopGroup();
             try
             {
-                ServerBootstrap b = new ServerBootstrap();
-                b.group(group)
-                        .channel(NioServerSocketChannel.class)
-                        .localAddress(this.config.createInetSocketAddress())
-                        .childHandler(new ChannelInitializer<SocketChannel>()
-                        {
-                            @Override
-                            public void initChannel(SocketChannel ch)
+                LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
+                group = new NioEventLoopGroup();
+                try
+                {
+                    ServerBootstrap b = new ServerBootstrap();
+                    b.group(group)
+                            .channel(NioServerSocketChannel.class)
+                            .localAddress(this.config.createInetSocketAddress())
+                            .childHandler(new ChannelInitializer<SocketChannel>()
                             {
-                                if(sslContext != null)
+                                @Override
+                                public void initChannel(SocketChannel ch)
                                 {
-                                    SSLEngine engine = sslContext.createSSLEngine();
-                                    engine.setUseClientMode(false);
-                                    ch.pipeline().addLast("ssl", new SslHandler(engine));
+                                    if(sslContext != null)
+                                    {
+                                        SSLEngine engine = sslContext.createSSLEngine();
+                                        engine.setUseClientMode(false);
+                                        ch.pipeline().addLast("ssl", new SslHandler(engine));
+                                    }
+                                    ch.pipeline().addLast("codec", new HttpServerCodec());
+                                    ch.pipeline().addLast("switch", new HttpWsSwitch(handlers));
+                                    ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
+                                    ch.pipeline().addLast("compressor", new HttpContentCompressor());
                                 }
-                                ch.pipeline().addLast("codec", new HttpServerCodec());
-                                ch.pipeline().addLast("switch", new HttpWsSwitch(handlers));
-                                ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
-                                ch.pipeline().addLast("compressor", new HttpContentCompressor());
-                            }
-                        });
-                ChannelFuture f = b.bind(this.config.getPort()).sync();
-                f.channel().closeFuture().sync();
+                            });
+                    ChannelFuture f = b.bind(this.config.getPort()).sync();
+                    f.channel().closeFuture().sync();
+                }
+                finally
+                {
+                    group.shutdownGracefully().sync();
+                }
             }
-            finally
+            catch (InterruptedException e)
             {
-                group.shutdownGracefully().sync();
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
-        }
-        catch (InterruptedException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
+        }).start();
     }
 
     @Override

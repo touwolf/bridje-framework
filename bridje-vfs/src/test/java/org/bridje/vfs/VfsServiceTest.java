@@ -141,9 +141,15 @@ public class VfsServiceTest
     }
 
     @Test
-    public void testListFiles()
+    public void testGlobMatch()
     {
-        //todo
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        VFolder otherFolder = vfsServ.findFolder("other");
+        //deberia listar los ficheros recursivamente
+        //assertEquals(1, otherFolder.listFiles("**/*.txt").size());
+        //deberia listar los ficheros de la carpeta actual solamente
+        //assertEquals(1, otherFolder.listFiles("*.txt").size());
+        //Eliminar travel
     }
 
     static public boolean deleteDirectory(File path)
