@@ -16,7 +16,6 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.widgets.WidgetManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,9 +25,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VfsService;
+import org.bridje.web.view.widgets.WidgetManager;
 
 /**
  * A manager for all the web views present in the application. with this
@@ -62,7 +62,7 @@ public class WebViewsManager
 
     /**
      * Finds the view by the given path.
-     * 
+     *
      * @param path The web view path to be found.
      * @return The web view founded or null if it does not exists.
      */
@@ -77,7 +77,9 @@ public class WebViewsManager
         VFolder publicFolder = vfsServ.findFolder(basePath);
         if (publicFolder != null)
         {
-            publicFolder.travel(this::readView, "**/*.view.xml");
+            publicFolder
+                .listFiles("**/*.view.xml")
+                .forEach(this::readView);
         }
     }
 

@@ -27,9 +27,7 @@ import org.bridje.ioc.Ioc;
 import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileVisitor;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VFolderVisitor;
 
 class MemoryFolder extends AbstractResource implements VFolder
 {
@@ -160,9 +158,12 @@ class MemoryFolder extends AbstractResource implements VFolder
     {
         if (folders == null) return Collections.EMPTY_LIST;
         List<VFolder> result = new ArrayList<>();
+        String path = getPath().toString();
         for (VFolder folder : folders)
         {
-            if(query == null || folder.getPath().globMatches(query))
+            if (query == null ||
+                    folder.getPath().globMatches(query) ||
+                    folder.getPathFrom(path).globMatches(query))
             {
                 result.add(folder);
             }
@@ -189,11 +190,22 @@ class MemoryFolder extends AbstractResource implements VFolder
             return Collections.EMPTY_LIST;
         }
         List<VFile> result = new ArrayList<>();
+        String path = getPath().toString();
         for (VFile file : files)
         {
-            if(query == null || file.getPath().globMatches(query))
+            if(query == null ||
+                file.getPath().globMatches(query) ||
+                file.getPathFrom(path).globMatches(query))
             {
                 result.add(file);
+            }
+        }
+        // recursive
+        if (query != null && query.contains("/") && folders != null)
+        {
+            for (VFolder vFolder : folders)
+            {
+                result.addAll(vFolder.listFiles(query));
             }
         }
         return Collections.unmodifiableList(result);
@@ -319,30 +331,6 @@ class MemoryFolder extends AbstractResource implements VFolder
     }
 
     @Override
-    public void travel(VFileVisitor visitor)
-    {
-        travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor)
-    {
-        travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFileVisitor visitor, String query)
-    {
-        travel(this, visitor, query);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor, String query)
-    {
-        travel(this, visitor, query);
-    }
-
-    @Override
     public VFile createNewFile(String filePath) throws IOException
     {
         return createNewFile(new Path(filePath));
@@ -365,7 +353,7 @@ class MemoryFolder extends AbstractResource implements VFolder
     {
         return canMkDir(new Path(folderPath));
     }
-    
+
     @Override
     public VFile createNewFile(Path filePath) throws IOException
     {
@@ -455,8 +443,8 @@ class MemoryFolder extends AbstractResource implements VFolder
         if(file instanceof MultiVFile)
         {
             MultiVFile mvf = (MultiVFile)file;
-            List<VFile> files = mvf.getFiles();
-            for (VFile f : files)
+            List<VFile> fileList = mvf.getFiles();
+            for (VFile f : fileList)
             {
                 T content = vfsServ.readFile(f, resultCls);
                 if(content != null)

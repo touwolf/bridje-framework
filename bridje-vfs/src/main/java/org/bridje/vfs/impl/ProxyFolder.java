@@ -27,9 +27,7 @@ import org.bridje.ioc.Ioc;
 import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileVisitor;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VFolderVisitor;
 
 class ProxyFolder implements VFolder
 {
@@ -44,7 +42,7 @@ class ProxyFolder implements VFolder
     {
         this.folders = folders;
     }
-    
+
     @Override
     public VFolder findFolder(String path)
     {
@@ -120,7 +118,7 @@ class ProxyFolder implements VFolder
     {
         return listFiles(null);
     }
-    
+
     @Override
     public List<VFolder> listFolders(String query)
     {
@@ -130,20 +128,24 @@ class ProxyFolder implements VFolder
             Map<String, List<VFolder>> foldersMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
-                folder.listFolders().stream()
-                        .filter((f) -> query == null || f.getPath().globMatches(query))
-                        .forEach((chFolder) ->
-                {
-                    List<VFolder> lst = foldersMap.get(chFolder.getName());
-                    if(lst == null)
+                String path = folder.getPath().toString();
+                folder
+                    .listFolders().stream()
+                    .filter((f) -> query == null ||
+                            f.getPath().globMatches(query) ||
+                            f.getPathFrom(path).globMatches(query))
+                    .forEach((chFolder) ->
                     {
-                        lst = new LinkedList<>();
-                    }
-                    lst.add(chFolder);
-                    foldersMap.put(chFolder.getName(), lst);
-                });
+                        List<VFolder> lst = foldersMap.get(chFolder.getName());
+                        if(lst == null)
+                        {
+                            lst = new LinkedList<>();
+                        }
+                        lst.add(chFolder);
+                        foldersMap.put(chFolder.getName(), lst);
+                    });
             });
-            
+
             for (Map.Entry<String, List<VFolder>> entry : foldersMap.entrySet())
             {
                 List<VFolder> value = entry.getValue();
@@ -174,20 +176,24 @@ class ProxyFolder implements VFolder
             Map<String, List<VFile>> filesMap = new LinkedHashMap<>();
             folders.stream().forEach((folder) ->
             {
-                folder.listFiles().stream()
-                        .filter((f) -> query == null || f.getPath().globMatches(query))
-                        .forEach((chFile) ->
-                {
-                    List<VFile> lst = filesMap.get(chFile.getName());
-                    if(lst == null)
+                String path = folder.getPath().toString();
+                folder
+                    .listFiles().stream()
+                    .filter((f) -> query == null ||
+                            f.getPath().globMatches(query) ||
+                            f.getPathFrom(path).globMatches(query))
+                    .forEach((chFile) ->
                     {
-                        lst = new LinkedList<>();
-                    }
-                    lst.add(chFile);
-                    filesMap.put(chFile.getName(), lst);
-                });
+                        List<VFile> lst = filesMap.get(chFile.getName());
+                        if(lst == null)
+                        {
+                            lst = new LinkedList<>();
+                        }
+                        lst.add(chFile);
+                        filesMap.put(chFile.getName(), lst);
+                    });
             });
-            
+
             for (Map.Entry<String, List<VFile>> entry : filesMap.entrySet())
             {
                 List<VFile> value = entry.getValue();
@@ -208,7 +214,7 @@ class ProxyFolder implements VFolder
         }
         return Collections.EMPTY_LIST;
     }
-    
+
     @Override
     public VFolder getParent()
     {
@@ -248,36 +254,21 @@ class ProxyFolder implements VFolder
         }
         return folders.get(0).getParentPath();
     }
-    
+
+    @Override
+    public Path getPathFrom(String ancestorPath)
+    {
+        if(folders == null || folders.isEmpty())
+        {
+            return null;
+        }
+        return folders.get(0).getPathFrom(ancestorPath);
+    }
+
     public void add(VFolder vf)
     {
         folders.add(vf);
     }
-
-    @Override
-    public void travel(VFileVisitor visitor)
-    {
-        AbstractResource.travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor)
-    {
-        AbstractResource.travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFileVisitor visitor, String query)
-    {
-        AbstractResource.travel(this, visitor, query);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor, String query)
-    {
-        AbstractResource.travel(this, visitor, query);
-    }
-    
 
     @Override
     public VFile createNewFile(String filePath) throws IOException
@@ -302,7 +293,7 @@ class ProxyFolder implements VFolder
     {
         return canMkDir(new Path(folderPath));
     }
-    
+
     @Override
     public VFile createNewFile(Path filePath) throws IOException
     {

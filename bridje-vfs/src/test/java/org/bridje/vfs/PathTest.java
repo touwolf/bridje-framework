@@ -229,4 +229,16 @@ public class PathTest
         assertFalse(file.globMatches("/usr/dev/**/php/**/*.*"));
         assertFalse(file.globMatches("/usr/dev/**/java/**/*."));
     }
+
+    /**
+     * Test of {@link Path#globRemaining(java.lang.String)}
+     */
+    @Test
+    public void testGlob_Remaining()
+    {
+        Path folder = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje");
+        assertEquals("src/main/java/org/bridje", folder.globRemaining("/**/superProject").toString());
+        assertEquals("src/main/java/org/bridje", folder.globRemaining("/**/dev/projects/{s*}t").toString());
+        assertNotEquals("src/main/java/org/bridje", folder.globRemaining("/**/projects/**").toString());
+    }
 }

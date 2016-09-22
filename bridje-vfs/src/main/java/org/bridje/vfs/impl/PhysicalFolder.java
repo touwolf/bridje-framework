@@ -25,11 +25,9 @@ import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileVisitor;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VFolderVisitor;
+import org.bridje.vfs.VfsSource;
 
 class PhysicalFolder extends PhysicalResource implements VFolder
 {
@@ -97,7 +95,7 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     {
         return listFiles(null);
     }
-    
+
     @Override
     public List<VFolder> listFolders(String query)
     {
@@ -109,11 +107,13 @@ class PhysicalFolder extends PhysicalResource implements VFolder
                 List<String> folders = getSource().listFolders(getPhysicalPath());
                 if(folders != null)
                 {
+                    String path = getPath().toString();
                     for (String folder : folders)
                     {
                         VFolder vf = instantiateChildFolder(new Path(folder));
-                        if(vf != null && (query == null 
-                                || (vf.getPath().globMatches(query))))
+                        if(vf != null && (query == null
+                                || (vf.getPath().globMatches(query))
+                                || (vf.getPathFrom(path).globMatches(query))))
                         {
                             result.add(vf);
                         }
@@ -139,13 +139,31 @@ class PhysicalFolder extends PhysicalResource implements VFolder
                 List<String> files = getSource().listFiles(getPhysicalPath());
                 if(files != null)
                 {
+                    String path = getPath().toString();
                     for (String file : files)
                     {
                         VFile vf = instantiateChildFile(new Path(file));
-                        if(vf != null && (query == null 
+                        if(vf != null && (query == null
+                                || vf.getPathFrom(path).globMatches(query)
                                 || vf.getPath().globMatches(query)))
                         {
                             result.add(vf);
+                        }
+                    }
+                    // recursive
+                    if (query != null && query.contains("/"))
+                    {
+                        List<String> folders = getSource().listFolders(getPhysicalPath());
+                        if (folders != null)
+                        {
+                            for (String folder : folders)
+                            {
+                                VFolder vFolder = instantiateChildFolder(new Path(folder));
+                                if(vFolder != null)
+                                {
+                                    result.addAll(vFolder.listFiles(query));
+                                }
+                            }
                         }
                     }
                 }
@@ -157,7 +175,7 @@ class PhysicalFolder extends PhysicalResource implements VFolder
         }
         return result;
     }
-    
+
     private VFolder instantiateChildFolder(Path path)
     {
         return new PhysicalFolder(getSource(), getMountPath(), getRelativePath().join(path));
@@ -221,30 +239,6 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     }
 
     @Override
-    public void travel(VFileVisitor visitor)
-    {
-        travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor)
-    {
-        travel(this, visitor);
-    }
-
-    @Override
-    public void travel(VFileVisitor visitor, String query)
-    {
-        travel(this, visitor, query);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor, String query)
-    {
-        travel(this, visitor, query);
-    }
-
-    @Override
     public VFile createNewFile(String filePath) throws IOException
     {
         return createNewFile(new Path(filePath));
@@ -267,7 +261,7 @@ class PhysicalFolder extends PhysicalResource implements VFolder
     {
         return canMkDir(new Path(folderPath));
     }
-        
+
     @Override
     public VFile createNewFile(Path filePath) throws IOException
     {

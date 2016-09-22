@@ -313,11 +313,41 @@ public class Path implements Iterable<Path>
         }
 
         String regex = globToRegex(glob);
-        String normPath = toString("/");
+        String normPath = toString();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(normPath);
 
         return matcher.matches();
+    }
+
+    /**
+     * Obtains the path remaining of matches a path with glob syntax.
+     *
+     * @param glob the requested glob to test.
+     * @return if the glob match this path beginning will return the remaining path, this full path otherwise.
+     * @see Path#globMatches(java.lang.String)
+     */
+    public Path globRemaining(String glob)
+    {
+        if (glob == null || glob.trim().isEmpty())
+        {
+            return this;
+        }
+
+        String regex = globToRegex(glob);
+        String normPath = toString();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(normPath);
+        if (matcher.find())
+        {
+            int end = matcher.end();
+            if (end > 0 && end < normPath.length())
+            {
+                return new Path(normPath.substring(end));
+            }
+        }
+
+        return this;
     }
 
     private String globToRegex(String glob)
