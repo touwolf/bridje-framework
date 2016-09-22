@@ -188,11 +188,11 @@
 
 <#macro render c>
     <#if !(c.visible??) || c.visible>
-        <@renderComponent />
+        <@renderComponent c />
     </#if>
 </#macro>
 
-<#macro renderComponent c>
+<#macro renderBridjeComponent c>
     <#if c.class.package.name == "org.bridje.wui.widgets">
         <#if c.class.simpleName == "Button">
             <@button c />

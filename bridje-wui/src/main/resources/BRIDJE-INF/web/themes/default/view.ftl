@@ -27,4 +27,8 @@
     <@renderStyle "default" "bridje-wui.css" />
 </#macro>
 
+<#macro renderComponent c>
+    <@renderBridjeComponent c />
+</#macro>
+
 <@renderMain "default" />
