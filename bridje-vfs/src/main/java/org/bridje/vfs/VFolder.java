@@ -75,7 +75,7 @@ public interface VFolder extends VResource
     /**
      * Gets a list of all child folders of this folder.
      * <p>
-     * @param query The regular expression to match the folders full path that will
+     * @param query The regular expression to match the child folders relative path that will
      * be listed with this method.
      * @return A List of VFolders representing the child folders of this
      * folder.
@@ -93,7 +93,7 @@ public interface VFolder extends VResource
     /**
      * Gets a list of all child files of this folder.
      * <p>
-     * @param query The regular expression to match the files full path that will
+     * @param query The regular expression to match the child files relative path that will
      * be listed with this method.
      * @return A List of VFiles representing the child files of this
      * folder.
@@ -124,10 +124,10 @@ public interface VFolder extends VResource
      * @throws java.io.IOException If any input-output error occurs reading the file.
      */
     <T> T readFile(Path path, Class<T> resultCls) throws IOException;
-    
+
     /**
      * Finds the virtual file by the given path. And reads it content to a new
-     * instance of the result class, if the file is a MultiVFile it reads the 
+     * instance of the result class, if the file is a MultiVFile it reads the
      * content of all the files represented by it.
      *
      * @param <T> The type of the result class.
@@ -141,7 +141,7 @@ public interface VFolder extends VResource
 
     /**
      * Finds the virtual file by the given path. And reads it content to a new
-     * instance of the result class. if the file is a MultiVFile it reads the 
+     * instance of the result class. if the file is a MultiVFile it reads the
      * content of all the files represented by it.
      *
      * @param <T> The type of the result class.
@@ -171,7 +171,7 @@ public interface VFolder extends VResource
      * @param <T> The type of the result class.
      * @param path The path of the file.
      * @param contentObj The object to be serialize to the file.
-     * 
+     *
      * @throws java.io.IOException If any input-output error occurs writing the file.
      */
     <T> void writeFile(Path path, T contentObj) throws IOException;
@@ -190,7 +190,7 @@ public interface VFolder extends VResource
      * <p>
      * @param folderPath The path and name to the folder to be created.
      * @return The name of the folder created.
-     * @throws java.io.IOException If any I/O exception occurs. 
+     * @throws java.io.IOException If any I/O exception occurs.
      */
     VFolder mkDir(Path folderPath) throws IOException;
 
@@ -224,7 +224,7 @@ public interface VFolder extends VResource
      * <p>
      * @param folderPath The path and name to the folder to be created.
      * @return The name of the folder created.
-     * @throws java.io.IOException If any I/O exception occurs. 
+     * @throws java.io.IOException If any I/O exception occurs.
      */
     VFolder mkDir(String folderPath) throws IOException;
 
@@ -265,40 +265,4 @@ public interface VFolder extends VResource
      * @throws java.io.IOException If any I/O exception occurs.
      */
     <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException;
-
-    /**
-     * Travels through all files recursively from this folder and its children
-     * folders.
-     * <p>
-     * @param visitor The visitor to be used.
-     */
-    void travel(VFileVisitor visitor);
-
-    /**
-     * Travels through all folders recursively from this folder and its children
-     * folders.
-     * <p>
-     * @param visitor The visitor to be used.
-     */
-    void travel(VFolderVisitor visitor);
-
-    /**
-     * Travels through all folders recursively from this folder and its children
-     * folders.
-     * <p>
-     * @param visitor The visitor to be used.
-     * @param query The regular expression to match the files full path that will
-     * be listed with this method.
-     */
-    void travel(VFileVisitor visitor, String query);
-
-    /**
-     * Travels through all folders recursively from this folder and its children
-     * folders.
-     * <p>
-     * @param visitor The visitor to be used.
-     * @param query The regular expression to match the folders full path that will
-     * be listed with this method.
-     */
-    void travel(VFolderVisitor visitor, String query);
 }

@@ -32,22 +32,31 @@ public interface VResource
 
     /**
      * The name of this file or folder.
-     * 
+     *
      * @return An String containing the name of the file or folder.
      */
     String getName();
 
     /**
      * The path to reach this resource, including the resource´s name.
-     * 
+     *
      * @return The path to reach this resource, including the resource´s name.
      */
     Path getPath();
 
     /**
      * The path to reach this resource, excluding the resource´s name.
-     * 
+     *
      * @return The path to reach this resource, excluding the resource´s name.
      */
     Path getParentPath();
+
+    /**
+     * The path to reach this resource including the resource´s name, from an ancestor path.
+     * Will return resource full resource path if the requested path is not an ancestor of the resource.
+     *
+     * @param ancestorPath the ancestor path.
+     * @return The path to reach this resource including the resource´s name, from an ancestor path.
+     */
+    Path getPathFrom(String ancestorPath);
 }

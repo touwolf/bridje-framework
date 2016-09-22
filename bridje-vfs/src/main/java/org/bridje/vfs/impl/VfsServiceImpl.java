@@ -33,13 +33,11 @@ import org.bridje.vfs.CpSource;
 import org.bridje.vfs.FileSource;
 import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileAdapter;
-import org.bridje.vfs.VFileVisitor;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VFolderVisitor;
+import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VfsSource;
 
 @Component
 class VfsServiceImpl implements VfsService
@@ -120,7 +118,7 @@ class VfsServiceImpl implements VfsService
     {
         return root.listFiles();
     }
-    
+
     @Override
     public List<VFolder> listFolders(String query)
     {
@@ -207,30 +205,6 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public void travel(VFileVisitor visitor)
-    {
-        root.travel(visitor);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor)
-    {
-        root.travel(visitor);
-    }
-
-    @Override
-    public void travel(VFileVisitor visitor, String query)
-    {
-        root.travel(visitor, query);
-    }
-
-    @Override
-    public void travel(VFolderVisitor visitor, String query)
-    {
-        root.travel(visitor, query);
-    }
-
-    @Override
     public <T> T readFile(String path, Class<T> resultCls) throws IOException
     {
         VFile file = findFile(path);
@@ -277,7 +251,7 @@ class VfsServiceImpl implements VfsService
                     }
                 }
             }
-            
+
             List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
             if(lst != null)
             {
@@ -312,7 +286,7 @@ class VfsServiceImpl implements VfsService
                     }
                 }
             }
-            
+
             List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
             if(lst != null)
             {
@@ -393,7 +367,6 @@ class VfsServiceImpl implements VfsService
     {
         return root.canMkDir(folderPath);
     }
-    
 
     @Override
     public VFile createNewFile(String filePath) throws IOException
@@ -441,6 +414,12 @@ class VfsServiceImpl implements VfsService
     public Path getParentPath()
     {
         return root.getParentPath();
+    }
+
+    @Override
+    public Path getPathFrom(String ancestorPath)
+    {
+        return root.getPathFrom(ancestorPath);
     }
 
     @Override

@@ -21,10 +21,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import org.bridje.vfs.MultiVFile;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.MultiVFile;
 
 class ProxyFile implements MultiVFile
 {
@@ -87,7 +87,7 @@ class ProxyFile implements MultiVFile
     {
         return getDefFile().getParentPath();
     }
-    
+
     public void add(VFile vf)
     {
         files.add(vf);
@@ -143,5 +143,11 @@ class ProxyFile implements MultiVFile
     public void moveTo(VFolder folder) throws IOException
     {
         getDefFile().moveTo(folder);
+    }
+
+    @Override
+    public Path getPathFrom(String ancestorPath)
+    {
+        return getDefFile().getPathFrom(ancestorPath);
     }
 }

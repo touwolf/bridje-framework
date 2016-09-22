@@ -17,15 +17,11 @@
 package org.bridje.vfs.impl;
 
 
-import java.util.List;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VResource;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileVisitor;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VFolderVisitor;
+import org.bridje.vfs.VResource;
+import org.bridje.vfs.VfsService;
 
 abstract class AbstractResource implements VResource
 {
@@ -89,57 +85,10 @@ abstract class AbstractResource implements VResource
     {
         return getPath().toString();
     }
-    
-    protected static void travel(VFolder rootFolder, VFileVisitor visitor)
-    {
-        List<VFolder> listFolders = rootFolder.listFolders();
-        for (VFolder folder : listFolders)
-        {
-            travel(folder, visitor);
-        }
-        List<VFile> listFiles = rootFolder.listFiles();
-        for (VFile file : listFiles)
-        {
-            visitor.visit(file);
-        }
-    }
 
-    protected static void travel(VFolder rootFolder, VFolderVisitor visitor)
+    @Override
+    public Path getPathFrom(String ancestorPath)
     {
-        List<VFolder> listFolders = rootFolder.listFolders();
-        for (VFolder folder : listFolders)
-        {
-            travel(folder, visitor);
-            visitor.visit(folder);
-        }
-    }
-
-    protected static void travel(VFolder rootFolder, VFileVisitor visitor, String query)
-    {
-        List<VFolder> listFolders = rootFolder.listFolders();
-        for (VFolder folder : listFolders)
-        {
-            travel(folder, visitor, query);
-        }
-        List<VFile> listFiles = rootFolder.listFiles(query);
-        for (VFile file : listFiles)
-        {
-            visitor.visit(file);
-        }
-    }
-
-    protected static void travel(VFolder rootFolder, VFolderVisitor visitor, String query)
-    {
-        List<VFolder> listFolders = rootFolder.listFolders();
-        for (VFolder folder : listFolders)
-        {
-            travel(folder, visitor, query);
-        }
-
-        List<VFolder> visitFolders = rootFolder.listFolders(query);
-        for (VFolder folder : visitFolders)
-        {
-            visitor.visit(folder);
-        }
+        return getPath().globRemaining(ancestorPath);
     }
 }
