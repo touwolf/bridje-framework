@@ -69,5 +69,10 @@
             <artifactId>maven-plugin-annotations</artifactId>
             <version>3.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>2.4.5</version>
+        </dependency>
     </dependencies>
 </project>

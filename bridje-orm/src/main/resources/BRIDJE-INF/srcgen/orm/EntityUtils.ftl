@@ -5,6 +5,29 @@
     </#list>
 </#list>
 
+<#assign templatesMap = {} />
+<#list doc.model.template as t>
+    <#assign templatesMap = templatesMap + {t.@name: t} />
+</#list>
+<#assign nodeFields = {} />
+<#if node.@extends[0]?? && node.@extends != "" >
+    <#assign tmpl = templatesMap[node.@extends] />
+    <#list tmpl.* as f>
+        <#assign nodeFields = nodeFields + {f.@name:f} />
+    </#list>
+</#if>
+<#list node.* as f>
+    <#assign nodeFields = nodeFields + {f.@name:f} />
+</#list>
+<#assign nodeAttrs = {} />
+<#list node.@@ as a>
+    <#assign nodeAttrs = nodeAttrs + {a?node_name:a[0]} />
+</#list>
+<#assign newNode = {} />
+<#assign newNode = newNode + {"fields":nodeFields} />
+<#assign newNode = newNode + {"attrs":nodeAttrs} />
+<#assign node = newNode />
+
 <#function findType field>
     <#if field?node_name == "relation">
         <#return field.@with />
@@ -19,7 +42,8 @@
 </#function>
 
 <#function hasAtLeastOneType type>
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+        <#assign field = node.fields[fieldName] />
         <#if field?node_name == type>
             <#return true />
         </#if>
@@ -28,7 +52,8 @@
 </#function>
 
 <#function hasAtLeastOneSqlType>
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+        <#assign field = node.fields[fieldName] />
         <#if hasSqlType(field)>
             <#return true />
         </#if>
@@ -37,7 +62,8 @@
 </#function>
 
 <#function findKeyField>
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+        <#assign field = node.fields[fieldName] />
         <#if isKey(field)>
             <#return field />
         </#if>
@@ -109,10 +135,10 @@
 </#function>
 
 <#function findTableName entity>
-    <#if entity.@table[0]??>
-        <#return findTablePrefix(entity?parent) + entity.@table />
+    <#if entity.attrs.table??>
+        <#return findTablePrefix(doc.model) + entity.attrs.table />
     </#if>
-    <#return findTablePrefix(entity?parent) + toSqlName(entity.@name?uncap_first) />
+    <#return findTablePrefix(doc.model) + toSqlName(entity.attrs.name?uncap_first) />
 </#function>
 
 <#function findColumnName field>
@@ -252,11 +278,11 @@
 </#function>
 
 <#function findEntityDescription entity>
-    <#if entity.@description[0]?? >
-        <#return entity.@description />
+    <#if entity.attrs.description?? >
+        <#return entity.attrs.description />
     </#if>
-    <#if entity?parent.@defaultEntityDescription[0]?? >
-        <#return entity?parent.@defaultEntityDescription />
+    <#if doc.model.@defaultEntityDescription[0]?? >
+        <#return doc.model.@defaultEntityDescription />
     </#if>
     <#return "" />
 </#function>
