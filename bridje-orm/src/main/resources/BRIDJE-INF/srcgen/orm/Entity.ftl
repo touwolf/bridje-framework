@@ -15,31 +15,33 @@ import java.sql.Time;
 import java.util.Objects;
 
 /**
- * This class represents the ${node.@name} entity.
+ * This class represents the ${node.attrs.name} entity.
  * ${findEntityDescription(node)}
  */
 @Entity(table = "${findTableName(node)}")
-public class ${node.@name}
+public class ${node.attrs.name}
 {
     /**
      * This static field holds a reference to the Table object that represents
-     * the SQL table used by the ${node.@name} entity.
+     * the SQL table used by the ${node.attrs.name} entity.
      * ${findEntityDescription(node)}
      */
     @DbObject
-    public static Table<${node.@name}> TABLE;
+    public static Table<${node.attrs.name}> TABLE;
 
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+    <#assign field = node.fields[fieldName] />
     /**
      * This static field holds a reference to the TableColumn object that represents
      * the SQL column used by the ${field.@name} field.
      * ${findFieldDescription(field)}
      */
     @DbObject("${field.@name}")
-    public static ${findTableColumn(field)}<${node.@name}<#if !isString(field)>, ${findType(field)}</#if>> ${findColumnName(field)?upper_case};
+    public static ${findTableColumn(field)}<${node.attrs.name}<#if !isString(field)>, ${findType(field)}</#if>> ${findColumnName(field)?upper_case};
 
     </#list>
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+    <#assign field = node.fields[fieldName] />
     <#if isKey(field) >
     @Key<#if isAutoIncrement(field)>(autoIncrement = true)</#if>
     </#if>
@@ -47,7 +49,8 @@ public class ${node.@name}
     private ${findType(field)} ${field.@name};
 
     </#list>
-    <#list node.* as field>
+    <#list node.fields?keys as fieldName>
+    <#assign field = node.fields[fieldName] />
     /**
      * Gets the value of the ${field.@name} field.
      * ${findFieldDescription(field)}
@@ -96,7 +99,7 @@ public class ${node.@name}
         {
             return false;
         }
-        final ${node.@name} other = (${node.@name}) obj;
+        final ${node.attrs.name} other = (${node.attrs.name}) obj;
         return Objects.equals(this.get${findKeyField().@name?cap_first}(), other.get${findKeyField().@name?cap_first}());
     }
 }

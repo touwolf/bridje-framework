@@ -31,6 +31,7 @@ limitations under the License.
                         <file>
                             <name>${doc.model.@package?replace(".", "/")}/${node.@name}.java</name>
                             <template>orm/Entity.ftl</template>
+                            <script>orm/Entity.groovy</script>
                             <resources>
                                 <resource>BRIDJE-INF/orm/datatypes.xml</resource>
                             </resources>

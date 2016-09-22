@@ -22,6 +22,8 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -37,7 +39,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.classworlds.DuplicateRealmException;
-import org.xml.sax.InputSource;
 
 /**
  * This MOJO is responsible for generating the code specified by the other APIs.
@@ -210,5 +211,20 @@ public class GenerateMojo extends AbstractMojo
     public Enumeration<URL> findResources(String resource) throws IOException
     {
         return clsRealm.getResources(resource);
+    }
+
+    public Reader findScript(String script)
+    {
+        try
+        {
+            String file = "BRIDJE-INF/srcgen/" + script;
+            URL resources = clsRealm.getResource(file);
+            return new InputStreamReader(resources.openStream());
+        }
+        catch (IOException ex)
+        {
+            getLog().error(ex.getMessage());
+        }
+        return null;
     }
 }
