@@ -212,19 +212,4 @@ public class GenerateMojo extends AbstractMojo
     {
         return clsRealm.getResources(resource);
     }
-
-    public Reader findScript(String script)
-    {
-        try
-        {
-            String file = "BRIDJE-INF/srcgen/" + script;
-            URL resources = clsRealm.getResource(file);
-            return new InputStreamReader(resources.openStream());
-        }
-        catch (IOException ex)
-        {
-            getLog().error(ex.getMessage());
-        }
-        return null;
-    }
 }

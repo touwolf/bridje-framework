@@ -71,8 +71,6 @@ public class WriteFile
 
     private String template;
 
-    private String script;
-    
     @XmlElementWrapper(name = "resources")
     @XmlElements(
     {
@@ -112,15 +110,6 @@ public class WriteFile
     }
 
     /**
-     * 
-     * @return 
-     */
-    public String getScript()
-    {
-        return script;
-    }
-
-    /**
      * Generates the files described by this data file.
      *
      * @param mojo The GenerateMojo instance.
@@ -139,11 +128,6 @@ public class WriteFile
             model.put("node", wrap);
             model.put("resources", loadResources(mojo));
             
-            Map scModel = new HashMap();
-            scModel.put("docInput", nodeToInputStream(doc));
-            scModel.put("nodeInput", nodeToInputStream(node));
-            Object data = processScript(mojo.findScript(script), scModel);
-            model.put("data", data);
             Configuration cfg = mojo.getFreeMarkerConfiguration();
 
             //File name
@@ -163,7 +147,7 @@ public class WriteFile
             Template tmpl = cfg.getTemplate(template);
             tmpl.process(model, new OutputStreamWriter(new FileOutputStream(toGenerate), "UTF-8"));
         }
-        catch (TransformerException | ScriptException | TemplateException | IOException ex)
+        catch (TemplateException | IOException ex)
         {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
@@ -202,19 +186,6 @@ public class WriteFile
             }
         }
         return result;
-    }
-    
-    private Object processScript(Reader script, Map<String, Object> params) throws ScriptException
-    {
-        ScriptEngineManager factory = new ScriptEngineManager();
-
-        ScriptEngine engine = factory.getEngineByName("groovy");
-        Bindings bindings = engine.createBindings();
-
-        bindings.putAll(params);
-
-        engine.put("result", new Object());
-        return engine.eval(script, bindings);
     }
 
     private InputStream nodeToInputStream(Node node) throws TransformerException
