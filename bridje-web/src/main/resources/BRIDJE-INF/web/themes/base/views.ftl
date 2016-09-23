@@ -15,8 +15,13 @@
  # limitations under the License.
 -->
 
-<#include "./utils.ftl" />
-<#include "./widgets.ftl" />
+<#macro renderStyle theme style>
+    <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+</#macro>
+
+<#macro renderScript theme script>
+    <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
+</#macro>
 
 <#macro renderThemeScripts themeName>
 </#macro>
@@ -79,5 +84,11 @@
         <#else>
             <@renderFullView themeName />
         </#if>
+    </#if>
+</#macro>
+
+<#macro render c>
+    <#if !(c.visible??) || c.visible>
+        <@renderComponent c />
     </#if>
 </#macro>

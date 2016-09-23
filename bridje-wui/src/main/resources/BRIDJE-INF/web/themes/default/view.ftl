@@ -15,8 +15,8 @@
  # limitations under the License.
 -->
 
-<#include "../base/utils.ftl"/>
 <#include "../base/views.ftl"/>
+<#include "./widgets.ftl"/>
 
 <#macro renderThemeScripts themeName>
     <@renderScript "default" "jquery-min.js" />
