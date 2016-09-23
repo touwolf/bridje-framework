@@ -1,6 +1,7 @@
 
 package org.bridje.wui.widgets;
 
+import org.bridje.web.view.widgets.BaseContainer;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;

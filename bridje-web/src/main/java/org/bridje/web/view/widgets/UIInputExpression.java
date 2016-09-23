@@ -17,10 +17,12 @@
 package org.bridje.web.view.widgets;
 
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
 @XmlTransient
+@XmlJavaTypeAdapter(UIInputExpressionAdapter.class)
 public class UIInputExpression extends UIExpression
 {
     private String parameter;

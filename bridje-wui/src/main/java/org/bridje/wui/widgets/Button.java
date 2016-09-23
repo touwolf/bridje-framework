@@ -1,6 +1,7 @@
 
 package org.bridje.wui.widgets;
 
+import org.bridje.web.view.widgets.BaseWidget;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.*;

@@ -19,6 +19,7 @@ package org.bridje.web.view.widgets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
@@ -27,6 +28,7 @@ import org.bridje.ioc.thls.Thls;
  * model during a view render.
  */
 @XmlTransient
+@XmlJavaTypeAdapter(UIExpressionAdapter.class)
 public class UIExpression
 {
     private static final Logger LOG = Logger.getLogger(UIExpression.class.getName());
