@@ -67,12 +67,14 @@ public class VfsServiceReadTest
     {
         VfsService vfsServ = Ioc.context().find(VfsService.class);
         VFolder otherFolder = vfsServ.findFolder("other");
-
+        //files
         assertEquals(1, otherFolder.listFiles("*.txt").size());
         assertEquals(3, otherFolder.listFiles("**/*.txt").size());
         assertEquals(1, otherFolder.listFiles("*testfile*").size());
         assertEquals(3, otherFolder.listFiles("**/*testfile*").size());
-        //assertEquals(3, otherFolder.listFolders("**/level1/**").size());
         assertTrue(otherFolder.listFiles("**/txt/*.txt").isEmpty());
+        //folders
+        assertEquals(3, otherFolder.listFolders("**/level1/**").size());
+        assertEquals(1, otherFolder.listFolders("**/level1/l*/**").size());
     }
 }

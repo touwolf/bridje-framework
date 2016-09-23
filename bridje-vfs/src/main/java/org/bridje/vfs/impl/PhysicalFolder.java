@@ -117,6 +117,11 @@ class PhysicalFolder extends PhysicalResource implements VFolder
                         {
                             result.add(vf);
                         }
+                        // recursive
+                        if (query != null && query.contains("/"))
+                        {
+                            result.addAll(vf.listFolders(query));
+                        }
                     }
                 }
             }

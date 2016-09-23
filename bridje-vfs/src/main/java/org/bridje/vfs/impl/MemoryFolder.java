@@ -167,6 +167,11 @@ class MemoryFolder extends AbstractResource implements VFolder
             {
                 result.add(folder);
             }
+            // recursive
+            if (query != null && query.contains("/"))
+            {
+                result.addAll(folder.listFolders(query));
+            }
         }
 
         return Collections.unmodifiableList(result);
