@@ -19,18 +19,24 @@ package org.bridje.maven.plugin;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
+import groovy.util.XmlSlurper;
+import groovy.util.slurpersupport.GPathResult;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import java.util.Map;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -51,165 +57,146 @@ import org.codehaus.classworlds.DuplicateRealmException;
 public class GenerateMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "${project.basedir}/src/main/bridje", readonly = false)
-    private String dataFilesBasePath;
+    private String sourceFolder;
 
     @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)
-    private String outputBasePath;
+    private String targetFolder;
 
     @Parameter(defaultValue="${project}", readonly=true, required=true)
     private MavenProject project;
 
-    @Parameter(defaultValue = "true", readonly = false)
-    private boolean autoCreate;
-
     private ClassLoader clsRealm;
 
     private Configuration cfg;
+    
+    private GroovyShell shell;
+    
+    private List<URL> generators;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
-        File f = new File(getDataFilesBasePath());
-        if(!f.exists())
-        {
-            if(autoCreate)
-            {
-                f.getAbsoluteFile().mkdirs();
-            }
-        }
-
         try
         {
+            getLog().info("Generating Source Code");
+            Binding binding = new Binding();
+            binding.setVariable("tools", this);
+            shell = new GroovyShell(binding);
             clsRealm = ClassPathUtils.createClassPath(project);
-            createFreeMarkerConfiguration();
+            cfg = createFreeMarkerConfiguration();
+            generators = loadGenerators();
+            for (URL generator : generators)
+            {
+                try(InputStream is = generator.openStream())
+                {
+                    shell.evaluate(new InputStreamReader(is));
+                }
+            }
+            project.addCompileSourceRoot(targetFolder);
         }
         catch (IOException | DuplicateRealmException | DependencyResolutionRequiredException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
-        getLog().info("Generating Classes");
-        try
-        {
-            List<GenerationConfig> genConfigs = readAllConfigs();
-            for (GenerationConfig genConfig : genConfigs)
-            {
-                DataFile[] df = genConfig.getDataFiles();
-                if(df != null)
-                {
-                    for (DataFile dataFile : df)
-                    {
-                        try
-                        {
-                            if(!dataFile.exists(this))
-                            {
-                                if(autoCreate)
-                                {
-                                    dataFile.create(this);
-                                }
-                            }
-                            dataFile.generate(this);
-                        }
-                        catch (IOException e)
-                        {
-                            throw new MojoExecutionException(e.getMessage(), e);
-                        }
-                    }
-                }
-            }
-            project.addCompileSourceRoot(outputBasePath);
-        }
-        catch (MojoExecutionException e)
-        {
-            getLog().error(e.getMessage(), e);
-            throw  e;
-        }
     }
 
-    /**
-     * The current data files input folder path for this mojo.
-     * 
-     * @return The current data files input folder path for this mojo.
-     */
-    protected String getDataFilesBasePath()
-    {
-        return dataFilesBasePath;
-    }
-
-    /**
-     * The current output folder path for this mojo.
-     * 
-     * @return The current output folder path for this mojo.
-     */
-    protected String getOutputBasePath()
-    {
-        return outputBasePath;
-    }
-
-    /**
-     * The current maven project.
-     * 
-     * @return The maven project.
-     */
-    protected MavenProject getProject()
-    {
-        return project;
-    }
-
-    /**
-     * Gets the current freemarker configuration object.
-     * 
-     * @return The freemarker Configuration object for this MOJO.
-     */
-    public Configuration getFreeMarkerConfiguration()
-    {
-        return cfg;
-    }
-
-    private void createFreeMarkerConfiguration() throws IOException
+    private Configuration createFreeMarkerConfiguration() throws IOException
     {
         //Freemarker configuration
-        cfg = new Configuration(Configuration.VERSION_2_3_23);
+        Configuration result = new Configuration(Configuration.VERSION_2_3_23);
         TemplateLoader cpLoader = new ClassTemplateLoader(clsRealm, "/BRIDJE-INF/srcgen/");
-        cfg.setTemplateLoader(cpLoader);
-        cfg.setDefaultEncoding("UTF-8");
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        cfg.setLogTemplateExceptions(false);
+        result.setTemplateLoader(cpLoader);
+        result.setDefaultEncoding("UTF-8");
+        result.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        result.setLogTemplateExceptions(false);
+        return result;
     }
 
-    private List<GenerationConfig> readAllConfigs()
+    public File getSourceFolder()
     {
-        List<GenerationConfig> result = new LinkedList<>();
-        String file = "BRIDJE-INF/srcgen/generation.xml";
+        return new File(sourceFolder);
+    }
+
+    public File getTargetFolder()
+    {
+        return new File(targetFolder);
+    }
+
+    public File generateClass(String className, String template, Map data)
+    {
         try
         {
-            Enumeration<URL> resources = clsRealm.getResources(file);
-            while (resources.hasMoreElements())
+            File clsFile = createClassFile(className);
+            Template tmpl = cfg.getTemplate(template);
+            if(tmpl != null)
             {
-                URL url = resources.nextElement();
-                GenerationConfig cfg = readConfig(url);
-                if(cfg != null)
+                try(FileWriter fw = new FileWriter(clsFile))
                 {
-                    result.add(cfg);
+                    tmpl.process(data, fw);
                 }
             }
         }
-        catch (IOException | JAXBException ex)
+        catch (TemplateException | IOException ex)
         {
             getLog().error(ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    private File createClassFile(String className) throws IOException
+    {
+        String fName = className.replaceAll("[\\.]", File.separator);
+        File f = new File(targetFolder + File.separator + fName + ".java");
+        if(f.exists())
+        {
+            f.delete();
+        }
+        f.getParentFile().mkdirs();
+        f.createNewFile();
+        return f;
+    }
+
+    private List<URL> loadGenerators() throws IOException
+    {
+        List<URL> result = new ArrayList<>();
+        Enumeration<URL> resources = clsRealm.getResources("BRIDJE-INF/srcgen/CodeGenerator.groovy");
+        while (resources.hasMoreElements())
+        {
+            URL url = resources.nextElement();
+            result.add(url);
         }
         return result;
     }
 
-    private GenerationConfig readConfig(URL url) throws JAXBException, IOException
+    public GPathResult loadXmlFile(String fileName)
     {
-        JAXBContext ctx = JAXBContext.newInstance(GenerationConfig.class);
-        Unmarshaller unm = ctx.createUnmarshaller();
-        Object result = unm.unmarshal(url.openStream());
-        return (GenerationConfig)result;
+        try(FileReader fr = new FileReader(new File(sourceFolder + File.separator + fileName)))
+        {
+            return new XmlSlurper().parse(fr);
+        }
+        catch (Exception e)
+        {
+            getLog().error(e.getMessage(), e);
+        }
+        return null;
     }
 
-    public Enumeration<URL> findResources(String resource) throws IOException
+    public List<GPathResult> loadXmlResources(String resourceName) throws IOException
     {
-        return clsRealm.getResources(resource);
+        List<GPathResult> result = new ArrayList<>();
+        Enumeration<URL> resources = clsRealm.getResources(resourceName);
+        while (resources.hasMoreElements())
+        {
+            URL url = resources.nextElement();
+            try(InputStreamReader fr = new InputStreamReader(url.openStream()))
+            {
+                result.add(new XmlSlurper().parse(fr));
+            }
+            catch (Exception e)
+            {
+                getLog().error(e.getMessage(), e);
+            }
+        }
+        return result;
     }
 }

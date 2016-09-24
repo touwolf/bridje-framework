@@ -85,5 +85,10 @@
             <version>1.4.191</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <artifactId>groovy-all</artifactId>
+            <groupId>org.codehaus.groovy</groupId>
+            <version>2.0.5</version>
+        </dependency>
     </dependencies>
 </project>

@@ -1,87 +1,74 @@
-<#include "./EntityUtils.ftl" />
 
-package ${doc.model.@package};
+package ${entity.package};
 
-<#if hasAtLeastOneSqlType() >
-import java.sql.JDBCType;
-</#if>
 import org.bridje.orm.*;
-<#if hasAtLeastOneType("date") >
-import java.util.Date;
-</#if>
-<#if hasAtLeastOneType("time") >
-import java.sql.Time;
-</#if>
 import java.util.Objects;
 
 /**
- * This class represents the ${node.attrs.name} entity.
- * ${findEntityDescription(node)}
+ * This class represents the  ${entity.name} entity.
+ * ${entity.description!}
  */
-@Entity(table = "${findTableName(node)}")
-public class ${node.attrs.name}
+@Entity(table = "${entity.table}")
+public class ${entity.name}
 {
     /**
      * This static field holds a reference to the Table object that represents
-     * the SQL table used by the ${node.attrs.name} entity.
-     * ${findEntityDescription(node)}
+     * the SQL table used by the ${entity.name} entity.
+     * ${entity.description!}
      */
     @DbObject
-    public static Table<${node.attrs.name}> TABLE;
+    public static Table<${entity.name}> TABLE;
 
-    <#list node.fields?keys as fieldName>
-    <#assign field = node.fields[fieldName] />
+    <#list entity.fields as field>
     /**
      * This static field holds a reference to the TableColumn object that represents
-     * the SQL column used by the ${field.@name} field.
-     * ${findFieldDescription(field)}
+     * the SQL column used by the ${field.name} field.
+     * ${field.description!}
      */
-    @DbObject("${field.@name}")
-    public static ${findTableColumn(field)}<${node.attrs.name}<#if !isString(field)>, ${findType(field)}</#if>> ${findColumnName(field)?upper_case};
+    @DbObject("${field.name}")
+    public static ${field.tableColumn}<${entity.name}<#if !field.isString>, ${field.javaType}</#if>> ${field.column?upper_case};
 
     </#list>
-    <#list node.fields?keys as fieldName>
-    <#assign field = node.fields[fieldName] />
-    <#if isKey(field) >
-    @Key<#if isAutoIncrement(field)>(autoIncrement = true)</#if>
+    <#list entity.fields as field>
+    <#if field.isKey >
+    @Key<#if field.isAutoIncrement>(autoIncrement = true)</#if>
     </#if>
-    @Field(column = "${findColumnName(field)}"<#if hasLength(field)>, length = ${getLength(field)}</#if><#if isIndex(field)>, index = true</#if><#if hasSqlType(field)>, type = JDBCType.${getSqlType(field)}</#if><#if hasAdapter(field)>, adapter = ${getAdapter(field)}.class</#if>)
-    private ${findType(field)} ${field.@name};
+    @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
+    private ${field.javaType} ${field.name};
 
     </#list>
-    <#list node.fields?keys as fieldName>
-    <#assign field = node.fields[fieldName] />
+    <#list entity.fields as field>
     /**
-     * Gets the value of the ${field.@name} field.
-     * ${findFieldDescription(field)}
-     * @return A ${findType(field)} object representing the value 
-     * of the ${field.@name} field.
+     * Gets the value of the ${field.name} field.
+     * ${field.description!}
+     * @return A ${field.javaType} object representing the value 
+     * of the ${field.name} field.
      */
-    public ${findType(field)} get${field.@name?cap_first}()
+    public ${field.javaType} get${field.name?cap_first}()
     {
-        return this.${field.@name};
+        return this.${field.name};
     }
 
     /**
-     * Sets the value of the ${field.@name} field.
-     * ${findFieldDescription(field)}
-     * @param ${field.@name} The ${findType(field)} object representing the value 
-     * of the ${field.@name} field.
+     * Sets the value of the ${field.name} field.
+     * ${field.description!}
+     * @param ${field.name} The ${field.javaType} object representing the value 
+     * of the ${field.name} field.
      */
-    public void set${field.@name?cap_first}(${findType(field)} ${field.@name})
+    public void set${field.name?cap_first}(${field.javaType} ${field.name})
     {
-        this.${field.@name} = ${field.@name};
+        this.${field.name} = ${field.name};
     }
 
     </#list>
     @Override
     public int hashCode()
     {
-        if(get${findKeyField().@name?cap_first}() == null)
+        if(get${entity.keyField.name?cap_first}() == null)
         {
             return super.hashCode();
         }
-        return get${findKeyField().@name?cap_first}().hashCode();
+        return get${entity.keyField.name?cap_first}().hashCode();
     }
 
     @Override
@@ -99,7 +86,7 @@ public class ${node.attrs.name}
         {
             return false;
         }
-        final ${node.attrs.name} other = (${node.attrs.name}) obj;
-        return Objects.equals(this.get${findKeyField().@name?cap_first}(), other.get${findKeyField().@name?cap_first}());
+        final ${entity.name} other = (${entity.name}) obj;
+        return Objects.equals(this.get${entity.keyField.name?cap_first}(), other.get${entity.keyField.name?cap_first}());
     }
 }
