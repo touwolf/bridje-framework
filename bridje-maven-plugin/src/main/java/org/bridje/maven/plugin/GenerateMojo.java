@@ -38,6 +38,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -61,6 +62,9 @@ public class GenerateMojo extends AbstractMojo
 
     @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)
     private String targetFolder;
+
+    @Parameter(defaultValue="${project.build.directory}/generated-resources/bridje", readonly = false)
+    private String targetResFolder;
 
     @Parameter(defaultValue="${project}", readonly=true, required=true)
     private MavenProject project;
@@ -93,6 +97,9 @@ public class GenerateMojo extends AbstractMojo
                 }
             }
             project.addCompileSourceRoot(targetFolder);
+            Resource res = new Resource();
+            res.setDirectory(targetResFolder);
+            project.addResource(res);
         }
         catch (IOException | DuplicateRealmException | DependencyResolutionRequiredException e)
         {
@@ -142,11 +149,44 @@ public class GenerateMojo extends AbstractMojo
         }
         return null;
     }
+    
+    public File generateResource(String className, String template, Map data)
+    {
+        try
+        {
+            File clsFile = createResourceFile(className);
+            Template tmpl = cfg.getTemplate(template);
+            if(tmpl != null)
+            {
+                try(FileWriter fw = new FileWriter(clsFile))
+                {
+                    tmpl.process(data, fw);
+                }
+            }
+        }
+        catch (TemplateException | IOException ex)
+        {
+            getLog().error(ex.getMessage(), ex);
+        }
+        return null;
+    }
 
     private File createClassFile(String className) throws IOException
     {
         String fName = className.replaceAll("[\\.]", File.separator);
         File f = new File(targetFolder + File.separator + fName + ".java");
+        if(f.exists())
+        {
+            f.delete();
+        }
+        f.getParentFile().mkdirs();
+        f.createNewFile();
+        return f;
+    }
+    
+    private File createResourceFile(String fileName) throws IOException
+    {
+        File f = new File(targetResFolder + File.separator + fileName);
         if(f.exists())
         {
             f.delete();

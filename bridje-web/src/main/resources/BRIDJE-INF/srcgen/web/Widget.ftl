@@ -1,92 +1,56 @@
 
-package ${entity.package};
+package ${widget.package};
 
-import org.bridje.orm.*;
-import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
+import org.bridje.web.view.widgets.*;
 
-/**
- * This class represents the  ${entity.name} entity.
- * ${entity.description!}
- */
-@Entity(table = "${entity.table}")
-public class ${entity.name}
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ${widget.name} extends ${widget.base}
 {
-    /**
-     * This static field holds a reference to the Table object that represents
-     * the SQL table used by the ${entity.name} entity.
-     * ${entity.description!}
-     */
-    @DbObject
-    public static Table<${entity.name}> TABLE;
-
-    <#list entity.fields as field>
-    /**
-     * This static field holds a reference to the TableColumn object that represents
-     * the SQL column used by the ${field.name} field.
-     * ${field.description!}
-     */
-    @DbObject("${field.name}")
-    public static ${field.tableColumn}<${entity.name}<#if !field.isString>, ${field.javaType}</#if>> ${field.column?upper_case};
-
-    </#list>
-    <#list entity.fields as field>
-    <#if field.isKey >
-    @Key<#if field.isAutoIncrement>(autoIncrement = true)</#if>
+    <#list widget.fields as f>
+    <#if f.fieldType == "attribute">
+    @XmlAttribute
+    <#elseif f.fieldType == "value">
+    @XmlValue
     </#if>
-    @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
-    private ${field.javaType} ${field.name};
+    private ${f.javaType} ${f.name};
 
     </#list>
-    <#list entity.fields as field>
-    /**
-     * Gets the value of the ${field.name} field.
-     * ${field.description!}
-     * @return A ${field.javaType} object representing the value 
-     * of the ${field.name} field.
-     */
-    public ${field.javaType} get${field.name?cap_first}()
+    <#list widget.fields as f>
+    <#if f.javaType == "UIExpression">
+    public ${f.javaType} get${f.name?cap_first}Expression()
     {
-        return this.${field.name};
+        return ${f.name};
     }
 
-    /**
-     * Sets the value of the ${field.name} field.
-     * ${field.description!}
-     * @param ${field.name} The ${field.javaType} object representing the value 
-     * of the ${field.name} field.
-     */
-    public void set${field.name?cap_first}(${field.javaType} ${field.name})
+    public ${f.resultType} get${f.name?cap_first}()
     {
-        this.${field.name} = ${field.name};
+        return get(${f.name}, ${f.resultType}.class, null);
     }
+    <#elseif f.javaType == "UIInputExpression">
+    public ${f.resultType} get${f.name?cap_first}Expression()
+    {
+        return ${f.name};;
+    }
+
+    public ${f.resultType} get${f.name?cap_first}()
+    {
+        return get(${f.name}, ${f.resultType}.class, null);
+    }
+    <#elseif f.javaType == "UIEvent">
+    public ${f.javaType} get${f.name?cap_first}()
+    {
+        return ${f.name};
+    }
+    <#else>
+    public ${f.javaType} get${f.name?cap_first}()
+    {
+        return ${f.name};
+    }
+    </#if>
 
     </#list>
-    @Override
-    public int hashCode()
-    {
-        if(get${entity.keyField.name?cap_first}() == null)
-        {
-            return super.hashCode();
-        }
-        return get${entity.keyField.name?cap_first}().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final ${entity.name} other = (${entity.name}) obj;
-        return Objects.equals(this.get${entity.keyField.name?cap_first}(), other.get${entity.keyField.name?cap_first}());
-    }
 }

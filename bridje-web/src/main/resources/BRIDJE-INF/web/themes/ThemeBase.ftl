@@ -86,9 +86,3 @@
         </#if>
     </#if>
 </#macro>
-
-<#macro render c>
-    <#if !(c.visible??) || c.visible>
-        <@renderComponent c />
-    </#if>
-</#macro>

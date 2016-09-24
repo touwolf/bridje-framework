@@ -67,7 +67,7 @@ public class ThemesManager
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = findThemeName();
-            String templatePath = themeName + "/view.ftl";
+            String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
             data.put("view", view);
@@ -87,7 +87,7 @@ public class ThemesManager
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = findThemeName();
-            String templatePath = themeName + "/view.ftl";
+            String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
             data.put("view", view);
