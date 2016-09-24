@@ -26,13 +26,13 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
 
-class ProxyFile implements MultiVFile
+class ProxyFile extends MimeType implements MultiVFile
 {
     private final List<VFile> files;
 
     public ProxyFile()
     {
-        this.files = new LinkedList<>();
+        files = new LinkedList<>();
     }
 
     public ProxyFile(List<VFile> files)
@@ -107,6 +107,12 @@ class ProxyFile implements MultiVFile
             return getName().substring(lastIndexOf+1);
         }
         return "";
+    }
+
+    @Override
+    public String getMimeType()
+    {
+        return MimeType.getInstance().getMimeType(getExtension());
     }
 
     @Override

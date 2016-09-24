@@ -16,7 +16,6 @@
 
 package org.bridje.vfs.impl;
 
-
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFolder;

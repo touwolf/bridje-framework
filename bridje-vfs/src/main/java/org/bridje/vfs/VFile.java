@@ -33,7 +33,7 @@ public interface VFile extends VResource
      *         exception may be throw if any input output operation fails.
      */
     InputStream openForRead() throws IOException;
-    
+
     /**
      * Open a file's OutputStream for writing it's content.
      * <p>
@@ -49,39 +49,47 @@ public interface VFile extends VResource
      * @return true the file can be open for writing.
      */
     boolean canOpenForWrite();
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     boolean canDelete();
 
     /**
-     * 
+     *
      * @throws java.io.IOException
      */
     void delete() throws IOException;
 
     /**
-     * 
-     * @param folder 
-     * @throws java.io.IOException 
+     *
+     * @param folder
+     * @throws java.io.IOException
      */
     void copyTo(VFolder folder) throws IOException;
 
     /**
-     * 
-     * @param folder 
-     * @throws java.io.IOException 
+     *
+     * @param folder
+     * @throws java.io.IOException
      */
     void moveTo(VFolder folder) throws IOException;
-    
+
     /**
      * Gets the extension part of the name of the file.
-     * 
+     *
      * @return The extension part of the name of the file.
      */
     public String getExtension();
+
+    /**
+     * Gets the mime type associated to the extension of the file.
+     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">Mime Types</a>
+     *
+     * @return The mime type of the file.
+     */
+    public String getMimeType();
 
     /**
      * Reads it content to a new instance of the result class.

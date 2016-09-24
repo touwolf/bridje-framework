@@ -77,4 +77,13 @@ public class VfsServiceReadTest
         assertEquals(3, otherFolder.listFolders("**/level1/**").size());
         assertEquals(1, otherFolder.listFolders("**/level1/l*/**").size());
     }
+
+    @Test
+    public void testMimeType()
+    {
+        VfsService vfsServ = Ioc.context().find(VfsService.class);
+        VFile script = vfsServ.findFile("other/script.js");
+        assertNotNull(script);
+        assertEquals("text/javascript", script.getMimeType());
+    }
 }

@@ -23,9 +23,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
+import org.bridje.vfs.VfsSource;
 
 class PhysicalFile extends PhysicalResource implements VFile
 {
@@ -66,6 +66,12 @@ class PhysicalFile extends PhysicalResource implements VFile
             return getName().substring(lastIndexOf+1);
         }
         return "";
+    }
+
+    @Override
+    public String getMimeType()
+    {
+        return MimeType.getInstance().getMimeType(getExtension());
     }
 
     @Override
