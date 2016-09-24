@@ -1,14 +1,15 @@
 [#ftl]
-<#include "../ThemeBase.ftl />
+<#ftl encoding="UTF-8">
+<#include "../ThemeBase.ftl" >
 
 [#list theme.widgets as w]
 <#macro render${w.name} widget>
 [#compress]${w.render}[/#compress]
 </#macro>
-[/#list]
 
-<#macro render widget>
-    <#if widget.class.package.name == "org.bridje.wui.widgets">
+[/#list]
+<#macro renderWidget widget>
+    <#if widget.class.package.name == "${theme.package}">
         <#switch widget.class.simpleName>
             [#list theme.widgets as w]
             <#case "${w.name}">
@@ -20,3 +21,11 @@
         </#switch>
     </#if>
 </#macro>
+
+<#macro renderThemeScripts themeName>
+</#macro>
+
+<#macro renderThemeStyles themeName>
+</#macro>
+
+<@renderMain "${theme.name}" />

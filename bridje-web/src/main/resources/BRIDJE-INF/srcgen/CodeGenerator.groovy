@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+def loadFieldChildrens = { field, fieldNode ->
+    def result = [:];
+    fieldNode.'*'.each{ node ->
+        result[node.name()] = node.'@type'.text();
+    };
+    field['childrens'] = result;
+};
+
 def loadFieldTypes = { field, fieldNode ->
     switch(fieldNode.name())
     {
@@ -65,6 +73,13 @@ def loadFieldTypes = { field, fieldNode ->
             field['fieldType'] = "value";
             field['javaType'] = "UIEvent";
             break;
+        case "childrens":
+            field['fieldType'] = "childrens";
+            field['javaType'] = "java.util.List<Widget>";
+            field['childrens'] = [:];
+            field['wrapper'] = fieldNode.'@wrapper'.text();
+            loadFieldChildrens(field, fieldNode);
+            break;
     }
 }
 
@@ -73,6 +88,7 @@ def generateWidgetsAndTheme = { ->
     def theme = [:];
     theme['package'] = ormData.'@package'.text();
     theme['name'] = ormData.'@name'.text();
+    theme['namespace'] = ormData.'@namespace'.text();
     theme['widgets'] = [];
 
     ormData.'widgets'.'*'.each{ widgetNode ->
@@ -83,6 +99,7 @@ def generateWidgetsAndTheme = { ->
         widget['fullName'] = widget['package'] + "." + widget['name'];
         widget['base'] = widgetNode.'@base'.text();
         widget['render'] = widgetNode.'render'.text();
+        widget['rootElement'] = widgetNode.'@rootElement'.text();
         if(widget['base'] == "")
         {
             widget['base'] = "Widget";
@@ -107,6 +124,7 @@ def generateWidgetsAndTheme = { ->
     def themeFile = "BRIDJE-INF/web/themes/" + theme['name'] + "/Theme.ftl";
     def data = ['theme':theme];
     tools.generateResource(themeFile, "web/Theme.ftl", data);
+    tools.generateClass(theme['package'] + ".package-info", "web/package-info.ftl", data);
 };
 
 generateWidgetsAndTheme();

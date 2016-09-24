@@ -29,6 +29,10 @@
 <#macro renderThemeStyles themeName>
 </#macro>
 
+<#macro renderWidget widget>
+    macro renderWidget must be implemented for this theme.
+</#macro>
+
 <#macro renderMetaTag>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,7 +65,7 @@
     <input type="hidden" name="__view" value="${view.name}" />
     <input type="hidden" name="__action" value="" />
     <@renderState />
-    <@render currentWidget />
+    <@renderWidget currentWidget />
 </#macro>
 
 <#macro renderState>
