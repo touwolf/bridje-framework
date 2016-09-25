@@ -203,7 +203,7 @@ public final class WebScope implements Scope
      *
      * @return A map with all the post parameters sent by the client.
      */
-    public Map<String, String> getPostParameters()
+    public Map<String, List<String>> getPostParameters()
     {
         return req.getPostParameters();
     }
@@ -217,6 +217,17 @@ public final class WebScope implements Scope
     public String getPostParameter(String parameter)
     {
         return req.getPostParameter(parameter);
+    }
+
+    /**
+     * Gets the specific post parameter from the parameters map.
+     *
+     * @param parameter The post parameter name.
+     * @return The post parameter value or null if it does not exists.
+     */
+    public String[] getPostParameterAll(String parameter)
+    {
+        return req.getPostParameterAll(parameter);
     }
 
     /**
@@ -250,6 +261,17 @@ public final class WebScope implements Scope
     public String getGetParameter(String parameter)
     {
         return req.getGetParameter(parameter);
+    }
+
+    /**
+     * Gets the specific "GET" parameter from the parameters map.
+     *
+     * @param parameter The "GET" parameter name.
+     * @return The "GET" parameter value or null if it does not exists.
+     */
+    public String[] getGetParameterAll(String parameter)
+    {
+        return req.getGetParameterAll(parameter);
     }
 
     /**

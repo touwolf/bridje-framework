@@ -149,7 +149,7 @@ public interface HttpBridletRequest
      *
      * @return A map with all the post parameters sent by the client.
      */
-    Map<String, String> getPostParameters();
+    Map<String, List<String>> getPostParameters();
 
     /**
      * Gets the specific post parameter from the parameters map.
@@ -158,6 +158,14 @@ public interface HttpBridletRequest
      * @return The post parameter value or null if it does not exists.
      */
     String getPostParameter(String parameter);
+
+    /**
+     * Gets the specific post parameter from the parameters map.
+     *
+     * @param parameter The post parameter name.
+     * @return The post parameter value or null if it does not exists.
+     */
+    String[] getPostParameterAll(String parameter);    
 
     /**
      * Gets all the post parameters names for this request if any.
@@ -183,6 +191,14 @@ public interface HttpBridletRequest
      */
     String getGetParameter(String parameter);
 
+    /**
+     * Gets the specific "GET" parameter from the parameters map.
+     *
+     * @param parameter The "GET" parameter name.
+     * @return The "GET" parameter value or null if it does not exists.
+     */
+    String[] getGetParameterAll(String parameter);
+    
     /**
      * Gets all the "GET" parameters names for this request if any.
      *

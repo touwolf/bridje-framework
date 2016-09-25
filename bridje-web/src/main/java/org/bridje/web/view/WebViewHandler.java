@@ -133,20 +133,7 @@ class WebViewHandler implements HttpBridlet
 
     private void updateParameters(WebView view, HttpBridletRequest req)
     {
-        String[] names = req.getPostParametersNames();
-        for (String name : names)
-        {
-            if(!name.startsWith("__state.")
-                    && !name.startsWith("__view")
-                    && !name.startsWith("__action"))
-            {
-                UIInputExpression input = view.findInput(name);
-                if(input != null)
-                {
-                    input.set(req.getPostParameter(name));
-                }
-            }
-        }
+        view.getRoot().readInput(req);
     }
 
     private Object invokeAction(HttpBridletRequest req, WebView view)

@@ -23,7 +23,13 @@
     <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
 </#macro>
 
+<#macro renderDefaultThemeScripts themeName>
+    <@renderScript "default" "jquery-min.js" />
+    <@renderScript "default" "bridje-view-update.js" />
+</#macro>
+
 <#macro renderThemeScripts themeName>
+    <@renderDefaultThemeScripts themeName />
 </#macro>
 
 <#macro renderThemeStyles themeName>

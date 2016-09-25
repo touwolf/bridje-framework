@@ -34,15 +34,23 @@ public class UIInputExpression extends UIExpression
 
     public <T> void set(T value)
     {
-        Thls.get(ElEnvironment.class).set(getExpression(), value);
+        if(isValid())
+        {
+            Thls.get(ElEnvironment.class).set(getExpression(), value);
+        }
     }
     
     public String getParameter()
     {
-        if(parameter == null)
+        if(parameter == null && isValid())
         {
             parameter = getExpression().substring(2, getExpression().length()-1);
         }
         return parameter;
+    }
+    
+    public boolean isValid()
+    {
+        return getExpression().startsWith("${") && getExpression().endsWith("}");
     }
 }

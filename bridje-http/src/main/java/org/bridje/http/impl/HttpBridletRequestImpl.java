@@ -53,7 +53,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     private String contentType;
 
-    private Map<String, String> postParameters;
+    private Map<String, List<String>> postParameters;
 
     private Map<String, List<String>> getParameters;
 
@@ -269,11 +269,17 @@ class HttpBridletRequestImpl implements HttpBridletRequest
         {
             postParameters = new HashMap<>();
         }
-        postParameters.put(name, value);
+        List<String> vals = postParameters.get(name);
+        if(vals == null)
+        {
+            vals = new ArrayList<>();
+            postParameters.put(name, vals);
+        }
+        vals.add(value);
     }
 
     @Override
-    public Map<String, String> getPostParameters()
+    public Map<String, List<String>> getPostParameters()
     {
         if(postParameters == null)
         {
@@ -285,7 +291,24 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     @Override
     public String getPostParameter(String parameter)
     {
-        return getPostParameters().get(parameter);
+        List<String> par = getPostParameters().get(parameter);
+        if(par != null)
+        {
+            return par.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public String[] getPostParameterAll(String parameter)
+    {
+        List<String> par = getPostParameters().get(parameter);
+        if(par != null)
+        {
+            String[] result = new String[par.size()];
+            return par.toArray(result);
+        }
+        return null;
     }
 
     @Override
@@ -330,6 +353,18 @@ class HttpBridletRequestImpl implements HttpBridletRequest
         return r.get(0);
     }
 
+    @Override
+    public String[] getGetParameterAll(String parameter)
+    {
+        List<String> par = getGetParameters().get(parameter);
+        if(par != null)
+        {
+            String[] result = new String[par.size()];
+            return par.toArray(result);
+        }
+        return null;
+    }
+    
     @Override
     public String[] getGetParametersNames()
     {

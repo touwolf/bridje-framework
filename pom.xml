@@ -32,7 +32,6 @@
         <module>bridje-orm</module>
         <module>bridje-maven-plugin</module>
         <module>bridje-web</module>
-        <module>bridje-wui</module>
         <module>bridje-el</module>
     </modules>
 

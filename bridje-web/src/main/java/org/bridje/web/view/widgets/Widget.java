@@ -17,10 +17,15 @@
 package org.bridje.web.view.widgets;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.ioc.IocContext;
+import org.bridje.web.WebScope;
 
 /**
  * Base class for all the widgets.
@@ -51,6 +56,14 @@ public abstract class Widget
         return def;
     }
     
+    public static <T> void set(UIInputExpression expression, T data)
+    {
+        if(expression != null && expression.isValid())
+        {
+            expression.set(data);
+        }
+    }
+    
     /**
      * Gets all the UIInputExpressions in this widget.
      * 
@@ -58,7 +71,7 @@ public abstract class Widget
      */
     public List<UIInputExpression> inputs()
     {
-        return new ArrayList<>();
+        return Collections.EMPTY_LIST;
     }
 
     /**
@@ -68,7 +81,7 @@ public abstract class Widget
      */
     public List<UIEvent> events()
     {
-        return new ArrayList<>();
+        return Collections.EMPTY_LIST;
     }
 
     /**
@@ -78,6 +91,18 @@ public abstract class Widget
      */
     public List<? extends Widget> childs()
     {
-        return new ArrayList<>();
+        return Collections.EMPTY_LIST;
+    }
+
+    /**
+     * 
+     * @param req 
+     */
+    public void readInput(HttpBridletRequest req)
+    {
+        inputs().stream()
+                .forEach((input) -> set(input, req.getPostParameterAll(input.getParameter())));
+        childs().stream()
+                .forEach((widget) -> widget.readInput(req));
     }
 }

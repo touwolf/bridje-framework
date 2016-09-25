@@ -44,7 +44,12 @@ class IocEnviromentImpl implements ElEnvironment
     @Override
     public <T> void set(String expression, T value)
     {
-        ValueExpression valueExp = factory.createValueExpression(context, expression, value.getClass());
+        Class<?> cls = Object.class;
+        if(value != null)
+        {
+            cls = value.getClass();
+        }
+        ValueExpression valueExp = factory.createValueExpression(context, expression, cls);
         valueExp.setValue(context, value);
     }
 

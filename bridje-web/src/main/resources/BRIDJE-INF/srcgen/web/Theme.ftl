@@ -23,6 +23,7 @@
 </#macro>
 
 <#macro renderThemeScripts themeName>
+    <@renderDefaultThemeScripts themeName />
 </#macro>
 
 <#macro renderThemeStyles themeName>

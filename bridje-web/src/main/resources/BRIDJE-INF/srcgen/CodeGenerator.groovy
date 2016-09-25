@@ -75,7 +75,7 @@ def loadFieldTypes = { field, fieldNode ->
             break;
         case "childrens":
             field['fieldType'] = "childrens";
-            field['javaType'] = "java.util.List<Widget>";
+            field['javaType'] = "List<Widget>";
             field['childrens'] = [:];
             field['wrapper'] = fieldNode.'@wrapper'.text();
             loadFieldChildrens(field, fieldNode);
@@ -105,6 +105,10 @@ def generateWidgetsAndTheme = { ->
             widget['base'] = "Widget";
         }
 
+        widget['hasInputs'] = false;
+        widget['hasChildrens'] = false;
+        widget['hasEvents'] = false;
+        
         widget['fields'] = [];
         widget['fieldsMap'] = [:];
         widgetNode.'fields'.'*'.each{ fieldNode ->
@@ -112,6 +116,12 @@ def generateWidgetsAndTheme = { ->
             field['name'] = fieldNode.'@name'.text();
             field['resultType'] = fieldNode.'@type'.text();
             loadFieldTypes(field, fieldNode);
+            if(field['javaType'] == 'UIInputExpression')
+                widget['hasInputs'] = true;
+            if(field['fieldType'] == 'childrens')
+                widget['hasChildrens'] = true;
+            if(field['javaType'] == 'UIEvent')
+                widget['hasEvents'] = true;
 
             widget['fields'] << field;
             widget['fieldsMap'][field['name']] = field;
