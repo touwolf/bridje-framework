@@ -1,6 +1,7 @@
 
 package ${entity.package};
 
+import java.sql.JDBCType;
 import org.bridje.orm.*;
 import java.util.Objects;
 

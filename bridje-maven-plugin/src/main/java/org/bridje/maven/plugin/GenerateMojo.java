@@ -188,7 +188,7 @@ public class GenerateMojo extends AbstractMojo
         f.createNewFile();
         return f;
     }
-    
+
     private File createResourceFile(String fileName) throws IOException
     {
         File f = new File(targetResFolder + File.separator + fileName);
@@ -211,6 +211,12 @@ public class GenerateMojo extends AbstractMojo
             result.add(url);
         }
         return result;
+    }
+
+    public boolean fileExists(String fileName)
+    {
+        File f = new File(sourceFolder + File.separator + fileName);
+        return f.exists() && f.isFile();
     }
 
     public GPathResult loadXmlFile(String fileName)
