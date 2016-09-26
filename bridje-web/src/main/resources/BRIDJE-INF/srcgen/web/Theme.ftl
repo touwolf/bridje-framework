@@ -23,10 +23,23 @@
 </#macro>
 
 <#macro renderThemeScripts themeName>
+    [#list theme.resources as r]
+        [#list r.scripts as s]
+            <@renderScript themeName "${s.href}" />
+        [/#list]
+    [/#list]
     <@renderDefaultThemeScripts themeName />
 </#macro>
 
 <#macro renderThemeStyles themeName>
+    [#list theme.resources as r]
+        [#list r.styles as s]
+            <@renderStyle themeName "${s.href}" />
+        [/#list]
+        [#list r.fonts as f]
+            <!-- font "${f.href}" -->
+        [/#list]
+    [/#list]
 </#macro>
 
 <@renderMain "${theme.name}" />

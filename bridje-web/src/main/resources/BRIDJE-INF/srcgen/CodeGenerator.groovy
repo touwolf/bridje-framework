@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-def loadFieldChildrens = { field, fieldNode ->
+def loadFieldChildren = { field, fieldNode ->
     def result = [:];
     fieldNode.'*'.each{ node ->
         result[node.name()] = node.'@type'.text();
     };
-    field['childrens'] = result;
+    field['children'] = result;
 };
 
 def loadFieldTypes = { field, fieldNode ->
@@ -73,12 +73,16 @@ def loadFieldTypes = { field, fieldNode ->
             field['fieldType'] = "value";
             field['javaType'] = "UIEvent";
             break;
-        case "childrens":
-            field['fieldType'] = "childrens";
+        case "children":
+            field['fieldType'] = "children";
             field['javaType'] = "List<Widget>";
-            field['childrens'] = [:];
+            field['children'] = [:];
             field['wrapper'] = fieldNode.'@wrapper'.text();
-            loadFieldChildrens(field, fieldNode);
+            loadFieldChildren(field, fieldNode);
+            break;
+        case "child":
+            field['fieldType'] = "child";
+            field['javaType'] = field['resultType'];
             break;
     }
 }
@@ -90,7 +94,41 @@ def generateWidgetsAndTheme = { ->
     theme['name'] = ormData.'@name'.text();
     theme['namespace'] = ormData.'@namespace'.text();
     theme['widgets'] = [];
+    theme['resources'] = [];
+    theme['resourcesMap'] = [:];
 
+    ormData.'resources'.'*'.each{ resNode ->
+        def resource = [:];
+
+        resource['scripts'] = [];
+        resource['styles'] = [];
+        resource['fonts'] = [];
+        resource['name'] = resNode.'@name'.text();
+        resNode.'*'.each{ rNode ->
+            if(rNode.name() == "script")
+            {
+                def script = [:];
+                script['href'] = rNode.'@href'.text();
+                resource['scripts'] << script;
+            }
+            else if(rNode.name() == "style")
+            {
+                def style = [:];
+                style['href'] = rNode.'@href'.text();
+                resource['styles'] << style;
+            }
+            else if(rNode.name() == "font")
+            {
+                def font = [:];
+                font['href'] = rNode.'@href'.text();
+                resource['fonts'] << font;
+            }
+        };
+        
+        theme['resources'] << resource;
+        theme['resourcesMap'][resource['name']] = resource;
+    };
+    
     ormData.'widgets'.'*'.each{ widgetNode ->
 
         def widget = [:];
@@ -106,7 +144,7 @@ def generateWidgetsAndTheme = { ->
         }
 
         widget['hasInputs'] = false;
-        widget['hasChildrens'] = false;
+        widget['hasChildren'] = false;
         widget['hasEvents'] = false;
         
         widget['fields'] = [];
@@ -115,11 +153,16 @@ def generateWidgetsAndTheme = { ->
             def field = [:];
             field['name'] = fieldNode.'@name'.text();
             field['resultType'] = fieldNode.'@type'.text();
+            field['defaultValue'] = fieldNode.'@def'.text();
+            if(field['defaultValue'] == "")
+            {
+                field['defaultValue'] = "null";
+            }
             loadFieldTypes(field, fieldNode);
             if(field['javaType'] == 'UIInputExpression')
                 widget['hasInputs'] = true;
-            if(field['fieldType'] == 'childrens')
-                widget['hasChildrens'] = true;
+            if(field['fieldType'] == 'children' || field['fieldType'] == 'child')
+                widget['hasChildren'] = true;
             if(field['javaType'] == 'UIEvent')
                 widget['hasEvents'] = true;
 

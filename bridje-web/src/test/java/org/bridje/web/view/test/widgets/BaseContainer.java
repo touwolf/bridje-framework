@@ -22,7 +22,7 @@ public class BaseContainer extends BaseWidget
     private UIExpression childStyleClass;
 
     /**
-     * Gets the style class to be apply to the childrens.
+     * Gets the style class to be apply to the children.
      * 
      * @return The style class to be apply to the childerns
      */

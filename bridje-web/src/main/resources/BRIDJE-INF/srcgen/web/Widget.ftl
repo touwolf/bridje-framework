@@ -21,7 +21,7 @@ import org.bridje.web.view.widgets.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ${widget.name} extends ${widget.base}
 {
-    <#if widget.hasChildrens>
+    <#if widget.hasChildren>
     @XmlTransient
     private List<Widget> childs;
 
@@ -41,15 +41,20 @@ public class ${widget.name} extends ${widget.base}
     @XmlAttribute
     <#elseif f.fieldType == "value">
     @XmlValue
-    <#elseif f.fieldType == "childrens">
+    <#elseif f.fieldType == "children">
     <#if f.wrapper != "">
     @XmlElementWrapper( name = "${f.wrapper}" )
     </#if>
     @XmlElements(
     {
-        <#list f.childrens?keys as k>
-        @XmlElement( name = "${k}", type = ${f.childrens[k]}.class ),
+        <#list f.children?keys as k>
+        @XmlElement( name = "${k}", type = ${f.children[k]}.class ),
         </#list>
+    })
+    <#elseif f.fieldType == "child">
+    @XmlElements(
+    {
+        @XmlElement( name = "${f.name}", type = ${f.javaType}.class ),
     })
     </#if>
     private ${f.javaType} ${f.name};
@@ -64,7 +69,7 @@ public class ${widget.name} extends ${widget.base}
 
     public ${f.resultType} get${f.name?cap_first}()
     {
-        return get(${f.name}, ${f.resultType}.class, null);
+        return get(${f.name}, ${f.resultType}.class, ${f.defaultValue});
     }
     <#elseif f.javaType == "UIInputExpression">
     public ${f.javaType} get${f.name?cap_first}Expression()
@@ -74,7 +79,7 @@ public class ${widget.name} extends ${widget.base}
 
     public ${f.resultType} get${f.name?cap_first}()
     {
-        return get(${f.name}, ${f.resultType}.class, null);
+        return get(${f.name}, ${f.resultType}.class, ${f.defaultValue});
     }
     <#elseif f.javaType == "UIEvent">
     public ${f.javaType} get${f.name?cap_first}()
@@ -89,7 +94,7 @@ public class ${widget.name} extends ${widget.base}
     </#if>
 
     </#list>
-    <#if widget.hasChildrens>
+    <#if widget.hasChildren>
     @Override
     public List<? extends Widget> childs()
     {
@@ -97,10 +102,16 @@ public class ${widget.name} extends ${widget.base}
         {
             childs = new ArrayList<>();
             <#list widget.fields as f>
-            <#if f.fieldType == "childrens">
+            <#if f.fieldType == "children">
             if(${f.name} != null)
             {
                 childs.addAll(${f.name});
+            }
+            </#if>
+            <#if f.fieldType == "child">
+            if(${f.name} != null)
+            {
+                childs.add(${f.name});
             }
             </#if>
             </#list>

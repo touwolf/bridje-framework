@@ -173,7 +173,12 @@ public class GenerateMojo extends AbstractMojo
 
     private File createClassFile(String className) throws IOException
     {
-        String fName = className.replaceAll("[\\.]", File.separator);
+        String sep = File.separator;
+        if(sep.equals("\\"))
+        {
+            sep = "\\\\"; 
+        }
+        String fName = className.replaceAll("[\\.]", sep);
         File f = new File(targetFolder + File.separator + fName + ".java");
         if(f.exists())
         {
