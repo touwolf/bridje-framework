@@ -16,11 +16,19 @@
 -->
 
 <#macro renderStyle theme style>
-    <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+    <#if script?starts_with("http://") || script?starts_with("https://")>
+        <link rel="stylesheet" href="${style}" />
+    <#else>
+        <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+    </#if>
 </#macro>
 
 <#macro renderScript theme script>
-    <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
+    <#if script?starts_with("http://") || script?starts_with("https://")>
+        <script src="${script}" type="text/javascript"></script>
+    <#else>
+        <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
+    </#if>
 </#macro>
 
 <#macro renderDefaultThemeScripts themeName>

@@ -20,8 +20,10 @@ import org.bridje.web.view.widgets.Widget;
 import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.widgets.UIInputExpression;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.xml.bind.annotation.*;
 
 /**
@@ -52,6 +54,12 @@ public class WebView
 
     @XmlTransient
     private Map<String, UIInputExpression> inputs;
+    
+    @XmlTransient
+    private Set<Class<?>> widgets;
+
+    @XmlTransient
+    private Set<String> resources;
 
     /**
      * Gets a list of meta information tags information to be rendered with 
@@ -104,6 +112,24 @@ public class WebView
         return root;
     }
 
+    public Set<String> getResources()
+    {
+        if(resources == null)
+        {
+            initResources();
+        }
+        return resources;
+    }
+    
+    public Set<Class<?>> getWidgets()
+    {
+        if(widgets == null)
+        {
+            initWidgets();
+        }
+        return widgets;
+    }
+
     /**
      * Finds the input expression that match the given string.
      *
@@ -145,6 +171,26 @@ public class WebView
         }
     }
 
+    private synchronized void initWidgets()
+    {
+        if (widgets == null)
+        {
+            Set<Class<?>> widgetsSet = new HashSet<>();
+            findWidgets(root, widgetsSet);
+            widgets = widgetsSet;
+        }
+    }
+    
+    private synchronized void initResources()
+    {
+        if (resources == null)
+        {
+            Set<String> resourcesSet = new HashSet<>();
+            findResources(root, resourcesSet);
+            resources = resourcesSet;
+        }
+    }
+
     private synchronized void initInputs()
     {
         if (inputs == null)
@@ -165,5 +211,17 @@ public class WebView
     {
         widget.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
         widget.childs().forEach((child) -> findInputs(child, inputsMap));
+    }
+
+    private void findResources(Widget widget, Set<String> resourcesSet)
+    {
+        widget.resources().forEach((r) -> resourcesSet.add(r));
+        widget.childs().forEach((child) -> findResources(child, resourcesSet));
+    }
+
+    private void findWidgets(Widget widget, Set<Class<?>> widgetsSet)
+    {
+        widgetsSet.add(widget.getClass());
+        widget.childs().forEach((child) -> findWidgets(child, widgetsSet));
     }
 }

@@ -172,6 +172,11 @@ def generateWidgetsAndTheme = { ->
                 widget['fieldsMap'][field['name']] = field;
             };
 
+            widget['resources'] = [];
+            widgetNode.'resources'.'*'.each{ resNode ->
+                widget['resources'] << resNode.'@name'.text();
+            };
+            
             theme['widgets'] << widget;
             def data = ['widget':widget];
             tools.generateClass(widget['fullName'], "web/Widget.ftl", data);

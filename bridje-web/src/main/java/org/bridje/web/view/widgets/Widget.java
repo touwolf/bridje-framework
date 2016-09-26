@@ -16,16 +16,12 @@
 
 package org.bridje.web.view.widgets;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
-import org.bridje.ioc.IocContext;
-import org.bridje.web.WebScope;
 
 /**
  * Base class for all the widgets.
@@ -90,6 +86,11 @@ public abstract class Widget
      * @return A list of all child widget.
      */
     public List<? extends Widget> childs()
+    {
+        return Collections.EMPTY_LIST;
+    }
+    
+    public List<String> resources()
     {
         return Collections.EMPTY_LIST;
     }
