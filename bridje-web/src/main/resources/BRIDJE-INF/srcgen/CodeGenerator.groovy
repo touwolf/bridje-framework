@@ -16,8 +16,8 @@
 
 def loadFieldChildren = { field, fieldNode ->
     def result = [:];
-    fieldNode.'*'.each{ node ->
-        result[node.name()] = node.'@type'.text();
+    fieldNode.'child'.each{ node ->
+        result[node.'@name'.text()] = node.'@type'.text();
     };
     field['children'] = result;
 };
