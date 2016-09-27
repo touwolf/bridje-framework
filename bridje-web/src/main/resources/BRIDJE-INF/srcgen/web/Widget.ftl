@@ -110,7 +110,11 @@ public class ${widget.name} extends ${widget.base}
             <#if f.fieldType == "children">
             if(${f.name} != null)
             {
-                childs.addAll(${f.name});
+                <#if f.isSingle>
+                    childs.add(${f.name});
+                <#else>
+                    childs.addAll(${f.name});
+                </#if>
             }
             </#if>
             <#if f.fieldType == "child">
