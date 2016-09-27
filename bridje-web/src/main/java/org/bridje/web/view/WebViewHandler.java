@@ -17,7 +17,6 @@
 package org.bridje.web.view;
 
 import org.bridje.web.view.widgets.UIEvent;
-import org.bridje.web.view.widgets.UIInputExpression;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,6 +40,7 @@ import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
+import org.bridje.http.HttpReqParam;
 
 @Component
 @Priority(200)
@@ -68,10 +68,10 @@ class WebViewHandler implements HttpBridlet
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         HttpBridletRequest req = context.get(HttpBridletRequest.class);
-        String viewUpdate = req.getPostParameter("__view");
+        HttpReqParam viewUpdate = req.getPostParameter("__view");
         if(viewUpdate != null && !viewUpdate.isEmpty())
         {
-            WebView view = viewsMang.findView(viewUpdate);
+            WebView view = viewsMang.findView(viewUpdate.getValue());
             if(view != null)
             {
                 IocContext<WebScope> wrsCtx = context.get(IocContext.class);
@@ -138,8 +138,8 @@ class WebViewHandler implements HttpBridlet
 
     private Object invokeAction(HttpBridletRequest req, WebView view)
     {
-        String action = req.getPostParameter("__action");
-        UIEvent event = view.findEvent(action);
+        HttpReqParam action = req.getPostParameter("__action");
+        UIEvent event = view.findEvent(action.getValue());
         return event.invoke();
     }
 

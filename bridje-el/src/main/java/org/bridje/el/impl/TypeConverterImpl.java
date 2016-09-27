@@ -17,7 +17,6 @@
 package org.bridje.el.impl;
 
 import de.odysseus.el.misc.TypeConverter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;

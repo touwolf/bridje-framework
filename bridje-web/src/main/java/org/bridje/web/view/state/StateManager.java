@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.el.ElService;
+import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
@@ -60,7 +61,7 @@ public class StateManager
             {
                 try
                 {
-                    String value = req.getPostParameter("__state." + stateName);
+                    HttpReqParam value = req.getPostParameter("__state." + stateName);
                     if(value != null)
                     {
                         Object cv = elServ.convert(value, field.getType());

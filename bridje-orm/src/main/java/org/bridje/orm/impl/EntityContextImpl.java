@@ -110,7 +110,7 @@ class EntityContextImpl implements EntityContext
             .from(dialect.identifier(table.getName()))
             .where(table.buildIdCondition(this))
             .limit(0, 1);
-        Object id = ((TableColumnImpl)table.getKey()).getValue(entity);
+        Object id = ((TableColumnImpl)table.getKey()).getQueryParameter(entity);
         return doQuery(qb.toString(), (rs) -> table.parse(entity, rs, this), id);
     }
 

@@ -26,6 +26,7 @@ import org.bridje.web.session.WebSession;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
+import org.bridje.http.HttpReqParam;
 
 /**
  * Represents the IoC scope for the web request IocContext.
@@ -203,7 +204,7 @@ public final class WebScope implements Scope
      *
      * @return A map with all the post parameters sent by the client.
      */
-    public Map<String, List<String>> getPostParameters()
+    public Map<String, HttpReqParam> getPostParameters()
     {
         return req.getPostParameters();
     }
@@ -214,20 +215,9 @@ public final class WebScope implements Scope
      * @param parameter The post parameter name.
      * @return The post parameter value or null if it does not exists.
      */
-    public String getPostParameter(String parameter)
+    public HttpReqParam getPostParameter(String parameter)
     {
         return req.getPostParameter(parameter);
-    }
-
-    /**
-     * Gets the specific post parameter from the parameters map.
-     *
-     * @param parameter The post parameter name.
-     * @return The post parameter value or null if it does not exists.
-     */
-    public String[] getPostParameterAll(String parameter)
-    {
-        return req.getPostParameterAll(parameter);
     }
 
     /**
@@ -247,7 +237,7 @@ public final class WebScope implements Scope
      *
      * @return A map with all the "GET" parameters for this request.
      */
-    public Map<String, List<String>> getGetParameters()
+    public Map<String, HttpReqParam> getGetParameters()
     {
         return req.getGetParameters();
     }
@@ -258,20 +248,9 @@ public final class WebScope implements Scope
      * @param parameter The "GET" parameter name.
      * @return The "GET" parameter value or null if it does not exists.
      */
-    public String getGetParameter(String parameter)
+    public HttpReqParam getGetParameter(String parameter)
     {
         return req.getGetParameter(parameter);
-    }
-
-    /**
-     * Gets the specific "GET" parameter from the parameters map.
-     *
-     * @param parameter The "GET" parameter name.
-     * @return The "GET" parameter value or null if it does not exists.
-     */
-    public String[] getGetParameterAll(String parameter)
-    {
-        return req.getGetParameterAll(parameter);
     }
 
     /**

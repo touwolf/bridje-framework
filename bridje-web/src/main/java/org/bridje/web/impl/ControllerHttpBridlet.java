@@ -36,6 +36,7 @@ import org.bridje.web.WebScope;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
+import org.bridje.http.HttpReqParam;
 
 @Component
 @Priority(500)
@@ -128,7 +129,7 @@ class ControllerHttpBridlet implements HttpBridlet
     private void injectParameter(IocContext<WebScope> wrsCtx, Object cmp, Field field, WebParameter param)
     {
         String name = param.value();
-        String paramVal = wrsCtx.getScope().getPostParameter(name);
+        HttpReqParam paramVal = wrsCtx.getScope().getPostParameter(name);
         if(paramVal == null)
         {
             paramVal = wrsCtx.getScope().getGetParameter(name);

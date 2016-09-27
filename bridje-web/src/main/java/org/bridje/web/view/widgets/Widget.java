@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpReqParam;
 
 /**
  * Base class for all the widgets.
@@ -52,11 +53,14 @@ public abstract class Widget
         return def;
     }
     
-    public static <T> void set(UIInputExpression expression, T data)
+    public static <T> void set(UIInputExpression expression, HttpReqParam param)
     {
-        if(expression != null && expression.isValid())
+        if(param != null)
         {
-            expression.set(data);
+            if(expression != null && expression.isValid())
+            {
+                expression.set(param);
+            }
         }
     }
     
@@ -102,7 +106,7 @@ public abstract class Widget
     public void readInput(HttpBridletRequest req)
     {
         inputs().stream()
-                .forEach((input) -> set(input, req.getPostParameterAll(input.getParameter())));
+                .forEach((input) -> set(input, req.getPostParameter(input.getParameter())));
         childs().stream()
                 .forEach((widget) -> widget.readInput(req));
     }

@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import org.bridje.http.HttpCookie;
 import org.bridje.http.UploadedFile;
 import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpReqParam;
 
 /**
  *
@@ -53,9 +54,9 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     private String contentType;
 
-    private Map<String, List<String>> postParameters;
+    private Map<String, HttpReqParamImpl> postParameters;
 
-    private Map<String, List<String>> getParameters;
+    private Map<String, HttpReqParamImpl> getParameters;
 
     private String[] postParamsNames;
 
@@ -269,17 +270,17 @@ class HttpBridletRequestImpl implements HttpBridletRequest
         {
             postParameters = new HashMap<>();
         }
-        List<String> vals = postParameters.get(name);
-        if(vals == null)
+        HttpReqParamImpl param = postParameters.get(name);
+        if(param == null)
         {
-            vals = new ArrayList<>();
-            postParameters.put(name, vals);
+            param = new HttpReqParamImpl(name);
+            postParameters.put(name, param);
         }
-        vals.add(value);
+        param.addValue(value);
     }
 
     @Override
-    public Map<String, List<String>> getPostParameters()
+    public Map<String, HttpReqParam> getPostParameters()
     {
         if(postParameters == null)
         {
@@ -289,26 +290,9 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     }
 
     @Override
-    public String getPostParameter(String parameter)
+    public HttpReqParam getPostParameter(String parameter)
     {
-        List<String> par = getPostParameters().get(parameter);
-        if(par != null)
-        {
-            return par.get(0);
-        }
-        return null;
-    }
-
-    @Override
-    public String[] getPostParameterAll(String parameter)
-    {
-        List<String> par = getPostParameters().get(parameter);
-        if(par != null)
-        {
-            String[] result = new String[par.size()];
-            return par.toArray(result);
-        }
-        return null;
+        return getPostParameters().get(parameter);
     }
 
     @Override
@@ -332,7 +316,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     }
 
     @Override
-    public Map<String, List<String>> getGetParameters()
+    public Map<String, HttpReqParam> getGetParameters()
     {
         if(getParameters == null)
         {
@@ -341,28 +325,10 @@ class HttpBridletRequestImpl implements HttpBridletRequest
         return Collections.unmodifiableMap(getParameters);
     }
 
-
     @Override
-    public String getGetParameter(String parameter)
+    public HttpReqParam getGetParameter(String parameter)
     {
-        List<String> r = getGetParameters().get(parameter);
-        if(r == null)
-        {
-            return null;
-        }
-        return r.get(0);
-    }
-
-    @Override
-    public String[] getGetParameterAll(String parameter)
-    {
-        List<String> par = getGetParameters().get(parameter);
-        if(par != null)
-        {
-            String[] result = new String[par.size()];
-            return par.toArray(result);
-        }
-        return null;
+        return getGetParameters().get(parameter);
     }
     
     @Override
@@ -378,7 +344,12 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     protected void setQueryString(Map<String, List<String>> parameters)
     {
-        this.getParameters = parameters;
+        this.getParameters = new HashMap<>();
+        parameters.forEach((name, values) -> 
+        {
+            HttpReqParamImpl par = new HttpReqParamImpl(name, values);
+            this.getParameters.put(name, par);
+        });
     }
 
     protected void setCookies(Set<Cookie> parseCookies)
