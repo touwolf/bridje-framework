@@ -13,7 +13,7 @@
 <#assign styles = styles + ["${s.href}"] />
 [/#list]
 <#assign resource = {} />
-<#assign resource = resource + {"script": scripts} />
+<#assign resource = resource + {"scripts": scripts} />
 <#assign resource = resource + {"styles": styles} />
 <#assign resourcesMap = resourcesMap + {"${r.name}":resource} />
 
@@ -41,7 +41,7 @@
 
 <#macro renderThemeScripts themeName>
     <#list view.resources as r>
-        <#list resourcesMap[r].scripts as s>
+        <#list resourcesMap[r].scripts![] as s>
             <@renderScript themeName s />
         </#list>
     </#list>
@@ -50,8 +50,8 @@
 
 <#macro renderThemeStyles themeName>
     <#list view.resources as r>
-        <#list resourcesMap[r].styles as s>
-            <@renderScript themeName s />
+        <#list resourcesMap[r].styles![] as s>
+            <@renderStyle themeName s />
         </#list>
     </#list>
 </#macro>

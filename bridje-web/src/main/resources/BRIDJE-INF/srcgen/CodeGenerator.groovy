@@ -148,6 +148,7 @@ def generateWidgetsAndTheme = { ->
             widget['hasInputs'] = false;
             widget['hasChildren'] = false;
             widget['hasEvents'] = false;
+            widget['hasResources'] = false;
 
             widget['fields'] = [];
             widget['fieldsMap'] = [:];
@@ -175,8 +176,9 @@ def generateWidgetsAndTheme = { ->
             widget['resources'] = [];
             widgetNode.'resources'.'*'.each{ resNode ->
                 widget['resources'] << resNode.'@name'.text();
+                widget['hasResources'] = true;
             };
-            
+
             theme['widgets'] << widget;
             def data = ['widget':widget];
             tools.generateClass(widget['fullName'], "web/Widget.ftl", data);

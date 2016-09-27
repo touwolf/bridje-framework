@@ -36,6 +36,11 @@ public class ${widget.name} extends ${widget.base}
     private List<UIEvent> events;
 
     </#if>
+    <#if widget.hasResources>
+    @XmlTransient
+    private List<String> resources;
+
+    </#if>
     <#list widget.fields as f>
     <#if f.fieldType == "attribute">
     @XmlAttribute
@@ -157,6 +162,21 @@ public class ${widget.name} extends ${widget.base}
             </#list>
         }
         return events;
+    }
+
+    </#if>
+    <#if widget.hasResources>
+    @Override
+    public List<String> resources()
+    {
+        if(resources == null)
+        {
+            resources = new ArrayList<>();
+            <#list widget.resources as r>
+            resources.add("${r}");
+            </#list>
+        }
+        return resources;
     }
 
     </#if>
