@@ -16,24 +16,23 @@
 
 package org.bridje.web.impl.conv;
 
+import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.temporal.Temporal;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bridje.el.ElTypeConverter;
 import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.Priority;
 
 @Component
 @Priority(5000)
 public class HttpReqParamConverter implements ElTypeConverter
 {
-    private static final Logger LOG = Logger.getLogger(HttpReqParamConverter.class.getName());
-
+    @Inject
+    private TypeConverter conv;
+    
     @Override
     public <F, T> boolean canConvert(Class<F> from, Class<T> to)
     {
@@ -63,54 +62,13 @@ public class HttpReqParamConverter implements ElTypeConverter
             Object[] result = (Object[])Array.newInstance(resClass, values.length);
             for (int i = 0; i < values.length; i++)
             {
-                result[i] = convertParam(values[i], resClass);
+                result[i] = conv.convert(values[i], resClass);
             }
             return (T)result;
         }
         else
         {
-            return (T)convertParam(param.getValue(), resClass);
+            return (T)conv.convert(param.getValue(), resClass);
         }
     }
-
-    public <T> T convertParam(String param, Class<T> resClass)
-    {
-        if(String.class.isAssignableFrom(resClass))
-        {
-            return (T)param;
-        }
-
-        if(Number.class.isAssignableFrom(resClass))
-        {
-            try
-            {
-                Method method = resClass.getMethod("fromString", String.class);
-                return (T)method.invoke(null, param);
-            }
-            catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
-            {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-
-        if(Date.class.isAssignableFrom(resClass))
-        {
-        }
-
-        if(Temporal.class.isAssignableFrom(resClass))
-        {
-            try
-            {
-                Method method = resClass.getMethod("parse", String.class);
-                return (T)method.invoke(null, param);
-            }
-            catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
-            {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-        
-        return null;
-    }
-    
 }

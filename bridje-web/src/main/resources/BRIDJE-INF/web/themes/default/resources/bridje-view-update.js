@@ -16,7 +16,7 @@ limitations under the License.
 
 $(document).ready(function()
 {
-    var initForm = function(el)
+    window.initViewForm = function(el)
     {
         el.find('button.action').click(function(event)
         {
@@ -31,12 +31,16 @@ $(document).ready(function()
                 success: function(response)
                 {
                     $('form#view-form').html(response);
-                    initForm($('form#view-form'));
+                    initViewForm($('form#view-form'));
+                    if(initBridjeView)
+                    {
+                        initBridjeView();
+                        $(window).trigger( "load" );
+                    }
                 }
             });
         });
     };
 
-    initForm($('form#view-form'));
-    window.__initForm = initForm;
+    initViewForm($('form#view-form'));
 });

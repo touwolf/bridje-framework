@@ -45,7 +45,7 @@
             <@renderScript themeName s />
         </#list>
     </#list>
-    <@renderDefaultThemeScripts themeName />
+    <@renderScript "default" "bridje-view-update.js" />
 </#macro>
 
 <#macro renderThemeStyles themeName>
