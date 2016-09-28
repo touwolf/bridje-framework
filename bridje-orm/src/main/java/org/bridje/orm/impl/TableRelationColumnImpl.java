@@ -62,20 +62,20 @@ class TableRelationColumnImpl<E, R> extends TableColumnImpl<E, R> implements Tab
         {
             return null;
         }
-        return ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
+        return ((TableColumnImpl<R, ?>)getRelated().getKey()).getQueryParameter(value);
     }
 
     @Override
     public Condition eq(R value)
     {
-        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
-        return new BinaryCondition(this, Operator.EQ, serialize(idValue));
+        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getQueryParameter(value);
+        return new BinaryCondition(this, Operator.EQ, idValue);
     }
 
     @Override
     public Condition ne(R value)
     {
-        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getValue(value);
-        return new BinaryCondition(this, Operator.NE, serialize(idValue));
+        Object idValue = ((TableColumnImpl<R, ?>)getRelated().getKey()).getQueryParameter(value);
+        return new BinaryCondition(this, Operator.NE, idValue);
     }
 }

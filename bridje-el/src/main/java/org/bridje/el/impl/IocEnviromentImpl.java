@@ -16,6 +16,8 @@
 
 package org.bridje.el.impl;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import org.bridje.ioc.Ioc;
@@ -24,6 +26,8 @@ import org.bridje.el.ElEnvironment;
 
 class IocEnviromentImpl implements ElEnvironment
 {
+    private static final Logger LOG = Logger.getLogger(IocEnviromentImpl.class.getName());
+
     private final IocElContext context;
 
     private final ExpressionFactory factory;
@@ -50,7 +54,14 @@ class IocEnviromentImpl implements ElEnvironment
             cls = value.getClass();
         }
         ValueExpression valueExp = factory.createValueExpression(context, expression, cls);
-        valueExp.setValue(context, value);
+        try
+        {
+            valueExp.setValue(context, value);
+        }
+        catch (javax.el.PropertyNotFoundException e)
+        {
+            LOG.log(Level.WARNING, e.getMessage());
+        }
     }
 
     @Override
