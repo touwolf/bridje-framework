@@ -15,7 +15,7 @@ import org.bridje.web.view.widgets.UIExpressionAdapter;
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseContainer extends BaseWidget
+public abstract class BaseContainer extends BaseWidget
 {
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)
     @XmlAttribute(name = "childClass")

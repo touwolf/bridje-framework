@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<v:view
+<v:layout
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns:v='http://www.bridje.org/schemas/web/view'
     xmlns:c='http://www.bridje.org/schemas/web/view/testcomp'>
@@ -8,8 +8,8 @@
     
     <v:standalone>
         <c:vlayout>
-            <c:header>Hello</c:header>
+            <c:placeholder name="vcontent" />
         </c:vlayout>
     </v:standalone>
 
-</v:view>
+</v:layout>

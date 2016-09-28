@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import org.bridje.web.view.Defines;
 import org.bridje.web.view.widgets.*;
 
 <#if widget.rootElement != "">
@@ -55,11 +57,17 @@ public class ${widget.name} extends ${widget.base}
         <#list f.children?keys as k>
         @XmlElement( name = "${k}", type = ${f.children[k]}.class ),
         </#list>
+        <#if f.allowPlaceHolder>
+        @XmlElement( name = "placeholder", type = WidgetPlaceHolder.class ),
+        </#if>
     })
     <#elseif f.fieldType == "child">
     @XmlElements(
     {
         @XmlElement( name = "${f.name}", type = ${f.javaType}.class ),
+        <#if f.allowPlaceHolder>
+        @XmlElement( name = "placeholder", type = WidgetPlaceHolder.class ),
+        </#if>
     })
     </#if>
     private ${f.javaType} ${f.name};
@@ -111,9 +119,9 @@ public class ${widget.name} extends ${widget.base}
             if(${f.name} != null)
             {
                 <#if f.isSingle>
-                    childs.add(${f.name});
+                childs.add(${f.name});
                 <#else>
-                    childs.addAll(${f.name});
+                childs.addAll(${f.name});
                 </#if>
             }
             </#if>
@@ -184,4 +192,30 @@ public class ${widget.name} extends ${widget.base}
     }
 
     </#if>
+    @Override
+    public void doOverride(Map<String, Defines> definesMap)
+    {
+        <#list widget.fields as f>
+        <#if f.fieldType == "children">
+        <#if f.allowPlaceHolder>
+        if(${f.name} != null)
+        {
+            <#if f.isSingle>
+            ${f.name} = (${f.javaType})Widget.doOverride(${f.name}, definesMap);
+            <#else>
+            ${f.name} = Widget.doOverride(${f.name}, definesMap);
+            </#if>
+        }
+        </#if>
+        </#if>
+        <#if f.fieldType == "child">
+        <#if f.allowPlaceHolder>
+        if(${f.name} != null)
+        {
+            ${f.name} = (${f.javaType})Widget.doOverride(${f.name}, definesMap);
+        }
+        </#if>
+        </#if>
+        </#list>
+    }
 }

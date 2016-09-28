@@ -77,6 +77,7 @@ def loadFieldTypes = { field, fieldNode ->
             field['fieldType'] = "children";
             field['javaType'] = "List<Widget>";
             field['isSingle'] = fieldNode.'@single'.text() == "true";
+            field['allowPlaceHolder'] = fieldNode.'@allowPlaceHolder'.text() == "true";
             if(field['isSingle'])
             {
                 field['javaType'] = "Widget";
@@ -88,6 +89,7 @@ def loadFieldTypes = { field, fieldNode ->
         case "child":
             field['fieldType'] = "child";
             field['javaType'] = field['resultType'];
+            field['allowPlaceHolder'] = fieldNode.'@allowPlaceHolder'.text() == "true";
             break;
     }
 }

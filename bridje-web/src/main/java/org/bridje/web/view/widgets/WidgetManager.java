@@ -34,6 +34,8 @@ import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileAdapter;
+import org.bridje.web.view.AbstractWebView;
+import org.bridje.web.view.WebLayout;
 import org.bridje.web.view.WebView;
 
 @Component
@@ -69,13 +71,14 @@ public class WidgetManager implements VFileAdapter
     @Override
     public Class<?>[] getClasses()
     {
-        return new Class<?>[]{WebView.class};
+        return new Class<?>[]{WebView.class, WebLayout.class};
     }
 
     @Override
     public boolean canHandle(VFile vf, Class<?> resultCls)
     {
-        return vf.getName().endsWith(".view.xml");
+        return vf.getName().endsWith(".view.xml")
+                || vf.getName().endsWith(".layout.xml");
     }
 
     @Override
@@ -94,6 +97,7 @@ public class WidgetManager implements VFileAdapter
     {
         List<Class<?>> result = new ArrayList<>();
         result.add(WebView.class);
+        result.add(WebLayout.class);
         List<URL> files = findModelsFiles();
         files.stream()
                 .map((url) -> readFile(url))
@@ -146,15 +150,15 @@ public class WidgetManager implements VFileAdapter
         });
     }
 
-    private WebView toWebView(VFile f)
+    private AbstractWebView toWebView(VFile f)
     {
-        WebView result = null;
+        AbstractWebView result = null;
         try(InputStream is = f.openForRead())
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
-            if(unmObj instanceof WebView)
+            if(unmObj instanceof AbstractWebView)
             {
-                return (WebView)unmObj;
+                return (AbstractWebView)unmObj;
             }
         }
         catch (JAXBException | IOException ex)

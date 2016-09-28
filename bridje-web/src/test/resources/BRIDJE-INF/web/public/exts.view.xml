@@ -3,13 +3,13 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns:v='http://www.bridje.org/schemas/web/view'
     xmlns:c='http://www.bridje.org/schemas/web/view/testcomp'>
-    
+
     <v:meta/>
-    
-    <v:standalone>
-        <c:vlayout>
+
+    <v:extends layout="base" >
+        <c:define name="vcontent" >
             <c:header>Hello</c:header>
-        </c:vlayout>
-    </v:standalone>
+        </c:define>
+    </v:extends>
 
 </v:view>

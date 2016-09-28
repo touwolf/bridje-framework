@@ -12,7 +12,7 @@ import org.bridje.web.view.widgets.Widget;
 
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseWidget extends Widget
+public abstract class BaseWidget extends Widget
 {
     @XmlAttribute(name = "visible")
     @XmlJavaTypeAdapter(UIExpressionAdapter.class)

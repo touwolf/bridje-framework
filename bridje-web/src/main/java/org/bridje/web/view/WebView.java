@@ -16,15 +16,15 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.widgets.Widget;
-import org.bridje.web.view.widgets.UIEvent;
-import org.bridje.web.view.widgets.UIInputExpression;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.bind.annotation.*;
+import org.bridje.web.view.widgets.UIEvent;
+import org.bridje.web.view.widgets.UIInputExpression;
+import org.bridje.web.view.widgets.Widget;
 
 /**
  * Represents a view of the application, views are render by themes and are
@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "view")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WebView
+public class WebView extends AbstractWebView
 {
     @XmlTransient
     private String name;
@@ -45,9 +45,6 @@ public class WebView
         @XmlElement(name = "meta", type = MetaTag.class)
     )
     private List<MetaTag> metaTags;
-
-    @XmlAnyElement(lax = true)
-    private Widget root;
 
     @XmlTransient
     private Map<String, UIEvent> events;
@@ -100,16 +97,6 @@ public class WebView
     void setName(String name)
     {
         this.name = name;
-    }
-
-    /**
-     * The root widget of this view.
-     *
-     * @return The root widget.
-     */
-    public Widget getRoot()
-    {
-        return root;
     }
 
     public Set<String> getResources()
@@ -166,7 +153,7 @@ public class WebView
         if (events == null)
         {
             Map<String, UIEvent> eventsMap = new HashMap<>();
-            findEvents(root, eventsMap);
+            findEvents(getRoot(), eventsMap);
             events = eventsMap;
         }
     }
@@ -176,7 +163,7 @@ public class WebView
         if (widgets == null)
         {
             Set<Class<?>> widgetsSet = new HashSet<>();
-            findWidgets(root, widgetsSet);
+            findWidgets(getRoot(), widgetsSet);
             widgets = widgetsSet;
         }
     }
@@ -186,7 +173,7 @@ public class WebView
         if (resources == null)
         {
             Set<String> resourcesSet = new HashSet<>();
-            findResources(root, resourcesSet);
+            findResources(getRoot(), resourcesSet);
             resources = resourcesSet;
         }
     }
@@ -196,7 +183,7 @@ public class WebView
         if (inputs == null)
         {
             Map<String, UIInputExpression> inputsMap = new HashMap<>();
-            findInputs(root, inputsMap);
+            findInputs(getRoot(), inputsMap);
             inputs = inputsMap;
         }
     }

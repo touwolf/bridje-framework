@@ -18,6 +18,8 @@ package org.bridje.web.view;
 
 import java.io.IOException;
 import org.bridje.ioc.Ioc;
+import org.bridje.web.view.test.widgets.Header;
+import org.bridje.web.view.test.widgets.VerticalLayout;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,5 +31,18 @@ public class WebViewTest
         WebView view = Ioc.context().find(WebViewsManager.class).findView("/public/index");
         Assert.assertNotNull(view);
         Assert.assertNotNull(view.getRoot());
+    }
+
+    @Test
+    public void testReadExtView() throws IOException
+    {
+        WebView view = Ioc.context().find(WebViewsManager.class).findView("/public/exts");
+        Assert.assertNotNull(view);
+        Assert.assertNotNull(view.getRoot());
+        Assert.assertTrue(view.getRoot() instanceof VerticalLayout);
+        VerticalLayout vlayout = (VerticalLayout)view.getRoot();
+        Assert.assertNotNull(vlayout.getChildren());
+        Assert.assertEquals(1, vlayout.getChildren().size());
+        Assert.assertTrue(vlayout.getChildren().get(0) instanceof Header);
     }
 }

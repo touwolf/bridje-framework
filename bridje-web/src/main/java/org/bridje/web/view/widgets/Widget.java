@@ -16,13 +16,16 @@
 
 package org.bridje.web.view.widgets;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpReqParam;
+import org.bridje.web.view.Defines;
 
 /**
  * Base class for all the widgets.
@@ -110,4 +113,58 @@ public abstract class Widget
         childs().stream()
                 .forEach((widget) -> widget.readInput(req));
     }
+
+    public void override(Map<String, Defines> definesMap)
+    {
+        doOverride(definesMap);
+        childs().stream()
+                .forEach((widget) -> widget.override(definesMap));        
+    }
+
+    public static List<Widget> doOverride(List<Widget> childrens, Map<String, Defines> definesMap)
+    {
+        List<Widget> result = new ArrayList<>();
+        
+        for (Widget widget : childrens)
+        {
+            if(widget instanceof WidgetPlaceHolder)
+            {
+                WidgetPlaceHolder ph = (WidgetPlaceHolder)widget;
+                Defines def = definesMap.get(ph.getName());
+                if(def != null && def.getComponents() != null)
+                {
+                    result.addAll(def.getComponents());
+                }
+            }
+            else
+            {
+                result.add(widget);
+            }
+        }
+        
+        return result;
+    }
+    
+    public static Widget doOverride(Widget child, Map<String, Defines> definesMap)
+    {
+        Widget result = null;
+        
+        if(child instanceof WidgetPlaceHolder)
+        {
+            WidgetPlaceHolder ph = (WidgetPlaceHolder)child;
+            Defines def = definesMap.get(ph.getName());
+            if(def != null && def.getComponent() != null)
+            {
+                result = def.getComponent();
+            }
+        }
+        else
+        {
+            result = child;
+        }
+        
+        return result;
+    }
+    
+    public abstract void doOverride(Map<String, Defines> definesMap);
 }
