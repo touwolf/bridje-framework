@@ -95,9 +95,9 @@ def loadFieldTypes = { field, fieldNode ->
 }
 
 def generateWidgetsAndTheme = { ->
-    if(tools.fileExists("web.xml"))
+    if(tools.fileExists("web/theme.xml"))
     {
-        def ormData = tools.loadXmlFile("web.xml");
+        def ormData = tools.loadXmlFile("web/theme.xml");
         def theme = [:];
         theme['package'] = ormData.'@package'.text();
         theme['name'] = ormData.'@name'.text();
