@@ -116,7 +116,12 @@ def findTableName = { entity, model ->
     {
         entity['table'] = toSqlName(entity['name'])
     }
-    model['tablePrefix'] + "_" + entity['table'];
+    def result = entity['table'];
+    if(model['tablePrefix'] != "")
+    {
+        model['tablePrefix'] + "_" + entity['table'];
+    }
+    result;
 };
 
 def findColumnName = { field ->

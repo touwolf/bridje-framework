@@ -16,6 +16,7 @@
 
 package org.bridje.orm.adpaters;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class LocalDateTimeAdapter implements SQLAdapter
         if(value instanceof Date)
         {
             Date d = ((Date)value);
-            return d.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            return Instant.ofEpochMilli(d.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         }
         return null;
     }

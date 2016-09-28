@@ -33,8 +33,9 @@ public interface Query<T>
      * @param page The page number where 1 is the first page, 0 or less means no
      * page, so all the entities will be returned.
      * @param size The size in records of a page.
+     * @return this
      */
-    void paging(int page, int size);
+    Query<T> paging(int page, int size);
 
     /**
      * Executes the query and fetch all entities.

@@ -42,9 +42,10 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     }
 
     @Override
-    public void paging(int page, int size)
+    public Query<R> paging(int page, int size)
     {
         baseQuery.paging(page, size);
+        return this;
     }
 
     @Override

@@ -50,10 +50,11 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     }
     
     @Override
-    public void paging(int page, int size)
+    public Query<T> paging(int page, int size)
     {
         this.page = page;
         this.page = pageSize;
+        return this;
     }
 
     @Override
