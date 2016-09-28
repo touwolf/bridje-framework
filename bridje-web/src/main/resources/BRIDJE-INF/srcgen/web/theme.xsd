@@ -16,7 +16,20 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-    
+
+    <xs:complexType name="defaultResources">
+        <xs:sequence>
+            <xs:element name="resource" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                        <xs:element name="script" type="tns:script" />
+                        <xs:element name="style" type="tns:style" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>    
+    </xs:complexType>
+
     <xs:complexType name="resources">
         <xs:sequence>
             <xs:element name="resource" maxOccurs="unbounded" minOccurs="0">
@@ -130,6 +143,7 @@
     <xs:complexType name="theme">
         <xs:sequence>
             <xs:element name="resources" type="tns:resources" />
+            <xs:element name="defaultResources" type="tns:defaultResources" />
             <xs:element name="widgets" type="tns:widgets">
             </xs:element>
         </xs:sequence>

@@ -103,6 +103,7 @@ def generateWidgetsAndTheme = { ->
         theme['name'] = ormData.'@name'.text();
         theme['namespace'] = ormData.'@namespace'.text();
         theme['widgets'] = [];
+        theme['defaultResources'] = [];
         theme['resources'] = [];
         theme['resourcesMap'] = [:];
 
@@ -136,6 +137,36 @@ def generateWidgetsAndTheme = { ->
 
             theme['resources'] << resource;
             theme['resourcesMap'][resource['name']] = resource;
+        };
+        
+        ormData.'defaultResources'.'*'.each{ resNode ->
+            def resource = [:];
+
+            resource['scripts'] = [];
+            resource['styles'] = [];
+            resource['fonts'] = [];
+            resNode.'*'.each{ rNode ->
+                if(rNode.name() == "script")
+                {
+                    def script = [:];
+                    script['href'] = rNode.'@href'.text();
+                    resource['scripts'] << script;
+                }
+                else if(rNode.name() == "style")
+                {
+                    def style = [:];
+                    style['href'] = rNode.'@href'.text();
+                    resource['styles'] << style;
+                }
+                else if(rNode.name() == "font")
+                {
+                    def font = [:];
+                    font['href'] = rNode.'@href'.text();
+                    resource['fonts'] << font;
+                }
+            };
+
+            theme['defaultResources'] << resource;
         };
 
         ormData.'widgets'.'*'.each{ widgetNode ->
