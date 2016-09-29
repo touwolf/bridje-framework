@@ -49,4 +49,16 @@ abstract class AbstractColumn<T> implements Column<T>
     {
         return new BinaryCondition(this, Operator.NE, value);
     }
+
+    @Override
+    public Condition isNotNull()
+    {
+        return new UnaryCondition(null, this, "IS NOT NULL");
+    }
+
+    @Override
+    public Condition isNull()
+    {
+        return new UnaryCondition(null, this, "IS NULL");
+    }
 }

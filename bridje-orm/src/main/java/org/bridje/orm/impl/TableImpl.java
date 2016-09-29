@@ -76,9 +76,9 @@ class TableImpl<T> implements Table<T>
     }
 
     @Override
-    public TableColumn getKey()
+    public TableColumnImpl getKey()
     {
-        return key;
+        return (TableColumnImpl)key;
     }
 
     @Override

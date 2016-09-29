@@ -36,4 +36,10 @@ abstract class AbstractCondition implements Condition
     {
         return new BinaryCondition(this, Operator.OR, otherCondition);
     }
+
+    @Override
+    public Condition not()
+    {
+        return new UnaryCondition("NOT", this, null);
+    }
 }

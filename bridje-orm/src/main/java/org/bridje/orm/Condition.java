@@ -41,4 +41,10 @@ public interface Condition extends SQLWritable
      * @return The new created condition.
      */
     Condition or(Condition otherCondition);
+
+    /**
+     * 
+     * @return 
+     */
+    Condition not();
 }

@@ -98,7 +98,8 @@ class EntityContextImpl implements EntityContext
             .where(tableImpl.buildIdCondition(this))
             .limit(0, 1);
 
-        return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs, this), id);
+        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(id);
+        return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs, this), serializedId);
     }
 
     @Override

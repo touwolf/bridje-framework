@@ -43,6 +43,22 @@ public interface Column<T> extends SQLWritable
     Condition eq(T value);
 
     /**
+     * Creates a new "IS NULL" condition with this column as a left operand and
+     * the provided value as the left operand.
+     *
+     * @return The new created condition.
+     */
+    Condition isNull();
+
+    /**
+     * Creates a new "IS NOT NULL" condition with this column as a left operand and
+     * the provided value as the left operand.
+     *
+     * @return The new created condition.
+     */
+    Condition isNotNull();
+
+    /**
      * Creates a new not equals "&lt;&gt;" condition with this column as a left
      * operand and the provided value as the left operand.
      *

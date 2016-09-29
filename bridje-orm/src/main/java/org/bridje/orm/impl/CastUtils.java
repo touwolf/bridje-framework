@@ -18,6 +18,7 @@ package org.bridje.orm.impl;
 
 import java.sql.SQLException;
 import org.bridje.orm.Entity;
+import org.bridje.orm.Table;
 
 /**
  * Utilities for casting values from to the database.
@@ -67,7 +68,8 @@ class CastUtils
                 }
                 if(fieldType.getAnnotation(Entity.class) != null)
                 {
-                    return ctx.find(fieldType, value);
+                    TableImpl<F> tableImpl = (TableImpl<F>)ctx.findTable(fieldType);
+                    return ctx.find(fieldType, tableImpl.getKey().unserialize(value) );
                 }
             }
             return (F) value;
