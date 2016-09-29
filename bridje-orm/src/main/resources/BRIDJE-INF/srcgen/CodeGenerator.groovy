@@ -119,7 +119,7 @@ def findTableName = { entity, model ->
     def result = entity['table'];
     if(model['tablePrefix'] != "")
     {
-        model['tablePrefix'] + "_" + entity['table'];
+        result = model['tablePrefix'] + "_" + entity['table'];
     }
     result;
 };
