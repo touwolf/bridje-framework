@@ -180,6 +180,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     {
         try
         {
+            if(entity == null)
+            {
+                return null;
+            }
             return this.field.get(entity);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
@@ -191,6 +195,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     
     protected Object getQueryParameter(E entity)
     {
+        if(entity == null)
+        {
+            return null;
+        }
         return serialize(getValue(entity));
     }
 

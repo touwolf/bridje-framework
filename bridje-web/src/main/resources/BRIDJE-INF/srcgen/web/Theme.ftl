@@ -46,7 +46,7 @@
             {
                 window.initViewForm = function(el)
                 {
-                    el.find('button.action').click(function(event)
+                    var postView = function(event)
                     {
                         event.preventDefault();
 
@@ -68,7 +68,9 @@
                                 }
                             }
                         });
-                    });
+                    };
+                    el.find('button.action').click(postView);
+                    el.find('select.action').change(postView);
                 };
 
                 initViewForm($('form#view-form'));

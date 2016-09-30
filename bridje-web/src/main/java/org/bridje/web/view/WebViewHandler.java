@@ -139,8 +139,15 @@ class WebViewHandler implements HttpBridlet
     private Object invokeAction(HttpBridletRequest req, WebView view)
     {
         HttpReqParam action = req.getPostParameter("__action");
-        UIEvent event = view.findEvent(action.getValue());
-        return event.invoke();
+        if(action != null)
+        {
+            UIEvent event = view.findEvent(action.getValue());
+            if(event != null)
+            {
+                return event.invoke();
+            }
+        }
+        return null;
     }
 
     private String getViewName(HttpBridletContext context)

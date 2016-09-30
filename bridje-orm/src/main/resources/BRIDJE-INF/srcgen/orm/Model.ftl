@@ -3,14 +3,17 @@ package ${model.package};
 
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import java.util.HashSet;
+import java.util.Set;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.orm.*;
 
-
 public class ${model.name}
 {
+    private static Set<Class<?>> TABLE_SET;
+
     private final EntityContext context;
 
     public ${model.name}(EntityContext context)
@@ -82,6 +85,24 @@ public class ${model.name}
     public <T> Table<T> findTable(Class<T> entity)
     {
         return context.findTable(entity);
+    }
+
+    public <T> boolean haveEntity(Class<T> entity)
+    {
+        if(TABLE_SET == null)
+        {
+            Set<Class<?>> tbSet = new HashSet<>();
+            <#list model.entitys as entity >
+            tbSet.add(${entity.name}.class);
+            </#list>
+            TABLE_SET = tbSet;
+        }
+        return TABLE_SET.contains(entity);
+    }
+
+    public <T> T find(Table<T> table, Object id) throws SQLException
+    {
+        return context.find(table, id);
     }
 
     <#list model.entitys as entity >
