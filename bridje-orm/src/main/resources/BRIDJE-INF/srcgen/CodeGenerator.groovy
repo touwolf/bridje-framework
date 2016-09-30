@@ -169,8 +169,6 @@ def readFieldData = { entity, fieldNode, model ->
     field['isAutoIncrement'] = fieldNode.'@autoIncrement'.text() == "true";
     if(field['isAutoIncrement'])
         field['isKey'] = true;
-    if(field['isKey'])
-        entity['keyField'] = field;
     field['isString'] = stringTypes.contains(field['fieldType']);
     field['isCustom'] = customTypes[field['fieldType']] != null;
     if(field["isCustom"])
@@ -193,6 +191,8 @@ def readEntityFields = { entityNode, entity, model ->
     entity['fieldsMap'] = [:];
     entityNode.'fields'.'*'.each{ fieldNode ->
         def field = readFieldData( entity, fieldNode, model );
+        if(field['isKey'])
+            entity['keyField'] = field;
 
         entity['fields'] << field;
         entity['fieldsMap'][field['name']] = field;
@@ -211,7 +211,24 @@ def readEntityData = { entityNode, model ->
     entity['fullName'] = entity['package'] + "." + entity['name'];
     entity['description'] = entityNode.'@description'.text();
     entity['description'] = findEntityDescription(entity, model);
+    
+    entity['operations'] = [:];
+    entity['operations']['insert'] = entityNode.'operations'.'@insert'.text();
+    entity['operations']['update'] = entityNode.'operations'.'@update'.text();
+    entity['operations']['delete'] = entityNode.'operations'.'@delete'.text();
+    entity['operations']['save'] = entityNode.'operations'.'@save'.text();
+    entity['operations']['find'] = entityNode.'operations'.'@find'.text();
+    entity['operations']['refresh'] = entityNode.'operations'.'@refresh'.text();
+    entity['operations']['query'] = entityNode.'operations'.'@query'.text();
+    
     entity;
+};
+
+def applyBaseOperation = { entity, tmpl, operation ->
+    if(entity['operations'][operation] == "" && tmpl['operations'][operation] != "")
+    {
+        entity['operations'][operation] = tmpl['operations'][operation];
+    }
 };
 
 def applyBaseTemplate;
@@ -244,6 +261,13 @@ applyBaseTemplate = { entity, templates ->
             {
                 entity['keyField'] = tmpl['keyField'];
             }
+            applyBaseOperation(entity, tmpl, 'insert');
+            applyBaseOperation(entity, tmpl, 'update');
+            applyBaseOperation(entity, tmpl, 'delete');
+            applyBaseOperation(entity, tmpl, 'save');
+            applyBaseOperation(entity, tmpl, 'find');
+            applyBaseOperation(entity, tmpl, 'refresh');
+            applyBaseOperation(entity, tmpl, 'query');
         }
     }
 };
@@ -253,9 +277,13 @@ def generateEntitys = { ->
     {
         def ormData = tools.loadXmlFile("orm.xml");
         def model = [:];
+        model['name'] = ormData.'@name'.text();
         model['package'] = ormData.'@package'.text();
+        model['fullName'] = model['package'] + "." + model['name'];
         model['defEntityDesc'] = ormData.'@defEntityDesc'.text();
         model['tablePrefix'] = ormData.'@tablePrefix'.text();
+        model['entitys'] = [];
+        model['entitysMap'] = [:];
         def templates = [:];
 
         ormData.'templates'.'*'.each{ entityNode ->
@@ -265,16 +293,23 @@ def generateEntitys = { ->
 
             templates[entity['name']] = entity;
         };
-
+        
         ormData.'entities'.'*'.each{ entityNode ->
 
             def entity = readEntityData(entityNode, model);
             entity = readEntityFields(entityNode, entity, model);
             applyBaseTemplate(entity, templates);
 
+            model['entitys'] << entity;
+            model['entitysMap'][entity['name']] = entity;
             def data = ['entity':entity];
-            tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
+            if(entity['keyField'] == null)
+                tools.log.error("The entity " + entity['name'] + ' does not have a key field.');
+            else
+                tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
         };
+        def data = ['model':model];
+        tools.generateClass(model['fullName'], "orm/Model.ftl", data);
     }
 };
 
