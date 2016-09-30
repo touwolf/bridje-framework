@@ -104,7 +104,7 @@ public class WebViewsManager
         }
         catch (Exception e)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            LOG.log(Level.SEVERE, "Could not parse " + f.getPath() + ". " + e.getMessage(), e);
         }
     }
 }
