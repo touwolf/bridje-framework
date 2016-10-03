@@ -20,6 +20,7 @@ import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,7 +81,7 @@ class WebViewHandler implements HttpBridlet
                     Thls.doAs(() ->
                     {
                         updateParameters(view, req);
-                        Object result = invokeAction(req, view);
+                        EventResult result = invokeAction(req, view);
                         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                         try(OutputStream os = resp.getOutputStream())
                         {
@@ -136,7 +137,7 @@ class WebViewHandler implements HttpBridlet
         view.getRoot().readInput(req);
     }
 
-    private Object invokeAction(HttpBridletRequest req, WebView view)
+    private EventResult invokeAction(HttpBridletRequest req, WebView view) throws Exception
     {
         HttpReqParam action = req.getPostParameter("__action");
         if(action != null)
@@ -144,7 +145,19 @@ class WebViewHandler implements HttpBridlet
             UIEvent event = view.findEvent(action.getValue());
             if(event != null)
             {
-                return event.invoke();
+                try
+                {
+                    Object res = event.invoke();
+                    if(res instanceof EventResult)
+                    {
+                        return (EventResult)res;
+                    }
+                    return new EventResult(null, null, res, null);
+                }
+                catch (Exception e)
+                {
+                    return new EventResult(EventResultType.ERROR, e.getMessage(), null, e);
+                }
             }
         }
         return null;
