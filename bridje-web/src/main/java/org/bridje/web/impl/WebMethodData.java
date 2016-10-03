@@ -17,8 +17,11 @@
 package org.bridje.web.impl;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.bridje.el.ElService;
+import org.bridje.ioc.Ioc;
 
 class WebMethodData
 {
@@ -31,6 +34,8 @@ class WebMethodData
     private final String regExp;
 
     private final Pattern pattern;
+    
+    private final ElService elServ;
 
     public WebMethodData(String expression, Class<?> component, Method method)
     {
@@ -38,6 +43,7 @@ class WebMethodData
         this.component = component;
         this.method = method;
         this.regExp = toRegExp(expression);
+        this.elServ = Ioc.context().find(ElService.class);
         pattern = Pattern.compile(regExp);
     }
 
@@ -63,20 +69,28 @@ class WebMethodData
     
     public Object[] matches(String path)
     {
+        Parameter[] params = this.method.getParameters();
         Matcher matcher = pattern.matcher(path);
         if(matcher.matches())
         {
             if(matcher.groupCount() >= 1)
             {
-                String[] result = new String[matcher.groupCount()];
+                Object[] result = new Object[matcher.groupCount()];
                 for(int i = 0; i < matcher.groupCount(); i++)
                 {
                     String value = matcher.group(i+1);
-                    result[i] = value;
+                    if(params[i] != null)
+                    {
+                        result[i] = doCast(value, params[i].getType());
+                    }
+                    else
+                    {
+                        result[i] = value;
+                    }
                 }
                 return result;
             }
-            return new String[0];
+            return new Object[0];
         }
         return null;
     }
@@ -88,5 +102,10 @@ class WebMethodData
         result = result.replaceAll("\\$\\{[a-zA-Z0-9]+\\}", "([^\\\\/]+)");
         result = "^" + result + "$";
         return result;
+    }
+
+    private Object doCast(String value, Class<?> type)
+    {
+        return elServ.convert(value, type);
     }
 }

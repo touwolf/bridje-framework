@@ -84,9 +84,10 @@
 
 <#macro renderMain themeName >
     <#if result??
-         && result.class.simpleName == "RedirectTo"
-         && result.status??
-         && result.resource??>
+         && result.data??
+         && result.data.class.simpleName == "RedirectTo"
+         && result.data.status??
+         && result.data.resource??>
         <script>
             window.location = '${result.resource}';
         </script>

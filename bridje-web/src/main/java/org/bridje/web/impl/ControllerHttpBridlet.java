@@ -95,6 +95,10 @@ class ControllerHttpBridlet implements HttpBridlet
                     {
                         throw (HttpException)e.getCause();
                     }
+                    else
+                    {
+                        throw new HttpException(500, e.getCause().getMessage(), e.getCause());
+                    }
                 }
                 catch (IllegalAccessException | IllegalArgumentException e)
                 {

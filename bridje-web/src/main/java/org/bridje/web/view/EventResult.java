@@ -27,13 +27,13 @@ public class EventResult
     
     private final Exception exception;
     
-    private final Object result;
+    private final Object data;
 
-    public EventResult(EventResultType type, String message, Object result, Exception exception)
+    public EventResult(EventResultType type, String message, Object data, Exception exception)
     {
         this.type = type;
         this.message = message;
-        this.result = result;
+        this.data = data;
         this.exception = exception;
     }
     
@@ -52,8 +52,8 @@ public class EventResult
         return exception;
     }
 
-    public Object getResult()
+    public Object getData()
     {
-        return result;
+        return data;
     }
 }
