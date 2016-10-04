@@ -20,7 +20,6 @@ import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELException;
@@ -85,8 +84,7 @@ class WebViewHandler implements HttpBridlet
                         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                         try(OutputStream os = resp.getOutputStream())
                         {
-                            Map<String, String> state = stateManag.createViewState(wrsCtx);
-                            themesMang.render(view.getRoot(), view, os, result, state);
+                            themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
                             os.flush();
                         }
                         return null;
@@ -114,8 +112,7 @@ class WebViewHandler implements HttpBridlet
                     {
                         Thls.doAs(() ->
                         {
-                            Map<String, String> state = stateManag.createViewState(wrsCtx);
-                            themesMang.render(view, os, state);
+                            themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
                             os.flush();
                             return null;
                         },

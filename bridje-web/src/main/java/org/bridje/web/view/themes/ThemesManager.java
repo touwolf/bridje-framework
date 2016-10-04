@@ -42,6 +42,7 @@ import org.bridje.web.view.WebView;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.vfs.VFile;
 import org.bridje.web.view.EventResult;
+import org.bridje.web.view.state.StateRenderProvider;
 
 @Component
 public class ThemesManager
@@ -63,7 +64,7 @@ public class ThemesManager
         ftlCfg.setLogTemplateExceptions(false);
     }
 
-    public void render(WebView view, OutputStream os, Map<String, String> state)
+    public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -73,7 +74,7 @@ public class ThemesManager
             Map data = new HashMap();
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
-            data.put("state", state);
+            data.put("stateProvider", stateProv);
             tpl.process(data, w);
             w.flush();
         }
@@ -83,7 +84,7 @@ public class ThemesManager
         }
     }
 
-    public void render(Widget widget, WebView view, OutputStream os, EventResult result, Map<String, String> state)
+    public void render(Widget widget, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -95,7 +96,7 @@ public class ThemesManager
             data.put("widget", widget);
             data.put("result", result);
             data.put("env", Thls.get(ElEnvironment.class));
-            data.put("state", state);
+            data.put("stateProvider", stateProv);
             tpl.process(data, w);
             w.flush();
         }

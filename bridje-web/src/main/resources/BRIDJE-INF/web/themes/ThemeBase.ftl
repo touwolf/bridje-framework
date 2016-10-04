@@ -77,8 +77,9 @@
 </#macro>
 
 <#macro renderState>
-    <#list state?keys as k>
-        <input type="hidden" name="__state.${k}" value="${state[k]}" />
+    <#assign currState = stateProvider.currentState />
+    <#list currState?keys as k>
+        <input type="hidden" name="__state.${k}" value="${currState[k]}" />
     </#list>
 </#macro>
 
