@@ -17,10 +17,13 @@
 package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.web.view.widgets.UIEvent;
 
 @XmlTransient
 public class EventResult
 {
+    private final UIEvent event;
+    
     private final EventResultType type;
 
     private final String message;
@@ -29,12 +32,18 @@ public class EventResult
     
     private final Object data;
 
-    public EventResult(EventResultType type, String message, Object data, Exception exception)
+    public EventResult(UIEvent event, EventResultType type, String message, Object data, Exception exception)
     {
+        this.event = event;
         this.type = type;
         this.message = message;
         this.data = data;
         this.exception = exception;
+    }
+
+    public UIEvent getEvent()
+    {
+        return event;
     }
     
     public EventResultType getType()

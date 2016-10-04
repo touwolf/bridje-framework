@@ -20,10 +20,10 @@ import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.themes.ThemesManager;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.el.ELException;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.el.ElService;
@@ -152,11 +152,20 @@ class WebViewHandler implements HttpBridlet
                     {
                         return (EventResult)res;
                     }
-                    return new EventResult(null, null, res, null);
+                    return new EventResult(event, null, null, res, null);
+                }
+                catch (ELException e)
+                {
+                    if(e.getCause() != null && e.getCause() instanceof Exception)
+                    {
+                        Exception real = (Exception)e.getCause();
+                        return new EventResult(event, EventResultType.ERROR, real.getMessage(), null, real);
+                    }
+                    return new EventResult(event, EventResultType.ERROR, e.getMessage(), null, e);
                 }
                 catch (Exception e)
                 {
-                    return new EventResult(EventResultType.ERROR, e.getMessage(), null, e);
+                    return new EventResult(event, EventResultType.ERROR, e.getMessage(), null, e);
                 }
             }
         }
