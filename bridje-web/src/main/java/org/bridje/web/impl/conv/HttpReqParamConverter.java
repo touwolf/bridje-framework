@@ -42,7 +42,7 @@ public class HttpReqParamConverter implements ElTypeConverter
             resClass = to.getComponentType();
         }
         return HttpReqParam.class.isAssignableFrom(from)
-                && (Number.class.isAssignableFrom(resClass) 
+                && (isNumber(resClass) 
                     || String.class == resClass
                     || Date.class.isAssignableFrom(resClass)
                     || Temporal.class.isAssignableFrom(resClass)
@@ -70,5 +70,23 @@ public class HttpReqParamConverter implements ElTypeConverter
         {
             return (T)conv.convert(param.getValue(), resClass);
         }
+    }
+
+    private boolean isNumber(Class<?> resClass)
+    {
+        if(Number.class.isAssignableFrom(resClass))
+        {
+            return true;
+        }
+        if(resClass == byte.class
+                || resClass == short.class
+                || resClass == int.class
+                || resClass == long.class
+                || resClass == float.class
+                || resClass == double.class)
+        {
+            return true;
+        }
+        return false;
     }
 }

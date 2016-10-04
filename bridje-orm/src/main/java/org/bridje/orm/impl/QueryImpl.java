@@ -53,7 +53,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     public Query<T> paging(int page, int size)
     {
         this.page = page;
-        this.page = pageSize;
+        this.pageSize = size;
         return this;
     }
 

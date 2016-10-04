@@ -52,6 +52,14 @@
 
                         $('input[name=__action]').val($(event.target).data('action'));
 
+                        var udtInputName = $(event.target).data('update-input');
+                        var udtInputNameValue = $(event.target).data('update-input-value');
+                        
+                        if(udtInputName != "")
+                        {
+                            $('input[name=\'' + udtInputName + '\']').val(udtInputNameValue);
+                        }
+
                         $.ajax(
                         {
                             type: 'POST',
@@ -69,6 +77,7 @@
                             }
                         });
                     };
+                    el.find('a.action').click(postView);
                     el.find('button.action').click(postView);
                     el.find('select.action').change(postView);
                 };
@@ -80,30 +89,30 @@
 </#macro>
 
 <#macro renderThemeScripts themeName>
-    <#list view.resources as r>
-        <#list resourcesMap[r].scripts![] as s>
-            <@renderScript themeName s />
-        </#list>
-    </#list>
     [#list theme.defaultResources as r]
     [#list r.scripts as s]
     <@renderScript themeName "${s.href}" />
     [/#list]
     [/#list]
+    <#list view.resources as r>
+        <#list resourcesMap[r].scripts![] as s>
+            <@renderScript themeName s />
+        </#list>
+    </#list>
     <@renderViewUpdateScript />
 </#macro>
 
 <#macro renderThemeStyles themeName>
-    <#list view.resources as r>
-        <#list resourcesMap[r].styles![] as s>
-            <@renderStyle themeName s />
-        </#list>
-    </#list>
     [#list theme.defaultResources as r]
     [#list r.styles as s]
     <@renderStyle themeName "${s.href}" />
     [/#list]
     [/#list]
+    <#list view.resources as r>
+        <#list resourcesMap[r].styles![] as s>
+            <@renderStyle themeName s />
+        </#list>
+    </#list>
 </#macro>
 
 <@renderMain "${theme.name}" />
