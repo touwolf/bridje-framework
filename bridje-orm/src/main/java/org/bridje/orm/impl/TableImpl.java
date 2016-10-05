@@ -153,7 +153,6 @@ class TableImpl<T> implements Table<T>
                 if(record != null)
                 {
                     result.add(record);
-                    ctx.getEnittysCache().put(record, findKeyValue(record));
                 }
             }
         }
@@ -168,12 +167,7 @@ class TableImpl<T> implements Table<T>
     {
         if(rs.next())
         {
-            T result = parseNew(rs, ctx);
-            if(result != null)
-            {
-                ctx.getEnittysCache().put(result, findKeyValue(result));
-            }
-            return result;
+            return parseNew(rs, ctx);
         }
         return null;
     }
@@ -182,8 +176,9 @@ class TableImpl<T> implements Table<T>
     {
         if(rs.next())
         {
-            fill(entity, rs, ctx);
+            fillKey(entity, rs, ctx);
             ctx.getEnittysCache().put(entity, findKeyValue(entity));
+            fill(entity, rs, ctx);
             return entity;
         }
         return null;
@@ -238,6 +233,8 @@ class TableImpl<T> implements Table<T>
     private T parseNew(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         T entity = buildEntityObject();
+        fillKey(entity, rs, ctx);
+        ctx.getEnittysCache().put(entity, findKeyValue(entity));
         fill(entity, rs, ctx);
         return entity;
     }
@@ -254,13 +251,23 @@ class TableImpl<T> implements Table<T>
         }
     }
 
+    private void fillKey(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object value = rs.getObject(key.getName());
+        Object realValue = CastUtils.castValue(key.getType(), value, ctx);
+        ((TableColumnImpl)key).setValue(entity, realValue);
+    }
+    
     private void fill(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
         for (TableColumn column : columns)
         {
-            Object value = rs.getObject(column.getName());
-            Object realValue = CastUtils.castValue(column.getType(), value, ctx);
-            ((TableColumnImpl)column).setValue(entity, realValue);
+            if(!column.isKey())
+            {
+                Object value = rs.getObject(column.getName());
+                Object realValue = CastUtils.castValue(column.getType(), value, ctx);
+                ((TableColumnImpl)column).setValue(entity, realValue);
+            }
         }
     }
 

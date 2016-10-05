@@ -80,7 +80,7 @@ class MySQLDialect implements SQLDialect
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
         return b.buildColumnStmt(identifier(column.getName()), 
-                column.getSqlType().getName(), 
+                findSqlType(column), 
                 column.getLength(), 
                 column.getPrecision(), 
                 column.isKey(), 
@@ -115,6 +115,24 @@ class MySQLDialect implements SQLDialect
             }
         }
         return def;
+    }
+
+    private String findSqlType(TableColumn<?, ?> column)
+    {
+        switch(column.getSqlType())
+        {
+            case VARCHAR:
+            case NVARCHAR:
+                if(column.getLength() > 21845)
+                {
+                    return "TEXT";
+                }
+                return "VARCHAR";
+            case LONGNVARCHAR:
+            case LONGVARCHAR:
+                return "LONGTEXT";
+        }
+        return column.getSqlType().getName();
     }
 }
 

@@ -90,7 +90,7 @@
          && result.data.status??
          && result.data.resource??>
         <script>
-            window.location = '${result.resource}';
+            window.location = '${result.data.resource}';
         </script>
     <#else>
         <#if widget??>

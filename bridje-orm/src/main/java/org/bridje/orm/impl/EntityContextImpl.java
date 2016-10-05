@@ -46,11 +46,11 @@ class EntityContextImpl implements EntityContext
     private final DataSource ds;
 
     private final EntitysCache cache;
-    
+
     private final SQLDialect dialect;
-    
+
     private final OrmServiceImpl orm;
-    
+
     public EntityContextImpl(OrmServiceImpl orm, DataSource ds, SQLDialect dialect)
     {
         this.orm = orm;
@@ -82,7 +82,7 @@ class EntityContextImpl implements EntityContext
     {
         return find(orm.findTable(entity), id);
     }
-    
+
     @Override
     public <T> T find(Table<T> table, Object id) throws SQLException
     {
@@ -143,7 +143,7 @@ class EntityContextImpl implements EntityContext
     {
         return update(entity, null);
     }
-    
+
     @Override
     public <T> T update(T entity, Object id) throws SQLException
     {
@@ -175,9 +175,13 @@ class EntityContextImpl implements EntityContext
         db.delete(dialect.identifier(table.getName()))
             .where(table.buildIdCondition(this));
 
-        doUpdate(db.toString(), table.findKeyValue(entity));
-        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(table.findKeyValue(entity));
-        cache.remove(entity.getClass(), serializedId);
+        Object updateId = table.findKeyValue(entity);
+        if(updateId != null)
+        {
+            Object serializedId = ((TableColumnImpl)table.getKey()).serialize(updateId);
+            doUpdate(db.toString(), serializedId);
+            cache.remove(entity.getClass(), updateId);
+        }
         return entity;
     }
 
@@ -278,7 +282,7 @@ class EntityContextImpl implements EntityContext
             fixIndex(field);
         }
     }
-    
+
     private <E, T> void fixColumn(TableColumn<E, T> column) throws SQLException
     {
         if(!columnExists(column.getTable().getName(), column.getName()))
@@ -287,7 +291,7 @@ class EntityContextImpl implements EntityContext
             doUpdate(query);
         }
     }
-    
+
     private <E, T> void fixIndex(TableColumn<E, T> column) throws SQLException
     {
         if(column.isIndexed() && !indexExists(column.getTable().getName(), column.getName()))
@@ -312,7 +316,7 @@ class EntityContextImpl implements EntityContext
         }
         return false;
     }
-    
+
     private <T, C> boolean indexExists(String tableName, String columnName) throws SQLException
     {
         try (Connection conn = ds.getConnection())
