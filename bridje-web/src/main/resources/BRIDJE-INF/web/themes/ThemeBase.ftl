@@ -57,8 +57,8 @@
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </head>
-        <body class="${themeName}-theme">
-            <form id="view-form" >
+        <body <@renderBodyAttrs /> >
+            <form id="view-form" <@renderViewFormAttrs /> >
                 <#if view.root??>
                     <@renderPartialView view.root />
                 </#if>

@@ -157,7 +157,10 @@ def readFieldData = { entity, fieldNode, model ->
     field['sqlType'] = fieldNode.'@sqlType'.text();
     field['adapter'] = fieldNode.'@adapter'.text();
     field['length'] = fieldNode.'@length'.text();
-    field['isIndexed'] = fieldNode.'@indexed'.text() == "true";
+    field['isIndexed'] = fieldNode.'@index'.text() == "true";
+    field['isRequired'] = fieldNode.'@required'.text() == "true";
+    field['blankToNull'] = fieldNode.'@blankToNull'.text() == "true";
+    field['emptyToNull'] = fieldNode.'@emptyToNull'.text() == "true";
     field['isKey'] = fieldNode.'@key'.text() == "true" ;
     field["isRelation"] = field['fieldType'] == 'relation';
     if(field["isRelation"])
@@ -273,9 +276,9 @@ applyBaseTemplate = { entity, templates ->
 };
 
 def generateEntitys = { ->
-    if(tools.fileExists("orm.xml"))
+    if(tools.fileExists("orm/model.xml"))
     {
-        def ormData = tools.loadXmlFile("orm.xml");
+        def ormData = tools.loadXmlFile("orm/model.xml");
         def model = [:];
         model['name'] = ormData.'@name'.text();
         model['package'] = ormData.'@package'.text();

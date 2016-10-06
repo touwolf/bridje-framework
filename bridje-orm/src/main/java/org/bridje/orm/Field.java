@@ -61,6 +61,13 @@ public @interface Field
     int precision() default 0;
 
     /**
+     * Defines if this field is required (not null or empty).
+     *
+     * @return true if the field is required, false otherwise.
+     */
+    boolean required() default false;
+
+    /**
      * Defines if this field have a index or not. If true th ORM API will create
      * an index on this field upon fix the Entity table.
      *

@@ -84,6 +84,7 @@ class PostgreSQLDialect implements SQLDialect
                 column.getPrecision(), 
                 column.isKey(), 
                 false, 
+                column.isRequired(),
                 findDefaultValue(column.getSqlType(), column.getDefaultValue()));
     }
 

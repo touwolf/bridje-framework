@@ -29,8 +29,8 @@ public class BuildersTest
     {
         DDLBuilder b = new DDLBuilder();
         String query = b.createTable("my_table")
-                .column(b.buildColumnStmt("id", "BIGINT", 0, 0, true, true, null))
-                .column(b.buildColumnStmt("name", "VARCHAR", 100, 0, false, false, "NULL"))
+                .column(b.buildColumnStmt("id", "BIGINT", 0, 0, true, true, false, null))
+                .column(b.buildColumnStmt("name", "VARCHAR", 100, 0, false, false, false, "NULL"))
                 .primaryKey("id")
                 .toString();
 
@@ -47,7 +47,7 @@ public class BuildersTest
     {
         DDLBuilder b = new DDLBuilder();
         String query = b.alterTable("my_table")
-                .addColumn(b.buildColumnStmt("other_col", "DECIMAL", 8, 2, false, false, "NULL"))
+                .addColumn(b.buildColumnStmt("other_col", "DECIMAL", 8, 2, false, false, false, "NULL"))
                 .toString();
 
         String expected = "ALTER TABLE my_table\n" +

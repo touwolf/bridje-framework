@@ -1,0 +1,146 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" targetNamespace="http://www.bridje.org/schemas/orm/model" xmlns:tns="http://www.bridje.org/schemas/orm/model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="model" type="tns:model"/>
+
+    <xs:complexType name="model">
+        <xs:sequence>
+            <xs:element name="templates" type="tns:templates" />
+            <xs:element name="entities" type="tns:entities" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="package"/>
+        <xs:attribute type="xs:string" name="tablePrefix"/>
+        <xs:attribute type="xs:string" name="defaultFieldDescription"/>
+    </xs:complexType>
+    
+    <xs:complexType name="templates">
+        <xs:sequence>
+            <xs:element name="template" type="tns:entity" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="entities">
+        <xs:sequence>
+            <xs:element name="entity" type="tns:entity" />            
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="entity">
+        <xs:sequence>
+            <xs:element name="fields" type="tns:fields" />            
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="table"/>
+        <xs:attribute type="xs:string" name="description"/>
+        <xs:attribute type="xs:string" name="base"/>
+    </xs:complexType>
+
+    <xs:complexType name="operations">
+        <xs:attribute type="xs:methodPresence" name="insert"/>
+        <xs:attribute type="xs:methodPresence" name="update"/>
+        <xs:attribute type="xs:methodPresence" name="delete"/>
+        <xs:attribute type="xs:methodPresence" name="exists"/>
+        <xs:attribute type="xs:methodPresence" name="save"/>
+        <xs:attribute type="xs:methodPresence" name="find"/>
+        <xs:attribute type="xs:methodPresence" name="refresh"/>
+        <xs:attribute type="xs:methodPresence" name="query"/>
+    </xs:complexType>
+
+    <xs:simpleType name="methodPresence">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="fields">
+        <xs:sequence>
+            <xs:element name="boolean" type="tns:boolean" />
+            <xs:element name="byte" type="tns:number" />
+            <xs:element name="short" type="tns:number" />
+            <xs:element name="integer" type="tns:number" />
+            <xs:element name="long" type="tns:number" />
+            <xs:element name="float" type="tns:number" />
+            <xs:element name="double" type="tns:number" />
+            <xs:element name="string" type="tns:string" />
+            <xs:element name="character" type="tns:character" />
+            <xs:element name="relation" type="tns:relation" />
+            <xs:element name="enum" type="tns:enum" />
+            <xs:element name="date" type="tns:date" />
+            <xs:element name="sqlTime" type="tns:date" />
+            <xs:element name="sqlDate" type="tns:date" />
+            <xs:element name="timestamp" type="tns:date" />
+            <xs:any />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="boolean">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+
+    <xs:complexType name="number">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:integer" name="length"/>
+        <xs:attribute type="xs:integer" name="precision"/>
+        <xs:attribute type="xs:boolean" name="autoIncrement"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+
+    <xs:complexType name="string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:integer" name="length"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+        <xs:attribute type="xs:boolean" name="blankToNull"/>
+        <xs:attribute type="xs:boolean" name="emptyToNull"/>
+    </xs:complexType>
+
+    <xs:complexType name="character">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+
+    <xs:complexType name="relation">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:string" name="with"/>
+        <xs:attribute type="xs:integer" name="length"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+
+    <xs:complexType name="enum">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="xs:integer" name="length"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+
+    <xs:complexType name="date">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="column"/>
+        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="xs:integer" name="length"/>
+        <xs:attribute type="xs:boolean" name="index"/>
+        <xs:attribute type="xs:boolean" name="required"/>
+        <xs:attribute type="xs:boolean" name="key"/>
+    </xs:complexType>
+</xs:schema>

@@ -18,6 +18,7 @@ package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -59,6 +60,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     
     private final boolean autoIncrement;
     
+    private final boolean required;
+    
     private SQLAdapter adapter;
     
     public TableColumnImpl(TableImpl<E> table, Field field, Class<T> type)
@@ -79,6 +82,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         this.length = findLength(annotation.length());
         this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? annotation.precision() : 0;
         this.indexed = annotation.index();
+        this.required = annotation.required();
         if(annotation.adapter() == SQLAdapter.class)
         {
             if(Enum.class.isAssignableFrom(this.type))
@@ -210,6 +214,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             {
                 case VARCHAR:
                     return 100;
+                case CHAR:
+                    return 1;
                 default:
                     return 0;
             }
@@ -296,6 +302,12 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     }
 
     @Override
+    public boolean isRequired()
+    {
+        return required;
+    }
+
+    @Override
     public Condition ne(T value)
     {
         return new BinaryCondition(this, Operator.NE, serialize(value));
@@ -340,5 +352,24 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             sqlAdapter = instantiate(sqlAdapt);
         }
         return sqlAdapter;
+    }
+
+    public void validate(E entity) throws SQLException
+    {
+        Object value = getQueryParameter(entity);
+        if(isRequired())
+        {
+            if(value == null)
+            {
+                throw new SQLException("The column " + getName() + " cannot be null.");
+            }
+        }
+        if(value instanceof String)
+        {
+           if( ((String) value).length() > length)
+           {
+               throw new SQLException("Data to big for column " + getName());
+           }
+        }
     }
 }

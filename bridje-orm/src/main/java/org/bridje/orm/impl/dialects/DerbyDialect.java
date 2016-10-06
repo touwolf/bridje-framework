@@ -85,6 +85,7 @@ class DerbyDialect implements SQLDialect
                 column.getPrecision(), 
                 column.isKey(), 
                 column.isAutoIncrement(), 
+                column.isRequired(),
                 column.getDefaultValue());
     }
 

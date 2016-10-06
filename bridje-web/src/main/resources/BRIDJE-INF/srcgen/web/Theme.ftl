@@ -39,55 +39,6 @@
     </#if>
 </#macro>
 
-<#macro renderViewUpdateScript>
-    <script>
-        (function($){
-            $(document).ready(function()
-            {
-                window.initViewForm = function(el)
-                {
-                    var postView = function(event)
-                    {
-                        event.preventDefault();
-
-                        $('input[name=__action]').val($(event.target).data('action'));
-
-                        var udtInputName = $(event.target).data('update-input');
-                        var udtInputNameValue = $(event.target).data('update-input-value');
-                        
-                        if(udtInputName != "")
-                        {
-                            $('input[name=\'' + udtInputName + '\']').val(udtInputNameValue);
-                        }
-
-                        $.ajax(
-                        {
-                            type: 'POST',
-                            url: window.location,
-                            data: $('form#view-form').serialize(),
-                            success: function(response)
-                            {
-                                $('form#view-form').html(response);
-                                initViewForm($('form#view-form'));
-                                if(typeof initBridjeView != 'undefined')
-                                {
-                                    initBridjeView();
-                                    $(window).trigger( "load" );
-                                }
-                            }
-                        });
-                    };
-                    el.find('a.action').click(postView);
-                    el.find('button.action').click(postView);
-                    el.find('select.action').change(postView);
-                };
-
-                initViewForm($('form#view-form'));
-            });
-         })(jQuery); 
-    </script>
-</#macro>
-
 <#macro renderThemeScripts themeName>
     [#list theme.defaultResources as r]
     [#list r.scripts as s]
@@ -99,7 +50,6 @@
             <@renderScript themeName s />
         </#list>
     </#list>
-    <@renderViewUpdateScript />
 </#macro>
 
 <#macro renderThemeStyles themeName>
@@ -113,6 +63,14 @@
             <@renderStyle themeName s />
         </#list>
     </#list>
+</#macro>
+
+<#macro renderBodyAttrs >
+    ${theme.bodyAttrs!}
+</#macro>
+
+<#macro renderViewFormAttrs >
+    ${theme.viewFormAttrs!}
 </#macro>
 
 <@renderMain "${theme.name}" />

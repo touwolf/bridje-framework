@@ -191,10 +191,11 @@ public class DDLBuilder
      * @param precision The precision for decimal types.
      * @param isKey If this column is a key column.
      * @param autoIncement If this column is auto increment column.
+     * @param required
      * @param def The default value for the column.
      * @return The column statement.
      */
-    public String buildColumnStmt(String columnName, String sqlType, int length, int precision, boolean isKey, boolean autoIncement, String def)
+    public String buildColumnStmt(String columnName, String sqlType, int length, int precision, boolean isKey, boolean autoIncement, boolean required, String def)
     {
         StringWriter sw = new StringWriter();
         
@@ -212,7 +213,7 @@ public class DDLBuilder
             }
             sw.append(")");
         }
-        if(isKey)
+        if(isKey || required)
         {
             sw.append(" NOT NULL");
             if(autoIncement)

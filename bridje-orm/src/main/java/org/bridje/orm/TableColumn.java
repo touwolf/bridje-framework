@@ -105,4 +105,10 @@ public interface TableColumn<E, T> extends Column<T>
      * @return true this column is autoincrement column, false otherwise.
      */
     boolean isAutoIncrement();
+    
+    /**
+     * 
+     * @return 
+     */
+    boolean isRequired();
 }

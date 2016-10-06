@@ -34,7 +34,7 @@ public class ${entity.name}
     <#if field.isKey >
     @Key<#if field.isAutoIncrement>(autoIncrement = true)</#if>
     </#if>
-    @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
+    @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isRequired>, required = true</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
     private ${field.javaType} ${field.name};
 
     </#list>
@@ -58,6 +58,21 @@ public class ${entity.name}
      */
     public void set${field.name?cap_first}(${field.javaType} ${field.name})
     {
+        <#if field.javaType == "String">
+        <#if field.blankToNull>
+        if(${field.name} != null && ${field.name}.trim().isEmpty())
+        {
+            this.${field.name} = null;
+            return;
+        }
+        <#elseif field.emptyToNull>
+        if(${field.name} != null && ${field.name}.isEmpty())
+        {
+            this.${field.name} = null;
+            return;
+        }
+        </#if>
+        </#if>
         this.${field.name} = ${field.name};
     }
 

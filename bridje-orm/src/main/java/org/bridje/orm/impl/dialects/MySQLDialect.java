@@ -85,6 +85,7 @@ class MySQLDialect implements SQLDialect
                 column.getPrecision(), 
                 column.isKey(), 
                 column.isAutoIncrement(), 
+                column.isRequired(),
                 findDefaultValue(column));
     }
 

@@ -103,6 +103,14 @@ public interface EntityContext
      * process.
      */
     <T> T refresh(T entity) throws SQLException;
+    
+    /**.
+     * 
+     * @param <T>
+     * @param entity
+     * @throws SQLException 
+     */
+    <T> void validate(T entity) throws SQLException;
 
     /**
      * Deletes the entity in the database
