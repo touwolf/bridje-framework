@@ -17,16 +17,8 @@
 package org.bridje.web.view;
 
 import org.bridje.web.view.widgets.Widget;
-import org.bridje.web.view.widgets.UIEvent;
-import org.bridje.web.view.widgets.UIInputExpression;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;

@@ -18,7 +18,6 @@ package org.bridje.orm.impl;
 
 import java.sql.SQLException;
 import org.bridje.orm.Entity;
-import org.bridje.orm.Table;
 
 /**
  * Utilities for casting values from to the database.

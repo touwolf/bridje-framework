@@ -16,7 +16,6 @@
 
 package org.bridje.web;
 
-import java.util.List;
 import java.util.Map;
 import org.bridje.http.HttpCookie;
 import org.bridje.ioc.Inject;

@@ -163,7 +163,7 @@ public class WidgetManager implements VFileAdapter
         }
         catch (JAXBException | IOException ex)
         {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            LOG.log(Level.SEVERE, "Could not load the  view " + f.getPath() + " " + ex.getMessage(), ex);
         }
         return result;
     }
