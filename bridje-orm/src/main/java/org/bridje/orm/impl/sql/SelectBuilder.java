@@ -63,15 +63,18 @@ public class SelectBuilder
     }
     
     /**
-     * Adds a new INNER JOIN clause to after the FROM statement.
+     * Adds a new JOIN clause to after the FROM statement.
      * 
+     * @param joinType INNER, LEFT, RIGHT...
      * @param table The name of the table to join.
      * @param condition The on condition for the join.
      * @return this builder.
      */
-    public SelectBuilder innerJoin(String table, String condition)
+    public SelectBuilder join(String joinType, String table, String condition)
     {
-        sb.append(" INNER JOIN ");
+        sb.append(" ");
+        sb.append(joinType);
+        sb.append(" JOIN ");
         sb.append(table);
         sb.append(" ON ");
         sb.append(condition);

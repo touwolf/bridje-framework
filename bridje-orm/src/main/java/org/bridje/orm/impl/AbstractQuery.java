@@ -24,6 +24,7 @@ import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 import org.bridje.orm.Table;
+import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
 abstract class AbstractQuery<T> implements Query<T>
@@ -141,11 +142,49 @@ abstract class AbstractQuery<T> implements Query<T>
         return count() > 0;
     }
 
+    @Override
+    public <R> Query<R> join(TableRelationColumn<T, R> relation)
+    {
+        return new JoinQueryImpl<>(JoinType.INNER, this, (TableRelationColumnImpl<T, R>)relation);
+    }
+
+    @Override
+    public <R> Query<R> leftJoin(TableRelationColumn<T, R> relation)
+    {
+        return new JoinQueryImpl<>(JoinType.LEFT, this, (TableRelationColumnImpl<T, R>)relation);
+    }
+
+    @Override
+    public <R> Query<R> rightJoin(TableRelationColumn<T, R> relation)
+    {
+        return new JoinQueryImpl<>(JoinType.RIGHT, this, (TableRelationColumnImpl<T, R>)relation);
+    }
+
+    @Override
+    public <R> Query<R> join(Table<R> related, Condition on)
+    {
+        return new JoinQueryImpl<>(JoinType.INNER, this, (TableImpl<R>)related, on);
+    }
+
+    @Override
+    public <R> Query<R> leftJoin(Table<R> related, Condition on)
+    {
+        return new JoinQueryImpl<>(JoinType.LEFT, this, (TableImpl<R>)related, on);
+    }
+
+    @Override
+    public <R> Query<R> rightJoin(Table<R> related, Condition on)
+    {
+        return new JoinQueryImpl<>(JoinType.RIGHT, this, (TableImpl<R>)related, on);
+    }
+
     protected abstract int getPage();
 
     protected abstract int getPageSize();
 
     protected abstract TableImpl<T> getTable();
+
+    protected abstract TableImpl<?> getBaseTable();
 
     protected abstract EntityContextImpl getCtx();
     

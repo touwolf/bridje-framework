@@ -20,6 +20,7 @@ import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
+import org.bridje.orm.TableColumn;
 
 /**
  *
@@ -44,6 +45,12 @@ abstract class AbstractColumn<T> implements Column<T>
         return new BinaryCondition(this, Operator.EQ, value);
     }
 
+    @Override
+    public Condition eq(TableColumn<?, ?> value)
+    {
+        return new BinaryCondition(this, Operator.EQ, value);
+    }
+    
     @Override
     public Condition ne(T value)
     {

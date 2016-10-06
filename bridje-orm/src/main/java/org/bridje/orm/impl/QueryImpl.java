@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
-import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
 /**
@@ -114,13 +113,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     {
         return pageSize;
     }
-
-    @Override
-    public <R> Query<R> join(TableRelationColumn<T, R> relation)
-    {
-        return new JoinQueryImpl<>(this, (TableRelationColumnImpl<T, R>)relation);
-    }
-
+    
     @Override
     protected TableImpl<T> getTable()
     {
@@ -131,5 +124,11 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     protected EntityContextImpl getCtx()
     {
         return ctx;
+    }
+
+    @Override
+    protected TableImpl<?> getBaseTable()
+    {
+        return table;
     }
 }

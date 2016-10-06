@@ -41,6 +41,13 @@ public interface Column<T> extends SQLWritable
      * @return The new created condition.
      */
     Condition eq(T value);
+    
+    /**
+     * 
+     * @param value
+     * @return 
+     */
+    Condition eq(TableColumn<?, ?> value);
 
     /**
      * Creates a new "IS NULL" condition with this column as a left operand and

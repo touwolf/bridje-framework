@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
-import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
 /**
@@ -30,15 +29,30 @@ import org.bridje.orm.impl.sql.SelectBuilder;
  */
 class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
 {
-    private final TableRelationColumnImpl<T, R> relation;
+    private TableRelationColumnImpl<T, R> relation;
+
+    private TableImpl<R> related;
+    
+    private Condition condition;
 
     private final AbstractQuery<T> baseQuery;
+    
+    private final JoinType type;
 
-    public JoinQueryImpl(AbstractQuery<T> baseQuery, 
+    public JoinQueryImpl(JoinType type, AbstractQuery<T> baseQuery, 
             TableRelationColumnImpl<T, R> relation)
     {
+        this.type = type;
         this.baseQuery = baseQuery;
         this.relation = relation;
+    }
+
+    public JoinQueryImpl(JoinType type, AbstractQuery<T> baseQuery, TableImpl<R> related, Condition condition)
+    {
+        this.related = related;
+        this.condition = condition;
+        this.baseQuery = baseQuery;
+        this.type = type;
     }
 
     @Override
@@ -46,12 +60,6 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     {
         baseQuery.paging(page, size);
         return this;
-    }
-
-    @Override
-    public <C> Query<C> join(TableRelationColumn<R, C> relation)
-    {
-        return new JoinQueryImpl<>(this, (TableRelationColumnImpl<R, C>)relation);
     }
 
     @Override
@@ -83,9 +91,19 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     @Override
     protected TableImpl<R> getTable()
     {
+        if(relation == null)
+        {
+            return related;
+        }
         return (TableImpl<R>)relation.getRelated();
     }
 
+    @Override
+    protected TableImpl<?> getBaseTable()
+    {
+        return baseQuery.getBaseTable();
+    }
+    
     @Override
     protected EntityContextImpl getCtx()
     {
@@ -97,8 +115,8 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     {
         SelectBuilder qb = new SelectBuilder();
         qb.select(fields)
-            .from(getCtx().getDialect().identifier(getTable().getName()));
-        createJoins(qb);
+            .from(getCtx().getDialect().identifier(getBaseTable().getName()));
+        createJoins(qb, parameters);
         if(getCondition() != null)
         {
             qb.where(getCondition().writeSQL(parameters, getCtx()));
@@ -113,21 +131,28 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
         return qb;
     }
 
-    private void createJoins(SelectBuilder qb)
+    private void createJoins(SelectBuilder qb, List<Object> parameters)
     {
         if(baseQuery instanceof JoinQueryImpl)
         {
-            ((JoinQueryImpl)baseQuery).createJoins(qb);
+            ((JoinQueryImpl)baseQuery).createJoins(qb, parameters);
         }
         StringBuilder joinCondition = new StringBuilder();
-        joinCondition.append(getCtx().getDialect().identifier(relation.getTable().getName()));
-        joinCondition.append('.');
-        joinCondition.append(getCtx().getDialect().identifier(relation.getName()));
-        joinCondition.append(" = ");
-        joinCondition.append(getCtx().getDialect().identifier(relation.getRelated().getName()));
-        joinCondition.append('.');
-        joinCondition.append(getCtx().getDialect().identifier(relation.getRelated().getKey().getName()));
-        qb.innerJoin(getCtx().getDialect().identifier(relation.getTable().getName()), joinCondition.toString());
+        if(relation != null)
+        {
+            joinCondition.append(getCtx().getDialect().identifier(relation.getTable().getName()));
+            joinCondition.append('.');
+            joinCondition.append(getCtx().getDialect().identifier(relation.getName()));
+            joinCondition.append(" = ");
+            joinCondition.append(getCtx().getDialect().identifier(relation.getRelated().getName()));
+            joinCondition.append('.');
+            joinCondition.append(getCtx().getDialect().identifier(relation.getRelated().getKey().getName()));
+            qb.join(type.name(), getCtx().getDialect().identifier(getTable().getName()), joinCondition.toString());
+        }
+        else
+        {
+            qb.join(type.name(), getCtx().getDialect().identifier(getTable().getName()), condition.writeSQL(parameters, getCtx()));
+        }
     }
     
     @Override

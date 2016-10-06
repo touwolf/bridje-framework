@@ -133,7 +133,55 @@ public interface Query<T>
      * @return The new create join query.
      */
     <R> Query<R> join(TableRelationColumn<T,R> relation);
-    
+
+    /**
+     * Creates a new left join query out of the given relation.
+     * 
+     * @param <R> The related entity type.
+     * @param relation The relation column object.
+     * @return The new create join query.
+     */
+    <R> Query<R> leftJoin(TableRelationColumn<T,R> relation);
+
+    /**
+     * Creates a new left join query out of the given relation.
+     * 
+     * @param <R> The related entity type.
+     * @param relation The relation column object.
+     * @return The new create join query.
+     */
+    <R> Query<R> rightJoin(TableRelationColumn<T,R> relation);
+
+    /**
+     * Creates a new join query out of the given relation.
+     * 
+     * @param <R> The related entity type.
+     * @param related The related table.
+     * @param on
+     * @return The new create join query.
+     */
+    <R> Query<R> join(Table<R> related, Condition on);
+
+    /**
+     * Creates a new left join query out of the given relation.
+     * 
+     * @param <R> The related entity type.
+     * @param related The related table.
+     * @param on
+     * @return The new create join query.
+     */
+    <R> Query<R> leftJoin(Table<R> related, Condition on);
+
+    /**
+     * Creates a new left join query out of the given relation.
+     * 
+     * @param <R> The related entity type.
+     * @param related The related table.
+     * @param on
+     * @return The new create join query.
+     */
+    <R> Query<R> rightJoin(Table<R> related, Condition on);
+
     /**
      * Specifies the condition to be use on this query.
      *
