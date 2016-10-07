@@ -25,7 +25,7 @@ import org.bridje.orm.Column;
 import org.bridje.orm.SQLAdapter;
 
 /**
- *
+ * An SQLAdapter for LocalDate class.
  */
 @Component
 public class LocalDateAdapter implements SQLAdapter

@@ -23,6 +23,10 @@ import org.bridje.orm.Column;
 import org.bridje.orm.SQLAdapter;
 import org.bridje.orm.TableColumn;
 
+/**
+ * An SQLAdapter for enum classes. This adapter will serialize any anum object
+ * taking the ordinal or the name depending on the result JDBCType.
+ */
 @Component
 public class EnumAdapter implements SQLAdapter
 {
@@ -31,22 +35,22 @@ public class EnumAdapter implements SQLAdapter
     @Override
     public Object serialize(Object value, Column column)
     {
-        if(value instanceof Enum)
+        if (value instanceof Enum)
         {
-            if(column instanceof TableColumn)
+            if (column instanceof TableColumn)
             {
-                switch( ((TableColumn)column).getSqlType() )
+                switch (((TableColumn) column).getSqlType())
                 {
                     case BIGINT:
                     case INTEGER:
                     case SMALLINT:
                     case TINYINT:
-                        return serializeOrdinal((Enum)value);
+                        return serializeOrdinal((Enum) value);
                     case VARCHAR:
                     case CHAR:
                     case NVARCHAR:
                     case NCHAR:
-                        return serializeName((Enum)value);
+                        return serializeName((Enum) value);
                 }
             }
         }
@@ -56,15 +60,15 @@ public class EnumAdapter implements SQLAdapter
     @Override
     public Object unserialize(Object value, Column column)
     {
-        if(isEnum(column.getType()))
+        if (isEnum(column.getType()))
         {
-            if(value instanceof Number)
+            if (value instanceof Number)
             {
-                return unserializeOrdinal((Number)value, (Class<? extends Enum>)column.getType());
+                return unserializeOrdinal((Number) value, (Class<? extends Enum>) column.getType());
             }
-            if(value instanceof String)
+            if (value instanceof String)
             {
-                return unserializeString((String)value, (Class<? extends Enum>)column.getType());
+                return unserializeString((String) value, (Class<? extends Enum>) column.getType());
             }
         }
         return null;
@@ -84,7 +88,7 @@ public class EnumAdapter implements SQLAdapter
     {
         Enum[] vals = cls.getEnumConstants();
         int index = number.intValue();
-        if(index < 0 || index >= vals.length)
+        if (index < 0 || index >= vals.length)
         {
             return null;
         }

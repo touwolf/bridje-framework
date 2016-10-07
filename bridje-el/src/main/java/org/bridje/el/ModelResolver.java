@@ -19,7 +19,20 @@ package org.bridje.el;
 import java.util.Map;
 import org.bridje.ioc.IocContext;
 
+/**
+ * An interface that allow other APIs to fill the global enviroment variables
+ * for the given IoC context.
+ */
+@FunctionalInterface
 public interface ModelResolver
 {
+    /**
+     * Called when the ElEnviroment need to resolve the names of the components
+     * that will participate in the expressions.
+     *
+     * @param ctx The context that the models will be resolved out of.
+     * @param result The result map with the names and class of all the
+     * components that are models to the given EL enviroment.
+     */
     void resolveAllModels(IocContext<?> ctx, Map<String, Class<?>> result);
 }

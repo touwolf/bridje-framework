@@ -26,9 +26,12 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Priority;
 
+/**
+ * An EL type converter between the HttpReqParam and the basic types.
+ */
 @Component
 @Priority(5000)
-public class HttpReqParamConverter implements ElTypeConverter
+class HttpReqParamConverter implements ElTypeConverter
 {
     @Inject
     private TypeConverter conv;

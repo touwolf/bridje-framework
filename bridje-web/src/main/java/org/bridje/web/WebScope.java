@@ -43,6 +43,13 @@ public final class WebScope implements Scope
 
     private WebSession session;
 
+    /**
+     * The only constructor for this object, the HTTP bridlet context for the
+     * request mus be provided.
+     *
+     * @param ctx The HTTP bridlet context for the current HTTP
+     * request.
+     */
     public WebScope(HttpBridletContext ctx)
     {
         this.srvCtx = ctx;
@@ -287,7 +294,7 @@ public final class WebScope implements Scope
 
     /**
      * Adds a cookie to the HTTP response.
-     * 
+     *
      * @param name The name of the HTTP Cookie.
      * @param value The value of the HTTP Cookie.
      * @return The HTTP Cookie added.
@@ -327,7 +334,7 @@ public final class WebScope implements Scope
 
     /**
      * Gets the current WebSession for this HTTP request.
-     * 
+     *
      * @return The current WebSession for this HTTP request.
      */
     public WebSession getSession()

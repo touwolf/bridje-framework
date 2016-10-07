@@ -16,33 +16,66 @@
 
 package org.bridje.http;
 
+/**
+ * Exception to be use by the HTTP server to return an status code and message
+ * to the client.
+ */
 public class HttpException extends Exception
 {
     private int status;
 
+    /**
+     * Status code only constructor. Message will be null.
+     * 
+     * @param status The status code to return to the client, must be a valid HTTP status code.
+     */
     public HttpException(int status)
     {
         this.status = status;
     }
 
+    /**
+     * Status code an message constructor.
+     * 
+     * @param status The status code to return to the client, must be a valid HTTP status code.
+     * @param message The message for this exception.
+     */
     public HttpException(int status, String message)
     {
         super(message);
         this.status = status;
     }
 
+    /**
+     * All fields constructor.
+     * 
+     * @param status The status code to return to the client, must be a valid HTTP status code.
+     * @param message The message for this exception.
+     * @param cause The coause for this exception.
+     */
     public HttpException(int status, String message, Throwable cause)
     {
         super(message, cause);
         this.status = status;
     }
 
+    /**
+     * Status and cause constructor.
+     * 
+     * @param status The status code to return to the client, must be a valid HTTP status code.
+     * @param cause The coause for this exception.
+     */
     public HttpException(int status, Throwable cause)
     {
         super(cause);
         this.status = status;
     }
-    
+
+    /**
+     * The status code to return to the client, must be a valid HTTP status code.
+     * 
+     * @return An integer that represents the HTTP status code.
+     */
     public int getStatus()
     {
         return status;

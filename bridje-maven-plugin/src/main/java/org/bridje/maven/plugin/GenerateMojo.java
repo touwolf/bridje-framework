@@ -49,32 +49,32 @@ import org.codehaus.classworlds.DuplicateRealmException;
 
 /**
  * This MOJO is responsible for generating the code specified by the other APIs.
- * Each API defines the code that it needs and the user need`s only to define the 
- * data for the code.
+ * Each API defines the code that it needs and the user need`s only to define
+ * the data for the code.
  */
 @Mojo(
-    name = "generate-sources"
+        name = "generate-sources"
 )
 public class GenerateMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "${project.basedir}/src/main/bridje", readonly = false)
     private String sourceFolder;
 
-    @Parameter(defaultValue="${project.build.directory}/generated-sources/bridje", readonly = false)
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/bridje", readonly = false)
     private String targetFolder;
 
-    @Parameter(defaultValue="${project.build.directory}/generated-resources/bridje", readonly = false)
+    @Parameter(defaultValue = "${project.build.directory}/generated-resources/bridje", readonly = false)
     private String targetResFolder;
 
-    @Parameter(defaultValue="${project}", readonly=true, required=true)
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
     private ClassLoader clsRealm;
 
     private Configuration cfg;
-    
+
     private GroovyShell shell;
-    
+
     private List<URL> generators;
 
     @Override
@@ -91,7 +91,7 @@ public class GenerateMojo extends AbstractMojo
             generators = loadGenerators();
             for (URL generator : generators)
             {
-                try(InputStream is = generator.openStream())
+                try (InputStream is = generator.openStream())
                 {
                     shell.evaluate(new InputStreamReader(is));
                 }
@@ -119,25 +119,45 @@ public class GenerateMojo extends AbstractMojo
         return result;
     }
 
+    /**
+     * Returns a file object that represents the source folder for the code
+     * generation goal.
+     *
+     * @return A File object.
+     */
     public File getSourceFolder()
     {
         return new File(sourceFolder);
     }
 
+    /**
+     * Returns a file object that represents the target folder for the code
+     * generation goal.
+     *
+     * @return A File object.
+     */
     public File getTargetFolder()
     {
         return new File(targetFolder);
     }
 
+    /**
+     * Generates a new class file using the data and the template given.
+     *
+     * @param className The full name of the class to be generated.
+     * @param template The name of the template to be use.
+     * @param data The data to be use in the generation.
+     * @return A File object that represents the generated class fild.
+     */
     public File generateClass(String className, String template, Map data)
     {
         try
         {
             File clsFile = createClassFile(className);
             Template tmpl = cfg.getTemplate(template);
-            if(tmpl != null)
+            if (tmpl != null)
             {
-                try(FileWriter fw = new FileWriter(clsFile))
+                try (FileWriter fw = new FileWriter(clsFile))
                 {
                     tmpl.process(data, fw);
                 }
@@ -149,16 +169,24 @@ public class GenerateMojo extends AbstractMojo
         }
         return null;
     }
-    
-    public File generateResource(String className, String template, Map data)
+
+    /**
+     * Generates a new resource file.
+     *
+     * @param resName The name and path of the resource file.
+     * @param template The name of the template to be use.
+     * @param data The data to be use.
+     * @return The file generated.
+     */
+    public File generateResource(String resName, String template, Map data)
     {
         try
         {
-            File clsFile = createResourceFile(className);
+            File clsFile = createResourceFile(resName);
             Template tmpl = cfg.getTemplate(template);
-            if(tmpl != null)
+            if (tmpl != null)
             {
-                try(FileWriter fw = new FileWriter(clsFile))
+                try (FileWriter fw = new FileWriter(clsFile))
                 {
                     tmpl.process(data, fw);
                 }
@@ -174,13 +202,13 @@ public class GenerateMojo extends AbstractMojo
     private File createClassFile(String className) throws IOException
     {
         String sep = File.separator;
-        if(sep.equals("\\"))
+        if (sep.equals("\\"))
         {
-            sep = "\\\\"; 
+            sep = "\\\\";
         }
         String fName = className.replaceAll("[\\.]", sep);
         File f = new File(targetFolder + File.separator + fName + ".java");
-        if(f.exists())
+        if (f.exists())
         {
             f.delete();
         }
@@ -192,7 +220,7 @@ public class GenerateMojo extends AbstractMojo
     private File createResourceFile(String fileName) throws IOException
     {
         File f = new File(targetResFolder + File.separator + fileName);
-        if(f.exists())
+        if (f.exists())
         {
             f.delete();
         }
@@ -213,15 +241,28 @@ public class GenerateMojo extends AbstractMojo
         return result;
     }
 
+    /**
+     * Determines if the given file exists.
+     *
+     * @param fileName The name and path of the file to check.
+     * @return true the file exists, false otherwise.
+     */
     public boolean fileExists(String fileName)
     {
         File f = new File(sourceFolder + File.separator + fileName);
         return f.exists() && f.isFile();
     }
 
+    /**
+     * Loads the given xml file into a GPathResult object that can be use
+     * withing groovy to navigate the content of the xml document.
+     *
+     * @param fileName The name of the xml file to load.
+     * @return An GPathResult object.
+     */
     public GPathResult loadXmlFile(String fileName)
     {
-        try(FileReader fr = new FileReader(new File(sourceFolder + File.separator + fileName)))
+        try (FileReader fr = new FileReader(new File(sourceFolder + File.separator + fileName)))
         {
             return new XmlSlurper().parse(fr);
         }
@@ -232,6 +273,13 @@ public class GenerateMojo extends AbstractMojo
         return null;
     }
 
+    /**
+     * Load all xml resources files availables in the projects class path.
+     * 
+     * @param resourceName The name of the resource to load.
+     * @return A list with all the resources found.
+     * @throws IOException If any IO error ocurrs.
+     */
     public List<GPathResult> loadXmlResources(String resourceName) throws IOException
     {
         List<GPathResult> result = new ArrayList<>();
@@ -239,7 +287,7 @@ public class GenerateMojo extends AbstractMojo
         while (resources.hasMoreElements())
         {
             URL url = resources.nextElement();
-            try(InputStreamReader fr = new InputStreamReader(url.openStream()))
+            try (InputStreamReader fr = new InputStreamReader(url.openStream()))
             {
                 result.add(new XmlSlurper().parse(fr));
             }

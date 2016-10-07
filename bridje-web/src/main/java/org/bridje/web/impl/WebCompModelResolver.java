@@ -22,8 +22,11 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
 import org.bridje.web.WebComponent;
 
+/**
+ * Provides a ModelResolver for the Web Components.
+ */
 @Component
-public class ModelResolverImpl implements ModelResolver
+class WebCompModelResolver implements ModelResolver
 {
     @Override
     public void resolveAllModels(IocContext<?> ctx, Map<String, Class<?>> result)

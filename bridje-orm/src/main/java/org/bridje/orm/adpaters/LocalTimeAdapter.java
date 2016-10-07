@@ -23,7 +23,7 @@ import org.bridje.orm.Column;
 import org.bridje.orm.SQLAdapter;
 
 /**
- *
+ * An SQLAdapter for LocalTime class.
  */
 @Component
 public class LocalTimeAdapter implements SQLAdapter

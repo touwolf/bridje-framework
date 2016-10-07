@@ -24,6 +24,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import org.bridje.web.view.widgets.Widget;
 
+/**
+ * Provides the hability to define 
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Defines
 {
