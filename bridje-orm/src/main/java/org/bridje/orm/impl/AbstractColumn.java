@@ -36,7 +36,7 @@ abstract class AbstractColumn<T> implements Column<T>
     @Override
     public OrderBy desc()
     {
-        return new OrderByImpl(OrderByType.ASC, this);
+        return new OrderByImpl(OrderByType.DESC, this);
     }
 
     @Override

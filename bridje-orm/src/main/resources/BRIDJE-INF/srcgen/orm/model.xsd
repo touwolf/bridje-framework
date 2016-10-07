@@ -5,13 +5,33 @@
         <xs:sequence>
             <xs:element name="templates" type="tns:templates" />
             <xs:element name="entities" type="tns:entities" />
+            <xs:element name="enums" type="tns:enums" />
         </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="package"/>
         <xs:attribute type="xs:string" name="tablePrefix"/>
         <xs:attribute type="xs:string" name="defaultFieldDescription"/>
     </xs:complexType>
+
+    <xs:complexType name="enums">
+        <xs:sequence>
+            <xs:element name="enum" type="tns:enumDef" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="enumDef">
+        <xs:sequence>
+            <xs:element name="constant" type="tns:enumConstant" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="description" />
+    </xs:complexType>
     
+    <xs:complexType name="enumConstant">
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="description" />
+    </xs:complexType>
+
     <xs:complexType name="templates">
         <xs:sequence>
             <xs:element name="template" type="tns:entity" />
@@ -35,20 +55,50 @@
     </xs:complexType>
 
     <xs:complexType name="operations">
-        <xs:attribute type="xs:methodPresence" name="insert"/>
-        <xs:attribute type="xs:methodPresence" name="update"/>
-        <xs:attribute type="xs:methodPresence" name="delete"/>
-        <xs:attribute type="xs:methodPresence" name="exists"/>
-        <xs:attribute type="xs:methodPresence" name="save"/>
-        <xs:attribute type="xs:methodPresence" name="find"/>
-        <xs:attribute type="xs:methodPresence" name="refresh"/>
-        <xs:attribute type="xs:methodPresence" name="query"/>
+        <xs:attribute type="tns:methodPresence" name="insert"/>
+        <xs:attribute type="tns:methodPresence" name="update"/>
+        <xs:attribute type="tns:methodPresence" name="delete"/>
+        <xs:attribute type="tns:methodPresence" name="exists"/>
+        <xs:attribute type="tns:methodPresence" name="save"/>
+        <xs:attribute type="tns:methodPresence" name="find"/>
+        <xs:attribute type="tns:methodPresence" name="refresh"/>
+        <xs:attribute type="tns:methodPresence" name="query"/>
     </xs:complexType>
 
     <xs:simpleType name="methodPresence">
         <xs:restriction base="xs:string">
             <xs:enumeration value="yes" />
             <xs:enumeration value="no" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="jdbcType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CHAR" />
+            <xs:enumeration value="VARCHAR" />
+            <xs:enumeration value="LONGVARCHAR" />
+            <xs:enumeration value="NUMERIC" />
+            <xs:enumeration value="DECIMAL" />
+            <xs:enumeration value="BIT" />
+            <xs:enumeration value="BOOLEAN" />
+            <xs:enumeration value="TINYINT" />
+            <xs:enumeration value="SMALLINT" />
+            <xs:enumeration value="INTEGER" />
+            <xs:enumeration value="BIGINT" />
+            <xs:enumeration value="REAL" />
+            <xs:enumeration value="FLOAT" />
+            <xs:enumeration value="DOUBLE" />
+            <xs:enumeration value="BINARY" />
+            <xs:enumeration value="VARBINARY" />
+            <xs:enumeration value="LONGVARBINARY" />
+            <xs:enumeration value="DATE" />
+            <xs:enumeration value="TIME" />
+            <xs:enumeration value="TIMESTAMP" />
+            <xs:enumeration value="CLOB" />
+            <xs:enumeration value="BLOB" />
+            <xs:enumeration value="ARRAY" />
+            <xs:enumeration value="DATALINK" />
+            <xs:enumeration value="JAVA_OBJECT" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -83,7 +133,7 @@
 
     <xs:complexType name="number">
         <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="tns:jdbcType" name="sqlType"/>
         <xs:attribute type="xs:string" name="column"/>
         <xs:attribute type="xs:integer" name="length"/>
         <xs:attribute type="xs:integer" name="precision"/>
@@ -95,7 +145,7 @@
 
     <xs:complexType name="string">
         <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="tns:jdbcType" name="sqlType"/>
         <xs:attribute type="xs:string" name="column"/>
         <xs:attribute type="xs:integer" name="length"/>
         <xs:attribute type="xs:boolean" name="index"/>
@@ -120,14 +170,13 @@
         <xs:attribute type="xs:integer" name="length"/>
         <xs:attribute type="xs:boolean" name="index"/>
         <xs:attribute type="xs:boolean" name="required"/>
-        <xs:attribute type="xs:boolean" name="key"/>
     </xs:complexType>
 
     <xs:complexType name="enum">
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="column"/>
         <xs:attribute type="xs:string" name="type"/>
-        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="tns:jdbcType" name="sqlType"/>
         <xs:attribute type="xs:integer" name="length"/>
         <xs:attribute type="xs:boolean" name="index"/>
         <xs:attribute type="xs:boolean" name="required"/>
@@ -137,7 +186,7 @@
     <xs:complexType name="date">
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="column"/>
-        <xs:attribute type="xs:string" name="sqlType"/>
+        <xs:attribute type="tns:jdbcType" name="sqlType"/>
         <xs:attribute type="xs:integer" name="length"/>
         <xs:attribute type="xs:boolean" name="index"/>
         <xs:attribute type="xs:boolean" name="required"/>

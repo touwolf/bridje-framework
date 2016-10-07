@@ -16,6 +16,7 @@
 package org.bridje.orm.impl.dialects;
 
 import java.sql.Connection;
+import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +79,7 @@ class H2Dialect implements SQLDialect
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
         return b.buildColumnStmt(identifier(column.getName()), 
-                column.getSqlType().getName(), 
+                findType(column.getSqlType()), 
                 column.getLength(), 
                 column.getPrecision(), 
                 column.isKey(), 
@@ -91,5 +92,10 @@ class H2Dialect implements SQLDialect
     public String identifier(String name)
     {
         return "\"" + name + "\"";
+    }
+
+    private String findType(JDBCType sqlType)
+    {
+        return sqlType.getName();
     }
 }

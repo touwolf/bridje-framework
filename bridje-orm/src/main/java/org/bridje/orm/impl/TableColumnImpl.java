@@ -271,10 +271,13 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             {
                 return JDBCType.TIMESTAMP;
             }
-            else if(Date.class.isAssignableFrom(field.getType())
-                    || java.sql.Date.class.isAssignableFrom(field.getType()))
+            else if(java.sql.Date.class.isAssignableFrom(field.getType()))
             {
                 return JDBCType.DATE;
+            }
+            else if(Date.class.isAssignableFrom(field.getType()))
+            {
+                return JDBCType.TIMESTAMP;
             }
         }
         return type;

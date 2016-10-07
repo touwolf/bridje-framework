@@ -36,7 +36,7 @@ public class LocalDateTimeAdapter implements SQLAdapter
         if(value instanceof LocalDateTime)
         {
             LocalDateTime ld = ((LocalDateTime)value);
-            return java.sql.Date.from(ld.atZone(ZoneId.systemDefault()).toInstant());
+            return Date.from(ld.atZone(ZoneId.systemDefault()).toInstant());
         }
         return null;
     }

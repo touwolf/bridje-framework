@@ -227,6 +227,24 @@ def readEntityData = { entityNode, model ->
     entity;
 };
 
+def readEnumData = { enumNode, model ->
+    def enumData = [:];
+
+    enumData['package'] = model['package'];
+    enumData['name'] = enumNode.'@name'.text();
+    enumData['fullName'] = enumData['package'] + "." + enumData['name'];
+    enumData['constants'] = [];
+    
+    enumNode.'*'.each{ constNode ->
+        def constant = [:];
+        constant['name'] = constNode.'@name'.text();
+        constant['description'] = constNode.'@description'.text();
+        enumData['constants'] << constant;
+    };
+    
+    enumData;
+};
+
 def applyBaseOperation = { entity, tmpl, operation ->
     if(entity['operations'][operation] == "" && tmpl['operations'][operation] != "")
     {
@@ -311,6 +329,15 @@ def generateEntitys = { ->
             else
                 tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
         };
+        
+        ormData.'enums'.'*'.each{ enumNode ->
+
+            def enumData = readEnumData(enumNode, model);
+
+            def data = ['enum':enumData];
+            tools.generateClass(enumData['fullName'], "orm/Enum.ftl", data);
+        };
+
         def data = ['model':model];
         tools.generateClass(model['fullName'], "orm/Model.ftl", data);
     }

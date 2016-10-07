@@ -153,6 +153,7 @@ public class GenerateMojo extends AbstractMojo
     {
         try
         {
+            getLog().info("Generating Class " + className + " from " + template);
             File clsFile = createClassFile(className);
             Template tmpl = cfg.getTemplate(template);
             if (tmpl != null)
@@ -182,6 +183,7 @@ public class GenerateMojo extends AbstractMojo
     {
         try
         {
+            getLog().info("Generating Resource " + resName + " from " + template);
             File clsFile = createResourceFile(resName);
             Template tmpl = cfg.getTemplate(template);
             if (tmpl != null)
