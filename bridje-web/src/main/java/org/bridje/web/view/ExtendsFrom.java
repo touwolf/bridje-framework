@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Ioc;
 import org.bridje.web.view.widgets.Widget;
 
+/**
+ * Defines that the view will extend from the given layout.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ExtendsFrom extends ViewDefinition
 {
@@ -35,28 +38,44 @@ public class ExtendsFrom extends ViewDefinition
     private String layout;
 
     @XmlElements(
-    {
-        @XmlElement(name = "define", type = Defines.class)
-    })
+            {
+                @XmlElement(name = "define", type = Defines.class)
+            })
     private List<Defines> defines;
 
     @XmlTransient
     private Map<String, Defines> definesMap;
 
+    /**
+     * Gets all the placeholder definitions for this view.
+     *
+     * @return A map with the name of the placeholder an the corresponding
+     * Defines object.
+     */
     public Map<String, Defines> getDefinesMap()
     {
-        if(definesMap == null)
+        if (definesMap == null)
         {
             initDefinesMap();
         }
         return definesMap;
     }
 
+    /**
+     * Gets the list of defines for this view.
+     *
+     * @return A list of Defines objects.
+     */
     public List<Defines> getDefines()
     {
         return defines;
     }
 
+    /**
+     * The name of the parent layout.
+     * 
+     * @return An string with the name of the parent layout.
+     */
     public String getLayout()
     {
         return layout;
@@ -67,7 +86,7 @@ public class ExtendsFrom extends ViewDefinition
     {
         WebLayoutManager layoutManag = Ioc.context().find(WebLayoutManager.class);
         WebLayout webLayout = layoutManag.loadLayout(layout);
-        if(webLayout != null)
+        if (webLayout != null)
         {
             Widget widget = webLayout.getRoot();
             widget.override(getDefinesMap());
@@ -84,5 +103,5 @@ public class ExtendsFrom extends ViewDefinition
             definesMap.put(define.getName(), define);
         }
     }
-    
+
 }

@@ -26,6 +26,10 @@ import org.bridje.vfs.VFile;
 import org.bridje.vfs.VfsService;
 import org.bridje.web.view.widgets.WidgetManager;
 
+/**
+ * A manager for the web layouts, this component can be user to load the web
+ * application layouts.
+ */
 @Component
 @XmlTransient
 public class WebLayoutManager
@@ -40,12 +44,19 @@ public class WebLayoutManager
 
     private final Path basePath = new Path("/web");
 
+    /**
+     * Loads the given web layout file.
+     *
+     * @param name The path and name without ".layout.xml" suffix.
+     * @return The WebLayout or null if it does not exists, or it cannot be
+     * read.
+     */
     public WebLayout loadLayout(String name)
     {
         VFile file = vfsServ.findFile(basePath.join(name + ".layout.xml"));
         return readLayout(file);
     }
-    
+
     private WebLayout readLayout(VFile f)
     {
         try

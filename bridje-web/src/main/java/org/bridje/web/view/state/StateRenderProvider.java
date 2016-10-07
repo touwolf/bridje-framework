@@ -18,8 +18,17 @@ package org.bridje.web.view.state;
 
 import java.util.Map;
 
+/**
+ * An interface that must be implemented by the component that will retrieve the
+ * current state to the theme so it can render the state of the current view.
+ */
 @FunctionalInterface
 public interface StateRenderProvider
 {
+    /**
+     * The current state for this view.
+     * 
+     * @return A map with the current state of the view.
+     */
     Map<String, String> getCurrentState();
 }

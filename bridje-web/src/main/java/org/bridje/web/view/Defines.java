@@ -25,7 +25,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import org.bridje.web.view.widgets.Widget;
 
 /**
- * Provides the hability to define 
+ * Provides the ability to define the content of a placeholder of the parent
+ * layout of the given view.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Defines
@@ -34,27 +35,42 @@ public class Defines
     private String name;
 
     @XmlAnyElement(lax = true)
-    private List<Widget> components;
-    
+    private List<Widget> widgets;
+
+    /**
+     * Gest the name of the placeholder to be defined.
+     * 
+     * @return The name of the placeholder.
+     */
     public String getName()
     {
         return name;
     }
 
-    public List<Widget> getComponents()
+    /**
+     * The list of widgets that must be place in the defined placeholder.
+     * 
+     * @return A list of widgets.
+     */
+    public List<Widget> getWidgets()
     {
-        if(components == null)
+        if (widgets == null)
         {
-            components = new ArrayList<>();
+            widgets = new ArrayList<>();
         }
-        return components;
+        return widgets;
     }
-    
-    public Widget getComponent()
+
+    /**
+     * The widget that must be place in the defined placeholder.
+     * 
+     * @return The widget.
+     */
+    public Widget getWidget()
     {
-        if(components != null && components.size() > 0)
+        if (widgets != null && widgets.size() > 0)
         {
-            return components.get(0);
+            return widgets.get(0);
         }
         return null;
     }

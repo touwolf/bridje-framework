@@ -29,5 +29,4 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface StateField
 {
-    String name() default "";
 }

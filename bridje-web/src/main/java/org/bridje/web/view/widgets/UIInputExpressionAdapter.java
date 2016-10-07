@@ -18,6 +18,9 @@ package org.bridje.web.view.widgets;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+/**
+ * An XmlAdapter for UIInputExpression
+ */
 public class UIInputExpressionAdapter extends XmlAdapter<String, UIInputExpression>
 {
     @Override

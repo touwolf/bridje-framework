@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import org.bridje.web.view.widgets.Widget;
 
+/**
+ * Defines a view that will not extend from any layout, an standalone view.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Standalone extends ViewDefinition
 {

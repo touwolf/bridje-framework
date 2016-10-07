@@ -42,7 +42,7 @@ public class WebView extends AbstractWebView
     private String title;
 
     @XmlElements(
-        @XmlElement(name = "meta", type = MetaTag.class)
+            @XmlElement(name = "meta", type = MetaTag.class)
     )
     private List<MetaTag> metaTags;
 
@@ -51,7 +51,7 @@ public class WebView extends AbstractWebView
 
     @XmlTransient
     private Map<String, UIInputExpression> inputs;
-    
+
     @XmlTransient
     private Set<Class<?>> widgets;
 
@@ -59,9 +59,9 @@ public class WebView extends AbstractWebView
     private Set<String> resources;
 
     /**
-     * Gets a list of meta information tags information to be rendered with 
-     * this view.
-     * 
+     * Gets a list of meta information tags information to be rendered with this
+     * view.
+     *
      * @return A list of meta information tags assigned to this view.
      */
     public List<MetaTag> getMetaTags()
@@ -71,7 +71,7 @@ public class WebView extends AbstractWebView
 
     /**
      * The title for this view.
-     * 
+     *
      * @return The title for this view.
      */
     public String getTitle()
@@ -91,7 +91,7 @@ public class WebView extends AbstractWebView
 
     /**
      * Sets the name of this view. for internal use of this API only.
-     * 
+     *
      * @param name The name to be set.
      */
     void setName(String name)
@@ -99,18 +99,29 @@ public class WebView extends AbstractWebView
         this.name = name;
     }
 
+    /**
+     * Finds the set of resources used in this view by all the widgets defined
+     * in it.
+     *
+     * @return A set with all the names of the resources.
+     */
     public Set<String> getResources()
     {
-        if(resources == null)
+        if (resources == null)
         {
             initResources();
         }
         return resources;
     }
-    
+
+    /**
+     * Gets the set of widgets classes used in this view.
+     *
+     * @return All the widgets classes used in this view.
+     */
     public Set<Class<?>> getWidgets()
     {
-        if(widgets == null)
+        if (widgets == null)
         {
             initWidgets();
         }
@@ -167,7 +178,7 @@ public class WebView extends AbstractWebView
             widgets = widgetsSet;
         }
     }
-    
+
     private synchronized void initResources()
     {
         if (resources == null)

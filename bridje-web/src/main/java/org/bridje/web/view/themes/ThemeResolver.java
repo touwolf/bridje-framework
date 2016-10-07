@@ -17,9 +17,16 @@
 package org.bridje.web.view.themes;
 
 /**
- *
+ * The provider of the name of the theme that will be used to render the web
+ * application. This interface must be implemented by the web application.
  */
 public interface ThemeResolver
 {
+    /**
+     * Called by the web framework to get the name of the theme to be use in the
+     * render of the views.
+     *
+     * @return The name of the theme to be use by the web application.
+     */
     String findThemeName();
 }

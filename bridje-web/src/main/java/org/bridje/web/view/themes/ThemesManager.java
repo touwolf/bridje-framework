@@ -44,6 +44,9 @@ import org.bridje.vfs.VFile;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.state.StateRenderProvider;
 
+/**
+ * The manager for the web themes that can be used in the web application.
+ */
 @Component
 public class ThemesManager
 {
@@ -53,7 +56,15 @@ public class ThemesManager
     
     @Inject
     private VfsService vfs;
+
+    @Inject
+    private ThemeResolver resolv;
     
+    private Map<String, String> mimeTypes;
+    
+    /**
+     * Component Initializer
+     */
     @PostConstruct
     public void init()
     {
@@ -64,6 +75,13 @@ public class ThemesManager
         ftlCfg.setLogTemplateExceptions(false);
     }
 
+    /**
+     * Renders the full web view to the given OutputStream.
+     * 
+     * @param view The view to be render.
+     * @param os The output stream to render the view.
+     * @param stateProv The provider for the current state of the view.
+     */
     public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
@@ -84,6 +102,15 @@ public class ThemesManager
         }
     }
 
+    /**
+     * Renders only the given widget to the given output stream.
+     * 
+     * @param widget The widget 
+     * @param view The view to be render.
+     * @param os The output stream to render the view.
+     * @param result The result of the event invocation.
+     * @param stateProv The provider for the current state of the view.
+     */
     public void render(Widget widget, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
@@ -106,6 +133,15 @@ public class ThemesManager
         }
     }
 
+    /**
+     * Renders the espected resource to the client.
+     * 
+     * @param themeName The name of the theme for the resource.
+     * @param resPath The path of the resource within the theme.
+     * @param resp The bridlet response to render the resource.
+     * @return If the resource was found an was rendered to the output. false if the resource was not found.
+     * @throws IOException 
+     */
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
         VFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
@@ -115,22 +151,21 @@ public class ThemesManager
             resp.setContentType(contentType);
             try(InputStream is = f.openForRead())
             {
-                OutputStream os = resp.getOutputStream();
-                int ch = is.read();
-                while(ch != -1)
+                try(OutputStream os = resp.getOutputStream())
                 {
-                    os.write(ch);
-                    ch = is.read();
+                    int ch = is.read();
+                    while(ch != -1)
+                    {
+                        os.write(ch);
+                        ch = is.read();
+                    }
+                    os.flush();
                 }
-                os.flush();
                 return true;
             }
         }
         return false;
     }
-
-    @Inject
-    private ThemeResolver resolv;
 
     private String findThemeName()
     {
@@ -144,8 +179,6 @@ public class ThemesManager
         }
         return "default";
     }
-
-    private Map<String, String> mimeTypes;
     
     private String findContentType(VFile f)
     {

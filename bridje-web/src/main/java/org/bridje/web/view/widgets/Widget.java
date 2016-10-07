@@ -36,7 +36,7 @@ public abstract class Widget
 {
     /**
      * Evaluates the given expression in the current ElEnviroment.
-     * 
+     *
      * @param <T> The type for the result.
      * @param expression The expression to evaluate.
      * @param resultClasss The class for the result.
@@ -45,31 +45,39 @@ public abstract class Widget
      */
     public static <T> T get(UIExpression expression, Class<T> resultClasss, T def)
     {
-        if(expression != null)
+        if (expression != null)
         {
             T result = expression.get(resultClasss);
-            if(result != null)
+            if (result != null)
             {
                 return result;
             }
         }
         return def;
     }
-    
+
+    /**
+     * Sets the value of the given UIInputExpression so that the web component
+     * can receive the value.
+     *
+     * @param <T> The type of the input expression.
+     * @param expression The expression object.
+     * @param param The parameter received for the input expression.
+     */
     public static <T> void set(UIInputExpression expression, HttpReqParam param)
     {
-        if(param != null)
+        if (param != null)
         {
-            if(expression != null && expression.isValid())
+            if (expression != null && expression.isValid())
             {
                 expression.set(param);
             }
         }
     }
-    
+
     /**
      * Gets all the UIInputExpressions in this widget.
-     * 
+     *
      * @return A list of the UIInputExpressions available in this widget.
      */
     public List<UIInputExpression> inputs()
@@ -79,7 +87,7 @@ public abstract class Widget
 
     /**
      * Gets all the UIEvents in this widget.
-     * 
+     *
      * @return A list of the UIInputExpressions available in this widget.
      */
     public List<UIEvent> events()
@@ -89,22 +97,29 @@ public abstract class Widget
 
     /**
      * Gets all child widget for this widget.
-     * 
+     *
      * @return A list of all child widget.
      */
     public List<? extends Widget> childs()
     {
         return Collections.EMPTY_LIST;
     }
-    
+
+    /**
+     * Gets the list of resources used by this widget.
+     *
+     * @return A list with the names of the resources used by this widget.
+     */
     public List<String> resources()
     {
         return Collections.EMPTY_LIST;
     }
 
     /**
-     * 
-     * @param req 
+     * Reads the input recursively for this and all the child widgets sent in
+     * the given http request.
+     *
+     * @param req The HTTP request to read the input from.
      */
     public void readInput(HttpBridletRequest req)
     {
@@ -114,26 +129,40 @@ public abstract class Widget
                 .forEach((widget) -> widget.readInput(req));
     }
 
+    /**
+     * Perform the override recursively of all the placeholder in this view with
+     * the given definesMap.
+     *
+     * @param definesMap The map of defines objecto for the place holder
+     * replacement.
+     */
     public void override(Map<String, Defines> definesMap)
     {
         doOverride(definesMap);
         childs().stream()
-                .forEach((widget) -> widget.override(definesMap));        
+                .forEach((widget) -> widget.override(definesMap));
     }
 
+    /**
+     * Utility method to override all placeholders in the given list of widgets.
+     *
+     * @param childrens The childers tha may contain the placeholder object.
+     * @param definesMap The map with the source objects.
+     * @return The resulting list.
+     */
     public static List<Widget> doOverride(List<Widget> childrens, Map<String, Defines> definesMap)
     {
         List<Widget> result = new ArrayList<>();
-        
+
         for (Widget widget : childrens)
         {
-            if(widget instanceof WidgetPlaceHolder)
+            if (widget instanceof WidgetPlaceHolder)
             {
-                WidgetPlaceHolder ph = (WidgetPlaceHolder)widget;
+                WidgetPlaceHolder ph = (WidgetPlaceHolder) widget;
                 Defines def = definesMap.get(ph.getName());
-                if(def != null && def.getComponents() != null)
+                if (def != null && def.getWidgets() != null)
                 {
-                    result.addAll(def.getComponents());
+                    result.addAll(def.getWidgets());
                 }
             }
             else
@@ -141,30 +170,43 @@ public abstract class Widget
                 result.add(widget);
             }
         }
-        
+
         return result;
     }
-    
+
+    /**
+     * Utility method to override all placeholders in the given list of widgets.
+     *
+     * @param child The widget to evaluate if it can be replce.
+     * @param definesMap The map with the source objects.
+     * @return The resulting widget.
+     */
     public static Widget doOverride(Widget child, Map<String, Defines> definesMap)
     {
         Widget result = null;
-        
-        if(child instanceof WidgetPlaceHolder)
+
+        if (child instanceof WidgetPlaceHolder)
         {
-            WidgetPlaceHolder ph = (WidgetPlaceHolder)child;
+            WidgetPlaceHolder ph = (WidgetPlaceHolder) child;
             Defines def = definesMap.get(ph.getName());
-            if(def != null && def.getComponent() != null)
+            if (def != null && def.getWidget() != null)
             {
-                result = def.getComponent();
+                result = def.getWidget();
             }
         }
         else
         {
             result = child;
         }
-        
+
         return result;
     }
-    
+
+    /**
+     * This method must be implemented by all widgets in order for it to
+     * override all its placeholder objects.
+     *
+     * @param definesMap The source map for the placeholders.
+     */
     public abstract void doOverride(Map<String, Defines> definesMap);
 }

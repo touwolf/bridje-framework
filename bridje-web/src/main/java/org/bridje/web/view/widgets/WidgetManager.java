@@ -38,13 +38,17 @@ import org.bridje.web.view.AbstractWebView;
 import org.bridje.web.view.WebLayout;
 import org.bridje.web.view.WebView;
 
+/**
+ * A service for reading web views, and keep track of all widgets classes
+ * in the application.
+ */
 @Component
 public class WidgetManager implements VFileAdapter
 {
     private static final Logger LOG = Logger.getLogger(WidgetManager.class.getName());
 
     private Unmarshaller webViewUnmarsh;
-    
+
     private Marshaller webViewMarsh;
 
     @PostConstruct
@@ -65,13 +69,19 @@ public class WidgetManager implements VFileAdapter
     @Override
     public String[] getExtensions()
     {
-        return new String[]{"xml"};
+        return new String[]
+        {
+            "xml"
+        };
     }
 
     @Override
     public Class<?>[] getClasses()
     {
-        return new Class<?>[]{WebView.class, WebLayout.class};
+        return new Class<?>[]
+        {
+            WebView.class, WebLayout.class
+        };
     }
 
     @Override
@@ -84,13 +94,13 @@ public class WidgetManager implements VFileAdapter
     @Override
     public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
-        return (T)toWebView(vf);
+        return (T) toWebView(vf);
     }
 
     @Override
     public <T> void write(VFile vf, T contentObj) throws IOException
     {
-        writeWebView(vf, (WebView)contentObj);
+        writeWebView(vf, (WebView) contentObj);
     }
 
     private Class<?>[] findComponentsClasses() throws IOException
@@ -113,7 +123,7 @@ public class WidgetManager implements VFileAdapter
         {
             prop.load(is);
         }
-        catch(IOException ex)
+        catch (IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -134,11 +144,12 @@ public class WidgetManager implements VFileAdapter
 
     private void readClasses(List<Class<?>> result, Properties prop)
     {
-        prop.forEach((Object k, Object v) -> {
+        prop.forEach((Object k, Object v) -> 
+        {
             try
             {
                 Class<?> cls = Class.forName((String) k);
-                if(!result.contains(cls))
+                if (!result.contains(cls))
                 {
                     result.add(cls);
                 }
@@ -153,12 +164,12 @@ public class WidgetManager implements VFileAdapter
     private AbstractWebView toWebView(VFile f)
     {
         AbstractWebView result = null;
-        try(InputStream is = f.openForRead())
+        try (InputStream is = f.openForRead())
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
-            if(unmObj instanceof AbstractWebView)
+            if (unmObj instanceof AbstractWebView)
             {
-                return (AbstractWebView)unmObj;
+                return (AbstractWebView) unmObj;
             }
         }
         catch (JAXBException | IOException ex)
@@ -170,7 +181,7 @@ public class WidgetManager implements VFileAdapter
 
     private void writeWebView(VFile f, WebView view)
     {
-        try(OutputStream os = f.openForWrite())
+        try (OutputStream os = f.openForWrite())
         {
             webViewMarsh.marshal(view, os);
         }

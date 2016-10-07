@@ -19,17 +19,20 @@ package org.bridje.web.view;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.web.view.widgets.UIEvent;
 
+/**
+ * The result of an event invocation.
+ */
 @XmlTransient
 public class EventResult
 {
     private final UIEvent event;
-    
+
     private final EventResultType type;
 
     private final String message;
-    
+
     private final Exception exception;
-    
+
     private final Object data;
 
     public EventResult(UIEvent event, EventResultType type, String message, Object data, Exception exception)
@@ -41,26 +44,52 @@ public class EventResult
         this.exception = exception;
     }
 
+    /**
+     * The invoked event.
+     *
+     * @return The UIEvent object for the event.
+     */
     public UIEvent getEvent()
     {
         return event;
     }
-    
+
+    /**
+     * The type of the message that must be show to the user as the result of
+     * the invocation. SUCCESS, INFO, WARNING, ERROR.
+     *
+     * @return An EventResultType object.
+     */
     public EventResultType getType()
     {
         return type;
     }
 
+    /**
+     * The message to be show as the result of the event invocation.
+     *
+     * @return An string with the message.
+     */
     public String getMessage()
     {
         return message;
     }
 
+    /**
+     * The exception (if any) that was throw by the event method.
+     * 
+     * @return An Exception or null if not Exception where throw by the event method.
+     */
     public Exception getException()
     {
         return exception;
     }
 
+    /**
+     * The result object returned by the event method.
+     * 
+     * @return An Object representing the result of the event method invocation.
+     */
     public Object getData()
     {
         return data;

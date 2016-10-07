@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
 
+/**
+ * Represents an input expression for a widget.
+ */
 @XmlTransient
 @XmlJavaTypeAdapter(UIInputExpressionAdapter.class)
 public class UIInputExpression extends UIExpression
@@ -32,23 +35,41 @@ public class UIInputExpression extends UIExpression
         super(expression);
     }
 
+    /**
+     * Sets the value of the input expression to the web component, if the
+     * expression is valid.
+     *
+     * @param <T> The type of the expression.
+     * @param value The value of the expression.
+     */
     public <T> void set(T value)
     {
-        if(isValid())
+        if (isValid())
         {
             Thls.get(ElEnvironment.class).set(getExpression(), value);
         }
     }
-    
+
+    /**
+     * Gets the name of the parameter that must be send to the server.
+     *
+     * @return The name of the parameter that must be send to the server.
+     */
     public String getParameter()
     {
-        if(parameter == null && isValid())
+        if (parameter == null && isValid())
         {
-            parameter = getExpression().substring(2, getExpression().length()-1);
+            parameter = getExpression().substring(2, getExpression().length() - 1);
         }
         return parameter;
     }
-    
+
+    /**
+     * Determines if the expression is a valid input expression, or is just an
+     * output expression.
+     *
+     * @return true the input expression is valid.
+     */
     public boolean isValid()
     {
         return getExpression().startsWith("${") && getExpression().endsWith("}");

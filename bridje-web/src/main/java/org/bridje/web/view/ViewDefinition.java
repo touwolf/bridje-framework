@@ -20,8 +20,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import org.bridje.web.view.widgets.Widget;
 
+/**
+ * Base class for all view definition objects.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ViewDefinition
 {
+    /**
+     * Gets the root element for this view.
+     * 
+     * @return A Widget object that is the root widget for the view.
+     */
     public abstract Widget findRoot();
 }

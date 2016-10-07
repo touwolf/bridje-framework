@@ -22,12 +22,21 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import org.bridje.web.view.Defines;
 
+/**
+ * A widget that represents a placeholder for a layout. This widgets can be
+ * overrited by the corresponding Defines objects.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WidgetPlaceHolder extends Widget
 {
     @XmlAttribute
     private String name;
 
+    /**
+     * The name of the placeholder.
+     * 
+     * @return The name of the placeholder.
+     */
     public String getName()
     {
         return name;
