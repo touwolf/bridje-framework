@@ -166,17 +166,17 @@ def readFieldData = { entity, fieldNode, model ->
     if(field["isRelation"])
         field['with'] = fieldNode.'@with'.text();
     field['isEnum'] = field['fieldType'] == 'enum';
-    if(field["isEnum"])
+    field['isCustom'] = field['fieldType'] == 'custom';
+    if(field["isEnum"] || field["isCustom"])
         field['type'] = fieldNode.'@type'.text();
     field['isNumber'] = numberTypes.contains(field['fieldType']);
     field['isAutoIncrement'] = fieldNode.'@autoIncrement'.text() == "true";
     if(field['isAutoIncrement'])
         field['isKey'] = true;
     field['isString'] = stringTypes.contains(field['fieldType']);
-    field['isCustom'] = customTypes[field['fieldType']] != null;
     if(field["isCustom"])
     {
-        field['customType'] = customTypes[field['fieldType']];
+        field['customType'] = customTypes[field['type']];
         if(field['adapter'] == "")
             field['adapter'] = field['customType']['adapter'];
         if(field['sqlType'] == "")
