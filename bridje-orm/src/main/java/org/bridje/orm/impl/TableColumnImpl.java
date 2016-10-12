@@ -18,7 +18,6 @@ package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -355,24 +354,5 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             sqlAdapter = instantiate(sqlAdapt);
         }
         return sqlAdapter;
-    }
-
-    public void validate(E entity) throws SQLException
-    {
-        Object value = getQueryParameter(entity);
-        if(isRequired())
-        {
-            if(value == null)
-            {
-                throw new SQLException("The column " + getName() + " cannot be null.");
-            }
-        }
-        if(value instanceof String)
-        {
-           if( ((String) value).length() > length)
-           {
-               throw new SQLException("Data to big for column " + getName());
-           }
-        }
     }
 }

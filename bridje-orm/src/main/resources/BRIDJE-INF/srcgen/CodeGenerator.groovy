@@ -223,6 +223,16 @@ def readEntityData = { entityNode, model ->
     entity['operations']['find'] = entityNode.'operations'.'@find'.text();
     entity['operations']['refresh'] = entityNode.'operations'.'@refresh'.text();
     entity['operations']['query'] = entityNode.'operations'.'@query'.text();
+    entity['operations']['crud'] = [];
+
+    entityNode.'operations'.'*'.each{ operationNode ->
+        def operation = [:];
+        operation['type'] = operationNode.name();
+        operation['name'] = operationNode.'@name'.text();
+        operation['params'] = operationNode.'@params'.text().split(",");
+        
+        entity['operations']['crud'] << operation;
+    };
     
     entity;
 };
@@ -289,8 +299,22 @@ applyBaseTemplate = { entity, templates ->
             applyBaseOperation(entity, tmpl, 'find');
             applyBaseOperation(entity, tmpl, 'refresh');
             applyBaseOperation(entity, tmpl, 'query');
+            
+            tmpl['operations']['crud'].each{ op ->
+                entity['operations']['crud'] << op;
+            };
         }
     }
+};
+
+def fixOperations = { entity ->
+    entity['operations']['crud'].each{ op ->
+        def newParams = [];
+        op['params'].each{ paramName ->
+            newParams << entity['fieldsMap'][paramName];
+        };
+        op['params'] = newParams;
+    };
 };
 
 def generateEntitys = { ->
@@ -320,7 +344,8 @@ def generateEntitys = { ->
             def entity = readEntityData(entityNode, model);
             entity = readEntityFields(entityNode, entity, model);
             applyBaseTemplate(entity, templates);
-
+            fixOperations(entity);
+            
             model['entitys'] << entity;
             model['entitysMap'][entity['name']] = entity;
             def data = ['entity':entity];

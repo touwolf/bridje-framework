@@ -46,7 +46,8 @@
 
     <xs:complexType name="entity">
         <xs:sequence>
-            <xs:element name="fields" type="tns:fields" />            
+            <xs:element name="fields" type="tns:fields" />
+            <xs:element name="operations" type="tns:operations" />
         </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="table"/>
@@ -55,6 +56,12 @@
     </xs:complexType>
 
     <xs:complexType name="operations">
+        <xs:sequence>
+            <xs:element name="create" type="tns:createOperation" />
+            <xs:element name="read" type="tns:readOperation" />
+            <xs:element name="update" type="tns:updateOperation" />
+            <xs:element name="delete" type="tns:deleteOperation" />
+        </xs:sequence>
         <xs:attribute type="tns:methodPresence" name="insert"/>
         <xs:attribute type="tns:methodPresence" name="update"/>
         <xs:attribute type="tns:methodPresence" name="delete"/>
@@ -63,6 +70,26 @@
         <xs:attribute type="tns:methodPresence" name="find"/>
         <xs:attribute type="tns:methodPresence" name="refresh"/>
         <xs:attribute type="tns:methodPresence" name="query"/>
+    </xs:complexType>
+    
+    <xs:complexType name="createOperation">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="params"/>
+    </xs:complexType>
+
+    <xs:complexType name="readOperation">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="params"/>
+    </xs:complexType>
+
+    <xs:complexType name="updateOperation">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="params"/>
+    </xs:complexType>
+
+    <xs:complexType name="deleteOperation">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="params"/>
     </xs:complexType>
 
     <xs:simpleType name="methodPresence">

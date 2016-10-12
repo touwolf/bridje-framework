@@ -142,28 +142,31 @@ class WebViewHandler implements HttpBridlet
             UIEvent event = view.findEvent(action.getValue());
             if(event != null)
             {
-                try
+                return Thls.doAs(() -> 
                 {
-                    Object res = event.invoke();
-                    if(res instanceof EventResult)
+                    try
                     {
-                        return (EventResult)res;
+                        Object res = event.invoke();
+                        if(res instanceof EventResult)
+                        {
+                            return (EventResult)res;
+                        }
+                        return EventResult.of(null, null, res, null);
                     }
-                    return new EventResult(event, null, null, res, null);
-                }
-                catch (ELException e)
-                {
-                    if(e.getCause() != null && e.getCause() instanceof Exception)
+                    catch (ELException e)
                     {
-                        Exception real = (Exception)e.getCause();
-                        return new EventResult(event, EventResultType.ERROR, real.getMessage(), null, real);
+                        if(e.getCause() != null && e.getCause() instanceof Exception)
+                        {
+                            Exception real = (Exception)e.getCause();
+                            return EventResult.error(real.getMessage(), real);
+                        }
+                        return EventResult.error(e.getMessage(), e);
                     }
-                    return new EventResult(event, EventResultType.ERROR, e.getMessage(), null, e);
-                }
-                catch (Exception e)
-                {
-                    return new EventResult(event, EventResultType.ERROR, e.getMessage(), null, e);
-                }
+                    catch (Exception e)
+                    {
+                        return EventResult.error(e.getMessage(), e);
+                    }
+                }, UIEvent.class, event);
             }
         }
         return null;

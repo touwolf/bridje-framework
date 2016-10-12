@@ -106,6 +106,50 @@ public class ${model.name}
     }
 
     <#list model.entitys as entity >
+    <#list entity.operations.crud as crudOp >
+    <#if crudOp.type == "create">
+    public ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    {
+        ${entity.name} entity = new ${entity.name}();
+        <#list crudOp.params as param>
+        entity.set${param.name?cap_first}(${param.name});
+        </#list>
+        context.insert(entity);
+        return entity;
+    }
+
+    <#elseif crudOp.type == "read">
+    public ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    {
+        return context.query(${entity.name}.TABLE)
+                        .where(
+                            <#assign first = true />
+                            <#list crudOp.params as param>
+                            <#if first>
+                            ${entity.name}.${param.column?upper_case}.eq(${param.name})
+                            <#else>
+                            .and(${entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            </#if>
+                            <#assign first = false />
+                            </#list>
+                        )
+                        .fetchOne();
+    }
+    
+    <#elseif crudOp.type == "update">
+    public ${entity.name} ${crudOp.name}(${entity.name} entity) throws SQLException
+    {
+        context.update(entity);
+    }
+    
+    <#elseif crudOp.type == "delete">
+    public void ${crudOp.name}(${entity.name} entity) throws SQLException
+    {
+        context.delete(entity);
+    }
+    
+    </#if>
+    </#list>
     <#if entity.operations.insert == "yes" >
     public void insert(${entity.name} entity) throws SQLException
     {

@@ -17,6 +17,7 @@
 package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.ioc.thls.Thls;
 import org.bridje.web.view.widgets.UIEvent;
 
 /**
@@ -35,9 +36,39 @@ public class EventResult
 
     private final Object data;
 
-    public EventResult(UIEvent event, EventResultType type, String message, Object data, Exception exception)
+    public static EventResult info(String message, Object data)
     {
-        this.event = event;
+        return new EventResult(EventResultType.INFO, message, data, null);
+    }
+
+    public static EventResult success(String message, Object data)
+    {
+        return new EventResult(EventResultType.SUCCESS, message, data, null);
+    }
+
+    public static EventResult warn(String message, Object data)
+    {
+        return new EventResult(EventResultType.WARNING, message, data, null);
+    }
+
+    public static EventResult warn(String message, Object data, Exception exception)
+    {
+        return new EventResult(EventResultType.WARNING, message, data, null);
+    }
+
+    public static EventResult error(String message, Exception exception)
+    {
+        return new EventResult(EventResultType.ERROR, message, null, exception);
+    }
+
+    public static EventResult of(EventResultType type, String message, Object data, Exception exception)
+    {
+        return new EventResult(type, message, data, exception);
+    }
+
+    private EventResult(EventResultType type, String message, Object data, Exception exception)
+    {
+        this.event = Thls.get(UIEvent.class);
         this.type = type;
         this.message = message;
         this.data = data;

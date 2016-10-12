@@ -116,21 +116,8 @@ class EntityContextImpl implements EntityContext
     }
 
     @Override
-    public <T> void validate(T entity) throws SQLException
-    {
-        TableImpl<T> table = (TableImpl<T>)orm.findTable(entity.getClass());
-        List<TableColumn<T, ?>> columns = table.getColumns();
-        for (TableColumn<T, ?> column : columns)
-        {
-            TableColumnImpl<T, ?> col = (TableColumnImpl<T, ?>)column;
-            col.validate(entity);
-        }
-    }
-    
-    @Override
     public <T> T insert(T entity) throws SQLException
     {
-        validate(entity);
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
@@ -154,14 +141,12 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T update(T entity) throws SQLException
     {
-        validate(entity);
         return update(entity, null);
     }
 
     @Override
     public <T> T update(T entity, Object id) throws SQLException
     {
-        validate(entity);
         TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
         UpdateBuilder ub = new UpdateBuilder();
 
