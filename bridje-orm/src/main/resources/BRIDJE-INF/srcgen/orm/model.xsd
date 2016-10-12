@@ -58,28 +58,40 @@
     <xs:complexType name="operations">
         <xs:sequence>
             <xs:element name="create" type="tns:createOperation" />
-            <xs:element name="read" type="tns:readOperation" />
+            <xs:element name="save" type="tns:saveOperation" />
+            <xs:element name="readOne" type="tns:readOperation" />
+            <xs:element name="readAll" type="tns:readOperation" />
             <xs:element name="update" type="tns:updateOperation" />
             <xs:element name="delete" type="tns:deleteOperation" />
         </xs:sequence>
-        <xs:attribute type="tns:methodPresence" name="insert"/>
-        <xs:attribute type="tns:methodPresence" name="update"/>
-        <xs:attribute type="tns:methodPresence" name="delete"/>
-        <xs:attribute type="tns:methodPresence" name="exists"/>
-        <xs:attribute type="tns:methodPresence" name="save"/>
-        <xs:attribute type="tns:methodPresence" name="find"/>
         <xs:attribute type="tns:methodPresence" name="refresh"/>
         <xs:attribute type="tns:methodPresence" name="query"/>
     </xs:complexType>
     
+    <xs:complexType name="setField">
+        <xs:attribute type="xs:string" name="field"/>
+        <xs:attribute type="xs:string" name="value"/>        
+    </xs:complexType>
+
     <xs:complexType name="createOperation">
+        <xs:sequence>
+            <xs:element name="set" type="tns:setField" />
+        </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="params"/>
+    </xs:complexType>
+
+    <xs:complexType name="saveOperation">
+        <xs:sequence>
+            <xs:element name="set" type="tns:setField" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
     </xs:complexType>
 
     <xs:complexType name="readOperation">
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="params"/>
+        <xs:attribute type="xs:string" name="result"/>
     </xs:complexType>
 
     <xs:complexType name="updateOperation">
@@ -89,7 +101,6 @@
 
     <xs:complexType name="deleteOperation">
         <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="params"/>
     </xs:complexType>
 
     <xs:simpleType name="methodPresence">

@@ -214,13 +214,8 @@ def readEntityData = { entityNode, model ->
     entity['fullName'] = entity['package'] + "." + entity['name'];
     entity['description'] = entityNode.'@description'.text();
     entity['description'] = findEntityDescription(entity, model);
-    
+
     entity['operations'] = [:];
-    entity['operations']['insert'] = entityNode.'operations'.'@insert'.text();
-    entity['operations']['update'] = entityNode.'operations'.'@update'.text();
-    entity['operations']['delete'] = entityNode.'operations'.'@delete'.text();
-    entity['operations']['save'] = entityNode.'operations'.'@save'.text();
-    entity['operations']['find'] = entityNode.'operations'.'@find'.text();
     entity['operations']['refresh'] = entityNode.'operations'.'@refresh'.text();
     entity['operations']['query'] = entityNode.'operations'.'@query'.text();
     entity['operations']['crud'] = [];
@@ -230,7 +225,24 @@ def readEntityData = { entityNode, model ->
         operation['type'] = operationNode.name();
         operation['name'] = operationNode.'@name'.text();
         operation['params'] = operationNode.'@params'.text().split(",");
-        
+        if(operation['type'] == 'create' || operation['type'] == 'save')
+        {
+            operation['setFields'] = [];
+            operationNode.'*'.each{ setNode ->
+                def setField = [:];
+                setField['name'] = setNode.'@field'.text();
+                setField['value'] = setNode.'@value'.text();
+
+                operation['setFields'] << setField;
+            };
+        }
+        if(operation['type'] == 'readOne' || operation['type'] == 'readAll')
+        {
+            if(operationNode.'@result'.text() != "")
+            {
+                operation['resultField'] = operationNode.'@result'.text();
+            }
+        }
         entity['operations']['crud'] << operation;
     };
     
@@ -292,11 +304,6 @@ applyBaseTemplate = { entity, templates ->
             {
                 entity['keyField'] = tmpl['keyField'];
             }
-            applyBaseOperation(entity, tmpl, 'insert');
-            applyBaseOperation(entity, tmpl, 'update');
-            applyBaseOperation(entity, tmpl, 'delete');
-            applyBaseOperation(entity, tmpl, 'save');
-            applyBaseOperation(entity, tmpl, 'find');
             applyBaseOperation(entity, tmpl, 'refresh');
             applyBaseOperation(entity, tmpl, 'query');
             
@@ -311,9 +318,23 @@ def fixOperations = { entity ->
     entity['operations']['crud'].each{ op ->
         def newParams = [];
         op['params'].each{ paramName ->
-            newParams << entity['fieldsMap'][paramName];
+            if(paramName instanceof String)
+            {
+                newParams << entity['fieldsMap'][paramName];
+            }
+            else
+            {
+                newParams << paramName;
+            }
         };
         op['params'] = newParams;
+        if(op['resultField'] != null)
+        {
+            if(op['resultField'] instanceof String)
+            {
+                op['resultField'] = entity['fieldsMap'][op['resultField']];
+            }
+        }
     };
 };
 
