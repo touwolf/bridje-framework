@@ -18,8 +18,6 @@ package org.bridje.web.impl.conv;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
-import java.time.temporal.Temporal;
-import java.util.Date;
 import org.bridje.el.ElTypeConverter;
 import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
@@ -27,7 +25,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.Priority;
 
 /**
- * An EL type converter between the HttpReqParam and the basic types.
+ * An EL type converter for HttpReqParam.
  */
 @Component
 @Priority(5000)
@@ -39,21 +37,7 @@ class HttpReqParamConverter implements ElTypeConverter
     @Override
     public <F, T> boolean canConvert(Class<F> from, Class<T> to)
     {
-        Class<?> resClass = to;
-        if(resClass.isArray())
-        {
-            resClass = to.getComponentType();
-        }
-        return HttpReqParam.class.isAssignableFrom(from)
-                && (isNumber(resClass) 
-                    || String.class == resClass
-                    || Boolean.class == resClass
-                    || Character.class == resClass
-                    || boolean.class == resClass
-                    || char.class == resClass
-                    || Date.class.isAssignableFrom(resClass)
-                    || Temporal.class.isAssignableFrom(resClass)
-                    || Enum.class.isAssignableFrom(resClass));
+        return HttpReqParam.class.isAssignableFrom(from);
     }
 
     @Override
@@ -77,24 +61,6 @@ class HttpReqParamConverter implements ElTypeConverter
         {
             return (T)doConvert(param.getValue(), resClass);
         }
-    }
-
-    private boolean isNumber(Class<?> resClass)
-    {
-        if(Number.class.isAssignableFrom(resClass))
-        {
-            return true;
-        }
-        if(resClass == byte.class
-                || resClass == short.class
-                || resClass == int.class
-                || resClass == long.class
-                || resClass == float.class
-                || resClass == double.class)
-        {
-            return true;
-        }
-        return false;
     }
 
     private Object doConvert(String value, Class<?> resClass)
