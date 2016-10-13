@@ -47,6 +47,10 @@ class HttpReqParamConverter implements ElTypeConverter
         return HttpReqParam.class.isAssignableFrom(from)
                 && (isNumber(resClass) 
                     || String.class == resClass
+                    || Boolean.class == resClass
+                    || Character.class == resClass
+                    || boolean.class == resClass
+                    || char.class == resClass
                     || Date.class.isAssignableFrom(resClass)
                     || Temporal.class.isAssignableFrom(resClass)
                     || Enum.class.isAssignableFrom(resClass));
