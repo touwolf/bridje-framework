@@ -71,6 +71,13 @@ public interface VFile extends VResource
 
     /**
      *
+     * @param os
+     * @throws java.io.IOException
+     */
+    void copyTo(OutputStream os) throws IOException;
+
+    /**
+     *
      * @param folder
      * @throws java.io.IOException
      */

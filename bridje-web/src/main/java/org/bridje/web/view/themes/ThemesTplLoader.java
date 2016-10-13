@@ -31,9 +31,9 @@ class ThemesTplLoader implements TemplateLoader
 {
     @Inject
     private VfsService vfs;
-    
+
     private final Long time = System.currentTimeMillis();
-    
+
     @Override
     public Object findTemplateSource(String name) throws IOException
     {

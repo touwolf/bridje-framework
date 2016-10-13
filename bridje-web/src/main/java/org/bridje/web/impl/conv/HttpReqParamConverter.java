@@ -49,7 +49,7 @@ class HttpReqParamConverter implements ElTypeConverter
                     || String.class == resClass
                     || Date.class.isAssignableFrom(resClass)
                     || Temporal.class.isAssignableFrom(resClass)
-                );
+                    || Enum.class.isAssignableFrom(resClass));
     }
 
     @Override
@@ -65,13 +65,13 @@ class HttpReqParamConverter implements ElTypeConverter
             Object[] result = (Object[])Array.newInstance(resClass, values.length);
             for (int i = 0; i < values.length; i++)
             {
-                result[i] = conv.convert(values[i], resClass);
+                result[i] = doConvert(values[i], resClass);
             }
             return (T)result;
         }
         else
         {
-            return (T)conv.convert(param.getValue(), resClass);
+            return (T)doConvert(param.getValue(), resClass);
         }
     }
 
@@ -91,5 +91,14 @@ class HttpReqParamConverter implements ElTypeConverter
             return true;
         }
         return false;
+    }
+
+    private Object doConvert(String value, Class<?> resClass)
+    {
+        if(Enum.class.isAssignableFrom(resClass))
+        {
+            return Enum.valueOf((Class<Enum>)resClass, value);
+        }
+        return conv.convert(value, resClass);
     }
 }

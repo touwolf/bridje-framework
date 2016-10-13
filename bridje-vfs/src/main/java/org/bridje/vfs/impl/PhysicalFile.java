@@ -120,6 +120,15 @@ class PhysicalFile extends PhysicalResource implements VFile
     }
 
     @Override
+    public void copyTo(OutputStream os) throws IOException
+    {
+        try(InputStream is = openForRead())
+        {
+            copy(is, os);
+        }
+    }
+    
+    @Override
     public void moveTo(VFolder folder) throws IOException
     {
         if(!canDelete())

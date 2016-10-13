@@ -134,13 +134,13 @@ public class ThemesManager
     }
 
     /**
-     * Renders the espected resource to the client.
+     * Renders the expected resource to the client.
      * 
      * @param themeName The name of the theme for the resource.
      * @param resPath The path of the resource within the theme.
      * @param resp The bridlet response to render the resource.
      * @return If the resource was found an was rendered to the output. false if the resource was not found.
-     * @throws IOException 
+     * @throws IOException If any I/O exception occurs.
      */
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
@@ -149,20 +149,12 @@ public class ThemesManager
         {
             String contentType = findContentType(f);
             resp.setContentType(contentType);
-            try(InputStream is = f.openForRead())
+            try(OutputStream os = resp.getOutputStream())
             {
-                try(OutputStream os = resp.getOutputStream())
-                {
-                    int ch = is.read();
-                    while(ch != -1)
-                    {
-                        os.write(ch);
-                        ch = is.read();
-                    }
-                    os.flush();
-                }
-                return true;
+                f.copyTo(os);
+                os.flush();
             }
+            return true;
         }
         return false;
     }

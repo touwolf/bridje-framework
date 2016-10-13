@@ -146,6 +146,12 @@ class ProxyFile extends MimeType implements MultiVFile
     }
 
     @Override
+    public void copyTo(OutputStream os) throws IOException
+    {
+        getDefFile().copyTo(os);
+    }
+
+    @Override
     public void moveTo(VFolder folder) throws IOException
     {
         getDefFile().moveTo(folder);
