@@ -16,6 +16,7 @@
 
 package org.bridje.web.view;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlTransient;
@@ -63,7 +64,7 @@ public class WebLayoutManager
         {
             return widgetManag.read(f, WebLayout.class);
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
