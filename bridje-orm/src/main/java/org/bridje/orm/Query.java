@@ -103,6 +103,13 @@ public interface Query<T>
      * process.
      */
     <C> C fetchOne(Column<C> column) throws SQLException;
+    
+    /**
+     * 
+     * @return 
+     * @throws java.sql.SQLException
+     */
+    public int delete() throws SQLException;
 
     /**
      * Executes a select count in the database and gets the number of records

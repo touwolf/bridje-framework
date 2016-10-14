@@ -16,6 +16,7 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -165,5 +166,11 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     protected OrderBy[] getOrderBy()
     {
         return baseQuery.getOrderBy();
+    }
+
+    @Override
+    public int delete() throws SQLException
+    {
+        throw new SQLException("DELETE JOIN is not supported yet.");
     }
 }

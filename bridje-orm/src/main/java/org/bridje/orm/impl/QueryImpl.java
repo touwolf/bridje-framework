@@ -16,12 +16,15 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.impl.sql.DeleteBuilder;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
 /**
@@ -130,5 +133,18 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     protected TableImpl<?> getBaseTable()
     {
         return table;
+    }
+
+    @Override
+    public int delete() throws SQLException
+    {
+        List<Object> parameters = new ArrayList<>();
+        DeleteBuilder qb = new DeleteBuilder();
+        qb.delete(ctx.getDialect().identifier(table.getName()));
+        if(condition != null)
+        {
+            qb.where(condition.writeSQL(parameters, ctx));
+        }
+        return ctx.doUpdate(qb.toString(), parameters.toArray());
     }
 }
