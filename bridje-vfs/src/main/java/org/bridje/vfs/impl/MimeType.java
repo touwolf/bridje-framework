@@ -20,16 +20,16 @@ import java.util.Map;
 
 class MimeType
 {
-    private static MimeType instance;
+    private static MimeType INSTANCE;
 
     public synchronized static MimeType getInstance()
     {
-        if (instance == null)
+        if (INSTANCE == null)
         {
-            instance = new MimeType();
-            instance.initMimeTypes();
+            INSTANCE = new MimeType();
+            INSTANCE.initMimeTypes();
         }
-        return instance;
+        return INSTANCE;
     }
 
     private Map<String, String> mimeTypes;

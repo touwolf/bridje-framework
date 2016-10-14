@@ -31,6 +31,7 @@ import org.bridje.orm.Key;
 import org.bridje.orm.SQLAdapter;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.adpaters.EnumAdapter;
+import org.bridje.orm.SQLCustomType;
 
 /**
  *
@@ -74,25 +75,16 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         {
             throw new IllegalArgumentException("The field " + field.getName() + " is not a valid entity field.");
         }
+        SQLCustomType customType = this.type.getAnnotation(SQLCustomType.class);
         this.key = this.field.getAnnotation(Key.class) != null;
         this.autoIncrement = this.key && this.field.getAnnotation(Key.class).autoIncrement();
         this.name = findColumnName(annotation.column());
-        this.sqlType = findSqlType(annotation.type());
-        this.length = findLength(annotation.length());
-        this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? annotation.precision() : 0;
+        this.sqlType = findSqlType(annotation, customType);
+        this.length = findLength(annotation, customType);
+        this.precision = (sqlType == JDBCType.FLOAT || sqlType == JDBCType.DOUBLE || sqlType == JDBCType.DECIMAL) ? findPrecision(annotation, customType) : 0;
         this.indexed = annotation.index();
         this.required = annotation.required();
-        if(annotation.adapter() == SQLAdapter.class)
-        {
-            if(Enum.class.isAssignableFrom(this.type))
-            {
-                this.adapter = findAdapter(EnumAdapter.class);
-            }
-        }
-        else
-        {
-            this.adapter = findAdapter(annotation.adapter());
-        }
+        this.adapter = findAdapter(findAdapterClass(annotation, customType));
     }
 
     @Override
@@ -205,8 +197,33 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         return serialize(getValue(entity));
     }
 
-    private int findLength(int length)
+    private int findPrecision(org.bridje.orm.Field annotation, SQLCustomType customType)
     {
+        int currentPrecision = annotation.precision();
+        if(customType != null && currentPrecision <= 0)
+        {
+            currentPrecision = customType.precision();
+        }
+        return currentPrecision;
+    }
+
+    private Class<? extends SQLAdapter> findAdapterClass(org.bridje.orm.Field annotation, SQLCustomType customType)
+    {
+        Class<? extends SQLAdapter> cls = annotation.adapter();
+        if(customType != null && (cls == null || cls == SQLAdapter.class))
+        {
+            cls = customType.adapter();
+        }
+        return cls;
+    }
+    
+    private int findLength(org.bridje.orm.Field annotation, SQLCustomType customType)
+    {
+        int length = annotation.length();
+        if(customType != null && length <= 0)
+        {
+            length = customType.length();
+        }
         if(length <= 0)
         {
             switch(sqlType)
@@ -222,9 +239,15 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         return length;
     }
 
-    private JDBCType findSqlType(JDBCType type)
+    private JDBCType findSqlType(org.bridje.orm.Field annotation, SQLCustomType customType)
     {
-        if(type == JDBCType.NULL)
+        JDBCType currentType = annotation.type();
+        if(customType != null && 
+                    (currentType == JDBCType.NULL || currentType == null))
+        {
+            currentType = customType.type();
+        }
+        if(currentType == JDBCType.NULL)
         {
             if(Boolean.class.isAssignableFrom(field.getType()))
             {
@@ -279,7 +302,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
                 return JDBCType.TIMESTAMP;
             }
         }
-        return type;
+        return currentType;
     }
 
     private String findColumnName(String column)
@@ -346,13 +369,30 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
         return null;
     }
 
-    private SQLAdapter findAdapter(Class<? extends SQLAdapter> sqlAdapt)
+    private SQLAdapter findAdapter(Class<? extends SQLAdapter> adapterCls)
     {
-        SQLAdapter sqlAdapter = Ioc.context().find(sqlAdapt);
+        SQLAdapter result = null;
+        if(adapterCls == SQLAdapter.class)
+        {
+            if(Enum.class.isAssignableFrom(this.type))
+            {
+                result = findAdapterOrCreate(EnumAdapter.class);
+            }
+        }
+        else
+        {
+            result = findAdapterOrCreate(adapterCls);
+        }
+        return result;
+    }
+
+    private SQLAdapter findAdapterOrCreate(Class<? extends SQLAdapter> adapterCls)
+    {
+        SQLAdapter sqlAdapter = Ioc.context().find(adapterCls);
         if(sqlAdapter == null)
         {
-            sqlAdapter = instantiate(sqlAdapt);
+            sqlAdapter = instantiate(adapterCls);
         }
-        return sqlAdapter;
+        return sqlAdapter;        
     }
 }

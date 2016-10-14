@@ -58,6 +58,9 @@ public class WebView extends AbstractWebView
     @XmlTransient
     private Set<String> resources;
 
+    @XmlAttribute(name = "theme")
+    private String theme;
+    
     /**
      * Gets a list of meta information tags information to be rendered with this
      * view.
@@ -77,6 +80,16 @@ public class WebView extends AbstractWebView
     public String getTitle()
     {
         return title;
+    }
+
+    /**
+     * The theme to be use to render this view.
+     * 
+     * @return The name of the theme for this view.
+     */
+    public String getTheme()
+    {
+        return theme;
     }
 
     /**
