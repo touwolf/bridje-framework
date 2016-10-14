@@ -33,7 +33,7 @@ import org.bridje.http.HttpException;
 
 @Component
 @Priority(20)
-class WebSessionHandler implements HttpBridlet
+class WebSessionBridlet implements HttpBridlet
 {
     @InjectNext
     private HttpBridlet nextHandler;

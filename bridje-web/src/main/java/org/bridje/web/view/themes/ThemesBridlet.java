@@ -31,7 +31,7 @@ import org.bridje.http.HttpException;
 
 @Component
 @Priority(150)
-class ThemesHandler implements HttpBridlet
+class ThemesBridlet implements HttpBridlet
 {
     @Inject
     private ThemesManager themesMang;

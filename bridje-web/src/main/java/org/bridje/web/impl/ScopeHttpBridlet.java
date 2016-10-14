@@ -17,6 +17,8 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
@@ -27,25 +29,43 @@ import org.bridje.web.WebScope;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
+import org.bridje.ioc.thls.Thls;
 
 @Component
 @Priority(0)
 class ScopeHttpBridlet implements HttpBridlet
 {
+    private static final Logger LOG = Logger.getLogger(ScopeHttpBridlet.class.getName());
+
     @Inject
     private IocContext<Application> appCtx;
-    
+
     @InjectNext
     private HttpBridlet nextHandler;
 
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        WebScope scope = new WebScope(context);
-        IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
-        context.set(WebScope.class, scope);
-        context.set(IocContext.class, wrsCtx);
-        return nextHandler.handle(context);
+        try
+        {
+            WebScope scope = new WebScope(context);
+            IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
+            context.set(WebScope.class, scope);
+            context.set(IocContext.class, wrsCtx);
+            return Thls.doAs(() ->
+            {
+                return Thls.doAs(() -> nextHandler.handle(context), WebScope.class, scope );
+            }, IocContext.class, wrsCtx );
+        }
+        catch (IOException | HttpException e)
+        {
+            throw e;
+        }
+        catch (Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            throw new HttpException(500, ex.getMessage(), ex);
+        }
     }
     
 }

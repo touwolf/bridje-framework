@@ -45,9 +45,9 @@ import org.bridje.http.HttpReqParam;
 @Component
 @Priority(200)
 @XmlTransient
-class WebViewHandler implements HttpBridlet
+class WebViewBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(WebViewHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(WebViewBridlet.class.getName());
 
     @Inject
     private WebViewsManager viewsMang;
