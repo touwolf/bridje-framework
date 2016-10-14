@@ -27,6 +27,13 @@ import java.sql.JDBCType;
 public @interface SQLCustomType
 {
     /**
+     * The name of the custom SQL datatype.
+     *
+     * @return The name of the custom SQL datatype.
+     */
+    String name();
+
+    /**
      * The JDBCType for the column.
      *
      * @return The JDBCType for the column.

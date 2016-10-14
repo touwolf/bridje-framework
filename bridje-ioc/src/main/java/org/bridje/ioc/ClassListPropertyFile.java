@@ -35,21 +35,21 @@ import javax.tools.StandardLocation;
 /**
  * Base class for the annotations processors that handle components declaration files.
  */
-public abstract class CompFileAnnotProcHelper extends AbstractProcessor
+public abstract class ClassListPropertyFile extends AbstractProcessor
 {
     private Writer writer;
 
-    private static final Logger LOG = Logger.getLogger(CompFileAnnotProcHelper.class.getName());
+    private static final Logger LOG = Logger.getLogger(ClassListPropertyFile.class.getName());
 
     /**
-     * Gets the name for the file that will be writed by this annotation procesor.
+     * Gets the name for the file that will be writed by this annotation processor.
      * 
-     * @return The name of the file for this annotation proceso.
+     * @return The name of the file for this annotation processor.
      */
     public abstract String getFileName();
-    
+
     /**
-     * This method will be called for each component class found by this procesor.
+     * This method will be called for each component class found by this processor.
      * the implementation of this method must call the appendClass method to write
      * the component reference to de file.
      * 
@@ -57,7 +57,7 @@ public abstract class CompFileAnnotProcHelper extends AbstractProcessor
      * @throws IOException If the component cannot be writed to the file.
      */
     public abstract void processElement(Element element) throws IOException;
-    
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
     {
@@ -106,18 +106,18 @@ public abstract class CompFileAnnotProcHelper extends AbstractProcessor
     }
 
     /**
-     * This method appends class=scope to the output file.
+     * This method appends key=value to the output file.
      * <p>
-     * @param clsName The full class name of the component to append
-     * @param scope   The scope of the component
+     * @param key   The full class name of the component to append
+     * @param value The scope of the component
      * <p>
      * @throws IOException If any IO error prevents the writing.
      */
-    protected void appendClass(String clsName, String scope) throws IOException
+    protected void appendProperty(String key, String value) throws IOException
     {
-        writer.append(clsName);
+        writer.append(key);
         writer.append("=");
-        writer.append(scope);
+        writer.append(value);
         writer.append('\n');
         writer.flush();
     }

@@ -21,14 +21,14 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import org.bridje.ioc.CompFileAnnotProcHelper;
+import org.bridje.ioc.ClassListPropertyFile;
 
 /**
  * Annotations processor for the {@link WebComponent} annotation.
  */
 @SupportedAnnotationTypes("org.bridje.web.WebComponent")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class WebComponentProcessor extends CompFileAnnotProcHelper
+public class WebComponentProcessor extends ClassListPropertyFile
 {
     /**
      * The web components resource file.
@@ -46,6 +46,6 @@ public class WebComponentProcessor extends CompFileAnnotProcHelper
     {
         String clsName = element.toString();
         String scope = "org.bridje.web.WebScope";
-        appendClass(clsName, scope);        
+        appendProperty(clsName, scope);        
     }
 }

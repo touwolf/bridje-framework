@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl.conv;
+package org.bridje.el.impl.convert;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

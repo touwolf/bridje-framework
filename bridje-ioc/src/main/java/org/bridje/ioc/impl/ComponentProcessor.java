@@ -22,7 +22,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.MirroredTypeException;
-import org.bridje.ioc.CompFileAnnotProcHelper;
+import org.bridje.ioc.ClassListPropertyFile;
 import org.bridje.ioc.Component;
 
 /**
@@ -30,7 +30,7 @@ import org.bridje.ioc.Component;
  */
 @SupportedAnnotationTypes("org.bridje.ioc.Component")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class ComponentProcessor extends CompFileAnnotProcHelper
+public class ComponentProcessor extends ClassListPropertyFile
 {
     public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/components.properties";
 
@@ -55,6 +55,6 @@ public class ComponentProcessor extends CompFileAnnotProcHelper
         {
             scope = e.getTypeMirror().toString();
         }
-        appendClass(clsName, scope);        
+        appendProperty(clsName, scope);        
     }
 }

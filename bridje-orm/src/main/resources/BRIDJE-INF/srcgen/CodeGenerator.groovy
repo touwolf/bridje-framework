@@ -50,7 +50,7 @@ def toSqlName = { name ->
 };
 
 def loadCustomTypes = { ->
-    def dtList = tools.loadXmlResources("BRIDJE-INF/orm/datatypes.xml");
+    def dtList = tools.loadXmlResources("BRIDJE-INF/orm/custom-datatypes.xml");
     def dataTypes = [:];
     dtList.each{ dtData ->
         dtData.'*'.each{ dt ->
@@ -60,6 +60,18 @@ def loadCustomTypes = { ->
             dataType['adapter'] = dt.'@adapter'.text();
             dataType['sqlType'] = dt.'@sqlType'.text();
             dataType['columnType'] = dt.'@columnType'.text();
+            dataTypes[dataType['name']] = dataType;
+        };
+    };
+    def gdtList = tools.loadPropertiesResources("BRIDJE-INF/orm/generated-custom-datatypes.properties");
+    gdtList.each{ gdtData ->
+        gdtData.each{ key, value ->
+            def dataType = [:];
+            dataType['name'] = key;
+            dataType['class'] = value;
+            dataType['adapter'] = "";
+            dataType['sqlType'] = "";
+            dataType['columnType'] = "TableColumn";
             dataTypes[dataType['name']] = dataType;
         };
     };

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl.conv;
+package org.bridje.web.impl.convert;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
@@ -28,7 +28,7 @@ import org.bridje.ioc.Priority;
  * An EL type converter for HttpReqParam.
  */
 @Component
-@Priority(5000)
+@Priority(3000)
 class HttpReqParamConverter implements ElTypeConverter
 {
     @Inject

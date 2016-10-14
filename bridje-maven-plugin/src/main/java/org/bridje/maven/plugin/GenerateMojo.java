@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -292,6 +293,34 @@ public class GenerateMojo extends AbstractMojo
             try (InputStreamReader fr = new InputStreamReader(url.openStream()))
             {
                 result.add(new XmlSlurper().parse(fr));
+            }
+            catch (Exception e)
+            {
+                getLog().error(e.getMessage(), e);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Load all property resources files availables in the projects class path.
+     * 
+     * @param resourceName The name of the resource to load.
+     * @return A list with all the resources found.
+     * @throws IOException If any IO error ocurrs.
+     */
+    public List<Properties> loadPropertiesResources(String resourceName) throws IOException
+    {
+        List<Properties> result = new ArrayList<>();
+        Enumeration<URL> resources = clsRealm.getResources(resourceName);
+        while (resources.hasMoreElements())
+        {
+            URL url = resources.nextElement();
+            try (InputStreamReader fr = new InputStreamReader(url.openStream()))
+            {
+                Properties p = new Properties();
+                p.load(fr);
+                result.add(p);
             }
             catch (Exception e)
             {

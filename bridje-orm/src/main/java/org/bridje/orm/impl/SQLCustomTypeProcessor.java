@@ -14,38 +14,40 @@
  * limitations under the License.
  */
 
-package org.bridje.web;
+package org.bridje.orm.impl;
 
 import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
-import org.bridje.ioc.CompFileAnnotProcHelper;
+import org.bridje.ioc.ClassListPropertyFile;
+import org.bridje.orm.SQLCustomType;
 
 /**
- * Annotations processor for the {@link WebComponent} annotation.
+ * Annotations processor for the {@link SQLCustomType} annotation.
  */
-@SupportedAnnotationTypes("org.bridje.web.WebComponent")
+@SupportedAnnotationTypes("org.bridje.orm.SQLCustomType")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-public class WebComponentProcessor extends CompFileAnnotProcHelper
+public class SQLCustomTypeProcessor extends ClassListPropertyFile
 {
     /**
      * The web components resource file.
      */
-    public static final String WEB_COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/web/components.properties";
+    public static final String CUSTOM_DATATYPE_FILE = "BRIDJE-INF/orm/generated-custom-datatypes.properties";
 
     @Override
     public String getFileName()
     {
-        return WEB_COMPONENTS_RESOURCE_FILE;
+        return CUSTOM_DATATYPE_FILE;
     }
 
     @Override
     public void processElement(Element element) throws IOException
     {
+        SQLCustomType annot = element.getAnnotation(SQLCustomType.class);
         String clsName = element.toString();
-        String scope = "org.bridje.web.WebScope";
-        appendClass(clsName, scope);        
+        String name = annot.name();
+        appendProperty(name, clsName);
     }
 }

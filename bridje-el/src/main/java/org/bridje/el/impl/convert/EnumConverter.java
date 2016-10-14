@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl.conv;
+package org.bridje.el.impl.convert;
 
 import org.bridje.el.ElTypeConverter;
 import org.bridje.ioc.Component;
