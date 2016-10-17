@@ -21,22 +21,36 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.el.ELException;
+import org.bridje.el.ElSimpleConvertMap;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.el.ElTypeConverter;
+import org.bridje.el.ElAdvanceConverter;
+import org.bridje.el.ElSimleConvertProvider;
+import org.bridje.el.ElSimpleConverter;
 
 @Component
 class TypeConverterImpl implements TypeConverter
 {
     @Inject
-    private ElTypeConverter[] typeConverters;
+    private ElAdvanceConverter[] advanceConverters;
+
+    @Inject
+    private ElSimleConvertProvider[] simpleConverters;
+
+    private Map<Class<?>,Map<Class<?>,ElAdvanceConverter>> advanceConvertMap;
     
-    private Map<Class,Map<Class,ElTypeConverter>> convertMap;
+    private ElSimpleConvertMap simpleConverMap;
     
     @PostConstruct
     public void init()
     {
-        convertMap = new ConcurrentHashMap<>();
+        advanceConvertMap = new ConcurrentHashMap<>();
+        simpleConverMap = new ElSimpleConvertMap();
+        for (ElSimleConvertProvider providers : simpleConverters)
+        {
+            ElSimpleConvertMap convMap = providers.createConvertMap();
+            simpleConverMap.addAll(convMap);
+        }
     }
     
     @Override
@@ -47,35 +61,41 @@ class TypeConverterImpl implements TypeConverter
             return null;
         }
         
-        if(type.getClass() == value.getClass())
+        if(type == value.getClass())
         {
             return (T)value;
         }
 
-        if(type.getClass().isAssignableFrom(value.getClass()))
+        if(type.isAssignableFrom(value.getClass()))
         {
             return (T)value;
         }
 
-        Map<Class, ElTypeConverter> map = convertMap.get(value.getClass());
+        ElSimpleConverter<Object, T> simpleConv = simpleConverMap.get((Class<Object>)value.getClass(), type);
+        if(simpleConv != null)
+        {
+            return simpleConv.convert(value);
+        }
+        
+        Map<Class<?>, ElAdvanceConverter> map = advanceConvertMap.get(value.getClass());
         if(map != null)
         {
-            ElTypeConverter converter = map.get(type);
+            ElAdvanceConverter converter = map.get(type);
             if(converter != null)
             {
                 return converter.convert(value, type);
             }
         }
 
-        for (ElTypeConverter typeConverter : typeConverters)
+        for (ElAdvanceConverter typeConverter : advanceConverters)
         {
             if(typeConverter.canConvert(value.getClass(), type))
             {
-                map = convertMap.get(value.getClass());
+                map = advanceConvertMap.get(value.getClass());
                 if(map == null)
                 {
                     map = new ConcurrentHashMap<>();
-                    convertMap.put(value.getClass(), map);
+                    advanceConvertMap.put(value.getClass(), map);
                 }
                 map.put(type, typeConverter);
                 return typeConverter.convert(value, type);
@@ -84,5 +104,4 @@ class TypeConverterImpl implements TypeConverter
         
         return TypeConverter.DEFAULT.convert(value, type);
     }
-    
 }

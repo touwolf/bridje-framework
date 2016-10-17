@@ -39,6 +39,8 @@ import org.bridje.vfs.VfsService;
 import org.bridje.web.view.widgets.Widget;
 import org.bridje.web.view.WebView;
 import org.bridje.http.HttpBridletResponse;
+import org.bridje.ioc.Application;
+import org.bridje.ioc.IocContext;
 import org.bridje.vfs.VFile;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.state.StateRenderProvider;
@@ -52,9 +54,14 @@ public class ThemesManager
     private static final Logger LOG = Logger.getLogger(ThemesManager.class.getName());
 
     private Configuration ftlCfg;
-    
+
     @Inject
     private VfsService vfs;
+
+    @Inject
+    private IocContext<Application> context;
+
+    private Map<String,Object> themeTools;
 
     /**
      * Component Initializer
@@ -62,6 +69,9 @@ public class ThemesManager
     @PostConstruct
     public void init()
     {
+        themeTools = new HashMap<>();
+        context.getClassRepository()
+                .forEachClass(ThemeTool.class, (cls, ann) -> themeTools.put(ann.name(), context.find(cls)) );
         ftlCfg = new Configuration(Configuration.VERSION_2_3_23);
         ftlCfg.setTemplateLoader(Ioc.context().find(ThemesTplLoader.class));
         ftlCfg.setDefaultEncoding("UTF-8");
@@ -84,6 +94,7 @@ public class ThemesManager
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
+            data.put("tools", themeTools);
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
@@ -113,6 +124,7 @@ public class ThemesManager
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
+            data.put("tools", themeTools);
             data.put("view", view);
             data.put("widget", widget);
             data.put("result", result);

@@ -21,13 +21,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.el.ElTypeConverter;
+import org.bridje.el.ElAdvanceConverter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Priority;
 
 @Component
 @Priority(5010)
-class StringConverter implements ElTypeConverter
+class StringConverter implements ElAdvanceConverter
 {
     private static final Logger LOG = Logger.getLogger(StringConverter.class.getName());
 

@@ -16,13 +16,13 @@
 
 package org.bridje.el.impl.convert;
 
-import org.bridje.el.ElTypeConverter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Priority;
+import org.bridje.el.ElAdvanceConverter;
 
 @Component
 @Priority(5020)
-class EnumConverter implements ElTypeConverter
+class EnumConverter implements ElAdvanceConverter
 {
     @Override
     public <F, T> boolean canConvert(Class<F> from, Class<T> to)

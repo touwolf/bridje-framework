@@ -7,7 +7,7 @@ package org.bridje.el;
  * provide a new converter a component that implements this interface must be
  * created.
  */
-public interface ElTypeConverter
+public interface ElAdvanceConverter
 {
     /**
      * Determines when ever this convertor can covert the specified value to the

@@ -18,18 +18,18 @@ package org.bridje.web.impl.convert;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
-import org.bridje.el.ElTypeConverter;
 import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Priority;
+import org.bridje.el.ElAdvanceConverter;
 
 /**
  * An EL type converter for HttpReqParam.
  */
 @Component
 @Priority(3000)
-class HttpReqParamConverter implements ElTypeConverter
+class HttpReqParamConverter implements ElAdvanceConverter
 {
     @Inject
     private TypeConverter conv;
