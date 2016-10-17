@@ -93,6 +93,14 @@ class DataSourceImpl implements DataSource
         if(!freeConnections.isEmpty())
         {
             ConnectionImpl nextConnection = freeConnections.poll();
+            if(needToReconnect(nextConnection))
+            {
+                if(!nextConnection.isValid(10))
+                {
+                    nextConnection.realClose();
+                    nextConnection = createNewConnection();
+                }
+            }
             nextConnection.open();
             usedConnections.add(nextConnection);
             LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
@@ -265,5 +273,10 @@ class DataSourceImpl implements DataSource
                             new Object[]{ config.getName(), freeConnections.size() + usedConnections.size() });
             }
         }
+    }
+    private boolean needToReconnect(ConnectionImpl connection)
+    {
+        long reTime = config.getReconnectTime() * 1000;
+        return (reTime > connection.getLastUse());
     }
 }

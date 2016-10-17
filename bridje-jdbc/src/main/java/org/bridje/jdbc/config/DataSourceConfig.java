@@ -42,6 +42,8 @@ public class DataSourceConfig
     private long idleTime;
 
     private int minConnections;
+    
+    private int reconnectTime;
 
     /**
      * Gets the name of the DataSource object that will be found by the
@@ -235,5 +237,27 @@ public class DataSourceConfig
     public void setMinConnections(int minConnections)
     {
         this.minConnections = minConnections;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public int getReconnectTime()
+    {
+        if(reconnectTime <= 0)
+        {
+            return 600;
+        }
+        return reconnectTime;
+    }
+
+    /**
+     * 
+     * @param reconnectTime 
+     */
+    public void setReconnectTime(int reconnectTime)
+    {
+        this.reconnectTime = reconnectTime;
     }
 }
