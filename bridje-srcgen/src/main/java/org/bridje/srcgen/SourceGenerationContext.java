@@ -19,7 +19,11 @@ package org.bridje.srcgen;
 /**
  *
  */
-public interface SourceGenerator
+public interface SourceGenerationContext
 {
-    public void generateSources(SourceGenerationContext ctx);
+    Object loadXmlFile(String filePath, Class<?>... rootClasses);
+    
+    void generateJavaClass(String className, Object model, String template);
+
+    void generateResource(String resourcePath, Object model, String template);
 }
