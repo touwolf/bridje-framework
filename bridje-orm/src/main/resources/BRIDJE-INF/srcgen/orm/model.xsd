@@ -73,6 +73,11 @@
         <xs:attribute type="xs:string" name="value"/>        
     </xs:complexType>
 
+    <xs:complexType name="eqField">
+        <xs:attribute type="xs:string" name="field"/>
+        <xs:attribute type="xs:string" name="value"/>        
+    </xs:complexType>
+
     <xs:complexType name="createOperation">
         <xs:sequence>
             <xs:element name="set" type="tns:setField" />
@@ -89,6 +94,9 @@
     </xs:complexType>
 
     <xs:complexType name="readOperation">
+        <xs:sequence>
+            <xs:element name="eq" type="tns:eqField" />
+        </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="params"/>
         <xs:attribute type="xs:string" name="result"/>

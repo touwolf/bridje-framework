@@ -162,6 +162,7 @@ def findFieldDescription = { field, model ->
 
 def readFieldData = { entity, fieldNode, model ->
     def field = [:];
+    field['entity'] = entity;
     field['name'] = fieldNode.'@name'.text();
     field['column'] = fieldNode.'@column'.text();
     field['column'] = findColumnName(field);
@@ -242,7 +243,7 @@ def readEntityData = { entityNode, model ->
             operation['setFields'] = [];
             operationNode.'*'.each{ setNode ->
                 def setField = [:];
-                setField['name'] = setNode.'@field'.text();
+                setField['field'] = setNode.'@field'.text();
                 setField['value'] = setNode.'@value'.text();
 
                 operation['setFields'] << setField;
@@ -254,6 +255,15 @@ def readEntityData = { entityNode, model ->
             {
                 operation['resultField'] = operationNode.'@result'.text();
             }
+            operation['conditions'] = [];
+            operationNode.'*'.each{ condNode ->
+                def condition = [:];
+                condition['operator'] = condNode.name();
+                condition['field'] = condNode.'@field'.text();
+                condition['value'] = condNode.'@value'.text();
+
+                operation['conditions'] << condition;
+            };
         }
         entity['operations']['crud'] << operation;
     };
@@ -279,13 +289,6 @@ def readEnumData = { enumNode, model ->
     enumData;
 };
 
-def applyBaseOperation = { entity, tmpl, operation ->
-    if(entity['operations'][operation] == "" && tmpl['operations'][operation] != "")
-    {
-        entity['operations'][operation] = tmpl['operations'][operation];
-    }
-};
-
 def applyBaseTemplate;
 applyBaseTemplate = { entity, templates ->
 
@@ -301,11 +304,13 @@ applyBaseTemplate = { entity, templates ->
                 entity['description'] = tmpl['description'];
             }
             def newFields = [];
-            tmpl['fields'].each{ field ->
-                if(entity['fieldsMap'][field['name']] == null)
+            tmpl['fields'].each{ tmplField ->
+                if(entity['fieldsMap'][tmplField['name']] == null)
                 {
+                    def field = tmplField.getClass().newInstance(tmplField);
                     newFields << field;
                     entity['fieldsMap'][field['name']] = field;
+                    field['entity'] = entity;
                 }
             };
             entity['fields'].each{ field -> 
@@ -314,10 +319,10 @@ applyBaseTemplate = { entity, templates ->
             entity['fields'] = newFields;
             if(entity['keyField'] == null && tmpl['keyField'] != null)
             {
-                entity['keyField'] = tmpl['keyField'];
+                def kfield = tmpl['keyField'].getClass().newInstance(tmpl['keyField']);
+                kfield['entity'] = entity;
+                entity['keyField'] = kfield;
             }
-            applyBaseOperation(entity, tmpl, 'refresh');
-            applyBaseOperation(entity, tmpl, 'query');
             
             tmpl['operations']['crud'].each{ op ->
                 entity['operations']['crud'] << op;
@@ -340,6 +345,24 @@ def fixOperations = { entity ->
             }
         };
         op['params'] = newParams;
+        if(op['setFields'] != null)
+        {
+            op['setFields'].each{ setField ->
+                if(setField['field'] instanceof String)
+                {
+                    setField['field'] = entity['fieldsMap'][setField['field']];
+                }
+            };
+        }
+        if(op['conditions'] != null)
+        {
+            op['conditions'].each{ condition ->
+                if(condition['field'] instanceof String)
+                {
+                    condition['field'] = entity['fieldsMap'][condition['field']];
+                }
+            };
+        }        
         if(op['resultField'] != null)
         {
             if(op['resultField'] instanceof String)

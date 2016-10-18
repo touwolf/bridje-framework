@@ -184,7 +184,7 @@ public class ${model.name}
     {
         ${entity.name} entity = new ${entity.name}();
         <#list crudOp.setFields as setField>
-        entity.set${setField.name?cap_first}(${setField.value});
+        entity.set${setField.field.name?cap_first}(${setField.value});
         </#list>
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
@@ -201,9 +201,17 @@ public class ${model.name}
                             <#assign first = true />
                             <#list crudOp.params as param>
                             <#if first>
-                            ${entity.name}.${param.column?upper_case}.eq(${param.name})
+                            ${param.entity.name}.${param.column?upper_case}.eq(${param.name})
                             <#else>
-                            .and(${entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            .and(${param.entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            </#if>
+                            <#assign first = false />
+                            </#list>
+                            <#list crudOp.conditions as cond>
+                            <#if first>
+                            ${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value})
+                            <#else>
+                            .and(${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value}))
                             </#if>
                             <#assign first = false />
                             </#list>
@@ -219,9 +227,17 @@ public class ${model.name}
                             <#assign first = true />
                             <#list crudOp.params as param>
                             <#if first>
-                            ${entity.name}.${param.column?upper_case}.eq(${param.name})
+                            ${param.entity.name}.${param.column?upper_case}.eq(${param.name})
                             <#else>
-                            .and(${entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            .and(${param.entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            </#if>
+                            <#assign first = false />
+                            </#list>
+                            <#list crudOp.conditions as cond>
+                            <#if first>
+                            ${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value})
+                            <#else>
+                            .and(${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value}))
                             </#if>
                             <#assign first = false />
                             </#list>
@@ -245,9 +261,9 @@ public class ${model.name}
     public void save(${entity.name} entity) throws SQLException
     {
         <#list crudOp.setFields as setField>
-        if(entity.get${setField.name?cap_first}() == null)
+        if(entity.get${setField.field.name?cap_first}() == null)
         {
-            entity.set${setField.name?cap_first}(${setField.value});
+            entity.set${setField.field.name?cap_first}(${setField.value});
         }
         </#list>
         if(entity.get${entity.keyField.name?cap_first}() == null)
