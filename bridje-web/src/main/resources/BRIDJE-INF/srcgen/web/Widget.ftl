@@ -102,6 +102,10 @@ public class ${widget.name} extends ${widget.base}
     <#else>
     public ${f.javaType} get${f.name?cap_first}()
     {
+        if(${f.name} == null)
+        {
+            ${f.name} = ${f.defaultValue};
+        }
         return ${f.name};
     }
     </#if>
