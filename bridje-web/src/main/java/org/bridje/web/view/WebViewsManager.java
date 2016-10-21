@@ -69,7 +69,7 @@ public class WebViewsManager
 
     @Inject
     private ElService elServ;
-    
+
     @Inject
     private StateManager stateManag;
 
@@ -90,6 +90,7 @@ public class WebViewsManager
      * Finds the view by the given path.
      *
      * @param path The web view path to be found.
+     *
      * @return The web view founded or null if it does not exists.
      */
     public WebView findView(String path)
@@ -97,20 +98,42 @@ public class WebViewsManager
         return views.get(path);
     }
 
+    /**
+     * Finds the view by the requested path of the given HTTP bridlet context.
+     *
+     * @param context The current HTTP bridlet context to extract the path of
+     *                the view.
+     *
+     * @return The web view founded or null if it does not exists.
+     */
     public WebView findView(HttpBridletContext context)
     {
         String viewName = findViewName(context);
         return findView(viewName);
     }
-    
+
+    /**
+     * Finds the view to be updated by the __view param name sended to the
+     * server.
+     *
+     * @param context The current HTTP bridlet context to extract the path of
+     *                the view.
+     *
+     * @return The web view if the parameter __view was send to the server, null
+     *         otherwise.
+     *
+     * @throws org.bridje.http.HttpException If the __view parameter was send
+     *                                       but the view referenced by it does
+     *                                       not exists.
+     */
     public WebView findUpdateView(HttpBridletContext context) throws HttpException
     {
         HttpBridletRequest req = context.get(HttpBridletRequest.class);
         HttpReqParam viewUpdate = req.getPostParameter("__view");
-        if(viewUpdate != null && !viewUpdate.isEmpty())
+        if (viewUpdate != null && !viewUpdate.isEmpty())
         {
             WebView view = findView(viewUpdate.getValue());
-            if(view == null)
+            if (view == null)
             {
                 throw new HttpException(400, "Bad Request");
             }
@@ -118,16 +141,22 @@ public class WebViewsManager
         }
         return null;
     }
-    
+
+    /**
+     * Renders the given web view to the response output stream.
+     *
+     * @param view    The view to render.
+     * @param context The HTTP bridlet context for the current request.
+     */
     public void renderView(WebView view, HttpBridletContext context)
     {
-        if(view == null)
+        if (view == null)
         {
             throw new NullPointerException();
         }
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
-        try(OutputStream os = resp.getOutputStream())
+        try (OutputStream os = resp.getOutputStream())
         {
             Thls.doAs(() ->
             {
@@ -135,17 +164,24 @@ public class WebViewsManager
                 os.flush();
                 return null;
             },
-            ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+                    ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-    
+
+    /**
+     * Performs a view update and/or an event invocation by the data sended to
+     * the server in the given request.
+     *
+     * @param view The view to be updated.
+     * @param context The HTTP bridlet context for the current request.
+     */
     public void updateView(WebView view, HttpBridletContext context)
     {
-        if(view == null)
+        if (view == null)
         {
             throw new NullPointerException();
         }
@@ -158,25 +194,33 @@ public class WebViewsManager
                 view.getRoot().readInput(req);
                 EventResult result = invokeEvent(req, view);
                 HttpBridletResponse resp = context.get(HttpBridletResponse.class);
-                try(OutputStream os = resp.getOutputStream())
+                try (OutputStream os = resp.getOutputStream())
                 {
                     themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
                     os.flush();
                 }
                 return null;
             },
-            ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+                    ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
+    /**
+     * Invokes the event expression sended to the server.
+     * 
+     * @param req The HTTP request to look for the event expression.
+     * @param view The view that declares the event.
+     *
+     * @return The result of the invocation of the event.
+     */
     public EventResult invokeEvent(HttpBridletRequest req, WebView view)
     {
         UIEvent event = findEvent(req, view);
-        if(event != null)
+        if (event != null)
         {
             try
             {
@@ -190,6 +234,15 @@ public class WebViewsManager
         return null;
     }
 
+    /**
+     * Invokes the given event.
+     * 
+     * @param event The event to be invoked.
+     *
+     * @return The result of the event invokation.
+     *
+     * @throws java.lang.Exception If any unhandled exception ocurss.
+     */
     public EventResult invokeEvent(UIEvent event) throws Exception
     {
         return Thls.doAs(() ->
@@ -197,17 +250,17 @@ public class WebViewsManager
             try
             {
                 Object res = event.invoke();
-                if(res instanceof EventResult)
+                if (res instanceof EventResult)
                 {
-                    return (EventResult)res;
+                    return (EventResult) res;
                 }
                 return EventResult.of(null, null, res, null);
             }
             catch (ELException e)
             {
-                if(e.getCause() != null && e.getCause() instanceof Exception)
+                if (e.getCause() != null && e.getCause() instanceof Exception)
                 {
-                    Exception real = (Exception)e.getCause();
+                    Exception real = (Exception) e.getCause();
                     LOG.log(Level.SEVERE, e.getMessage(), e);
                     return EventResult.error(real.getMessage(), real);
                 }
@@ -222,10 +275,18 @@ public class WebViewsManager
         }, UIEvent.class, event);
     }
 
+    /**
+     * Finds the event sended to the server in the __action parameter.
+     * 
+     * @param req The request to look for the event.
+     * @param view The view to look for the event.
+     *
+     * @return The event.
+     */
     public UIEvent findEvent(HttpBridletRequest req, WebView view)
     {
         HttpReqParam action = req.getPostParameter("__action");
-        if(action != null)
+        if (action != null)
         {
             UIEvent event = view.findEvent(action.getValue());
             return event;
@@ -233,10 +294,17 @@ public class WebViewsManager
         return null;
     }
 
+    /**
+     * Finds the name of the view to be rendered by the path of the HTTP request.
+     * 
+     * @param context The HTTP bidlet context to get the path form.
+     *
+     * @return The name of the view to be use to render this request.
+     */
     public String findViewName(HttpBridletContext context)
     {
         WebViewRef viewRef = context.get(WebViewRef.class);
-        if(viewRef != null && viewRef.getViewPath() != null)
+        if (viewRef != null && viewRef.getViewPath() != null)
         {
             return viewRef.getViewPath();
         }
@@ -250,8 +318,8 @@ public class WebViewsManager
         if (publicFolder != null)
         {
             publicFolder
-                .listFiles("**/*.view.xml")
-                .forEach(this::readView);
+                    .listFiles("**/*.view.xml")
+                    .forEach(this::readView);
         }
     }
 
@@ -279,4 +347,5 @@ public class WebViewsManager
             LOG.log(Level.SEVERE, "Could not parse " + f.getPath() + ". " + e.getMessage(), e);
         }
     }
+
 }

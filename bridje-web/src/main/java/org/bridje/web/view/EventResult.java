@@ -21,7 +21,7 @@ import org.bridje.ioc.thls.Thls;
 import org.bridje.web.view.widgets.UIEvent;
 
 /**
- * The result of an event invocation.
+ * The result of the invocation of a web event.
  */
 @XmlTransient
 public class EventResult
@@ -36,31 +36,93 @@ public class EventResult
 
     private final Object data;
 
+    /**
+     * Creates a new info event result object, that will show an information
+     * type message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     *
+     * @return An EventResult object of type info.
+     */
     public static EventResult info(String message, Object data)
     {
         return new EventResult(EventResultType.INFO, message, data, null);
     }
 
+    /**
+     * Creates a new success event result object, that will show an success type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     *
+     * @return An EventResult object of type success.
+     */
     public static EventResult success(String message, Object data)
     {
         return new EventResult(EventResultType.SUCCESS, message, data, null);
     }
 
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     *
+     * @return An EventResult object of type warning.
+     */
     public static EventResult warn(String message, Object data)
     {
         return new EventResult(EventResultType.WARNING, message, data, null);
     }
 
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     * @param data      The data to pass to the web view as the result of the
+     *                  event.
+     * @param exception The exception responsable for this warning.
+     *
+     * @return An EventResult object of type warning.
+     */
     public static EventResult warn(String message, Object data, Exception exception)
     {
         return new EventResult(EventResultType.WARNING, message, data, null);
     }
 
+    /**
+     * Creates a new error event result object, that will show an error type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     * @param exception The exception responsable for this error.
+     *
+     * @return An EventResult object of type error.
+     */
     public static EventResult error(String message, Exception exception)
     {
         return new EventResult(EventResultType.ERROR, message, null, exception);
     }
 
+    /**
+     * Creates a new event result, for the given type, that will show a message
+     * to the end user.
+     *
+     * @param type      The type of message to show to the end user.
+     * @param message   The message to show to the user.
+     * @param data      The data to pass to the web view as the result of the
+     *                  event.
+     * @param exception The exception responsable for this error.
+     *
+     * @return An EventResult object of type error.
+     */
     public static EventResult of(EventResultType type, String message, Object data, Exception exception)
     {
         return new EventResult(type, message, data, exception);
@@ -108,8 +170,9 @@ public class EventResult
 
     /**
      * The exception (if any) that was throw by the event method.
-     * 
-     * @return An Exception or null if not Exception where throw by the event method.
+     *
+     * @return An Exception or null if not Exception where throw by the event
+     *         method.
      */
     public Exception getException()
     {
@@ -118,7 +181,7 @@ public class EventResult
 
     /**
      * The result object returned by the event method.
-     * 
+     *
      * @return An Object representing the result of the event method invocation.
      */
     public Object getData()
