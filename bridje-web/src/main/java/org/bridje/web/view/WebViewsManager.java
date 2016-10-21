@@ -208,12 +208,15 @@ public class WebViewsManager
                 if(e.getCause() != null && e.getCause() instanceof Exception)
                 {
                     Exception real = (Exception)e.getCause();
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
                     return EventResult.error(real.getMessage(), real);
                 }
+                LOG.log(Level.SEVERE, e.getMessage(), e);
                 return EventResult.error(e.getMessage(), e);
             }
             catch (Exception e)
             {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
                 return EventResult.error(e.getMessage(), e);
             }
         }, UIEvent.class, event);
