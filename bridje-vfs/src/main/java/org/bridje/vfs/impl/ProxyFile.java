@@ -26,7 +26,7 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
 
-class ProxyFile extends MimeType implements MultiVFile
+class ProxyFile extends MimeTypeUtils implements MultiVFile
 {
     private final List<VFile> files;
 
@@ -112,7 +112,7 @@ class ProxyFile extends MimeType implements MultiVFile
     @Override
     public String getMimeType()
     {
-        return MimeType.getInstance().getMimeType(getExtension());
+        return MimeTypeUtils.getInstance().getMimeType(getExtension());
     }
 
     @Override

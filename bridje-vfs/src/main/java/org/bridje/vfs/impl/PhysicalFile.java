@@ -71,7 +71,7 @@ class PhysicalFile extends PhysicalResource implements VFile
     @Override
     public String getMimeType()
     {
-        return MimeType.getInstance().getMimeType(getExtension());
+        return MimeTypeUtils.getInstance().getMimeType(getExtension());
     }
 
     @Override
