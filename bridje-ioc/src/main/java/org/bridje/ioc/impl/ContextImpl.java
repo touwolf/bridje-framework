@@ -294,7 +294,7 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
     public void printPriorities(Class<?> service, PrintWriter writer)
     {
         List<Class<?>> lst = serviceMap.findAll(service);
-        lst.stream().forEach((c) -> writer.println(ClassUtils.findPriority(c) + " -> " + c.getName()));
+        lst.stream().forEach((c) -> writer.println(findPriority(c) + " -> " + c.getName()));
     }
 
     @Override

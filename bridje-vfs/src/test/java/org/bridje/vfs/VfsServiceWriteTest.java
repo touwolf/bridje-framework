@@ -19,7 +19,6 @@ package org.bridje.vfs;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import static org.junit.Assert.*;
 import org.junit.Test;
