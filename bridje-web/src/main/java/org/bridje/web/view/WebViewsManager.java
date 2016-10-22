@@ -150,15 +150,11 @@ public class WebViewsManager
      */
     public void renderView(WebView view, HttpBridletContext context)
     {
-        if (view == null)
-        {
-            throw new NullPointerException();
-        }
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
         try (OutputStream os = resp.getOutputStream())
         {
-            Thls.doAs(() ->
+            Thls.doAsEx(() ->
             {
                 themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
                 os.flush();
@@ -181,15 +177,11 @@ public class WebViewsManager
      */
     public void updateView(WebView view, HttpBridletContext context)
     {
-        if (view == null)
-        {
-            throw new NullPointerException();
-        }
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         HttpBridletRequest req = context.get(HttpBridletRequest.class);
         try
         {
-            Thls.doAs(() ->
+            Thls.doAsEx(() ->
             {
                 view.getRoot().readInput(req);
                 EventResult result = invokeEvent(req, view);

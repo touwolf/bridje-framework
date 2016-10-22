@@ -18,6 +18,8 @@ package org.bridje.ioc.thls.impl;
 
 import org.bridje.ioc.Component;
 import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.ioc.thls.ThlsService;
 
 @Component
@@ -31,16 +33,40 @@ class ThlsServiceImpl implements ThlsService
     }
 
     @Override
-    public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception
+    public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data)
     {
         threadLocalStorage.put(cls, data);
         try
         {
             return action.execute();
         }
-        catch (Exception ex)
+        finally
         {
-            throw ex;
+            threadLocalStorage.pop(cls);
+        }
+    }
+
+    @Override
+    public <T, D, E extends Throwable> T doAsEx(ThlsActionException<T, E> action, Class<D> cls, D data) throws E
+    {
+        threadLocalStorage.put(cls, data);
+        try
+        {
+            return action.execute();
+        }
+        finally
+        {
+            threadLocalStorage.pop(cls);
+        }
+    }
+    
+    @Override
+    public <T, D, E extends Throwable, E2 extends Throwable> T doAsEx2(ThlsActionException2<T, E, E2> action, Class<D> cls, D data) throws E, E2
+    {
+        threadLocalStorage.put(cls, data);
+        try
+        {
+            return action.execute();
         }
         finally
         {

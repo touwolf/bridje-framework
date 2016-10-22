@@ -52,9 +52,9 @@ class ScopeHttpBridlet implements HttpBridlet
             IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
             context.set(WebScope.class, scope);
             context.set(IocContext.class, wrsCtx);
-            return Thls.doAs(() ->
+            return Thls.doAsEx2(() ->
             {
-                return Thls.doAs(() -> nextHandler.handle(context), WebScope.class, scope );
+                return Thls.doAsEx2(() -> nextHandler.handle(context), WebScope.class, scope );
             }, IocContext.class, wrsCtx );
         }
         catch (IOException | HttpException e)

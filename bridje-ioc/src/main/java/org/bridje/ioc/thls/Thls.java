@@ -28,10 +28,10 @@ public class Thls
     /**
      * Get the last object of the cls Class that was put in the thread local
      * storage.
-     * <p>
+     *
      * @param <T> The type of the object to look for.
      * @param cls The class of the object to look for.
-     * <p>
+     *
      * @return The last object of the specified class that was put in the thread
      *         local storage, or null if none can be found.
      */
@@ -47,24 +47,77 @@ public class Thls
     /**
      * This method puts all the data objects on the internal thread local
      * storage an executes the {@link ThlsAction}.
-     * <p>
+     *
      * @param <T>    The type of the resulting object for the action.
      * @param <D>    The type of the data to be put in the thread.
      * @param action The action to be executed.
      * @param cls    The class of the data to be put in the thread.
      * @param data   The data that must be available for the action.
-     * <p>
+     *
      * @return The object returned by the {@link ThlsAction#execute()} method.
-     * <p>
-     * @throws Exception If {@link ThlsAction#execute()} throw an exception.
      */
-    public static <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception
+    public static <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data)
     {
         if (thlsServ == null)
         {
             thlsServ = Ioc.context().find(ThlsService.class);
         }
         return thlsServ.doAs(action, cls, data);
+    }
+
+    /**
+     * This method puts all the data objects on the internal thread local
+     * storage an executes the {@link ThlsAction}.
+     *
+     * @param <T>    The type of the resulting object for the action.
+     * @param <D>    The type of the data to be put in the thread.
+     * @param <E>    The type of the first exception throw by the execution of
+     *               this action.
+     * @param action The action to be executed.
+     * @param cls    The class of the data to be put in the thread.
+     * @param data   The data that must be available for the action.
+     *
+     * @return The object returned by the {@link ThlsActionException#execute()}
+     *         method.
+     *
+     * @throws E Exception throw by the action.
+     */
+    public static <T, D, E extends Throwable> T doAsEx(ThlsActionException<T, E> action, Class<D> cls, D data) throws E
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.doAsEx(action, cls, data);
+    }
+
+    /**
+     * This method puts all the data objects on the internal thread local
+     * storage an executes the {@link ThlsAction}.
+     *
+     * @param <T>    The type of the resulting object for the action.
+     * @param <D>    The type of the data to be put in the thread.
+     * @param <E>    The type of the first exception throw by the execution of
+     *               this action.
+     * @param <E2>   The type of the second exception throw by the execution of
+     *               this action.
+     * @param action The action to be executed.
+     * @param cls    The class of the data to be put in the thread.
+     * @param data   The data that must be available for the action.
+     *
+     * @return The object returned by the {@link ThlsActionException2#execute()}
+     *         method.
+     *
+     * @throws E  Exception throw by the action.
+     * @throws E2 The second exception throw by the action.
+     */
+    public static <T, D, E extends Throwable, E2 extends Throwable> T doAsEx2(ThlsActionException2<T, E, E2> action, Class<D> cls, D data) throws E, E2
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.doAsEx2(action, cls, data);
     }
 
 }

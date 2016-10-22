@@ -21,11 +21,15 @@ package org.bridje.ioc.thls;
  * current thread, that was made available on the
  * {@link ThlsService#doAs(org.bridje.ioc.thls.ThlsAction, java.lang.Class, java.lang.Object) doAs}
  * method.
- * <p>
- * @param <T> The type of the returning object for the action.
+ *
+ * @param <T>  The type of the returning object for the action.
+ * @param <E>  The type of the first exception throw by the execution of this
+ *             action.
+ * @param <E2> The type of the second exception throw by the execution of this
+ *             action.
  */
 @FunctionalInterface
-public interface ThlsAction<T>
+public interface ThlsActionException2<T, E extends Throwable, E2 extends Throwable>
 {
     /**
      * Executes the action. this method is called on the
@@ -33,7 +37,10 @@ public interface ThlsAction<T>
      * method.
      *
      * @return The action result.
+     *
+     * @throws E  The first exception throw by the aciton.
+     * @throws E2 The second exception throw by the action.
      */
-    T execute();
+    T execute() throws E, E2;
 
 }
