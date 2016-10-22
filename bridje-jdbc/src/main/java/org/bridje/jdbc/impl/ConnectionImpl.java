@@ -35,9 +35,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-/**
- *
- */
 class ConnectionImpl implements Connection
 {
     private final Connection connection;

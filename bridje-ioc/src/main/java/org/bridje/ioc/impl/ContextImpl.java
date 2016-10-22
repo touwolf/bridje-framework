@@ -17,6 +17,7 @@
 package org.bridje.ioc.impl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -287,6 +288,13 @@ final class ContextImpl<S extends Scope> implements IocContext<S>
     public ClassRepository getClassRepository()
     {
         return classSet;
+    }
+
+    @Override
+    public void printPriorities(Class<?> service, PrintWriter writer)
+    {
+        List<Class<?>> lst = serviceMap.findAll(service);
+        lst.stream().forEach((c) -> writer.println(ClassUtils.findPriority(c) + " -> " + c.getName()));
     }
 
     @Override

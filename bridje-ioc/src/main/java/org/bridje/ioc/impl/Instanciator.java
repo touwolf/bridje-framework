@@ -34,11 +34,11 @@ class Instanciator
     private static final Logger LOG = Logger.getLogger(Instanciator.class.getName());
 
     private final ContextImpl<?> context;
-    
+
     private final ServiceMap serviceMap;
 
     private ContextListener[] contextListeners;
-    
+
     public Instanciator(ContextImpl context, ServiceMap serviceMap)
     {
         this.context = context;
@@ -51,11 +51,11 @@ class Instanciator
         try
         {
             Constructor<?> constructor = context.findCache(cls).getConstructor();
-            if(constructor == null)
+            if (constructor == null)
             {
                 return null;
             }
-            return (T)constructor.newInstance();
+            return (T) constructor.newInstance();
         }
         catch (InstantiationException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ex)
         {
@@ -63,11 +63,11 @@ class Instanciator
         }
         return null;
     }
-    
+
     public void callPostConstruct(Class cls, Object obj)
     {
         Class currentClass = cls;
-        while(!currentClass.equals(Object.class))
+        while (!currentClass.equals(Object.class))
         {
             List<Method> methods = context.findCache(currentClass).getPostConstructs();
             for (Method method : methods)
@@ -76,7 +76,7 @@ class Instanciator
                 {
                     method.invoke(obj);
                 }
-                catch(SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
+                catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
                 {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -91,31 +91,31 @@ class Instanciator
         for (Field field : fields)
         {
             Inject annotation = field.getAnnotation(Inject.class);
-            if(annotation != null)
+            if (annotation != null)
             {
                 injectDependency(cls, obj, field, null);
             }
             InjectNext annotationNext = field.getAnnotation(InjectNext.class);
-            if(annotationNext != null)
+            if (annotationNext != null)
             {
                 injectDependency(cls, obj, field, ClassUtils.findPriority(cls));
             }
         }
 
         Class supClass = cls.getSuperclass();
-        if(supClass != null && supClass != Object.class)
+        if (supClass != null && supClass != Object.class)
         {
             injectDependencies(supClass, obj);
         }
     }
-    
+
     public void injectDependency(Class cls, Object obj, Field field, Integer priority)
     {
         try
         {
             Type service = field.getGenericType();
             Object componentObj;
-            if(priority == null)
+            if (priority == null)
             {
                 componentObj = context.findGeneric(service);
             }
@@ -126,7 +126,7 @@ class Instanciator
 
             field.set(obj, componentObj);
         }
-        catch(IllegalArgumentException | IllegalAccessException ex)
+        catch (IllegalArgumentException | IllegalAccessException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -134,7 +134,7 @@ class Instanciator
 
     private void initContextListeners()
     {
-        if(null == contextListeners)
+        if (null == contextListeners)
         {
             contextListeners = context.findAll(ContextListener.class);
         }
@@ -142,31 +142,31 @@ class Instanciator
 
     protected <T> void invokePreCreateListener(Class<T> cls)
     {
-        if(ContextListener.class.isAssignableFrom(cls))
+        if (ContextListener.class.isAssignableFrom(cls))
         {
             return;
         }
 
         initContextListeners();
-        if(null != contextListeners)
+        if (null != contextListeners)
         {
             for (ContextListener contextListener : contextListeners)
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
-                if(type.equals(Object.class))
+                if (type.equals(Object.class))
                 {
                     contextListener.preCreateComponent(cls);
                 }
                 else
                 {
                     List<Type> services = serviceMap.getServices(cls);
-                    if(services != null)
+                    if (services != null)
                     {
                         for (Type service : services)
                         {
-                            if(type.equals(service))
+                            if (type.equals(service))
                             {
                                 contextListener.preCreateComponent(cls);
                                 break;
@@ -180,76 +180,76 @@ class Instanciator
 
     public <T> void invokePreInitListener(Class<T> cls, Object instance)
     {
-        if(ContextListener.class.isAssignableFrom(cls))
+        if (ContextListener.class.isAssignableFrom(cls))
         {
             return;
         }
-        
+
         initContextListeners();
-        if(null != contextListeners)
+        if (null != contextListeners)
         {
             for (ContextListener contextListener : contextListeners)
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
-                if(type.equals(Object.class))
+                if (type.equals(Object.class))
                 {
                     contextListener.preInitComponent(cls, instance);
                 }
                 else
                 {
                     List<Type> services = serviceMap.getServices(cls);
-                    if(services != null)
+                    if (services != null)
                     {
                         for (Type service : services)
                         {
-                            if(type.equals(service))
+                            if (type.equals(service))
                             {
                                 contextListener.preInitComponent(cls, instance);
                                 break;
                             }
                         }
                     }
-                }      
+                }
             }
         }
     }
-    
+
     public <T> void invokePostInitListener(Class<T> cls, Object instance)
     {
-        if(ContextListener.class.isAssignableFrom(cls))
+        if (ContextListener.class.isAssignableFrom(cls))
         {
             return;
         }
-        
+
         initContextListeners();
-        if(null != contextListeners)
+        if (null != contextListeners)
         {
             for (ContextListener contextListener : contextListeners)
             {
                 //find the generic parameter type of ContextListener, 
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
-                if(type.equals(Object.class))
+                if (type.equals(Object.class))
                 {
                     contextListener.postInitComponent(cls, instance);
                 }
                 else
                 {
                     List<Type> services = serviceMap.getServices(cls);
-                    if(services != null)
+                    if (services != null)
                     {
                         for (Type service : services)
                         {
-                            if(type.equals(service))
+                            if (type.equals(service))
                             {
                                 contextListener.postInitComponent(cls, instance);
                                 break;
                             }
                         }
                     }
-                }      
+                }
             }
         }
     }
@@ -259,12 +259,13 @@ class Instanciator
         Type[] ifcs = clazz.getGenericInterfaces();
         for (Type ifc : ifcs)
         {
-            if(ifc instanceof ParameterizedType 
+            if (ifc instanceof ParameterizedType
                     && ClassUtils.rawClass(ifc).equals(ContextListener.class))
             {
-                return (((ParameterizedType)ifc).getActualTypeArguments())[0];
+                return (((ParameterizedType) ifc).getActualTypeArguments())[0];
             }
         }
         return Object.class;
     }
+
 }

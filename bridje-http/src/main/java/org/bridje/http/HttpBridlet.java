@@ -33,10 +33,16 @@ public interface HttpBridlet
      * request it self and return true in that case.
      *
      * @param context The data context for this request.
+     *
      * @return true the request was handler withing this call, false the request
-     * was not handled by any handler whiting this call.
-     * @throws IOException If any IOException occurs during this call.
-     * @throws org.bridje.http.HttpException
+     *         was not handled by any handler whiting this call.
+     *
+     * @throws IOException                   If any IOException occurs during
+     *                                       this call.
+     * @throws org.bridje.http.HttpException An HTTP exception with the code and
+     *                                       message that must be return to the
+     *                                       client.
      */
     boolean handle(HttpBridletContext context) throws IOException, HttpException;
+
 }

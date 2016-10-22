@@ -31,8 +31,9 @@ public interface Query<T>
      * The page that must be fetch from the database.
      *
      * @param page The page number where 1 is the first page, 0 or less means no
-     * page, so all the entities will be returned.
+     *             page, so all the entities will be returned.
      * @param size The size in records of a page.
+     *
      * @return this
      */
     Query<T> paging(int page, int size);
@@ -41,45 +42,47 @@ public interface Query<T>
      * Executes the query and fetch all entities.
      *
      * @return The list of entities returned from the database.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     List<T> fetchAll() throws SQLException;
 
     /**
      * Executes the query and fetch the given column.
      *
-     * @param <C> The type of the field the given column represents.
+     * @param <C>    The type of the field the given column represents.
      * @param column The column to be fetch.
+     *
      * @return A list of objects of type c representing the values of the
-     * column.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *         column.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     <C> List<C> fetchAll(Column<C> column) throws SQLException;
-
 
     /**
      * Executes the query and fetch the first value of the given table returned
      * by the database.
      *
-     * @param <R> The entity of the given table.
+     * @param <R>   The entity of the given table.
      * @param table The table to be fetch.
+     *
      * @return The first entity returned by the query.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     <R> R fetchOne(Table<R> table) throws SQLException;
 
     /**
      * Executes the query and fetch the given table.
      *
-     * @param <R> The entity of the given table represents.
+     * @param <R>   The entity of the given table represents.
      * @param table The table to be fetch.
-     * @return A list of objects of type R representing the values of the
-     * result entity.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *
+     * @return A list of objects of type R representing the values of the result
+     *         entity.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     <R> List<R> fetchAll(Table<R> table) throws SQLException;
 
@@ -87,8 +90,8 @@ public interface Query<T>
      * Executes the query and fetch the first record that the database return.
      *
      * @return The first entity returned by the query.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     T fetchOne() throws SQLException;
 
@@ -96,18 +99,21 @@ public interface Query<T>
      * Executes the query and fetch the first value of the given column returned
      * by the database.
      *
-     * @param <C> The type of the field the given column represents.
+     * @param <C>    The type of the field the given column represents.
      * @param column The column to be fetch.
+     *
      * @return The first entity returned by the query.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     <C> C fetchOne(Column<C> column) throws SQLException;
-    
+
     /**
-     * 
-     * @return 
-     * @throws java.sql.SQLException
+     * Executes a delete query in the database with the current where condition.
+     *
+     * @return The number of records that were delted in the database.
+     *
+     * @throws java.sql.SQLException If the query execution fails.
      */
     public int delete() throws SQLException;
 
@@ -116,9 +122,9 @@ public interface Query<T>
      * this query will return from the database.
      *
      * @return The number of records this query can return, 0 means that this
-     * query will not return any records.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *         query will not return any records.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     long count() throws SQLException;
 
@@ -126,65 +132,71 @@ public interface Query<T>
      * Gets when ever this query will return any records at all.
      *
      * @return true the query will return 1 or more record, false the query will
-     * not return any records.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
+     *         not return any records.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
      */
     boolean exists() throws SQLException;
 
     /**
      * Creates a new join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>      The related entity type.
      * @param relation The relation column object.
+     *
      * @return The new create join query.
      */
-    <R> Query<R> join(TableRelationColumn<T,R> relation);
+    <R> Query<R> join(TableRelationColumn<T, R> relation);
 
     /**
      * Creates a new left join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>      The related entity type.
      * @param relation The relation column object.
+     *
      * @return The new create join query.
      */
-    <R> Query<R> leftJoin(TableRelationColumn<T,R> relation);
+    <R> Query<R> leftJoin(TableRelationColumn<T, R> relation);
 
     /**
      * Creates a new left join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>      The related entity type.
      * @param relation The relation column object.
+     *
      * @return The new create join query.
      */
-    <R> Query<R> rightJoin(TableRelationColumn<T,R> relation);
+    <R> Query<R> rightJoin(TableRelationColumn<T, R> relation);
 
     /**
      * Creates a new join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>     The related entity type.
      * @param related The related table.
-     * @param on
+     * @param on      The on condition for thid join.
+     *
      * @return The new create join query.
      */
     <R> Query<R> join(Table<R> related, Condition on);
 
     /**
      * Creates a new left join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>     The related entity type.
      * @param related The related table.
-     * @param on
+     * @param on      The on condition for thid join.
+     *
      * @return The new create join query.
      */
     <R> Query<R> leftJoin(Table<R> related, Condition on);
 
     /**
      * Creates a new left join query out of the given relation.
-     * 
-     * @param <R> The related entity type.
+     *
+     * @param <R>     The related entity type.
      * @param related The related table.
-     * @param on
+     * @param on      The on condition for thid join.
+     *
      * @return The new create join query.
      */
     <R> Query<R> rightJoin(Table<R> related, Condition on);
@@ -193,7 +205,7 @@ public interface Query<T>
      * Specifies the condition to be use on this query.
      *
      * @param condition A condition object representing the where statement of
-     * the query.
+     *                  the query.
      *
      * @return this object.
      */
@@ -203,8 +215,10 @@ public interface Query<T>
      * Specifies the order by statement to be use in this query.
      *
      * @param statements The OrderBy objects that the query must use to order
-     * the records.
+     *                   the records.
+     *
      * @return this object.
      */
     Query<T> orderBy(OrderBy... statements);
+
 }

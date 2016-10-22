@@ -33,7 +33,9 @@ public interface ThlsAction<T>
      * method.
      * <p>
      * @return The action result.
+     *
      * @throws java.lang.Exception Any exception throw by the action.
      */
     T execute() throws Exception;
+
 }

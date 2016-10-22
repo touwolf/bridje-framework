@@ -45,8 +45,8 @@ public class Thls
     }
 
     /**
-     * This method puts all the data objects on the internal thread
-     * local storage an executes the {@link ThlsAction}.
+     * This method puts all the data objects on the internal thread local
+     * storage an executes the {@link ThlsAction}.
      * <p>
      * @param <T>    The type of the resulting object for the action.
      * @param <D>    The type of the data to be put in the thread.
@@ -66,4 +66,5 @@ public class Thls
         }
         return thlsServ.doAs(action, cls, data);
     }
+
 }

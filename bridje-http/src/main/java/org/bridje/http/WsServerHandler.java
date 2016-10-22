@@ -28,8 +28,9 @@ public interface WsServerHandler
      * handler or not.
      *
      * @param path The path to test for.
+     *
      * @return true this web socket handler can handle the given path, false
-     * otherwise.
+     *         otherwise.
      */
     boolean canHandle(String path);
 
@@ -37,8 +38,9 @@ public interface WsServerHandler
      * This method will be call for each text message received from any client
      * endpoint connected to the web socket managed by this handler.
      *
-     * @param ch The client endpoint channel.
+     * @param ch   The client endpoint channel.
      * @param text The text message received.
      */
     void onText(WsChannel ch, String text);
+
 }

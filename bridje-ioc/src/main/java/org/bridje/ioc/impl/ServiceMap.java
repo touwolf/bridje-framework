@@ -50,11 +50,11 @@ class ServiceMap
      * Constructor for this class.
      *
      * @param baseMap A service map to base this service map from.
-     * @param clsSet The components to create this services map for.
+     * @param clsSet  The components to create this services map for.
      */
     public ServiceMap(ClassSet clsSet)
     {
-        Map<Type, List<Class<?>>> servMap  = new HashMap<>();
+        Map<Type, List<Class<?>>> servMap = new HashMap<>();
         Map<Class<?>, List<Type>> compsMap = new HashMap<>();
         if (clsSet != null)
         {
@@ -63,11 +63,11 @@ class ServiceMap
                 List<Type> services = findServices(component);
                 compsMap.put(component, services);
                 services.stream()
-                        .forEach((service) -> addComponentToService(servMap, service, component) );
+                        .forEach((service) -> addComponentToService(servMap, service, component));
             }
         }
         servMap.values().stream()
-                .forEach((value) -> ClassUtils.sort(value) );
+                .forEach((value) -> ClassUtils.sort(value));
         this.map = servMap;
         this.compMap = compsMap;
     }
@@ -76,6 +76,7 @@ class ServiceMap
      * Finds the first component class by the given service type.
      *
      * @param service The type of the service.
+     *
      * @return The component class or null if none can be found.
      */
     public Class<?> findOne(Type service)
@@ -86,13 +87,14 @@ class ServiceMap
     /**
      * Finds the first component class by the given service type.
      *
-     * @param service The type of the service.
+     * @param service  The type of the service.
      * @param priority The priority
+     *
      * @return The component class or null if none can be found.
      */
     public Class<?> findOne(Type service, Integer priority)
     {
-        if(ClassUtils.rawClass(service).equals(IocContext.class))
+        if (ClassUtils.rawClass(service).equals(IocContext.class))
         {
             return map.get(ClassUtils.rawClass(service)).get(0);
         }
@@ -123,6 +125,7 @@ class ServiceMap
      * Determines whenever a service is provided by a least one component.
      *
      * @param service The serivce to look for.
+     *
      * @return true at least one component provides the given service.
      */
     public boolean exists(Type service)
@@ -134,6 +137,7 @@ class ServiceMap
      * Finds all components classes by the given service type.
      *
      * @param service The service to lookup
+     *
      * @return The list of components that provides the given service if any.
      */
     public List<Class<?>> findAll(Type service)
@@ -159,8 +163,9 @@ class ServiceMap
      * Gets the service map by the given scope.
      *
      * @param scope The scope to look for.
+     *
      * @return A service map with all the service in the given scope or null if
-     * the given scope has no components.
+     *         the given scope has no components.
      */
     public static ServiceMap findByScope(Class<?> scope)
     {
@@ -182,6 +187,7 @@ class ServiceMap
      * Gets all the services provided by a component.
      *
      * @param component The component to look for.
+     *
      * @return The list of service the especified component provides.
      */
     public List<Type> getServices(Class<?> component)
@@ -193,6 +199,7 @@ class ServiceMap
      * Creates a list of all services the especified component provides.
      *
      * @param component The component to search.
+     *
      * @return The list of all services the especified component provides.
      */
     private static List<Type> findServices(Class<?> component)
@@ -208,7 +215,7 @@ class ServiceMap
     /**
      * Fills all the services provided by all supper classes of the component.
      *
-     * @param component The component to look for it´s services for.
+     * @param component    The component to look for it´s services for.
      * @param servicesList The list to put all finded services.
      */
     private static void fillServicesSuperClasses(Class<?> component, List<Type> servicesList)
@@ -239,7 +246,7 @@ class ServiceMap
      * Fills all the services provided by all supper interfaces of the
      * component.
      *
-     * @param component The component to look for it´s services for.
+     * @param component    The component to look for it´s services for.
      * @param servicesList The list to put all finded services.
      */
     private static void fillServicesIntefaces(Class<?> cls, List<Type> servicesList)
@@ -247,7 +254,7 @@ class ServiceMap
         Type[] interfaces = cls.getGenericInterfaces();
         for (Type ifc : interfaces)
         {
-            if (!ClassUtils.hasGenericDeclaration(ifc) 
+            if (!ClassUtils.hasGenericDeclaration(ifc)
                     && !servicesList.contains(ifc))
             {
                 servicesList.add(ifc);
@@ -264,7 +271,7 @@ class ServiceMap
     /**
      * Adds a component to a list of components that provides the given service.
      *
-     * @param service The service provided
+     * @param service   The service provided
      * @param component The component who provides the given services.
      */
     private static void addComponentToService(Map<Type, List<Class<?>>> servMap, Type service, Class<?> component)
@@ -280,4 +287,5 @@ class ServiceMap
             components.add(component);
         }
     }
+
 }

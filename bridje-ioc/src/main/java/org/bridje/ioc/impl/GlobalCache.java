@@ -27,7 +27,7 @@ class GlobalCache
 
     public static GlobalCache instance()
     {
-        if(INSTANCE == null)
+        if (INSTANCE == null)
         {
             INSTANCE = new GlobalCache();
         }
@@ -42,11 +42,12 @@ class GlobalCache
     public ScopeCache getScope(Class<?> scope)
     {
         ScopeCache cache = scopeMap.get(scope);
-        if(cache == null)
+        if (cache == null)
         {
             cache = new ScopeCache();
             scopeMap.put(scope, cache);
         }
         return cache;
     }
+
 }

@@ -27,6 +27,7 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -38,11 +39,14 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpServer;
 import org.bridje.http.WsServerHandler;
 import org.bridje.http.config.HttpServerConfig;
+import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.IocContext;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsService;
 
@@ -62,6 +66,11 @@ class HttpServerImpl implements HttpServer
     private List<WsServerHandler> handlers;
 
     private SSLContext sslContext;
+    
+    private Thread serverThread;
+    
+    @Inject
+    private IocContext<Application> appCtx;
 
     @PostConstruct
     public void init()
@@ -83,7 +92,7 @@ class HttpServerImpl implements HttpServer
     @Override
     public void start()
     {
-        new Thread(() ->
+        serverThread = new Thread(() ->
         {
             try
             {
@@ -124,7 +133,8 @@ class HttpServerImpl implements HttpServer
             {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
-        }).start();
+        });
+        serverThread.start();
     }
 
     @Override
@@ -157,5 +167,27 @@ class HttpServerImpl implements HttpServer
                 vfsServ.createAndWriteNewFile(path, config);
             }
         }
+    }
+
+    @Override
+    public void join()
+    {
+        try
+        {
+            if(serverThread != null)
+            {
+                serverThread.join();
+            }
+        }
+        catch (InterruptedException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void printBridlets(PrintWriter writer)
+    {
+        appCtx.printPriorities(HttpBridlet.class, writer);
     }
 }

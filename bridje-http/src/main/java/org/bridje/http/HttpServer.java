@@ -16,13 +16,16 @@
 
 package org.bridje.http;
 
+import java.io.PrintWriter;
+
 /**
  * Http server service, you can inject this interface to control HTTP server.
  */
 public interface HttpServer
 {
     /**
-     * Starts the HTTP server
+     * Starts the HTTP server, this method does not wait for the server to start
+     * it returns inmediatly. The HTTP server is started in a diferent thread.
      */
     void start();
 
@@ -30,4 +33,18 @@ public interface HttpServer
      * Stops the HTTP server
      */
     void stop();
+
+    /**
+     * Joins the HTTP thread, and waits until the server its shutdown.
+     */
+    void join();
+
+    /**
+     * Prints the full list of HttpBridlets that are in the class path and its
+     * priorities.
+     *
+     * @param writer The writer to print to.
+     */
+    void printBridlets(PrintWriter writer);
+
 }

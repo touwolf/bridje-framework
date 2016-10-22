@@ -38,8 +38,9 @@ public class ContextFactory
 
     /**
      * Creates the application scoped IocContext.
-     * 
+     *
      * @param application The application scope object.
+     *
      * @return The created IocContext object.
      */
     public static IocContext<Application> createApplicationContext(Application application)
@@ -54,4 +55,5 @@ public class ContextFactory
         }
         return null;
     }
+
 }

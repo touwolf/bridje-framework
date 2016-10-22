@@ -23,8 +23,8 @@ package org.bridje.ioc.thls;
 public interface ThlsService
 {
     /**
-     * This method puts all the data objects on the internal thread
-     * local storage an executes the {@link ThlsAction}.
+     * This method puts all the data objects on the internal thread local
+     * storage an executes the {@link ThlsAction}.
      * <p>
      * @param <T>    The type of the resulting object for the action.
      * @param <D>    The type of the data to be put in the thread.
@@ -39,14 +39,15 @@ public interface ThlsService
     public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception;
 
     /**
-     * Get the last object of the specified class that was put in the thread local
-     * storage.
+     * Get the last object of the specified class that was put in the thread
+     * local storage.
      * <p>
      * @param <T> The type of the object to look for.
      * @param cls The class of the object to look for.
      * <p>
-     * @return The last object of the specified class that was put in the thread local
-     *         storage, or null if none can be found.
+     * @return The last object of the specified class that was put in the thread
+     *         local storage, or null if none can be found.
      */
     <T> T get(Class<T> cls);
+
 }

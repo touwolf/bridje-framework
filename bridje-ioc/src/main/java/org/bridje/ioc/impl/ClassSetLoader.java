@@ -40,10 +40,10 @@ class ClassSetLoader
     private static final Logger LOG = Logger.getLogger(ClassSetLoader.class.getName());
 
     private static ClassSetLoader INSTANCE;
-    
+
     public static ClassSetLoader instance()
     {
-        if(INSTANCE == null)
+        if (INSTANCE == null)
         {
             INSTANCE = new ClassSetLoader();
         }
@@ -53,7 +53,7 @@ class ClassSetLoader
     private ClassSetLoader()
     {
     }
-    
+
     /**
      * All ClassSets available by scope.
      */
@@ -68,6 +68,7 @@ class ClassSetLoader
      * Finds a ClassSet that contains all the classes in the specified scope.
      *
      * @param scope The scope of the classes to lookup.
+     *
      * @return A ClassSet containing all the classes in the specified scope.
      */
     public ClassSet findByScope(Class<?> scope)
@@ -83,8 +84,10 @@ class ClassSetLoader
      * Load all classes of the specified scope from the class path.
      *
      * @param scope The scope to load.
+     *
      * @return A ClassSet containing all the classes in the scope, that where
-     * found in the classpath.
+     *         found in the classpath.
+     *
      * @throws IOException If something when wrong.
      */
     private ClassSet loadFromClassPath(Class<?> scope) throws IOException
@@ -122,7 +125,8 @@ class ClassSetLoader
      * Loads all of the components.properties files in the class path.
      *
      * @return A map containing the combination of all the components.properties
-     * files present in the class path.
+     *         files present in the class path.
+     *
      * @throws IOException If a file cannot be read.
      */
     private Map<String, String> loadPropFilesCache() throws IOException
@@ -140,7 +144,7 @@ class ClassSetLoader
                 {
                     prop.load(is);
                 }
-                prop.forEach((key, value) -> 
+                prop.forEach((key, value) ->
                 {
                     String clsName = (String) key;
                     String compScope = (String) value;
@@ -184,12 +188,12 @@ class ClassSetLoader
             {
                 BufferedReader bis = new BufferedReader(new InputStreamReader(is));
                 String compFile = bis.readLine();
-                if(compFile != null && !compFile.trim().isEmpty())
+                if (compFile != null && !compFile.trim().isEmpty())
                 {
                     lst.add(compFile);
                 }
             }
-            catch(IOException ex)
+            catch (IOException ex)
             {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }

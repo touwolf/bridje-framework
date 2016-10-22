@@ -25,8 +25,8 @@ import org.bridje.el.ElSimpleConvertMap;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.el.ElAdvanceConverter;
-import org.bridje.el.ElSimleConvertProvider;
 import org.bridje.el.ElSimpleConverter;
+import org.bridje.el.ElSimpleConvertProvider;
 
 @Component
 class TypeConverterImpl implements TypeConverter
@@ -35,7 +35,7 @@ class TypeConverterImpl implements TypeConverter
     private ElAdvanceConverter[] advanceConverters;
 
     @Inject
-    private ElSimleConvertProvider[] simpleConverters;
+    private ElSimpleConvertProvider[] simpleConverters;
 
     private Map<Class<?>,Map<Class<?>,ElAdvanceConverter>> advanceConvertMap;
     
@@ -46,7 +46,7 @@ class TypeConverterImpl implements TypeConverter
     {
         advanceConvertMap = new ConcurrentHashMap<>();
         simpleConverMap = new ElSimpleConvertMap();
-        for (ElSimleConvertProvider providers : simpleConverters)
+        for (ElSimpleConvertProvider providers : simpleConverters)
         {
             ElSimpleConvertMap convMap = providers.createConvertMap();
             simpleConverMap.addAll(convMap);

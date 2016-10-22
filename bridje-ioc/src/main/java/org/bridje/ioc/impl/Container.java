@@ -39,8 +39,8 @@ class Container
     /**
      * The constuctor for this container.
      *
-     * @param creator The instance of the object whos resposability will be to
-     * create the components.
+     * @param creator   The instance of the object whos resposability will be to
+     *                  create the components.
      * @param instances The components that are already instantiated.
      */
     public Container(Instanciator creator, Object... instances)
@@ -57,6 +57,7 @@ class Container
      * Determines if a omponent is alrready instantiated in this container.
      *
      * @param cls The class of the component.
+     *
      * @return true the component is alrready instantiated, false othewise.
      */
     public boolean contains(Class cls)
@@ -66,9 +67,10 @@ class Container
 
     /**
      * Gets a component´s instance by it´s class.
-     * 
+     *
      * @param <T> The type of the component.
      * @param cls The class of the component.
+     *
      * @return The component´s instance, or null if it does not exists.
      */
     public <T> T get(Class<T> cls)
@@ -79,11 +81,12 @@ class Container
     /**
      * Creates a component using the internar instanciator, and put it in the
      * internal map for future use.
-     * 
+     *
      * @param <T> The type of the component.
      * @param cls The class of the component.
+     *
      * @return The new create component of null if the component cannot be
-     * created.
+     *         created.
      */
     public <T> T create(Class<T> cls)
     {
@@ -109,4 +112,5 @@ class Container
             return obj;
         }
     }
+
 }

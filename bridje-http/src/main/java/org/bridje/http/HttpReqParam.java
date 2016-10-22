@@ -43,7 +43,7 @@ public interface HttpReqParam
      * the contrary of the isSingle method.
      *
      * @return true if several values were sent to the server with the name of
-     * this parameter.
+     *         this parameter.
      */
     boolean isMultiple();
 
@@ -66,7 +66,8 @@ public interface HttpReqParam
      * Determines if the first value sent to the server is an empty string.
      *
      * @return true the first value sent to the server is an empty string, false
-     * otherwise.
+     *         otherwise.
      */
     boolean isEmpty();
+
 }

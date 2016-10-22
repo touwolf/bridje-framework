@@ -64,7 +64,7 @@ public class ElSimpleConvertMap
      * @param <T>  The type of the to class.
      * @param from The source class for the convertion.
      * @param to   The destiny class for the convertion.
-     * @param conv
+     * @param conv The converter to be added.
      */
     public <F, T> void add(Class<F> from, Class<T> to, ElSimpleConverter<F, T> conv)
     {

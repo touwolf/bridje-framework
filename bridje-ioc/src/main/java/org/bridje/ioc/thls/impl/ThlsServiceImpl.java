@@ -29,7 +29,7 @@ class ThlsServiceImpl implements ThlsService
     {
         threadLocalStorage = new ThreadLocalStorage();
     }
-    
+
     @Override
     public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data) throws Exception
     {
@@ -38,7 +38,7 @@ class ThlsServiceImpl implements ThlsService
         {
             return action.execute();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
@@ -53,4 +53,5 @@ class ThlsServiceImpl implements ThlsService
     {
         return threadLocalStorage.get(cls);
     }
+
 }

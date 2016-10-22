@@ -42,7 +42,7 @@ public class DataSourceConfig
     private long idleTime;
 
     private int minConnections;
-    
+
     private int reconnectTime;
 
     /**
@@ -68,8 +68,9 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the driver to be used for connecting the database. It must be a valid
-     * jdbc driver class name. (ex: com.mysql.jdbc.Driver for MySQL server).
+     * Gets the driver to be used for connecting the database. It must be a
+     * valid jdbc driver class name. (ex: com.mysql.jdbc.Driver for MySQL
+     * server).
      *
      * @return The jdbc driver for this DataSource.
      */
@@ -184,7 +185,7 @@ public class DataSourceConfig
      * datasource to be considered iddle and released.
      *
      * @return The minimun amount of seconds a connection can be unused before
-     * it is released.
+     *         it is released.
      */
     public long getIdleTime()
     {
@@ -200,7 +201,7 @@ public class DataSourceConfig
      * datasource to be considered iddle and released.
      *
      * @param idleTime The minimun amount of seconds a connection can be unused
-     * before it is released.
+     *                 before it is released.
      */
     public void setIdleTime(long idleTime)
     {
@@ -208,13 +209,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the minumun amount of connections to keep in the datasource when iddle
-     * connections are released. Iddle connections will be released from the
-     * datasource but not all, a number of connections equals to this parameter
-     * will be keep even if they are iddle.
+     * Gets the minumun amount of connections to keep in the datasource when
+     * iddle connections are released. Iddle connections will be released from
+     * the datasource but not all, a number of connections equals to this
+     * parameter will be keep even if they are iddle.
      *
      * @return The number of connections to keep in the datasource even if they
-     * are iddle.
+     *         are iddle.
      */
     public int getMinConnections()
     {
@@ -226,13 +227,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the minumun amount of connections to keep in the datasource when iddle
-     * connections are released. Iddle connections will be released from the
-     * datasource but not all, a number of connections equals to this parameter
-     * will be keep even if they are iddle.
+     * Sets the minumun amount of connections to keep in the datasource when
+     * iddle connections are released. Iddle connections will be released from
+     * the datasource but not all, a number of connections equals to this
+     * parameter will be keep even if they are iddle.
      *
-     * @param minConnections The number of connections to keep in the datasource even if they
-     * are iddle.
+     * @param minConnections The number of connections to keep in the datasource
+     *                       even if they are iddle.
      */
     public void setMinConnections(int minConnections)
     {
@@ -240,12 +241,14 @@ public class DataSourceConfig
     }
 
     /**
-     * 
-     * @return 
+     * The time in seconds before the connection is tested to be discarted as
+     * idle, and the framework tries to reconnect it again.
+     *
+     * @return An integer representing the time in seconds.
      */
     public int getReconnectTime()
     {
-        if(reconnectTime <= 0)
+        if (reconnectTime <= 0)
         {
             return 600;
         }
@@ -253,8 +256,10 @@ public class DataSourceConfig
     }
 
     /**
-     * 
-     * @param reconnectTime 
+     * The time in seconds before the connection is tested to be discarted as
+     * idle, and the framework tries to reconnect it again.
+     *
+     * @param reconnectTime An integer representing the time in seconds.
      */
     public void setReconnectTime(int reconnectTime)
     {

@@ -19,7 +19,7 @@ package org.bridje.el;
 /**
  * A provider of simple converters for expression languaje.
  */
-public interface ElSimleConvertProvider
+public interface ElSimpleConvertProvider
 {
     /**
      * Gets the map of simple converters, that the component provides.

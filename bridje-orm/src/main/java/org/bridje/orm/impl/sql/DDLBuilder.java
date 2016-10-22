@@ -191,7 +191,7 @@ public class DDLBuilder
      * @param precision The precision for decimal types.
      * @param isKey If this column is a key column.
      * @param autoIncement If this column is auto increment column.
-     * @param required
+     * @param required If the column is required, (not null).
      * @param def The default value for the column.
      * @return The column statement.
      */

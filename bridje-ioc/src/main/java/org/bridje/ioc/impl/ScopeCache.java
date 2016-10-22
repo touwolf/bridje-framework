@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class ScopeCache
 {
-    private Map<Class<?>, ClassCache> classMap;
+    private final Map<Class<?>, ClassCache> classMap;
 
     public ScopeCache()
     {

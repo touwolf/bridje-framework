@@ -42,6 +42,7 @@ public interface UploadedFile
      * Opens a new InputStream to read the content of the file.
      *
      * @return An InputStream to read the content of the file.
+     *
      * @throws IOException If any I/O exception occurs
      */
     InputStream getInputStream() throws IOException;
@@ -52,4 +53,5 @@ public interface UploadedFile
      * @return The mime/type for the file.
      */
     String getContentType();
+
 }

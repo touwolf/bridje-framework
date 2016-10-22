@@ -23,7 +23,7 @@ import java.util.Map;
 
 class ThreadLocalStorage
 {
-    private final ThreadLocal<Map<Class,List<Object>>> threadLocalStorage;
+    private final ThreadLocal<Map<Class, List<Object>>> threadLocalStorage;
 
     public ThreadLocalStorage()
     {
@@ -33,26 +33,26 @@ class ThreadLocalStorage
     public <T> T get(Class<T> cls)
     {
         Map<Class, List<Object>> map = threadLocalStorage.get();
-        if(map != null)
+        if (map != null)
         {
             List<Object> objects = map.get(cls);
-            if(objects != null && !objects.isEmpty())
+            if (objects != null && !objects.isEmpty())
             {
-                return (T)objects.get(objects.size()-1);
+                return (T) objects.get(objects.size() - 1);
             }
         }
         return null;
     }
-    
+
     public <T> void pop(Class<T> cls)
     {
         Map<Class, List<Object>> map = threadLocalStorage.get();
-        if(map != null)
+        if (map != null)
         {
             List<Object> objects = map.get(cls);
-            if(objects != null && !objects.isEmpty())
+            if (objects != null && !objects.isEmpty())
             {
-                objects.remove(objects.size()-1);
+                objects.remove(objects.size() - 1);
             }
         }
     }
@@ -60,17 +60,18 @@ class ThreadLocalStorage
     public <T> void put(Class<T> cls, T obj)
     {
         Map<Class, List<Object>> map = threadLocalStorage.get();
-        if(map == null)
+        if (map == null)
         {
             map = new HashMap<>();
             threadLocalStorage.set(map);
         }
         List<Object> objects = map.get(cls);
-        if(objects == null)
+        if (objects == null)
         {
             objects = new ArrayList<>();
             map.put(cls, objects);
         }
         objects.add(obj);
     }
+
 }

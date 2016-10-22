@@ -16,6 +16,7 @@
 
 package org.bridje.ioc;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 
 /**
@@ -163,4 +164,12 @@ public interface IocContext<S extends Scope>
      * @return A ClassRepository instance
      */
     ClassRepository getClassRepository();
+
+    /**
+     * Prints all the implementations of the services with its priorities.
+     *
+     * @param service The service to lookup.
+     * @param writer  The writer to print the result.
+     */
+    public void printPriorities(Class<?> service, PrintWriter writer);
 }

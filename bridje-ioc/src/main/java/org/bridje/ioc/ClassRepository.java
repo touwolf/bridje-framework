@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-
 package org.bridje.ioc;
 
 import java.lang.annotation.Annotation;
 
 /**
- * Represents the collection of classes being used by {@link IocContext} to create
- * and manage components.
+ * Represents the collection of classes being used by {@link IocContext} to
+ * create and manage components.
  */
 public interface ClassRepository
 {

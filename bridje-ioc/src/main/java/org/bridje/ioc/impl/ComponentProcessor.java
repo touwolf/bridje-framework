@@ -55,6 +55,7 @@ public class ComponentProcessor extends ClassListPropertyFile
         {
             scope = e.getTypeMirror().toString();
         }
-        appendProperty(clsName, scope);        
+        appendProperty(clsName, scope);
     }
+
 }

@@ -49,7 +49,7 @@ public interface HttpBridletRequest
      * The UserAgent heather from the http request if any.
      *
      * @return An String representing the UserAgent information from the client
-     * if is available.
+     *         if is available.
      */
     String getUserAgent();
 
@@ -100,7 +100,7 @@ public interface HttpBridletRequest
      * When ever this request is http method is "DELETE".
      *
      * @return true the http method for this request is "DELETE", false
-     * otherwise.
+     *         otherwise.
      */
     boolean isDelete();
 
@@ -114,7 +114,8 @@ public interface HttpBridletRequest
     /**
      * When ever this request is http method is "PATCH".
      *
-     * @return true the http method for this request is "PATCH", false otherwise.
+     * @return true the http method for this request is "PATCH", false
+     *         otherwise.
      */
     boolean isPatch();
 
@@ -122,7 +123,7 @@ public interface HttpBridletRequest
      * When ever this request content type is a www-form or multipart-form.
      *
      * @return true this request content type is a www-form or multipart-form,
-     * false otherwise.
+     *         false otherwise.
      */
     boolean isForm();
 
@@ -130,7 +131,7 @@ public interface HttpBridletRequest
      * When ever this request is a "application/x-www-form-urlencoded".
      *
      * @return true this request is a "application/x-www-form-urlencoded", false
-     * otherwise.
+     *         otherwise.
      */
     boolean isWwwForm();
 
@@ -154,6 +155,7 @@ public interface HttpBridletRequest
      * Gets the specific post parameter from the parameters map.
      *
      * @param parameter The post parameter name.
+     *
      * @return The post parameter value or null if it does not exists.
      */
     HttpReqParam getPostParameter(String parameter);
@@ -162,7 +164,7 @@ public interface HttpBridletRequest
      * Gets all the post parameters names for this request if any.
      *
      * @return An array of String representing all the post parameters for this
-     * request.
+     *         request.
      */
     String[] getPostParametersNames();
 
@@ -178,15 +180,16 @@ public interface HttpBridletRequest
      * Gets the specific "GET" parameter from the parameters map.
      *
      * @param parameter The "GET" parameter name.
+     *
      * @return The "GET" parameter value or null if it does not exists.
      */
     HttpReqParam getGetParameter(String parameter);
-    
+
     /**
      * Gets all the "GET" parameters names for this request if any.
      *
      * @return An array of String representing all the "GET" parameters for this
-     * request.
+     *         request.
      */
     String[] getGetParametersNames();
 
@@ -208,6 +211,7 @@ public interface HttpBridletRequest
      * Gets the value of the especified header.
      *
      * @param header The header name
+     *
      * @return The header value
      */
     String getHeader(String header);
@@ -230,8 +234,9 @@ public interface HttpBridletRequest
      * Gets the specified HTTP cookie.
      *
      * @param name The name of the HTTP cookie.
+     *
      * @return the HttpCookie object representing the cookie or null if it does
-     * not exists.
+     *         not exists.
      */
     HttpCookie getCookie(String name);
 
@@ -241,4 +246,5 @@ public interface HttpBridletRequest
      * @return An array of String representing the cookies names.
      */
     String[] getCookiesNames();
+
 }

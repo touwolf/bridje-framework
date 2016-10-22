@@ -27,7 +27,8 @@ public interface Condition extends SQLWritable
      * condition and the given one.
      *
      * @param otherCondition The condition to join this condition to in a new
-     * logical and condition.
+     *                       logical and condition.
+     *
      * @return The new created condition.
      */
     Condition and(Condition otherCondition);
@@ -37,14 +38,17 @@ public interface Condition extends SQLWritable
      * condition or the given one.
      *
      * @param otherCondition The condition to join this condition to in a new
-     * logical or condition.
+     *                       logical or condition.
+     *
      * @return The new created condition.
      */
     Condition or(Condition otherCondition);
 
     /**
-     * 
-     * @return 
+     * Creates a new condition that is the negation of this.
+     *
+     * @return The new created condition.
      */
     Condition not();
+
 }

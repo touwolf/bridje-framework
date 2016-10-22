@@ -49,13 +49,13 @@ public class ClassUtils
 
     /**
      * Gets the upper bounds Type for a WildcarType.
-     *
      * <pre>
      * ? extends SomeService               = SomeService
      * ? extends SomeService&lt;String&gt; = SomeService&lt;String&gt;
      * </pre>
      *
      * @param service The wildcardType to inspect.
+     *
      * @return The upper bounds Type of the WildcardType.
      */
     public static Type typeOf(WildcardType service)
@@ -74,7 +74,6 @@ public class ClassUtils
 
     /**
      * Find the Type of an array, map or collection.
-     *
      * <pre>
      * SomeService[]                 = SomeService
      * List&lt;SomeService&gt;       = SomeService
@@ -82,8 +81,9 @@ public class ClassUtils
      * </pre>
      *
      * @param service The inner type of the multiple type passed.
+     *
      * @return A type representing the inner type for the collection, array or
-     * map passed.
+     *         map passed.
      */
     public static Type multipleType(Type service)
     {
@@ -104,12 +104,12 @@ public class ClassUtils
 
     /**
      * Find the Type of an array.
-     *
      * <pre>
      * SomeService[] = SomeService
      * </pre>
      *
      * @param service The inner type of the array type passed.
+     *
      * @return A type representing the inner type for the array type passed.
      */
     public static Type arrayType(Type service)
@@ -128,15 +128,15 @@ public class ClassUtils
 
     /**
      * Find the Type of collection.
-     *
      * <pre>
      * List&lt;SomeService&gt; = SomeService
      * Set&lt;SomeService&gt;  = SomeService
      * </pre>
      *
      * @param service The inner type of the array type passed.
+     *
      * @return A type representing the inner type for the collection type
-     * passed.
+     *         passed.
      */
     public static Type collectionType(Type service)
     {
@@ -153,13 +153,13 @@ public class ClassUtils
 
     /**
      * Find the Type of a map.
-     *
      * <pre>
      * Map&lt;Class, SomeService&gt;     = SomeService
      * HashMap&lt;Class, SomeService&gt; = SomeService
      * </pre>
      *
      * @param service The inner type of the array type passed.
+     *
      * @return A type representing the inner type for the map type passed.
      */
     public static Type mapType(Type service)
@@ -179,9 +179,10 @@ public class ClassUtils
      * Returns the specified parameter from the ParameterizedType.
      *
      * @param service The ParameterizedType type to search the parameter.
-     * @param index The index of the actual parameter.
+     * @param index   The index of the actual parameter.
+     *
      * @return If service is a ParameterizedType and the parameter is available
-     * it will return it, or null otherwise.
+     *         it will return it, or null otherwise.
      */
     public static Type parameterType(Type service, int index)
     {
@@ -207,10 +208,11 @@ public class ClassUtils
      * MyListImpl&lt;SomeService&gt;     = false
      * HashMap&lt;Class, SomeService&gt; = true
      * </pre>
-     * 
+     *
      * @param service The type to inspect.
+     *
      * @return true if the especified type is an array, a collection or map from
-     * java languaje.
+     *         java languaje.
      */
     public static boolean isMultiple(Type service)
     {
@@ -230,6 +232,7 @@ public class ClassUtils
      * </pre>
      *
      * @param service The type to inspect.
+     *
      * @return true if the especified type is an array.
      */
     public static boolean isArray(Type service)
@@ -257,8 +260,9 @@ public class ClassUtils
      * </pre>
      *
      * @param service The type to inspect.
+     *
      * @return true if the especified type is a List Set or other java
-     * collection except a map.
+     *         collection except a map.
      */
     public static boolean isCollection(Type service)
     {
@@ -285,6 +289,7 @@ public class ClassUtils
      * </pre>
      *
      * @param service The type to inspect.
+     *
      * @return true if the especified type is a java Map.
      */
     public static boolean isMap(Type service)
@@ -311,6 +316,7 @@ public class ClassUtils
      * </pre>
      *
      * @param service The type to take the raw class from.
+     *
      * @return The raw class for the given type.
      */
     public static Class rawClass(Type service)
@@ -340,8 +346,9 @@ public class ClassUtils
      * collection.
      *
      * @param instances The objects to obtain it´s classes from.
+     *
      * @return A Collection object with all the classes of the object´s in the
-     * collection passed.
+     *         collection passed.
      */
     public static Collection<Class<?>> toClasses(Collection instances)
     {
@@ -358,8 +365,9 @@ public class ClassUtils
      * haveit.
      *
      * @param cls The class to find it´s priority.
+     *
      * @return The int value of the priority, by default the priority will be
-     * Integer.MAX_VALUE if not especified directly in the component.
+     *         Integer.MAX_VALUE if not especified directly in the component.
      */
     public static int findPriority(Class<?> cls)
     {
@@ -386,7 +394,8 @@ public class ClassUtils
      * </pre>
      *
      * @param service The type of the array, collection or map.
-     * @param data The data to put on the result listing.
+     * @param data    The data to put on the result listing.
+     *
      * @return The proper object for the especified type.
      */
     public static Object createMultiple(Type service, Object[] data)
@@ -433,8 +442,10 @@ public class ClassUtils
      * </pre>
      *
      * @param collectionCls The class for the collection.
-     * @param data The data for the collection.
+     * @param data          The data for the collection.
+     *
      * @return The collection.
+     *
      * @throws InstantiationException if the collection cannot be instance.
      * @throws IllegalAccessException security exception.
      */
@@ -478,8 +489,10 @@ public class ClassUtils
      * </pre>
      *
      * @param mapCls The clss for the map.
-     * @param data The data for the map.
+     * @param data   The data for the map.
+     *
      * @return The map.
+     *
      * @throws InstantiationException if the collection cannot be instance.
      * @throws IllegalAccessException security exception.
      */
@@ -509,8 +522,9 @@ public class ClassUtils
      * Finds the default constructor for the especified class.
      *
      * @param cls The class to find the constructor for.
+     *
      * @return The default constructor for the class of null if none can be
-     * found.
+     *         found.
      */
     private static Constructor findConstructor(Class cls)
     {
@@ -533,11 +547,11 @@ public class ClassUtils
     public static void sort(List<Class<?>> value)
     {
         Collections.sort(value, (Class<?> c1, Class<?> c2)
-                -> 
-                {
-                    int v1 = ClassUtils.findPriority(c1);
-                    int v2 = ClassUtils.findPriority(c2);
-                    return v1 - v2;
+                ->
+        {
+            int v1 = ClassUtils.findPriority(c1);
+            int v2 = ClassUtils.findPriority(c2);
+            return v1 - v2;
         });
     }
 
@@ -552,8 +566,9 @@ public class ClassUtils
      * </pre>
      *
      * @param type The type to inspect.
+     *
      * @return true the especified type has a generic declaration, false
-     * otherwise.
+     *         otherwise.
      */
     public static boolean hasGenericDeclaration(Type type)
     {

@@ -20,14 +20,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import org.bridje.el.ElSimleConvertProvider;
 import org.bridje.el.ElSimpleConvertMap;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Priority;
+import org.bridje.el.ElSimpleConvertProvider;
 
 @Component
 @Priority(5030)
-class DateConverter implements ElSimleConvertProvider
+class DateConverter implements ElSimpleConvertProvider
 {
     @Override
     public ElSimpleConvertMap createConvertMap()

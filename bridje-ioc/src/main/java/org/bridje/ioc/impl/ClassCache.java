@@ -28,9 +28,9 @@ import org.bridje.ioc.InjectNext;
 class ClassCache
 {
     private final List<Field> injectFields;
-    
+
     private final Constructor constructor;
-    
+
     private final List<Method> postConstructs;
 
     public ClassCache(Class<?> cls)
@@ -64,11 +64,11 @@ class ClassCache
             field.setAccessible(true);
             Inject annotation = field.getAnnotation(Inject.class);
             InjectNext annotationNext = field.getAnnotation(InjectNext.class);
-            if(annotation != null)
+            if (annotation != null)
             {
                 result.add(field);
             }
-            else if(annotationNext != null)
+            else if (annotationNext != null)
             {
                 result.add(field);
             }
@@ -96,7 +96,7 @@ class ClassCache
         for (Method method : methods)
         {
             PostConstruct annotation = method.getAnnotation(PostConstruct.class);
-            if(annotation != null)
+            if (annotation != null)
             {
                 method.setAccessible(true);
                 result.add(method);
@@ -104,4 +104,5 @@ class ClassCache
         }
         return result;
     }
+
 }

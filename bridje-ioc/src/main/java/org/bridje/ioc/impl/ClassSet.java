@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.bridje.ioc.ClassNavigator;
 import org.bridje.ioc.ClassRepository;
 import org.bridje.ioc.FieldNavigator;
@@ -35,20 +34,15 @@ import org.bridje.ioc.MethodNavigator;
 /**
  * This class represents a set of classes, his propouse is to serve as a
  * container for all the class that are to be managed by an IocContext instance.
- *
+ * <p>
  */
 class ClassSet implements Iterable<Class<?>>, ClassRepository
 {
     /**
-     * Logger for this class
-     */
-    private static final Logger LOG = Logger.getLogger(ComponentProcessor.class.getName());
-    
-    /**
      * The set of classes for this instance.
      */
     private final Set<Class<?>> clsSet;
-    
+
     /**
      * The ordered list of classes for this instance
      */
@@ -67,7 +61,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * Constructor that receive an arbitrary collection of classes.
      *
      * @param classes The collection of classes to be present in this set of
-     * classes.
+     *                classes.
      */
     public ClassSet(Collection<Class<?>> classes)
     {
@@ -116,6 +110,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * Determines whenever a class exist whiting the class set.
      *
      * @param cls The class to lookup.
+     *
      * @return true the class exists, false otherwise.
      */
     public boolean contains(Class cls)
@@ -148,13 +143,14 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * Finds a ClassSet that contains all the classes in the specified scope.
      *
      * @param scope The scope of the classes to lookup.
+     *
      * @return A ClassSet containing all the classes in the specified scope.
      */
     public static ClassSet findByScope(Class<?> scope)
     {
         return ClassSetLoader.instance().findByScope(scope);
     }
-    
+
     /**
      * The size of this ClassSet.
      *
@@ -169,6 +165,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
      * Utility method to convert from array to Collection of classes.
      *
      * @param clss The array of clases to be converted.
+     *
      * @return A collection containing the classes in the passed array.
      */
     private static Collection<Class<?>> asList(Class<?>... clss)
@@ -222,7 +219,7 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             A annot = cls.getAnnotation(annotation);
             if (annot != null)
             {
-                navigator.accept((Class<Object>)cls, annot);
+                navigator.accept((Class<Object>) cls, annot);
             }
         }
     }
@@ -235,8 +232,9 @@ class ClassSet implements Iterable<Class<?>>, ClassRepository
             A annot = cls.getAnnotation(annotation);
             if (annot != null && service.isAssignableFrom(cls))
             {
-                navigator.accept((Class<T>)cls, annot);
+                navigator.accept((Class<T>) cls, annot);
             }
         }
     }
+
 }

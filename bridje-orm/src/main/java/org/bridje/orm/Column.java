@@ -35,7 +35,7 @@ public interface Column<T> extends SQLWritable
 
     /**
      * Creates a new equals "=" condition with this column as a left operand and
-     * the provided value as the left operand.
+     * the provided value as the right operand.
      *
      * @param value The right operaand for the condition.
      * @return The new created condition.
@@ -43,11 +43,13 @@ public interface Column<T> extends SQLWritable
     Condition eq(T value);
     
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new equals "=" condition with this column as a left operand and
+     * the given column as the right operand.
+     *
+     * @param column The right operaand for the condition.
+     * @return The new created condition.
      */
-    Condition eq(TableColumn<?, ?> value);
+    Condition eq(TableColumn<?, ?> column);
 
     /**
      * Creates a new "IS NULL" condition with this column as a left operand and

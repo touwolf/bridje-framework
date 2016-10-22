@@ -22,7 +22,7 @@ package org.bridje.http;
  */
 public class HttpException extends Exception
 {
-    private int status;
+    private final int status;
 
     /**
      * Status code only constructor. Message will be null.
