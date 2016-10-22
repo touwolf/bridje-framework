@@ -52,7 +52,7 @@ public class WidgetManager implements VFileAdapter
     private Marshaller webViewMarsh;
 
     @PostConstruct
-    public void init()
+    private void init()
     {
         try
         {

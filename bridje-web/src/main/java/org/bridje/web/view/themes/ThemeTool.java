@@ -21,9 +21,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Marks a component as a tool to be use in web themes.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ThemeTool
 {
+    /**
+     * The name to access this tool in the web theme.
+     * 
+     * @return The name to access this tool in the web theme.
+     */
     String name();
 }

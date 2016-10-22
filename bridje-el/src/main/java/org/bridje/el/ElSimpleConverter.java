@@ -16,8 +16,22 @@
 
 package org.bridje.el;
 
+/**
+ * This interface defines a simple converter that can be use to convert an
+ * object of its source class into a new object of its destiny class.
+ *
+ * @param <F> The type of the source class.
+ * @param <T> The type of the destiny class.
+ */
 @FunctionalInterface
-public interface ElSimpleConverter<F,T>
+public interface ElSimpleConverter<F, T>
 {
+    /**
+     * Converts the from object into a new T object.
+     * 
+     * @param from The object to convert.
+     * @return The result of the convertion.
+     */
     T convert(F from);
+
 }

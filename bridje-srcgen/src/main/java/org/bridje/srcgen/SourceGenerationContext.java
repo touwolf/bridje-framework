@@ -17,7 +17,7 @@
 package org.bridje.srcgen;
 
 /**
- *
+ * 
  */
 public interface SourceGenerationContext
 {

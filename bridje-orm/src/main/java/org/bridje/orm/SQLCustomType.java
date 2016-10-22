@@ -22,6 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.sql.JDBCType;
 
+/**
+ * Defines an object as a custom SQL type that can be use in the orm as a field
+ * of an entity. Such entity field will have the properties of this custom type
+ * unless it defines its own properties, like the name, sqlType, adapter, etc.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface SQLCustomType
@@ -54,12 +59,13 @@ public @interface SQLCustomType
      * @return The precision of the field.
      */
     int precision() default 0;
-    
+
     /**
-     * Defines the adapter to be use by this field to serialize/deserialize
-     * from the database value. To create a new SQLAdapter 
-     * 
+     * Defines the adapter to be use by this field to serialize/deserialize from
+     * the database value. To create a new SQLAdapter
+     *
      * @return The class of the SQLAdapter to be use.
      */
     Class<? extends SQLAdapter> adapter() default SQLAdapter.class;
+
 }

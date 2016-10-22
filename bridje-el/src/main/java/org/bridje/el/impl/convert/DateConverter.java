@@ -27,7 +27,7 @@ import org.bridje.ioc.Priority;
 
 @Component
 @Priority(5030)
-public class DateConverter implements ElSimleConvertProvider
+class DateConverter implements ElSimleConvertProvider
 {
     @Override
     public ElSimpleConvertMap createConvertMap()

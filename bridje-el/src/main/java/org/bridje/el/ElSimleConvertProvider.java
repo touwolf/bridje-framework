@@ -16,7 +16,16 @@
 
 package org.bridje.el;
 
+/**
+ * A provider of simple converters for expression languaje.
+ */
 public interface ElSimleConvertProvider
 {
+    /**
+     * Gets the map of simple converters, that the component provides.
+     * 
+     * @return A map of simple converters.
+     */
     ElSimpleConvertMap createConvertMap();
+
 }
