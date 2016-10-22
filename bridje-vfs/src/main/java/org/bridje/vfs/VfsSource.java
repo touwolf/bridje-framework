@@ -37,10 +37,13 @@ public interface VfsSource
      * return all objects files for the path.
      * <p>
      * @param path The path to look for.
+     *
      * @return An array of object, each acts as identifier for a file mapped to
-     * the path argument.
+     *         the path argument.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     Object[] getFiles(Path path) throws IOException;
 
@@ -49,10 +52,13 @@ public interface VfsSource
      * path.
      * <p>
      * @param path The path to look for children folders.
+     *
      * @return A list of string with the names of the child folders for the
-     * specified path.
+     *         specified path.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     List<String> listFolders(Path path) throws IOException;
 
@@ -61,10 +67,13 @@ public interface VfsSource
      * path.
      * <p>
      * @param path The path to look for children files.
+     *
      * @return A list of string with the names of the child file for the
-     * specified path.
+     *         specified path.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     List<String> listFiles(Path path) throws IOException;
 
@@ -72,10 +81,13 @@ public interface VfsSource
      * Determines if the specified path is a file from this VfsSource.
      * <p>
      * @param path The path of the file.
+     *
      * @return {@literal true} if a file mapped to the path argument exists
-     * within this VfsSource.
+     *         within this VfsSource.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     boolean fileExists(Path path) throws IOException;
 
@@ -83,10 +95,13 @@ public interface VfsSource
      * Determines if the specified path is a folder from this VfsSource.
      * <p>
      * @param path The path of the file.
+     *
      * @return {@literal true} if a folder mapped to the path argument exists
-     * within this VfsSource.
+     *         within this VfsSource.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     boolean folderExists(Path path) throws IOException;
 
@@ -94,10 +109,13 @@ public interface VfsSource
      * Open a file's InputStream for reading it's content.
      * <p>
      * @param data The file identifier retrieve from this VfsSource by the
-     * getFiles method.
+     *             getFiles method.
+     *
      * @return An InputStream to the file.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     InputStream openForRead(Object data) throws IOException;
 
@@ -105,18 +123,22 @@ public interface VfsSource
      * Open a file's OutputStream for writing it's content.
      * <p>
      * @param data The file identifier retrieve from this VfsSource by the
-     * getFiles method.
+     *             getFiles method.
+     *
      * @return An OutputStream to the file.
+     *
      * @throws IOException This method may access to physical device so this
-     * exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     OutputStream openForWrite(Object data) throws IOException;
-    
+
     /**
      * Determines when ever the file can or not be open for writing.
      * <p>
      * @param data The file identifier retrieve from this VfsSource by the
-     * getFiles method.
+     *             getFiles method.
+     *
      * @return true if the file can be open for writing false otherwise.
      */
     boolean canOpenForWrite(Object data);
@@ -125,7 +147,9 @@ public interface VfsSource
      * Creates a new physical file on this source.
      * <p>
      * @param filePath The path to the file to be created.
+     *
      * @return The file representation according this source.
+     *
      * @throws java.io.IOException If any I/O exception occurs.
      */
     Object createNewFile(Path filePath) throws IOException;
@@ -134,8 +158,10 @@ public interface VfsSource
      * Creates a new directory on this source.
      * <p>
      * @param folderPath The path to the folder to be created.
+     *
      * @return The name of the folder created.
-     * @throws java.io.IOException If any I/O exception occurs. 
+     *
+     * @throws java.io.IOException If any I/O exception occurs.
      */
     String mkDir(Path folderPath) throws IOException;
 
@@ -143,6 +169,7 @@ public interface VfsSource
      * Determines if a folder can be created on the given path.
      * <p>
      * @param folderPath The path to the folder to be created.
+     *
      * @return true if a folder can be created on this path.
      */
     boolean canMkDir(Path folderPath);
@@ -151,21 +178,27 @@ public interface VfsSource
      * Determines if a file can be created on the given path.
      * <p>
      * @param filePath The path to the file to be created.
+     *
      * @return true if a folder can be created on this path.
      */
     boolean canCreateNewFile(Path filePath);
 
     /**
-     * 
-     * @param data
-     * @return 
+     * Determines when ever the givern file can be delete.
+     *
+     * @param data The data object representing the file.
+     *
+     * @return true the file can be deleted. false otherwise.
      */
     boolean canDelete(Object data);
 
     /**
+     * Deletes the given file.
      * 
-     * @param data 
-     * @throws java.io.IOException 
+     * @param data The data object representing the file.
+     *
+     * @throws java.io.IOException If the file cannot be deleted.
      */
     void delete(Object data) throws IOException;
+
 }

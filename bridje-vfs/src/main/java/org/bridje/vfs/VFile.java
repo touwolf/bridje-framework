@@ -29,8 +29,10 @@ public interface VFile extends VResource
      * Open a file's InputStream for reading it's content.
      * <p>
      * @return An InputStream to the file.
+     *
      * @throws IOException This method may access to physical device so this
-     *         exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     InputStream openForRead() throws IOException;
 
@@ -38,8 +40,10 @@ public interface VFile extends VResource
      * Open a file's OutputStream for writing it's content.
      * <p>
      * @return An OutputStream to the file.
+     *
      * @throws IOException This method may access to physical device so this
-     *         exception may be throw if any input output operation fails.
+     *                     exception may be throw if any input output operation
+     *                     fails.
      */
     OutputStream openForWrite() throws IOException;
 
@@ -51,35 +55,46 @@ public interface VFile extends VResource
     boolean canOpenForWrite();
 
     /**
+     * Determines when ever this file can be delete.
      *
-     * @return
+     * @return true the file can be delete, false otherwise.
      */
     boolean canDelete();
 
     /**
+     * Deletes this file.
      *
-     * @throws java.io.IOException
+     * @throws java.io.IOException If the file cannot be deleted.
      */
     void delete() throws IOException;
 
     /**
+     * Copies this file into the given folder.
      *
-     * @param folder
-     * @throws java.io.IOException
+     * @param folder The destiny folder to copy this file.
+     *
+     * @throws java.io.IOException If the file connot be read or the destiny
+     *                             folder connot be write.
      */
     void copyTo(VFolder folder) throws IOException;
 
     /**
+     * Copies this file into the given OutpuStream.
      *
-     * @param os
-     * @throws java.io.IOException
+     * @param os The OutputStream to copy the file to.
+     *
+     * @throws java.io.IOException If the file connot be read, or any
+     *                             IOException ocurrs with the OutputStream.
      */
     void copyTo(OutputStream os) throws IOException;
 
     /**
+     * Move this file to the given folder.
      *
-     * @param folder
-     * @throws java.io.IOException
+     * @param folder The folder to move this file to.
+     *
+     * @throws java.io.IOException If the file connot be read, delete, or the
+     *                             folder cannot be write.
      */
     void moveTo(VFolder folder) throws IOException;
 
@@ -92,7 +107,10 @@ public interface VFile extends VResource
 
     /**
      * Gets the mime type associated to the extension of the file.
-     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">Mime Types</a>
+     *
+     * @see
+     * <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">Mime
+     * Types</a>
      *
      * @return The mime type of the file.
      */
@@ -101,21 +119,25 @@ public interface VFile extends VResource
     /**
      * Reads it content to a new instance of the result class.
      *
-     * @param <T> The type of the result class.
+     * @param <T>       The type of the result class.
      * @param resultCls The result class that the files need to be parsed to.
      *
      * @return The file founded or null if it does not exists.
-     * @throws java.io.IOException If any input-output error occurs reading the file.
+     *
+     * @throws java.io.IOException If any input-output error occurs reading the
+     *                             file.
      */
     <T> T readFile(Class<T> resultCls) throws IOException;
 
     /**
      * Writes it's content with the instance of the given object.
      *
-     * @param <T> The type of the result class.
+     * @param <T>        The type of the result class.
      * @param contentObj The object to be serialize to the file.
      *
-     * @throws java.io.IOException If any input-output error occurs writing the file.
+     * @throws java.io.IOException If any input-output error occurs writing the
+     *                             file.
      */
     <T> void writeFile(T contentObj) throws IOException;
+
 }
