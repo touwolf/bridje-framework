@@ -28,10 +28,6 @@ import static org.junit.Assert.*;
 
 public class ElServiceTest
 {
-    public ElServiceTest()
-    {
-    }
-    
     @BeforeClass
     public static void setUpClass()
     {

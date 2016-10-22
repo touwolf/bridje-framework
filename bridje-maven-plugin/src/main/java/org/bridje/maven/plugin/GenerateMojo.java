@@ -76,10 +76,6 @@ public class GenerateMojo extends AbstractMojo
 
     private Configuration cfg;
 
-    private GroovyShell shell;
-
-    private List<URL> generators;
-
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException
     {
@@ -88,10 +84,10 @@ public class GenerateMojo extends AbstractMojo
             getLog().info("Generating Source Code");
             Binding binding = new Binding();
             binding.setVariable("tools", this);
-            shell = new GroovyShell(binding);
+            GroovyShell shell = new GroovyShell(binding);
             clsRealm = ClassPathUtils.createClassPath(project);
             cfg = createFreeMarkerConfiguration();
-            generators = loadGenerators();
+            List<URL> generators = loadGenerators();
             for (URL generator : generators)
             {
                 try (InputStream is = generator.openStream())

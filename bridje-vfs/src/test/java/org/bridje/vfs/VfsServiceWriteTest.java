@@ -26,8 +26,6 @@ import org.junit.Test;
 
 public class VfsServiceWriteTest
 {
-    private static final Logger LOG = Logger.getLogger(VfsServiceWriteTest.class.getName());
-
     @Test
     public void testWrite() throws IOException
     {

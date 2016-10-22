@@ -16,7 +16,6 @@
 
 package org.bridje.orm.adpaters;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
 import org.bridje.orm.Column;
@@ -30,8 +29,6 @@ import org.bridje.orm.TableColumn;
 @Component
 public class EnumAdapter implements SQLAdapter
 {
-    private static final Logger LOG = Logger.getLogger(EnumAdapter.class.getName());
-
     @Override
     public Object serialize(Object value, Column column)
     {

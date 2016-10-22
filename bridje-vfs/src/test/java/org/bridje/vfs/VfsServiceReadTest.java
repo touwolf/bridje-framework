@@ -27,8 +27,6 @@ import org.junit.Test;
 
 public class VfsServiceReadTest
 {
-    private static final Logger LOG = Logger.getLogger(VfsServiceReadTest.class.getName());
-
     @Test
     public void testFindFiles()
     {
