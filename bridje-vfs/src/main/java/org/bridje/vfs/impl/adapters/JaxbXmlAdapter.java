@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,7 +48,7 @@ class JaxbXmlAdapter implements VFileAdapter
             Object unmarsh = unm.unmarshal(is);
             return (T)unmarsh;
         }
-        catch (Exception e)
+        catch (JAXBException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -65,7 +66,7 @@ class JaxbXmlAdapter implements VFileAdapter
                 Marshaller unm = ctx.createMarshaller();
                 unm.marshal(contentObj, os);
             }
-            catch (Exception e)
+            catch (JAXBException e)
             {
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }

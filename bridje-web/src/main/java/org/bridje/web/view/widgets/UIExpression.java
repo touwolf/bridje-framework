@@ -53,8 +53,9 @@ public class UIExpression
     /**
      * Evaluates the expression and return the result casted to the given class.
      *
-     * @param <T> The type for the result of this expression.
+     * @param <T>          The type for the result of this expression.
      * @param resultClasss The class for the result of this expression.
+     *
      * @return The result of the expression evaluation.
      */
     public <T> T get(Class<T> resultClasss)
@@ -69,4 +70,5 @@ public class UIExpression
         }
         return null;
     }
+
 }

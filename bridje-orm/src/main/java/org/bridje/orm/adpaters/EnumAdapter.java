@@ -97,15 +97,7 @@ public class EnumAdapter implements SQLAdapter
 
     private Object unserializeString(String string, Class<? extends Enum> cls)
     {
-        try
-        {
-            return Enum.valueOf(cls, string);
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.WARNING, e.getMessage());
-        }
-        return null;
+        return Enum.valueOf(cls, string);
     }
 
     private boolean isEnum(Class type)

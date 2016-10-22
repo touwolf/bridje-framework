@@ -38,6 +38,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -47,6 +48,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.classworlds.DuplicateRealmException;
+import org.xml.sax.SAXException;
 
 /**
  * This MOJO is responsible for generating the code specified by the other APIs.
@@ -269,9 +271,9 @@ public class GenerateMojo extends AbstractMojo
         {
             return new XmlSlurper().parse(fr);
         }
-        catch (Exception e)
+        catch(ParserConfigurationException | SAXException | IOException ex)
         {
-            getLog().error(e.getMessage(), e);
+            getLog().error(ex.getMessage(), ex);
         }
         return null;
     }
@@ -286,18 +288,21 @@ public class GenerateMojo extends AbstractMojo
     public List<GPathResult> loadXmlResources(String resourceName) throws IOException
     {
         List<GPathResult> result = new ArrayList<>();
-        Enumeration<URL> resources = clsRealm.getResources(resourceName);
-        while (resources.hasMoreElements())
+        try
         {
-            URL url = resources.nextElement();
-            try (InputStreamReader fr = new InputStreamReader(url.openStream()))
+            Enumeration<URL> resources = clsRealm.getResources(resourceName);
+            while (resources.hasMoreElements())
             {
-                result.add(new XmlSlurper().parse(fr));
+                URL url = resources.nextElement();
+                try (InputStreamReader fr = new InputStreamReader(url.openStream()))
+                {
+                    result.add(new XmlSlurper().parse(fr));
+                }
             }
-            catch (Exception e)
-            {
-                getLog().error(e.getMessage(), e);
-            }
+        }
+        catch(ParserConfigurationException | SAXException | IOException ex)
+        {
+            getLog().error(ex.getMessage(), ex);
         }
         return result;
     }
@@ -321,10 +326,6 @@ public class GenerateMojo extends AbstractMojo
                 Properties p = new Properties();
                 p.load(fr);
                 result.add(p);
-            }
-            catch (Exception e)
-            {
-                getLog().error(e.getMessage(), e);
             }
         }
         return result;

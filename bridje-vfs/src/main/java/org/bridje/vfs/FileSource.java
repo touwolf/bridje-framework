@@ -93,19 +93,12 @@ public class FileSource implements VfsSource
     @Override
     public Object createNewFile(Path filePath) throws IOException
     {
-        try
+        File f = findRealFile(filePath);
+        if(f != null && !f.exists())
         {
-            File f = findRealFile(filePath);
-            if(f != null && !f.exists())
-            {
-                f.getParentFile().getAbsoluteFile().mkdirs();
-                f.createNewFile();
-                return f;
-            }
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            f.getParentFile().getAbsoluteFile().mkdirs();
+            f.createNewFile();
+            return f;
         }
         throw new IOException("Could not create the specified file.");
     }
@@ -113,18 +106,11 @@ public class FileSource implements VfsSource
     @Override
     public String mkDir(Path folderPath) throws IOException
     {
-        try
+        File f = findRealFile(folderPath);
+        if(f != null && !f.exists())
         {
-            File f = findRealFile(folderPath);
-            if(f != null && !f.exists())
-            {
-                f.mkdirs();
-                return f.getName();
-            }
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            f.mkdirs();
+            return f.getName();
         }
         throw new IOException("Could not create the specified folder.");
     }
@@ -137,7 +123,7 @@ public class FileSource implements VfsSource
             File f = findRealFile(folderPath);
             return f != null && !f.exists();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -152,7 +138,7 @@ public class FileSource implements VfsSource
             File f = findRealFile(filePath);
             return f != null && !f.exists();
         }
-        catch (Exception e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
