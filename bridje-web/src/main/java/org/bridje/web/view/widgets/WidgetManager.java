@@ -133,7 +133,8 @@ public class WidgetManager implements VFileAdapter
     private List<URL> findModelsFiles() throws IOException
     {
         List<URL> urls = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(WidgetProcessor.WIDGETS_RESOURCE_FILE);
+        ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        Enumeration<URL> resources = ccl.getResources(WidgetProcessor.WIDGETS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

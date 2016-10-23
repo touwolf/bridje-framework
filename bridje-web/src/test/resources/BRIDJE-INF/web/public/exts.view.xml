@@ -7,9 +7,9 @@
     <v:meta/>
 
     <v:extends layout="base" >
-        <c:define name="vcontent" >
+        <v:define name="vcontent" >
             <c:header>Hello</c:header>
-        </c:define>
+        </v:define>
     </v:extends>
 
 </v:view>

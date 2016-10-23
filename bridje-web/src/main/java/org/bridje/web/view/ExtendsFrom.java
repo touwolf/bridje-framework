@@ -98,9 +98,12 @@ public class ExtendsFrom extends ViewDefinition
     private void initDefinesMap()
     {
         definesMap = new HashMap<>();
-        for (Defines define : defines)
+        if(defines != null)
         {
-            definesMap.put(define.getName(), define);
+            for (Defines define : defines)
+            {
+                definesMap.put(define.getName(), define);
+            }
         }
     }
 
