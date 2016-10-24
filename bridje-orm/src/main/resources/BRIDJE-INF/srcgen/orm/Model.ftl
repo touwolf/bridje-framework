@@ -9,6 +9,8 @@ import java.util.List;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.orm.*;
 
 /**
@@ -73,52 +75,42 @@ public class ${model.name}
      * Performs the given action with a new model in the current thread local storage.
      * @param <T> The result type for the action.
      * @param action The action to be executed.
-     * @param dataSource The DataSource
+     * @param model The ${model.name}.
      * @return The result of the action execution.
-     * @throws java.lang.Exception If any exception is throws.
      */
-    public static <T> T doWithModel(ThlsAction<T> action, DataSource dataSource) throws Exception
+    public static <T> T doWithModel(ThlsAction<T> action, ${model.name} model)
     {
-        return doWithModel(action, new ${model.name}(dataSource));
+        return Thls.doAs(action, ${model.name}.class, model);
     }
 
     /**
      * Performs the given action with a new model in the current thread local storage.
      * @param <T> The result type for the action.
-     * @param action The action to be executed.
-     * @param dataSourceName The DataSource name.
-     * @return The result of the action execution.
-     * @throws java.lang.Exception If any exception is throws.
-     */
-    public static <T> T doWithModel(ThlsAction<T> action, String dataSourceName) throws Exception
-    {
-        return doWithModel(action, new ${model.name}(dataSourceName));
-    }
-
-    /**
-     * Performs the given action with a new model in the current thread local storage.
-     * @param <T> The result type for the action.
-     * @param action The action to be executed.
-     * @param context The EntityContext.
-     * @return The result of the action execution.
-     * @throws java.lang.Exception If any exception is throws.
-     */
-    public static <T> T doWithModel(ThlsAction<T> action, EntityContext context) throws Exception
-    {
-        return doWithModel(action, new ${model.name}(context));
-    }
-
-    /**
-     * Performs the given action with a new model in the current thread local storage.
-     * @param <T> The result type for the action.
+     * @param <E> The type of the first exception.
      * @param action The action to be executed.
      * @param model The ${model.name}.
      * @return The result of the action execution.
-     * @throws java.lang.Exception If any exception is throws.
+     * @throws E If any exception is throws.
      */
-    public static <T> T doWithModel(ThlsAction<T> action, ${model.name} model) throws Exception
+    public static <T, E extends Exception> T doWithModelEx(ThlsActionException<T, E> action, ${model.name} model) throws E
     {
-        return Thls.doAs(action, ${model.name}.class, model);
+        return Thls.doAsEx(action, ${model.name}.class, model);
+    }
+
+    /**
+     * Performs the given action with a new model in the current thread local storage.
+     * @param <T> The result type for the action.
+     * @param <E> The type of the first exception.
+     * @param <E2> The type of the second exception.
+     * @param action The action to be executed.
+     * @param model The ${model.name}.
+     * @return The result of the action execution.
+     * @throws E If any exception is throws.
+     * @throws E2 If any exception is throws.
+     */
+    public static <T, E extends Exception, E2 extends Exception> T doWithModelEx2(ThlsActionException2<T, E, E2> action, ${model.name} model) throws E, E2
+    {
+        return Thls.doAsEx2(action, ${model.name}.class, model);
     }
 
     /**
