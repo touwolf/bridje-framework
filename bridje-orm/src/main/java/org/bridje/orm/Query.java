@@ -116,6 +116,20 @@ public interface Query<T>
      * @throws java.sql.SQLException If the query execution fails.
      */
     public int delete() throws SQLException;
+    
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     */
+    public int update() throws SQLException;
+
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     */
+    public int insert() throws SQLException;
 
     /**
      * Executes a select count in the database and gets the number of records
@@ -221,4 +235,21 @@ public interface Query<T>
      */
     Query<T> orderBy(OrderBy... statements);
 
+    /**
+     * 
+     * @param <D>
+     * @param column
+     * @param value
+     * @return 
+     */
+    <D> Query<T> set(TableColumn<T,D> column, D value);
+
+    /**
+     * 
+     * @param <D>
+     * @param column
+     * @param valueColumn
+     * @return 
+     */
+    <D> Query<T> set(TableColumn<T,D> column, Column<D> valueColumn);
 }

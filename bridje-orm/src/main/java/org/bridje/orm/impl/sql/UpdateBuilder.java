@@ -70,6 +70,31 @@ public class UpdateBuilder
     }
     
     /**
+     * Sets the value of a field to update, this add the "field = valueField" statement 
+     * to the builder. It can be used multiple times to add several fields updates.
+     * 
+     * @param field The field to update.
+     * @param valueField
+     * @return this builder.
+     */
+    public UpdateBuilder set(String field, String valueField)
+    {
+        if(isFirst)
+        {
+            sb.append(" SET ");
+        }
+        else
+        {
+            sb.append(", ");
+        }
+        sb.append(field);
+        sb.append(" = ");
+        sb.append(valueField);
+        isFirst = false;
+        return this;
+    }
+    
+    /**
      * Adds a where clause to this UPDATE statement.
      * 
      * @param condition The condition of the where clause.

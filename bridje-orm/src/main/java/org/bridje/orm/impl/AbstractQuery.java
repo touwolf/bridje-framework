@@ -19,11 +19,13 @@ package org.bridje.orm.impl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 import org.bridje.orm.Table;
+import org.bridje.orm.TableColumn;
 import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
@@ -177,6 +179,8 @@ abstract class AbstractQuery<T> implements Query<T>
     {
         return new JoinQueryImpl<>(JoinType.RIGHT, this, (TableImpl<R>)related, on);
     }
+
+    protected abstract Map<TableColumn<?,?>, Object> getSets();
 
     protected abstract int getPage();
 

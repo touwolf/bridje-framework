@@ -19,10 +19,13 @@ package org.bridje.orm.impl;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
 /**
@@ -33,11 +36,11 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     private TableRelationColumnImpl<T, R> relation;
 
     private TableImpl<R> related;
-    
+
     private Condition condition;
 
     private final AbstractQuery<T> baseQuery;
-    
+
     private final JoinType type;
 
     public JoinQueryImpl(JoinType type, AbstractQuery<T> baseQuery, 
@@ -104,7 +107,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     {
         return baseQuery.getBaseTable();
     }
-    
+
     @Override
     protected EntityContextImpl getCtx()
     {
@@ -155,7 +158,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
             qb.join(type.name(), getCtx().getDialect().identifier(getTable().getName()), condition.writeSQL(parameters, getCtx()));
         }
     }
-    
+
     @Override
     protected Condition getCondition()
     {
@@ -171,6 +174,36 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     @Override
     public int delete() throws SQLException
     {
-        throw new SQLException("DELETE JOIN is not supported yet.");
+        throw new UnsupportedOperationException("DELETE JOIN is not supported yet.");
+    }
+
+    @Override
+    protected Map<TableColumn<?, ?>, Object> getSets()
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
+    }
+
+    @Override
+    public int update() throws SQLException
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
+    }
+
+    @Override
+    public int insert() throws SQLException
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
+    }
+
+    @Override
+    public <D> Query<R> set(TableColumn<R, D> column, D value)
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
+    }
+
+    @Override
+    public <D> Query<R> set(TableColumn<R, D> column, Column<D> valueColumn)
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
     }
 }

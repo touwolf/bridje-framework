@@ -19,32 +19,36 @@ package org.bridje.orm.impl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
+import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.DeleteBuilder;
+import org.bridje.orm.impl.sql.InsertBuilder;
 import org.bridje.orm.impl.sql.SelectBuilder;
+import org.bridje.orm.impl.sql.UpdateBuilder;
 
-/**
- *
- * @param <T>
- */
 class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
 {
     private final TableImpl<T> table;
-    
+
     private final EntityContextImpl ctx;
 
     private Condition condition;
-    
+
     private OrderBy[] orderBy;
-    
+
     private int page;
-    
+
     private int pageSize;
-    
+
+    private Map<TableColumn<?,?>, Object> sets;
+
     public QueryImpl(EntityContextImpl ctx, TableImpl<T> table)
     {
         this.table = table;
@@ -146,5 +150,85 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
             qb.where(condition.writeSQL(parameters, ctx));
         }
         return ctx.doUpdate(qb.toString(), parameters.toArray());
+    }
+
+
+    @Override
+    public int update() throws SQLException
+    {
+        List<Object> parameters = new ArrayList<>();
+        UpdateBuilder qb = new UpdateBuilder();
+        qb.update(ctx.getDialect().identifier(table.getName()));
+        getSets().forEach((column, value) -> 
+        {
+            if(value instanceof Column)
+            {
+                qb.set(column.writeSQL(parameters, ctx),((Column)value).writeSQL(parameters, ctx));
+            }
+            else
+            {
+                qb.set(column.writeSQL(parameters, ctx));
+                parameters.add(value);
+            }
+        });
+        if(condition != null)
+        {
+            qb.where(condition.writeSQL(parameters, ctx));
+        }
+        return ctx.doUpdate(qb.toString(), parameters.toArray());
+    }
+
+    @Override
+    public int insert() throws SQLException
+    {
+        List<String> fields = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
+        InsertBuilder qb = new InsertBuilder();
+        qb.insertInto(ctx.getDialect().identifier(table.getName()));
+        getSets().forEach((column, value) -> 
+        {
+            fields.add(column.writeSQL(parameters, ctx));
+        });
+        getSets().forEach((column, value) -> 
+        {
+            if(value instanceof Column)
+            {
+                values.add(((Column)value).writeSQL(parameters, ctx));
+            }
+            else
+            {
+                values.add("?");
+                parameters.add(value);
+            }
+            qb.fields(column.writeSQL(parameters, ctx));
+        });
+        qb.fields(fields.stream().collect(Collectors.joining(", ")));
+        qb.values(values.stream().collect(Collectors.joining(", ")));
+        return ctx.doUpdate(qb.toString(), parameters.toArray());
+    }
+
+    @Override
+    protected Map<TableColumn<?, ?>, Object> getSets()
+    {
+        if(sets == null)
+        {
+            sets = new HashMap<>();
+        }
+        return this.sets;
+    }
+
+    @Override
+    public <D> Query<T> set(TableColumn<T, D> column, D value)
+    {
+        getSets().put(column, value);
+        return this;
+    }
+
+    @Override
+    public <D> Query<T> set(TableColumn<T, D> column, Column<D> valueColumn)
+    {
+        getSets().put(column, valueColumn);
+        return this;
     }
 }
