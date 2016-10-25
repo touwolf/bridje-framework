@@ -111,23 +111,27 @@ public interface Query<T>
     /**
      * Executes a delete query in the database with the current where condition.
      *
-     * @return The number of records that were delted in the database.
+     * @return The number of records that were deleted in the database.
      *
      * @throws java.sql.SQLException If the query execution fails.
      */
     public int delete() throws SQLException;
-    
+
     /**
-     * 
-     * @return
-     * @throws SQLException 
+     * Executes a update query in the database with the current where condition.
+     *
+     * @return The number of records that were updated in the database.
+     *
+     * @throws java.sql.SQLException If the query execution fails.
      */
     public int update() throws SQLException;
 
     /**
-     * 
-     * @return
-     * @throws SQLException 
+     * Executes an insert query in the database with the current where condition.
+     *
+     * @return The number of records that were inserted in the database.
+     *
+     * @throws java.sql.SQLException If the query execution fails.
      */
     public int insert() throws SQLException;
 
@@ -236,20 +240,28 @@ public interface Query<T>
     Query<T> orderBy(OrderBy... statements);
 
     /**
-     * 
-     * @param <D>
-     * @param column
-     * @param value
-     * @return 
+     * Sets the value of a column so it can be use in either an INSERT or UPDATE
+     * statement.
+     *
+     * @param <D>    The type of the column to be set.
+     * @param column The column to be set.
+     * @param value  The literal value for the field.
+     *
+     * @return this object.
      */
-    <D> Query<T> set(TableColumn<T,D> column, D value);
+    <D> Query<T> set(TableColumn<T, D> column, D value);
 
     /**
-     * 
-     * @param <D>
-     * @param column
-     * @param valueColumn
-     * @return 
+     * Sets the value of a column so it can be use in either an INSERT or UPDATE
+     * statement.
+     *
+     * @param <D>         The type of the column to be set.
+     * @param column      The column to be set.
+     * @param valueColumn The column that will be use to read the value to be
+     *                    set.
+     *
+     * @return this object.
      */
-    <D> Query<T> set(TableColumn<T,D> column, Column<D> valueColumn);
+    <D> Query<T> set(TableColumn<T, D> column, Column<D> valueColumn);
+
 }

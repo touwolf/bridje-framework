@@ -74,7 +74,7 @@ public class UpdateBuilder
      * to the builder. It can be used multiple times to add several fields updates.
      * 
      * @param field The field to update.
-     * @param valueField
+     * @param valueField The value for the field.
      * @return this builder.
      */
     public UpdateBuilder set(String field, String valueField)
