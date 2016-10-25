@@ -92,7 +92,7 @@ public class ${model.name}
      * @return The result of the action execution.
      * @throws E If any exception is throws.
      */
-    public static <T, E extends Exception> T doWithModelEx(ThlsActionException<T, E> action, ${model.name} model) throws E
+    public static <T, E extends Throwable> T doWithModelEx(ThlsActionException<T, E> action, ${model.name} model) throws E
     {
         return Thls.doAsEx(action, ${model.name}.class, model);
     }
@@ -108,7 +108,7 @@ public class ${model.name}
      * @throws E If any exception is throws.
      * @throws E2 If any exception is throws.
      */
-    public static <T, E extends Exception, E2 extends Exception> T doWithModelEx2(ThlsActionException2<T, E, E2> action, ${model.name} model) throws E, E2
+    public static <T, E extends Throwable, E2 extends Throwable> T doWithModelEx2(ThlsActionException2<T, E, E2> action, ${model.name} model) throws E, E2
     {
         return Thls.doAsEx2(action, ${model.name}.class, model);
     }
