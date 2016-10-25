@@ -28,6 +28,7 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -92,6 +93,7 @@ class HttpServerImpl implements HttpServer
     @Override
     public void start()
     {
+        logBridlets();
         serverThread = new Thread(() ->
         {
             try
@@ -189,5 +191,14 @@ class HttpServerImpl implements HttpServer
     public void printBridlets(PrintWriter writer)
     {
         appCtx.printPriorities(HttpBridlet.class, writer);
+    }
+
+    private void logBridlets()
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        pw.println("HTTP Bridlets Chain:");
+        printBridlets(pw);
+        LOG.log(Level.INFO, sw.toString());
     }
 }

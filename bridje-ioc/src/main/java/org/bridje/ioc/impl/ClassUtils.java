@@ -551,7 +551,7 @@ public class ClassUtils
         {
             int v1 = ClassUtils.findPriority(c1);
             int v2 = ClassUtils.findPriority(c2);
-            return v1 - v2;
+            return Integer.compare(v1, v2);
         });
     }
 
