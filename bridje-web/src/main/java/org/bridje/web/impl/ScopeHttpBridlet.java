@@ -30,6 +30,7 @@ import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsActionException2;
 
 @Component
 @Priority(0)
@@ -52,9 +53,21 @@ class ScopeHttpBridlet implements HttpBridlet
             IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
             context.set(WebScope.class, scope);
             context.set(IocContext.class, wrsCtx);
-            return Thls.doAsEx2(() ->
+            return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
             {
-                return Thls.doAsEx2(() -> nextHandler.handle(context), WebScope.class, scope );
+                @Override
+                public Boolean execute() throws IOException, HttpException
+                {
+                    return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
+                    {
+                        @Override
+                        public Boolean execute() throws IOException, HttpException
+                        {
+                            return nextHandler.handle(context);
+                        }
+                    }, WebScope.class, scope );
+                }
+                
             }, IocContext.class, wrsCtx );
         }
         catch (IOException | HttpException e)
@@ -67,5 +80,4 @@ class ScopeHttpBridlet implements HttpBridlet
             throw new HttpException(500, ex.getMessage(), ex);
         }
     }
-    
 }
