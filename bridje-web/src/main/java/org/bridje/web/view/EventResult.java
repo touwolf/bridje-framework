@@ -112,6 +112,19 @@ public class EventResult
     }
 
     /**
+     * Creates a new error event result object, that will show an error type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     *
+     * @return An EventResult object of type error.
+     */
+    public static EventResult error(String message)
+    {
+        return new EventResult(EventResultType.ERROR, message, null, null);
+    }
+
+    /**
      * Creates a new event result, for the given type, that will show a message
      * to the end user.
      *
