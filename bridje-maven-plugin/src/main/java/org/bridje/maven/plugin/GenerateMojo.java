@@ -33,11 +33,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
@@ -144,8 +149,9 @@ public class GenerateMojo extends AbstractMojo
      * Generates a new class file using the data and the template given.
      *
      * @param className The full name of the class to be generated.
-     * @param template The name of the template to be use.
-     * @param data The data to be use in the generation.
+     * @param template  The name of the template to be use.
+     * @param data      The data to be use in the generation.
+     *
      * @return A File object that represents the generated class fild.
      */
     public File generateClass(String className, String template, Map data)
@@ -173,9 +179,10 @@ public class GenerateMojo extends AbstractMojo
     /**
      * Generates a new resource file.
      *
-     * @param resName The name and path of the resource file.
+     * @param resName  The name and path of the resource file.
      * @param template The name of the template to be use.
-     * @param data The data to be use.
+     * @param data     The data to be use.
+     *
      * @return The file generated.
      */
     public File generateResource(String resName, String template, Map data)
@@ -233,11 +240,30 @@ public class GenerateMojo extends AbstractMojo
     private List<URL> loadGenerators() throws IOException
     {
         List<URL> result = new ArrayList<>();
-        Enumeration<URL> resources = clsRealm.getResources("BRIDJE-INF/srcgen/CodeGenerator.groovy");
-        while (resources.hasMoreElements())
+        Enumeration<URL> res = clsRealm.getResources("BRIDJE-INF/srcgen");
+
+        while (res.hasMoreElements())
         {
-            URL url = resources.nextElement();
-            result.add(url);
+            URL dirURL = res.nextElement();
+            if (dirURL.getProtocol().equals("jar"))
+            {
+                String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
+                JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+                Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+                while (entries.hasMoreElements())
+                {
+                    String name = entries.nextElement().getName();
+                    if (name.endsWith(".groovy"))
+                    {
+                        Enumeration<URL> resources = clsRealm.getResources(name);
+                        while (resources.hasMoreElements())
+                        {
+                            URL url = resources.nextElement();
+                            result.add(url);
+                        }
+                    }
+                }
+            }
         }
         return result;
     }
@@ -246,6 +272,7 @@ public class GenerateMojo extends AbstractMojo
      * Determines if the given file exists.
      *
      * @param fileName The name and path of the file to check.
+     *
      * @return true the file exists, false otherwise.
      */
     public boolean fileExists(String fileName)
@@ -259,6 +286,7 @@ public class GenerateMojo extends AbstractMojo
      * withing groovy to navigate the content of the xml document.
      *
      * @param fileName The name of the xml file to load.
+     *
      * @return An GPathResult object.
      */
     public GPathResult loadXmlFile(String fileName)
@@ -267,7 +295,7 @@ public class GenerateMojo extends AbstractMojo
         {
             return new XmlSlurper().parse(fr);
         }
-        catch(ParserConfigurationException | SAXException | IOException ex)
+        catch (ParserConfigurationException | SAXException | IOException ex)
         {
             getLog().error(ex.getMessage(), ex);
         }
@@ -276,9 +304,11 @@ public class GenerateMojo extends AbstractMojo
 
     /**
      * Load all xml resources files availables in the projects class path.
-     * 
+     *
      * @param resourceName The name of the resource to load.
+     *
      * @return A list with all the resources found.
+     *
      * @throws IOException If any IO error ocurrs.
      */
     public List<GPathResult> loadXmlResources(String resourceName) throws IOException
@@ -296,7 +326,7 @@ public class GenerateMojo extends AbstractMojo
                 }
             }
         }
-        catch(ParserConfigurationException | SAXException | IOException ex)
+        catch (ParserConfigurationException | SAXException | IOException ex)
         {
             getLog().error(ex.getMessage(), ex);
         }
@@ -305,9 +335,11 @@ public class GenerateMojo extends AbstractMojo
 
     /**
      * Load all property resources files availables in the projects class path.
-     * 
+     *
      * @param resourceName The name of the resource to load.
+     *
      * @return A list with all the resources found.
+     *
      * @throws IOException If any IO error ocurrs.
      */
     public List<Properties> loadPropertiesResources(String resourceName) throws IOException
@@ -326,4 +358,5 @@ public class GenerateMojo extends AbstractMojo
         }
         return result;
     }
+
 }
