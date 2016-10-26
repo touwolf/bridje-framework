@@ -35,7 +35,7 @@ import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.ioc.thls.Thls;
+import org.bridje.thls.Thls;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;

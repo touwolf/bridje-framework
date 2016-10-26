@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import org.bridje.ioc.Ioc;
-import org.bridje.ioc.thls.Thls;
-import org.bridje.ioc.thls.ThlsAction;
-import org.bridje.ioc.thls.ThlsActionException;
-import org.bridje.ioc.thls.ThlsActionException2;
+import org.bridje.thls.Thls;
+import org.bridje.thls.ThlsAction;
+import org.bridje.thls.ThlsActionException;
+import org.bridje.thls.ThlsActionException2;
 import org.bridje.orm.*;
 
 /**

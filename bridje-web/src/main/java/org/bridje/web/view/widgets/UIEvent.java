@@ -19,7 +19,7 @@ package org.bridje.web.view.widgets;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
-import org.bridje.ioc.thls.Thls;
+import org.bridje.thls.Thls;
 
 /**
  * The data for the events of the widget that can be render in a WebView.

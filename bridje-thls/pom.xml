@@ -8,13 +8,18 @@
         <version>0.2.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bridje-srcgen</artifactId>
+    <artifactId>bridje-thls</artifactId>
 
-    <name>Bridje SrcGen</name>
-    <description>Bridje sources generation API.</description>
+    <name>Bridje Thls</name>
+    <description>Bridje Thread Local Storage</description>
     <url>http://www.bridje.org</url>
 
     <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>bridje-ioc</artifactId>

@@ -79,7 +79,7 @@ public class JdbcServiceTest
         //Must be the same connection, only one thread running here
         assertEquals("Must be the same connection", connection, otherConnection);
         otherConnection.close();
-       
+
         createTable();
         ExecutorService executor = Executors.newFixedThreadPool(10);
         executor.submit(() -> runSomeQuerys(1, 10) );

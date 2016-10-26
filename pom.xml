@@ -33,7 +33,7 @@
         <module>bridje-maven-plugin</module>
         <module>bridje-web</module>
         <module>bridje-el</module>
-        <module>bridje-srcgen</module>
+        <module>bridje-thls</module>
     </modules>
 
     <scm>
