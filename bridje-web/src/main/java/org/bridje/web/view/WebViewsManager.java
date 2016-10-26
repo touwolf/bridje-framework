@@ -128,16 +128,50 @@ public class WebViewsManager
      */
     public WebView findUpdateView(HttpBridletContext context) throws HttpException
     {
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
-        HttpReqParam viewUpdate = req.getPostParameter("__view");
-        if (viewUpdate != null && !viewUpdate.isEmpty())
+        String viewName = findUpdateViewName(context);
+        if (viewName != null)
         {
-            WebView view = findView(viewUpdate.getValue());
+            WebView view = findView(viewName);
             if (view == null)
             {
                 throw new HttpException(400, "Bad Request");
             }
             return view;
+        }
+        return null;
+    }
+
+    /**
+     * Finds if there is a view to be updated by the __view param name sended to
+     * the server.
+     *
+     * @param context The current HTTP bridlet context to extract the path of
+     *                the view.
+     *
+     * @return The current request is a view update request.
+     */
+    public boolean isUpdateView(HttpBridletContext context)
+    {
+        return findUpdateViewName(context) != null;
+    }
+
+    /**
+     * Finds the name of the view to be updated by the __view param name sended
+     * to the server.
+     *
+     * @param context The current HTTP bridlet context to extract the path of
+     *                the view.
+     *
+     * @return The name of the web view if the parameter __view was send to the
+     *         server, null otherwise.
+     */
+    public String findUpdateViewName(HttpBridletContext context)
+    {
+        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpReqParam viewUpdate = req.getPostParameter("__view");
+        if (viewUpdate != null && !viewUpdate.isEmpty())
+        {
+            return viewUpdate.getValue();
         }
         return null;
     }
@@ -159,8 +193,7 @@ public class WebViewsManager
                 themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
                 os.flush();
                 return null;
-            },
-                    ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+            }, ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
         }
         catch (Exception ex)
         {
@@ -172,7 +205,7 @@ public class WebViewsManager
      * Performs a view update and/or an event invocation by the data sended to
      * the server in the given request.
      *
-     * @param view The view to be updated.
+     * @param view    The view to be updated.
      * @param context The HTTP bridlet context for the current request.
      */
     public void updateView(WebView view, HttpBridletContext context)
@@ -192,8 +225,7 @@ public class WebViewsManager
                     os.flush();
                 }
                 return null;
-            },
-                    ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+            }, ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
         }
         catch (Exception ex)
         {
@@ -203,8 +235,8 @@ public class WebViewsManager
 
     /**
      * Invokes the event expression sended to the server.
-     * 
-     * @param req The HTTP request to look for the event expression.
+     *
+     * @param req  The HTTP request to look for the event expression.
      * @param view The view that declares the event.
      *
      * @return The result of the invocation of the event.
@@ -228,7 +260,7 @@ public class WebViewsManager
 
     /**
      * Invokes the given event.
-     * 
+     *
      * @param event The event to be invoked.
      *
      * @return The result of the event invokation.
@@ -269,8 +301,8 @@ public class WebViewsManager
 
     /**
      * Finds the event sended to the server in the __action parameter.
-     * 
-     * @param req The request to look for the event.
+     *
+     * @param req  The request to look for the event.
      * @param view The view to look for the event.
      *
      * @return The event.
@@ -287,8 +319,9 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the name of the view to be rendered by the path of the HTTP request.
-     * 
+     * Finds the name of the view to be rendered by the path of the HTTP
+     * request.
+     *
      * @param context The HTTP bidlet context to get the path form.
      *
      * @return The name of the view to be use to render this request.
