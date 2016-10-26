@@ -17,7 +17,7 @@
 package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlTransient;
-import org.bridje.thls.Thls;
+import org.bridje.ioc.thls.Thls;
 import org.bridje.web.view.widgets.UIEvent;
 
 /**

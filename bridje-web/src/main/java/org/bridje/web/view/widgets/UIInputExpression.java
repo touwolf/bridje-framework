@@ -19,7 +19,7 @@ package org.bridje.web.view.widgets;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
-import org.bridje.thls.Thls;
+import org.bridje.ioc.thls.Thls;
 
 /**
  * Represents an input expression for a widget.

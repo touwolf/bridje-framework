@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.bridje.thls.impl;
+package org.bridje.ioc.thls.impl;
 
 import org.bridje.ioc.Component;
-import org.bridje.thls.ThlsAction;
-import org.bridje.thls.ThlsActionException;
-import org.bridje.thls.ThlsActionException2;
-import org.bridje.thls.ThlsService;
+import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
+import org.bridje.ioc.thls.ThlsService;
 
 @Component
 class ThlsServiceImpl implements ThlsService

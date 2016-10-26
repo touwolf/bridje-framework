@@ -14,30 +14,33 @@
  * limitations under the License.
  */
 
-package org.bridje.thls;
+package org.bridje.ioc.thls;
 
 /**
  * Represents an action that can be executed and can access to the data of the
  * current thread, that was made available on the
- * {@link ThlsService#doAs(org.bridje.thls.ThlsAction, java.lang.Class, java.lang.Object) doAs}
+ * {@link ThlsService#doAs(org.bridje.ioc.thls.ThlsAction, java.lang.Class, java.lang.Object) doAs}
  * method.
  *
- * @param <T> The type of the returning object for the action.
- * @param <E> The type of the first exception throw by the execution of this
- *            action.
+ * @param <T>  The type of the returning object for the action.
+ * @param <E>  The type of the first exception throw by the execution of this
+ *             action.
+ * @param <E2> The type of the second exception throw by the execution of this
+ *             action.
  */
 @FunctionalInterface
-public interface ThlsActionException<T, E extends Throwable>
+public interface ThlsActionException2<T, E extends Throwable, E2 extends Throwable>
 {
     /**
      * Executes the action. this method is called on the
-     * {@link ThlsService#doAs(org.bridje.thls.ThlsAction, java.lang.Class, java.lang.Object) doAs}
+     * {@link ThlsService#doAs(org.bridje.ioc.thls.ThlsAction, java.lang.Class, java.lang.Object) doAs}
      * method.
      *
      * @return The action result.
      *
-     * @throws E Exception throw by the action.
+     * @throws E  The first exception throw by the aciton.
+     * @throws E2 The second exception throw by the action.
      */
-    T execute() throws E;
+    T execute() throws E, E2;
 
 }

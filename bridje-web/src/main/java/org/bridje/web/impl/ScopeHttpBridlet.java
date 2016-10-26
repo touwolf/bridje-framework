@@ -29,8 +29,8 @@ import org.bridje.web.WebScope;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
-import org.bridje.thls.Thls;
-import org.bridje.thls.ThlsActionException2;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsActionException2;
 
 @Component
 @Priority(0)

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.thls.impl;
+package org.bridje.ioc.thls.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -14,14 +14,36 @@
  * limitations under the License.
  */
 
-package org.bridje.thls;
+package org.bridje.ioc.thls;
+
+import org.bridje.ioc.Ioc;
 
 /**
- * This service allows you to execute an action with a group of data objects
- * that will be available in the thread.
+ * Facade to thread local storage (ThLS) service. {@link ThlsService}
  */
-public interface ThlsService
+public class Thls
 {
+    private static ThlsService thlsServ;
+
+    /**
+     * Get the last object of the cls Class that was put in the thread local
+     * storage.
+     *
+     * @param <T> The type of the object to look for.
+     * @param cls The class of the object to look for.
+     *
+     * @return The last object of the specified class that was put in the thread
+     *         local storage, or null if none can be found.
+     */
+    public static <T> T get(Class<T> cls)
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.get(cls);
+    }
+
     /**
      * This method puts all the data objects on the internal thread local
      * storage an executes the {@link ThlsAction}.
@@ -34,7 +56,14 @@ public interface ThlsService
      *
      * @return The object returned by the {@link ThlsAction#execute()} method.
      */
-    public <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data);
+    public static <T, D> T doAs(ThlsAction<T> action, Class<D> cls, D data)
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.doAs(action, cls, data);
+    }
 
     /**
      * This method puts all the data objects on the internal thread local
@@ -53,8 +82,15 @@ public interface ThlsService
      *
      * @throws E Exception throw by the action.
      */
-    public <T, D, E extends Throwable> T doAsEx(ThlsActionException<T, E> action, Class<D> cls, D data) throws E;
-    
+    public static <T, D, E extends Throwable> T doAsEx(ThlsActionException<T, E> action, Class<D> cls, D data) throws E
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.doAsEx(action, cls, data);
+    }
+
     /**
      * This method puts all the data objects on the internal thread local
      * storage an executes the {@link ThlsAction}.
@@ -75,18 +111,13 @@ public interface ThlsService
      * @throws E  Exception throw by the action.
      * @throws E2 The second exception throw by the action.
      */
-    public <T, D, E extends Throwable, E2 extends Throwable> T doAsEx2(ThlsActionException2<T, E, E2> action, Class<D> cls, D data) throws E, E2;
-
-    /**
-     * Get the last object of the specified class that was put in the thread
-     * local storage.
-     *
-     * @param <T> The type of the object to look for.
-     * @param cls The class of the object to look for.
-     *
-     * @return The last object of the specified class that was put in the thread
-     *         local storage, or null if none can be found.
-     */
-    <T> T get(Class<T> cls);
+    public static <T, D, E extends Throwable, E2 extends Throwable> T doAsEx2(ThlsActionException2<T, E, E2> action, Class<D> cls, D data) throws E, E2
+    {
+        if (thlsServ == null)
+        {
+            thlsServ = Ioc.context().find(ThlsService.class);
+        }
+        return thlsServ.doAsEx2(action, cls, data);
+    }
 
 }

@@ -34,7 +34,7 @@ import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
-import org.bridje.thls.Thls;
+import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.VfsService;
 import org.bridje.web.view.widgets.Widget;
 import org.bridje.web.view.WebView;
