@@ -16,27 +16,27 @@
 
 package org.bridje.ioc.impl;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class ClassSetLoader
 {
-    public static final String COMPONENTS_FILES_RESOURCE_FILE = "BRIDJE-INF/ioc/components-files";
-
     private static final Logger LOG = Logger.getLogger(ClassSetLoader.class.getName());
 
     private static ClassSetLoader INSTANCE;
@@ -132,7 +132,7 @@ class ClassSetLoader
     private Map<String, String> loadPropFilesCache() throws IOException
     {
         Map<String, String> result = new HashMap<>();
-        List<String> files = findComponentsFiles();
+        Set<String> files = findComponentsFiles();
         for (String file : files)
         {
             Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(file);
@@ -177,28 +177,83 @@ class ClassSetLoader
         return null;
     }
 
-    private List<String> findComponentsFiles() throws IOException
+    private Set<String> findComponentsFiles()
     {
-        List<String> lst = new ArrayList<>();
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(COMPONENTS_FILES_RESOURCE_FILE);
-        while (resources.hasMoreElements())
+        Set<String> result = new HashSet<>();
+        try
         {
-            URL nextElement = resources.nextElement();
-            try (InputStream is = nextElement.openStream())
+            Enumeration<URL> resources = getClass().getClassLoader().getResources("BRIDJE-INF/");
+            while (resources.hasMoreElements())
             {
-                BufferedReader bis = new BufferedReader(new InputStreamReader(is));
-                String compFile = bis.readLine();
-                if (compFile != null && !compFile.trim().isEmpty())
+                URL dirURL = resources.nextElement();
+                if (dirURL != null)
                 {
-                    lst.add(compFile);
+                    if (dirURL.getProtocol().equals("file"))
+                    {
+                        findComponentsFilesFromDir(dirURL, result);
+                    }
+                    else if (dirURL.getProtocol().equals("jar"))
+                    {
+                        findComponentsFilesFromJar(dirURL, result);
+                    }
                 }
             }
-            catch (IOException ex)
+        }
+        catch (IOException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return result;
+    }
+
+    private void findComponentsFilesFromDir(URL dirURL, Set<String> result) throws IOException
+    {
+        try
+        {
+            File f = new File(dirURL.toURI());
+            if (f.isDirectory())
             {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                Files.find(f.toPath(),
+                        Integer.MAX_VALUE,
+                        (t, u) -> t.getFileName().toString().equals("ioc-components.properties"))
+                        .forEach(path ->
+                        {
+                            int lastIndex = path.toString().lastIndexOf("BRIDJE-INF");
+                            String name = path.toString().substring(lastIndex);
+                            result.add(name);
+                        });
             }
         }
-        return lst;
+        catch (URISyntaxException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    private void findComponentsFilesFromJar(URL dirURL, Set<String> result) throws IOException
+    {
+        /*
+         * A JAR path
+         */
+        String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
+        try
+        {
+            JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+            Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+            while (entries.hasMoreElements())
+            {
+                JarEntry jarEntry = entries.nextElement();
+                String name = jarEntry.getName().trim();
+                if (name.endsWith("/ioc-components.properties"))
+                {
+                    result.add(name);
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
 }

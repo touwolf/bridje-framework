@@ -32,7 +32,7 @@ import org.bridje.ioc.Component;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class ComponentProcessor extends ClassListPropertyFile
 {
-    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/components.properties";
+    public static final String COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/ioc/ioc-components.properties";
 
     @Override
     public String getFileName()
