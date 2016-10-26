@@ -64,6 +64,14 @@ public interface Table<T>
     TableColumn<T, ?> findColumn(String fieldName);
     
     /**
+     * Finds the column for the given column name.
+     *
+     * @param columnName The name of the column.
+     * @return The column object for the given field.
+     */
+    TableColumn<T, ?> findColumnByName(String columnName);
+    
+    /**
      * Finds the key value for the given entity.
      * 
      * @param entity The entity to find the key value from.

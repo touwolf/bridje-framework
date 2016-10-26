@@ -36,10 +36,6 @@ import org.bridje.orm.OrmService;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
 
-/**
- *
- * @param <T>
- */
 class TableImpl<T> implements Table<T>
 {
     private static final Logger LOG = Logger.getLogger(TableImpl.class.getName());
@@ -54,6 +50,8 @@ class TableImpl<T> implements Table<T>
 
     private final Map<String, TableColumn<T, ?>> columnsMap;
     
+    private final Map<String, TableColumn<T, ?>> columnsByNameMap;
+    
     public TableImpl(Class<T> entity, String name)
     {
         this.entity = entity;
@@ -65,7 +63,9 @@ class TableImpl<T> implements Table<T>
             throw new IllegalArgumentException("The class " + entity.getName() + " does not have a valid key field.");
         }
         columnsMap = new HashMap<>();
+        columnsByNameMap = new HashMap<>();
         columns.stream().forEach((column) -> columnsMap.put(column.getField().getName(), column));
+        columns.stream().forEach((column) -> columnsByNameMap.put(column.getName(), column));
     }
 
     @Override
@@ -96,6 +96,12 @@ class TableImpl<T> implements Table<T>
     public TableColumn<T, ?> findColumn(String fieldName)
     {
         return columnsMap.get(fieldName);
+    }
+    
+    @Override
+    public TableColumn<T, ?> findColumnByName(String columnName)
+    {
+        return columnsByNameMap.get(columnName);
     }
     
     private TableColumnImpl createColumns()

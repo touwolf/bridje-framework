@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,7 @@ import org.bridje.orm.impl.sql.SelectBuilder;
 import org.bridje.orm.impl.sql.UpdateBuilder;
 
 /**
- * 
+ *
  */
 class EntityContextImpl implements EntityContext
 {
@@ -62,11 +63,11 @@ class EntityContextImpl implements EntityContext
     @Override
     public void fixTable(Table<?>... tables) throws SQLException
     {
-        if(tables != null)
+        if (tables != null)
         {
             for (Table<?> table : tables)
             {
-                if(tableExists(table))
+                if (tableExists(table))
                 {
                     fixColumns(table);
                 }
@@ -86,47 +87,47 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T find(Table<T> table, Object id) throws SQLException
     {
-        TableImpl<T> tableImpl = (TableImpl<T>)table;
+        TableImpl<T> tableImpl = (TableImpl<T>) table;
         T cachedEntity = cache.get(tableImpl.getEntity(), id);
-        if(cachedEntity != null)
+        if (cachedEntity != null)
         {
             return cachedEntity;
         }
         SelectBuilder qb = new SelectBuilder();
         qb.select(tableImpl.allFieldsCommaSep(this))
-            .from(dialect.identifier(tableImpl.getName()))
-            .where(tableImpl.buildIdCondition(this))
-            .limit(0, 1);
+                .from(dialect.identifier(tableImpl.getName()))
+                .where(tableImpl.buildIdCondition(this))
+                .limit(0, 1);
 
-        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(id);
+        Object serializedId = ((TableColumnImpl) table.getKey()).serialize(id);
         return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs, this), serializedId);
     }
 
     @Override
     public <T> T refresh(T entity) throws SQLException
     {
-        TableImpl<T> table = (TableImpl<T>)orm.findTable(entity.getClass());
+        TableImpl<T> table = (TableImpl<T>) orm.findTable(entity.getClass());
         SelectBuilder qb = new SelectBuilder();
         qb.select(table.allFieldsCommaSep(this))
-            .from(dialect.identifier(table.getName()))
-            .where(table.buildIdCondition(this))
-            .limit(0, 1);
-        Object id = ((TableColumnImpl)table.getKey()).getQueryParameter(entity);
+                .from(dialect.identifier(table.getName()))
+                .where(table.buildIdCondition(this))
+                .limit(0, 1);
+        Object id = ((TableColumnImpl) table.getKey()).getQueryParameter(entity);
         return doQuery(qb.toString(), (rs) -> table.parse(entity, rs, this), id);
     }
 
     @Override
     public <T> T insert(T entity) throws SQLException
     {
-        TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
+        TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
                 .fields(table.allFieldsCommaSepNoTable(this))
                 .valuesParams(table.getColumns().size());
 
-        if(table.getKey().isAutoIncrement())
+        if (table.getKey().isAutoIncrement())
         {
-            doUpdate(ib.toString(), 
+            doUpdate(ib.toString(),
                     (rs) -> table.updateKeyField(entity, rs, this),
                     table.buildInsertParameters(entity));
         }
@@ -137,7 +138,7 @@ class EntityContextImpl implements EntityContext
         cache.put(entity, table.findKeyValue(entity));
         return entity;
     }
-    
+
     @Override
     public <T> T update(T entity) throws SQLException
     {
@@ -147,7 +148,7 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T update(T entity, Object id) throws SQLException
     {
-        TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
+        TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         UpdateBuilder ub = new UpdateBuilder();
 
         ub.update(dialect.identifier(table.getName()));
@@ -155,11 +156,11 @@ class EntityContextImpl implements EntityContext
         ub.where(table.buildIdCondition(this));
 
         Object updateId = id;
-        if(updateId == null)
+        if (updateId == null)
         {
             updateId = table.findKeyValue(entity);
         }
-        Object serializedId = ((TableColumnImpl)table.getKey()).serialize(updateId);
+        Object serializedId = ((TableColumnImpl) table.getKey()).serialize(updateId);
         doUpdate(ub.toString(), table.buildUpdateParameters(entity, serializedId));
         cache.remove(entity.getClass(), updateId);
         cache.put(entity, id);
@@ -169,16 +170,16 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T delete(T entity) throws SQLException
     {
-        TableImpl<T> table = orm.findTable((Class<T>)entity.getClass());
+        TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         DeleteBuilder db = new DeleteBuilder();
 
         db.delete(dialect.identifier(table.getName()))
-            .where(table.buildIdCondition(this));
+                .where(table.buildIdCondition(this));
 
         Object updateId = table.findKeyValue(entity);
-        if(updateId != null)
+        if (updateId != null)
         {
-            Object serializedId = ((TableColumnImpl)table.getKey()).serialize(updateId);
+            Object serializedId = ((TableColumnImpl) table.getKey()).serialize(updateId);
             doUpdate(db.toString(), serializedId);
             cache.remove(entity.getClass(), updateId);
         }
@@ -199,7 +200,7 @@ class EntityContextImpl implements EntityContext
                 result = consumer.parse(resultSet);
             }
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
             throw e;
@@ -216,15 +217,15 @@ class EntityContextImpl implements EntityContext
             {
                 setParam(stmt, parameters[i], i + 1);
             }
-            if(stmt.executeUpdate() > 0)
+            if (stmt.executeUpdate() > 0)
             {
-                try(ResultSet rs = stmt.getGeneratedKeys())
+                try (ResultSet rs = stmt.getGeneratedKeys())
                 {
                     result = consumer.parse(rs);
                 }
             }
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
             throw e;
@@ -242,7 +243,7 @@ class EntityContextImpl implements EntityContext
             }
             return stmt.executeUpdate();
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
             LOG.log(Level.SEVERE, "Invalid Query: {0}", query);
             throw e;
@@ -256,7 +257,7 @@ class EntityContextImpl implements EntityContext
             DatabaseMetaData metaData = conn.getMetaData();
             try (ResultSet resultSet = metaData.getTables(null, null, table.getName(), null))
             {
-                if(resultSet.next())
+                if (resultSet.next())
                 {
                     return true;
                 }
@@ -272,6 +273,15 @@ class EntityContextImpl implements EntityContext
         {
             fixColumn(field);
         }
+        List<String> columnNames = findColumnNames(table.getName());
+        for (String columnName : columnNames)
+        {
+            TableColumn tbCol = table.findColumnByName(columnName);
+            if (tbCol == null)
+            {
+                LOG.log(Level.WARNING, "Column {0} of table {1} no longer exists in the model.", new Object[]{ columnName, table.getName()});
+            }
+        }
     }
 
     private <T> void fixIndexs(Table<T> table) throws SQLException
@@ -285,18 +295,20 @@ class EntityContextImpl implements EntityContext
 
     private <E, T> void fixColumn(TableColumn<E, T> column) throws SQLException
     {
-        if(!columnExists(column.getTable().getName(), column.getName()))
+        if (!columnExists(column.getTable().getName(), column.getName()))
         {
             String query = dialect.createColumn(column);
+            LOG.log(Level.INFO, "Creating Column: \n{0}", query);
             doUpdate(query);
         }
     }
 
     private <E, T> void fixIndex(TableColumn<E, T> column) throws SQLException
     {
-        if(column.isIndexed() && !indexExists(column.getTable().getName(), column.getName()))
+        if (column.isIndexed() && !indexExists(column.getTable().getName(), column.getName()))
         {
             String query = dialect.createIndex(column);
+            LOG.log(Level.INFO, "Creating Index: \n{0}", query);
             doUpdate(query);
         }
     }
@@ -308,13 +320,30 @@ class EntityContextImpl implements EntityContext
             DatabaseMetaData metaData = conn.getMetaData();
             try (ResultSet resultSet = metaData.getColumns(null, null, tableName, columnName))
             {
-                if(resultSet.next())
+                if (resultSet.next())
                 {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private <T, C> List<String> findColumnNames(String tableName) throws SQLException
+    {
+        List<String> result = new ArrayList<>();
+        try (Connection conn = ds.getConnection())
+        {
+            DatabaseMetaData metaData = conn.getMetaData();
+            try (ResultSet resultSet = metaData.getColumns(null, null, tableName, null))
+            {
+                while (resultSet.next())
+                {
+                    result.add(resultSet.getString("COLUMN_NAME"));
+                }
+            }
+        }
+        return result;
     }
 
     private <T, C> boolean indexExists(String tableName, String columnName) throws SQLException
@@ -324,10 +353,10 @@ class EntityContextImpl implements EntityContext
             DatabaseMetaData metaData = conn.getMetaData();
             try (ResultSet resultSet = metaData.getIndexInfo(null, null, tableName, false, true))
             {
-                while(resultSet.next())
+                while (resultSet.next())
                 {
                     String col = resultSet.getString("COLUMN_NAME");
-                    if(col != null && col.equalsIgnoreCase(columnName))
+                    if (col != null && col.equalsIgnoreCase(columnName))
                     {
                         return true;
                     }
@@ -340,6 +369,7 @@ class EntityContextImpl implements EntityContext
     private <T> void createTable(Table<T> table) throws SQLException
     {
         String query = dialect.createTable(table);
+        LOG.log(Level.INFO, "Creating Table: \n{0}", query);
         doUpdate(query);
         fixIndexs(table);
     }
@@ -347,12 +377,12 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> Query<T> query(Table<T> table)
     {
-        return new QueryImpl<>(this, (TableImpl<T>)table);
+        return new QueryImpl<>(this, (TableImpl<T>) table);
     }
 
     private void setParam(PreparedStatement stmt, Object parameter, int index) throws SQLException
     {
-        if(parameter instanceof Character) 
+        if (parameter instanceof Character)
         {
             stmt.setString(index, parameter.toString());
         }
@@ -384,4 +414,5 @@ class EntityContextImpl implements EntityContext
     {
         return orm.findTable(entity);
     }
+
 }
