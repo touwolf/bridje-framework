@@ -181,6 +181,34 @@ public class WebViewsManager
      *
      * @param view    The view to render.
      * @param context The HTTP bridlet context for the current request.
+     * @param params  The parameters that can be accesed withing the view.
+     */
+    public void renderView(WebView view, HttpBridletContext context, Map<String,Object> params)
+    {
+        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+        try (OutputStream os = resp.getOutputStream())
+        {
+            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            elEnv.setVar("params", params);
+            Thls.doAsEx(() ->
+            {
+                themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
+                os.flush();
+                return null;
+            }, ElEnvironment.class, elEnv);
+        }
+        catch (Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Renders the given web view to the response output stream.
+     *
+     * @param view    The view to render.
+     * @param context The HTTP bridlet context for the current request.
      */
     public void renderView(WebView view, HttpBridletContext context)
     {
@@ -188,12 +216,13 @@ public class WebViewsManager
         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
         try (OutputStream os = resp.getOutputStream())
         {
+            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             Thls.doAsEx(() ->
             {
                 themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
                 os.flush();
                 return null;
-            }, ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+            }, ElEnvironment.class, elEnv);
         }
         catch (Exception ex)
         {
