@@ -29,7 +29,7 @@ import org.bridje.http.HttpException;
 @Component
 @Priority(200)
 @XmlTransient
-class WebViewBridlet implements HttpBridlet
+class UpdateWebViewBridlet implements HttpBridlet
 {
     @Inject
     private WebViewsManager viewsMang;
@@ -47,18 +47,10 @@ class WebViewBridlet implements HttpBridlet
             return true;
         }
 
-        if(nextHandler.handle(context))
+        if(nextHandler != null)
         {
-            return true;
+            return nextHandler.handle(context);
         }
-
-        view = viewsMang.findView(context);
-        if(view != null)
-        {
-            viewsMang.renderView(view, context);
-            return true;
-        }
-
         return false;
     }
 }

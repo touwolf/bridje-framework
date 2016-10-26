@@ -37,6 +37,7 @@ import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
 import org.bridje.http.HttpReqParam;
+import org.bridje.ioc.InjectNext;
 
 @Component
 @Priority(500)
@@ -46,6 +47,9 @@ class ControllerHttpBridlet implements HttpBridlet
 
     private List<WebMethodData> methodsData;
 
+    @InjectNext
+    private HttpBridlet next;
+    
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
@@ -58,6 +62,10 @@ class ControllerHttpBridlet implements HttpBridlet
         if(result != null)
         {
             context.set((Class)result.getClass(), result);
+        }
+        if(next != null)
+        {
+            return next.handle(context);
         }
         return false;
     }

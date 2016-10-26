@@ -14,40 +14,47 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl;
+package org.bridje.web.view;
 
 import java.io.IOException;
+import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.RedirectTo;
 import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
 
 @Component
-@Priority(550)
-class RedirectHttpBridlet implements HttpBridlet
+@Priority(600)
+@XmlTransient
+class RenderWebViewBridlet implements HttpBridlet
 {
+    @Inject
+    private WebViewsManager viewsMang;
+    
     @InjectNext
     private HttpBridlet nextHandler;
 
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        RedirectTo r = context.get(RedirectTo.class);
-        if(r != null && r.getResource() != null && !r.getResource().isEmpty())
-        {
-            HttpBridletResponse resp = context.get(HttpBridletResponse.class);
-            resp.setHeader("Location", r.getResource());
-            resp.setStatusCode(r.getStatus());
-        }
         if(nextHandler != null)
         {
-            return nextHandler.handle(context);
+            if(nextHandler.handle(context))
+            {
+                return true;
+            }
         }
+
+        WebView view = viewsMang.findView(context);
+        if(view != null)
+        {
+            viewsMang.renderView(view, context);
+            return true;
+        }
+
         return false;
     }
-    
 }
