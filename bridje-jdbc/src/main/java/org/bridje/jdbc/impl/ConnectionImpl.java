@@ -344,7 +344,6 @@ class ConnectionImpl implements Connection
     @Override
     public boolean isValid(int timeout) throws SQLException
     {
-        checkClosed();
         return connection.isValid(timeout);
     }
 

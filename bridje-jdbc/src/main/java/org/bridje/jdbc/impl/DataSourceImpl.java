@@ -30,9 +30,6 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.bridje.jdbc.config.DataSourceConfig;
 
-/**
- *
- */
 class DataSourceImpl implements DataSource
 {
     private static final Logger LOG = Logger.getLogger(DataSourceImpl.class.getName());
@@ -274,9 +271,11 @@ class DataSourceImpl implements DataSource
             }
         }
     }
+
     private boolean needToReconnect(ConnectionImpl connection)
     {
         long reTime = config.getReconnectTime() * 1000;
-        return (reTime > connection.getLastUse());
+        long timePass = System.currentTimeMillis() - connection.getLastUse();
+        return reTime < timePass;
     }
 }
