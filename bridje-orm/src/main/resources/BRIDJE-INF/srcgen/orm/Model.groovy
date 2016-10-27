@@ -75,6 +75,18 @@ def loadCustomTypes = { ->
             dataTypes[dataType['name']] = dataType;
         };
     };
+    
+    def pdtClassesList = tools.findProjectAnnotatedClasses("SQLCustomType", "name");
+    pdtClassesList.each{ key, value ->
+        def dataType = [:];
+        dataType['name'] = key;
+        dataType['class'] = value;
+        dataType['adapter'] = "";
+        dataType['sqlType'] = "";
+        dataType['columnType'] = "TableColumn";
+        dataTypes[dataType['name']] = dataType;        
+    };
+    println dataTypes;
     dataTypes;
 };
 

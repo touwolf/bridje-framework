@@ -16,6 +16,13 @@
 
 package org.bridje.maven.plugin;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
@@ -34,13 +41,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.xml.parsers.ParserConfigurationException;
@@ -358,5 +368,89 @@ public class GenerateMojo extends AbstractMojo
         }
         return result;
     }
+    
+    /**
+     * 
+     * @param anntCls
+     * @param annotAttrib
+     * @return
+     * @throws IOException 
+     */
+    public Map<String, String> findProjectAnnotatedClasses(String anntCls, String annotAttrib) throws IOException
+    {
+        Map<String, String> result = new HashMap<>();
+        findAllJavaFiles(path ->
+        {
+            try
+            {
+                CompilationUnit cu = JavaParser.parse(path.toFile());
+                findAnnotation(cu, anntCls, 
+                        (annotExp, clsDec) -> 
+                        {
+                            String attrValue = findAttribute(annotExp, annotAttrib);
+                            if(attrValue != null)
+                            {
+                                result.put(attrValue, cu.getPackage().getPackageName() + "." + clsDec.getName());
+                            }
+                        });
+            }
+            catch (ParseException | IOException e)
+            {
+                getLog().error(e);
+            }
+        });
+        return result;
+    }
 
+    private void findAnnotation(CompilationUnit cu, String annotCls, BiConsumer<? super NormalAnnotationExpr, ? super ClassOrInterfaceDeclaration> consumer)
+    {
+        new VoidVisitorAdapter<ClassOrInterfaceDeclaration>()
+        {
+            @Override
+            public void visit(ClassOrInterfaceDeclaration clsDec, ClassOrInterfaceDeclaration arg)
+            {
+                clsDec.getAnnotations().stream()
+                        .filter(annot -> annot instanceof NormalAnnotationExpr)
+                        .map(annot -> (NormalAnnotationExpr)annot)
+                        .filter(nae -> nae.getName().getName().equals(annotCls))
+                        .forEach(nae -> consumer.accept(nae, clsDec));
+            }
+
+        }.visit(cu, null);        
+    }
+    
+    private void findAllJavaFiles(Consumer<? super Path> consumer) throws IOException
+    {
+        List compileSourceRoots = project.getCompileSourceRoots();
+        for (Object compileSourceRoot : compileSourceRoots)
+        {
+            File root = new File((String) compileSourceRoot);
+            Files.find(root.toPath(),
+                    Integer.MAX_VALUE,
+                    (t, u) -> t.getFileName().toString().endsWith(".java"))
+                    .forEach(consumer);
+        }
+    }
+    
+    private String findAttribute(NormalAnnotationExpr annot, String attrName)
+    {
+        List<MemberValuePair> pairs = annot.getPairs();
+        for (MemberValuePair pair : pairs)
+        {
+            if(pair.getName().equals(attrName))
+            {
+                return removeDoubleQuotes(pair.getValue().toString());
+            }
+        }
+        return null;
+    }
+
+    private static String removeDoubleQuotes(String str)
+    {
+        if(str.startsWith("\"") && str.endsWith("\""))
+        {
+            return str.substring(1, str.length()-1);
+        }
+        return str;
+    }
 }

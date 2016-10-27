@@ -87,6 +87,10 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T find(Table<T> table, Object id) throws SQLException
     {
+        if(id == null)
+        {
+            return null;
+        }
         TableImpl<T> tableImpl = (TableImpl<T>) table;
         T cachedEntity = cache.get(tableImpl.getEntity(), id);
         if (cachedEntity != null)

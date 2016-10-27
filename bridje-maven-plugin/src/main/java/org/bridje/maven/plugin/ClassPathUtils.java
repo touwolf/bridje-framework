@@ -16,21 +16,37 @@
 
 package org.bridje.maven.plugin;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseException;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.classworlds.ClassWorld;
 import org.codehaus.classworlds.DuplicateRealmException;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 class ClassPathUtils
 {
+    private static final Logger LOG = Logger.getLogger(ClassPathUtils.class.getName());
+
     public static ClassLoader createClassPath(MavenProject project)
-                throws MalformedURLException, DuplicateRealmException, DependencyResolutionRequiredException
+            throws MalformedURLException, DuplicateRealmException, DependencyResolutionRequiredException
     {
         List<String> elements = project.getCompileClasspathElements();
         Set<Artifact> artifacts = project.getDependencyArtifacts();
@@ -43,10 +59,11 @@ class ClassPathUtils
             newRealm.addConstituent(file.toURI().toURL());
         }
 
-        for(String element : elements)
+        for (String element : elements)
         {
             newRealm.addConstituent(new File(element).toURI().toURL());
         }
         return newRealm.getClassLoader();
     }
+
 }

@@ -340,6 +340,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
     
     public Object serialize(Object value)
     {
+        if(value == null)
+        {
+            return null;
+        }
         if(adapter != null)
         {
             return adapter.serialize(value, this);
@@ -349,6 +353,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
 
     public Object unserialize(Object value)
     {
+        if(value == null)
+        {
+            return null;
+        }
         if(adapter != null)
         {
             return adapter.unserialize(value, this);
