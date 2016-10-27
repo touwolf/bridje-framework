@@ -50,7 +50,10 @@ public class GenericSQLAdapter implements SQLAdapter
             {
                 LOG.log(Level.WARNING, "{0} does not have a valid ToSQL method.", column.getType());
             }
-            return method.invoke(value);
+            else
+            {
+                return method.invoke(value);
+            }
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)
         {
@@ -69,7 +72,10 @@ public class GenericSQLAdapter implements SQLAdapter
             {
                 LOG.log(Level.WARNING, "{0} does not have a valid FromSQL method.", column.getType());
             }
-            return method.invoke(null, value);
+            else
+            {
+                return method.invoke(null, value);
+            }
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)
         {
