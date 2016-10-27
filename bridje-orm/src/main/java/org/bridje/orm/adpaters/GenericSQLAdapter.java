@@ -88,7 +88,10 @@ public class GenericSQLAdapter implements SQLAdapter
         else
         {
             method = findToSQLMethod(column);
-            toSQLMap.put(column.getType(), method);
+            if(method != null)
+            {
+                toSQLMap.put(column.getType(), method);
+            }
             return method;
         }
     }
@@ -103,7 +106,10 @@ public class GenericSQLAdapter implements SQLAdapter
         else
         {
             method = findFromSQLMethod(column);
-            fromSQLMap.put(column.getType(), method);
+            if(method != null)
+            {
+                fromSQLMap.put(column.getType(), method);
+            }
             return method;
         }
     }
