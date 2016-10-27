@@ -37,20 +37,24 @@ public class GenericSQLAdapter implements SQLAdapter
     private static final Logger LOG = Logger.getLogger(GenericSQLAdapter.class.getName());
 
     private final Map<Class, Method> fromSQLMap = new ConcurrentHashMap<>();
-    
+
     private final Map<Class, Method> toSQLMap = new ConcurrentHashMap<>();
-    
+
     @Override
     public Object serialize(Object value, Column column)
     {
         try
         {
             Method method = getToSQLMethod(column);
+            if(method == null)
+            {
+                LOG.log(Level.WARNING, "{0} does not have a valid ToSQL method.", column.getType());
+            }
             return method.invoke(value);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)
         {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            LOG.log(Level.WARNING, "{0} does not have a valid ToSQL method: {1}", new Object[] { column.getType(), ex.getMessage() });
         }
         return null;
     }
@@ -61,16 +65,18 @@ public class GenericSQLAdapter implements SQLAdapter
         try
         {
             Method method = getFromSQLMethod(column);
-            method.setAccessible(true);
+            if(method == null)
+            {
+                LOG.log(Level.WARNING, "{0} does not have a valid FromSQL method.", column.getType());
+            }
             return method.invoke(null, value);
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)
         {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            LOG.log(Level.WARNING, "{0} does not have a valid FromSQL method: {1}", new Object[] { column.getType(), ex.getMessage() });
         }
         return null;
     }
-
 
     private Method getToSQLMethod(Column column)
     {
@@ -101,15 +107,15 @@ public class GenericSQLAdapter implements SQLAdapter
             return method;
         }
     }
-    
+
     private Method findToSQLMethod(Column column)
     {
-        return findMethod(column.getType(), FromSQL.class);
+        return findMethod(column.getType(), ToSQL.class);
     }
 
     private Method findFromSQLMethod(Column column)
     {
-        return findMethod(column.getType(), ToSQL.class);
+        return findMethod(column.getType(), FromSQL.class);
     }
 
     private Method findMethod(Class<?> type, Class<? extends Annotation> anot)
