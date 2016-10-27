@@ -370,11 +370,12 @@ public class GenerateMojo extends AbstractMojo
     }
     
     /**
+     * Finds all the classes annotated tiwh the given annotation name, the key of the map is te value of the given attribute.
      * 
-     * @param anntCls
-     * @param annotAttrib
-     * @return
-     * @throws IOException 
+     * @param anntCls The simple name of the annotation.
+     * @param annotAttrib The attriburte of the annotation for the key of the map.
+     * @return A map with the value of the annotations finded and the classes.
+     * @throws IOException If any io exception occurs parsing the code.
      */
     public Map<String, String> findProjectAnnotatedClasses(String anntCls, String annotAttrib) throws IOException
     {

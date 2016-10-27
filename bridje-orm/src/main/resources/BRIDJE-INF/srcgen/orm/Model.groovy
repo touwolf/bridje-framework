@@ -55,7 +55,7 @@ def loadCustomTypes = { ->
     dtList.each{ dtData ->
         dtData.'*'.each{ dt ->
             def dataType = [:];
-            dataType['name'] = dt.name();
+            dataType['name'] = dt.'@name'.text();
             dataType['class'] = dt.'@class'.text();
             dataType['adapter'] = dt.'@adapter'.text();
             dataType['sqlType'] = dt.'@sqlType'.text();
@@ -202,6 +202,10 @@ def readFieldData = { entity, fieldNode, model ->
     if(field["isCustom"])
     {
         field['customType'] = customTypes[field['type']];
+        if(field['customType'] == null)
+        {
+            throw new Exception("Invalid cutom data type " + field['type'] + " for field " + field['name'] + " of entity " + entity['name']);
+        }
         if(field['adapter'] == "")
             field['adapter'] = field['customType']['adapter'];
         if(field['sqlType'] == "")
