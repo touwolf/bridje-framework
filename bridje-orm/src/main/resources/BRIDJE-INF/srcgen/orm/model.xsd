@@ -62,6 +62,7 @@
             <xs:element name="readOne" type="tns:readOperation" />
             <xs:element name="readAll" type="tns:readOperation" />
             <xs:element name="update" type="tns:updateOperation" />
+            <xs:element name="deleteEntity" type="tns:deleteEntityOperation" />
             <xs:element name="delete" type="tns:deleteOperation" />
         </xs:sequence>
         <xs:attribute type="tns:methodPresence" name="refresh"/>
@@ -107,8 +108,16 @@
         <xs:attribute type="xs:string" name="params"/>
     </xs:complexType>
 
-    <xs:complexType name="deleteOperation">
+    <xs:complexType name="deleteEntityOperation">
         <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+
+    <xs:complexType name="deleteOperation">
+        <xs:sequence>
+            <xs:element name="eq" type="tns:eqField" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="params"/>
     </xs:complexType>
 
     <xs:simpleType name="methodPresence">

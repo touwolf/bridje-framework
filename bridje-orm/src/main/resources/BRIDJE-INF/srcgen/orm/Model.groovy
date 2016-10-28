@@ -253,8 +253,11 @@ def readEntityData = { entityNode, model ->
         def operation = [:];
         operation['type'] = operationNode.name();
         operation['name'] = operationNode.'@name'.text();
-        operation['params'] = operationNode.'@params'.text().split(",");
-        if(operation['type'] == 'create' || operation['type'] == 'save')
+        if(operationNode.'@params'.text() != '')
+        {
+            operation['params'] = operationNode.'@params'.text().split(",");
+        }
+        if(operation['type'] == 'create' || operation['type'] == 'update' || operation['type'] == 'save')
         {
             operation['setFields'] = [];
             operationNode.'*'.each{ setNode ->
@@ -265,7 +268,7 @@ def readEntityData = { entityNode, model ->
                 operation['setFields'] << setField;
             };
         }
-        if(operation['type'] == 'readOne' || operation['type'] == 'readAll')
+        if(operation['type'] == 'readOne' || operation['type'] == 'readAll' || operation['type'] == 'delete')
         {
             if(operationNode.'@result'.text() != "")
             {

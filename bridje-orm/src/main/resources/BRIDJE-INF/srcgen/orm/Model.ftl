@@ -210,7 +210,7 @@ public class ${model.name}
                         )
                         .fetchAll(<#if crudOp.resultField??>${entity.name}.${crudOp.resultField.column?upper_case}</#if>);
     }
-    
+
     <#elseif crudOp.type == "readOne">
     public <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
@@ -238,17 +238,49 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "update">
-    public ${entity.name} ${crudOp.name}(${entity.name} entity) throws SQLException
+    public void ${crudOp.name}(${entity.name} entity<#list crudOp.params as param>, ${param.javaType} ${param.name}</#list>) throws SQLException
     {
+        <#list crudOp.setFields as setField>
+        entity.set${setField.field.name?cap_first}(${setField.value});
+        </#list>
+        <#list crudOp.params as param>
+        entity.set${param.name?cap_first}(${param.name});
+        </#list>
         context.update(entity);
     }
-    
-    <#elseif crudOp.type == "delete">
+
+    <#elseif crudOp.type == "deleteEntity">
     public void ${crudOp.name}(${entity.name} entity) throws SQLException
     {
         context.delete(entity);
     }
-    
+
+    <#elseif crudOp.type == "delete">
+    public int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    {
+        return context.query(${entity.name}.TABLE)
+                        .where(
+                            <#assign first = true />
+                            <#list crudOp.params as param>
+                            <#if first>
+                            ${param.entity.name}.${param.column?upper_case}.eq(${param.name})
+                            <#else>
+                            .and(${param.entity.name}.${param.column?upper_case}.eq(${param.name}))
+                            </#if>
+                            <#assign first = false />
+                            </#list>
+                            <#list crudOp.conditions as cond>
+                            <#if first>
+                            ${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value})
+                            <#else>
+                            .and(${cond.field.entity.name}.${cond.field.column?upper_case}.${cond.operator}(${cond.value}))
+                            </#if>
+                            <#assign first = false />
+                            </#list>
+                        )
+                        .delete();
+    }
+
     <#elseif crudOp.type == "save">
     public void save(${entity.name} entity) throws SQLException
     {
