@@ -11,6 +11,20 @@ public enum ${enum.name}
     /**
      * ${ct.description!}
      */
-    ${ct.name}<#if ct_has_next>,<#else>;</#if>
+    ${ct.name}<#if enum.descriptionAsProperty>("${ct.description!}")</#if><#if ct_has_next>,<#else>;</#if>
     </#list>
+    <#if enum.descriptionAsProperty>
+
+    private final String description;
+
+    ${enum.name}(String description)
+    {
+        this.description = description;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+    </#if>
 }

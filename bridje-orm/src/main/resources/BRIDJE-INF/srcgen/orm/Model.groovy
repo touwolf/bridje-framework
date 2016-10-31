@@ -293,8 +293,11 @@ def readEntityData = { entityNode, model ->
 def readEnumData = { enumNode, model ->
     def enumData = [:];
 
-    enumData['package'] = model['package'];
+    enumData['package'] = model['package'];    enumData['package'] = model['package'];
+
     enumData['name'] = enumNode.'@name'.text();
+    enumData['description'] = enumNode.'@description'.text();
+    enumData['descriptionAsProperty'] = enumNode.'@descriptionAsProperty'.text() == "true";
     enumData['fullName'] = enumData['package'] + "." + enumData['name'];
     enumData['constants'] = [];
     

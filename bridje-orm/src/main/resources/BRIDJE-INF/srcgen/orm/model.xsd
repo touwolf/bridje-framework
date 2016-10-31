@@ -25,6 +25,7 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" />
         <xs:attribute type="xs:string" name="description" />
+        <xs:attribute type="xs:boolean" name="descriptionAsProperty" />
     </xs:complexType>
     
     <xs:complexType name="enumConstant">
