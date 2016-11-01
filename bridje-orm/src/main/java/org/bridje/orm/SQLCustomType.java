@@ -68,4 +68,10 @@ public @interface SQLCustomType
      */
     Class<? extends SQLAdapter> adapter() default SQLAdapter.class;
 
+    /**
+     * 
+     * @return 
+     */
+    Class<? extends TableColumn> columnType() default TableColumn.class;
+
 }

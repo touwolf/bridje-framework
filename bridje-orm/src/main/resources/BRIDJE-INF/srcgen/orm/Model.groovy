@@ -66,24 +66,30 @@ def loadCustomTypes = { ->
     def gdtList = tools.loadPropertiesResources("BRIDJE-INF/orm/generated-custom-datatypes.properties");
     gdtList.each{ gdtData ->
         gdtData.each{ key, value ->
+            println value;
+            def arr = value.split(":");
             def dataType = [:];
             dataType['name'] = key;
-            dataType['class'] = value;
+            dataType['class'] = arr[0];
             dataType['adapter'] = "";
             dataType['sqlType'] = "";
             dataType['columnType'] = "TableColumn";
+            if(arr.length == 2)
+            {
+                dataType['columnType'] = arr[1];
+            }
             dataTypes[dataType['name']] = dataType;
         };
     };
     
-    def pdtClassesList = tools.findProjectAnnotatedClasses("SQLCustomType", "name");
-    pdtClassesList.each{ key, value ->
+    def pdtClassesList = tools.findProjectAnnotatedClasses("SQLCustomType");
+    pdtClassesList.each{ key, attrs ->
         def dataType = [:];
         dataType['name'] = key;
-        dataType['class'] = value;
+        dataType['class'] = attrs['name'];
         dataType['adapter'] = "";
         dataType['sqlType'] = "";
-        dataType['columnType'] = "TableColumn";
+        dataType['columnType'] = attrs['columnType'];
         dataTypes[dataType['name']] = dataType;        
     };
     dataTypes;

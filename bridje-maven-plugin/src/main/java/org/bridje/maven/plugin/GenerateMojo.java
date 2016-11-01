@@ -373,13 +373,12 @@ public class GenerateMojo extends AbstractMojo
      * Finds all the classes annotated tiwh the given annotation name, the key of the map is te value of the given attribute.
      * 
      * @param anntCls The simple name of the annotation.
-     * @param annotAttrib The attriburte of the annotation for the key of the map.
      * @return A map with the value of the annotations finded and the classes.
      * @throws IOException If any io exception occurs parsing the code.
      */
-    public Map<String, String> findProjectAnnotatedClasses(String anntCls, String annotAttrib) throws IOException
+    public Map<String, Map<String,String>> findProjectAnnotatedClasses(String anntCls) throws IOException
     {
-        Map<String, String> result = new HashMap<>();
+        Map<String, Map<String,String>> result = new HashMap<>();
         findAllJavaFiles(path ->
         {
             try
@@ -388,10 +387,10 @@ public class GenerateMojo extends AbstractMojo
                 findAnnotation(cu, anntCls, 
                         (annotExp, clsDec) -> 
                         {
-                            String attrValue = findAttribute(annotExp, annotAttrib);
+                            Map<String,String> attrValue = findAttributes(annotExp);
                             if(attrValue != null)
                             {
-                                result.put(attrValue, cu.getPackage().getPackageName() + "." + clsDec.getName());
+                                result.put(cu.getPackage().getPackageName() + "." + clsDec.getName(), attrValue);
                             }
                         });
             }
@@ -433,15 +432,13 @@ public class GenerateMojo extends AbstractMojo
         }
     }
     
-    private String findAttribute(NormalAnnotationExpr annot, String attrName)
+    private Map<String,String> findAttributes(NormalAnnotationExpr annot)
     {
+        Map<String,String> reuslt = new HashMap<>();
         List<MemberValuePair> pairs = annot.getPairs();
         for (MemberValuePair pair : pairs)
         {
-            if(pair.getName().equals(attrName))
-            {
-                return removeDoubleQuotes(pair.getValue().toString());
-            }
+            reuslt.put(pair.getName(), removeDoubleQuotes(pair.getValue().toString()));
         }
         return null;
     }

@@ -21,6 +21,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
+import javax.lang.model.type.MirroredTypeException;
 import org.bridje.ioc.ClassListPropertyFile;
 import org.bridje.orm.SQLCustomType;
 
@@ -48,6 +49,16 @@ public class SQLCustomTypeProcessor extends ClassListPropertyFile
         SQLCustomType annot = element.getAnnotation(SQLCustomType.class);
         String clsName = element.toString();
         String name = annot.name();
-        appendProperty(name, clsName);
+        String columnType = "";
+        try
+        {
+            annot.columnType();
+        }
+        catch (MirroredTypeException e)
+        {
+            columnType = e.getTypeMirror().toString();
+        }
+
+        appendProperty(name, clsName + ":" + columnType);
     }
 }

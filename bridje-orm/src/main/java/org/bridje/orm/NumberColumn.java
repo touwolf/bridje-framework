@@ -22,7 +22,7 @@ package org.bridje.orm;
  *
  * @param <T> The type of the field this column represents.
  */
-public interface NumberColumn<T extends Number> extends ComparableColumn<T>
+public interface NumberColumn<T> extends ComparableColumn<T>
 {
     /**
      * Creates a new column that totalize all the values of the current column.
