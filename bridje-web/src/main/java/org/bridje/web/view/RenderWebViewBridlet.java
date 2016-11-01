@@ -40,19 +40,16 @@ class RenderWebViewBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        if(nextHandler != null)
-        {
-            if(nextHandler.handle(context))
-            {
-                return true;
-            }
-        }
-
         WebView view = viewsMang.findView(context);
         if(view != null)
         {
             viewsMang.renderView(view, context);
             return true;
+        }
+
+        if(nextHandler != null)
+        {
+            return nextHandler.handle(context);
         }
 
         return false;

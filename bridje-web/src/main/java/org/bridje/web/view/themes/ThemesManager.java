@@ -41,6 +41,7 @@ import org.bridje.web.view.WebView;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.IocContext;
+import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.state.StateRenderProvider;
@@ -150,17 +151,21 @@ public class ThemesManager
      */
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
-        VFile f = vfs.findFile("/web/themes/" + themeName + "/resources/" + resPath);
-        if(f != null)
+        Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
+        if(path.getCanonicalPath().globMatches("/web/themes/**/resources/**"))
         {
-            String contentType = f.getMimeType();
-            resp.setContentType(contentType);
-            try(OutputStream os = resp.getOutputStream())
+            VFile f = vfs.findFile(path);
+            if(f != null)
             {
-                f.copyTo(os);
-                os.flush();
+                String contentType = f.getMimeType();
+                resp.setContentType(contentType);
+                try(OutputStream os = resp.getOutputStream())
+                {
+                    f.copyTo(os);
+                    os.flush();
+                }
+                return true;
             }
-            return true;
         }
         return false;
     }

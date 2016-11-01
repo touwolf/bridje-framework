@@ -94,6 +94,17 @@ def loadFieldTypes = { field, fieldNode ->
     }
 }
 
+def removeSlash = { str ->
+    if(str != null)
+    {
+        if(str.startsWith("/"))
+        {
+            return str.substring(1);
+        }
+    }
+    return str;
+};
+
 def generateWidgetsAndTheme = { ->
     if(tools.fileExists("web/theme.xml"))
     {
@@ -120,19 +131,19 @@ def generateWidgetsAndTheme = { ->
                 if(rNode.name() == "script")
                 {
                     def script = [:];
-                    script['href'] = rNode.'@href'.text();
+                    script['href'] = removeSlash(rNode.'@href'.text());
                     resource['scripts'] << script;
                 }
                 else if(rNode.name() == "style")
                 {
                     def style = [:];
-                    style['href'] = rNode.'@href'.text();
+                    style['href'] = removeSlash(rNode.'@href'.text());
                     resource['styles'] << style;
                 }
                 else if(rNode.name() == "font")
                 {
                     def font = [:];
-                    font['href'] = rNode.'@href'.text();
+                    font['href'] = removeSlash(rNode.'@href'.text());
                     resource['fonts'] << font;
                 }
             };
@@ -151,19 +162,19 @@ def generateWidgetsAndTheme = { ->
                 if(rNode.name() == "script")
                 {
                     def script = [:];
-                    script['href'] = rNode.'@href'.text();
+                    script['href'] = removeSlash(rNode.'@href'.text());
                     resource['scripts'] << script;
                 }
                 else if(rNode.name() == "style")
                 {
                     def style = [:];
-                    style['href'] = rNode.'@href'.text();
+                    style['href'] = removeSlash(rNode.'@href'.text());
                     resource['styles'] << style;
                 }
                 else if(rNode.name() == "font")
                 {
                     def font = [:];
-                    font['href'] = rNode.'@href'.text();
+                    font['href'] = removeSlash(rNode.'@href'.text());
                     resource['fonts'] << font;
                 }
             };

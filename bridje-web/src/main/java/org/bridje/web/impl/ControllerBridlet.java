@@ -41,9 +41,9 @@ import org.bridje.ioc.InjectNext;
 
 @Component
 @Priority(500)
-class ControllerHttpBridlet implements HttpBridlet
+class ControllerBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(ControllerHttpBridlet.class.getName());
+    private static final Logger LOG = Logger.getLogger(ControllerBridlet.class.getName());
 
     private List<WebMethodData> methodsData;
 

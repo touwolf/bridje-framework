@@ -20,15 +20,14 @@ import java.io.IOException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.RedirectTo;
+import org.bridje.web.ReqPathRef;
 import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
 
 @Component
-@Priority(550)
-class RedirectHttpBridlet implements HttpBridlet
+@Priority(100)
+class IndexPathBridlet implements HttpBridlet
 {
     @InjectNext
     private HttpBridlet nextHandler;
@@ -36,18 +35,12 @@ class RedirectHttpBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        RedirectTo r = context.get(RedirectTo.class);
-        if(r != null && r.getResource() != null && !r.getResource().isEmpty())
+        String currPath = ReqPathRef.findCurrentPath(context);
+        if(currPath == null || currPath.trim().isEmpty() || currPath.trim().equalsIgnoreCase("/"))
         {
-            HttpBridletResponse resp = context.get(HttpBridletResponse.class);
-            resp.setHeader("Location", r.getResource());
-            resp.setStatusCode(r.getStatus());
+            context.set(ReqPathRef.class, new ReqPathRef("/index"));
         }
-        if(nextHandler != null)
-        {
-            return nextHandler.handle(context);
-        }
-        return false;
+        return nextHandler.handle(context);
     }
     
 }

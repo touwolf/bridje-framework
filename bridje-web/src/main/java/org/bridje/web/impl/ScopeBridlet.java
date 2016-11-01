@@ -34,9 +34,9 @@ import org.bridje.ioc.thls.ThlsActionException2;
 
 @Component
 @Priority(0)
-class ScopeHttpBridlet implements HttpBridlet
+class ScopeBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(ScopeHttpBridlet.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScopeBridlet.class.getName());
 
     @Inject
     private IocContext<Application> appCtx;

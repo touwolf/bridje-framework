@@ -86,7 +86,6 @@ def loadCustomTypes = { ->
         dataType['columnType'] = "TableColumn";
         dataTypes[dataType['name']] = dataType;        
     };
-    println dataTypes;
     dataTypes;
 };
 
