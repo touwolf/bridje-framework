@@ -69,7 +69,7 @@
 
 [#if theme.body??]
 <#macro renderBody>
-[#compress]${theme.body!}[/#compress]
+[#compress]${theme.renderBody!}[/#compress]
 </#macro>
 [/#if]
 

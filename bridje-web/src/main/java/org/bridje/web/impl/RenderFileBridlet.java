@@ -33,7 +33,7 @@ import org.bridje.vfs.VfsService;
 
 @Component
 @Priority(700)
-class RenderFileHttpBridlet implements HttpBridlet
+class RenderFileBridlet implements HttpBridlet
 {
     @InjectNext
     private HttpBridlet nextHandler;

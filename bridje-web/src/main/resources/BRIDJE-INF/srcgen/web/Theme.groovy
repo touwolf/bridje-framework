@@ -111,7 +111,7 @@ def generateWidgetsAndTheme = { ->
         def ormData = tools.loadXmlFile("web/theme.xml");
         def theme = [:];
         theme['package'] = ormData.'@package'.text();
-        theme['body'] = ormData.'body'.text();
+        theme['renderBody'] = ormData.'renderBody'.text();
         theme['renderViewContainer'] = ormData.'renderViewContainer'.text();
         theme['name'] = ormData.'@name'.text();
         theme['namespace'] = ormData.'@namespace'.text();
@@ -157,7 +157,7 @@ def generateWidgetsAndTheme = { ->
         theme['defaultResources']['styles'] = [];
         theme['defaultResources']['fonts'] = [];
 
-        ormData.'defaultResources'.'*'.each{ resNode ->
+        ormData.'defaultResources'.'*'.each{ rNode ->
             if(rNode.name() == "script")
             {
                 def script = [:];
