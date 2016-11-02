@@ -52,6 +52,19 @@ public class EventResult
     }
 
     /**
+     * Creates a new info event result object, that will show an information
+     * type message to the end user.
+     *
+     * @param message The message to show to the user.
+     *
+     * @return An EventResult object of type info.
+     */
+    public static EventResult info(String message)
+    {
+        return new EventResult(EventResultType.INFO, message, null, null);
+    }
+
+    /**
      * Creates a new success event result object, that will show an success type
      * message to the end user.
      *
@@ -64,6 +77,19 @@ public class EventResult
     public static EventResult success(String message, Object data)
     {
         return new EventResult(EventResultType.SUCCESS, message, data, null);
+    }
+    
+    /**
+     * Creates a new success event result object, that will show an success type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * 
+     * @return An EventResult object of type success.
+     */
+    public static EventResult success(String message)
+    {
+        return new EventResult(EventResultType.SUCCESS, message, null, null);
     }
 
     /**
@@ -79,6 +105,20 @@ public class EventResult
     public static EventResult warn(String message, Object data)
     {
         return new EventResult(EventResultType.WARNING, message, data, null);
+    }
+
+
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     *
+     * @return An EventResult object of type warning.
+     */
+    public static EventResult warn(String message)
+    {
+        return new EventResult(EventResultType.WARNING, message, null, null);
     }
 
     /**
