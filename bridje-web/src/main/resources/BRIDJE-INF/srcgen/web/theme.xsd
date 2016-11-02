@@ -2,31 +2,17 @@
     <xs:element name="theme" type="tns:theme"/>
 
     <xs:complexType name="script" >
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="href" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:attribute type="xs:string" name="href" />
     </xs:complexType>
 
     <xs:complexType name="style">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="href" use="optional"/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:attribute type="xs:string" name="href" />
     </xs:complexType>
 
     <xs:complexType name="defaultResources">
         <xs:sequence>
-            <xs:element name="resource" maxOccurs="unbounded" minOccurs="0">
-                <xs:complexType>
-                    <xs:choice maxOccurs="unbounded" minOccurs="0">
-                        <xs:element name="script" type="tns:script" />
-                        <xs:element name="style" type="tns:style" />
-                    </xs:choice>
-                </xs:complexType>
-            </xs:element>
+            <xs:element name="script" type="tns:script" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element name="style" type="tns:style" maxOccurs="unbounded" minOccurs="0" />
         </xs:sequence>    
     </xs:complexType>
 
@@ -38,7 +24,7 @@
                         <xs:element name="script" type="tns:script" />
                         <xs:element name="style" type="tns:style" />
                     </xs:choice>
-                    <xs:attribute type="xs:string" name="name" use="optional"/>
+                    <xs:attribute type="xs:string" name="name" />
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
@@ -55,8 +41,8 @@
     <xs:complexType name="expFieldDef">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="name" use="optional"/>
-                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:string" name="name" />
+                <xs:attribute type="xs:string" name="type" />
                 <xs:attribute type="xs:string" name="def" use="optional"/>
             </xs:extension>
         </xs:simpleContent>
@@ -65,8 +51,8 @@
     <xs:complexType name="childFieldDef">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="name" use="optional"/>
-                <xs:attribute type="xs:string" name="type" use="optional"/>
+                <xs:attribute type="xs:string" name="name" />
+                <xs:attribute type="xs:string" name="type" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -77,8 +63,8 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="xs:string">
-                            <xs:attribute type="xs:string" name="name" use="optional"/>
-                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                            <xs:attribute type="xs:string" name="name" />
+                            <xs:attribute type="xs:string" name="type" />
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -89,7 +75,7 @@
         <xs:attribute type="xs:string" name="wrapper" use="optional"/>
         <xs:attribute type="xs:string" name="single" use="optional"/>
     </xs:complexType>
-    
+
     <xs:complexType name="eventFieldDef">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -98,7 +84,20 @@
         </xs:simpleContent>
     </xs:complexType>
 
-    
+    <xs:complexType name="macros">
+        <xs:sequence>
+            <xs:element name="macro" type="tns:macro" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="macro">
+        <xs:sequence>
+            <xs:element name="content" type="xs:string" maxOccurs="1" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="parameters" />
+    </xs:complexType>
+
     <xs:complexType name="widgets">
         <xs:sequence>
             <xs:element name="widget" maxOccurs="unbounded" minOccurs="0">
@@ -142,10 +141,12 @@
 
     <xs:complexType name="theme">
         <xs:sequence>
-            <xs:element name="resources" type="tns:resources" />
-            <xs:element name="defaultResources" type="tns:defaultResources" />
-            <xs:element name="widgets" type="tns:widgets">
-            </xs:element>
+            <xs:element name="renderViewContainer" type="xs:string" maxOccurs="1" minOccurs="0" />
+            <xs:element name="renderBody" type="xs:string" maxOccurs="1" minOccurs="0" />
+            <xs:element name="resources" type="tns:resources" maxOccurs="1" minOccurs="0" />
+            <xs:element name="defaultResources" type="tns:defaultResources" maxOccurs="1" minOccurs="0" />
+            <xs:element name="widgets" type="tns:widgets" maxOccurs="1" minOccurs="0" />
+            <xs:element name="macros" type="tns:macros" maxOccurs="1" minOccurs="0" />
         </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="package"/>

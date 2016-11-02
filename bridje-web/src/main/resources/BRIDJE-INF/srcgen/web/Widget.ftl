@@ -17,6 +17,9 @@ import java.util.Map;
 import org.bridje.web.view.Defines;
 import org.bridje.web.view.widgets.*;
 
+/**
+ * This object represents the ${widget.name} for the ${theme.name} Theme.
+ */
 <#if widget.rootElement != "">
 @XmlRootElement( name = "${widget.rootElement}" )
 </#if>

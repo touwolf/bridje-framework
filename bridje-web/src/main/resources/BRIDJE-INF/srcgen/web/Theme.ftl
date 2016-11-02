@@ -19,6 +19,12 @@
 
 [/#list]
 
+[#list theme.macros as m]
+<#macro ${m.name} ${m.parameters}>
+[#compress]${w.content}[/#compress]
+</#macro>
+
+[/#list]
 [#list theme.widgets as w]
 <#macro render${w.name} widget>
 [#compress]${w.render}[/#compress]
@@ -40,10 +46,8 @@
 </#macro>
 
 <#macro renderThemeScripts themeName>
-    [#list theme.defaultResources as r]
-    [#list r.scripts as s]
+    [#list theme.defaultResources.scripts as s]
     <@renderScript themeName "${s.href}" />
-    [/#list]
     [/#list]
     <#list view.resources as r>
         <#list resourcesMap[r].scripts![] as s>
@@ -53,10 +57,8 @@
 </#macro>
 
 <#macro renderThemeStyles themeName>
-    [#list theme.defaultResources as r]
-    [#list r.styles as s]
+    [#list theme.defaultResources.styles as s]
     <@renderStyle themeName "${s.href}" />
-    [/#list]
     [/#list]
     <#list view.resources as r>
         <#list resourcesMap[r].styles![] as s>
@@ -65,12 +67,16 @@
     </#list>
 </#macro>
 
-<#macro renderBodyAttrs >
-    ${theme.bodyAttrs!}
+[#if theme.body??]
+<#macro renderBody>
+[#compress]${theme.body!}[/#compress]
 </#macro>
+[/#if]
 
-<#macro renderViewFormAttrs >
-    ${theme.viewFormAttrs!}
+[#if theme.renderViewContainer??]
+<#macro renderViewContainer>
+[#compress]${theme.renderViewContainer!}[/#compress]
 </#macro>
+[/#if]
 
 <@renderMain "${theme.name}" />

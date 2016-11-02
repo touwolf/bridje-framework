@@ -111,12 +111,13 @@ def generateWidgetsAndTheme = { ->
         def ormData = tools.loadXmlFile("web/theme.xml");
         def theme = [:];
         theme['package'] = ormData.'@package'.text();
-        theme['bodyAttrs'] = ormData.'@bodyAttrs'.text();
-        theme['viewFormAttrs'] = ormData.'@viewFormAttrs'.text();
+        theme['body'] = ormData.'body'.text();
+        theme['renderViewContainer'] = ormData.'renderViewContainer'.text();
         theme['name'] = ormData.'@name'.text();
         theme['namespace'] = ormData.'@namespace'.text();
         theme['widgets'] = [];
-        theme['defaultResources'] = [];
+        theme['macros'] = [];
+        theme['defaultResources'] = [:];
         theme['resources'] = [];
         theme['resourcesMap'] = [:];
 
@@ -152,36 +153,41 @@ def generateWidgetsAndTheme = { ->
             theme['resourcesMap'][resource['name']] = resource;
         };
         
+        theme['defaultResources']['scripts'] = [];
+        theme['defaultResources']['styles'] = [];
+        theme['defaultResources']['fonts'] = [];
+
         ormData.'defaultResources'.'*'.each{ resNode ->
-            def resource = [:];
-
-            resource['scripts'] = [];
-            resource['styles'] = [];
-            resource['fonts'] = [];
-            resNode.'*'.each{ rNode ->
-                if(rNode.name() == "script")
-                {
-                    def script = [:];
-                    script['href'] = removeSlash(rNode.'@href'.text());
-                    resource['scripts'] << script;
-                }
-                else if(rNode.name() == "style")
-                {
-                    def style = [:];
-                    style['href'] = removeSlash(rNode.'@href'.text());
-                    resource['styles'] << style;
-                }
-                else if(rNode.name() == "font")
-                {
-                    def font = [:];
-                    font['href'] = removeSlash(rNode.'@href'.text());
-                    resource['fonts'] << font;
-                }
-            };
-
-            theme['defaultResources'] << resource;
+            if(rNode.name() == "script")
+            {
+                def script = [:];
+                script['href'] = removeSlash(rNode.'@href'.text());
+                theme['defaultResources']['scripts'] << script;
+            }
+            else if(rNode.name() == "style")
+            {
+                def style = [:];
+                style['href'] = removeSlash(rNode.'@href'.text());
+                theme['defaultResources']['styles'] << style;
+            }
+            else if(rNode.name() == "font")
+            {
+                def font = [:];
+                font['href'] = removeSlash(rNode.'@href'.text());
+                theme['defaultResources']['fonts'] << font;
+            }
         };
 
+        ormData.'macros'.'*'.each{ macroNode ->
+            def macro = [:];
+            
+            macro['name'] = macroNode.'@name'.text();
+            macro['parameters'] = macroNode.'@parameters'.text();
+            macro['content'] = macroNode.'content'.text();
+            
+            theme['macros'] << macro;
+        };
+        
         ormData.'widgets'.'*'.each{ widgetNode ->
 
             def widget = [:];
@@ -232,6 +238,7 @@ def generateWidgetsAndTheme = { ->
 
             theme['widgets'] << widget;
             def data = ['widget':widget];
+            data['theme'] = theme;
             tools.generateClass(widget['fullName'], "web/Widget.ftl", data);
         };
         def themeFile = "BRIDJE-INF/web/themes/" + theme['name'] + "/Theme.ftl";

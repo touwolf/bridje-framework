@@ -49,6 +49,18 @@
     </#list>
 </#macro>
 
+<#macro renderViewContainer>
+    <div id="bridje-view-container" >
+        <#nested />
+    </div>
+</#macro>
+
+<#macro renderBody>
+    <body>
+        <#nested />
+    </body>
+</#macro>
+
 <#macro renderFullView themeName>
     <!DOCTYPE html>
     <html>
@@ -57,15 +69,15 @@
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </head>
-        <body <@renderBodyAttrs /> >
-            <form id="view-form" <@renderViewFormAttrs /> >
+        <@renderBody>
+            <@renderViewContainer>
                 <#if view.root??>
                     <@renderPartialView view.root />
                 </#if>
-            </form>
+            </@renderViewContainer>
 
             <@renderThemeScripts themeName />
-        </body>
+        </@renderBody>
     </html>
 </#macro>
 
