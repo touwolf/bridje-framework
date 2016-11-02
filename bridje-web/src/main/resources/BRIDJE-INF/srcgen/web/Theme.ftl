@@ -2,23 +2,20 @@
 <#ftl encoding="UTF-8">
 <#include "../ThemeBase.ftl" >
 
-<#assign resourcesMap = {} />
 [#list theme.resources as r]
-<#assign scripts = [] />
+<#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
-<#assign scripts = scripts + ["${s.href}"] />
+    <@renderScript themeName "${s.href}" />
 [/#list]
-<#assign styles = [] />
+</#macro>
+
+<#macro render${r.name?cap_first}Styles themeName>
 [#list r.styles as s]
-<#assign styles = styles + ["${s.href}"] />
+    <@renderStyle themeName "${s.href}" />
 [/#list]
-<#assign resource = {} />
-<#assign resource = resource + {"scripts": scripts} />
-<#assign resource = resource + {"styles": styles} />
-<#assign resourcesMap = resourcesMap + {"${r.name}":resource} />
+</#macro>
 
 [/#list]
-
 [#list theme.macros as m]
 <#macro ${m.name} ${m.parameters}>
 [#compress]${w.content}[/#compress]
@@ -50,9 +47,8 @@
     <@renderScript themeName "${s.href}" />
     [/#list]
     <#list view.resources as r>
-        <#list resourcesMap[r].scripts![] as s>
-            <@renderScript themeName s />
-        </#list>
+        <#assign macroName = "render" + r?cap_first + "Scripts" />
+        <@.vars[macroName] themeName />
     </#list>
 </#macro>
 
@@ -61,9 +57,8 @@
     <@renderStyle themeName "${s.href}" />
     [/#list]
     <#list view.resources as r>
-        <#list resourcesMap[r].styles![] as s>
-            <@renderStyle themeName s />
-        </#list>
+        <#assign macroName = "render" + r?cap_first + "Styles" />
+        <@.vars[macroName] themeName />
     </#list>
 </#macro>
 
