@@ -440,7 +440,7 @@ public class GenerateMojo extends AbstractMojo
         {
             reuslt.put(pair.getName(), removeDoubleQuotes(pair.getValue().toString()));
         }
-        return null;
+        return reuslt;
     }
 
     private static String removeDoubleQuotes(String str)

@@ -49,6 +49,14 @@ def toSqlName = { name ->
     result;
 };
 
+def removeSufix = { str, sufix ->
+    if(str.endsWith(sufix))
+    {
+        return str.substring(0, str.length()-sufix.length());
+    }
+    return str;
+};
+
 def loadCustomTypes = { ->
     def dtList = tools.loadXmlResources("BRIDJE-INF/orm/custom-datatypes.xml");
     def dataTypes = [:];
@@ -83,13 +91,18 @@ def loadCustomTypes = { ->
     };
     
     def pdtClassesList = tools.findProjectAnnotatedClasses("SQLCustomType");
+    println pdtClassesList;
     pdtClassesList.each{ key, attrs ->
         def dataType = [:];
-        dataType['name'] = key;
-        dataType['class'] = attrs['name'];
+        dataType['name'] = attrs['name'];
+        dataType['class'] = key;
         dataType['adapter'] = "";
         dataType['sqlType'] = "";
-        dataType['columnType'] = attrs['columnType'];
+        if(attrs['columnType'] != null)
+        {
+            //Remove .class
+            dataType['columnType'] = removeSufix(attrs['columnType'], ".class");
+        }
         dataTypes[dataType['name']] = dataType;        
     };
     dataTypes;
