@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.bridje.ioc.Component;
 import org.bridje.orm.Column;
 import org.bridje.orm.SQLAdapter;
+import org.bridje.orm.impl.CastUtils;
 
 /**
  * An SQLAdapter that will find and call the methods toSQL/fromSQL by
@@ -41,7 +42,7 @@ public class GenericSQLAdapter implements SQLAdapter
     private final Map<Class, Method> toSQLMap = new ConcurrentHashMap<>();
 
     @Override
-    public Object serialize(Object value, Column column)
+    public Object serialize(Object entity, Column column)
     {
         try
         {
@@ -52,7 +53,7 @@ public class GenericSQLAdapter implements SQLAdapter
             }
             else
             {
-                return method.invoke(value);
+                return method.invoke(entity);
             }
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)
@@ -74,7 +75,7 @@ public class GenericSQLAdapter implements SQLAdapter
             }
             else
             {
-                return method.invoke(null, value);
+                return method.invoke(null, CastUtils.castValue(method.getParameterTypes()[0], value));
             }
         }
         catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException ex)

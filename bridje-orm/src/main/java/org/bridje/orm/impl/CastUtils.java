@@ -22,7 +22,7 @@ import org.bridje.orm.Entity;
 /**
  * Utilities for casting values from to the database.
  */
-class CastUtils
+public class CastUtils
 {
     /**
      * Cast the given object to the specified class.
@@ -74,6 +74,42 @@ class CastUtils
             return (F) value;
         }
         return null;
+    }
+
+    public static <F> F castValue(Class<F> fieldType, Object value)
+    {
+        if (value != null)
+        {
+            if (!fieldType.isAssignableFrom(value.getClass()))
+            {
+                if (Character.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toCharacter(value);
+                }
+                if (Byte.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toByte(value);
+                }
+                if (Short.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toShort(value);
+                }
+                if (Integer.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toInteger(value);
+                }
+                if (Long.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toLong(value);
+                }
+                if (Float.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toFloat(value);
+                }
+            }
+            return (F) value;
+        }
+        return null;        
     }
 
     private static Character toCharacter(Object value)
@@ -145,7 +181,7 @@ class CastUtils
         }
         if (value instanceof String && !((String) value).isEmpty())
         {
-            return Short.valueOf((String) value);
+            return Float.valueOf((String) value);
         }
         return null;
     }
