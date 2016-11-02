@@ -329,21 +329,10 @@ class TableImpl<T> implements Table<T>
         {
             return new TableRelationColumnImpl(this, declaredField, declaredField.getType());
         }
-        else if(Number.class.isAssignableFrom(declaredField.getType()))
-        {
-            return new TableNumberColumnImpl(this, declaredField, declaredField.getType());
-        }
         else if(String.class.equals(declaredField.getType()))
         {
             return new TableStringColumnImpl(this, declaredField);
         }
-        else if(Comparable.class.isAssignableFrom(declaredField.getType()))
-        {
-            return new TableComparableColumnImpl(this, declaredField, declaredField.getType());
-        }
-        else
-        {
-            return new TableColumnImpl(this, declaredField, declaredField.getType());
-        }
+        return new TableColumnImpl(this, declaredField, declaredField.getType());
     }
 }

@@ -28,15 +28,13 @@ import org.bridje.ioc.Ioc;
 import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
+import org.bridje.orm.NumberColumn;
 import org.bridje.orm.SQLAdapter;
-import org.bridje.orm.TableColumn;
 import org.bridje.orm.adpaters.EnumAdapter;
 import org.bridje.orm.SQLCustomType;
+import org.bridje.orm.TableNumberColumn;
 
-/**
- *
- */
-class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, T>
+class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColumn<E, T>
 {
     private static final Logger LOG = Logger.getLogger(TableColumnImpl.class.getName());
     
@@ -402,5 +400,51 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableColumn<E, 
             sqlAdapter = instantiate(adapterCls);
         }
         return sqlAdapter;        
+    }
+
+    @Override
+    public NumberColumn<T> sum()
+    {
+        return new FunctionColumnImpl<>(this,getType(), "SUM(%s)");
+    }
+
+    @Override
+    public NumberColumn<T> puls(T value)
+    {
+        FunctionColumnImpl result = new FunctionColumnImpl<>(this,getType(), "%s + ?");
+        result.addParameter(value);
+        return result;
+    }
+
+    @Override
+    public NumberColumn<T> minus(T value)
+    {
+        FunctionColumnImpl result = new FunctionColumnImpl<>(this,getType(), "%s + ?");
+        result.addParameter(value);
+        return result;
+    }
+
+    @Override
+    public Condition gt(T value)
+    {
+        return new BinaryCondition(this, Operator.GT, serialize(value));
+    }
+
+    @Override
+    public Condition ge(T value)
+    {
+        return new BinaryCondition(this, Operator.GE, serialize(value));
+    }
+
+    @Override
+    public Condition lt(T value)
+    {
+        return new BinaryCondition(this, Operator.LT, serialize(value));
+    }
+
+    @Override
+    public Condition le(T value)
+    {
+        return new BinaryCondition(this, Operator.LE, serialize(value));
     }
 }

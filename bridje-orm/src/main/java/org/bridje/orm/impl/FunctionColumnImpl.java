@@ -19,10 +19,12 @@ package org.bridje.orm.impl;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridje.orm.Column;
+import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.NumberColumn;
 import org.bridje.orm.TableColumn;
 
-class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
+class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn<T>
 {
     private final Column<B> column;
 
@@ -128,4 +130,50 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements Column<T>
         }
         return result;
     }
+
+    @Override
+    public NumberColumn<T> sum()
+    {
+        return new FunctionColumnImpl<>(this, getType(), "SUM(%s)");
+    }
+
+    @Override
+    public NumberColumn<T> puls(T value)
+    {
+        FunctionColumnImpl result = new FunctionColumnImpl<>(this, getType(), "%s + ?");
+        result.addParameter(value);
+        return result;
+    }
+
+    @Override
+    public NumberColumn<T> minus(T value)
+    {
+        FunctionColumnImpl result = new FunctionColumnImpl<>(this,getType(), "%s + ?");
+        result.addParameter(value);
+        return result;
+    }
+
+    @Override
+    public Condition gt(T value)
+    {
+        return new BinaryCondition(this, Operator.GT, value);
+    }
+
+    @Override
+    public Condition ge(T value)
+    {
+        return new BinaryCondition(this, Operator.GE, value);
+    }
+
+    @Override
+    public Condition lt(T value)
+    {
+        return new BinaryCondition(this, Operator.LT, value);
+    }
+
+    @Override
+    public Condition le(T value)
+    {
+        return new BinaryCondition(this, Operator.LE, value);
+    }    
 }

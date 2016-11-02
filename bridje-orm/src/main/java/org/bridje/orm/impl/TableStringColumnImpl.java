@@ -31,7 +31,7 @@ class TableStringColumnImpl<E> extends TableColumnImpl<E, String> implements Tab
     @Override
     public NumberColumn<Integer> length()
     {
-        return new FunctionNumberColumnImpl<>(this, Integer.class, "LENGTH(%s)");
+        return new FunctionColumnImpl<>(this, Integer.class, "LENGTH(%s)");
     }
 
     @Override
