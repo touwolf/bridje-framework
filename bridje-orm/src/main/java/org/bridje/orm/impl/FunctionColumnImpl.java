@@ -175,5 +175,17 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
     public Condition le(T value)
     {
         return new BinaryCondition(this, Operator.LE, value);
-    }    
+    }
+
+    @Override
+    public Condition in(T... values)
+    {
+        return new FunctionCondition(this, "IN", values);
+    }
+
+    @Override
+    public Condition notIn(T... values)
+    {
+        return new FunctionCondition(this, "NOT IN", values);
+    }
 }

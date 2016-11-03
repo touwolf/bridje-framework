@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.adpaters;
+package org.bridje.orm.adapters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;

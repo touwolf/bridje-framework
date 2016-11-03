@@ -57,7 +57,7 @@ class BinaryCondition extends AbstractCondition
 
     /**
      * This method writes and operant to the StringBuilder when the condition is
-     * beign serialised in the writeString method.
+     * being serialized in the writeString method.
      *
      * @param operand The operant to be writed
      * @param parameters The parameters list for the query.
@@ -81,7 +81,7 @@ class BinaryCondition extends AbstractCondition
 
     /**
      * This method writes a column as one of the operands of the current
-     * condition when this object is beign serialised.
+     * condition when this object is being serialized.
      *
      * @param column The column operand to write.
      * @param parameters The parameters list for the query.
@@ -94,7 +94,7 @@ class BinaryCondition extends AbstractCondition
 
     /**
      * This method writes a condition as one of the operands of the current
-     * condition when this object is beign serialised.
+     * condition when this object is being serialized.
      *
      * @param condition
      * @param parameters The parameters list for the query.
@@ -110,8 +110,8 @@ class BinaryCondition extends AbstractCondition
     }
 
     /**
-     * This method writes a literal param as one of the operands of the current
-     * condition when this object is beign serialised.
+     * This method writes a literal parameter as one of the operands of the current
+     * condition when this object is being serialized.
      *
      * @param operand The operand literal to write.
      * @param parameters The parameters list for the query.

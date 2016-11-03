@@ -22,23 +22,21 @@ import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
 
 /**
- * A condition with two operators. This condition can be use with the binary
- * operators in the Operator enum like EQ("="), GT(">"), GE(">="), LT("&lt;"),
- * LE("&lt;="), NE("&lt;&gt;"), AND("and"), OR("or")
+ * A condition with arguments.
  */
-class BinaryCondition extends AbstractCondition
+class FunctionCondition extends AbstractCondition
 {
-    private final Object firstOperand;
+    private final Object operand;
+    
+    private final String func;
+    
+    private final Object[] args;
 
-    private final Operator operator;
-
-    private final Object secondOperand;
-
-    public BinaryCondition(Object firstOperand, Operator operator, Object secondOperand)
+    public FunctionCondition(Object operand, String func, Object... args)
     {
-        this.firstOperand = firstOperand;
-        this.operator = operator;
-        this.secondOperand = secondOperand;
+        this.operand = operand;
+        this.func = func;
+        this.args = args;
     }
 
     @Override
@@ -46,18 +44,17 @@ class BinaryCondition extends AbstractCondition
     {
         StringBuilder sb = new StringBuilder();
 
-        writeOperand(firstOperand, parameters, sb, ctx);
+        writeOperand(operand, parameters, sb, ctx);
         sb.append(' ');
-        sb.append(operator.toString());
+        writeFunc(parameters, sb);
         sb.append(' ');
-        writeOperand(secondOperand, parameters, sb, ctx);
 
         return sb.toString();
     }
 
     /**
      * This method writes and operant to the StringBuilder when the condition is
-     * beign serialised in the writeString method.
+     * being serialized in the writeString method.
      *
      * @param operand The operant to be writed
      * @param parameters The parameters list for the query.
@@ -78,10 +75,10 @@ class BinaryCondition extends AbstractCondition
             writeLiteral(operand, parameters, sb);
         }
     }
-
+    
     /**
      * This method writes a column as one of the operands of the current
-     * condition when this object is beign serialised.
+     * condition when this object is being serialized.
      *
      * @param column The column operand to write.
      * @param parameters The parameters list for the query.
@@ -94,7 +91,7 @@ class BinaryCondition extends AbstractCondition
 
     /**
      * This method writes a condition as one of the operands of the current
-     * condition when this object is beign serialised.
+     * condition when this object is being serialized.
      *
      * @param condition
      * @param parameters The parameters list for the query.
@@ -110,8 +107,8 @@ class BinaryCondition extends AbstractCondition
     }
 
     /**
-     * This method writes a literal param as one of the operands of the current
-     * condition when this object is beign serialised.
+     * This method writes a literal parameter as one of the operands of the current
+     * condition when this object is being serialized.
      *
      * @param operand The operand literal to write.
      * @param parameters The parameters list for the query.
@@ -119,7 +116,23 @@ class BinaryCondition extends AbstractCondition
      */
     private void writeLiteral(Object operand, List<Object> parameters, StringBuilder sb)
     {
-        parameters.add(operand);
-        sb.append('?');
+        sb.append(operand);
+    }
+
+    private void writeFunc( List<Object> parameters, StringBuilder sb)
+    {
+        sb.append(' ');
+        sb.append(func);
+        sb.append(" (");
+        for (int i = 0; i< args.length; i++)
+        {
+            if (i > 0)
+            {
+                sb.append(',');
+            }
+            sb.append('?');
+            parameters.add(args[i]);
+        }
+        sb.append(')');
     }
 }

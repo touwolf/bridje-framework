@@ -191,6 +191,8 @@ public class EntityContextTest
         assertEquals(9, ctx.query(User.TABLE).where(User.NAME.eq("Admin 3")).fetchOne(User.NAME.length().puls(2)).intValue());
         assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.length().eq(7)).fetchOne(User.NAME));
         assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.length().puls(1).eq(8)).fetchOne(User.NAME));
+        assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.in("Admin 3", "Admin 49")).fetchOne(User.NAME));
+        assertEquals("Admin 3", ctx.query(User.TABLE).where(User.MONEY.in(100D, 150.40d)).fetchOne(User.NAME));
     }
 
     @Test

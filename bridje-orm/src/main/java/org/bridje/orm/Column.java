@@ -37,7 +37,7 @@ public interface Column<T> extends SQLWritable
      * Creates a new equals "=" condition with this column as a left operand and
      * the provided value as the right operand.
      *
-     * @param value The right operaand for the condition.
+     * @param value The right operand for the condition.
      * @return The new created condition.
      */
     Condition eq(T value);
@@ -46,7 +46,7 @@ public interface Column<T> extends SQLWritable
      * Creates a new equals "=" condition with this column as a left operand and
      * the given column as the right operand.
      *
-     * @param column The right operaand for the condition.
+     * @param column The right operand for the condition.
      * @return The new created condition.
      */
     Condition eq(TableColumn<?, ?> column);
@@ -71,10 +71,28 @@ public interface Column<T> extends SQLWritable
      * Creates a new not equals "&lt;&gt;" condition with this column as a left
      * operand and the provided value as the left operand.
      *
-     * @param value The right operaand for the condition.
+     * @param value The right operand for the condition.
      * @return The new created condition.
      */
     Condition ne(T value);
+
+    /**
+     * Creates a new in "IN" condition with this column as a left operand and
+     * the provided values as parameters.
+     *
+     * @param values The in parameters.
+     * @return The new created condition.
+     */
+    Condition in(T... values);
+
+    /**
+     * Creates a new not in "NOT IN" condition with this column as a left operand and
+     * the provided values as parameters.
+     *
+     * @param values The in parameters.
+     * @return The new created condition.
+     */
+    Condition notIn(T... values);
 
     /**
      * Creates a new ascending order by statement that can be user to order a

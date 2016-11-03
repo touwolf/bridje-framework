@@ -50,5 +50,4 @@ public interface Condition extends SQLWritable
      * @return The new created condition.
      */
     Condition not();
-
 }
