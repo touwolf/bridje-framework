@@ -176,4 +176,24 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
     {
         return new BinaryCondition(this, Operator.LE, value);
     }    
+
+    @Override
+    public T unserialize(Object value)
+    {
+        if(type == column.getType() && column instanceof AbstractColumn)
+        {
+            return (T)((AbstractColumn)column).unserialize(value);
+        }
+        return (T)value;
+    }
+
+    @Override
+    public Object serialize(T value)
+    {
+        if(type == column.getType() && column instanceof AbstractColumn)
+        {
+            return (T)((AbstractColumn)column).serialize(value);
+        }
+        return value;
+    }
 }

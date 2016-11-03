@@ -68,4 +68,8 @@ abstract class AbstractColumn<T> implements Column<T>
     {
         return new UnaryCondition(null, this, "IS NULL");
     }
+    
+    public abstract T unserialize(Object value);
+    
+    public abstract Object serialize(T value);
 }

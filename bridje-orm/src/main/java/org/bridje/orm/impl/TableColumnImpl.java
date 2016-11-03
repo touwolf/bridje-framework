@@ -60,7 +60,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     
     private final boolean required;
     
-    private SQLAdapter adapter;
+    private SQLAdapter<T, Object> adapter;
     
     public TableColumnImpl(TableImpl<E> table, Field field, Class<T> type)
     {
@@ -169,7 +169,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         }
     }
 
-    protected Object getValue(E entity)
+    protected T getValue(E entity)
     {
         try
         {
@@ -177,7 +177,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
             {
                 return null;
             }
-            return this.field.get(entity);
+            return (T)this.field.get(entity);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
         {
@@ -336,7 +336,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         return new BinaryCondition(this, Operator.NE, serialize(value));
     }
     
-    public Object serialize(Object value)
+    @Override
+    public Object serialize(T value)
     {
         if(value == null)
         {
@@ -349,7 +350,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         return value;
     }
 
-    public Object unserialize(Object value)
+    @Override
+    public T unserialize(Object value)
     {
         if(value == null)
         {
@@ -359,7 +361,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         {
             return adapter.unserialize(value, this);
         }
-        return value;
+        return (T)value;
     }
 
     private SQLAdapter instantiate(Class<? extends SQLAdapter> adapter)

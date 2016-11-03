@@ -65,6 +65,10 @@ public class CastUtils
                 {
                     return (F) toFloat(value);
                 }
+                if (Double.class.isAssignableFrom(fieldType))
+                {
+                    return (F) toDouble(value);
+                }
                 if(fieldType.getAnnotation(Entity.class) != null)
                 {
                     TableImpl<F> tableImpl = (TableImpl<F>)ctx.findTable(fieldType);
@@ -182,6 +186,19 @@ public class CastUtils
         if (value instanceof String && !((String) value).isEmpty())
         {
             return Float.valueOf((String) value);
+        }
+        return null;
+    }
+    
+    private static Object toDouble(Object value)
+    {
+        if (value instanceof Number)
+        {
+            return ((Number) value).floatValue();
+        }
+        if (value instanceof String && !((String) value).isEmpty())
+        {
+            return Double.valueOf((String) value);
         }
         return null;
     }
