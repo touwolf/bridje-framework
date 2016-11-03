@@ -178,6 +178,18 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
     }    
 
     @Override
+    public Condition in(T... values)
+    {
+        return new FunctionCondition(this, "IN", values);
+    }
+
+    @Override
+    public Condition notIn(T... values)
+    {
+        return new FunctionCondition(this, "NOT IN", values);
+    }
+
+    @Override
     public T unserialize(Object value)
     {
         if(type == column.getType() && column instanceof AbstractColumn)

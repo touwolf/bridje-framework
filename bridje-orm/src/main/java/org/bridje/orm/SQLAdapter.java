@@ -20,7 +20,7 @@ package org.bridje.orm;
  * Represents an adapter that can be use in a field to serialize, unserialize
  * the value to/from the database.
  *
- * @param <T> The tpye of the field as declared in java.
+ * @param <T> The type of the field as declared in java.
  * @param <R> The type of the java object that will be storage in the database.
  */
 public interface SQLAdapter<T, R>
@@ -44,5 +44,4 @@ public interface SQLAdapter<T, R>
      * @return The java type to write to the java object field.
      */
     T unserialize(R value, Column column);
-
 }

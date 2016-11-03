@@ -103,7 +103,7 @@ public class BuildersTest
     }
 
     @Test
-    public void testSeletTuples()
+    public void testSelectTuples()
     {
         SelectBuilder s = new SelectBuilder();
         String query = s.select("id")

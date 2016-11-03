@@ -17,11 +17,21 @@
 package org.bridje.orm.impl;
 
 /**
- * Operators used in querys.
+ * Operators used in queries.
  */
 enum Operator
 {
-    IS("IS"), EQ("="), GT(">"), GE(">="), LT("<"), LE("<="), NE("<>"), AND("and"), OR("or"), NOT("not"), LIKE("LIKE");
+    IS("IS"), 
+    EQ("="), 
+    GT(">"), 
+    GE(">="), 
+    LT("<"), 
+    LE("<="), 
+    NE("<>"), 
+    AND("and"), 
+    OR("or"), 
+    NOT("not"), 
+    LIKE("LIKE");
     
     private final String symbol;
 

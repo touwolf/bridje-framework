@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.adpaters;
+package org.bridje.orm.adapters;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import org.bridje.ioc.Component;
 import org.bridje.orm.Column;
 import org.bridje.orm.SQLAdapter;
 
 /**
- * An SQLAdapter for LocalDate class.
+ * An SQLAdapter for LocalTime class.
  */
 @Component
-public class LocalDateAdapter implements SQLAdapter
+public class LocalTimeAdapter implements SQLAdapter
 {
     @Override
     public Object serialize(Object value, Column column)
     {
-        if(value instanceof LocalDate)
+        if(value instanceof LocalTime)
         {
-            LocalDate ld = ((LocalDate)value);
-            return java.sql.Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            LocalTime lt = ((LocalTime)value);
+            return Time.valueOf(lt);
         }
         return null;
     }
@@ -44,10 +42,10 @@ public class LocalDateAdapter implements SQLAdapter
     @Override
     public Object unserialize(Object value, Column column)
     {
-        if(value instanceof Date)
+        if(value instanceof Time)
         {
-            Date d = ((Date)value);
-            return Instant.ofEpochMilli(d.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+            Time d = ((Time)value);
+            return d.toLocalTime();
         }
         return null;
     }

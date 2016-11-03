@@ -30,9 +30,9 @@ import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
 import org.bridje.orm.NumberColumn;
 import org.bridje.orm.SQLAdapter;
-import org.bridje.orm.adpaters.EnumAdapter;
 import org.bridje.orm.SQLCustomType;
 import org.bridje.orm.TableNumberColumn;
+import org.bridje.orm.adapters.EnumAdapter;
 
 class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColumn<E, T>
 {
@@ -217,12 +217,12 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     
     private int findLength(org.bridje.orm.Field annotation, SQLCustomType customType)
     {
-        int length = annotation.length();
-        if(customType != null && length <= 0)
+        int len = annotation.length();
+        if(customType != null && len <= 0)
         {
-            length = customType.length();
+            len = customType.length();
         }
-        if(length <= 0)
+        if(len <= 0)
         {
             switch(sqlType)
             {
@@ -234,7 +234,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
                     return 0;
             }
         }
-        return length;
+        return len;
     }
 
     private JDBCType findSqlType(org.bridje.orm.Field annotation, SQLCustomType customType)
@@ -334,6 +334,18 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     public Condition ne(T value)
     {
         return new BinaryCondition(this, Operator.NE, serialize(value));
+    }
+
+    @Override
+    public Condition in(T... values)
+    {
+        return new FunctionCondition(this, "IN", values);
+    }
+
+    @Override
+    public Condition notIn(T... values)
+    {
+        return new FunctionCondition(this, "NOT IN", values);
     }
     
     @Override
