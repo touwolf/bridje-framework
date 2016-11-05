@@ -38,6 +38,7 @@
     <xs:complexType name="enumProperty">
         <xs:attribute type="xs:string" name="name" />
         <xs:attribute type="xs:string" name="type" />
+        <xs:attribute type="xs:boolean" name="mapped" />
     </xs:complexType>
 
     <xs:complexType name="enumConstant">

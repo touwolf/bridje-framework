@@ -332,6 +332,7 @@ def readEnumData = { enumNode, model ->
         def property = [:];
         property['name'] = propNode.'@name'.text();
         property['type'] = propType;
+        property['mapped'] = propNode.'@mapped'.text() == "true";
         enumData['properties'] << property;
     };
 

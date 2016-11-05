@@ -1,5 +1,13 @@
 
 package ${enum.package};
+<#list enum.properties as prop>
+<#if prop.mapped>
+
+import java.util.Map;
+import java.util.HashMap;
+<#break />
+</#if>
+</#list>
 
 /**
  * This class represents the ${enum.name} enumerator.
@@ -26,12 +34,18 @@ public enum ${enum.name}
 
     private final String description;
     </#if>
-    <#if hasProps>
     <#list enum.properties as prop>
 
-    private final ${prop.type} ${prop.name};
+    private final ${prop.type} ${prop.name};<#if prop.mapped>
+
+    private final static Map<${prop.type}, ${enum.name}> ${prop.name}Map = new HashMap<>();
+    static
+    {
+        <#list enum.constants as ct>
+        ${prop.name}Map.put(<#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"</#if>, ${ct.name});
+        </#list>
+    }</#if>
     </#list>
-    </#if>
 
     ${enum.name}(<#if hasDescr>String description<#if hasProps>, </#if></#if><#list enum.properties as prop>${prop.type} ${prop.name}<#if prop?has_next>, </#if></#list>)
     {<#if hasDescr>
@@ -52,7 +66,12 @@ public enum ${enum.name}
     public ${prop.type} get${prop.name?cap_first}()
     {
         return ${prop.name};
-    }
+    }<#if prop.mapped>
+
+    public static ${enum.name} from${prop.name?cap_first}(${prop.type} ${prop.name})
+    {
+        return ${prop.name}Map.get(${prop.name});
+    }</#if>
     </#list>
     </#if>
 }
