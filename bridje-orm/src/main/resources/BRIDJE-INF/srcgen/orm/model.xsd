@@ -22,15 +22,35 @@
     <xs:complexType name="enumDef">
         <xs:sequence>
             <xs:element name="constant" type="tns:enumConstant" />
+            <xs:element name="properties" type="tns:enumProperties" />
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" />
         <xs:attribute type="xs:string" name="description" />
         <xs:attribute type="xs:boolean" name="descriptionAsProperty" />
     </xs:complexType>
-    
+
+    <xs:complexType name="enumProperties">
+        <xs:sequence>
+            <xs:element name="property" type="tns:enumProperty" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="enumProperty">
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="type" />
+    </xs:complexType>
+
     <xs:complexType name="enumConstant">
+        <xs:sequence>
+            <xs:element name="property" type="tns:enumConstantProperty" />
+        </xs:sequence>
         <xs:attribute type="xs:string" name="name" />
         <xs:attribute type="xs:string" name="description" />
+    </xs:complexType>
+
+    <xs:complexType name="enumConstantProperty">
+        <xs:attribute type="xs:string" name="name" />
+        <xs:attribute type="xs:string" name="value" />
     </xs:complexType>
 
     <xs:complexType name="templates">
@@ -41,7 +61,7 @@
 
     <xs:complexType name="entities">
         <xs:sequence>
-            <xs:element name="entity" type="tns:entity" />            
+            <xs:element name="entity" type="tns:entity" />
         </xs:sequence>
     </xs:complexType>
 
@@ -69,15 +89,15 @@
         <xs:attribute type="tns:methodPresence" name="refresh"/>
         <xs:attribute type="tns:methodPresence" name="query"/>
     </xs:complexType>
-    
+
     <xs:complexType name="setField">
         <xs:attribute type="xs:string" name="field"/>
-        <xs:attribute type="xs:string" name="value"/>        
+        <xs:attribute type="xs:string" name="value"/>
     </xs:complexType>
 
     <xs:complexType name="eqField">
         <xs:attribute type="xs:string" name="field"/>
-        <xs:attribute type="xs:string" name="value"/>        
+        <xs:attribute type="xs:string" name="value"/>
     </xs:complexType>
 
     <xs:complexType name="createOperation">

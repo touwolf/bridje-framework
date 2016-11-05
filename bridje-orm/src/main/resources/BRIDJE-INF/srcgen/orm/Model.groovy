@@ -89,7 +89,7 @@ def loadCustomTypes = { ->
             dataTypes[dataType['name']] = dataType;
         };
     };
-    
+
     def pdtClassesList = tools.findProjectAnnotatedClasses("SQLCustomType");
     println pdtClassesList;
     pdtClassesList.each{ key, attrs ->
@@ -103,7 +103,7 @@ def loadCustomTypes = { ->
             //Remove .class
             dataType['columnType'] = removeSufix(attrs['columnType'], ".class");
         }
-        dataTypes[dataType['name']] = dataType;        
+        dataTypes[dataType['name']] = dataType;
     };
     dataTypes;
 };
@@ -304,28 +304,55 @@ def readEntityData = { entityNode, model ->
         }
         entity['operations']['crud'] << operation;
     };
-    
+
     entity;
 };
 
 def readEnumData = { enumNode, model ->
     def enumData = [:];
 
-    enumData['package'] = model['package'];    enumData['package'] = model['package'];
+    enumData['package'] = model['package'];
 
     enumData['name'] = enumNode.'@name'.text();
     enumData['description'] = enumNode.'@description'.text();
     enumData['descriptionAsProperty'] = enumNode.'@descriptionAsProperty'.text() == "true";
     enumData['fullName'] = enumData['package'] + "." + enumData['name'];
+    enumData['properties'] = [];
     enumData['constants'] = [];
-    
+
+    enumNode.'properties'.'*'.each{ propNode ->
+        def propType = "String";
+        switch (propNode.'@type'.text())
+        {
+            case "integer":
+                propType = "Integer";
+                break;
+        }
+
+        def property = [:];
+        property['name'] = propNode.'@name'.text();
+        property['type'] = propType;
+        enumData['properties'] << property;
+    };
+
     enumNode.'*'.each{ constNode ->
+        if (constNode.'@name'.text() == "")
+        {
+            return;
+        }
+
         def constant = [:];
         constant['name'] = constNode.'@name'.text();
         constant['description'] = constNode.'@description'.text();
+        def properties = [:]
+        constNode.'*'.each{ propNode ->
+            properties[propNode.'@name'.text()] = propNode.'@value'.text();
+        };
+        constant['properties'] = properties;
+
         enumData['constants'] << constant;
     };
-    
+
     enumData;
 };
 
@@ -353,7 +380,7 @@ applyBaseTemplate = { entity, templates ->
                     field['entity'] = entity;
                 }
             };
-            entity['fields'].each{ field -> 
+            entity['fields'].each{ field ->
                 newFields << field;
             };
             entity['fields'] = newFields;
@@ -363,7 +390,7 @@ applyBaseTemplate = { entity, templates ->
                 kfield['entity'] = entity;
                 entity['keyField'] = kfield;
             }
-            
+
             tmpl['operations']['crud'].each{ op ->
                 entity['operations']['crud'] << op;
             };
@@ -402,7 +429,7 @@ def fixOperations = { entity ->
                     condition['field'] = entity['fieldsMap'][condition['field']];
                 }
             };
-        }        
+        }
         if(op['resultField'] != null)
         {
             if(op['resultField'] instanceof String)
@@ -434,14 +461,14 @@ def generateEntitys = { ->
 
             templates[entity['name']] = entity;
         };
-        
+
         ormData.'entities'.'*'.each{ entityNode ->
 
             def entity = readEntityData(entityNode, model);
             entity = readEntityFields(entityNode, entity, model);
             applyBaseTemplate(entity, templates);
             fixOperations(entity);
-            
+
             model['entitys'] << entity;
             model['entitysMap'][entity['name']] = entity;
             def data = ['entity':entity];
@@ -450,7 +477,7 @@ def generateEntitys = { ->
             else
                 tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
         };
-        
+
         ormData.'enums'.'*'.each{ enumNode ->
 
             def enumData = readEnumData(enumNode, model);
