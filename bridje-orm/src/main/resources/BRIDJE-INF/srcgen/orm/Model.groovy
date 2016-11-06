@@ -327,6 +327,12 @@ def readEnumData = { enumNode, model ->
             case "integer":
                 propType = "Integer";
                 break;
+            case "long":
+                propType = "Long";
+                break;
+            case "double":
+                propType = "Double";
+                break;
         }
 
         def property = [:];

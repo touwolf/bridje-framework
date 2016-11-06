@@ -27,7 +27,7 @@ public enum ${enum.name}
     <#if enum.descriptionAsProperty>
     <#assign hasDescr = true />
     </#if>
-    ${ct.name}<#if hasDescr || hasProps>(</#if><#if hasDescr>"${ct.description!}"<#if hasProps>, </#if></#if><#list enum.properties![] as prop><#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"</#if><#if prop?has_next>, </#if></#list><#if hasDescr || hasProps>)</#if><#if ct?has_next>,<#else>;</#if>
+    ${ct.name}<#if hasDescr || hasProps>(</#if><#if hasDescr>"${ct.description!}"<#if hasProps>, </#if></#if><#list enum.properties![] as prop><#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"<#elseif prop.type == "Long">L<#elseif prop.type == "Double">D</#if><#if prop?has_next>, </#if></#list><#if hasDescr || hasProps>)</#if><#if ct?has_next>,<#else>;</#if>
     </#list>
     <#if hasDescr || hasProps>
     <#if hasDescr>
