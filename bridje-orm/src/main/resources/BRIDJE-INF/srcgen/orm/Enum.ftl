@@ -42,7 +42,7 @@ public enum ${enum.name}
     static
     {
         <#list enum.constants as ct>
-        ${prop.name}Map.put(<#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"</#if>, ${ct.name});
+        ${prop.name}Map.put(<#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"<#elseif prop.type == "Long">L<#elseif prop.type == "Double">D</#if>, ${ct.name});
         </#list>
     }</#if>
     </#list>

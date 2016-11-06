@@ -54,7 +54,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         this.table = table;
         this.ctx = ctx;
     }
-    
+
     @Override
     public Query<T> paging(int page, int size)
     {
@@ -69,7 +69,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         this.condition = condition;
         return this;
     }
-    
+
     @Override
     public Query<T> orderBy(OrderBy... statements)
     {
@@ -90,9 +90,9 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         if(orderBy != null)
         {
             qb.orderBy(Arrays
-                    .asList(orderBy).stream()
-                    .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
-                    .collect(Collectors.joining(", ")));
+                .stream(orderBy)
+                .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
+                .collect(Collectors.joining(", ")));
         }
         return qb;
     }
@@ -120,7 +120,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     {
         return pageSize;
     }
-    
+
     @Override
     protected TableImpl<T> getTable()
     {
@@ -159,7 +159,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         List<Object> parameters = new ArrayList<>();
         UpdateBuilder qb = new UpdateBuilder();
         qb.update(ctx.getDialect().identifier(table.getName()));
-        getSets().forEach((column, value) -> 
+        getSets().forEach((column, value) ->
         {
             if(value instanceof Column)
             {
@@ -185,12 +185,11 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         List<String> values = new ArrayList<>();
         List<Object> parameters = new ArrayList<>();
         InsertBuilder qb = new InsertBuilder();
-        qb.insertInto(ctx.getDialect().identifier(table.getName()));
-        getSets().forEach((column, value) -> 
-        {
-            fields.add(column.writeSQL(parameters, ctx));
-        });
-        getSets().forEach((column, value) -> 
+        String tableName = ctx.getDialect().identifier(table.getName());
+        qb.insertInto(tableName);
+        getSets().forEach((column, value) ->
+            fields.add(ctx.getDialect().identifier(column.getName())));
+        getSets().forEach((column, value) ->
         {
             if(value instanceof Column)
             {
@@ -201,7 +200,6 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
                 values.add("?");
                 parameters.add(value);
             }
-            qb.fields(column.writeSQL(parameters, ctx));
         });
         qb.fields(fields.stream().collect(Collectors.joining(", ")));
         qb.values(values.stream().collect(Collectors.joining(", ")));
