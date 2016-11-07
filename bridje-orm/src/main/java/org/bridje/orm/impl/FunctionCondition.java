@@ -46,8 +46,11 @@ class FunctionCondition extends AbstractCondition
 
         writeOperand(operand, parameters, sb, ctx);
         sb.append(' ');
-        writeFunc(parameters, sb);
-        sb.append(' ');
+        if (args.length > 0)
+        {
+            writeFunc(parameters, sb);
+            sb.append(' ');
+        }
 
         return sb.toString();
     }
