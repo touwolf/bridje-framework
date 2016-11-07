@@ -191,7 +191,25 @@ class TableImpl<T> implements Table<T>
 
     public <C> List<C> parseAll(int index, Column<C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        return parseAll(index, column.getType(), rs, ctx);
+        if(column instanceof AbstractColumn)
+        {
+            AbstractColumn absColumn = (AbstractColumn)column;
+            List<C> result = new ArrayList<>();
+            while(rs.next())
+            {
+                Object value = CastUtils.castValue(column.getType(), rs.getObject(index), ctx);
+                if(value != null)
+                {
+                    C unsValue = (C)absColumn.unserialize(value);
+                    result.add(unsValue);
+                }
+            }
+            return result;
+        }
+        else
+        {
+            return parseAll(index, column.getType(), rs, ctx);
+        }
     }
 
     public <C> List<C> parseAll(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException
@@ -210,7 +228,24 @@ class TableImpl<T> implements Table<T>
 
     public <C> C parse(int index, Column<C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        return parse(index, column.getType(), rs, ctx);
+        if(column instanceof AbstractColumn)
+        {
+            if(rs.next())
+            {
+                AbstractColumn absColumn = (AbstractColumn)column;
+                Object value = CastUtils.castValue(absColumn.getType(), rs.getObject(index), ctx);
+                if(value != null)
+                {
+                    C unsValue = (C)absColumn.unserialize(value);
+                    return unsValue;
+                }
+            }
+            return null;
+        }
+        else
+        {
+            return parse(index, column.getType(), rs, ctx);
+        }
     }
 
     public <C> C parse(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException

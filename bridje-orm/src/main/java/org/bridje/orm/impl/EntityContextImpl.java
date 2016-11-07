@@ -37,9 +37,6 @@ import org.bridje.orm.impl.sql.InsertBuilder;
 import org.bridje.orm.impl.sql.SelectBuilder;
 import org.bridje.orm.impl.sql.UpdateBuilder;
 
-/**
- *
- */
 class EntityContextImpl implements EntityContext
 {
     private static final Logger LOG = Logger.getLogger(EntityContextImpl.class.getName());
@@ -67,6 +64,7 @@ class EntityContextImpl implements EntityContext
         {
             for (Table<?> table : tables)
             {
+                LOG.log(Level.INFO, "Checking table {0}", table.getName());
                 if (tableExists(table))
                 {
                     fixColumns(table);

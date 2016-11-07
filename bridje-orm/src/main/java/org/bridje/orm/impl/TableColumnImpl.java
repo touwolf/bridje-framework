@@ -355,6 +355,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         {
             return null;
         }
+        if(!type.isAssignableFrom(value.getClass()))
+        {
+            return value;
+        }
         if(adapter != null)
         {
             return adapter.serialize(value, this);
@@ -368,6 +372,10 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         if(value == null)
         {
             return null;
+        }
+        if(type.isAssignableFrom(value.getClass()))
+        {
+            return (T)value;
         }
         if(adapter != null)
         {
