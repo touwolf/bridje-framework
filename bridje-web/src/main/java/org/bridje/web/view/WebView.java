@@ -41,7 +41,7 @@ public class WebView extends AbstractWebView
     private String title;
 
     @XmlElements(
-            @XmlElement(name = "meta", type = MetaTag.class)
+        @XmlElement(name = "meta", type = MetaTag.class)
     )
     private List<MetaTag> metaTags;
 
