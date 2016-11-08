@@ -35,19 +35,19 @@ import org.bridje.web.view.Defines;
 public abstract class Widget
 {
     /**
-     * Evaluates the given expression in the current ElEnviroment.
+     * Evaluates the given expression in the current ElEnvironment.
      *
      * @param <T> The type for the result.
      * @param expression The expression to evaluate.
-     * @param resultClasss The class for the result.
+     * @param resultClass The class for the result.
      * @param def The default value.
      * @return The result of the evaluation.
      */
-    public static <T> T get(UIExpression expression, Class<T> resultClasss, T def)
+    public static <T> T get(UIExpression expression, Class<T> resultClass, T def)
     {
         if (expression != null)
         {
-            T result = expression.get(resultClasss);
+            T result = expression.get(resultClass);
             if (result != null)
             {
                 return result;
@@ -60,11 +60,10 @@ public abstract class Widget
      * Sets the value of the given UIInputExpression so that the web component
      * can receive the value.
      *
-     * @param <T> The type of the input expression.
      * @param expression The expression object.
      * @param param The parameter received for the input expression.
      */
-    public static <T> void set(UIInputExpression expression, HttpReqParam param)
+    public static void set(UIInputExpression expression, HttpReqParam param)
     {
         if (param != null)
         {
@@ -82,7 +81,7 @@ public abstract class Widget
      */
     public List<UIInputExpression> inputs()
     {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -92,7 +91,7 @@ public abstract class Widget
      */
     public List<UIEvent> events()
     {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -102,7 +101,7 @@ public abstract class Widget
      */
     public List<? extends Widget> childs()
     {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -112,7 +111,7 @@ public abstract class Widget
      */
     public List<String> resources()
     {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -123,38 +122,35 @@ public abstract class Widget
      */
     public void readInput(HttpBridletRequest req)
     {
-        inputs().stream()
-                .forEach((input) -> set(input, req.getPostParameter(input.getParameter())));
-        childs().stream()
-                .forEach((widget) -> widget.readInput(req));
+        inputs().forEach((input) -> set(input, req.getPostParameter(input.getParameter())));
+        childs().forEach((widget) -> widget.readInput(req));
     }
 
     /**
      * Perform the override recursively of all the placeholder in this view with
      * the given definesMap.
      *
-     * @param definesMap The map of defines objecto for the place holder
+     * @param definesMap The map of defines objects for the place holder
      * replacement.
      */
     public void override(Map<String, Defines> definesMap)
     {
         doOverride(definesMap);
-        childs().stream()
-                .forEach((widget) -> widget.override(definesMap));
+        childs().forEach((widget) -> widget.override(definesMap));
     }
 
     /**
      * Utility method to override all placeholders in the given list of widgets.
      *
-     * @param childrens The childers tha may contain the placeholder object.
+     * @param children The children that may contain the placeholder object.
      * @param definesMap The map with the source objects.
      * @return The resulting list.
      */
-    public static List<Widget> doOverride(List<Widget> childrens, Map<String, Defines> definesMap)
+    public static List<Widget> doOverride(List<Widget> children, Map<String, Defines> definesMap)
     {
         List<Widget> result = new ArrayList<>();
 
-        for (Widget widget : childrens)
+        for (Widget widget : children)
         {
             if (widget instanceof WidgetPlaceHolder)
             {
@@ -177,7 +173,7 @@ public abstract class Widget
     /**
      * Utility method to override all placeholders in the given list of widgets.
      *
-     * @param child The widget to evaluate if it can be replce.
+     * @param child The widget to evaluate if it can be replace.
      * @param definesMap The map with the source objects.
      * @return The resulting widget.
      */
