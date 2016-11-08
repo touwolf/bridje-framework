@@ -16,11 +16,8 @@
 
 package org.bridje.web.view;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.logging.Logger;
 import javax.xml.bind.annotation.*;
 import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.widgets.UIInputExpression;
@@ -35,6 +32,8 @@ import org.bridje.web.view.widgets.Widget;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WebView extends AbstractWebView
 {
+    private static final Logger LOG = Logger.getLogger(WebView.class.getName());
+
     @XmlTransient
     private String name;
 
@@ -60,7 +59,7 @@ public class WebView extends AbstractWebView
 
     @XmlAttribute(name = "theme")
     private String theme;
-    
+
     /**
      * Gets a list of meta information tags information to be rendered with this
      * view.
@@ -84,7 +83,7 @@ public class WebView extends AbstractWebView
 
     /**
      * The theme to be use to render this view.
-     * 
+     *
      * @return The name of the theme for this view.
      */
     public String getTheme()
@@ -172,13 +171,26 @@ public class WebView extends AbstractWebView
         return events.get(action);
     }
 
+    private boolean isValidView()
+    {
+        return getRoot() != null;
+    }
+
     private synchronized void initEvents()
     {
         if (events == null)
         {
-            Map<String, UIEvent> eventsMap = new HashMap<>();
-            findEvents(getRoot(), eventsMap);
-            events = eventsMap;
+            if (!isValidView())
+            {
+                LOG.warning("Not valid view: " + getName());
+                events = Collections.emptyMap();
+            }
+            else
+            {
+                Map<String, UIEvent> eventsMap = new HashMap<>();
+                findEvents(getRoot(), eventsMap);
+                events = eventsMap;
+            }
         }
     }
 
@@ -186,9 +198,17 @@ public class WebView extends AbstractWebView
     {
         if (widgets == null)
         {
-            Set<Class<?>> widgetsSet = new HashSet<>();
-            findWidgets(getRoot(), widgetsSet);
-            widgets = widgetsSet;
+            if (!isValidView())
+            {
+                LOG.warning("Not valid view: " + getName());
+                widgets = Collections.emptySet();
+            }
+            else
+            {
+                Set<Class<?>> widgetsSet = new HashSet<>();
+                findWidgets(getRoot(), widgetsSet);
+                widgets = widgetsSet;
+            }
         }
     }
 
@@ -196,9 +216,17 @@ public class WebView extends AbstractWebView
     {
         if (resources == null)
         {
-            Set<String> resourcesSet = new HashSet<>();
-            findResources(getRoot(), resourcesSet);
-            resources = resourcesSet;
+            if (!isValidView())
+            {
+                LOG.warning("Not valid view: " + getName());
+                resources = Collections.emptySet();
+            }
+            else
+            {
+                Set<String> resourcesSet = new HashSet<>();
+                findResources(getRoot(), resourcesSet);
+                resources = resourcesSet;
+            }
         }
     }
 
@@ -206,9 +234,17 @@ public class WebView extends AbstractWebView
     {
         if (inputs == null)
         {
-            Map<String, UIInputExpression> inputsMap = new HashMap<>();
-            findInputs(getRoot(), inputsMap);
-            inputs = inputsMap;
+            if (!isValidView())
+            {
+                LOG.warning("Not valid view: " + getName());
+                inputs = Collections.emptyMap();
+            }
+            else
+            {
+                Map<String, UIInputExpression> inputsMap = new HashMap<>();
+                findInputs(getRoot(), inputsMap);
+                inputs = inputsMap;
+            }
         }
     }
 
