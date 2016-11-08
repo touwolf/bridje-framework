@@ -31,20 +31,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.el.ElEnvironment;
+import org.bridje.http.HttpBridletResponse;
+import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
-import org.bridje.ioc.thls.Thls;
-import org.bridje.vfs.VfsService;
-import org.bridje.web.view.widgets.Widget;
-import org.bridje.web.view.WebView;
-import org.bridje.http.HttpBridletResponse;
-import org.bridje.ioc.Application;
 import org.bridje.ioc.IocContext;
+import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VfsService;
 import org.bridje.web.view.EventResult;
+import org.bridje.web.view.WebView;
 import org.bridje.web.view.state.StateRenderProvider;
+import org.bridje.web.view.widgets.Widget;
 
 /**
  * The manager for the web themes that can be used in the web application.
@@ -89,7 +89,7 @@ public class ThemesManager
      */
     public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
     {
-        try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
+        try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = view.getTheme();
             String templatePath = themeName + "/Theme.ftl";
