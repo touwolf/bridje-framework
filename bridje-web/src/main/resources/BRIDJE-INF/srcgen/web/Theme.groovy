@@ -155,6 +155,7 @@ def generateWidgetsAndTheme = { ->
         
         theme['defaultResources']['scripts'] = [];
         theme['defaultResources']['styles'] = [];
+        theme['defaultResources']['links'] = [];
         theme['defaultResources']['fonts'] = [];
 
         ormData.'defaultResources'.'*'.each{ rNode ->
@@ -169,6 +170,13 @@ def generateWidgetsAndTheme = { ->
                 def style = [:];
                 style['href'] = removeSlash(rNode.'@href'.text());
                 theme['defaultResources']['styles'] << style;
+            }
+            else if(rNode.name() == "link")
+            {
+                def link = [:];
+                link['rel'] = rNode.'@rel'.text();
+                link['href'] = removeSlash(rNode.'@href'.text());
+                theme['defaultResources']['links'] << link;
             }
             else if(rNode.name() == "font")
             {

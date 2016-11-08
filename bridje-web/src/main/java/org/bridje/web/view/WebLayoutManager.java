@@ -54,6 +54,10 @@ public class WebLayoutManager
      */
     public WebLayout loadLayout(String name)
     {
+        if (name == null || name.isEmpty())
+        {
+            return null;
+        }
         VFile file = vfsServ.findFile(basePath.join(name + ".layout.xml"));
         return readLayout(file);
     }

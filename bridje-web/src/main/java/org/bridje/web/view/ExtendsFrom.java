@@ -38,9 +38,9 @@ public class ExtendsFrom extends ViewDefinition
     private String layout;
 
     @XmlElements(
-            {
-                @XmlElement(name = "define", type = Defines.class)
-            })
+    {
+        @XmlElement(name = "define", type = Defines.class)
+    })
     private List<Defines> defines;
 
     @XmlTransient
@@ -106,5 +106,4 @@ public class ExtendsFrom extends ViewDefinition
             }
         }
     }
-
 }

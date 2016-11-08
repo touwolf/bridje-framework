@@ -16,6 +16,8 @@
 
 package org.bridje.web.view;
 
+import java.util.Collections;
+import java.util.List;
 import javax.xml.bind.annotation.*;
 
 /**
@@ -27,4 +29,22 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WebLayout extends AbstractWebView
 {
+    @XmlElements(
+        @XmlElement(name = "meta", type = MetaTag.class)
+    )
+    private List<MetaTag> metaTags;
+
+    /**
+     * Gets a list of meta information tags information to be rendered with views that extends this layout.
+     *
+     * @return A list of meta information tags assigned to views.
+     */
+    public List<MetaTag> getMetaTags()
+    {
+        if (metaTags == null)
+        {
+            metaTags = Collections.emptyList();
+        }
+        return metaTags;
+    }
 }

@@ -56,6 +56,9 @@
     [#list theme.defaultResources.styles as s]
     <@renderStyle themeName "${s.href}" />
     [/#list]
+    [#list theme.defaultResources.links as l]
+    <@renderLink themeName "${l.rel}" "${l.href}" />
+    [/#list]
     <#list view.resources as r>
         <#assign macroName = "render" + r?cap_first + "Styles" />
         <@.vars[macroName] themeName />

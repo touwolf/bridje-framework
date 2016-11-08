@@ -16,6 +16,7 @@
 
 package org.bridje.web.view;
 
+import java.util.Objects;
 import javax.xml.bind.annotation.*;
 
 /**
@@ -68,5 +69,27 @@ public class MetaTag
     public void setContent(String content)
     {
         this.content = content;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final MetaTag other = (MetaTag) obj;
+        return Objects.equals(this.name, other.name);
     }
 }

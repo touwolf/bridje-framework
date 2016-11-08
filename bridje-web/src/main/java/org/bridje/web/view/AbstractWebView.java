@@ -16,12 +16,12 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.view.widgets.Widget;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.web.view.widgets.Widget;
 
 /**
  * Represents a view of the application, views are render by themes and are
@@ -54,5 +54,10 @@ public class AbstractWebView
             root = definition.findRoot();
         }
         return root;
+    }
+
+    public ViewDefinition getDefinition()
+    {
+        return definition;
     }
 }

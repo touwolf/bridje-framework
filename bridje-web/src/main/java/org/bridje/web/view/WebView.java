@@ -17,6 +17,7 @@
 package org.bridje.web.view;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.*;
 import org.bridje.web.view.widgets.UIEvent;
@@ -69,6 +70,25 @@ public class WebView extends AbstractWebView
     public List<MetaTag> getMetaTags()
     {
         return metaTags;
+    }
+    
+    void updateMetaTags(List<MetaTag> metas)
+    {
+        if (metas == null || metas.isEmpty())
+        {
+            return;
+        }
+        if (metaTags == null)
+        {
+            metaTags = new LinkedList<>();
+        }
+        for (MetaTag meta : metas)
+        {
+            if (!metaTags.contains(meta))
+            {
+                metaTags.add(meta);
+            }
+        }
     }
 
     /**
@@ -182,7 +202,7 @@ public class WebView extends AbstractWebView
         {
             if (!isValidView())
             {
-                LOG.warning("Not valid view: " + getName());
+                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
                 events = Collections.emptyMap();
             }
             else
@@ -200,7 +220,7 @@ public class WebView extends AbstractWebView
         {
             if (!isValidView())
             {
-                LOG.warning("Not valid view: " + getName());
+                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
                 widgets = Collections.emptySet();
             }
             else
@@ -218,7 +238,7 @@ public class WebView extends AbstractWebView
         {
             if (!isValidView())
             {
-                LOG.warning("Not valid view: " + getName());
+                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
                 resources = Collections.emptySet();
             }
             else
@@ -236,7 +256,7 @@ public class WebView extends AbstractWebView
         {
             if (!isValidView())
             {
-                LOG.warning("Not valid view: " + getName());
+                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
                 inputs = Collections.emptyMap();
             }
             else

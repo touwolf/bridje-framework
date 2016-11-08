@@ -72,6 +72,9 @@ public class WebViewsManager
 
     @Inject
     private StateManager stateManag;
+    
+    @Inject
+    private WebLayoutManager layoutManag;
 
     private Map<String, WebView> views;
 
@@ -181,7 +184,7 @@ public class WebViewsManager
      *
      * @param view    The view to render.
      * @param context The HTTP bridlet context for the current request.
-     * @param params  The parameters that can be accesed withing the view.
+     * @param params  The parameters that can be accessed within the view.
      */
     public void renderView(WebView view, HttpBridletContext context, Map<String,Object> params)
     {
@@ -263,7 +266,7 @@ public class WebViewsManager
     }
 
     /**
-     * Invokes the event expression sended to the server.
+     * Invokes the event expression sent to the server.
      *
      * @param req  The HTTP request to look for the event expression.
      * @param view The view that declares the event.
@@ -292,9 +295,9 @@ public class WebViewsManager
      *
      * @param event The event to be invoked.
      *
-     * @return The result of the event invokation.
+     * @return The result of the event invocation.
      *
-     * @throws java.lang.Exception If any unhandled exception ocurss.
+     * @throws java.lang.Exception If any unhandled exception occurs.
      */
     public EventResult invokeEvent(UIEvent event) throws Exception
     {
@@ -329,7 +332,7 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the event sended to the server in the __action parameter.
+     * Finds the event sent to the server in the __action parameter.
      *
      * @param req  The request to look for the event.
      * @param view The view to look for the event.
@@ -351,7 +354,7 @@ public class WebViewsManager
      * Finds the name of the view to be rendered by the path of the HTTP
      * request.
      *
-     * @param context The HTTP bidlet context to get the path form.
+     * @param context The HTTP bridlet context to get the path form.
      *
      * @return The name of the view to be use to render this request.
      */
@@ -393,6 +396,7 @@ public class WebViewsManager
             {
                 String viewPath = toViewPath(f.getPath());
                 view.setName(viewPath);
+                updateViewMetaTags(view);
                 views.put(viewPath, view);
             }
         }
@@ -402,4 +406,17 @@ public class WebViewsManager
         }
     }
 
+    private void updateViewMetaTags(WebView view)
+    {
+        if (view.getDefinition() == null || !(view.getDefinition() instanceof ExtendsFrom))
+        {
+            return;
+        }
+        String layout = ((ExtendsFrom) view.getDefinition()).getLayout();
+        WebLayout webLayout = layoutManag.loadLayout(layout);
+        if (webLayout != null)
+        {
+            view.updateMetaTags(webLayout.getMetaTags());
+        }
+    }
 }

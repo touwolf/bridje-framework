@@ -23,6 +23,14 @@
     </#if>
 </#macro>
 
+<#macro renderLink theme rel href>
+    <#if href?starts_with("http://") || href?starts_with("https://")>
+        <link rel="${rel!}" href="${href}" />
+    <#else>
+        <link rel="${rel!}" href="/__themes/${theme}/${href}" />
+    </#if>
+</#macro>
+
 <#macro renderScript theme script>
     <#if script?starts_with("http://") || script?starts_with("https://")>
         <script src="${script}" type="text/javascript"></script>
