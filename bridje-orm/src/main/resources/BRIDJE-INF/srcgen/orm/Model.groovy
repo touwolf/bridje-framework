@@ -185,7 +185,11 @@ def findFieldDescription = { field, model ->
     {
         field['description'] = model['defFieldDesc'];
     }
-    field['description'];
+    if(field['description'] == '')
+    {
+        field['description'] = "This is the field " + field['name'] + " for the " + field['entity']['name'] + " entity.";
+    }
+    return field['description'];
 };
 
 def readFieldData = { entity, fieldNode, model ->
@@ -230,7 +234,7 @@ def readFieldData = { entity, fieldNode, model ->
     field['javaType'] = findJavaType(field);
     field['tableColumn'] = findTableColumn(field);
     field['description'] = fieldNode.'@description'.text();
-    field['description'] = findFieldDescription(entity, model);
+    field['description'] = findFieldDescription(field, model);
     field;
 };
 

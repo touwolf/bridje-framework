@@ -207,6 +207,7 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="number">
@@ -220,6 +221,7 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="custom">
@@ -234,6 +236,7 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="string">
@@ -247,6 +250,7 @@
         <xs:attribute type="xs:boolean" name="blankToNull"/>
         <xs:attribute type="xs:boolean" name="emptyToNull"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="character">
@@ -256,6 +260,7 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="relation">
@@ -266,6 +271,7 @@
         <xs:attribute type="xs:boolean" name="index"/>
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="enum">
@@ -278,6 +284,7 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 
     <xs:complexType name="date">
@@ -289,5 +296,6 @@
         <xs:attribute type="xs:boolean" name="required"/>
         <xs:attribute type="xs:boolean" name="key"/>
         <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="xs:string" name="description"/>
     </xs:complexType>
 </xs:schema>
