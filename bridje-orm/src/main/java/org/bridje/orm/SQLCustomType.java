@@ -69,8 +69,9 @@ public @interface SQLCustomType
     Class<? extends SQLAdapter> adapter() default SQLAdapter.class;
 
     /**
+     * Defines the type of column to be used by the fields of this type.
      * 
-     * @return 
+     * @return The column type for this custom type.
      */
     Class<? extends TableColumn> columnType() default TableColumn.class;
 

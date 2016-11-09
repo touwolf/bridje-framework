@@ -131,21 +131,50 @@ public class ${model.name}
         context.fixTable(tables());
     }
 
+    /**
+     * Creates a new query with the given entity as the base entity for the
+     * query, the object returned by this method can be customized to build must
+     * common queries you'l whant to execute on the database.
+     *
+     * @param <T> The type of the entity.
+     * @param table The entity table to be query.
+     * @return A new Query object.
+     */
     public <T> Query<T> query(Table<T> table)
     {
         return context.query(table);
     }
 
+    /**
+     * Clears the internal cache of the entity context, so new queries retrieve
+     * fresh data from the database, note that entities returned from this
+     * context will be cached, so if you what to reset the context and release
+     * memory this method must be call.
+     */
     public void clearCache()
     {
         context.clearCache();
     }
 
+    /**
+     * Finds the table for the given entity.
+     *
+     * @param <T> The type of the entity.
+     * @param entity The class of the entity.
+     * @return The table object for the given entity.
+     */
     public <T> Table<T> findTable(Class<T> entity)
     {
         return context.findTable(entity);
     }
 
+    /**
+     * Determines when ever this model has the given entity.
+     *
+     * @param <T> The type of the entity.
+     * @param entity The class of the entity.
+     * @return true the given class is an entity of this model, false otherwise.
+     */
     public <T> boolean haveEntity(Class<T> entity)
     {
         if(TABLE_SET == null)
@@ -159,19 +188,46 @@ public class ${model.name}
         return TABLE_SET.contains(entity);
     }
 
+    /**
+     * This method will find an entity given his class and id.
+     * 
+     * @param <T> The type of the entity.
+     * @param table The entity table to be find.
+     * @param id The id of the entity to be find.
+     * @return The finded entity, or null if no entity can be found by that id.
+     * @throws SQLException If any SQLException occurs.
+     */
     public <T> T find(Table<T> table, Object id) throws SQLException
     {
         return context.find(table, id);
     }
 
-    public void refresh(Object entity) throws SQLException
+    /**
+     * This method will update all the fields of the entity from the actual
+     * values in the database.
+     * 
+     * @param <T> The type of the entity.
+     * @param entity The entity to be refreshed.
+     * @return The same entity passed to this method but with the fields
+     * refreshed.
+     * @throws SQLException If any SQLException occurs.
+     */
+    public <T> T refresh(T entity) throws SQLException
     {
-        context.refresh(entity);
+        return context.refresh(entity);
     }
 
     <#list model.entitys as entity >
     <#list entity.operations.crud as crudOp >
     <#if crudOp.type == "create">
+    /**
+     * This method creates a new ${entity.name} entity. and insert it into the database.
+    <#list crudOp.params as param>
+     * @param ${param.name} ${param.description!}
+    </#list>
+     * @return The created ${entity.name} object.
+     * @throws SQLException If any SQLException occurs.
+     */
     public ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         ${entity.name} entity = new ${entity.name}();
@@ -186,6 +242,14 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "readAll">
+    /**
+     * This method finds a list of <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object from the database.
+    <#list crudOp.params as param>
+     * @param ${param.name} ${param.description!}
+    </#list>
+     * @return A list of <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> objects.
+     * @throws SQLException If any SQLException occurs.
+     */
     public List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
@@ -212,6 +276,14 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "readOne">
+    /**
+     * This method finds a <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object from the database.
+    <#list crudOp.params as param>
+     * @param ${param.name} ${param.description!}
+    </#list>
+     * @return A <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object.
+     * @throws SQLException If any SQLException occurs.
+     */
     public <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
@@ -238,6 +310,14 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "update">
+    /**
+     * This method updates an ${entity.name} object into the database.
+     * @param entity The entity to be updated.
+    <#list crudOp.params as param>
+     * @param ${param.name} ${param.description!}
+    </#list>
+     * @throws SQLException If any SQLException occurs.
+     */
     public void ${crudOp.name}(${entity.name} entity<#list crudOp.params as param>, ${param.javaType} ${param.name}</#list>) throws SQLException
     {
         <#list crudOp.setFields as setField>
@@ -250,12 +330,25 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "deleteEntity">
+    /**
+     * This method deletes the given ${entity.name} object into the database.
+     * @param entity The entity to be deleted.
+     * @throws SQLException If any SQLException occurs.
+     */
     public void ${crudOp.name}(${entity.name} entity) throws SQLException
     {
         context.delete(entity);
     }
 
     <#elseif crudOp.type == "delete">
+    /**
+     * This method deletes all ${entity.name} objects in the database that match the given parameters.
+     * @return An integer representing the number of record deleted in the database.
+    <#list crudOp.params as param>
+     * @param ${param.name} ${param.description!}
+    </#list>
+     * @throws SQLException If any SQLException occurs.
+     */
     public int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
@@ -282,6 +375,11 @@ public class ${model.name}
     }
 
     <#elseif crudOp.type == "save">
+    /**
+     * This method save a new ${entity.name} object in the database.
+     * @param entity The entity to be saved.
+     * @throws SQLException If any SQLException occurs.
+     */
     public void save(${entity.name} entity) throws SQLException
     {
         <#list crudOp.setFields as setField>
