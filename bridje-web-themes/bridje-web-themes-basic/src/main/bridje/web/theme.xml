@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/theme'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/theme ../../../../../../bridje-web/src/main/resources/BRIDJE-INF/srcgen/web/theme.xsd'
+    name="bridje-basic"
+    package="org.bridje.web.themes.basic"
+    namespace="http://www.bridje.org/schemas/web/themes/basic" >
+    
+    <renderHead>
+        <![CDATA[
+            <head>
+                <title>${view.title!}</title>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <#nested />
+            </head>
+        ]]>
+    </renderHead>
+    <renderBody>
+        <![CDATA[
+            <body>
+                <#nested />
+            </body>
+        ]]>
+    </renderBody>    
+    <renderViewContainer>
+        <![CDATA[
+            <div id="bridje-view-container" class="" >
+                <#nested />
+            </div>
+        ]]>
+    </renderViewContainer>
+    <resources>
+    </resources>
+    <defaultResources>
+        <script href="https://code.jquery.com/jquery-3.1.1.min.js" />
+        <script href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+        <style href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <script href="script.js" />
+    </defaultResources>
+    <widgetsTemplates>
+        <widgetTemplate name="BaseContainer" >
+            <fields>
+                <children name="content" allowPlaceHolder="true">
+                    <child name="link" type="Link" />
+                    <child name="text" type="Text" />
+                    <child name="header" type="Header" />
+                    <child name="paragraph" type="Paragraph" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <@renderAllWidgets widget.content />
+                ]]>
+            </render>
+        </widgetTemplate>
+    </widgetsTemplates>
+    <widgets>
+        <widget name="ContainerFluid" rootElement="containerfluid" baseTemplate="BaseContainer" >
+            <fields>
+            </fields>
+            <render>
+                <![CDATA[
+                    <div class="container-fluid">
+                        <@renderAllWidgets widget.content />
+                    </div>
+                ]]>
+            </render>
+        </widget>
+        <widget name="Container" rootElement="container" baseTemplate="BaseContainer" >
+            <fields>
+            </fields>
+            <render>
+                <![CDATA[
+                    <div class="container">
+                        <@renderAllWidgets widget.content />
+                    </div>
+                ]]>
+            </render>
+        </widget>
+        <widget name="Header" >
+            <fields>
+                <outValue name="content" type="String" def='""' />
+                <outAttr name="size" type="Integer" def='1' />
+            </fields>
+            <render>
+                <![CDATA[
+                    <h${widget.size}>${widget.content?html}</h${widget.size}>
+                ]]>
+            </render>            
+        </widget>
+        <widget name="Paragraph" >
+            <fields>
+                <outValue name="content" type="String" def='""' />
+            </fields>
+            <render>
+                <![CDATA[
+                    <p>${widget.content?html}</p>
+                ]]>
+            </render>            
+        </widget>
+        <widget name="Text" >
+            <fields>
+                <outValue name="content" type="String" def='""' />
+            </fields>
+            <render>
+                <![CDATA[
+                    <span>${widget.content?html}</span>
+                ]]>
+            </render>            
+        </widget>
+        <widget name="Link" >
+            <fields>
+                <outAttr name="href" type="String" def='"#"' />
+                <outValue name="content" type="String" def='""' />
+            </fields>
+            <render>
+                <![CDATA[
+                    <a href="${widget.href!}">${widget.content?html}</a>
+                ]]>
+            </render>            
+        </widget>
+    </widgets>
+
+</theme>

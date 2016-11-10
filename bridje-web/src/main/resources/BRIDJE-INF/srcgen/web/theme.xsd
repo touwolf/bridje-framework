@@ -35,7 +35,7 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    
+
     <xs:complexType name="widgetResource">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -104,44 +104,52 @@
         <xs:attribute type="xs:string" name="parameters" />
     </xs:complexType>
 
-    <xs:complexType name="widgets">
+    <xs:complexType name="widget">
         <xs:sequence>
-            <xs:element name="widget" maxOccurs="unbounded" minOccurs="0">
+            <xs:element name="resources" minOccurs="0">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="resources" minOccurs="0">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="resource" type="tns:widgetResource" />
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element name="fields">
-                            <xs:complexType mixed="true">
-                                <xs:choice maxOccurs="unbounded" minOccurs="0">
-                                    <xs:element name="outAttr" type="tns:expFieldDef" />
-                                    <xs:element name="inAttr" type="tns:expFieldDef" />
-                                    <xs:element name="eventAttr" type="tns:eventFieldDef" />
-                                    <xs:element name="attr" type="tns:expFieldDef" />
-                                    <xs:element name="outEl" type="tns:expFieldDef" />
-                                    <xs:element name="inEl" type="tns:expFieldDef" />
-                                    <xs:element name="eventEl" type="tns:eventFieldDef" />
-                                    <xs:element name="el" type="tns:expFieldDef" />
-                                    <xs:element name="outValue" type="tns:expFieldDef" />
-                                    <xs:element name="inValue" type="tns:expFieldDef" />
-                                    <xs:element name="eventValue" type="tns:eventFieldDef" />
-                                    <xs:element name="value" type="tns:expFieldDef" />
-                                    <xs:element name="child" type="tns:childFieldDef" />
-                                    <xs:element name="children" type="tns:childrenFieldDef" />
-                                </xs:choice>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:element type="xs:string" name="render"/>
+                        <xs:element name="resource" type="tns:widgetResource" />
                     </xs:sequence>
-                    <xs:attribute type="xs:string" name="name" use="optional"/>
-                    <xs:attribute type="xs:string" name="rootElement" use="optional"/>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="fields">
+                <xs:complexType mixed="true">
+                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                        <xs:element name="outAttr" type="tns:expFieldDef" />
+                        <xs:element name="inAttr" type="tns:expFieldDef" />
+                        <xs:element name="eventAttr" type="tns:eventFieldDef" />
+                        <xs:element name="attr" type="tns:expFieldDef" />
+                        <xs:element name="outEl" type="tns:expFieldDef" />
+                        <xs:element name="inEl" type="tns:expFieldDef" />
+                        <xs:element name="eventEl" type="tns:eventFieldDef" />
+                        <xs:element name="el" type="tns:expFieldDef" />
+                        <xs:element name="outValue" type="tns:expFieldDef" />
+                        <xs:element name="inValue" type="tns:expFieldDef" />
+                        <xs:element name="eventValue" type="tns:eventFieldDef" />
+                        <xs:element name="value" type="tns:expFieldDef" />
+                        <xs:element name="child" type="tns:childFieldDef" />
+                        <xs:element name="children" type="tns:childrenFieldDef" />
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element type="xs:string" name="render"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="rootElement" use="optional"/>
+        <xs:attribute type="xs:string" name="base" use="optional"/>
+        <xs:attribute type="xs:string" name="baseTemplate" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="widgets">
+        <xs:sequence>
+            <xs:element name="widget" type="tns:widget" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="widgetsTemplates">
+        <xs:sequence>
+            <xs:element name="widgetTemplate" type="tns:widget" maxOccurs="unbounded" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
 
@@ -149,9 +157,12 @@
         <xs:sequence>
             <xs:element name="renderViewContainer" type="xs:string" maxOccurs="1" minOccurs="0" />
             <xs:element name="renderBody" type="xs:string" maxOccurs="1" minOccurs="0" />
+            <xs:element name="renderHead" type="xs:string" maxOccurs="1" minOccurs="0" />
             <xs:element name="resources" type="tns:resources" maxOccurs="1" minOccurs="0" />
             <xs:element name="defaultResources" type="tns:defaultResources" maxOccurs="1" minOccurs="0" />
             <xs:element name="widgets" type="tns:widgets" maxOccurs="1" minOccurs="0" />
+            <xs:element name="widgetsTemplates" type="tns:widgetsTemplates" maxOccurs="1" minOccurs="0" />
+            <xs:element name="templates" type="tns:template" maxOccurs="1" minOccurs="0" />
             <xs:element name="macros" type="tns:macros" maxOccurs="1" minOccurs="0" />
         </xs:sequence>
         <xs:attribute type="xs:string" name="name"/>

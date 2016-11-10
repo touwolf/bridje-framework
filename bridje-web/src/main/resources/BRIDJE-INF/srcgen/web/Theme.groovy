@@ -105,23 +105,130 @@ def removeSlash = { str ->
     return str;
 };
 
+def findBaseWidget = { theme, widget ->
+    if(widget['baseTemplate'] != null && widget['baseTemplate'] != '')
+    {
+        return theme['widgetsTemplates'][widget['baseTemplate']];
+    }
+    return null;
+};
+
+def findValue = { first, second ->
+    if(first == null || first == "")
+    {
+        return second;
+    }
+    return first;
+};
+
+def applyBaseTemplateWidget;
+applyBaseTemplateWidget = { theme, widget ->
+
+    def baseWidget = findBaseWidget(theme, widget);
+    if(baseWidget != null)
+    {
+        applyBaseTemplateWidget(theme, baseWidget);
+        widget['package'] = findValue(widget['package'], baseWidget['package']);
+        widget['name'] = findValue(widget['name'], baseWidget['name']);
+        widget['fullName'] = findValue(widget['fullName'], baseWidget['fullName']);
+        widget['base'] = findValue(widget['base'], baseWidget['base']);
+        widget['baseTemplate']  = findValue(widget['baseTemplate'], baseWidget['baseTemplate']);
+        widget['render'] = findValue(widget['render'], baseWidget['render']);
+        widget['rootElement'] = findValue(widget['rootElement'], baseWidget['rootElement']);
+        if(widget['base'] == "")
+        {
+            widget['base'] = "Widget";
+        }
+
+        widget['hasInputs'] = widget['hasInputs'] || baseWidget['hasInputs'];
+        widget['hasChildren'] = widget['hasChildren'] || baseWidget['hasChildren'];
+        widget['hasEvents'] = widget['hasEvents'] || baseWidget['hasEvents'];
+        widget['hasResources'] = widget['hasResources'] || baseWidget['hasResources'];
+
+        baseWidget['fields'].each{ field ->
+            widget['fields'] << field;
+            widget['fieldsMap'][field['name']] = field;
+        };
+
+        baseWidget['resources'].each{ resNode ->
+            widget['resources'] << resNode;
+        };
+
+        widget;
+    }
+};
+
+def readWidget = { theme, widgetNode ->
+
+    def widget = [:];
+    widget['package'] = theme['package'];
+    widget['name'] = widgetNode.'@name'.text();
+    widget['fullName'] = widget['package'] + "." + widget['name'];
+    widget['baseTemplate'] = widgetNode.'@baseTemplate'.text();
+    widget['base'] = widgetNode.'@base'.text();
+    widget['render'] = widgetNode.'render'.text();
+    widget['rootElement'] = widgetNode.'@rootElement'.text();
+    if(widget['base'] == "")
+    {
+        widget['base'] = "Widget";
+    }
+
+    widget['hasInputs'] = false;
+    widget['hasChildren'] = false;
+    widget['hasEvents'] = false;
+    widget['hasResources'] = false;
+
+    widget['fields'] = [];
+    widget['fieldsMap'] = [:];
+    widgetNode.'fields'.'*'.each{ fieldNode ->
+        def field = [:];
+        field['name'] = fieldNode.'@name'.text();
+        field['resultType'] = fieldNode.'@type'.text();
+        field['defaultValue'] = fieldNode.'@def'.text();
+        if(field['defaultValue'] == "")
+        {
+            field['defaultValue'] = "null";
+        }
+        loadFieldTypes(field, fieldNode);
+        if(field['javaType'] == 'UIInputExpression')
+            widget['hasInputs'] = true;
+        if(field['fieldType'] == 'children' || field['fieldType'] == 'child')
+            widget['hasChildren'] = true;
+        if(field['javaType'] == 'UIEvent')
+            widget['hasEvents'] = true;
+
+        widget['fields'] << field;
+        widget['fieldsMap'][field['name']] = field;
+    };
+
+    widget['resources'] = [];
+    widgetNode.'resources'.'*'.each{ resNode ->
+        widget['resources'] << resNode.'@name'.text();
+        widget['hasResources'] = true;
+    };
+
+    widget;
+};
+
 def generateWidgetsAndTheme = { ->
     if(tools.fileExists("web/theme.xml"))
     {
-        def ormData = tools.loadXmlFile("web/theme.xml");
+        def themeData = tools.loadXmlFile("web/theme.xml");
         def theme = [:];
-        theme['package'] = ormData.'@package'.text();
-        theme['renderBody'] = ormData.'renderBody'.text();
-        theme['renderViewContainer'] = ormData.'renderViewContainer'.text();
-        theme['name'] = ormData.'@name'.text();
-        theme['namespace'] = ormData.'@namespace'.text();
+        theme['package'] = themeData.'@package'.text();
+        theme['renderBody'] = themeData.'renderBody'.text();
+        theme['renderHead'] = themeData.'renderHead'.text();
+        theme['renderViewContainer'] = themeData.'renderViewContainer'.text();
+        theme['name'] = themeData.'@name'.text();
+        theme['namespace'] = themeData.'@namespace'.text();
         theme['widgets'] = [];
+        theme['widgetsTemplates'] = [:];
         theme['macros'] = [];
         theme['defaultResources'] = [:];
         theme['resources'] = [];
         theme['resourcesMap'] = [:];
 
-        ormData.'resources'.'*'.each{ resNode ->
+        themeData.'resources'.'*'.each{ resNode ->
             def resource = [:];
 
             resource['scripts'] = [];
@@ -152,13 +259,13 @@ def generateWidgetsAndTheme = { ->
             theme['resources'] << resource;
             theme['resourcesMap'][resource['name']] = resource;
         };
-        
+
         theme['defaultResources']['scripts'] = [];
         theme['defaultResources']['styles'] = [];
         theme['defaultResources']['links'] = [];
         theme['defaultResources']['fonts'] = [];
 
-        ormData.'defaultResources'.'*'.each{ rNode ->
+        themeData.'defaultResources'.'*'.each{ rNode ->
             if(rNode.name() == "script")
             {
                 def script = [:];
@@ -186,7 +293,7 @@ def generateWidgetsAndTheme = { ->
             }
         };
 
-        ormData.'macros'.'*'.each{ macroNode ->
+        themeData.'macros'.'*'.each{ macroNode ->
             def macro = [:];
             
             macro['name'] = macroNode.'@name'.text();
@@ -195,54 +302,17 @@ def generateWidgetsAndTheme = { ->
             
             theme['macros'] << macro;
         };
-        
-        ormData.'widgets'.'*'.each{ widgetNode ->
 
-            def widget = [:];
-            widget['package'] = theme['package'];
-            widget['name'] = widgetNode.'@name'.text();
-            widget['fullName'] = widget['package'] + "." + widget['name'];
-            widget['base'] = widgetNode.'@base'.text();
-            widget['render'] = widgetNode.'render'.text();
-            widget['rootElement'] = widgetNode.'@rootElement'.text();
-            if(widget['base'] == "")
-            {
-                widget['base'] = "Widget";
-            }
+        themeData.'widgetsTemplates'.'*'.each{ widgetNode ->
+            def widget = readWidget(theme, widgetNode);
 
-            widget['hasInputs'] = false;
-            widget['hasChildren'] = false;
-            widget['hasEvents'] = false;
-            widget['hasResources'] = false;
+            theme['widgetsTemplates'][widget['name']] = widget;
+        };
 
-            widget['fields'] = [];
-            widget['fieldsMap'] = [:];
-            widgetNode.'fields'.'*'.each{ fieldNode ->
-                def field = [:];
-                field['name'] = fieldNode.'@name'.text();
-                field['resultType'] = fieldNode.'@type'.text();
-                field['defaultValue'] = fieldNode.'@def'.text();
-                if(field['defaultValue'] == "")
-                {
-                    field['defaultValue'] = "null";
-                }
-                loadFieldTypes(field, fieldNode);
-                if(field['javaType'] == 'UIInputExpression')
-                    widget['hasInputs'] = true;
-                if(field['fieldType'] == 'children' || field['fieldType'] == 'child')
-                    widget['hasChildren'] = true;
-                if(field['javaType'] == 'UIEvent')
-                    widget['hasEvents'] = true;
+        themeData.'widgets'.'*'.each{ widgetNode ->
+            def widget = readWidget(theme, widgetNode);
 
-                widget['fields'] << field;
-                widget['fieldsMap'][field['name']] = field;
-            };
-
-            widget['resources'] = [];
-            widgetNode.'resources'.'*'.each{ resNode ->
-                widget['resources'] << resNode.'@name'.text();
-                widget['hasResources'] = true;
-            };
+            applyBaseTemplateWidget(theme, widget);
 
             theme['widgets'] << widget;
             def data = ['widget':widget];

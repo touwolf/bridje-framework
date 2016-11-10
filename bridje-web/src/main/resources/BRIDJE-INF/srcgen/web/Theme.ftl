@@ -65,9 +65,15 @@
     </#list>
 </#macro>
 
-[#if theme.body??]
+[#if theme.renderBody??]
 <#macro renderBody>
 [#compress]${theme.renderBody!}[/#compress]
+</#macro>
+[/#if]
+
+[#if theme.renderHead??]
+<#macro renderHead>
+[#compress]${theme.renderHead!}[/#compress]
 </#macro>
 [/#if]
 
