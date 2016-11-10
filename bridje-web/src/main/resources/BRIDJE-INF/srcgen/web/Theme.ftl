@@ -65,19 +65,19 @@
     </#list>
 </#macro>
 
-[#if theme.renderBody??]
+[#if theme.renderBody?? && theme.renderBody?has_content]
 <#macro renderBody>
 [#compress]${theme.renderBody!}[/#compress]
 </#macro>
 [/#if]
 
-[#if theme.renderHead??]
+[#if theme.renderHead?? && theme.renderHead?has_content]
 <#macro renderHead>
 [#compress]${theme.renderHead!}[/#compress]
 </#macro>
 [/#if]
 
-[#if theme.renderViewContainer??]
+[#if theme.renderViewContainer?? && theme.renderViewContainer?has_content]
 <#macro renderViewContainer>
 [#compress]${theme.renderViewContainer!}[/#compress]
 </#macro>
