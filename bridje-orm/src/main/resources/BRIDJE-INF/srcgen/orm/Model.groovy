@@ -177,6 +177,10 @@ def findEntityDescription = { entity, model ->
     {
         entity['description'] = model['defEntityDesc'];
     }
+    if(entity['description'] == null || entity['description'] == '')
+    {
+        entity['description'] = "This is the " + entity['name'] + " entity.";
+    }
     entity['description'];
 };
 
@@ -185,7 +189,7 @@ def findFieldDescription = { field, model ->
     {
         field['description'] = model['defFieldDesc'];
     }
-    if(field['description'] == '')
+    if(field['description'] == null || field['description'] == '')
     {
         field['description'] = "This is the field " + field['name'] + " for the " + field['entity']['name'] + " entity.";
     }
