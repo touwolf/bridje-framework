@@ -129,12 +129,8 @@ applyBaseTemplateWidget = { theme, widget ->
     {
         applyBaseTemplateWidget(theme, baseWidget);
         widget['package'] = findValue(widget['package'], baseWidget['package']);
-        widget['name'] = findValue(widget['name'], baseWidget['name']);
-        widget['fullName'] = findValue(widget['fullName'], baseWidget['fullName']);
         widget['base'] = findValue(widget['base'], baseWidget['base']);
-        widget['baseTemplate']  = findValue(widget['baseTemplate'], baseWidget['baseTemplate']);
         widget['render'] = findValue(widget['render'], baseWidget['render']);
-        widget['rootElement'] = findValue(widget['rootElement'], baseWidget['rootElement']);
         if(widget['base'] == "")
         {
             widget['base'] = "Widget";
@@ -210,6 +206,36 @@ def readWidget = { theme, widgetNode ->
     widget;
 };
 
+def readResource = { theme, resNode ->
+    def resource = [:];
+
+    resource['scripts'] = [];
+    resource['styles'] = [];
+    resource['fonts'] = [];
+    resource['name'] = resNode.'@name'.text();
+    resNode.'*'.each{ rNode ->
+        if(rNode.name() == "script")
+        {
+            def script = [:];
+            script['href'] = removeSlash(rNode.'@href'.text());
+            resource['scripts'] << script;
+        }
+        else if(rNode.name() == "style")
+        {
+            def style = [:];
+            style['href'] = removeSlash(rNode.'@href'.text());
+            resource['styles'] << style;
+        }
+        else if(rNode.name() == "font")
+        {
+            def font = [:];
+            font['href'] = removeSlash(rNode.'@href'.text());
+            resource['fonts'] << font;
+        }
+    };
+    resource;
+};
+
 def generateWidgetsAndTheme = { ->
     if(tools.fileExists("web/theme.xml"))
     {
@@ -229,32 +255,7 @@ def generateWidgetsAndTheme = { ->
         theme['resourcesMap'] = [:];
 
         themeData.'resources'.'*'.each{ resNode ->
-            def resource = [:];
-
-            resource['scripts'] = [];
-            resource['styles'] = [];
-            resource['fonts'] = [];
-            resource['name'] = resNode.'@name'.text();
-            resNode.'*'.each{ rNode ->
-                if(rNode.name() == "script")
-                {
-                    def script = [:];
-                    script['href'] = removeSlash(rNode.'@href'.text());
-                    resource['scripts'] << script;
-                }
-                else if(rNode.name() == "style")
-                {
-                    def style = [:];
-                    style['href'] = removeSlash(rNode.'@href'.text());
-                    resource['styles'] << style;
-                }
-                else if(rNode.name() == "font")
-                {
-                    def font = [:];
-                    font['href'] = removeSlash(rNode.'@href'.text());
-                    resource['fonts'] << font;
-                }
-            };
+            def resource = readResource(theme, resNode);
 
             theme['resources'] << resource;
             theme['resourcesMap'][resource['name']] = resource;
