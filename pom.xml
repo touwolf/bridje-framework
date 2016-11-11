@@ -30,10 +30,9 @@
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
         <module>bridje-orm</module>
-        <module>bridje-maven-plugin</module>
         <module>bridje-web</module>
         <module>bridje-el</module>
-        <module>bridje-web-themes</module>
+        <module>bridje-maven-plugin</module>
     </modules>
 
     <scm>
