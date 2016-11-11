@@ -236,6 +236,34 @@ def readResource = { theme, resNode ->
     resource;
 };
 
+def readDefResources = { theme, rNode ->
+    if(rNode.name() == "script")
+    {
+        def script = [:];
+        script['href'] = removeSlash(rNode.'@href'.text());
+        theme['defaultResources']['scripts'] << script;
+    }
+    else if(rNode.name() == "style")
+    {
+        def style = [:];
+        style['href'] = removeSlash(rNode.'@href'.text());
+        theme['defaultResources']['styles'] << style;
+    }
+    else if(rNode.name() == "link")
+    {
+        def link = [:];
+        link['rel'] = rNode.'@rel'.text();
+        link['href'] = removeSlash(rNode.'@href'.text());
+        theme['defaultResources']['links'] << link;
+    }
+    else if(rNode.name() == "font")
+    {
+        def font = [:];
+        font['href'] = removeSlash(rNode.'@href'.text());
+        theme['defaultResources']['fonts'] << font;
+    }
+};
+
 def generateWidgetsAndTheme = { ->
     if(tools.fileExists("web/theme.xml"))
     {
@@ -266,32 +294,8 @@ def generateWidgetsAndTheme = { ->
         theme['defaultResources']['links'] = [];
         theme['defaultResources']['fonts'] = [];
 
-        themeData.'defaultResources'.'*'.each{ rNode ->
-            if(rNode.name() == "script")
-            {
-                def script = [:];
-                script['href'] = removeSlash(rNode.'@href'.text());
-                theme['defaultResources']['scripts'] << script;
-            }
-            else if(rNode.name() == "style")
-            {
-                def style = [:];
-                style['href'] = removeSlash(rNode.'@href'.text());
-                theme['defaultResources']['styles'] << style;
-            }
-            else if(rNode.name() == "link")
-            {
-                def link = [:];
-                link['rel'] = rNode.'@rel'.text();
-                link['href'] = removeSlash(rNode.'@href'.text());
-                theme['defaultResources']['links'] << link;
-            }
-            else if(rNode.name() == "font")
-            {
-                def font = [:];
-                font['href'] = removeSlash(rNode.'@href'.text());
-                theme['defaultResources']['fonts'] << font;
-            }
+        themeData.'defaultResources'.'*'.each{ resNode ->
+            readDefResources(theme, resNode);
         };
 
         themeData.'macros'.'*'.each{ macroNode ->
