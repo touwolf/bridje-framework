@@ -105,7 +105,7 @@ public class BuildersTest
     @Test
     public void testSelectTuples()
     {
-        SelectBuilder s = new SelectBuilder();
+        SelectBuilder s = new SelectBuilder(null);
         String query = s.select("id")
                 .from("my_table")
                 .where("my_field <> 'new value'")

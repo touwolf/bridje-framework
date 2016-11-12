@@ -80,7 +80,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     @Override
     protected SelectBuilder createQuery(String fields, List<Object> parameters)
     {
-        SelectBuilder qb = new SelectBuilder();
+        SelectBuilder qb = new SelectBuilder(ctx.getDialect());
         qb.select(fields)
             .from(ctx.getDialect().identifier(table.getName()));
         if(condition != null)

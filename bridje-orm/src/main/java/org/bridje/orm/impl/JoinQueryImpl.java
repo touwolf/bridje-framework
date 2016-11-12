@@ -117,7 +117,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     @Override
     protected SelectBuilder createQuery(String fields, List<Object> parameters)
     {
-        SelectBuilder qb = new SelectBuilder();
+        SelectBuilder qb = new SelectBuilder(getCtx().getDialect());
         qb.select(fields)
             .from(getCtx().getDialect().identifier(getBaseTable().getName()));
         createJoins(qb, parameters);

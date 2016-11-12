@@ -43,9 +43,6 @@ import org.bridje.orm.SQLDialect;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
 
-/**
- *
- */
 @Component
 class OrmServiceImpl implements OrmService
 {

@@ -16,6 +16,8 @@
 
 package org.bridje.orm.impl.sql;
 
+import org.bridje.orm.SQLDialect;
+
 /**
  * A helper class for building SELECT statements more easy.
  */
@@ -27,11 +29,15 @@ public class SelectBuilder
 
     private boolean orderByAdded;
 
+    private final SQLDialect dialect;
+
     /**
      * Default constructor.
+     * @param dialect
      */
-    public SelectBuilder()
+    public SelectBuilder(SQLDialect dialect)
     {
+        this.dialect = dialect;
         sb = new StringBuilder();
         whereAdded = false;
     }
@@ -122,10 +128,18 @@ public class SelectBuilder
     {
         if(index >= 0 && size >= 0)
         {
-            sb.append(" LIMIT ");
-            sb.append(index);
-            sb.append(", ");
-            sb.append(size);
+            if(dialect == null)
+            {
+                sb.append(" LIMIT ");
+                sb.append(index);
+                sb.append(", ");
+                sb.append(size);
+            }
+            else
+            {
+                sb.append(" ");
+                sb.append(dialect.limit(index, size));
+            }
         }
         return this;
     }

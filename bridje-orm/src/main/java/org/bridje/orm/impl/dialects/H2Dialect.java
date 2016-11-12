@@ -16,7 +16,6 @@
 package org.bridje.orm.impl.dialects;
 
 import java.sql.Connection;
-import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,12 +77,13 @@ class H2Dialect implements SQLDialect
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
+        String sqlType = findSqlType(column);
         return b.buildColumnStmt(identifier(column.getName()), 
-                findType(column.getSqlType()), 
-                column.getLength(), 
+                sqlType, 
+                sqlType.equalsIgnoreCase("TEXT") || sqlType.equalsIgnoreCase("LONGTEXT") ? 0 : column.getLength(), 
                 column.getPrecision(), 
                 column.isKey(), 
-                column.isAutoIncrement(),
+                column.isAutoIncrement(), 
                 column.isRequired(),
                 column.getDefaultValue());
     }
@@ -94,8 +94,32 @@ class H2Dialect implements SQLDialect
         return "\"" + name + "\"";
     }
 
-    private String findType(JDBCType sqlType)
+    private String findSqlType(TableColumn<?, ?> column)
     {
-        return sqlType.getName();
+        switch(column.getSqlType())
+        {
+            case VARCHAR:
+            case NVARCHAR:
+                if(column.getLength() > 21845)
+                {
+                    return "TEXT";
+                }
+                return "VARCHAR";
+            case LONGNVARCHAR:
+            case LONGVARCHAR:
+                return "LONGTEXT";
+        }
+        return column.getSqlType().getName();
+    }
+
+    @Override
+    public String limit(int index, int size)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(index);
+        sb.append(", ");
+        sb.append(size);
+        return sb.toString();
     }
 }

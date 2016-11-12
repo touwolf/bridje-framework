@@ -67,4 +67,12 @@ public interface SQLDialect
      * @return The correct object string to be writen to the sql statement.
      */
     public String identifier(String name);
+    
+    /**
+     * 
+     * @param index
+     * @param size
+     * @return 
+     */
+    public String limit(int index, int size);
 }

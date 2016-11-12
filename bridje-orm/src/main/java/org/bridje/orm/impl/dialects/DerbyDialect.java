@@ -79,9 +79,19 @@ class DerbyDialect implements SQLDialect
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
+        int length = column.getLength();
+        String sqlType = findSqlType(column);
+        switch(sqlType)
+        {
+            case "LONGNVARCHAR":
+            case "LONGVARCHAR":
+                sqlType = "LONG VARCHAR";
+                length = 0;
+        }
+
         return b.buildColumnStmt(identifier(column.getName()), 
-                findType(column.getSqlType()), 
-                column.getLength(), 
+                sqlType, 
+                length, 
                 column.getPrecision(), 
                 column.isKey(), 
                 column.isAutoIncrement(), 
@@ -103,13 +113,40 @@ class DerbyDialect implements SQLDialect
         return "\"" + name + "\"";
     }
 
-    private String findType(JDBCType sqlType)
+    private String findSqlType(TableColumn<?, ?> column)
     {
-        if(sqlType == JDBCType.TINYINT)
+        if(column.getSqlType() == JDBCType.TINYINT)
         {
             return JDBCType.SMALLINT.getName();
         }
-        return sqlType.getName();
+        switch(column.getSqlType())
+        {
+            case VARCHAR:
+                if(column.getLength() > 21845)
+                {
+                    return JDBCType.LONGVARCHAR.name();
+                }
+                break;
+            case NVARCHAR:
+                if(column.getLength() > 21845)
+                {
+                    return JDBCType.LONGNVARCHAR.name();
+                }
+                break;
+        }
+        return column.getSqlType().getName();
+    }
+
+    @Override
+    public String limit(int index, int size)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" OFFSET ");
+        sb.append(index);
+        sb.append(" ROWS FETCH NEXT ");
+        sb.append(size);
+        sb.append(" ROWS ONLY");
+        return sb.toString();
     }
 }
 

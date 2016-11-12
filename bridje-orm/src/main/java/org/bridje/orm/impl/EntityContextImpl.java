@@ -95,7 +95,7 @@ class EntityContextImpl implements EntityContext
         {
             return cachedEntity;
         }
-        SelectBuilder qb = new SelectBuilder();
+        SelectBuilder qb = new SelectBuilder(dialect);
         qb.select(tableImpl.allFieldsCommaSep(this))
                 .from(dialect.identifier(tableImpl.getName()))
                 .where(tableImpl.buildIdCondition(this))
@@ -109,7 +109,7 @@ class EntityContextImpl implements EntityContext
     public <T> T refresh(T entity) throws SQLException
     {
         TableImpl<T> table = (TableImpl<T>) orm.findTable(entity.getClass());
-        SelectBuilder qb = new SelectBuilder();
+        SelectBuilder qb = new SelectBuilder(dialect);
         qb.select(table.allFieldsCommaSep(this))
                 .from(dialect.identifier(table.getName()))
                 .where(table.buildIdCondition(this))

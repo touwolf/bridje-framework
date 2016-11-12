@@ -129,4 +129,15 @@ class PostgreSQLDialect implements SQLDialect
         }
         return defaultValue;
     }
+
+    @Override
+    public String limit(int index, int size)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(index);
+        sb.append(", ");
+        sb.append(size);
+        return sb.toString();
+    }
 }

@@ -79,9 +79,10 @@ class MySQLDialect implements SQLDialect
 
     public String buildColumnStmt(TableColumn<?, ?> column, DDLBuilder b)
     {
+        String sqlType = findSqlType(column);
         return b.buildColumnStmt(identifier(column.getName()), 
-                findSqlType(column), 
-                column.getLength(), 
+                sqlType, 
+                sqlType.equalsIgnoreCase("TEXT") || sqlType.equalsIgnoreCase("LONGTEXT") ? 0 : column.getLength(), 
                 column.getPrecision(), 
                 column.isKey(), 
                 column.isAutoIncrement(), 
@@ -134,6 +135,17 @@ class MySQLDialect implements SQLDialect
                 return "LONGTEXT";
         }
         return column.getSqlType().getName();
+    }
+
+    @Override
+    public String limit(int index, int size)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(index);
+        sb.append(", ");
+        sb.append(size);
+        return sb.toString();
     }
 }
 
