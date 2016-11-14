@@ -42,6 +42,8 @@ public class AbstractWebView
     @XmlTransient
     private Widget root;
 
+    private String defaultTheme;
+
     /**
      * The root widget of this view.
      *
@@ -52,8 +54,18 @@ public class AbstractWebView
         if(root == null && definition != null)
         {
             root = definition.findRoot();
+            DefaultTheme annot = root.getClass().getPackage().getAnnotation(DefaultTheme.class);
+            if(annot != null)
+            {
+                defaultTheme = annot.name();
+            }
         }
         return root;
+    }
+
+    public String getDefaultTheme()
+    {
+        return defaultTheme;
     }
 
     public ViewDefinition getDefinition()

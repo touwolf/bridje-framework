@@ -69,10 +69,11 @@ public interface SQLDialect
     public String identifier(String name);
     
     /**
+     * Creates the limit statement for this dialect.
      * 
-     * @param index
-     * @param size
-     * @return 
+     * @param index The index of the limit.
+     * @param size The size of the limit.
+     * @return The limit statement.
      */
     public String limit(int index, int size);
 }

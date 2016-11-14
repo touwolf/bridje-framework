@@ -108,6 +108,10 @@ public class WebView extends AbstractWebView
      */
     public String getTheme()
     {
+        if(theme == null)
+        {
+            theme = getDefaultTheme();
+        }
         return theme;
     }
 
