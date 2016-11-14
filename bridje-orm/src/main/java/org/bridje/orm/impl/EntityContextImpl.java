@@ -124,8 +124,8 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
-                .fields(table.allFieldsCommaSepNoTable(this))
-                .valuesParams(table.getColumns().size());
+                .fields(table.nonAiFieldsCommaSepNoTable(this))
+                .valuesParams((int)table.nonAiFieldsStream(this).count());
 
         if (table.getKey().isAutoIncrement())
         {

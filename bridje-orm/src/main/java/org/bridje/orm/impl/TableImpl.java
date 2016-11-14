@@ -133,6 +133,13 @@ class TableImpl<T> implements Table<T>
         return columns.stream().map((field) -> prefix + ctx.getDialect().identifier(field.getName()));
     }
     
+    public Stream<String> nonAiFieldsStream(EntityContext ctx)
+    {
+        return columns.stream()
+                        .filter((field) -> !field.isAutoIncrement())
+                        .map((field) -> ctx.getDialect().identifier(field.getName()));
+    }
+    
     public String allFieldsCommaSep(EntityContext ctx)
     {
         return columns.stream()
@@ -143,6 +150,14 @@ class TableImpl<T> implements Table<T>
     public String allFieldsCommaSepNoTable(EntityContext ctx)
     {
         return columns.stream()
+                .map((column) -> ctx.getDialect().identifier(column.getName()))
+                .collect(Collectors.joining(", "));
+    }
+
+    public String nonAiFieldsCommaSepNoTable(EntityContext ctx)
+    {
+        return columns.stream()
+                .filter((column) -> !column.isAutoIncrement())
                 .map((column) -> ctx.getDialect().identifier(column.getName()))
                 .collect(Collectors.joining(", "));
     }
@@ -323,6 +338,7 @@ class TableImpl<T> implements Table<T>
     public <T> Object[] buildInsertParameters(T entity)
     {
         List<Object> result = columns.stream()
+                                .filter((fi) -> !fi.isAutoIncrement())
                                 .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
                                 .collect(Collectors.toList());
         return result.toArray();
