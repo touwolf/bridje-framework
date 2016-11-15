@@ -35,10 +35,10 @@ class ThemesBridlet implements HttpBridlet
 {
     @Inject
     private ThemesManager themesMang;
-    
+
     @InjectNext
     private HttpBridlet nextHandler;
-    
+
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
@@ -57,5 +57,4 @@ class ThemesBridlet implements HttpBridlet
         }
         return nextHandler.handle(context);
     }
-    
 }

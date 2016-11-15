@@ -41,8 +41,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -310,6 +312,34 @@ public class GenerateMojo extends AbstractMojo
             getLog().error(ex.getMessage(), ex);
         }
         return null;
+    }
+    
+    /**
+     * 
+     * @param folder
+     * @param fileExpr
+     * @return 
+     */
+    public List<GPathResult> loadXmlFiles(String folder, String fileExpr)
+    {
+        PathMatcher matcher =
+            FileSystems.getDefault().getPathMatcher("glob:" + fileExpr);
+        
+        File lookFolder = new File(sourceFolder + File.separator + folder);
+        File[] listFiles = lookFolder.listFiles((f) -> matcher.matches(f.toPath()));
+        List<GPathResult> lst = new ArrayList<>();
+        for (File file : listFiles)
+        {
+            try (FileReader fr = new FileReader(file))
+            {
+                lst.add(new XmlSlurper().parse(fr));
+            }
+            catch (ParserConfigurationException | SAXException | IOException ex)
+            {
+                getLog().error(ex.getMessage(), ex);
+            }
+        }
+        return lst;
     }
 
     /**
