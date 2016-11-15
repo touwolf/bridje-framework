@@ -154,7 +154,10 @@ class EntityContextImpl implements EntityContext
         UpdateBuilder ub = new UpdateBuilder();
 
         ub.update(dialect.identifier(table.getName()));
-        table.allFieldsStream(dialect.identifier(table.getName()) + ".", this).forEach(ub::set);
+        table.getColumns().stream()
+                .filter((c) -> !c.isAutoIncrement())
+                .map((c) -> dialect.identifier(table.getName()) + "." + dialect.identifier(c.getName()))
+                .forEach(ub::set);
         ub.where(table.buildIdCondition(this));
 
         Object updateId = id;

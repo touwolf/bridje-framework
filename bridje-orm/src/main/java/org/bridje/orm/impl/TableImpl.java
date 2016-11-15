@@ -329,6 +329,7 @@ class TableImpl<T> implements Table<T>
     public <T> Object[] buildUpdateParameters(T entity, Object id)
     {
         List<Object> result = columns.stream()
+                            .filter((fi) -> !fi.isAutoIncrement())
                             .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
                             .collect(Collectors.toList());
         result.add(id);
@@ -352,7 +353,9 @@ class TableImpl<T> implements Table<T>
     
     public String buildIdCondition(EntityContext ctx)
     {
-        return ctx.getDialect().identifier(((TableColumnImpl)key).getName()) + " = ?";
+        return ctx.getDialect().identifier(getName()) 
+                + "." 
+                + ctx.getDialect().identifier(key.getName()) + " = ?";
     }
     
     public String buildOrderBy(OrderBy orderBy, List<Object> parameters, EntityContextImpl ctx)
