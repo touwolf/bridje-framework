@@ -146,6 +146,16 @@ public class ${model.name}
     }
 
     /**
+     * Obtains the entity context.
+     *
+     * @return The entity context object.
+     */
+    public EntityContext getContext()
+    {
+        return context;
+    }
+
+    /**
      * Clears the internal cache of the entity context, so new queries retrieve
      * fresh data from the database, note that entities returned from this
      * context will be cached, so if you what to reset the context and release
@@ -190,7 +200,7 @@ public class ${model.name}
 
     /**
      * This method will find an entity given his class and id.
-     * 
+     *
      * @param <T> The type of the entity.
      * @param table The entity table to be find.
      * @param id The id of the entity to be find.
@@ -205,7 +215,7 @@ public class ${model.name}
     /**
      * This method will update all the fields of the entity from the actual
      * values in the database.
-     * 
+     *
      * @param <T> The type of the entity.
      * @param entity The entity to be refreshed.
      * @return The same entity passed to this method but with the fields
