@@ -63,8 +63,16 @@ public class AbstractWebView
         return root;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getDefaultTheme()
     {
+        if(defaultTheme == null)
+        {
+            getRoot();
+        }
         return defaultTheme;
     }
 
