@@ -18,11 +18,11 @@ package org.bridje.web.impl.convert;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
+import org.bridje.el.ElAdvanceConverter;
 import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Priority;
-import org.bridje.el.ElAdvanceConverter;
 
 /**
  * An EL type converter for HttpReqParam.
@@ -68,6 +68,12 @@ class HttpReqParamConverter implements ElAdvanceConverter
         if(Enum.class.isAssignableFrom(resClass))
         {
             return Enum.valueOf((Class<Enum>)resClass, value);
+        }
+        if(Boolean.class.isAssignableFrom(resClass))
+        {
+            return "true".equalsIgnoreCase(value) || 
+                    "on".equalsIgnoreCase(value) || 
+                    "1".equalsIgnoreCase(value);
         }
         return conv.convert(value, resClass);
     }
