@@ -408,7 +408,7 @@ public class WebViewsManager
 
     private void updateViewMetaTags(WebView view)
     {
-        if (view.getDefinition() == null || !(view.getDefinition() instanceof ExtendsFrom))
+        if (!(view.getDefinition() instanceof ExtendsFrom))
         {
             return;
         }

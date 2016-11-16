@@ -30,8 +30,6 @@ import org.codehaus.classworlds.DuplicateRealmException;
 
 class ClassPathUtils
 {
-    private static final Logger LOG = Logger.getLogger(ClassPathUtils.class.getName());
-
     public static ClassLoader createClassPath(MavenProject project)
             throws MalformedURLException, DuplicateRealmException, DependencyResolutionRequiredException
     {

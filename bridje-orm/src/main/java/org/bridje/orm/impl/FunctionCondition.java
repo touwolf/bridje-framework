@@ -119,7 +119,8 @@ class FunctionCondition extends AbstractCondition
      */
     private void writeLiteral(Object operand, List<Object> parameters, StringBuilder sb)
     {
-        sb.append(operand);
+        parameters.add(operand);
+        sb.append('?');
     }
 
     private void writeFunc( List<Object> parameters, StringBuilder sb)

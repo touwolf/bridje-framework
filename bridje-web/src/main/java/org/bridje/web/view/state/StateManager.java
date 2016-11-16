@@ -132,7 +132,7 @@ public class StateManager
         }
     }
 
-    private String findStateFieldName(Class<Object> clazz, Field field, StateField stateField)
+    private String findStateFieldName(Class<Object> clazz, Field field)
     {
         return clazz.getName().replaceAll("\\.", "_") + field.getName();
     }
@@ -151,7 +151,7 @@ public class StateManager
                     result.put(component, lst);
                 }
                 field.setAccessible(true);
-                String name = findStateFieldName(component, field, annot);
+                String name = findStateFieldName(component, field);
                 lst.put(field, name);
             });
             stateFields = result;
