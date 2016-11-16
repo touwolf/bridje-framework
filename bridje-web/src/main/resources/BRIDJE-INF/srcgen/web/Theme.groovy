@@ -264,71 +264,72 @@ def readDefResources = { theme, rNode ->
     }
 };
 
-def generateWidgetsAndTheme = { ->
-    if(tools.fileExists("web/theme.xml"))
-    {
-        def themeData = tools.loadXmlFile("web/theme.xml");
-        def theme = [:];
-        theme['package'] = themeData.'@package'.text();
-        theme['renderBody'] = themeData.'renderBody'.text();
-        theme['renderHead'] = themeData.'renderHead'.text();
-        theme['renderViewContainer'] = themeData.'renderViewContainer'.text();
-        theme['name'] = themeData.'@name'.text();
-        theme['namespace'] = themeData.'@namespace'.text();
-        theme['widgets'] = [];
-        theme['widgetsTemplates'] = [:];
-        theme['macros'] = [];
-        theme['defaultResources'] = [:];
-        theme['resources'] = [];
-        theme['resourcesMap'] = [:];
+def generateWidgetsAndTheme = { themeData ->
+    def theme = [:];
+    theme['package'] = themeData.'@package'.text();
+    theme['renderBody'] = themeData.'renderBody'.text();
+    theme['renderHead'] = themeData.'renderHead'.text();
+    theme['renderViewContainer'] = themeData.'renderViewContainer'.text();
+    theme['name'] = themeData.'@name'.text();
+    theme['namespace'] = themeData.'@namespace'.text();
+    theme['widgets'] = [];
+    theme['widgetsTemplates'] = [:];
+    theme['macros'] = [];
+    theme['defaultResources'] = [:];
+    theme['resources'] = [];
+    theme['resourcesMap'] = [:];
 
-        themeData.'resources'.'*'.each{ resNode ->
-            def resource = readResource(theme, resNode);
+    themeData.'resources'.'*'.each{ resNode ->
+        def resource = readResource(theme, resNode);
 
-            theme['resources'] << resource;
-            theme['resourcesMap'][resource['name']] = resource;
-        };
+        theme['resources'] << resource;
+        theme['resourcesMap'][resource['name']] = resource;
+    };
 
-        theme['defaultResources']['scripts'] = [];
-        theme['defaultResources']['styles'] = [];
-        theme['defaultResources']['links'] = [];
-        theme['defaultResources']['fonts'] = [];
+    theme['defaultResources']['scripts'] = [];
+    theme['defaultResources']['styles'] = [];
+    theme['defaultResources']['links'] = [];
+    theme['defaultResources']['fonts'] = [];
 
-        themeData.'defaultResources'.'*'.each{ resNode ->
-            readDefResources(theme, resNode);
-        };
+    themeData.'defaultResources'.'*'.each{ resNode ->
+        readDefResources(theme, resNode);
+    };
 
-        themeData.'macros'.'*'.each{ macroNode ->
-            def macro = [:];
-            
-            macro['name'] = macroNode.'@name'.text();
-            macro['parameters'] = macroNode.'@parameters'.text();
-            macro['content'] = macroNode.'content'.text();
-            
-            theme['macros'] << macro;
-        };
+    themeData.'macros'.'*'.each{ macroNode ->
+        def macro = [:];
 
-        themeData.'widgetsTemplates'.'*'.each{ widgetNode ->
-            def widget = readWidget(theme, widgetNode);
+        macro['name'] = macroNode.'@name'.text();
+        macro['parameters'] = macroNode.'@parameters'.text();
+        macro['content'] = macroNode.'content'.text();
 
-            theme['widgetsTemplates'][widget['name']] = widget;
-        };
+        theme['macros'] << macro;
+    };
 
-        themeData.'widgets'.'*'.each{ widgetNode ->
-            def widget = readWidget(theme, widgetNode);
+    themeData.'widgetsTemplates'.'*'.each{ widgetNode ->
+        def widget = readWidget(theme, widgetNode);
 
-            applyBaseTemplateWidget(theme, widget);
+        theme['widgetsTemplates'][widget['name']] = widget;
+    };
 
-            theme['widgets'] << widget;
-            def data = ['widget':widget];
-            data['theme'] = theme;
-            tools.generateClass(widget['fullName'], "web/Widget.ftl", data);
-        };
-        def themeFile = "BRIDJE-INF/web/themes/" + theme['name'] + "/Theme.ftl";
-        def data = ['theme':theme];
-        tools.generateResource(themeFile, "web/Theme.ftl", data);
-        tools.generateClass(theme['package'] + ".package-info", "web/package-info.ftl", data);
-    }
+    themeData.'widgets'.'*'.each{ widgetNode ->
+        def widget = readWidget(theme, widgetNode);
+
+        applyBaseTemplateWidget(theme, widget);
+
+        theme['widgets'] << widget;
+        def data = ['widget':widget];
+        data['theme'] = theme;
+        tools.generateClass(widget['fullName'], "web/Widget.ftl", data);
+    };
+    def themeFile = "BRIDJE-INF/web/themes/" + theme['name'] + "/Theme.ftl";
+    def data = ['theme':theme];
+    tools.generateResource(themeFile, "web/Theme.ftl", data);
+    tools.generateClass(theme['package'] + ".package-info", "web/package-info.ftl", data);
 };
 
-generateWidgetsAndTheme();
+def generateAll = { ->
+    def themes = tools.loadXmlFiles("web", "*.xml");
+    themes.each{ themeData -> generateWidgetsAndTheme(themeData); };
+};
+
+generateAll();

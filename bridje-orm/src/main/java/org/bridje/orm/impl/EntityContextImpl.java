@@ -125,7 +125,7 @@ class EntityContextImpl implements EntityContext
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
                 .fields(table.nonAiFieldsCommaSepNoTable(this))
-                .valuesParams((int)table.nonAiFieldsStream(this).count());
+                .valuesParams(table.getNonAiColumns().size());
 
         if (table.getKey().isAutoIncrement())
         {
@@ -152,12 +152,8 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         UpdateBuilder ub = new UpdateBuilder();
-
         ub.update(dialect.identifier(table.getName()));
-        table.getColumns().stream()
-                .filter((c) -> !c.isAutoIncrement())
-                .map((c) -> dialect.identifier(table.getName()) + "." + dialect.identifier(c.getName()))
-                .forEach(ub::set);
+        table.nonAiFieldsStream(dialect.identifier(table.getName()) + ".", this).forEach(ub::set);
         ub.where(table.buildIdCondition(this));
 
         Object updateId = id;

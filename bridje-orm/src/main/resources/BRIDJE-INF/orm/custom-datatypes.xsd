@@ -1,0 +1,47 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" targetNamespace="http://www.bridje.org/schemas/orm/datatypes" xmlns:tns="http://www.bridje.org/schemas/orm/datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="datatypes" type="tns:datatypes"/>
+
+    <xs:complexType name="datatypes">
+        <xs:sequence>
+            <xs:element name="datatype" type="tns:datatype" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="datatype">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="class"/>
+        <xs:attribute type="xs:string" name="adapter"/>
+        <xs:attribute type="tns:jdbcType" name="sqlType"/>
+        <xs:attribute type="xs:string" name="columnType"/>
+    </xs:complexType>
+
+    <xs:simpleType name="jdbcType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CHAR" />
+            <xs:enumeration value="VARCHAR" />
+            <xs:enumeration value="LONGVARCHAR" />
+            <xs:enumeration value="NUMERIC" />
+            <xs:enumeration value="DECIMAL" />
+            <xs:enumeration value="BIT" />
+            <xs:enumeration value="BOOLEAN" />
+            <xs:enumeration value="TINYINT" />
+            <xs:enumeration value="SMALLINT" />
+            <xs:enumeration value="INTEGER" />
+            <xs:enumeration value="BIGINT" />
+            <xs:enumeration value="REAL" />
+            <xs:enumeration value="FLOAT" />
+            <xs:enumeration value="DOUBLE" />
+            <xs:enumeration value="BINARY" />
+            <xs:enumeration value="VARBINARY" />
+            <xs:enumeration value="LONGVARBINARY" />
+            <xs:enumeration value="DATE" />
+            <xs:enumeration value="TIME" />
+            <xs:enumeration value="TIMESTAMP" />
+            <xs:enumeration value="CLOB" />
+            <xs:enumeration value="BLOB" />
+            <xs:enumeration value="ARRAY" />
+            <xs:enumeration value="DATALINK" />
+            <xs:enumeration value="JAVA_OBJECT" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -64,8 +64,9 @@ public class AbstractWebView
     }
 
     /**
+     * Gets the default theme associated with the roor widget of the view.
      * 
-     * @return 
+     * @return The default theme for the root widget of the view.
      */
     public String getDefaultTheme()
     {
@@ -76,6 +77,11 @@ public class AbstractWebView
         return defaultTheme;
     }
 
+    /**
+     * Gets the view definition widget for this view.
+     * 
+     * @return The view definition widget, standalone or extends.
+     */
     public ViewDefinition getDefinition()
     {
         return definition;

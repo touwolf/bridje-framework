@@ -453,55 +453,57 @@ def fixOperations = { entity ->
     };
 };
 
-def generateEntitys = { ->
-    if(tools.fileExists("orm/model.xml"))
-    {
-        def ormData = tools.loadXmlFile("orm/model.xml");
-        def model = [:];
-        model['name'] = ormData.'@name'.text();
-        model['package'] = ormData.'@package'.text();
-        model['fullName'] = model['package'] + "." + model['name'];
-        model['defEntityDesc'] = ormData.'@defEntityDesc'.text();
-        model['tablePrefix'] = ormData.'@tablePrefix'.text();
-        model['entitys'] = [];
-        model['entitysMap'] = [:];
-        def templates = [:];
+def generateEntitys = { ormData ->
+    def model = [:];
+    model['name'] = ormData.'@name'.text();
+    model['package'] = ormData.'@package'.text();
+    model['fullName'] = model['package'] + "." + model['name'];
+    model['defEntityDesc'] = ormData.'@defEntityDesc'.text();
+    model['tablePrefix'] = ormData.'@tablePrefix'.text();
+    model['entitys'] = [];
+    model['entitysMap'] = [:];
+    def templates = [:];
 
-        ormData.'templates'.'*'.each{ entityNode ->
+    ormData.'templates'.'*'.each{ entityNode ->
 
-            def entity = readEntityData(entityNode, model);
-            entity = readEntityFields(entityNode, entity, model);
+        def entity = readEntityData(entityNode, model);
+        entity = readEntityFields(entityNode, entity, model);
 
-            templates[entity['name']] = entity;
-        };
+        templates[entity['name']] = entity;
+    };
 
-        ormData.'entities'.'*'.each{ entityNode ->
+    ormData.'entities'.'*'.each{ entityNode ->
 
-            def entity = readEntityData(entityNode, model);
-            entity = readEntityFields(entityNode, entity, model);
-            applyBaseTemplate(entity, templates);
-            fixOperations(entity);
+        def entity = readEntityData(entityNode, model);
+        entity = readEntityFields(entityNode, entity, model);
+        applyBaseTemplate(entity, templates);
+        fixOperations(entity);
 
-            model['entitys'] << entity;
-            model['entitysMap'][entity['name']] = entity;
-            def data = ['entity':entity];
-            if(entity['keyField'] == null)
-                tools.log.error("The entity " + entity['name'] + ' does not have a key field.');
-            else
-                tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
-        };
+        model['entitys'] << entity;
+        model['entitysMap'][entity['name']] = entity;
+        def data = ['entity':entity];
+        if(entity['keyField'] == null)
+            tools.log.error("The entity " + entity['name'] + ' does not have a key field.');
+        else
+            tools.generateClass(entity['fullName'], "orm/Entity.ftl", data);
+    };
 
-        ormData.'enums'.'*'.each{ enumNode ->
+    ormData.'enums'.'*'.each{ enumNode ->
 
-            def enumData = readEnumData(enumNode, model);
+        def enumData = readEnumData(enumNode, model);
 
-            def data = ['enum':enumData];
-            tools.generateClass(enumData['fullName'], "orm/Enum.ftl", data);
-        };
+        def data = ['enum':enumData];
+        tools.generateClass(enumData['fullName'], "orm/Enum.ftl", data);
+    };
 
-        def data = ['model':model];
-        tools.generateClass(model['fullName'], "orm/Model.ftl", data);
-    }
+    def data = ['model':model];
+    tools.generateClass(model['fullName'], "orm/Model.ftl", data);
 };
 
-generateEntitys();
+def generateModels = { ->
+    def ormModels = tools.loadXmlFiles("orm", "*.xml");
+    
+    ormModels.each{ ormData -> generateEntitys(ormData); };
+};
+
+generateModels();

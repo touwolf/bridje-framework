@@ -313,18 +313,22 @@ public class GenerateMojo extends AbstractMojo
         }
         return null;
     }
-    
+
     /**
-     * 
-     * @param folder
-     * @param fileExpr
-     * @return 
+     * Loads all the xml files that mathc the fileExpr and are under the given
+     * folder into a list of GPathResult object that can be use withing groovy
+     * to navigate the content of the xml document.
+     *
+     * @param folder The folder in witch to look.
+     * @param fileExpr The glob expr to match the files.
+     *
+     * @return An GPathResult object.
      */
     public List<GPathResult> loadXmlFiles(String folder, String fileExpr)
     {
-        PathMatcher matcher =
-            FileSystems.getDefault().getPathMatcher("glob:" + fileExpr);
-        
+        PathMatcher matcher
+                = FileSystems.getDefault().getPathMatcher("glob:**/" + fileExpr);
+
         File lookFolder = new File(sourceFolder + File.separator + folder);
         File[] listFiles = lookFolder.listFiles((f) -> matcher.matches(f.toPath()));
         List<GPathResult> lst = new ArrayList<>();
@@ -398,31 +402,34 @@ public class GenerateMojo extends AbstractMojo
         }
         return result;
     }
-    
+
     /**
-     * Finds all the classes annotated tiwh the given annotation name, the key of the map is te value of the given attribute.
-     * 
+     * Finds all the classes annotated tiwh the given annotation name, the key
+     * of the map is te value of the given attribute.
+     *
      * @param anntCls The simple name of the annotation.
+     *
      * @return A map with the value of the annotations finded and the classes.
+     *
      * @throws IOException If any io exception occurs parsing the code.
      */
-    public Map<String, Map<String,String>> findProjectAnnotatedClasses(String anntCls) throws IOException
+    public Map<String, Map<String, String>> findProjectAnnotatedClasses(String anntCls) throws IOException
     {
-        Map<String, Map<String,String>> result = new HashMap<>();
+        Map<String, Map<String, String>> result = new HashMap<>();
         findAllJavaFiles(path ->
         {
             try
             {
                 CompilationUnit cu = JavaParser.parse(path.toFile());
-                findAnnotation(cu, anntCls, 
-                        (annotExp, clsDec) -> 
-                        {
-                            Map<String,String> attrValue = findAttributes(annotExp);
-                            if(attrValue != null)
-                            {
-                                result.put(cu.getPackage().getPackageName() + "." + clsDec.getName(), attrValue);
-                            }
-                        });
+                findAnnotation(cu, anntCls,
+                        (annotExp, clsDec) ->
+                {
+                    Map<String, String> attrValue = findAttributes(annotExp);
+                    if (attrValue != null)
+                    {
+                        result.put(cu.getPackage().getPackageName() + "." + clsDec.getName(), attrValue);
+                    }
+                });
             }
             catch (ParseException | IOException e)
             {
@@ -441,14 +448,14 @@ public class GenerateMojo extends AbstractMojo
             {
                 clsDec.getAnnotations().stream()
                         .filter(annot -> annot instanceof NormalAnnotationExpr)
-                        .map(annot -> (NormalAnnotationExpr)annot)
+                        .map(annot -> (NormalAnnotationExpr) annot)
                         .filter(nae -> nae.getName().getName().equals(annotCls))
                         .forEach(nae -> consumer.accept(nae, clsDec));
             }
 
-        }.visit(cu, null);        
+        }.visit(cu, null);
     }
-    
+
     private void findAllJavaFiles(Consumer<? super Path> consumer) throws IOException
     {
         List compileSourceRoots = project.getCompileSourceRoots();
@@ -461,10 +468,10 @@ public class GenerateMojo extends AbstractMojo
                     .forEach(consumer);
         }
     }
-    
-    private Map<String,String> findAttributes(NormalAnnotationExpr annot)
+
+    private Map<String, String> findAttributes(NormalAnnotationExpr annot)
     {
-        Map<String,String> reuslt = new HashMap<>();
+        Map<String, String> reuslt = new HashMap<>();
         List<MemberValuePair> pairs = annot.getPairs();
         for (MemberValuePair pair : pairs)
         {
@@ -475,10 +482,11 @@ public class GenerateMojo extends AbstractMojo
 
     private static String removeDoubleQuotes(String str)
     {
-        if(str.startsWith("\"") && str.endsWith("\""))
+        if (str.startsWith("\"") && str.endsWith("\""))
         {
-            return str.substring(1, str.length()-1);
+            return str.substring(1, str.length() - 1);
         }
         return str;
     }
+
 }

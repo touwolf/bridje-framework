@@ -35,7 +35,7 @@ public class CastUtils
      * found.
      * @throws java.sql.SQLException if a related entity cannot be found.
      */
-    public static <F> F castValue(Class<F> fieldType, Object value, EntityContextImpl ctx) throws SQLException
+    static <F> F castValue(Class<F> fieldType, Object value, EntityContextImpl ctx) throws SQLException
     {
         if (value != null)
         {

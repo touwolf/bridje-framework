@@ -47,6 +47,8 @@ class TableImpl<T> implements Table<T>
     private final TableColumn<T, ?> key;
 
     private final List<TableColumn<T, ?>> columns;
+    
+    private final List<TableColumn<T, ?>> nonAiColumns;
 
     private final Map<String, TableColumn<T, ?>> columnsMap;
     
@@ -66,6 +68,7 @@ class TableImpl<T> implements Table<T>
         columnsByNameMap = new HashMap<>();
         columns.stream().forEach((column) -> columnsMap.put(column.getField().getName(), column));
         columns.stream().forEach((column) -> columnsByNameMap.put(column.getName(), column));
+        nonAiColumns = columns.stream().filter(c -> !c.isAutoIncrement()).collect(Collectors.toList());
     }
 
     @Override
@@ -84,6 +87,11 @@ class TableImpl<T> implements Table<T>
     public List<TableColumn<T, ?>> getColumns()
     {
         return columns;
+    }
+    
+    public List<TableColumn<T, ?>> getNonAiColumns()
+    {
+        return nonAiColumns;
     }
 
     @Override
@@ -132,17 +140,25 @@ class TableImpl<T> implements Table<T>
     {
         return columns.stream().map((field) -> prefix + ctx.getDialect().identifier(field.getName()));
     }
-    
-    public Stream<String> nonAiFieldsStream(EntityContext ctx)
+
+    public Stream<String> nonAiFieldsStream(String prefix, EntityContext ctx)
     {
-        return columns.stream()
-                        .filter((field) -> !field.isAutoIncrement())
-                        .map((field) -> ctx.getDialect().identifier(field.getName()));
+        return nonAiColumns.stream()
+                        .map((field) -> prefix + ctx.getDialect()
+                        .identifier(field.getName()));
     }
     
     public String allFieldsCommaSep(EntityContext ctx)
     {
         return columns.stream()
+                .map((column) -> column.writeSQL(null, ctx))
+                .collect(Collectors.joining(", "));
+    }
+
+    public String nonAiFieldsCommaSep(EntityContext ctx)
+    {
+        return nonAiColumns.stream()
+                .filter((column) -> !column.isAutoIncrement())
                 .map((column) -> column.writeSQL(null, ctx))
                 .collect(Collectors.joining(", "));
     }
@@ -156,7 +172,7 @@ class TableImpl<T> implements Table<T>
 
     public String nonAiFieldsCommaSepNoTable(EntityContext ctx)
     {
-        return columns.stream()
+        return nonAiColumns.stream()
                 .filter((column) -> !column.isAutoIncrement())
                 .map((column) -> ctx.getDialect().identifier(column.getName()))
                 .collect(Collectors.joining(", "));

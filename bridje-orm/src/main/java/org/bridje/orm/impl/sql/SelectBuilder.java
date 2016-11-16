@@ -33,7 +33,7 @@ public class SelectBuilder
 
     /**
      * Default constructor.
-     * @param dialect
+     * @param dialect The SQL dialect for this builder, it may be null.
      */
     public SelectBuilder(SQLDialect dialect)
     {
