@@ -222,7 +222,7 @@ public class GenerateMojo extends AbstractMojo
     private File createClassFile(String className) throws IOException
     {
         String sep = File.separator;
-        if (sep.equals("\\"))
+        if ("\\".equals(sep))
         {
             sep = "\\\\";
         }

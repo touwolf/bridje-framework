@@ -31,7 +31,7 @@ import org.bridje.web.view.widgets.Widget;
  */
 @XmlRootElement(name = "view")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WebView extends AbstractWebView
+public final class WebView extends AbstractWebView
 {
     private static final Logger LOG = Logger.getLogger(WebView.class.getName());
 
@@ -68,8 +68,13 @@ public class WebView extends AbstractWebView
     {
         return metaTags;
     }
-    
-    void updateMetaTags(List<MetaTag> metas)
+
+    /**
+     * Adds the given meta tags for this view.
+     * 
+     * @param metas The list of meta tags to be added.
+     */
+    protected void updateMetaTags(List<MetaTag> metas)
     {
         if (metas == null || metas.isEmpty())
         {
@@ -77,15 +82,11 @@ public class WebView extends AbstractWebView
         }
         if (metaTags == null)
         {
-            metaTags = new LinkedList<>();
+            metaTags = new ArrayList<>();
         }
-        for (MetaTag meta : metas)
-        {
-            if (!metaTags.contains(meta))
-            {
-                metaTags.add(meta);
-            }
-        }
+        metas.stream()
+                .filter((meta) -> !metaTags.contains(meta))
+                .forEachOrdered(metaTags::add);
     }
 
     /**
@@ -178,25 +179,29 @@ public class WebView extends AbstractWebView
         return events.get(action);
     }
 
-    private boolean isValidView()
+    private boolean checkIsValidView()
     {
-        return getRoot() != null;
+        if(getRoot() != null)
+        {
+            return true;
+        }
+        LOG.log(Level.WARNING, "The view {0} does not have a valid root widget, it will be ignored.", getName());
+        return false;
     }
 
     private synchronized void initEvents()
     {
         if (events == null)
         {
-            if (!isValidView())
-            {
-                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
-                events = Collections.emptyMap();
-            }
-            else
+            if (checkIsValidView())
             {
                 Map<String, UIEvent> eventsMap = new HashMap<>();
                 findEvents(getRoot(), eventsMap);
                 events = eventsMap;
+            }
+            else
+            {
+                events = Collections.emptyMap();
             }
         }
     }
@@ -205,16 +210,15 @@ public class WebView extends AbstractWebView
     {
         if (widgets == null)
         {
-            if (!isValidView())
-            {
-                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
-                widgets = Collections.emptySet();
-            }
-            else
+            if (checkIsValidView())
             {
                 Set<Class<?>> widgetsSet = new HashSet<>();
                 findWidgets(getRoot(), widgetsSet);
                 widgets = widgetsSet;
+            }
+            else
+            {
+                widgets = Collections.emptySet();
             }
         }
     }
@@ -223,16 +227,15 @@ public class WebView extends AbstractWebView
     {
         if (resources == null)
         {
-            if (!isValidView())
-            {
-                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
-                resources = Collections.emptySet();
-            }
-            else
+            if (checkIsValidView())
             {
                 Set<String> resourcesSet = new HashSet<>();
                 findResources(getRoot(), resourcesSet);
                 resources = resourcesSet;
+            }
+            else
+            {
+                resources = Collections.emptySet();
             }
         }
     }
@@ -241,16 +244,15 @@ public class WebView extends AbstractWebView
     {
         if (inputs == null)
         {
-            if (!isValidView())
-            {
-                LOG.log(Level.WARNING, "Not valid view: {0}", getName());
-                inputs = Collections.emptyMap();
-            }
-            else
+            if (checkIsValidView())
             {
                 Map<String, UIInputExpression> inputsMap = new HashMap<>();
                 findInputs(getRoot(), inputsMap);
                 inputs = inputsMap;
+            }
+            else
+            {
+                inputs = Collections.emptyMap();
             }
         }
     }

@@ -108,6 +108,8 @@ class H2Dialect implements SQLDialect
             case LONGNVARCHAR:
             case LONGVARCHAR:
                 return "LONGTEXT";
+            default:
+                break;
         }
         return column.getSqlType().getName();
     }

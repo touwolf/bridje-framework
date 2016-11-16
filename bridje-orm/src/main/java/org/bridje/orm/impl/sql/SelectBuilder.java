@@ -78,7 +78,7 @@ public class SelectBuilder
      */
     public SelectBuilder join(String joinType, String table, String condition)
     {
-        sb.append(" ");
+        sb.append(' ');
         sb.append(joinType);
         sb.append(" JOIN ");
         sb.append(table);
@@ -137,7 +137,7 @@ public class SelectBuilder
             }
             else
             {
-                sb.append(" ");
+                sb.append(' ');
                 sb.append(dialect.limit(index, size));
             }
         }

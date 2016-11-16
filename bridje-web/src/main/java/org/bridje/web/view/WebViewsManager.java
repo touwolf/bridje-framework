@@ -278,14 +278,7 @@ public class WebViewsManager
         UIEvent event = findEvent(req, view);
         if (event != null)
         {
-            try
-            {
-                return invokeEvent(event);
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-            }
+            return invokeEvent(event);
         }
         return null;
     }
@@ -296,10 +289,8 @@ public class WebViewsManager
      * @param event The event to be invoked.
      *
      * @return The result of the event invocation.
-     *
-     * @throws java.lang.Exception If any unhandled exception occurs.
      */
-    public EventResult invokeEvent(UIEvent event) throws Exception
+    public EventResult invokeEvent(UIEvent event)
     {
         return Thls.doAs(() ->
         {

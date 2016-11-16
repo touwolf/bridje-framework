@@ -47,37 +47,25 @@ class ScopeBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        try
+        WebScope scope = new WebScope(context);
+        IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
+        context.set(WebScope.class, scope);
+        context.set(IocContext.class, wrsCtx);
+        return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
         {
-            WebScope scope = new WebScope(context);
-            IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
-            context.set(WebScope.class, scope);
-            context.set(IocContext.class, wrsCtx);
-            return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
+            @Override
+            public Boolean execute() throws IOException, HttpException
             {
-                @Override
-                public Boolean execute() throws IOException, HttpException
+                return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
                 {
-                    return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
+                    @Override
+                    public Boolean execute() throws IOException, HttpException
                     {
-                        @Override
-                        public Boolean execute() throws IOException, HttpException
-                        {
-                            return nextHandler.handle(context);
-                        }
-                    }, WebScope.class, scope );
-                }
-                
-            }, IocContext.class, wrsCtx );
-        }
-        catch (IOException | HttpException e)
-        {
-            throw e;
-        }
-        catch (Exception ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            throw new HttpException(500, ex.getMessage(), ex);
-        }
+                        return nextHandler.handle(context);
+                    }
+                }, WebScope.class, scope );
+            }
+
+        }, IocContext.class, wrsCtx );
     }
 }

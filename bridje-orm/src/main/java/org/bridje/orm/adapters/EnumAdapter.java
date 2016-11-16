@@ -47,6 +47,8 @@ public class EnumAdapter implements SQLAdapter
                     case NVARCHAR:
                     case NCHAR:
                         return serializeName((Enum) value);
+                    default:
+                        return null;
                 }
             }
         }

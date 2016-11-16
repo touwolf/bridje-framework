@@ -87,6 +87,7 @@ class DerbyDialect implements SQLDialect
             case "LONGVARCHAR":
                 sqlType = "LONG VARCHAR";
                 length = 0;
+                break;
         }
 
         return b.buildColumnStmt(identifier(column.getName()), 
@@ -132,6 +133,8 @@ class DerbyDialect implements SQLDialect
                 {
                     return JDBCType.LONGNVARCHAR.name();
                 }
+                break;
+            default:
                 break;
         }
         return column.getSqlType().getName();

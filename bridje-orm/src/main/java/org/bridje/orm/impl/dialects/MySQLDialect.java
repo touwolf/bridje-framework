@@ -133,6 +133,8 @@ class MySQLDialect implements SQLDialect
             case LONGNVARCHAR:
             case LONGVARCHAR:
                 return "LONGTEXT";
+            default:
+                break;
         }
         return column.getSqlType().getName();
     }
