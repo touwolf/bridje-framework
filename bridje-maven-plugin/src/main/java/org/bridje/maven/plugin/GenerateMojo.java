@@ -332,15 +332,18 @@ public class GenerateMojo extends AbstractMojo
         File lookFolder = new File(sourceFolder + File.separator + folder);
         File[] listFiles = lookFolder.listFiles((f) -> matcher.matches(f.toPath()));
         List<GPathResult> lst = new ArrayList<>();
-        for (File file : listFiles)
+        if(listFiles != null)
         {
-            try (FileReader fr = new FileReader(file))
+            for (File file : listFiles)
             {
-                lst.add(new XmlSlurper().parse(fr));
-            }
-            catch (ParserConfigurationException | SAXException | IOException ex)
-            {
-                getLog().error(ex.getMessage(), ex);
+                try (FileReader fr = new FileReader(file))
+                {
+                    lst.add(new XmlSlurper().parse(fr));
+                }
+                catch (ParserConfigurationException | SAXException | IOException ex)
+                {
+                    getLog().error(ex.getMessage(), ex);
+                }
             }
         }
         return lst;
