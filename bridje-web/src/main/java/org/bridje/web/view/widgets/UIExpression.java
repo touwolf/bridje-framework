@@ -66,7 +66,7 @@ public class UIExpression
         }
         catch (Exception e)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            LOG.log(Level.SEVERE, "The expression " + expression + " is not valid: " + e.getMessage(), e);
         }
         return null;
     }

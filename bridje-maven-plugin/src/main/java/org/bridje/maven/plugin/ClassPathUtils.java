@@ -20,7 +20,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.project.MavenProject;
@@ -50,5 +49,4 @@ class ClassPathUtils
         }
         return newRealm.getClassLoader();
     }
-
 }

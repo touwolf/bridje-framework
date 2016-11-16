@@ -17,8 +17,6 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpException;
@@ -36,8 +34,6 @@ import org.bridje.web.WebScope;
 @Priority(0)
 class ScopeBridlet implements HttpBridlet
 {
-    private static final Logger LOG = Logger.getLogger(ScopeBridlet.class.getName());
-
     @Inject
     private IocContext<Application> appCtx;
 
