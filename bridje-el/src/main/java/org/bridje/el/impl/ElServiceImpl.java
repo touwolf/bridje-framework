@@ -16,11 +16,11 @@
 
 package org.bridje.el.impl;
 
-import org.bridje.ioc.Component;
-import org.bridje.ioc.IocContext;
-import org.bridje.el.ElService;
 import org.bridje.el.ElEnvironment;
+import org.bridje.el.ElService;
+import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.IocContext;
 
 @Component
 class ElServiceImpl implements ElService

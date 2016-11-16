@@ -19,18 +19,18 @@ package org.bridje.web.impl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpException;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
-import org.bridje.web.WebScope;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpException;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.ioc.thls.ThlsActionException2;
+import org.bridje.web.WebScope;
 
 @Component
 @Priority(0)

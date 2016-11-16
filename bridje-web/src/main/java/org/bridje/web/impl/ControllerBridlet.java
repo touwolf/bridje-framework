@@ -24,8 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpCookie;
+import org.bridje.http.HttpException;
+import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.ReqPathRef;
@@ -33,11 +38,6 @@ import org.bridje.web.WebCookie;
 import org.bridje.web.WebMethod;
 import org.bridje.web.WebParameter;
 import org.bridje.web.WebScope;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpException;
-import org.bridje.http.HttpReqParam;
-import org.bridje.ioc.InjectNext;
 
 @Component
 @Priority(500)

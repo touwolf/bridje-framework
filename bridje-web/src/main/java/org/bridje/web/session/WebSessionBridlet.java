@@ -20,16 +20,16 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.UUID;
+import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpCookie;
+import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.WebScope;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpException;
 
 @Component
 @Priority(20)

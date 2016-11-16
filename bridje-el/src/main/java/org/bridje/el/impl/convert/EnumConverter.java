@@ -16,9 +16,9 @@
 
 package org.bridje.el.impl.convert;
 
+import org.bridje.el.ElAdvanceConverter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Priority;
-import org.bridje.el.ElAdvanceConverter;
 
 @Component
 @Priority(5020)

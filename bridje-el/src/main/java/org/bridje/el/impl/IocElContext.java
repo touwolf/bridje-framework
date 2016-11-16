@@ -27,8 +27,8 @@ import javax.el.ExpressionFactory;
 import javax.el.FunctionMapper;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
-import org.bridje.ioc.IocContext;
 import org.bridje.el.ModelResolver;
+import org.bridje.ioc.IocContext;
 
 class IocElContext extends ELContext
 {

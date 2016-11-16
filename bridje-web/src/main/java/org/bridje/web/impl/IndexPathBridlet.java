@@ -17,13 +17,13 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
+import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.ReqPathRef;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpException;
 
 @Component
 @Priority(100)

@@ -20,14 +20,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.InjectNext;
-import org.bridje.ioc.Priority;
+import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
-import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpException;
+import org.bridje.ioc.Component;
+import org.bridje.ioc.InjectNext;
+import org.bridje.ioc.Priority;
 
 /**
  *

@@ -20,9 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
-import org.bridje.el.ElEnvironment;
 
 class IocEnviromentImpl implements ElEnvironment
 {

@@ -17,8 +17,8 @@
 package org.bridje.vfs.impl;
 
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsSource;
 import org.bridje.vfs.VResource;
+import org.bridje.vfs.VfsSource;
 
 class PhysicalResource extends AbstractResource implements VResource
 {

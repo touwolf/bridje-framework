@@ -18,13 +18,13 @@ package org.bridje.web.view;
 
 import java.io.IOException;
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.http.HttpBridlet;
+import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpException;
 
 @Component
 @Priority(600)

@@ -23,8 +23,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.vfs.VfsService;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VfsService;
 
 @Component
 class ThemesTplLoader implements TemplateLoader

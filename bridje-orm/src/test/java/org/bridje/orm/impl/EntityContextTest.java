@@ -28,11 +28,11 @@ import org.bridje.jdbc.JdbcService;
 import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrmService;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import static org.junit.Assert.*;
 
 /**
  *

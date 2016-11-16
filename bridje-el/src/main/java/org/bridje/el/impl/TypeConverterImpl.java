@@ -21,12 +21,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.el.ELException;
+import org.bridje.el.ElAdvanceConverter;
 import org.bridje.el.ElSimpleConvertMap;
+import org.bridje.el.ElSimpleConvertProvider;
+import org.bridje.el.ElSimpleConverter;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.el.ElAdvanceConverter;
-import org.bridje.el.ElSimpleConverter;
-import org.bridje.el.ElSimpleConvertProvider;
 
 @Component
 class TypeConverterImpl implements TypeConverter
