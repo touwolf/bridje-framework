@@ -5,7 +5,7 @@
 [#list theme.resources as r]
 <#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
-    <@renderScript themeName "${s.href}" />
+    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
 [/#list]
 </#macro>
 
@@ -44,7 +44,7 @@
 
 <#macro renderThemeScripts themeName>
     [#list theme.defaultResources.scripts as s]
-    <@renderScript themeName "${s.href}" />
+    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
     [/#list]
     <#list view.resources as r>
         <#assign macroName = "render" + r?cap_first + "Scripts" />
