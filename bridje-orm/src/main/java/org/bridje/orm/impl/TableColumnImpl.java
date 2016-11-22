@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
+import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.Key;
@@ -468,5 +469,17 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     public Condition le(T value)
     {
         return new BinaryCondition(this, Operator.LE, serialize(value));
+    }
+
+    @Override
+    public Column<T> max()
+    {
+        return new FunctionColumnImpl<>(this, type, "MAX(%s)");
+    }
+
+    @Override
+    public Column<T> min()
+    {
+        return new FunctionColumnImpl<>(this, type, "MIN(%s)");
     }
 }

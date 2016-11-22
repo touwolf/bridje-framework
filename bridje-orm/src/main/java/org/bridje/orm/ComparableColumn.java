@@ -28,6 +28,18 @@ package org.bridje.orm;
 public interface ComparableColumn<T> extends Column<T>
 {
     /**
+     * 
+     * @return 
+     */
+    Column<T> max();
+    
+    /**
+     * 
+     * @return 
+     */
+    Column<T> min();
+    
+    /**
      * Creates a new greather than "&gt;" condition with this column as a left
      * operand and the provided value as the left operand.
      *
