@@ -208,4 +208,16 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
         }
         return value;
     }
+
+    @Override
+    public Column<T> max()
+    {
+        return new FunctionColumnImpl<>(this, getType(), "MAX(%s)");
+    }
+
+    @Override
+    public Column<T> min()
+    {
+        return new FunctionColumnImpl<>(this, getType(), "MIN(%s)");
+    }
 }
