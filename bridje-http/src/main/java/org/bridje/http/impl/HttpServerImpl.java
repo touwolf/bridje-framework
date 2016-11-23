@@ -93,12 +93,12 @@ class HttpServerImpl implements HttpServer
     @Override
     public void start()
     {
-        logBridlets();
         serverThread = new Thread(() ->
         {
             try
             {
                 LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
+                logBridlets();
                 group = new NioEventLoopGroup();
                 try
                 {

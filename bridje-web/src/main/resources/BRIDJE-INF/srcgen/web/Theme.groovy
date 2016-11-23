@@ -218,6 +218,8 @@ def readResource = { theme, resNode ->
         {
             def script = [:];
             script['href'] = removeSlash(rNode.'@href'.text());
+            script['async'] = rNode.'@async'.text() == "true";
+            script['defer'] = rNode.'@defer'.text() == "true";
             resource['scripts'] << script;
         }
         else if(rNode.name() == "style")
@@ -241,6 +243,8 @@ def readDefResources = { theme, rNode ->
     {
         def script = [:];
         script['href'] = removeSlash(rNode.'@href'.text());
+        script['async'] = rNode.'@async'.text() == "true";
+        script['defer'] = rNode.'@defer'.text() == "true";
         theme['defaultResources']['scripts'] << script;
     }
     else if(rNode.name() == "style")

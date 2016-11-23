@@ -31,11 +31,11 @@
     </#if>
 </#macro>
 
-<#macro renderScript theme script>
+<#macro renderScript theme script async=false defer=false>
     <#if script?starts_with("http://") || script?starts_with("https://")>
-        <script src="${script}" type="text/javascript"></script>
+        <script src="${script}" type="text/javascript"<#if async> async</#if><#if defer> defer</#if>></script>
     <#else>
-        <script src="/__themes/${theme}/${script}" type="text/javascript"></script>
+        <script src="/__themes/${theme}/${script}" type="text/javascript"<#if async> async</#if><#if defer> defer</#if>></script>
     </#if>
 </#macro>
 

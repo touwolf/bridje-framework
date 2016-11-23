@@ -28,14 +28,16 @@ package org.bridje.orm;
 public interface ComparableColumn<T> extends Column<T>
 {
     /**
+     * Returns a new function column representing the max aggregated function for this column.
      * 
-     * @return 
+     * @return A new function column representing the max aggregated function for this column.
      */
     Column<T> max();
     
     /**
+     * Returns a new function column representing the min aggregated function for this column.
      * 
-     * @return 
+     * @return A new function column representing the min aggregated function for this column.
      */
     Column<T> min();
     
