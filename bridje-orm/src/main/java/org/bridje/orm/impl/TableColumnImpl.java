@@ -340,15 +340,25 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     @Override
     public Condition in(T... values)
     {
-        return new FunctionCondition(this, "IN", values);
+        return new FunctionCondition(this, "IN", serializeAll(values));
     }
 
     @Override
     public Condition notIn(T... values)
     {
-        return new FunctionCondition(this, "NOT IN", values);
+        return new FunctionCondition(this, "NOT IN", serializeAll(values));
     }
-    
+
+    public Object[] serializeAll(T[] values)
+    {
+        Object[] rawValues = new Object[values.length];
+        for(int i = 0; i < values.length; i++)
+        {
+            rawValues[i] = serialize(values[i]);
+        }
+        return rawValues;
+    }
+
     @Override
     public Object serialize(T value)
     {
