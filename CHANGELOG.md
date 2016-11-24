@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.3.0](https://github.com/bridje/bridje-framework/tree/v0.3.0) (2016-11-23)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.3...v0.3.0)
+
+
 ## [v0.2.3](https://github.com/bridje/bridje-framework/tree/v0.2.3) (2016-07-29)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.2...v0.2.3)
 
