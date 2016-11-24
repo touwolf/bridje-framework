@@ -48,38 +48,43 @@ Installation and Usage
 Bridje libraries are available on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
     <dependencies>
-		....
+	....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.2.3</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-vfs</artifactId>
-            <version>0.2.3</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.2.3</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-web</artifactId>
-            <version>0.2.2</version>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-el</artifactId>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.2.3</version>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.2.3</version>
+            <version>0.3.0</version>
         </dependency>
-		....
+	....
     </dependencies>
 
     <build>
@@ -88,9 +93,9 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
             <plugin>
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
-                <version>0.2.3</version>
+                <version>0.3.0</version>
                 <configuration>
-                	....
+			....
                 </configuration>
             <plugin>
              ...
