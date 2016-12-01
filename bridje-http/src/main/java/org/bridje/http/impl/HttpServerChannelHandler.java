@@ -59,9 +59,6 @@ import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.ioc.Ioc;
 
-/**
- *
- */
 class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
