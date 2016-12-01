@@ -48,7 +48,7 @@ Installation and Usage
 Bridje libraries are available on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
     <dependencies>
-	....
+		....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
@@ -84,7 +84,7 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
             <artifactId>bridje-orm</artifactId>
             <version>0.3.0</version>
         </dependency>
-	....
+		....
     </dependencies>
 
     <build>
