@@ -2,21 +2,21 @@
 package org.bridje.sip;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SipRequestMessage
+public class SipRequest extends SipMessage
 {
-    private String method;
+    private SipMethod method;
 
     private String uri;
-    
-    private String version;
 
-    private Map<String,String> headers;
-    
+    private SipVersion version;
+
+    private List<SipViaInfo> via;
+
     private String body;
-    
+
     private InetSocketAddress sender;
 
     public InetSocketAddress getSender()
@@ -28,13 +28,13 @@ public class SipRequestMessage
     {
         this.sender = sender;
     }
-    
-    public String getMethod()
+
+    public SipMethod getMethod()
     {
         return method;
     }
 
-    public void setMethod(String method)
+    public void setMethod(SipMethod method)
     {
         this.method = method;
     }
@@ -49,23 +49,31 @@ public class SipRequestMessage
         this.uri = uri;
     }
 
-    public String getVersion()
+    public SipVersion getVersion()
     {
         return version;
     }
 
-    public void setVersion(String version)
+    public void setVersion(SipVersion version)
     {
         this.version = version;
     }
 
-    public Map<String, String> getHeaders()
+    public List<SipViaInfo> getVia()
     {
-        if(headers == null)
+        if(via == null)
         {
-            headers = new HashMap<>();
+            List<String> viaHeaders = getHeaders().get("Via");
+            if(viaHeaders != null)
+            {
+                this.via = new ArrayList<>(viaHeaders.size());
+                for (String viaHeader : viaHeaders)
+                {
+                    this.via.add(SipViaInfo.fromString(viaHeader));
+                }
+            }
         }
-        return headers;
+        return via;
     }
 
     public String getBody()
@@ -85,8 +93,8 @@ public class SipRequestMessage
         {
             throw new IllegalArgumentException("Invalid sip message intro");
         }
-        setMethod(introArr[0]);
+        setMethod(SipMethod.valueOf(introArr[0]));
         setUri(introArr[1]);
-        setVersion(introArr[2]);
+        setVersion(SipVersion.fromString(introArr[2]));
     }
 }

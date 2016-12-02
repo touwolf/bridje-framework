@@ -24,8 +24,8 @@ import org.bridje.sip.SipException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
-import org.bridje.sip.SipRequestMessage;
-import org.bridje.sip.SipResponseMessage;
+import org.bridje.sip.SipRequest;
+import org.bridje.sip.SipResponse;
 
 @Component
 @Priority(Integer.MIN_VALUE)
@@ -37,14 +37,14 @@ class RootSipBridlet implements SipBridlet
     private SipBridlet handler;
     
     @Override
-    public SipResponseMessage handle(SipRequestMessage req) throws IOException
+    public SipResponse handle(SipRequest req) throws IOException
     {
         LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{req.getMethod(), req.getUri(), req.getVersion()});
         try
         {
             if(handler != null)
             {
-                SipResponseMessage resp = handler.handle(req);
+                SipResponse resp = handler.handle(req);
                 if(resp != null)
                 {
                     return resp;
@@ -56,7 +56,7 @@ class RootSipBridlet implements SipBridlet
         {
             LOG.log(Level.WARNING, "{0} {1} {2} - {3} {4}", 
                         new Object[]{req.getMethod(), req.getUri(), req.getVersion(), e.getStatus(), e.getMessage()});
-            SipResponseMessage resp = new SipResponseMessage();
+            SipResponse resp = new SipResponse();
             resp.setStatusCode(e.getStatus());
             resp.setMessage(e.getMessage());
             resp.setVersion(req.getVersion());

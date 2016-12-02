@@ -2,27 +2,23 @@
 package org.bridje.sip;
 
 import java.net.InetSocketAddress;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-public class SipResponseMessage
+public class SipResponse extends SipMessage
 {
-    private String version;
+    private SipVersion version;
 
     private int statusCode;
-    
-    private String message;
 
-    private Map<String,String> headers;
+    private String message;
 
     private InetSocketAddress recipient;
 
-    public String getVersion()
+    public SipVersion getVersion()
     {
         return version;
     }
 
-    public void setVersion(String version)
+    public void setVersion(SipVersion version)
     {
         this.version = version;
     }
@@ -45,15 +41,6 @@ public class SipResponseMessage
     public void setMessage(String message)
     {
         this.message = message;
-    }
-
-    public Map<String, String> getHeaders()
-    {
-        if(headers == null)
-        {
-            headers = new LinkedHashMap<>();
-        }
-        return headers;
     }
 
     public InetSocketAddress getRecipient()

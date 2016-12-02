@@ -1,11 +1,12 @@
 
 package org.bridje.sip.impl;
 
-import org.bridje.sip.SipRequestMessage;
+import org.bridje.sip.SipRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +15,7 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
 {
     private static final Logger LOG = Logger.getLogger(SipRequestDecoder.class.getName());
 
-    private SipRequestMessage currentMessage = new SipRequestMessage();
+    private SipRequest currentMessage = new SipRequest();
 
     private String intro = "";
 
@@ -58,7 +59,7 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
             {
                 if(parseIntro)
                 {
-                    currentMessage.setIntro(intro);
+                    currentMessage.setIntro(doTrim(intro));
                     parseIntro = false;
                 }
                 else
@@ -78,7 +79,14 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
                     }
                     else
                     {
-                        currentMessage.getHeaders().put(doTrim(currentKey), doTrim(currentVal));
+                        String currKey = doTrim(currentKey);
+                        List<String> lst = currentMessage.getHeaders().get(currKey);
+                        if(lst == null)
+                        {
+                            lst = new ArrayList<>();
+                            currentMessage.getHeaders().put(currKey, lst);
+                        }
+                        lst.add(doTrim(currentVal));
                         currentKey = "";
                         currentVal = "";
                     }
@@ -120,7 +128,7 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
     }
     private void prepareNextMessage()
     {
-        currentMessage = new SipRequestMessage();
+        currentMessage = new SipRequest();
         intro = "";
         currentKey = "";
         currentVal = "";
@@ -133,7 +141,12 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
 
     private int findContentLength()
     {
-        String clStr = currentMessage.getHeaders().get("Content-Length");
+        List<String> lstClStr = currentMessage.getHeaders().get("Content-Length");
+        String clStr = null;
+        if(lstClStr != null && lstClStr.size() > 0)
+        {
+            clStr = lstClStr.get(0);
+        }
         try
         {
             if(clStr != null && !clStr.isEmpty())

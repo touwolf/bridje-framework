@@ -43,6 +43,6 @@ public interface SipBridlet
      *                                     message that must be return to the
      *                                     client.
      */
-    SipResponseMessage handle(SipRequestMessage reqMsg) throws IOException, SipException;
+    SipResponse handle(SipRequest reqMsg) throws IOException, SipException;
 
 }
