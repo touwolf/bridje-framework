@@ -18,23 +18,9 @@ package org.bridje.orm.srcgen.inf;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RelationFieldInf extends FieldInfBase
+public class UpdateOperationInf extends OperationInfBase
 {
-    @XmlIDREF
-    @XmlAttribute
-    private EntityInf type;
 
-    public EntityInf getType()
-    {
-        return type;
-    }
-
-    public void setType(EntityInf type)
-    {
-        this.type = type;
-    }
 }

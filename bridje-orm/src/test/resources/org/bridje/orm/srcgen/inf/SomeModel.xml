@@ -15,7 +15,7 @@
         </template>
     </templates>
     <entities>
-        <entity name="WebSessionEntry" base="DefaultEntity" >
+        <entity name="SomeEntity" base="DefaultEntity" >
             <operations>
                 <readOne name="findEntryValue" params="sessionId,name" result="value" />
                 <readOne name="findEntry" params="sessionId,name" />
@@ -28,16 +28,26 @@
             </operations>
             <fields>
                 <integer type="Integer" name="integerField" sqlType="INTEGER" length="10" required="false" indexed="true" key="false" description="Some int field" />
-                <string name="someString" length="100" sqlType="VARCHAR" required="true" key="false" indexed="true" description="Some string field" />
+                <string name="someString" length="100" sqlType="VARCHAR" required="true" key="false" indexed="true" description="Some string field" emptyToNull="true" blankToNull="true" />
                 <decimal type="Double" name="doubleField" sqlType="DOUBLE" length="10" precision="5" required="false" indexed="true" key="false" description="Some double field" />
                 <datetime type="LocalDateTime" name="datetimeField" sqlType="DATETIME" required="false" indexed="true" key="false" description="Some datetime field" />
-                <!-- Por Hacer
-                <custom name="lastUse" index="true" type="LocalDateTime" />
-                <string name="sessionId" length="36" index="true" required="true" blankToNull="true" />
-                <string name="name" length="256" index="true" required="true" blankToNull="true" />
-                <string name="value" length="65535" required="true" blankToNull="true" />
-                -->
+                <relation type="SomeEntity1" name="relationField" required="false" indexed="true" key="false" description="Some relation" />
+                <enum type="SomeEnum" name="someEnum" sqlType="BYTE" required="false" indexed="true" key="false" description="Some enums" />
+                <custom type="SomeType" name="someCustom" autoIncrement="false" required="false" indexed="true" key="false" description="Some custom field" />
             </fields>
         </entity>
+        <entity name="SomeEntity1" base="DefaultEntity" >
+            <fields>
+                <integer type="Integer" name="integerField" sqlType="INTEGER" length="10" required="false" indexed="true" key="false" description="Some int field" />
+            </fields>            
+        </entity>
     </entities>
+    <enums>
+        <enum name="SomeEnum" description="Some enum">
+            <constants>
+                <constant name="CONST1" description="Constant 1" />
+                <constant name="CONST2" description="Constant 2" />
+            </constants>
+        </enum>
+    </enums>
 </model>

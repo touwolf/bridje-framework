@@ -16,9 +16,14 @@
 
 package org.bridje.orm.srcgen.inf;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -30,6 +35,13 @@ public class EnumInf
 
     @XmlAttribute
     private String description;
+    
+    @XmlElementWrapper(name = "constants")
+    @XmlElements(
+    {
+        @XmlElement(name = "constant", type = EnumConstantInf.class)
+    })
+    private List<EnumConstantInf> constants;
 
     public String getName()
     {
@@ -49,5 +61,14 @@ public class EnumInf
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public List<EnumConstantInf> getConstants()
+    {
+        if(constants == null)
+        {
+            constants = new ArrayList<>();
+        }
+        return constants;
     }
 }

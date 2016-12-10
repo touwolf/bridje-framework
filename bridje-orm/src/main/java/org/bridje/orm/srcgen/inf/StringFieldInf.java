@@ -30,6 +30,12 @@ public class StringFieldInf extends FieldInfBase
     @XmlAttribute
     private Integer length;
 
+    @XmlAttribute
+    private Boolean emptyToNull;
+    
+    @XmlAttribute
+    private Boolean blankToNull;
+    
     public Integer getLength()
     {
         return length;
@@ -50,6 +56,26 @@ public class StringFieldInf extends FieldInfBase
         this.sqlType = sqlType;
     }
 
+    public Boolean getEmptyToNull()
+    {
+        return emptyToNull;
+    }
+
+    public void setEmptyToNull(Boolean emptyToNull)
+    {
+        this.emptyToNull = emptyToNull;
+    }
+
+    public Boolean getBlankToNull()
+    {
+        return blankToNull;
+    }
+
+    public void setBlankToNull(Boolean blankToNull)
+    {
+        this.blankToNull = blankToNull;
+    }
+    
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
     }

@@ -19,58 +19,35 @@ package org.bridje.orm.srcgen.inf;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IntegerFieldInf extends FieldInfBase
+public class OperationInfBase
 {
+    @XmlID
     @XmlAttribute
-    private IntegerFieldType type;
-    
+    private String name;
+
     @XmlAttribute
-    private IntegerFieldSQLType sqlType;
-    
-    @XmlAttribute
-    private Integer length;
-    
-    private Boolean autoIncrement;
+    private String description;
 
-    public IntegerFieldType getType()
+    public String getName()
     {
-        return type;
+        return name;
     }
 
-    public void setType(IntegerFieldType type)
+    public void setName(String name)
     {
-        this.type = type;
+        this.name = name;
     }
 
-    public IntegerFieldSQLType getSqlType()
+    public String getDescription()
     {
-        return sqlType;
+        return description;
     }
 
-    public void setSqlType(IntegerFieldSQLType sqlType)
+    public void setDescription(String description)
     {
-        this.sqlType = sqlType;
-    }
-
-    public Integer getLength()
-    {
-        return length;
-    }
-
-    public void setLength(Integer length)
-    {
-        this.length = length;
-    }
-
-    public Boolean isAutoIncrement()
-    {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Boolean autoIncrement)
-    {
-        this.autoIncrement = autoIncrement;
+        this.description = description;
     }
 }

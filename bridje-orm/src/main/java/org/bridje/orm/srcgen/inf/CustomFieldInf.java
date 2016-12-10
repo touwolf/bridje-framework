@@ -18,8 +18,34 @@ package org.bridje.orm.srcgen.inf;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CustomFieldInf extends FieldInfBase
 {
+    @XmlAttribute
+    private String type;
+
+    @XmlAttribute
+    private Boolean autoIncrement;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public Boolean isAutoIncrement()
+    {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(Boolean autoIncrement)
+    {
+        this.autoIncrement = autoIncrement;
+    }
 }

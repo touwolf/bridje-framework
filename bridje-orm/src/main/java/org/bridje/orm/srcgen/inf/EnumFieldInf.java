@@ -16,10 +16,56 @@
 
 package org.bridje.orm.srcgen.inf;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlIDREF;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumFieldInf extends FieldInfBase
 {
+    @XmlIDREF
+    @XmlAttribute(name = "type")
+    private EnumInf type;
+
+    @XmlAttribute
+    private EnumFieldSQLType sqlType;
+
+    @XmlAttribute
+    private Integer length;
+
+    public EnumInf getType()
+    {
+        return type;
+    }
+
+    public void setType(EnumInf type)
+    {
+        this.type = type;
+    }
+
+    public Integer getLength()
+    {
+        return length;
+    }
+
+    public void setLength(Integer length)
+    {
+        this.length = length;
+    }
+
+    public EnumFieldSQLType getSqlType()
+    {
+        return sqlType;
+    }
+
+    public void setSqlType(EnumFieldSQLType sqlType)
+    {
+        this.sqlType = sqlType;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+    }
 }

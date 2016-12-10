@@ -35,8 +35,9 @@ public class SrcGenInfTest
         ModelInf model = (ModelInf)unmarshaller.unmarshal(getClass().getResourceAsStream("SomeModel.xml"));
         Assert.assertEquals("SomeModel", model.getName());
         Assert.assertEquals(1, model.getTemplates().size());
-        Assert.assertEquals(1, model.getEntities().size());
-        
+        Assert.assertEquals(2, model.getEntities().size());
+        Assert.assertEquals(1, model.getEnums().size());
+
         EntityInf entity1 = model.getEntities().get(0);
         IntegerFieldInf intField1 = (IntegerFieldInf)entity1.getFields().get(0);
         Assert.assertEquals(IntegerFieldType.INTEGER, intField1.getType());
@@ -47,7 +48,7 @@ public class SrcGenInfTest
         Assert.assertTrue(intField1.isIndexed());
         Assert.assertFalse(intField1.isKey());
         Assert.assertEquals("Some int field", intField1.getDescription());
-        
+
         StringFieldInf stringField1 = (StringFieldInf)entity1.getFields().get(1);
         Assert.assertEquals("someString", stringField1.getName());
         Assert.assertEquals(StringFieldSQLType.VARCHAR, stringField1.getSqlType());
@@ -56,7 +57,7 @@ public class SrcGenInfTest
         Assert.assertTrue(stringField1.isIndexed());
         Assert.assertFalse(stringField1.isKey());
         Assert.assertEquals("Some string field", stringField1.getDescription());
-        
+
         DecimalFieldInf doubleField1 = (DecimalFieldInf)entity1.getFields().get(2);
         Assert.assertEquals(DecimalFieldType.DOUBLE, doubleField1.getType());
         Assert.assertEquals("doubleField", doubleField1.getName());
@@ -67,7 +68,7 @@ public class SrcGenInfTest
         Assert.assertTrue(doubleField1.isIndexed());
         Assert.assertFalse(doubleField1.isKey());
         Assert.assertEquals("Some double field", doubleField1.getDescription());
-        
+
         DateTimeFieldInf dateTimeField1 = (DateTimeFieldInf)entity1.getFields().get(3);
         Assert.assertEquals(DateTimeFieldType.LOCALDATETIME, dateTimeField1.getType());
         Assert.assertEquals("datetimeField", dateTimeField1.getName());
@@ -76,6 +77,39 @@ public class SrcGenInfTest
         Assert.assertTrue(dateTimeField1.isIndexed());
         Assert.assertFalse(dateTimeField1.isKey());
         Assert.assertEquals("Some datetime field", dateTimeField1.getDescription());
-        
+
+        RelationFieldInf relationField1 = (RelationFieldInf)entity1.getFields().get(4);
+        Assert.assertEquals("relationField", relationField1.getName());
+        Assert.assertEquals("SomeEntity1", relationField1.getType().getName());
+        Assert.assertFalse(relationField1.isRequired());
+        Assert.assertTrue(relationField1.isIndexed());
+        Assert.assertFalse(relationField1.isKey());
+        Assert.assertEquals("Some relation", relationField1.getDescription());
+
+        EnumFieldInf enumField1 = (EnumFieldInf)entity1.getFields().get(5);
+        Assert.assertEquals("someEnum", enumField1.getName());
+        Assert.assertEquals("SomeEnum", enumField1.getType().getName());
+        Assert.assertEquals(EnumFieldSQLType.BYTE, enumField1.getSqlType());
+        Assert.assertFalse(enumField1.isRequired());
+        Assert.assertTrue(enumField1.isIndexed());
+        Assert.assertFalse(enumField1.isKey());
+        Assert.assertEquals("Some enums", enumField1.getDescription());
+
+        CustomFieldInf customField1 = (CustomFieldInf)entity1.getFields().get(6);
+        Assert.assertEquals("someCustom", customField1.getName());
+        Assert.assertEquals("SomeType", customField1.getType());
+        Assert.assertFalse(customField1.isAutoIncrement());
+        Assert.assertFalse(customField1.isRequired());
+        Assert.assertTrue(customField1.isIndexed());
+        Assert.assertFalse(customField1.isKey());
+        Assert.assertEquals("Some custom field", customField1.getDescription());
+
+        EnumInf enum1 = model.getEnums().get(0);
+        Assert.assertEquals("SomeEnum", enum1.getName());
+        Assert.assertEquals(2, enum1.getConstants().size());
+        EnumConstantInf enumConst1 = enum1.getConstants().get(0);
+        Assert.assertEquals("CONST1", enumConst1.getName());
+        EnumConstantInf enumConst2 = enum1.getConstants().get(1);
+        Assert.assertEquals("CONST2", enumConst2.getName());
     }
 }

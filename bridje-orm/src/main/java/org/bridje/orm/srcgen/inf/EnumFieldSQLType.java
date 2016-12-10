@@ -16,25 +16,22 @@
 
 package org.bridje.orm.srcgen.inf;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class RelationFieldInf extends FieldInfBase
+@XmlType
+@XmlEnum
+public enum EnumFieldSQLType
 {
-    @XmlIDREF
-    @XmlAttribute
-    private EntityInf type;
-
-    public EntityInf getType()
-    {
-        return type;
-    }
-
-    public void setType(EntityInf type)
-    {
-        this.type = type;
-    }
+    @XmlEnumValue("BIGINT") BIGINT,
+    @XmlEnumValue("INTEGER") INTEGER,
+    @XmlEnumValue("BYTE") BYTE,
+    @XmlEnumValue("SMALLINT") SMALLINT,
+    @XmlEnumValue("CHAR") CHAR,
+    @XmlEnumValue("VARCHAR") VARCHAR,
+    @XmlEnumValue("NVARCHAR") NVARCHAR,
+    @XmlEnumValue("TEXT") TEXT,
+    @XmlEnumValue("LONGTEXT") LONGTEXT,
+    @XmlEnumValue("NCHAR") NCHAR;
 }
