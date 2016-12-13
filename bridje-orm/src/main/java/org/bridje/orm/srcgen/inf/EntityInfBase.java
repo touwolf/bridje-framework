@@ -37,7 +37,7 @@ public class EntityInfBase
 
     @XmlAttribute
     private String description;
-    
+
     @XmlElementWrapper(name = "fields")
     @XmlElements(
     {
@@ -50,6 +50,16 @@ public class EntityInfBase
         @XmlElement(name = "custom", type = CustomFieldInf.class)
     })
     private List<FieldInfBase> fields;
+
+    @XmlElementWrapper(name = "operations")
+    @XmlElements(
+    {
+        @XmlElement(name = "create", type = CreateOperationInf.class),
+        @XmlElement(name = "read", type = ReadOperationInf.class),
+        @XmlElement(name = "update", type = UpdateOperationInf.class),
+        @XmlElement(name = "delete", type = DeleteOperationInf.class)
+    })
+    private List<OperationInfBase> operations;
 
     public String getName()
     {
@@ -78,5 +88,14 @@ public class EntityInfBase
             fields = new ArrayList<>();
         }
         return fields;
+    }
+
+    public List<OperationInfBase> getOperations()
+    {
+        if(operations == null)
+        {
+            operations = new ArrayList<>();
+        }
+        return operations;
     }
 }

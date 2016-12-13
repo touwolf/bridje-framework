@@ -17,8 +17,8 @@
     <entities>
         <entity name="SomeEntity" base="DefaultEntity" >
             <operations>
-                <readOne name="findEntryValue" params="sessionId,name" result="value" />
-                <readOne name="findEntry" params="sessionId,name" />
+                <read type="one" name="findEntryValue" params="sessionId,name" result="value" />
+                <read type="one" name="findEntry" params="sessionId,name" />
                 <create name="createEntry" params="sessionId,name,value" >
                     <set field="lastUse" value="java.time.LocalDateTime.now()" />
                 </create>

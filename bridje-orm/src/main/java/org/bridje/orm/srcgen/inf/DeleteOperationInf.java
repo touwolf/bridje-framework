@@ -18,9 +18,21 @@ package org.bridje.orm.srcgen.inf;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DeleteOperationInf extends OperationInfBase
 {
+    @XmlAttribute
+    private String params;
 
+    public String getParams()
+    {
+        return params;
+    }
+
+    public void setParams(String params)
+    {
+        this.params = params;
+    }
 }

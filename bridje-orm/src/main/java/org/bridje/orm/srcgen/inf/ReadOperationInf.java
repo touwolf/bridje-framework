@@ -18,9 +18,47 @@ package org.bridje.orm.srcgen.inf;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadOperationInf extends OperationInfBase
 {
+    @XmlAttribute
+    private ReadOperationType type;
 
+    @XmlAttribute
+    private String params;
+
+    @XmlAttribute
+    private String result;
+
+    public ReadOperationType getType()
+    {
+        return type;
+    }
+
+    public void setType(ReadOperationType type)
+    {
+        this.type = type;
+    }
+
+    public String getParams()
+    {
+        return params;
+    }
+
+    public void setParams(String params)
+    {
+        this.params = params;
+    }
+
+    public String getResult()
+    {
+        return result;
+    }
+
+    public void setResult(String result)
+    {
+        this.result = result;
+    }
 }
