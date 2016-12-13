@@ -40,16 +40,16 @@ public class ModelInf
 
     @XmlAttribute(name = "package")
     private String packageName;
-    
+
     @XmlAttribute
     private String tablePrefix;
-    
+
     @XmlAttribute
     private String fieldDescription;
-    
+
     @XmlAttribute
     private String entityDescription;
-    
+
     @XmlElementWrapper(name = "entities")
     @XmlElements(
     {
@@ -135,7 +135,7 @@ public class ModelInf
     {
         this.description = description;
     }
-    
+
     public List<EntityInf> getEntities()
     {
         if(entities == null)

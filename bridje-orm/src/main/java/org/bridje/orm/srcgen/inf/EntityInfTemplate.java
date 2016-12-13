@@ -22,5 +22,4 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInfTemplate extends EntityInfBase
 {
-    
 }

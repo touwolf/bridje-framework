@@ -26,16 +26,16 @@ public class StringFieldInf extends FieldInfBase
 {
     @XmlAttribute
     private StringFieldSQLType sqlType;
-    
+
     @XmlAttribute
     private Integer length;
 
     @XmlAttribute
     private Boolean emptyToNull;
-    
+
     @XmlAttribute
     private Boolean blankToNull;
-    
+
     public Integer getLength()
     {
         return length;
@@ -45,7 +45,7 @@ public class StringFieldInf extends FieldInfBase
     {
         this.length = length;
     }
-    
+
     public StringFieldSQLType getSqlType()
     {
         return sqlType;

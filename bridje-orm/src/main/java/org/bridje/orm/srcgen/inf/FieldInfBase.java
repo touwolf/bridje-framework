@@ -19,24 +19,22 @@ package org.bridje.orm.srcgen.inf;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FieldInfBase
 {
-    @XmlID
     @XmlAttribute
     private String name;
 
     @XmlAttribute
     private String description;
-    
+
     @XmlAttribute
     private Boolean required;
 
     @XmlAttribute
     private Boolean indexed;
-    
+
     @XmlAttribute
     private Boolean key;
 

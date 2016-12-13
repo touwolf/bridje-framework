@@ -21,56 +21,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IntegerFieldInf extends FieldInfBase
+public class OperationSetField
 {
-    @XmlAttribute
-    private IntegerFieldType type;
+    @XmlAttribute(name = "field")
+    private String field;
 
-    @XmlAttribute
-    private IntegerFieldSQLType sqlType;
+    @XmlAttribute(name = "value")
+    private String value;
 
-    @XmlAttribute
-    private Integer length;
-
-    private Boolean autoIncrement;
-
-    public IntegerFieldType getType()
+    public String getField()
     {
-        return type;
+        return field;
     }
 
-    public void setType(IntegerFieldType type)
+    public void setField(String field)
     {
-        this.type = type;
+        this.field = field;
     }
 
-    public IntegerFieldSQLType getSqlType()
+    public String getValue()
     {
-        return sqlType;
+        return value;
     }
 
-    public void setSqlType(IntegerFieldSQLType sqlType)
+    public void setValue(String value)
     {
-        this.sqlType = sqlType;
-    }
-
-    public Integer getLength()
-    {
-        return length;
-    }
-
-    public void setLength(Integer length)
-    {
-        this.length = length;
-    }
-
-    public Boolean isAutoIncrement()
-    {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(Boolean autoIncrement)
-    {
-        this.autoIncrement = autoIncrement;
+        this.value = value;
     }
 }
