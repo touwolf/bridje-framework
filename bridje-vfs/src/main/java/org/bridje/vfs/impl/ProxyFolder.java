@@ -267,7 +267,7 @@ class ProxyFolder implements VFolder
 
     public void add(VFolder vf)
     {
-        folders.add(vf);
+        folders.add(0, vf);
     }
 
     @Override

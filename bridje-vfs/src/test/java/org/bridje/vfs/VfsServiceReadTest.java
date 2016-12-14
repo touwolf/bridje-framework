@@ -73,6 +73,7 @@ public class VfsServiceReadTest
         //folders
         assertEquals(3, otherFolder.listFolders("**/level1/**").size());
         assertEquals(1, otherFolder.listFolders("**/level1/l*/**").size());
+        //assertEquals(3, otherFolder.listFolders("level1/**").size());
     }
 
     @Test
