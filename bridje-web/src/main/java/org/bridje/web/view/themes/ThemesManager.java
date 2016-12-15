@@ -62,7 +62,7 @@ public class ThemesManager
     @Inject
     private IocContext<Application> context;
 
-    private Map<String,Object> themeTools;
+    private Map<String, Object> themeTools;
 
     /**
      * Component Initializer
@@ -82,7 +82,7 @@ public class ThemesManager
 
     /**
      * Renders the full web view to the given OutputStream.
-     * 
+     *
      * @param view The view to be render.
      * @param os The output stream to render the view.
      * @param stateProv The provider for the current state of the view.
@@ -110,8 +110,8 @@ public class ThemesManager
 
     /**
      * Renders only the given widget to the given output stream.
-     * 
-     * @param widget The widget 
+     *
+     * @param widget The widget
      * @param view The view to be render.
      * @param os The output stream to render the view.
      * @param result The result of the event invocation.
@@ -142,7 +142,7 @@ public class ThemesManager
 
     /**
      * Renders the expected resource to the client.
-     * 
+     *
      * @param themeName The name of the theme for the resource.
      * @param resPath The path of the resource within the theme.
      * @param resp The bridlet response to render the resource.
