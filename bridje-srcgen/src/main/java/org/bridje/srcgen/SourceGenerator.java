@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.srcgen.inf;
+package org.bridje.srcgen;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.IOException;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class EntityInfTemplate extends EntityInfBase
+public interface SourceGenerator
 {
+    void generateSources() throws IOException;
 }

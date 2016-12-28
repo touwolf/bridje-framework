@@ -131,5 +131,10 @@
             <version>1.4.191</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-srcgen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -79,5 +79,10 @@
             <artifactId>javaparser-core</artifactId>
             <version>2.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-srcgen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

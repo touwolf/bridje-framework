@@ -16,42 +16,10 @@
 
 package org.bridje.orm.srcgen.inf;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CreateOperationInf extends OperationInfBase
+public class SaveOperationInf extends OperationInfBase
 {
-    @XmlAttribute
-    private String params;
-
-    @XmlElements(
-    {
-        @XmlElement(name = "set", type = OperationSetField.class)
-    })
-    private List<OperationSetField> sets;
-
-    public String getParams()
-    {
-        return params;
-    }
-
-    public void setParams(String params)
-    {
-        this.params = params;
-    }
-
-    public List<OperationSetField> getSets()
-    {
-        if(sets == null)
-        {
-            sets = new ArrayList<>();
-        }
-        return sets;
-    }
 }

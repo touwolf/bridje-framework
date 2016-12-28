@@ -35,7 +35,7 @@ public class EnumInf
 
     @XmlAttribute
     private String description;
-    
+
     @XmlElementWrapper(name = "constants")
     @XmlElements(
     {

@@ -31,7 +31,7 @@ public class DecimalFieldInf extends FieldInfBase
 
     @XmlAttribute
     private Integer length;
-    
+
     @XmlAttribute
     private Integer precision;
 
