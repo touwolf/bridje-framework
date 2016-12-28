@@ -25,20 +25,22 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.xml.bind.JAXBException;
 import org.bridje.sip.config.SipServerConfig;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.sip.SipBridlet;
-import org.bridje.vfs.Path;
 import org.bridje.sip.SipServer;
-import org.bridje.vfs.VfsServiceOld;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 @Component
 class SipServerImpl implements SipServer
@@ -48,9 +50,6 @@ class SipServerImpl implements SipServer
     private EventLoopGroup group;
 
     private SipServerConfig config;
-
-    @Inject
-    private VfsServiceOld vfsServ;
     
     private Thread serverThread;
     
@@ -133,15 +132,21 @@ class SipServerImpl implements SipServer
 
     private void initConfig() throws IOException
     {
-        Path path = new Path("/etc/http.xml");
-        config = vfsServ.readFile(path, SipServerConfig.class);
+        VFile configFile = new VFile("/etc/http.xml");
+        if(configFile.exists())
+        {
+            try(InputStream is = new VFileInputStream(configFile))
+            {
+                config = SipServerConfig.load(is);
+            }
+            catch (JAXBException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
         if(config == null)
         {
             config = new SipServerConfig();
-            if(vfsServ.canCreateNewFile(path))
-            {
-                vfsServ.createAndWriteNewFile(path, config);
-            }
         }
     }
 

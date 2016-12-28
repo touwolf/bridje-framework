@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -42,6 +45,8 @@ import org.apache.maven.project.MavenProject;
 import org.bridje.ioc.Ioc;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.FileSource;
+import org.bridje.vfs.VFile;
 import org.bridje.vfs.VfsService;
 
 /**
@@ -81,9 +86,9 @@ public class GenerateMojo extends AbstractMojo
             {
                 targetResFolder.mkdirs();
             }
-            vfs.mountFile(SrcGenService.DATA_PATH, sourceFolder);
-            vfs.mountFile(SrcGenService.CLASSES_PATH, targetFolder);
-            vfs.mountFile(SrcGenService.RESOURCE_PATH, targetResFolder);
+            new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
+            new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
+            new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
             SourceGenerator[] generators = Ioc.context().findAll(SourceGenerator.class);
             for (SourceGenerator generator : generators)
             {
@@ -94,7 +99,7 @@ public class GenerateMojo extends AbstractMojo
             res.setDirectory(targetResFolder.getAbsolutePath());
             project.addResource(res);
         }
-        catch (IOException e)
+        catch (JAXBException | IOException e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }

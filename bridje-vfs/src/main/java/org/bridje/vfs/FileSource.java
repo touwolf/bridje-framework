@@ -181,4 +181,15 @@ public class FileSource implements VfsSource
         }
         return false;
     }
+
+    @Override
+    public boolean delete(Path path)
+    {
+        File pathFile = findFile(path);
+        if(!pathFile.exists())
+        {
+            return pathFile.delete();
+        }
+        return false;
+    }
 }

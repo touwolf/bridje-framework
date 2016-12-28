@@ -28,6 +28,8 @@ public interface VfsService
     VFile[] search(GlobExpr globExpr, Path path);
 
     boolean createNewFile(Path path);
+    
+    boolean delete(Path path);
 
     boolean mkdir(Path path);
     

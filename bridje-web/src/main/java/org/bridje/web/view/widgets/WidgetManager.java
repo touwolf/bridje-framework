@@ -33,7 +33,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileAdapter;
+import org.bridje.vfs.VFileInputStream;
+import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.view.AbstractWebView;
 import org.bridje.web.view.WebLayout;
 import org.bridje.web.view.WebView;
@@ -43,7 +44,7 @@ import org.bridje.web.view.WebView;
  * in the application.
  */
 @Component
-public class WidgetManager implements VFileAdapter
+public class WidgetManager
 {
     private static final Logger LOG = Logger.getLogger(WidgetManager.class.getName());
 
@@ -66,38 +67,11 @@ public class WidgetManager implements VFileAdapter
         }
     }
 
-    @Override
-    public String[] getExtensions()
-    {
-        return new String[]
-        {
-            "xml"
-        };
-    }
-
-    @Override
-    public Class<?>[] getClasses()
-    {
-        return new Class<?>[]
-        {
-            WebView.class, WebLayout.class
-        };
-    }
-
-    @Override
-    public boolean canHandle(VFile vf, Class<?> resultCls)
-    {
-        return vf.getName().endsWith(".view.xml")
-                || vf.getName().endsWith(".layout.xml");
-    }
-
-    @Override
     public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
         return (T) toWebView(vf);
     }
 
-    @Override
     public <T> void write(VFile vf, T contentObj) throws IOException
     {
         writeWebView(vf, (WebView) contentObj);
@@ -165,7 +139,7 @@ public class WidgetManager implements VFileAdapter
     private AbstractWebView toWebView(VFile f)
     {
         AbstractWebView result = null;
-        try (InputStream is = f.openForRead())
+        try (InputStream is = new VFileInputStream(f))
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
             if (unmObj instanceof AbstractWebView)
@@ -182,7 +156,7 @@ public class WidgetManager implements VFileAdapter
 
     private void writeWebView(VFile f, WebView view)
     {
-        try (OutputStream os = f.openForWrite())
+        try (OutputStream os = new VFileOutputStream(f))
         {
             webViewMarsh.marshal(view, os);
         }

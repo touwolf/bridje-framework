@@ -18,25 +18,26 @@ package org.bridje.srcgen;
 
 import java.io.IOException;
 import java.util.List;
+import javax.xml.bind.JAXBException;
 import org.bridje.vfs.Path;
 
 public interface SrcGenService
 {
-    public static final Path DATA_PATH = new Path("/srcgen/data");
-    
-    public static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
-    
-    public static final Path RESOURCE_PATH = new Path("/srcgen/resources");
-    
-    public static final Path CLASSES_PATH = new Path("/srcgen/classes");
-    
-    public static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
+    static final Path DATA_PATH = new Path("/srcgen/data");
 
-    <T> List<T> findData(String path, Class<T> cls) throws IOException;
+    static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
 
-    <T> List<T> findSuplementaryData(String path, Class<T> cls) throws IOException;
+    static final Path RESOURCE_PATH = new Path("/srcgen/resources");
+
+    static final Path CLASSES_PATH = new Path("/srcgen/classes");
+
+    static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
+
+    <T> List<T> findData(String path, Class<T> cls) throws JAXBException, IOException;
+
+    <T> List<T> findSuplementaryData(String path, Class<T> cls) throws JAXBException, IOException;
 
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
-    
+
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
 }

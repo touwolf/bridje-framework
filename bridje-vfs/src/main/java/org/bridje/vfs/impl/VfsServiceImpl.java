@@ -106,6 +106,12 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
+    public boolean delete(Path path)
+    {
+        return root.delete(path);
+    }
+
+    @Override
     public boolean mkdir(Path path)
     {
         return root.mkdir(path);

@@ -17,6 +17,7 @@
 package org.bridje.jdbc.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,21 +25,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.jdbc.JdbcService;
 import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 @Component
 class JdbcServiceImpl implements JdbcService
 {
     private static final Logger LOG = Logger.getLogger(JdbcServiceImpl.class.getName());
-
-    @Inject
-    private VfsService vfsServ;
     
     private Map<String, DataSourceImpl> dsMap;
     
@@ -105,15 +103,21 @@ class JdbcServiceImpl implements JdbcService
 
     private void initConfig() throws IOException
     {
-        Path path = new Path("/etc/jdbc.xml");
-        config = vfsServ.readFile(path, JdbcConfig.class);
+        VFile configFile = new VFile("/etc/jdbc.xml");
+        if(configFile.exists())
+        {
+            try(InputStream is = new VFileInputStream(configFile))
+            {
+                config = JdbcConfig.load(is);
+            }
+            catch (JAXBException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
         if(config == null)
         {
             config = new JdbcConfig();
-            if(vfsServ.canCreateNewFile(path))
-            {
-                vfsServ.createAndWriteNewFile(path, config);
-            }
         }
     }
 }

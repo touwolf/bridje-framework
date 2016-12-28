@@ -102,6 +102,7 @@ class VfsFolderNode extends VfsNode
         if(path.isLast()) return false;
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
+        if(child == null) return false;
         return child.isFile(path.getNext());
     }
 
@@ -111,6 +112,7 @@ class VfsFolderNode extends VfsNode
         if(path.isLast()) return getChild(path.getName()) != null;
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
+        if(child == null) return false;
         return child.exists(path.getNext());
     }
 
@@ -180,6 +182,15 @@ class VfsFolderNode extends VfsNode
 
     @Override
     public boolean createNewFile(Path path)
+    {
+        if(path == null || path.isRoot()) return false;
+        VfsNode child = getChild(path.getFirstElement());
+        if(child == null) return false;
+        return child.createNewFile(path.getNext());
+    }
+
+    @Override
+    public boolean delete(Path path)
     {
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());

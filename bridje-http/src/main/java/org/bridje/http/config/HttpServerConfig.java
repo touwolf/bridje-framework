@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -30,6 +31,8 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -304,5 +307,17 @@ public class HttpServerConfig
     private InputStream readKeyStoreData() throws FileNotFoundException
     {
         return new FileInputStream(new File(keyStoreFile));
+    }
+
+    public static HttpServerConfig load(InputStream is) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);
+    }
+
+    public static void save(OutputStream os, HttpServerConfig config) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        ctx.createMarshaller().marshal(config, os);
     }
 }

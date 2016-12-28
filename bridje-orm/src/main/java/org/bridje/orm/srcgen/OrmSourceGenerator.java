@@ -18,6 +18,7 @@ package org.bridje.orm.srcgen;
 
 import java.io.IOException;
 import java.util.List;
+import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.srcgen.inf.ModelInf;
@@ -31,7 +32,7 @@ public class OrmSourceGenerator implements SourceGenerator
     private SrcGenService srcGen;
     
     @Override
-    public void generateSources() throws IOException
+    public void generateSources() throws IOException, JAXBException
     {
         List<ModelInf> models = srcGen.findData("**/orm/*.xml", ModelInf.class);
         for (ModelInf modelInf : models)

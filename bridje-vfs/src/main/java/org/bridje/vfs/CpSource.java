@@ -271,4 +271,10 @@ public class CpSource implements VfsSource
     {
         return false;
     }
+
+    @Override
+    public boolean delete(Path path)
+    {
+        return false;
+    }
 }

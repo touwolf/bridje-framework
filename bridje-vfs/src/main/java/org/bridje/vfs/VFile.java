@@ -57,7 +57,12 @@ public class VFile
     {
         return getVfs().createNewFile(path);
     }
-    
+
+    public boolean delete()
+    {
+        return getVfs().delete(path);
+    }
+
     public boolean mkdir()
     {
         return getVfs().mkdir(path);

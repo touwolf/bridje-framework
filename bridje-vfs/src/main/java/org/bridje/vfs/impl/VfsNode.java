@@ -73,6 +73,8 @@ abstract class VfsNode
     abstract OutputStream openForWrite(Path path);
 
     abstract boolean createNewFile(Path path);
+    
+    abstract boolean delete(Path path);
 
     abstract boolean mkdir(Path path);
 }

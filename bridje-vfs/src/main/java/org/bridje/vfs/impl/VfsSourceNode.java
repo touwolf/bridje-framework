@@ -100,4 +100,10 @@ class VfsSourceNode extends VfsNode
     {
         return source.mkdir(path);
     }
+
+    @Override
+    public boolean delete(Path path)
+    {
+        return source.delete(path);
+    }
 }

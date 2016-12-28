@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -29,26 +30,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.VfsService;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
+import org.bridje.vfs.VFileOutputStream;
 
 @Component
-public class SrcGenServicesImpl implements SrcGenService
+class SrcGenServicesImpl implements SrcGenService
 {
     private static final Logger LOG = Logger.getLogger(SrcGenServicesImpl.class.getName());
-
-    @Inject
-    private VfsService vfs;
 
     @Inject
     private SrcGenTplLoader srcGenTpl;
 
     private Configuration ftlCfg;
 
+    @PostConstruct
     public void init()
     {
         ftlCfg = new Configuration(Configuration.VERSION_2_3_23);
@@ -64,13 +68,10 @@ public class SrcGenServicesImpl implements SrcGenService
         LOG.log(Level.INFO, "Generating Class {0} from {1}", new Object[]{clsFullName, tplPath});
         String clsPath = toClassPath(clsFullName);
         Path resultPath = CLASSES_PATH.join(clsPath);
-        VFile file = vfs.findFile(resultPath);
-        if(file != null)
-        {
-            file.delete();
-        }
-        file = vfs.findFolder(resultPath.getParent()).createNewFile(resultPath.getName());
-        try(OutputStream os = file.openForWrite())
+        VFile vfile = new VFile(resultPath);
+        if(vfile.exists()) vfile.delete();
+        vfile.createNewFile();
+        try(OutputStream os = new VFileOutputStream(vfile))
         {
             render(os, tplPath, data);
         }
@@ -81,41 +82,38 @@ public class SrcGenServicesImpl implements SrcGenService
     {
         LOG.log(Level.INFO, "Generating Resource {0} from {1}", new Object[]{resourcePath, tplPath});
         Path resultPath = RESOURCE_PATH.join(resourcePath);
-        VFile file = vfs.findFile(resultPath);
-        if(file != null)
-        {
-            file.delete();
-        }
-        file = vfs.createNewFile(resultPath);
-        try(OutputStream os = file.openForWrite())
+        VFile vfile = new VFile(resultPath);
+        if(vfile.exists()) vfile.delete();
+        vfile.createNewFile();
+        try(OutputStream os = new VFileOutputStream(vfile))
         {
             render(os, tplPath, data);
         }
     }
-    
+
     @Override
-    public <T> List<T> findData(String path, Class<T> cls) throws IOException
+    public <T> List<T> findData(String path, Class<T> cls) throws JAXBException, IOException
     {
         List<T> result = new ArrayList<>();
-        List<VFile> files = vfs.findFolder(DATA_PATH).listFiles(path);
-        for (VFile file : files)
+        VFile[] files = new VFile(DATA_PATH).listFiles();
+        for (VFile vfile : files)
         {
-            LOG.log(Level.INFO, "Reading Data File {0}", file.getPath().toString());
-            T data = file.readFile(cls);
+            LOG.log(Level.INFO, "Reading Data File {0}", vfile.getPath().toString());
+            T data = readFile(vfile, cls);
             result.add(data);
         }
         return result;
     }
 
     @Override
-    public <T> List<T> findSuplementaryData(String path, Class<T> cls) throws IOException
+    public <T> List<T> findSuplementaryData(String path, Class<T> cls) throws JAXBException, IOException
     {
         List<T> result = new ArrayList<>();
-        List<VFile> files = vfs.findFolder(DATA_PATH).listFiles(path);
-        for (VFile file : files)
+        VFile[] files = new VFile(DATA_PATH).listFiles();
+        for (VFile vfile : files)
         {
-            LOG.log(Level.INFO, "Reading Suplementary Data File {0}", file.getPath().toString());
-            T data = file.readFile(cls);
+            LOG.log(Level.INFO, "Reading Suplementary Data File {0}", vfile.getPath().toString());
+            T data = readFile(vfile, cls);
             result.add(data);
         }
         return result;
@@ -145,6 +143,15 @@ public class SrcGenServicesImpl implements SrcGenService
         catch (TemplateException | IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    private <T> T readFile(VFile file, Class<T> cls) throws JAXBException, IOException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(cls);
+        try(InputStream is = new VFileInputStream(file))
+        {
+            return (T)ctx.createUnmarshaller().unmarshal(is);
         }
     }
 }

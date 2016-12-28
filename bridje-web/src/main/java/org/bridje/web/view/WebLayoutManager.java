@@ -25,7 +25,6 @@ import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.web.view.widgets.WidgetManager;
-import org.bridje.vfs.VfsServiceOld;
 
 /**
  * A manager for the web layouts, this component can be user to load the web
@@ -36,9 +35,6 @@ import org.bridje.vfs.VfsServiceOld;
 public class WebLayoutManager
 {
     private static final Logger LOG = Logger.getLogger(WebLayoutManager.class.getName());
-
-    @Inject
-    private VfsServiceOld vfsServ;
 
     @Inject
     private WidgetManager widgetManag;
@@ -54,11 +50,9 @@ public class WebLayoutManager
      */
     public WebLayout loadLayout(String name)
     {
-        if (name == null || name.isEmpty())
-        {
-            return null;
-        }
-        VFile file = vfsServ.findFile(basePath.join(name + ".layout.xml"));
+        if (name == null || name.isEmpty()) return null;
+        VFile file = new VFile(basePath.join(name + ".layout.xml"));
+        if(!file.isFile()) return null;
         return readLayout(file);
     }
 

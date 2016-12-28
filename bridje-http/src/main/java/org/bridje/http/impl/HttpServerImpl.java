@@ -27,6 +27,8 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.KeyManagementException;
@@ -40,6 +42,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpServer;
 import org.bridje.http.WsServerHandler;
@@ -48,8 +52,8 @@ import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -61,15 +65,12 @@ class HttpServerImpl implements HttpServer
     private HttpServerConfig config;
 
     @Inject
-    private VfsService vfsServ;
-
-    @Inject
     private List<WsServerHandler> handlers;
 
     private SSLContext sslContext;
-    
+
     private Thread serverThread;
-    
+
     @Inject
     private IocContext<Application> appCtx;
 
@@ -159,15 +160,21 @@ class HttpServerImpl implements HttpServer
 
     private void initConfig() throws IOException
     {
-        Path path = new Path("/etc/http.xml");
-        config = vfsServ.readFile(path, HttpServerConfig.class);
+        VFile configFile = new VFile("/etc/http.xml");
+        if(configFile.exists())
+        {
+            try(InputStream is = new VFileInputStream(configFile))
+            {
+                config = HttpServerConfig.load(is);
+            }
+            catch (JAXBException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
         if(config == null)
         {
             config = new HttpServerConfig();
-            if(vfsServ.canCreateNewFile(path))
-            {
-                vfsServ.createAndWriteNewFile(path, config);
-            }
         }
     }
 
@@ -200,5 +207,17 @@ class HttpServerImpl implements HttpServer
         pw.println("HTTP Bridlets Chain:");
         printBridlets(pw);
         LOG.log(Level.INFO, sw.toString());
+    }
+
+    public static HttpServerConfig load(InputStream is) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);
+    }
+
+    public static void save(OutputStream os, HttpServerConfig config) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        ctx.createMarshaller().marshal(config, os);
     }
 }

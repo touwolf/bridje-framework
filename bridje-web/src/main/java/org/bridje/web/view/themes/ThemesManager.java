@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -38,13 +39,14 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
 import org.bridje.web.view.state.StateRenderProvider;
 import org.bridje.web.view.widgets.Widget;
-import org.bridje.vfs.VfsServiceOld;
 
 /**
  * The manager for the web themes that can be used in the web application.
@@ -55,9 +57,6 @@ public class ThemesManager
     private static final Logger LOG = Logger.getLogger(ThemesManager.class.getName());
 
     private Configuration ftlCfg;
-
-    @Inject
-    private VfsServiceOld vfs;
 
     @Inject
     private IocContext<Application> context;
@@ -152,21 +151,36 @@ public class ThemesManager
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
         Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
-        if(path.getCanonicalPath().globMatches("/web/themes/**/resources/**"))
+        GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
+        if(globExpr.globMatches(path.getCanonicalPath()))
         {
-            VFile f = vfs.findFile(path);
-            if(f != null)
+            VFile f = new VFile(path);
+            if(f.isFile())
             {
                 String contentType = f.getMimeType();
                 resp.setContentType(contentType);
                 try(OutputStream os = resp.getOutputStream())
                 {
-                    f.copyTo(os);
-                    os.flush();
+                    try(InputStream is = new VFileInputStream(f))
+                    {
+                        copy(is, os);
+                        os.flush();
+                    }
                 }
                 return true;
             }
         }
         return false;
+    }
+
+    private void copy(InputStream is, OutputStream os) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        int bytesCount = is.read(buffer);
+        while(bytesCount > -1)
+        {
+            os.write(buffer, 0, bytesCount);
+            bytesCount = is.read(buffer);
+        }
     }
 }

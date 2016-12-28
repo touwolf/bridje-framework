@@ -28,4 +28,6 @@ public interface VfsSource
     boolean createNewFile(Path path);
 
     boolean mkdir(Path path);
+
+    boolean delete(Path path);
 }

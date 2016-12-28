@@ -15,8 +15,12 @@
  */
 package org.bridje.jdbc.config;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -65,5 +69,17 @@ public class JdbcConfig
     public void setDataSources(List<DataSourceConfig> dataSources)
     {
         this.dataSources = dataSources;
+    }
+
+    public static JdbcConfig load(InputStream is) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
+        return (JdbcConfig)ctx.createUnmarshaller().unmarshal(is);
+    }
+
+    public static void save(OutputStream os, JdbcConfig config) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
+        ctx.createMarshaller().marshal(config, os);
     }
 }

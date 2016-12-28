@@ -17,6 +17,7 @@
 package org.bridje.web.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpBridletContext;
@@ -24,12 +25,11 @@ import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsServiceOld;
+import org.bridje.vfs.VFileInputStream;
 
 @Component
 @Priority(700)
@@ -37,9 +37,6 @@ class RenderFileBridlet implements HttpBridlet
 {
     @InjectNext
     private HttpBridlet nextHandler;
-
-    @Inject
-    private VfsServiceOld vfsServ;
 
     private final Path PUBLIC_PATH = new Path("/web/public");
 
@@ -55,16 +52,18 @@ class RenderFileBridlet implements HttpBridlet
             if(path != null)
             {
                 path = PUBLIC_PATH.join(path);
-                VFile file = vfsServ.findFile(path);
-                if(file != null)
+                VFile file = new VFile(path);
+                if(file.exists())
                 {
                     HttpBridletResponse resp = context.get(HttpBridletResponse.class);
-                    try(OutputStream os = resp.getOutputStream())
+                    try(InputStream is = new VFileInputStream(file))
                     {
-                        resp.setContentType(file.getMimeType());
-                        file.copyTo(os);
-                        os.flush();
-                        os.close();
+                        try(OutputStream os = resp.getOutputStream())
+                        {
+                            resp.setContentType(file.getMimeType());
+                            copy(is, os);
+                            os.flush();
+                        }
                     }
                     return true;
                 }
@@ -76,5 +75,15 @@ class RenderFileBridlet implements HttpBridlet
         }
         return false;
     }
-    
+
+    private void copy(InputStream is, OutputStream os) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        int bytesCount = is.read(buffer);
+        while(bytesCount > -1)
+        {
+            os.write(buffer, 0, bytesCount);
+            bytesCount = is.read(buffer);
+        }
+    }
 }
