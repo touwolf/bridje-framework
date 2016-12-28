@@ -24,8 +24,8 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
 import org.bridje.web.view.widgets.WidgetManager;
+import org.bridje.vfs.VfsServiceOld;
 
 /**
  * A manager for the web layouts, this component can be user to load the web
@@ -38,7 +38,7 @@ public class WebLayoutManager
     private static final Logger LOG = Logger.getLogger(WebLayoutManager.class.getName());
 
     @Inject
-    private VfsService vfsServ;
+    private VfsServiceOld vfsServ;
 
     @Inject
     private WidgetManager widgetManag;

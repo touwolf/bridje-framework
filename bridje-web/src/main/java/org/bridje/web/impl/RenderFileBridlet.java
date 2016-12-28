@@ -29,7 +29,7 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VfsServiceOld;
 
 @Component
 @Priority(700)
@@ -39,7 +39,7 @@ class RenderFileBridlet implements HttpBridlet
     private HttpBridlet nextHandler;
 
     @Inject
-    private VfsService vfsServ;
+    private VfsServiceOld vfsServ;
 
     private final Path PUBLIC_PATH = new Path("/web/public");
 

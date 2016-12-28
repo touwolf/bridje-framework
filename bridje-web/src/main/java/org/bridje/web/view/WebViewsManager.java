@@ -39,13 +39,13 @@ import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VfsService;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.state.StateManager;
 import org.bridje.web.view.themes.ThemesManager;
 import org.bridje.web.view.widgets.UIEvent;
 import org.bridje.web.view.widgets.WidgetManager;
+import org.bridje.vfs.VfsServiceOld;
 
 /**
  * A manager for all the web views present in the application. with this
@@ -59,7 +59,7 @@ public class WebViewsManager
     private static final Logger LOG = Logger.getLogger(WebViewsManager.class.getName());
 
     @Inject
-    private VfsService vfsServ;
+    private VfsServiceOld vfsServ;
 
     @Inject
     private WidgetManager widgetManag;

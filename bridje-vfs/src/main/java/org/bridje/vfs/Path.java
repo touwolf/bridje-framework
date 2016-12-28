@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * An utility class for virtual path management.
@@ -16,6 +14,11 @@ import java.util.regex.Pattern;
 public class Path implements Iterable<Path>
 {
     private final String[] pathElements;
+
+    public Path()
+    {
+        this.pathElements = null;
+    }
 
     /**
      * Creates a Path object from String
@@ -38,6 +41,15 @@ public class Path implements Iterable<Path>
     }
 
     /**
+     * 
+     * @return 
+     */
+    public String[] getPathElements()
+    {
+        return pathElements;
+    }
+
+    /**
      * Gets the first element of the path.
      * <p>
      * For example, if the path represented by this object equals to {@literal "usr/local"},
@@ -47,6 +59,7 @@ public class Path implements Iterable<Path>
      */
     public String getFirstElement()
     {
+        if(pathElements == null) return null;
         return pathElements[0];
     }
 
@@ -60,6 +73,7 @@ public class Path implements Iterable<Path>
      */
     public String getName()
     {
+        if(pathElements == null) return "/";
         return pathElements[pathElements.length - 1];
     }
 
@@ -75,10 +89,7 @@ public class Path implements Iterable<Path>
      */
     public Path getParent()
     {
-        if (isLast())
-        {
-            return null;
-        }
+        if (isLast()) return new Path();
         String[] copyOfRange = Arrays.copyOfRange(pathElements, 0, pathElements.length - 1);
         return new Path(copyOfRange);
     }
@@ -95,11 +106,7 @@ public class Path implements Iterable<Path>
      */
     public Path getNext()
     {
-        if (isLast())
-        {
-            return null;
-        }
-
+        if (isLast()) return null;
         String[] copyOfRange = Arrays.copyOfRange(pathElements, 1, pathElements.length);
         return new Path(copyOfRange);
     }
@@ -119,6 +126,15 @@ public class Path implements Iterable<Path>
     }
 
     /**
+     * 
+     * @return 
+     */
+    public boolean isRoot()
+    {
+        return pathElements == null;
+    }
+    
+    /**
      * Determines if the first element of the path is the dot (.) character
      * witch represents the current folder.
      * <p>
@@ -127,10 +143,7 @@ public class Path implements Iterable<Path>
      */
     public boolean isSelf()
     {
-        if(pathElements.length < 0)
-        {
-            return false;
-        }
+        if(isRoot()) return false;
         return ".".equalsIgnoreCase(pathElements[0]);
     }
 
@@ -143,10 +156,7 @@ public class Path implements Iterable<Path>
      */
     public boolean isParent()
     {
-        if(pathElements.length < 0)
-        {
-            return false;
-        }
+        if(isRoot()) return false;
         return "..".equalsIgnoreCase(pathElements[0]);
     }
 
@@ -161,6 +171,7 @@ public class Path implements Iterable<Path>
      */
     public boolean isLast()
     {
+        if(isRoot()) return true;
         return (pathElements.length <= 1);
     }
 
@@ -175,6 +186,7 @@ public class Path implements Iterable<Path>
      */
     public Path getCanonicalPath()
     {
+        if(isRoot()) return this;
         List<String> str = new LinkedList<>();
         for (String pe : pathElements)
         {
@@ -210,6 +222,7 @@ public class Path implements Iterable<Path>
     @Override
     public String toString()
     {
+        if(isRoot()) return "/";
         return toString("/");
     }
 
@@ -222,6 +235,7 @@ public class Path implements Iterable<Path>
      */
     public String toString(String pathSep)
     {
+        if(isRoot()) return pathSep;
         return String.join(pathSep, pathElements);
     }
 
@@ -233,6 +247,7 @@ public class Path implements Iterable<Path>
      */
     public Path join(Path path)
     {
+        if(isRoot()) return new Path(path.pathElements);
         String[] newElements = new String[pathElements.length + path.pathElements.length];
         System.arraycopy(pathElements, 0, newElements, 0, pathElements.length);
         System.arraycopy(path.pathElements, 0, newElements, pathElements.length, path.pathElements.length);
@@ -247,6 +262,7 @@ public class Path implements Iterable<Path>
      */
     public Path join(String path)
     {
+        if(isRoot()) return new Path(path);
         return join(new Path(path));
     }
 
@@ -263,164 +279,19 @@ public class Path implements Iterable<Path>
             @Override
             public boolean hasNext()
             {
+                if(isRoot()) return false;
                 return (currentIndex < pathElements.length);
             }
 
             @Override
             public Path next()
             {
+                if(isRoot()) return null;
                 String[] copyOfRange = Arrays.copyOfRange(pathElements, 0, currentIndex + 1);
                 currentIndex++;
                 return new Path(copyOfRange);
             }
         };
-    }
-
-    /**
-     * Tests the path against a string path with glob syntax.
-     * <p>
-     * Glob syntax follows the following simple rules:
-     * <ul>
-     * <li>Asterisk {@literal "*"}: matches any number of characters (including none).</li>
-     * <li>Two asterisks {@literal "**"}: is like {@literal "*"} but includes directory separator.
-     * Is generally used for matching complete paths.</li>
-     * <li>Question mark {@literal "?"}: matches exactly one character.</li>
-     * <li>Braces specify a collection of sub patterns. For example:<br>
-     *  - {@literal "{java,maven,bridje}"} matches {@literal "java"}, {@literal "maven"}, or {@literal "bridje"}.<br>
-     *  - {@literal "{gradle*,ant*}"} matches all strings beginning with {@literal "gradle"} or {@literal "ant"}.</li>
-     * <li>Square brackets defines a set of single characters or, when used with the hyphen character {@literal "-"},
-     * a range of characters. For example:<br>
-     *  - {@literal "[aeiou]"} matches any lowercase vowel.<br>
-     *  - {@literal "[0-9]"} matches any digit.<br>
-     *  - {@literal "[A-Z]"} matches any uppercase letter.<br>
-     *  - {@literal "[a-z,A-Z]"} matches any uppercase or lowercase letter.<br>
-     * Within the square brackets, {@literal "*"}, {@literal "?"}, and {@literal "\"} match themselves.<li>
-     * <li>All other characters match themselves.</li>
-     * </ul>
-     * <p>
-     * To match {@literal "*"}, {@literal "?"}, or the other special characters,
-     * you can escape them by using the backslash character, {@literal "\"}.
-     * For example: {@literal "\\"} matches a single backslash, and {@literal "\?"} matches the question mark.
-     *
-     * @param glob the requested glob to test.
-     * @return {@literal true} if the glob match this path, {@literal false} otherwise.
-     */
-    public boolean globMatches(String glob)
-    {
-        if (glob == null || glob.trim().isEmpty())
-        {
-            return false;
-        }
-
-        String regex = globToRegex(glob);
-        String normPath = toString();
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(normPath);
-
-        return matcher.matches();
-    }
-
-    /**
-     * Obtains the path remaining of matches a path with glob syntax.
-     *
-     * @param glob the requested glob to test.
-     * @return if the glob match this path beginning will return the remaining path, this full path otherwise.
-     * @see Path#globMatches(java.lang.String)
-     */
-    public Path globRemaining(String glob)
-    {
-        if (glob == null || glob.trim().isEmpty())
-        {
-            return this;
-        }
-
-        String regex = globToRegex(glob);
-        String normPath = toString();
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(normPath);
-        if (matcher.find())
-        {
-            int end = matcher.end();
-            if (end > 0 && end < normPath.length())
-            {
-                return new Path(normPath.substring(end));
-            }
-        }
-
-        return this;
-    }
-
-    private String globToRegex(String glob)
-    {
-        String regex = normalize(glob);
-        // replace []
-        regex = replaceGlobBoundaries(regex, "[", "]", true);
-        // replace .
-        regex = regex.replaceAll("\\.", "\\\\.");
-        // replace **
-        regex = regex.replaceAll("\\*\\*", "(\\\\w|-|\\\\.|/)+");
-        // replace *
-        regex = regex.replaceAll("\\*", "(\\\\w|-|\\\\.)*");
-        // replace ?
-        regex = regex.replaceAll("\\?", "(\\\\w|-|\\\\.)");
-        // replace {}
-        regex = replaceGlobBoundaries(regex, "{", "}", false);
-        // replace /
-        regex = regex.replaceAll("/", "\\\\/");
-        // replace literals
-        regex = regex.replaceAll("ASTERISK", "\\\\*");
-        regex = regex.replaceAll("QUESTION", "\\\\?");
-
-        return regex;
-    }
-
-    private String replaceGlobBoundaries(String glob, String open, String close, boolean escape)
-    {
-        String regex = glob;
-        String newOpen = "(";
-        String newClose = ")";
-
-        int index = regex.indexOf(open);
-        while (index >= 0)
-        {
-            int endIndex = regex.indexOf(close, index);
-            if (endIndex < 0)
-            {
-                // malformed glob
-                return glob;
-            }
-            // replace , by |
-            String[] globs = regex.substring(index + 1, endIndex).split(",");
-            String postRegex = regex.substring(endIndex + 1);
-            regex = regex.substring(0, index) + newOpen;
-            for (int i = 0; i < globs.length; i++)
-            {
-                if (i > 0)
-                {
-                    regex += "|";
-                }
-                String globChild = globs[i].trim();
-                // escape special characters so they won´t get processed further
-                if (escape)
-                {
-                    globChild = globChild.replaceAll("\\*", "ASTERISK");
-                    globChild = globChild.replaceAll("\\?", "QUESTION");
-                }
-                // hyphen means range, so apply [] to glob part if it's not a regex already
-                if (globChild.contains("-") && !globChild.contains("|-|"))
-                {
-                    globChild = "[" + globChild + "]";
-                }
-
-                regex += globChild;
-            }
-
-            int nextIndex = regex.length();
-            regex += newClose + postRegex;
-            index = regex.indexOf(open, nextIndex);
-        }
-
-        return regex;
     }
 
     private static String[] createElements(String path)
@@ -434,6 +305,14 @@ public class Path implements Iterable<Path>
         String[] arr = normPath.split("/");
 
         return arr;
+    }
+    
+    public String getExtension()
+    {
+        if(isRoot()) return null;
+        String[] split = getName().split("[\\.]");
+        if(split != null && split.length > 1) return split[split.length];
+        return null;
     }
 
     private static String normalize(String path)

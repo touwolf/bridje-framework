@@ -24,13 +24,13 @@ import java.io.Reader;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VfsServiceOld;
 
 @Component
 class ThemesTplLoader implements TemplateLoader
 {
     @Inject
-    private VfsService vfs;
+    private VfsServiceOld vfs;
 
     private final Long time = System.currentTimeMillis();
 

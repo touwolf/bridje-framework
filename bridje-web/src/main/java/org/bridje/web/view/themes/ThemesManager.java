@@ -40,11 +40,11 @@ import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
 import org.bridje.web.view.state.StateRenderProvider;
 import org.bridje.web.view.widgets.Widget;
+import org.bridje.vfs.VfsServiceOld;
 
 /**
  * The manager for the web themes that can be used in the web application.
@@ -57,7 +57,7 @@ public class ThemesManager
     private Configuration ftlCfg;
 
     @Inject
-    private VfsService vfs;
+    private VfsServiceOld vfs;
 
     @Inject
     private IocContext<Application> context;

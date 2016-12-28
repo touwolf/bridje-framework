@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -15,13 +16,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-/**
- * A virtual file system source to mount java classpath base resources.
- */
 public class CpSource implements VfsSource
 {
     private final String resource;
@@ -50,189 +49,103 @@ public class CpSource implements VfsSource
     }
 
     @Override
-    public URL[] getFiles(Path path) throws IOException
+    public boolean isDirectory(Path path)
     {
-        List<URL> urls = new LinkedList<>();
-        Enumeration<URL> resources;
         if(path == null)
         {
-            resources = getClass().getClassLoader().getResources(resource);
+            return childs != null;
         }
         else
         {
-            resources = getClass().getClassLoader().getResources(resource + "/" + path);
+            CpSource cp = childs.get(path.getFirstElement());
+            if(cp == null) return false;
+            return cp.isDirectory(path.getNext());
         }
-        if(resources != null)
+    }
+
+    @Override
+    public boolean isFile(Path path)
+    {
+        if(path == null)
         {
-            while (resources.hasMoreElements())
+            return childs == null;
+        }
+        else
+        {
+            CpSource cp = childs.get(path.getFirstElement());
+            if(cp == null) return false;
+            return cp.isFile(path.getNext());
+        }
+    }
+
+    @Override
+    public boolean exists(Path path)
+    {
+        if(path == null)
+        {
+            return true;
+        }
+        else
+        {
+            if(childs == null) return false;
+            CpSource cp = childs.get(path.getFirstElement());
+            if(cp == null) return false;
+            return cp.exists(path.getNext());
+        }
+    }
+
+    @Override
+    public boolean canWrite(Path path)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canRead(Path path)
+    {
+        return isFile(path);
+    }
+
+    @Override
+    public String[] list(Path path)
+    {
+        if(childs == null) return null;
+        if(path == null)
+        {
+            String[] arr = new String[childs.size()];
+            return childs.keySet().toArray(arr);
+        }
+        else
+        {
+            CpSource cp = childs.get(path.getFirstElement());
+            if(cp == null) return null;
+            return cp.list(path.getNext());
+        }
+    }
+
+    @Override
+    public InputStream openForRead(Path path)
+    {
+        if(path == null)
+        {
+            if(childs == null)
             {
-                URL nextElement = resources.nextElement();
-                urls.add(nextElement);
+                return getClass().getClassLoader().getResourceAsStream(resource);
             }
-        }
-        URL[] result = new URL[urls.size()];
-        return urls.toArray(result);
-    }
-
-    @Override
-    public List<String> listFolders(Path path) throws IOException
-    {
-        return listFolders(path, null);
-    }
-
-    @Override
-    public List<String> listFiles(Path path) throws IOException
-    {
-        return listFiles(path, null);
-    }
-
-    private List<String> listFolders(Path path, String regexp) throws IOException
-    {
-        if(childs == null)
-        {
             return null;
         }
-        if(path == null)
-        {
-            List<String> result = new LinkedList<>();
-            for (Map.Entry<String, CpSource> entry : childs.entrySet())
-            {
-                String key = entry.getKey();
-                if(regexp == null || key.matches(regexp))
-                {
-                    CpSource value = entry.getValue();
-                    if (value.isFolder())
-                    {
-                        result.add(key);
-                    }
-                }
-            }
-            return result;
-        }
         else
         {
-            CpSource src = childs.get(path.getFirstElement());
-            if(src != null)
-            {
-                return src.listFolders(path.getNext(), regexp);
-            }
+            CpSource cp = childs.get(path.getFirstElement());
+            if(cp == null) return null;
+            return cp.openForRead(path.getNext());
         }
-        return null;
-    }
-
-    private List<String> listFiles(Path path, String regexp) throws IOException
-    {
-        if(childs == null)
-        {
-            return null;
-        }
-        if(path == null)
-        {
-            List<String> result = new LinkedList<>();
-            childs.entrySet().stream().forEach((entry) ->
-            {
-                String key = entry.getKey();
-                if(regexp == null || key.matches(regexp))
-                {
-                    CpSource value = entry.getValue();
-                    if (!value.isFolder())
-                    {
-                        result.add(key);
-                    }
-                }
-            });
-            return result;
-        }
-        else
-        {
-            CpSource src = childs.get(path.getFirstElement());
-            if(src != null)
-            {
-                return src.listFiles(path.getNext(), regexp);
-            }
-        }
-        return null;
-    }
-    
-    @Override
-    public boolean fileExists(Path path) throws IOException
-    {
-        if(path == null)
-        {
-            return !isFolder();
-        }
-        if(childs == null)
-        {
-            return false;
-        }
-        CpSource src = childs.get(path.getFirstElement());
-        if(src != null)
-        {
-            return src.fileExists(path.getNext());
-        }
-        return false;
     }
 
     @Override
-    public boolean folderExists(Path path) throws IOException
-    {
-        if(path == null)
-        {
-            return isFolder();
-        }
-        if(childs == null)
-        {
-            return false;
-        }
-        CpSource src = childs.get(path.getFirstElement());
-        if(src != null)
-        {
-            return src.folderExists(path.getNext());
-        }
-        return false;
-    }
-
-    @Override
-    public InputStream openForRead(Object data) throws IOException
-    {
-        URL url = (URL)data;
-        return url.openStream();
-    }
-
-    @Override
-    public OutputStream openForWrite(Object data) throws IOException
+    public OutputStream openForWrite(Path path)
     {
         return null;
-    }
-    
-    @Override
-    public boolean canOpenForWrite(Object data)
-    {
-        return false;
-    }
-    
-    @Override
-    public Object createNewFile(Path join) throws IOException
-    {
-        throw new IOException("Cannot create physical file here.");
-    }
-
-    @Override
-    public String mkDir(Path join) throws IOException
-    {
-        throw new IOException("Cannot create physical folder here.");
-    }
-
-    @Override
-    public boolean canMkDir(Path join)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canCreateNewFile(Path join)
-    {
-        return false;
     }
 
     private List<String> getResourceListing(Class clazz, String path) throws URISyntaxException, IOException
@@ -307,20 +220,55 @@ public class CpSource implements VfsSource
         return res;
     }
 
-    private boolean isFolder()
+    @Override
+    public List<Path> search(GlobExpr globExpr, Path path)
     {
-        return childs != null;
+        CpSource resource = findResource(path);
+        if(resource.isDirectory(null))
+        {
+            List<Path> files = new ArrayList<>();
+            resource.search(globExpr, path, files);
+            return files;
+        }
+        return null;
+    }
+    
+    public CpSource findResource(Path path)
+    {
+        if(path == null || path.isRoot()) return this;
+        CpSource child = childs.get(path.getFirstElement());
+        if(child == null) return null;
+        return child.findResource(path.getNext());
+    }
+
+    public void search(GlobExpr globExpr, Path path, List<Path> files)
+    {
+        for (Entry<String, CpSource> entry : childs.entrySet())
+        {
+            if(entry.getValue().isDirectory(null))
+            {
+                entry.getValue().search(globExpr, path.join(entry.getKey()), files);
+            }
+            else if(entry.getValue().isFile(null))
+            {
+                Path fullPath = path.join(entry.getKey());
+                if(globExpr.globMatches(fullPath))
+                {
+                    files.add(fullPath);
+                }
+            }
+        }
     }
 
     @Override
-    public boolean canDelete(Object data)
+    public boolean createNewFile(Path path)
     {
         return false;
     }
 
     @Override
-    public void delete(Object data) throws IOException
+    public boolean mkdir(Path path)
     {
-        throw new IOException("Cannot delete a physical file here.");
+        return false;
     }
 }

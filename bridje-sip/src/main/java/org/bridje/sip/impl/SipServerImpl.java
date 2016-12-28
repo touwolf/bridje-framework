@@ -37,8 +37,8 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.sip.SipBridlet;
 import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
 import org.bridje.sip.SipServer;
+import org.bridje.vfs.VfsServiceOld;
 
 @Component
 class SipServerImpl implements SipServer
@@ -50,7 +50,7 @@ class SipServerImpl implements SipServer
     private SipServerConfig config;
 
     @Inject
-    private VfsService vfsServ;
+    private VfsServiceOld vfsServ;
     
     private Thread serverThread;
     
