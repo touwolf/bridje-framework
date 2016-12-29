@@ -11,7 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFileInputStream;
@@ -19,6 +24,8 @@ import org.bridje.vfs.VFileInputStream;
 @Component
 class VfsServiceImpl implements VfsService
 {
+    private static final Logger LOG = Logger.getLogger(VfsServiceImpl.class.getName());
+
     private final VfsFolderNode root;
     
     private final Properties mimeTypes;
@@ -29,13 +36,37 @@ class VfsServiceImpl implements VfsService
         this.mimeTypes = new Properties();
     }
 
+    @PostConstruct
     public void init() throws IOException, URISyntaxException
     {
-        this.root.mount(new Path("/vfs/org/bridje"), new CpSource("/BRIDJE-INF/vfs"));
-        VFile mimeFiles = new VFile("/vfs/org/bridje/mime-types.properties");
+        VFile vfsBridje = new VFile("/vfs/bridje");
+        vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
+        VFile mimeFiles = new VFile(vfsBridje.getPath().join("mime-types.properties"));
         try(VFileInputStream is = new VFileInputStream(mimeFiles))
         {
             this.mimeTypes.load(is);
+        }
+        VFile[] sources = vfsBridje.search(new GlobExpr("*-classpath-sources.properties"));
+        for (VFile source : sources)
+        {
+            Properties prop = new Properties();
+            try(VFileInputStream is = new VFileInputStream(source))
+            {
+                prop.load(is);
+            }
+            Set<Map.Entry<Object, Object>> entrySet = prop.entrySet();
+            for (Map.Entry<Object, Object> entry : entrySet)
+            {
+                try
+                {
+                    VFile folder = new VFile((String)entry.getKey());
+                    folder.mount(new CpSource((String)entry.getValue()));
+                }
+                catch (Exception e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
         }
     }
 

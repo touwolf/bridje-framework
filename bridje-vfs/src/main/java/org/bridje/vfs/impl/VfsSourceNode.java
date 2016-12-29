@@ -74,9 +74,10 @@ class VfsSourceNode extends VfsNode
     }
 
     @Override
-    public VFile[] search(GlobExpr globExpr, Path path)
+    public VFile[] search(GlobExpr globExpr, Path searchPath)
     {
-        GlobExpr expr = new GlobExpr(path.toString() + "/" + globExpr.getValue());
+        Path path = searchPath == null ? new Path() : searchPath;
+        GlobExpr expr = new GlobExpr(path.join(globExpr.getValue()).toString());
         List<Path> lst = source.search(expr, path);
         if(lst == null) return null;
         List<VFile> lstFiles = new ArrayList<>();
