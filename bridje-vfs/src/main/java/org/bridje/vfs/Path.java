@@ -279,8 +279,7 @@ public class Path implements Iterable<Path>
             @Override
             public boolean hasNext()
             {
-                if(isRoot()) return false;
-                return (currentIndex < pathElements.length);
+                return !isRoot() && (currentIndex < pathElements.length);
             }
 
             @Override
@@ -311,7 +310,7 @@ public class Path implements Iterable<Path>
     {
         if(isRoot()) return null;
         String[] split = getName().split("[\\.]");
-        if(split != null && split.length > 1) return split[split.length];
+        if(split.length > 1) return split[split.length];
         return null;
     }
 

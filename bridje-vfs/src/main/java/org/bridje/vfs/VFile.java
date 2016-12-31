@@ -146,19 +146,11 @@ public class VFile
         {
             return true;
         }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
         {
             return false;
         }
         final VFile other = (VFile) obj;
-        if (!Objects.equals(this.path, other.path))
-        {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.path, other.path);
     }
 }

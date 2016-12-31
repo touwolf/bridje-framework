@@ -19,7 +19,7 @@ public class FileSource implements VfsSource
 
     private final File file;
 
-    public FileSource(File file) throws IOException, FileNotFoundException
+    public FileSource(File file) throws IOException
     {
         this.file = file.getAbsoluteFile().getCanonicalFile();
         if(!this.file.exists())
@@ -53,8 +53,7 @@ public class FileSource implements VfsSource
     public boolean exists(Path path)
     {
         File f = findFile(path);
-        if(f == null) return false;
-        return f.exists();        
+        return f != null && f.exists();
     }
 
     @Override
@@ -134,18 +133,21 @@ public class FileSource implements VfsSource
     public void search(GlobExpr globExpr, File pathFile, Path path, List<Path> files)
     {
         File[] listFiles = pathFile.listFiles();
-        for (File f : listFiles)
+        if (listFiles != null)
         {
-            if(f.isDirectory())
+            for (File f : listFiles)
             {
-                search(globExpr, f, path.join(f.getName()), files);
-            }
-            else if(f.isFile())
-            {
-                Path fullPath = path.join(f.getName());
-                if(globExpr.globMatches(fullPath))
+                if (f.isDirectory())
                 {
-                    files.add(fullPath);
+                    search(globExpr, f, path.join(f.getName()), files);
+                }
+                else if (f.isFile())
+                {
+                    Path fullPath = path.join(f.getName());
+                    if (globExpr.globMatches(fullPath))
+                    {
+                        files.add(fullPath);
+                    }
                 }
             }
         }
@@ -186,10 +188,6 @@ public class FileSource implements VfsSource
     public boolean delete(Path path)
     {
         File pathFile = findFile(path);
-        if(!pathFile.exists())
-        {
-            return pathFile.delete();
-        }
-        return false;
+        return !pathFile.exists() && pathFile.delete();
     }
 }

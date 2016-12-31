@@ -58,8 +58,7 @@ public class CpSource implements VfsSource
         else
         {
             CpSource cp = childs.get(path.getFirstElement());
-            if(cp == null) return false;
-            return cp.isDirectory(path.getNext());
+            return cp != null && cp.isDirectory(path.getNext());
         }
     }
 
@@ -73,8 +72,7 @@ public class CpSource implements VfsSource
         else
         {
             CpSource cp = childs.get(path.getFirstElement());
-            if(cp == null) return false;
-            return cp.isFile(path.getNext());
+            return cp != null && cp.isFile(path.getNext());
         }
     }
 
@@ -87,10 +85,9 @@ public class CpSource implements VfsSource
         }
         else
         {
-            if(childs == null) return false;
+            if (childs == null) return false;
             CpSource cp = childs.get(path.getFirstElement());
-            if(cp == null) return false;
-            return cp.exists(path.getNext());
+            return cp != null && cp.exists(path.getNext());
         }
     }
 
@@ -181,7 +178,7 @@ public class CpSource implements VfsSource
                 dirURL = clazz.getClassLoader().getResource(me);
             }
 
-            if (dirURL.getProtocol().equals("jar"))
+            if (dirURL != null && dirURL.getProtocol().equals("jar"))
             {
                 /* A JAR path */
                 String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file

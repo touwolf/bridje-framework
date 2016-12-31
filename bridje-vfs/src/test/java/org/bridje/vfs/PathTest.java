@@ -79,9 +79,8 @@ public class PathTest
     public void testHasNext()
     {
         Path instance = new Path("/www");
-        boolean expResult = false;
         boolean result = instance.hasNext();
-        assertEquals(expResult, result);
+        assertEquals(false, result);
     }
 
     /**
@@ -91,9 +90,8 @@ public class PathTest
     public void testIsSelf()
     {
         Path instance = new Path("/./asd");
-        boolean expResult = true;
         boolean result = instance.isSelf();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -103,9 +101,8 @@ public class PathTest
     public void testIsParent()
     {
         Path instance = new Path("/../");
-        boolean expResult = true;
         boolean result = instance.isParent();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -115,9 +112,8 @@ public class PathTest
     public void testIsLast()
     {
         Path instance = new Path("/www");
-        boolean expResult = true;
         boolean result = instance.isLast();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -184,7 +180,7 @@ public class PathTest
     }
 
     /**
-     * Test of {@link Path#globMatches(java.lang.String)}
+     * Test of {@link GlobExpr#globMatches(Path)}
      */
     @Test
     public void testGlob_Matches()
@@ -231,7 +227,7 @@ public class PathTest
     }
 
     /**
-     * Test of {@link Path#globRemaining(java.lang.String)}
+     * Test of {@link GlobExpr#globRemaining(Path)}
      */
     @Test
     public void testGlob_Remaining()

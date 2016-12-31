@@ -54,7 +54,7 @@ public class GlobExpr
      * you can escape them by using the backslash character, {@literal "\"}.
      * For example: {@literal "\\"} matches a single backslash, and {@literal "\?"} matches the question mark.
      *
-     * @param path 
+     * @param path path to test
      * @return {@literal true} if the glob match this path, {@literal false} otherwise.
      */
     public boolean globMatches(Path path)
@@ -69,9 +69,9 @@ public class GlobExpr
     /**
      * Obtains the path remaining of matches a path with glob syntax.
      *
-     * @param path 
+     * @param path path to search
      * @return if the glob match this path beginning will return the remaining path, this full path otherwise.
-     * @see Path#globMatches(java.lang.String)
+     * @see GlobExpr#globMatches(Path)
      */
     public Path globRemaining(Path path)
     {
