@@ -33,9 +33,9 @@ public interface SrcGenService
 
     static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
-    <T> List<T> findData(String path, Class<T> cls) throws JAXBException, IOException;
+    <T> List<T> findData(String expr, Class<T> cls) throws JAXBException, IOException;
 
-    <T> List<T> findSuplementaryData(String path, Class<T> cls) throws JAXBException, IOException;
+    <T> List<T> findSuplementaryData(String expr, Class<T> cls) throws JAXBException, IOException;
 
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
 

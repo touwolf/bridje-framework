@@ -21,10 +21,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FieldInfBase
+public abstract class FieldInfBase
 {
     @XmlAttribute
     private String name;
+
+    @XmlAttribute
+    private String column;
 
     @XmlAttribute
     private String description;
@@ -37,7 +40,7 @@ public class FieldInfBase
 
     @XmlAttribute
     private Boolean key;
-
+    
     public String getName()
     {
         return name;
@@ -46,6 +49,17 @@ public class FieldInfBase
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getColumn()
+    {
+        if(this.column == null) this.column = Utils.toSQLName(this.name);
+        return column;
+    }
+
+    public void setColumn(String column)
+    {
+        this.column = column;
     }
 
     public String getDescription()
@@ -86,5 +100,12 @@ public class FieldInfBase
     public void setKey(Boolean key)
     {
         this.key = key;
+    }
+    
+    public abstract String getJavaType();
+    
+    public String getTableColumn()
+    {
+        return "TableComparableColumn";
     }
 }

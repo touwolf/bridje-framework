@@ -48,4 +48,10 @@ public class CustomFieldInf extends FieldInfBase
     {
         this.autoIncrement = autoIncrement;
     }
+
+    @Override
+    public String getJavaType()
+    {
+        return getType();
+    }
 }

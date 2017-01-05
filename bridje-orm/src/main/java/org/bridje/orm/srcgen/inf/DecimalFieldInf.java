@@ -37,6 +37,7 @@ public class DecimalFieldInf extends FieldInfBase
 
     public DecimalFieldType getType()
     {
+        if(type == null) return DecimalFieldType.DOUBLE;
         return type;
     }
 
@@ -73,5 +74,26 @@ public class DecimalFieldInf extends FieldInfBase
     public void setPrecision(Integer precision)
     {
         this.precision = precision;
+    }
+
+    @Override
+    public String getJavaType()
+    {
+        switch(getType())
+        {
+            case BIGDECIMAL:
+                return "BigDecimal";
+            case DOUBLE:
+                return "Double";
+            case FLOAT:
+                return "Float";
+        }
+        return "Double";
+    }
+
+    @Override
+    public String getTableColumn()
+    {
+        return "TableNumberColumn";
     }
 }

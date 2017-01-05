@@ -18,6 +18,7 @@ package org.bridje.orm.srcgen.inf;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -42,6 +43,13 @@ public class EnumInf
         @XmlElement(name = "constant", type = EnumConstantInf.class)
     })
     private List<EnumConstantInf> constants;
+
+    private ModelInf model;
+
+    public ModelInf getModel()
+    {
+        return model;
+    }
 
     public String getName()
     {
@@ -70,5 +78,20 @@ public class EnumInf
             constants = new ArrayList<>();
         }
         return constants;
+    }
+
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        model = (ModelInf)parent;
+    }
+    
+    public String getPackage()
+    {
+        return model.getPackage();
+    }
+    
+    public String getFullName()
+    {
+        return getPackage() + "." + getName();
     }
 }

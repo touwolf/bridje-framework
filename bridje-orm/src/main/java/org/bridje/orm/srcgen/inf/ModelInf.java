@@ -86,12 +86,12 @@ public class ModelInf
         this.name = name;
     }
 
-    public String getPackageName()
+    public String getPackage()
     {
         return packageName;
     }
 
-    public void setPackageName(String packageName)
+    public void setPackage(String packageName)
     {
         this.packageName = packageName;
     }

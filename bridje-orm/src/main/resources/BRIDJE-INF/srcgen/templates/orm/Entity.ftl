@@ -27,7 +27,7 @@ public class ${entity.name}
      * ${field.description!}
      */
     @DbObject("${field.name}")
-    public static ${field.tableColumn}<${entity.name}<#if !field.isString>, ${field.javaType}</#if>> ${field.column?upper_case};
+    public static ${field.tableColumn}<${entity.name}<#if field.tableColumn != "TableStringColumn">, ${field.javaType}</#if>> ${field.column?upper_case};
 
     </#list>
     <#list entity.fields as field>

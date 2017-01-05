@@ -68,4 +68,11 @@ public class EnumFieldInf extends FieldInfBase
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
     }
+
+
+    @Override
+    public String getJavaType()
+    {
+        return getType().getName();
+    }
 }

@@ -1,6 +1,7 @@
 
 package org.bridje.vfs;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -8,12 +9,13 @@ public class VFileInputStream extends InputStream
 {
     private final VFile vfile;
 
-    private final InputStream os;
+    private final InputStream is;
     
-    public VFileInputStream(VFile vfile)
+    public VFileInputStream(VFile vfile) throws FileNotFoundException
     {
         this.vfile = vfile;
-        this.os = this.vfile.openForRead();
+        this.is = this.vfile.openForRead();
+        if(is == null) throw new FileNotFoundException("Cannot open the file for read.");
     }
 
     public VFile getVFile()
@@ -24,54 +26,63 @@ public class VFileInputStream extends InputStream
     @Override
     public void close() throws IOException
     {
-        this.os.close();
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        this.is.close();
     }
 
     @Override
     public int available() throws IOException
     {
-        return this.os.available();
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        return this.is.available();
     }
 
     @Override
     public synchronized void mark(int readlimit)
     {
-        this.os.mark(readlimit);
+        if(is == null) return;
+        this.is.mark(readlimit);
     }
 
     @Override
     public boolean markSupported()
     {
-        return this.os.markSupported();
+        if(is == null) return false;
+        return this.is.markSupported();
     }
 
     @Override
     public int read() throws IOException
     {
-        return this.os.read();
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        return this.is.read();
     }
 
     @Override
     public int read(byte[] b) throws IOException
     {
-        return this.os.read(b);
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        return this.is.read(b);
     }
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException
     {
-        return this.os.read(b, off, len);
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        return this.is.read(b, off, len);
     }
 
     @Override
     public synchronized void reset() throws IOException
     {
-        this.os.reset();
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        this.is.reset();
     }
 
     @Override
     public long skip(long n) throws IOException
     {
-        return this.os.skip(n);
+        if(is == null) throw new IOException("Cannot open the file for read.");
+        return this.is.skip(n);
     }
 }

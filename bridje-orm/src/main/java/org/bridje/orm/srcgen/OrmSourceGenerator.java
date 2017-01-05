@@ -17,10 +17,14 @@
 package org.bridje.orm.srcgen;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.orm.srcgen.inf.EntityInf;
+import org.bridje.orm.srcgen.inf.EnumInf;
 import org.bridje.orm.srcgen.inf.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
@@ -34,10 +38,29 @@ public class OrmSourceGenerator implements SourceGenerator
     @Override
     public void generateSources() throws IOException, JAXBException
     {
-        List<ModelInf> models = srcGen.findData("**/orm/*.xml", ModelInf.class);
+        List<ModelInf> models = srcGen.findData("orm/*.xml", ModelInf.class);
+        Map<String, Object> data;
         for (ModelInf modelInf : models)
         {
-            srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", modelInf);
+            data = new HashMap<>();
+            data.put("model", modelInf);
+            srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
+
+            data = new HashMap<>();
+            data.put("model", modelInf);
+            for (EntityInf entity : modelInf.getEntities())
+            {
+                data.put("entity", entity);
+                srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
+            }
+
+            data = new HashMap<>();
+            data.put("model", modelInf);
+            for (EnumInf enumInf : modelInf.getEnums())
+            {
+                data.put("enum", enumInf);
+                srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
+            }
         }
     }
     

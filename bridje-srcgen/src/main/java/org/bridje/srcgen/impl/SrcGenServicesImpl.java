@@ -35,8 +35,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.vfs.VfsService;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
@@ -92,29 +92,35 @@ class SrcGenServicesImpl implements SrcGenService
     }
 
     @Override
-    public <T> List<T> findData(String path, Class<T> cls) throws JAXBException, IOException
+    public <T> List<T> findData(String expr, Class<T> cls) throws JAXBException, IOException
     {
         List<T> result = new ArrayList<>();
-        VFile[] files = new VFile(DATA_PATH).listFiles();
+        VFile[] files = new VFile(DATA_PATH).search(new GlobExpr(expr));
         for (VFile vfile : files)
         {
-            LOG.log(Level.INFO, "Reading Data File {0}", vfile.getPath().toString());
-            T data = readFile(vfile, cls);
-            result.add(data);
+            if(vfile.isFile())
+            {
+                LOG.log(Level.INFO, "Reading Data File {0}", vfile.getPath().toString());
+                T data = readFile(vfile, cls);
+                result.add(data);
+            }
         }
         return result;
     }
 
     @Override
-    public <T> List<T> findSuplementaryData(String path, Class<T> cls) throws JAXBException, IOException
+    public <T> List<T> findSuplementaryData(String expr, Class<T> cls) throws JAXBException, IOException
     {
         List<T> result = new ArrayList<>();
-        VFile[] files = new VFile(DATA_PATH).listFiles();
+        VFile[] files = new VFile(SUPLEMENTARY_PATH).search(new GlobExpr(expr));
         for (VFile vfile : files)
         {
-            LOG.log(Level.INFO, "Reading Suplementary Data File {0}", vfile.getPath().toString());
-            T data = readFile(vfile, cls);
-            result.add(data);
+            if(vfile.isFile())
+            {
+                LOG.log(Level.INFO, "Reading Suplementary Data File {0}", vfile.getPath().toString());
+                T data = readFile(vfile, cls);
+                result.add(data);
+            }
         }
         return result;
     }

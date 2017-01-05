@@ -21,16 +21,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 
 @Component
 class SrcGenTplLoader implements TemplateLoader
 {
+    private static final Logger LOG = Logger.getLogger(SrcGenTplLoader.class.getName());
+
     private final Long time = System.currentTimeMillis();
 
+    @PostConstruct
+    public void init()
+    {
+        try
+        {
+            VFile tpl = new VFile(SrcGenService.TEMPLATES_PATH);
+            tpl.mount(new CpSource("/BRIDJE-INF/srcgen/templates"));
+        }
+        catch (URISyntaxException | IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+    
     @Override
     public Object findTemplateSource(String name) throws IOException
     {

@@ -51,29 +51,17 @@ public class CpSource implements VfsSource
     @Override
     public boolean isDirectory(Path path)
     {
-        if(path == null)
-        {
-            return childs != null;
-        }
-        else
-        {
-            CpSource cp = childs.get(path.getFirstElement());
-            return cp != null && cp.isDirectory(path.getNext());
-        }
+        if(path == null || path.isRoot()) return childs != null;
+        CpSource cp = childs.get(path.getFirstElement());
+        return cp != null && cp.isDirectory(path.getNext());
     }
 
     @Override
     public boolean isFile(Path path)
     {
-        if(path == null)
-        {
-            return childs == null;
-        }
-        else
-        {
-            CpSource cp = childs.get(path.getFirstElement());
-            return cp != null && cp.isFile(path.getNext());
-        }
+        if(path == null || path.isRoot()) return childs == null;
+        CpSource cp = childs.get(path.getFirstElement());
+        return cp != null && cp.isFile(path.getNext());
     }
 
     @Override

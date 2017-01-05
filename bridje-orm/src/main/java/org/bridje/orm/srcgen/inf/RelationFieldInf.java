@@ -37,4 +37,16 @@ public class RelationFieldInf extends FieldInfBase
     {
         this.type = type;
     }
+
+    @Override
+    public String getJavaType()
+    {
+        return type.getName();
+    }
+
+    @Override
+    public String getTableColumn()
+    {
+        return "TableRelationColumn";
+    }
 }

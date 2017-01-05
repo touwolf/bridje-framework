@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -77,15 +76,9 @@ public class GenerateMojo extends AbstractMojo
         try
         {
             getLog().info("Generating Source Code");
-            VfsService vfs = Ioc.context().find(VfsService.class);
-            if(!sourceFolder.exists())
-            {
-                sourceFolder.mkdirs();
-            }
-            if(!targetResFolder.exists())
-            {
-                targetResFolder.mkdirs();
-            }
+            if(!sourceFolder.exists()) sourceFolder.mkdirs();
+            if(!targetFolder.exists()) targetFolder.mkdirs();
+            if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
@@ -101,6 +94,12 @@ public class GenerateMojo extends AbstractMojo
         }
         catch (JAXBException | IOException e)
         {
+            getLog().error(e.getMessage(), e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+        catch(Exception e)
+        {
+            getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);
         }
     }

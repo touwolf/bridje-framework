@@ -36,6 +36,7 @@ public class IntegerFieldInf extends FieldInfBase
 
     public IntegerFieldType getType()
     {
+        if(type == null) return IntegerFieldType.INTEGER;
         return type;
     }
 
@@ -72,5 +73,32 @@ public class IntegerFieldInf extends FieldInfBase
     public void setAutoIncrement(Boolean autoIncrement)
     {
         this.autoIncrement = autoIncrement;
+    }
+
+    @Override
+    public String getJavaType()
+    {
+        switch(getType())
+        {
+            case BIGINTEGER:
+                return "BigInteger";
+            case BYTE:
+                return "Byte";
+            case CHARACTER:
+                return "Character";
+            case INTEGER:
+                return "Integer";
+            case LONG:
+                return "Long";
+            case SHORT:
+                return "Short";
+        }
+        return "Integer";
+    }
+
+    @Override
+    public String getTableColumn()
+    {
+        return "TableNumberColumn";
     }
 }

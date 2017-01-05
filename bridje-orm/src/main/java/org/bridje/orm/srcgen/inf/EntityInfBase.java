@@ -18,6 +18,7 @@ package org.bridje.orm.srcgen.inf;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -62,6 +63,17 @@ public class EntityInfBase
     })
     private List<OperationInfBase> operations;
 
+    @XmlTransient
+    private ModelInf model;
+    
+    @XmlTransient
+    private FieldInfBase keyField;
+
+    public ModelInf getModel()
+    {
+        return model;
+    }
+    
     public String getName()
     {
         return name;
@@ -84,7 +96,7 @@ public class EntityInfBase
 
     public List<FieldInfBase> getFields()
     {
-        if(fields == null)
+        if (fields == null)
         {
             fields = new ArrayList<>();
         }
@@ -93,10 +105,40 @@ public class EntityInfBase
 
     public List<OperationInfBase> getOperations()
     {
-        if(operations == null)
+        if (operations == null)
         {
             operations = new ArrayList<>();
         }
         return operations;
+    }
+
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        model = (ModelInf)parent;
+    }
+    
+    public String getPackage()
+    {
+        return model.getPackage();
+    }
+    
+    public String getFullName()
+    {
+        return getPackage() + "." + getName();
+    }
+    
+    public FieldInfBase getKeyField()
+    {
+        if(keyField == null) keyField = findKeyField();
+        return keyField;
+    }
+    
+    public FieldInfBase findKeyField()
+    {
+        for(FieldInfBase fieldInf : getFields())
+        {
+            if(fieldInf.isKey()) return fieldInf;
+        }
+        return null;
     }
 }

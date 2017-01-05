@@ -22,4 +22,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInf extends EntityInfBase
 {
+    private String table;
+
+    public String getTable()
+    {
+        if(this.table == null) this.table = Utils.toSQLName(this.getName());
+        return table;
+    }
+
+    public void setTable(String table)
+    {
+        this.table = table;
+    }
 }

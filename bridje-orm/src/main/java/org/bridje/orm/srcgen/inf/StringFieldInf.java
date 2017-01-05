@@ -79,4 +79,16 @@ public class StringFieldInf extends FieldInfBase
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
     }
+
+    @Override
+    public String getJavaType()
+    {
+        return "String";
+    }
+
+    @Override
+    public String getTableColumn()
+    {
+        return "TableStringColumn";
+    }
 }
