@@ -41,6 +41,7 @@ public class RelationFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
+        if(type == null) return "";
         return type.getName();
     }
 

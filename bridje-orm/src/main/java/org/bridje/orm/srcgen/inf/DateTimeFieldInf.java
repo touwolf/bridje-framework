@@ -58,11 +58,11 @@ public class DateTimeFieldInf extends FieldInfBase
             case DATE:
                 return "Date";
             case LOCALDATE:
-                return "LocalDate";
+                return "java.time.LocalDate";
             case LOCALTIME:
-                return "LocalTime";
+                return "java.time.LocalTime";
             case LOCALDATETIME:
-                return "LocalDateTime";
+                return "java.time.LocalDateTime";
             case SQLDATE:
                 return "java.sql.Date";
             case SQLTIME:

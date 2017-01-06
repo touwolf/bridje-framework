@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumInf
@@ -44,6 +45,7 @@ public class EnumInf
     })
     private List<EnumConstantInf> constants;
 
+    @XmlTransient
     private ModelInf model;
 
     public ModelInf getModel()

@@ -19,6 +19,7 @@ package org.bridje.orm.srcgen.inf;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import org.bridje.ioc.Ioc;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CustomFieldInf extends FieldInfBase
@@ -52,6 +53,14 @@ public class CustomFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
-        return getType();
+        CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
+        return prov.getJavaType(getType());
+    }
+
+    @Override
+    public String getTableColumn()
+    {
+        CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
+        return prov.getColumnClass(getType());
     }
 }
