@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.*;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from widgets. The views are inmutables so once defined they will
+ * composed from controls. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
 @XmlRootElement(name = "layout")

@@ -18,7 +18,7 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.controls.Control;
 
 /**
  * Base class for all view definition objects.
@@ -29,7 +29,7 @@ public abstract class ViewDefinition
     /**
      * Gets the root element for this view.
      * 
-     * @return A Widget object that is the root widget for the view.
+     * @return A Control object that is the root control for the view.
      */
-    public abstract Widget findRoot();
+    public abstract Control findRoot();
 }

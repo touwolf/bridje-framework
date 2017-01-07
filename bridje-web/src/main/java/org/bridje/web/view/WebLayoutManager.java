@@ -24,7 +24,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.web.view.widgets.WidgetManager;
+import org.bridje.web.view.controls.ControlManager;
 
 /**
  * A manager for the web layouts, this component can be user to load the web
@@ -37,7 +37,7 @@ public class WebLayoutManager
     private static final Logger LOG = Logger.getLogger(WebLayoutManager.class.getName());
 
     @Inject
-    private WidgetManager widgetManag;
+    private ControlManager controlManag;
 
     private final Path basePath = new Path("/web");
 
@@ -60,7 +60,7 @@ public class WebLayoutManager
     {
         try
         {
-            return widgetManag.read(f, WebLayout.class);
+            return controlManag.read(f, WebLayout.class);
         }
         catch (IOException e)
         {

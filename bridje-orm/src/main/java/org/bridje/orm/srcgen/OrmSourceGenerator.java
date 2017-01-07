@@ -30,10 +30,10 @@ import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
-import org.bridje.orm.srcgen.inf.CustomTypesProvider;
-import org.bridje.orm.srcgen.inf.EntityInf;
-import org.bridje.orm.srcgen.inf.EnumInf;
-import org.bridje.orm.srcgen.inf.ModelInf;
+import org.bridje.orm.srcgen.model.CustomTypesProvider;
+import org.bridje.orm.srcgen.model.EntityInf;
+import org.bridje.orm.srcgen.model.EnumInf;
+import org.bridje.orm.srcgen.model.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 

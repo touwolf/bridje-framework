@@ -20,13 +20,13 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.*;
-import org.bridje.web.view.widgets.UIEvent;
-import org.bridje.web.view.widgets.UIInputExpression;
-import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.controls.UIEvent;
+import org.bridje.web.view.controls.UIInputExpression;
+import org.bridje.web.view.controls.Control;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from widgets. The views are inmutables so once defined they will
+ * composed from controls. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
 @XmlRootElement(name = "view")
@@ -53,7 +53,7 @@ public final class WebView extends AbstractWebView
     private Map<String, UIInputExpression> inputs;
 
     @XmlTransient
-    private Set<Class<?>> widgets;
+    private Set<Class<?>> controls;
 
     @XmlTransient
     private Set<String> resources;
@@ -120,7 +120,7 @@ public final class WebView extends AbstractWebView
     }
 
     /**
-     * Finds the set of resources used in this view by all the widgets defined
+     * Finds the set of resources used in this view by all the controls defined 
      * in it.
      *
      * @return A set with all the names of the resources.
@@ -135,17 +135,17 @@ public final class WebView extends AbstractWebView
     }
 
     /**
-     * Gets the set of widgets classes used in this view.
+     * Gets the set of controls classes used in this view.
      *
-     * @return All the widgets classes used in this view.
+     * @return All the controls classes used in this view.
      */
-    public Set<Class<?>> getWidgets()
+    public Set<Class<?>> getControls()
     {
-        if (widgets == null)
+        if (controls == null)
         {
-            initWidgets();
+            initControls();
         }
-        return widgets;
+        return controls;
     }
 
     /**
@@ -185,7 +185,7 @@ public final class WebView extends AbstractWebView
         {
             return true;
         }
-        LOG.log(Level.WARNING, "The view {0} does not have a valid root widget, it will be ignored.", getName());
+        LOG.log(Level.WARNING, "The view {0} does not have a valid root control, it will be ignored.", getName());
         return false;
     }
 
@@ -206,19 +206,19 @@ public final class WebView extends AbstractWebView
         }
     }
 
-    private synchronized void initWidgets()
+    private synchronized void initControls()
     {
-        if (widgets == null)
+        if (controls == null)
         {
             if (checkIsValidView())
             {
-                Set<Class<?>> widgetsSet = new HashSet<>();
-                findWidgets(getRoot(), widgetsSet);
-                widgets = widgetsSet;
+                Set<Class<?>> controlsSet = new HashSet<>();
+                findControls(getRoot(), controlsSet);
+                controls = controlsSet;
             }
             else
             {
-                widgets = Collections.emptySet();
+                controls = Collections.emptySet();
             }
         }
     }
@@ -257,27 +257,27 @@ public final class WebView extends AbstractWebView
         }
     }
 
-    private void findEvents(Widget widget, Map<String, UIEvent> eventsMap)
+    private void findEvents(Control control, Map<String, UIEvent> eventsMap)
     {
-        widget.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
-        widget.childs().forEach((child) -> findEvents(child, eventsMap));
+        control.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
+        control.childs().forEach((child) -> findEvents(child, eventsMap));
     }
 
-    private void findInputs(Widget widget, Map<String, UIInputExpression> inputsMap)
+    private void findInputs(Control control, Map<String, UIInputExpression> inputsMap)
     {
-        widget.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
-        widget.childs().forEach((child) -> findInputs(child, inputsMap));
+        control.inputs().forEach((in) -> inputsMap.put(in.getParameter(), in));
+        control.childs().forEach((child) -> findInputs(child, inputsMap));
     }
 
-    private void findResources(Widget widget, Set<String> resourcesSet)
+    private void findResources(Control control, Set<String> resourcesSet)
     {
-        widget.resources().forEach((r) -> resourcesSet.add(r));
-        widget.childs().forEach((child) -> findResources(child, resourcesSet));
+        control.resources().forEach((r) -> resourcesSet.add(r));
+        control.childs().forEach((child) -> findResources(child, resourcesSet));
     }
 
-    private void findWidgets(Widget widget, Set<Class<?>> widgetsSet)
+    private void findControls(Control control, Set<Class<?>> controlsSet)
     {
-        widgetsSet.add(widget.getClass());
-        widget.childs().forEach((child) -> findWidgets(child, widgetsSet));
+        controlsSet.add(control.getClass());
+        control.childs().forEach((child) -> findControls(child, controlsSet));
     }
 }

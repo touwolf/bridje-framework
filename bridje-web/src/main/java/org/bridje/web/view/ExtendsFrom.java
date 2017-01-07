@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Ioc;
-import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.controls.Control;
 
 /**
  * Defines that the view will extend from the given layout.
@@ -82,15 +82,15 @@ public class ExtendsFrom extends ViewDefinition
     }
 
     @Override
-    public Widget findRoot()
+    public Control findRoot()
     {
         WebLayoutManager layoutManag = Ioc.context().find(WebLayoutManager.class);
         WebLayout webLayout = layoutManag.loadLayout(layout);
         if (webLayout != null)
         {
-            Widget widget = webLayout.getRoot();
-            widget.override(getDefinesMap());
-            return widget;
+            Control control = webLayout.getRoot();
+            control.override(getDefinesMap());
+            return control;
         }
         return null;
     }

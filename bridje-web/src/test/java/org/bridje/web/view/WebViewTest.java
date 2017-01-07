@@ -18,8 +18,8 @@ package org.bridje.web.view;
 
 import java.io.IOException;
 import org.bridje.ioc.Ioc;
-import org.bridje.web.view.test.widgets.Header;
-import org.bridje.web.view.test.widgets.VerticalLayout;
+import org.bridje.web.view.test.controls.Header;
+import org.bridje.web.view.test.controls.VerticalLayout;
 import org.junit.Assert;
 import org.junit.Test;
 

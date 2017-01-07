@@ -21,11 +21,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
-import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.controls.Control;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from widgets. The views are inmutables so once defined they will
+ * composed from controls. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
 @XmlTransient
@@ -40,16 +40,16 @@ public class AbstractWebView
     private ViewDefinition definition;
 
     @XmlTransient
-    private Widget root;
+    private Control root;
 
     private String defaultTheme;
 
     /**
-     * The root widget of this view.
+     * The root control of this view.
      *
-     * @return The root widget.
+     * @return The root control.
      */
-    public Widget getRoot()
+    public Control getRoot()
     {
         if(root == null && definition != null)
         {
@@ -64,9 +64,9 @@ public class AbstractWebView
     }
 
     /**
-     * Gets the default theme associated with the roor widget of the view.
+     * Gets the default theme associated with the roor control of the view.
      * 
-     * @return The default theme for the root widget of the view.
+     * @return The default theme for the root control of the view.
      */
     public String getDefaultTheme()
     {
@@ -78,9 +78,9 @@ public class AbstractWebView
     }
 
     /**
-     * Gets the view definition widget for this view.
+     * Gets the view definition control for this view.
      * 
-     * @return The view definition widget, standalone or extends.
+     * @return The view definition control, standalone or extends.
      */
     public ViewDefinition getDefinition()
     {

@@ -44,8 +44,8 @@ import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.state.StateManager;
 import org.bridje.web.view.themes.ThemesManager;
-import org.bridje.web.view.widgets.UIEvent;
-import org.bridje.web.view.widgets.WidgetManager;
+import org.bridje.web.view.controls.UIEvent;
+import org.bridje.web.view.controls.ControlManager;
 
 /**
  * A manager for all the web views present in the application. with this
@@ -59,7 +59,7 @@ public class WebViewsManager
     private static final Logger LOG = Logger.getLogger(WebViewsManager.class.getName());
 
     @Inject
-    private WidgetManager widgetManag;
+    private ControlManager controlManag;
 
     @Inject
     private ThemesManager themesMang;
@@ -379,7 +379,7 @@ public class WebViewsManager
     {
         try
         {
-            WebView view = widgetManag.read(f, WebView.class);
+            WebView view = controlManag.read(f, WebView.class);
             if (view != null)
             {
                 String viewPath = toViewPath(f.getPath());

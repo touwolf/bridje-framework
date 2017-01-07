@@ -18,7 +18,7 @@ package org.bridje.web.view;
 
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.view.widgets.UIEvent;
+import org.bridje.web.view.controls.UIEvent;
 
 /**
  * The result of the invocation of a web event.

@@ -46,7 +46,7 @@ import org.bridje.vfs.VFileInputStream;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
 import org.bridje.web.view.state.StateRenderProvider;
-import org.bridje.web.view.widgets.Widget;
+import org.bridje.web.view.controls.Control;
 
 /**
  * The manager for the web themes that can be used in the web application.
@@ -108,15 +108,15 @@ public class ThemesManager
     }
 
     /**
-     * Renders only the given widget to the given output stream.
+     * Renders only the given control to the given output stream.
      *
-     * @param widget The widget
+     * @param control The control
      * @param view The view to be render.
      * @param os The output stream to render the view.
      * @param result The result of the event invocation.
      * @param stateProv The provider for the current state of the view.
      */
-    public void render(Widget widget, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
+    public void render(Control control, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -126,7 +126,7 @@ public class ThemesManager
             Map data = new HashMap();
             data.put("tools", themeTools);
             data.put("view", view);
-            data.put("widget", widget);
+            data.put("control", control);
             data.put("result", result);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
