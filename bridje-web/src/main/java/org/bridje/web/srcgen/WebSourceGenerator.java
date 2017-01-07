@@ -43,12 +43,12 @@ public class WebSourceGenerator implements SourceGenerator
         {
             data = new HashMap<>();
             data.put("uisuite", uiSuite);
-            srcGen.createResource(uiSuite.getName(), "orm/Theme.ftl", data);
+            srcGen.createResource(uiSuite.getName(), "web/Theme.ftl", data);
             for (ControlDef controlDef : uiSuite.getControls())
             {
                 data = new HashMap<>();
                 data.put("uisuite", uiSuite);
-                srcGen.createResource(controlDef.getFullName(), "orm/Theme.ftl", data);
+                srcGen.createResource(controlDef.getFullName(), "web/Control.ftl", data);
             }
         }
     }
