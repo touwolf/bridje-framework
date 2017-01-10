@@ -99,6 +99,7 @@ public class BaseControlDef
 
     public String getBase()
     {
+        if(base == null) base = "Control";
         return base;
     }
 
@@ -149,7 +150,7 @@ public class BaseControlDef
 
     public String getFullName()
     {
-        return name;
+        return getPackage() + "." + getName();
     }
 
     public void afterUnmarshal(Unmarshaller u, Object parent)
@@ -160,5 +161,10 @@ public class BaseControlDef
     public UISuite getUISuite()
     {
         return uiSuite;
+    }
+    
+    public String getPackage()
+    {
+        return uiSuite.getPackage();
     }
 }

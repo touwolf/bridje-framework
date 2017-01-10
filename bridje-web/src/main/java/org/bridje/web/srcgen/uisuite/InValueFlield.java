@@ -20,7 +20,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InValueFlield
+public class InValueFlield extends BaseDataFlield
 {
-    
+    @Override
+    public String getJavaType()
+    {
+        return "UIInputExpression";
+    }
+
+    @Override
+    public String getFieldType()
+    {
+        return "value";
+    }
 }

@@ -21,13 +21,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChildFlield
+public class ChildFlield implements FieldDef
 {
     @XmlAttribute
     private String name;
     
     @XmlAttribute
-    private Boolean type;
+    private String type;
 
     public String getName()
     {
@@ -39,13 +39,25 @@ public class ChildFlield
         this.name = name;
     }
 
-    public Boolean getType()
+    public String getType()
     {
         return type;
     }
 
-    public void setType(Boolean type)
+    public void setType(String type)
     {
         this.type = type;
+    }
+
+    @Override
+    public String getJavaType()
+    {
+        return getType();
+    }
+
+    @Override
+    public String getFieldType()
+    {
+        return "child";
     }
 }

@@ -83,9 +83,9 @@ public class ${control.name} extends ${control.base}
         return ${f.name};
     }
 
-    public ${f.resultType} get${f.name?cap_first}()
+    public ${f.type} get${f.name?cap_first}()
     {
-        return get(${f.name}, ${f.resultType}.class, ${f.defaultValue});
+        return get(${f.name}, ${f.type}.class, ${f.defaultValue});
     }
     <#elseif f.javaType == "UIInputExpression">
     public ${f.javaType} get${f.name?cap_first}Expression()
@@ -93,9 +93,9 @@ public class ${control.name} extends ${control.base}
         return ${f.name};
     }
 
-    public ${f.resultType} get${f.name?cap_first}()
+    public ${f.type} get${f.name?cap_first}()
     {
-        return get(${f.name}, ${f.resultType}.class, ${f.defaultValue});
+        return get(${f.name}, ${f.type}.class, ${f.defaultValue});
     }
     <#elseif f.javaType == "UIEvent">
     public ${f.javaType} get${f.name?cap_first}()

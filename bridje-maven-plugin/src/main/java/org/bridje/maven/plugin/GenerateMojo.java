@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -46,7 +45,6 @@ import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.FileSource;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
 
 /**
  * This MOJO is responsible for generating the code specified by the other APIs.

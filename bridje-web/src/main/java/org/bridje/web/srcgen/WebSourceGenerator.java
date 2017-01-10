@@ -48,7 +48,8 @@ public class WebSourceGenerator implements SourceGenerator
             {
                 data = new HashMap<>();
                 data.put("uisuite", uiSuite);
-                srcGen.createResource(controlDef.getFullName(), "web/Control.ftl", data);
+                data.put("control", controlDef);
+                srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
             }
         }
     }

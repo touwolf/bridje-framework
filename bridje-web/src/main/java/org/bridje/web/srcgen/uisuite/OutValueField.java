@@ -20,7 +20,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OutValueField
+public class OutValueField extends BaseDataFlield
 {
-    
+    @Override
+    public String getJavaType()
+    {
+        return "UIExpression";
+    }
+
+    @Override
+    public String getFieldType()
+    {
+        return "value";
+    }
 }

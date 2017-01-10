@@ -33,7 +33,7 @@ public class ChildrenFlield
     private Boolean allowPlaceHolder;
     
     @XmlAttribute
-    private Boolean wrapper;
+    private String wrapper;
 
     @XmlAttribute
     private Boolean single;
@@ -64,12 +64,12 @@ public class ChildrenFlield
         this.allowPlaceHolder = allowPlaceHolder;
     }
 
-    public Boolean getWrapper()
+    public String getWrapper()
     {
         return wrapper;
     }
 
-    public void setWrapper(Boolean wrapper)
+    public void setWrapper(String wrapper)
     {
         this.wrapper = wrapper;
     }
@@ -92,5 +92,15 @@ public class ChildrenFlield
     public void setContent(List<ChildFlield> content)
     {
         this.content = content;
+    }
+
+    public String getJavaType()
+    {
+        return "List<Control>";
+    }
+
+    public String getFieldType()
+    {
+        return "children";
     }
 }

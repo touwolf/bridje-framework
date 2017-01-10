@@ -20,7 +20,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ElementField
+public class ElementField extends BaseDataFlield
 {
-    
+    @Override
+    public String getJavaType()
+    {
+        return getType();
+    }
+
+    @Override
+    public String getFieldType()
+    {
+        return "element";
+    }
 }

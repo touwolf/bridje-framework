@@ -18,5 +18,8 @@ package org.bridje.web.srcgen.uisuite;
 
 public interface FieldDef
 {
+    public String getJavaType();
     
+    public String getFieldType();
+
 }

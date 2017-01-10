@@ -18,14 +18,29 @@ package org.bridje.web.srcgen.uisuite;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EventElementFlield extends BaseEventFlield
+public abstract class BaseEventFlield implements FieldDef
 {
-    @Override
-    public String getFieldType()
+    @XmlAttribute
+    private String name;
+    
+    public String getName()
     {
-        return "element";
+        return name;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    @Override
+    public String getJavaType()
+    {
+        return "UIEvent";
+    }
 }
