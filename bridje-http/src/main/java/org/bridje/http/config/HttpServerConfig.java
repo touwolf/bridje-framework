@@ -34,6 +34,8 @@ import javax.net.ssl.SSLContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 /**
  * HTTP server configuration.
@@ -309,12 +311,40 @@ public class HttpServerConfig
         return new FileInputStream(new File(keyStoreFile));
     }
 
+    /**
+     * 
+     * @param configFile
+     * @return
+     * @throws JAXBException
+     * @throws IOException 
+     */
+    public static HttpServerConfig load(VFile configFile) throws JAXBException, IOException
+    {
+        if(!configFile.exists()) return null;
+        try(InputStream is = new VFileInputStream(configFile))
+        {
+            return load(is);
+        }
+    }
+
+    /**
+     * 
+     * @param is
+     * @return
+     * @throws JAXBException 
+     */
     public static HttpServerConfig load(InputStream is) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
         return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);
     }
 
+    /**
+     * 
+     * @param os
+     * @param config
+     * @throws JAXBException 
+     */
     public static void save(OutputStream os, HttpServerConfig config) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);

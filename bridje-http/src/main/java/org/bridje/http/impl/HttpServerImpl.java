@@ -52,8 +52,6 @@ import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileInputStream;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -158,23 +156,22 @@ class HttpServerImpl implements HttpServer
         return config.getName();
     }
 
-    private void initConfig() throws IOException
+    private void initConfig() 
     {
-        VFile configFile = new VFile("/etc/http.xml");
-        if(configFile.exists())
+        config = loadConfigFile();
+        if(config == null) config = new HttpServerConfig();
+    }
+    
+    private HttpServerConfig loadConfigFile() 
+    {
+        try
         {
-            try(InputStream is = new VFileInputStream(configFile))
-            {
-                config = HttpServerConfig.load(is);
-            }
-            catch (JAXBException ex)
-            {
-                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            }
+            return HttpServerConfig.load(CONFIG_FILE);
         }
-        if(config == null)
+        catch (JAXBException | IOException ex)
         {
-            config = new HttpServerConfig();
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
         }
     }
 

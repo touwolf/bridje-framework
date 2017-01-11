@@ -19,7 +19,15 @@ package org.bridje.srcgen;
 import java.io.IOException;
 import javax.xml.bind.JAXBException;
 
+/**
+ * 
+ */
 public interface SourceGenerator
 {
+    /**
+     * 
+     * @throws IOException
+     * @throws JAXBException 
+     */
     void generateSources() throws IOException, JAXBException;
 }

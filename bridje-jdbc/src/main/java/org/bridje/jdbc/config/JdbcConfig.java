@@ -15,6 +15,7 @@
  */
 package org.bridje.jdbc.config;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 /**
  * Configuration object for the JdbcService. It specify all the datasources
@@ -71,12 +74,40 @@ public class JdbcConfig
         this.dataSources = dataSources;
     }
 
+    /**
+     * 
+     * @param configFile 
+     * @return 
+     * @throws JAXBException 
+     * @throws IOException 
+     */
+    public static JdbcConfig load(VFile configFile) throws JAXBException, IOException
+    {
+        if(!configFile.exists()) return null;
+        try(InputStream is = new VFileInputStream(configFile))
+        {
+            return load(is);
+        }
+    }
+
+    /**
+     * 
+     * @param is 
+     * @return 
+     * @throws JAXBException 
+     */
     public static JdbcConfig load(InputStream is) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
         return (JdbcConfig)ctx.createUnmarshaller().unmarshal(is);
     }
 
+    /**
+     * 
+     * @param os 
+     * @param config 
+     * @throws JAXBException 
+     */
     public static void save(OutputStream os, JdbcConfig config) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);

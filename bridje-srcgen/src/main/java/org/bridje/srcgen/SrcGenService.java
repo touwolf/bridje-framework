@@ -21,23 +21,73 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.bridje.vfs.Path;
 
+/**
+ * 
+ */
 public interface SrcGenService
 {
-    static final Path DATA_PATH = new Path("/srcgen/data");
+    /**
+     * 
+     */
+    public static final Path DATA_PATH = new Path("/srcgen/data");
 
-    static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
+    /**
+     * 
+     */
+    public static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
 
-    static final Path RESOURCE_PATH = new Path("/srcgen/resources");
+    /**
+     * 
+     */
+    public static final Path RESOURCE_PATH = new Path("/srcgen/resources");
 
-    static final Path CLASSES_PATH = new Path("/srcgen/classes");
+    /**
+     * 
+     */
+    public static final Path CLASSES_PATH = new Path("/srcgen/classes");
 
-    static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
+    /**
+     * 
+     */
+    public static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
+    /**
+     * 
+     * @param <T>
+     * @param expr
+     * @param cls
+     * @return
+     * @throws JAXBException
+     * @throws IOException 
+     */
     <T> List<T> findData(String expr, Class<T> cls) throws JAXBException, IOException;
 
+    /**
+     * 
+     * @param <T>
+     * @param expr
+     * @param cls
+     * @return
+     * @throws JAXBException
+     * @throws IOException 
+     */
     <T> List<T> findSuplementaryData(String expr, Class<T> cls) throws JAXBException, IOException;
 
+    /**
+     * 
+     * @param clsFullName
+     * @param tplPath
+     * @param data
+     * @throws IOException 
+     */
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
 
+    /**
+     * 
+     * @param resourcePath
+     * @param tplPath
+     * @param data
+     * @throws IOException 
+     */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
 }
