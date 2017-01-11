@@ -54,12 +54,13 @@ public class ChildrenFlield
         this.name = name;
     }
 
-    public Boolean getAllowPlaceHolder()
+    public boolean getAllowPlaceHolder()
     {
+        if(this.allowPlaceHolder == null) return false;
         return allowPlaceHolder;
     }
 
-    public void setAllowPlaceHolder(Boolean allowPlaceHolder)
+    public void setAllowPlaceHolder(boolean allowPlaceHolder)
     {
         this.allowPlaceHolder = allowPlaceHolder;
     }
@@ -74,12 +75,13 @@ public class ChildrenFlield
         this.wrapper = wrapper;
     }
 
-    public Boolean getSingle()
+    public boolean getSingle()
     {
+        if(single == null) return false;
         return single;
     }
 
-    public void setSingle(Boolean single)
+    public void setSingle(boolean single)
     {
         this.single = single;
     }
@@ -96,11 +98,18 @@ public class ChildrenFlield
 
     public String getJavaType()
     {
+        if(getSingle()) return "Control";
         return "List<Control>";
     }
 
     public String getFieldType()
     {
         return "children";
+    }
+
+    public String getDefaultValue()
+    {
+        if(getSingle()) return null;
+        return "new ArrayList<>()";
     }
 }

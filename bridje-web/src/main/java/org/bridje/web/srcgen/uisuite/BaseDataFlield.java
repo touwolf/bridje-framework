@@ -30,6 +30,9 @@ public abstract class BaseDataFlield implements FieldDef
     
     @XmlAttribute
     private String type;
+    
+    @XmlAttribute(name = "def")
+    private String defaultValue;
 
     public String getName()
     {
@@ -49,5 +52,16 @@ public abstract class BaseDataFlield implements FieldDef
     public void setType(String type)
     {
         this.type = type;
+    }
+
+    public String getDefaultValue()
+    {
+        if(defaultValue == null || defaultValue.trim().isEmpty()) return "null";
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 }

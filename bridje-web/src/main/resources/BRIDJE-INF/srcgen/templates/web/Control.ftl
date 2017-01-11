@@ -57,8 +57,8 @@ public class ${control.name} extends ${control.base}
     </#if>
     @XmlElements(
     {
-        <#list f.children?keys as k>
-        @XmlElement( name = "${k}", type = ${f.children[k]}.class ),
+        <#list f.content![] as c>
+        @XmlElement( name = "${c.name}", type = ${c.type}.class ),
         </#list>
         <#if f.allowPlaceHolder>
         @XmlElement( name = "placeholder", type = ControlPlaceHolder.class ),
@@ -105,10 +105,12 @@ public class ${control.name} extends ${control.base}
     <#else>
     public ${f.javaType} get${f.name?cap_first}()
     {
+        <#if f.defaultValue??>
         if(${f.name} == null)
         {
             ${f.name} = ${f.defaultValue};
         }
+        </#if>
         return ${f.name};
     }
     </#if>
