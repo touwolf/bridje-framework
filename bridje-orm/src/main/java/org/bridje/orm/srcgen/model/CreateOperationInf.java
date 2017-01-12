@@ -54,4 +54,10 @@ public class CreateOperationInf extends OperationInfBase
         }
         return sets;
     }
+
+    @Override
+    public OperationType getOperationType()
+    {
+        return OperationType.CREATE;
+    }
 }

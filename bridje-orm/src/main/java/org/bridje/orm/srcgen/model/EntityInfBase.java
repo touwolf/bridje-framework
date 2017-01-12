@@ -67,6 +67,7 @@ public class EntityInfBase
         @XmlElement(name = "read", type = ReadOperationInf.class),
         @XmlElement(name = "update", type = UpdateOperationInf.class),
         @XmlElement(name = "delete", type = DeleteOperationInf.class),
+        @XmlElement(name = "deleteEntity", type = DeleteOperationInf.class),
         @XmlElement(name = "save", type = SaveOperationInf.class)
     })
     private List<OperationInfBase> operations;

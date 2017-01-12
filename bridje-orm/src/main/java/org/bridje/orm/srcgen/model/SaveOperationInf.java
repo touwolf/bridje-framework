@@ -22,4 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SaveOperationInf extends OperationInfBase
 {
+    @Override
+    public OperationType getOperationType()
+    {
+        return OperationType.SAVE;
+    }
 }

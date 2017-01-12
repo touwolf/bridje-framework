@@ -15,10 +15,10 @@ import org.bridje.orm.*;
 
 /**
  * This class represents the ${model.name} data model.
- * it must be use to read and write ${model.name} entitys.
- * The full list of ${model.name} entitys is the following.
+ * it must be use to read and write ${model.name} entities.
+ * The full list of ${model.name} entities is the following.
  * <ul>
-<#list model.entitys as entity >
+<#list model.entities as entity >
  * <li>${entity.name}<br></li>
 </#list>
  * </ul>
@@ -57,14 +57,14 @@ public class ${model.name}
     }
 
     /**
-     * Retrieve all the tables for the entitys that are handled by this model.
-     * @return all the tables for the entitys that are handled by this model.
+     * Retrieve all the tables for the entities that are handled by this model.
+     * @return all the tables for the entities that are handled by this model.
      */
     public Table<?>[] tables()
     {
         Table<?>[] tables = new Table<?>[]
         {
-            <#list model.entitys as entity >
+            <#list model.entities as entity >
             ${entity.name}.TABLE<#if entity_has_next>,</#if>
             </#list>
         };
@@ -190,7 +190,7 @@ public class ${model.name}
         if(TABLE_SET == null)
         {
             Set<Class<?>> tbSet = new HashSet<>();
-            <#list model.entitys as entity >
+            <#list model.entities as entity >
             tbSet.add(${entity.name}.class);
             </#list>
             TABLE_SET = tbSet;
@@ -227,9 +227,9 @@ public class ${model.name}
         return context.refresh(entity);
     }
 
-    <#list model.entitys as entity >
-    <#list entity.operations.crud as crudOp >
-    <#if crudOp.type == "create">
+    <#list model.entities as entity >
+    <#list entity.operations as crudOp >
+    <#if crudOp.operationType == "CREATE" >
     /**
      * This method creates a new ${entity.name} entity. and insert it into the database.
     <#list crudOp.params as param>
@@ -251,7 +251,7 @@ public class ${model.name}
         return entity;
     }
 
-    <#elseif crudOp.type == "readAll">
+    <#elseif crudOp.operationType == "READ" && crudOp.resultType == "ALL" >
     /**
      * This method finds a list of <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object from the database.
     <#list crudOp.params as param>
@@ -285,7 +285,7 @@ public class ${model.name}
                         .fetchAll(<#if crudOp.resultField??>${entity.name}.${crudOp.resultField.column?upper_case}</#if>);
     }
 
-    <#elseif crudOp.type == "readOne">
+    <#elseif crudOp.operationType == "READ" && crudOp.resultType == "ONE" >
     /**
      * This method finds a <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object from the database.
     <#list crudOp.params as param>
@@ -319,7 +319,7 @@ public class ${model.name}
                         .fetchOne(<#if crudOp.resultField??>${entity.name}.${crudOp.resultField.column?upper_case}</#if>);
     }
 
-    <#elseif crudOp.type == "update">
+    <#elseif crudOp.operationType == "UPDATE" >
     /**
      * This method updates an ${entity.name} object into the database.
      * @param entity The entity to be updated.
@@ -339,7 +339,7 @@ public class ${model.name}
         context.update(entity);
     }
 
-    <#elseif crudOp.type == "deleteEntity">
+    <#elseif crudOp.operationType == "DELETE_ENTITY" >
     /**
      * This method deletes the given ${entity.name} object into the database.
      * @param entity The entity to be deleted.
@@ -350,7 +350,7 @@ public class ${model.name}
         context.delete(entity);
     }
 
-    <#elseif crudOp.type == "delete">
+    <#elseif crudOp.operationType == "DELETE">
     /**
      * This method deletes all ${entity.name} objects in the database that match the given parameters.
      * @return An integer representing the number of record deleted in the database.
@@ -384,7 +384,7 @@ public class ${model.name}
                         .delete();
     }
 
-    <#elseif crudOp.type == "save">
+    <#elseif crudOp.operationType == "SAVE">
     /**
      * This method save a new ${entity.name} object in the database.
      * @param entity The entity to be saved.

@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OperationInfBase
+public abstract class OperationInfBase
 {
     @XmlID
     @XmlAttribute
@@ -50,4 +50,6 @@ public class OperationInfBase
     {
         this.description = description;
     }
+
+    public abstract OperationType getOperationType();
 }
