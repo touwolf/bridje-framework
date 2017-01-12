@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class ReadOperationInf extends OperationInfBase
 {
     @XmlAttribute
-    private ReadOperationType type;
+    private ReadOperationResultType resultType;
 
     @XmlAttribute
     private String params;
@@ -32,14 +32,14 @@ public class ReadOperationInf extends OperationInfBase
     @XmlAttribute
     private String result;
 
-    public ReadOperationType getType()
+    public ReadOperationResultType getResultType()
     {
-        return type;
+        return resultType;
     }
 
-    public void setType(ReadOperationType type)
+    public void setResultType(ReadOperationResultType resultType)
     {
-        this.type = type;
+        this.resultType = resultType;
     }
 
     public String getParams()
@@ -60,5 +60,11 @@ public class ReadOperationInf extends OperationInfBase
     public void setResult(String result)
     {
         this.result = result;
+    }
+
+    @Override
+    public OperationType getOperationType()
+    {
+        return OperationType.READ;
     }
 }

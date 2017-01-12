@@ -16,29 +16,17 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class DeleteOperationInf extends OperationInfBase
+@XmlType
+@XmlEnum
+public enum OperationType
 {
-    @XmlAttribute
-    private String params;
-
-    public String getParams()
-    {
-        return params;
-    }
-
-    public void setParams(String params)
-    {
-        this.params = params;
-    }
-
-    @Override
-    public OperationType getOperationType()
-    {
-        return OperationType.DELETE;
-    }
+    CREATE,
+    READ,
+    UPDATE,
+    DELETE,
+    DELETE_ENTITY,
+    SAVE;
 }

@@ -35,4 +35,10 @@ public class UpdateOperationInf extends OperationInfBase
     {
         this.params = params;
     }
+
+    @Override
+    public OperationType getOperationType()
+    {
+        return OperationType.UPDATE;
+    }
 }

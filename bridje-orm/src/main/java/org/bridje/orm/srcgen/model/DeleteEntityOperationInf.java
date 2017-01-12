@@ -16,14 +16,15 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
-@XmlType
-@XmlEnum
-public enum ReadOperationType
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DeleteEntityOperationInf extends OperationInfBase
 {
-    @XmlEnumValue("one") ONE,
-    @XmlEnumValue("all") ALL;
+    @Override
+    public OperationType getOperationType()
+    {
+        return OperationType.DELETE_ENTITY;
+    }
 }
