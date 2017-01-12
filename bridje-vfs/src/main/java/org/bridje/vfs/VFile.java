@@ -32,6 +32,11 @@ public class VFile
         this.path = new Path(path);
     }
 
+    public String getName()
+    {
+        return path.getName();
+    }
+
     public Path getPath()
     {
         return path;
