@@ -44,10 +44,8 @@
     </entities>
     <enums>
         <enum name="SomeEnum" description="Some enum">
-            <constants>
-                <constant name="CONST1" description="Constant 1" />
-                <constant name="CONST2" description="Constant 2" />
-            </constants>
+            <constant name="CONST1" description="Constant 1" />
+            <constant name="CONST2" description="Constant 2" />
         </enum>
     </enums>
 </model>

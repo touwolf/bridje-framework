@@ -31,7 +31,7 @@ public class ${entity.name}
 
     </#list>
     <#list entity.fields as field>
-    <#if field.isKey >
+    <#if field.key >
     @Key<#if field.isAutoIncrement>(autoIncrement = true)</#if>
     </#if>
     @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isRequired>, required = true</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
