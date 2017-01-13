@@ -65,8 +65,9 @@ public class IntegerFieldInf extends FieldInfBase
         this.length = length;
     }
 
-    public Boolean isAutoIncrement()
+    public boolean getAutoIncrement()
     {
+        if(autoIncrement == null) return false;
         return autoIncrement;
     }
 

@@ -56,6 +56,7 @@ public class EnumFieldInf extends FieldInfBase
 
     public EnumFieldSQLType getSqlType()
     {
+        if(sqlType == null) return EnumFieldSQLType.BYTE;
         return sqlType;
     }
 

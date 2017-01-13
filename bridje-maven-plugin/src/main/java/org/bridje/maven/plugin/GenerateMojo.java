@@ -56,7 +56,7 @@ import org.bridje.vfs.VFile;
 )
 public class GenerateMojo extends AbstractMojo
 {
-    @Parameter(defaultValue = "${project.basedir}/src/main/bridje", readonly = false)
+    @Parameter(defaultValue = "src/main/bridje", readonly = false)
     private File sourceFolder;
 
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/bridje", readonly = false)

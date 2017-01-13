@@ -40,12 +40,13 @@ public class CustomFieldInf extends FieldInfBase
         this.type = type;
     }
 
-    public Boolean isAutoIncrement()
+    public boolean getAutoIncrement()
     {
+        if(autoIncrement == null) return false;
         return autoIncrement;
     }
 
-    public void setAutoIncrement(Boolean autoIncrement)
+    public void setAutoIncrement(boolean autoIncrement)
     {
         this.autoIncrement = autoIncrement;
     }

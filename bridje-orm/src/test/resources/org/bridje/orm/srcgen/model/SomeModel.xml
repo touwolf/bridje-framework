@@ -30,7 +30,7 @@
                 <integer type="Integer" name="integerField" sqlType="INTEGER" length="10" required="false" indexed="true" key="false" description="Some int field" />
                 <string name="someString" length="100" sqlType="VARCHAR" required="true" key="false" indexed="true" description="Some string field" emptyToNull="true" blankToNull="true" />
                 <decimal type="Double" name="doubleField" sqlType="DOUBLE" length="10" precision="5" required="false" indexed="true" key="false" description="Some double field" />
-                <datetime type="LocalDateTime" name="datetimeField" sqlType="DATETIME" required="false" indexed="true" key="false" description="Some datetime field" />
+                <datetime type="LocalDateTime" name="datetimeField" sqlType="DATE" required="false" indexed="true" key="false" description="Some datetime field" />
                 <relation type="SomeEntity1" name="relationField" required="false" indexed="true" key="false" description="Some relation" />
                 <enum type="SomeEnum" name="someEnum" sqlType="BYTE" required="false" indexed="true" key="false" description="Some enums" />
                 <custom type="SomeType" name="someCustom" autoIncrement="false" required="false" indexed="true" key="false" description="Some custom field" />

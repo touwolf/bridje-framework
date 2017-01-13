@@ -42,6 +42,26 @@ public class DateTimeFieldInf extends FieldInfBase
 
     public DateTimeFieldSQLType getSqlType()
     {
+        if(sqlType == null)
+        {
+            switch(getType())
+            {
+                case DATE:
+                    return DateTimeFieldSQLType.DATE;
+                case LOCALDATE:
+                    return DateTimeFieldSQLType.DATE;
+                case LOCALTIME:
+                    return DateTimeFieldSQLType.TIME;
+                case LOCALDATETIME:
+                    return DateTimeFieldSQLType.DATE;
+                case SQLDATE:
+                    return DateTimeFieldSQLType.DATE;
+                case SQLTIME:
+                    return DateTimeFieldSQLType.TIME;
+                case TIMESTAMP:
+                    return DateTimeFieldSQLType.TIMESTAMP;
+            }
+        }
         return sqlType;
     }
 

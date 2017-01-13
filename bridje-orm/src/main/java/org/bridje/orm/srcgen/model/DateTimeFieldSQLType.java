@@ -26,6 +26,5 @@ public enum DateTimeFieldSQLType
 {
     @XmlEnumValue("DATE") DATE,
     @XmlEnumValue("TIME") TIME,
-    @XmlEnumValue("DATETIME") DATETIME,
     @XmlEnumValue("TIMESTAMP") TIMESTAMP;
 }

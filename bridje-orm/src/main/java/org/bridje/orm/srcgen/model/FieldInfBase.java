@@ -97,7 +97,7 @@ public abstract class FieldInfBase
         this.indexed = indexed;
     }
 
-    public Boolean isKey()
+    public Boolean getKey()
     {
         if(key == null) return false;
         return key;

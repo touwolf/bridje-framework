@@ -163,7 +163,7 @@ public class EntityInfBase
     {
         for(FieldInfBase fieldInf : getFields())
         {
-            if(fieldInf.isKey()) return fieldInf;
+            if(fieldInf.getKey()) return fieldInf;
         }
         return null;
     }
