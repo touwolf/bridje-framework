@@ -16,9 +16,11 @@
 
 package org.bridje.orm.srcgen.model;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class FieldInfBase
@@ -41,6 +43,9 @@ public abstract class FieldInfBase
     @XmlAttribute
     private Boolean key;
     
+    @XmlTransient
+    private EntityInfBase entity;
+
     public String getName()
     {
         return name;
@@ -102,11 +107,34 @@ public abstract class FieldInfBase
     {
         this.key = key;
     }
+
+    public EntityInfBase getEntity()
+    {
+        return entity;
+    }
     
     public abstract String getJavaType();
     
     public String getTableColumn()
     {
         return "TableComparableColumn";
+    }
+
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        entity = (EntityInfBase)parent;
+    }
+    
+    public abstract FieldInfBase clone(EntityInfBase entity);
+
+    protected void clone(FieldInfBase result, EntityInfBase entity)
+    {
+        result.entity = entity;
+        result.column = column;
+        result.description = description;
+        result.indexed = indexed;
+        result.key = key;
+        result.name = name;
+        result.required = required;
     }
 }

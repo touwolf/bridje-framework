@@ -72,4 +72,14 @@ public class DateTimeFieldInf extends FieldInfBase
         }
         return "LocalDateTime";
     }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        DateTimeFieldInf result = new DateTimeFieldInf();
+        clone(result, entity);
+        result.type = type;
+        result.sqlType = sqlType;
+        return result;
+    }
 }

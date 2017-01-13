@@ -63,4 +63,14 @@ public class CustomFieldInf extends FieldInfBase
         CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
         return prov.getColumnClass(getType());
     }
+    
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        CustomFieldInf result = new CustomFieldInf();
+        clone(result, entity);
+        result.type = type;
+        result.autoIncrement = autoIncrement;
+        return result;
+    }
 }

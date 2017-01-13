@@ -21,13 +21,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadOperationInf extends OperationInfBase
+public class ReadOperationInf extends ParametizedOperationInf
 {
     @XmlAttribute
     private ReadOperationResultType resultType;
-
-    @XmlAttribute
-    private String params;
 
     @XmlAttribute
     private String result;
@@ -40,16 +37,6 @@ public class ReadOperationInf extends OperationInfBase
     public void setResultType(ReadOperationResultType resultType)
     {
         this.resultType = resultType;
-    }
-
-    public String getParams()
-    {
-        return params;
-    }
-
-    public void setParams(String params)
-    {
-        this.params = params;
     }
 
     public String getResult()

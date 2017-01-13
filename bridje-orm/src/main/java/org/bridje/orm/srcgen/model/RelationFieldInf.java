@@ -50,4 +50,13 @@ public class RelationFieldInf extends FieldInfBase
     {
         return "TableRelationColumn";
     }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        RelationFieldInf result = new RelationFieldInf();
+        clone(result, entity);
+        result.type = type;
+        return result;
+    }
 }

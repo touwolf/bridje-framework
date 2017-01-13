@@ -18,24 +18,10 @@ package org.bridje.orm.srcgen.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UpdateOperationInf extends OperationInfBase
+public class UpdateOperationInf extends ParametizedOperationInf
 {
-    @XmlAttribute
-    private String params;
-
-    public String getParams()
-    {
-        return params;
-    }
-
-    public void setParams(String params)
-    {
-        this.params = params;
-    }
-
     @Override
     public OperationType getOperationType()
     {

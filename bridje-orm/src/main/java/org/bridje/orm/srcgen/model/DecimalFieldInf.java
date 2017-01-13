@@ -96,4 +96,14 @@ public class DecimalFieldInf extends FieldInfBase
     {
         return "TableNumberColumn";
     }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        DecimalFieldInf result = new DecimalFieldInf();
+        clone(result, entity);
+        result.type = type;
+        result.sqlType = sqlType;
+        return result;
+    }
 }

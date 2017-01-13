@@ -121,7 +121,7 @@ public class EntityInfBase
         if (allFields == null)
         {
             allFields = new ArrayList<>();
-            if(base != null) allFields.addAll(base.getFields());
+            if(base != null) allFields.addAll(cloneFields(base.getFields()));
             if(fields != null) allFields.addAll(fields);
         }
         return allFields;
@@ -166,5 +166,23 @@ public class EntityInfBase
             if(fieldInf.isKey()) return fieldInf;
         }
         return null;
+    }
+
+    public FieldInfBase findField(String fieldName)
+    {
+        return getFields().stream()
+                        .filter(f -> f.getName().equals(fieldName))
+                        .findAny()
+                        .orElse(null);
+    }
+
+    private List<FieldInfBase> cloneFields(List<FieldInfBase> fields)
+    {
+        List<FieldInfBase> result = new ArrayList<>();
+        for (FieldInfBase field : fields)
+        {
+            result.add(field.clone(this));
+        }
+        return result;
     }
 }

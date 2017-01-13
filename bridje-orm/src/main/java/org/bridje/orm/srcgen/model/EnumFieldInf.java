@@ -16,7 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -65,14 +64,20 @@ public class EnumFieldInf extends FieldInfBase
         this.sqlType = sqlType;
     }
 
-    void afterUnmarshal(Unmarshaller u, Object parent)
-    {
-    }
-
-
     @Override
     public String getJavaType()
     {
         return getType().getName();
+    }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        EnumFieldInf result = new EnumFieldInf();
+        clone(result, entity);
+        result.type = type;
+        result.sqlType = sqlType;
+        result.length = length;
+        return result;
     }
 }

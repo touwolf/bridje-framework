@@ -101,4 +101,16 @@ public class IntegerFieldInf extends FieldInfBase
     {
         return "TableNumberColumn";
     }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        IntegerFieldInf result = new IntegerFieldInf();
+        clone(result, entity);
+        result.type = type;
+        result.sqlType = sqlType;
+        result.length = length;
+        result.autoIncrement = autoIncrement;
+        return result;
+    }
 }

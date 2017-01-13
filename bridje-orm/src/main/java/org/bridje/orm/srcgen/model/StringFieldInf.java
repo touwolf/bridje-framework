@@ -16,7 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -75,10 +74,6 @@ public class StringFieldInf extends FieldInfBase
     {
         this.blankToNull = blankToNull;
     }
-    
-    void afterUnmarshal(Unmarshaller u, Object parent)
-    {
-    }
 
     @Override
     public String getJavaType()
@@ -90,5 +85,17 @@ public class StringFieldInf extends FieldInfBase
     public String getTableColumn()
     {
         return "TableStringColumn";
+    }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        StringFieldInf result = new StringFieldInf();
+        clone(result, entity);
+        result.sqlType = sqlType;
+        result.length = length;
+        result.emptyToNull = emptyToNull;
+        result.blankToNull = blankToNull;
+        return result;
     }
 }

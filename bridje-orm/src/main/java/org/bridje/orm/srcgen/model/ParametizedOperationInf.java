@@ -16,55 +16,42 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.Unmarshaller;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class OperationInfBase
+public abstract class ParametizedOperationInf extends OperationInfBase
 {
-    @XmlID
     @XmlAttribute
-    private String name;
-
-    @XmlAttribute
-    private String description;
+    private String params;
 
     @XmlTransient
-    private EntityInfBase entity;
-    
-    public String getName()
+    private List<FieldInfBase> paramsFields;
+
+    public List<FieldInfBase> getParams()
     {
-        return name;
+        if(paramsFields == null)
+        {
+            paramsFields = parseParams();
+        }
+        return paramsFields;
     }
 
-    public void setName(String name)
+    private List<FieldInfBase> parseParams()
     {
-        this.name = name;
+        List<FieldInfBase> result = new ArrayList<>();
+        if(params == null || params.isEmpty()) return result;
+        String[] split = params.split(",");
+        for (String fieldName : split)
+        {
+            FieldInfBase field = getEntity().findField(fieldName);
+            if(field == null) continue;
+            result.add(field);
+        }
+        return result;
     }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-    public EntityInfBase getEntity()
-    {
-        return entity;
-    }
-
-    public void afterUnmarshal(Unmarshaller u, Object parent)
-    {
-        entity = (EntityInfBase)parent;
-    }
-
-    public abstract OperationType getOperationType();
 }

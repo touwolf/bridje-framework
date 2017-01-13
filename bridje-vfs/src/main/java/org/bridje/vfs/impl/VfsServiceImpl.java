@@ -37,7 +37,7 @@ class VfsServiceImpl implements VfsService
     }
 
     @PostConstruct
-    public void init() throws IOException, URISyntaxException
+    public synchronized void init() throws IOException, URISyntaxException
     {
         VFile vfsBridje = new VFile("/vfs/bridje");
         vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
@@ -71,7 +71,7 @@ class VfsServiceImpl implements VfsService
     }
 
     @Override
-    public void mount(Path path, VfsSource source) throws FileNotFoundException
+    public synchronized void mount(Path path, VfsSource source) throws FileNotFoundException
     {
         root.mount(path, source);
     }
