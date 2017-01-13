@@ -2,7 +2,7 @@
 <#ftl encoding="UTF-8">
 <#include "../ThemeBase.ftl" >
 
-[#list theme.resources as r]
+[#list uisuite.resources as r]
 <#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
@@ -16,22 +16,22 @@
 </#macro>
 
 [/#list]
-[#list theme.macros as m]
+[#list uisuite.macros as m]
 <#macro ${m.name} ${m.parameters}>
 [#compress]${w.content}[/#compress]
 </#macro>
 
 [/#list]
-[#list theme.controls as w]
+[#list uisuite.controls as w]
 <#macro render${w.name} control>
 [#compress]${w.render}[/#compress]
 </#macro>
 
 [/#list]
 <#macro renderControl control>
-    <#if control.class.package.name == "${theme.package}">
+    <#if control.class.package.name == "${uisuite.package}">
         <#switch control.class.simpleName>
-            [#list theme.controls as w]
+            [#list uisuite.controls as w]
             <#case "${w.name}">
               <@render${w.name} control />
               <#break>
@@ -43,7 +43,7 @@
 </#macro>
 
 <#macro renderThemeScripts themeName>
-    [#list theme.defaultResources.scripts as s]
+    [#list uisuite.defaultResources.scripts as s]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
     [/#list]
     <#list view.resources as r>
@@ -53,10 +53,10 @@
 </#macro>
 
 <#macro renderThemeStyles themeName>
-    [#list theme.defaultResources.styles as s]
+    [#list uisuite.defaultResources.styles as s]
     <@renderStyle themeName "${s.href}" />
     [/#list]
-    [#list theme.defaultResources.links as l]
+    [#list uisuite.defaultResources.links as l]
     <@renderLink themeName "${l.rel}" "${l.href}" />
     [/#list]
     <#list view.resources as r>
@@ -65,22 +65,22 @@
     </#list>
 </#macro>
 
-[#if theme.renderBody?? && theme.renderBody?has_content]
+[#if uisuite.renderBody?? && uisuite.renderBody?has_content]
 <#macro renderBody>
-[#compress]${theme.renderBody!}[/#compress]
+[#compress]${uisuite.renderBody!}[/#compress]
 </#macro>
 [/#if]
 
-[#if theme.renderHead?? && theme.renderHead?has_content]
+[#if uisuite.renderHead?? && uisuite.renderHead?has_content]
 <#macro renderHead>
-[#compress]${theme.renderHead!}[/#compress]
+[#compress]${uisuite.renderHead!}[/#compress]
 </#macro>
 [/#if]
 
-[#if theme.renderViewContainer?? && theme.renderViewContainer?has_content]
+[#if uisuite.renderViewContainer?? && uisuite.renderViewContainer?has_content]
 <#macro renderViewContainer>
-[#compress]${theme.renderViewContainer!}[/#compress]
+[#compress]${uisuite.renderViewContainer!}[/#compress]
 </#macro>
 [/#if]
 
-<@renderMain "${theme.name}" />
+<@renderMain "${uisuite.name}" />

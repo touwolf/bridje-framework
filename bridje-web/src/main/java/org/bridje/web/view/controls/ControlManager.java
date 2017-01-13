@@ -110,7 +110,7 @@ public class ControlManager
     {
         List<URL> urls = new ArrayList<>();
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-        Enumeration<URL> resources = ccl.getResources(ControlProcessor.WIDGETS_RESOURCE_FILE);
+        Enumeration<URL> resources = ccl.getResources(ControlProcessor.CONTROLS_RESOURCE_FILE);
         while (resources.hasMoreElements())
         {
             URL nextElement = resources.nextElement();

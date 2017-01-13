@@ -60,7 +60,7 @@ class VfsFolderNode extends VfsNode
             }
             else
             {
-                throw new FileNotFoundException("Could not mount the source in this folder.");
+                throw new FileNotFoundException("Could not mount the source in " + getPath() + " folder.");
             }
         }
         else

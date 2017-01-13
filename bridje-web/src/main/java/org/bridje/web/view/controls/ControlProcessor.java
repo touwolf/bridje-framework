@@ -53,7 +53,7 @@ public class ControlProcessor extends AbstractProcessor
     /**
      * The bridje controls resources file path.
      */
-    public static final String WIDGETS_RESOURCE_FILE = "BRIDJE-INF/web/controls.properties";
+    public static final String CONTROLS_RESOURCE_FILE = "BRIDJE-INF/web/controls.properties";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
@@ -65,7 +65,7 @@ public class ControlProcessor extends AbstractProcessor
         {
             Filer filer = processingEnv.getFiler();
             //Creating output file
-            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", WIDGETS_RESOURCE_FILE);
+            FileObject fobj = filer.createResource(StandardLocation.CLASS_OUTPUT, "", CONTROLS_RESOURCE_FILE);
             writer = fobj.openWriter();
         }
         catch (IOException e)
@@ -83,7 +83,7 @@ public class ControlProcessor extends AbstractProcessor
         {
             for (TypeElement typeElement : annotations)
             {
-                //Find all WebComponents marked classes
+                //Find all XmlRootElement marked classes
                 Set<? extends Element> ann = roundEnv.getElementsAnnotatedWith(typeElement);
                 for (Element element : ann)
                 {

@@ -1,10 +1,10 @@
 <#ftl encoding="UTF-8">
 
-@XmlSchema(namespace = "${theme.namespace}",
+@XmlSchema(namespace = "${uisuite.namespace}",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
-@DefaultTheme(name = "${theme.name}")
-package ${theme.package};
+@DefaultTheme(name = "${uisuite.name}")
+package ${uisuite.package};
 
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;

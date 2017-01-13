@@ -185,6 +185,7 @@ public class WebViewsManager
      */
     public void renderView(WebView view, HttpBridletContext context, Map<String,Object> params)
     {
+        if(view == null) return;
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         HttpBridletResponse resp = context.get(HttpBridletResponse.class);
         try (OutputStream os = resp.getOutputStream())

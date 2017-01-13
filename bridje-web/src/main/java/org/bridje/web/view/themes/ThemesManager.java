@@ -88,9 +88,11 @@ public class ThemesManager
      */
     public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
     {
+        if(view == null) return;
         try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = view.getDefaultTheme();
+            if(themeName == null || themeName.isEmpty()) return;
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();

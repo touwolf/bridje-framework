@@ -77,9 +77,12 @@ public class GenerateMojo extends AbstractMojo
             if(!sourceFolder.exists()) sourceFolder.mkdirs();
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
-            new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
-            new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
-            new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
+            if(!new VFile(SrcGenService.DATA_PATH).isDirectory())
+                new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
+            if(!new VFile(SrcGenService.CLASSES_PATH).isDirectory())
+                new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
+            if(!new VFile(SrcGenService.RESOURCE_PATH).isDirectory())
+                new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
             SourceGenerator[] generators = Ioc.context().findAll(SourceGenerator.class);
             for (SourceGenerator generator : generators)
             {

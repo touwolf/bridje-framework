@@ -44,6 +44,7 @@ public class WebSourceGenerator implements SourceGenerator
             data = new HashMap<>();
             data.put("uisuite", uiSuite);
             srcGen.createResource( "BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
+            srcGen.createClass( uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
             for (ControlDef controlDef : uiSuite.getControls())
             {
                 data = new HashMap<>();

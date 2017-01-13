@@ -54,6 +54,7 @@ public class AbstractWebView
         if(root == null && definition != null)
         {
             root = definition.findRoot();
+            if(root == null) return null;
             DefaultTheme annot = root.getClass().getPackage().getAnnotation(DefaultTheme.class);
             if(annot != null)
             {
