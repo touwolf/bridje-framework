@@ -54,13 +54,22 @@ class VfsFolderNode extends VfsNode
         if(path == null || path.isRoot()) throw new FileNotFoundException("Could not mount the source in this folder.");
         if(path.isLast())
         {
-            if(getChild(path.getName()) == null)
+            VfsNode child = getChild(path.getName());
+            if(child == null)
             {
                 addChild(new VfsSourceNode(path.getName(), source));
             }
             else
             {
-                throw new FileNotFoundException("Could not mount the source in " + getPath() + " folder.");
+                if(child instanceof VfsSourceNode)
+                {
+                    removeChild(child);
+                    addChild(new VfsSourceNode(path.getName(), source));
+                }
+                else
+                {
+                    throw new FileNotFoundException("Could not mount the source in " + getPath() + " folder.");
+                }
             }
         }
         else
