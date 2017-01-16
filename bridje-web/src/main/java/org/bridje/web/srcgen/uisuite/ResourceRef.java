@@ -34,7 +34,7 @@ public class ResourceRef
         return resource.getName();
     }
 
-    public List<FieldDef> getContent()
+    public List<AssetBase> getContent()
     {
         return resource.getContent();
     }
