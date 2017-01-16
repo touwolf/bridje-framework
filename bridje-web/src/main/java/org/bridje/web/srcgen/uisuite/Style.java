@@ -21,9 +21,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Style
+public class Style extends AssetBase
 {
+    @XmlAttribute
+    private String href;
+
     @XmlAttribute
     private String style;
 
+    public String getHref()
+    {
+        return href;
+    }
+
+    public void setHref(String href)
+    {
+        this.href = href;
+    }
+
+    public String getStyle()
+    {
+        return style;
+    }
+
+    public void setStyle(String style)
+    {
+        this.style = style;
+    }
 }

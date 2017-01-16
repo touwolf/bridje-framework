@@ -21,9 +21,44 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Script
+public class Script extends AssetBase
 {
     @XmlAttribute
     private String href;
 
+    @XmlAttribute
+    private Boolean async;
+
+    @XmlAttribute
+    private Boolean defer;
+
+    public String getHref()
+    {
+        return href;
+    }
+
+    public void setHref(String href)
+    {
+        this.href = href;
+    }
+
+    public Boolean getAsync()
+    {
+        return async;
+    }
+
+    public void setAsync(Boolean async)
+    {
+        this.async = async;
+    }
+
+    public Boolean getDefer()
+    {
+        return defer;
+    }
+
+    public void setDefer(Boolean defer)
+    {
+        this.defer = defer;
+    }
 }

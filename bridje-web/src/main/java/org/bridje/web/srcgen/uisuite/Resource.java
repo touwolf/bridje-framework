@@ -16,13 +16,9 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+import java.util.LinkedList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resource
@@ -37,7 +33,16 @@ public class Resource
         @XmlElement(name = "style", type = Style.class),
         @XmlElement(name = "link", type = Link.class)
     })
-    private List<FieldDef> content;
+    private List<AssetBase> content;
+
+    @XmlTransient
+    private List<Script> scriptList;
+
+    @XmlTransient
+    private List<Style> styleList;
+
+    @XmlTransient
+    private List<Link> linkList;
 
     public String getName()
     {
@@ -49,13 +54,61 @@ public class Resource
         this.name = name;
     }
 
-    public List<FieldDef> getContent()
+    public List<AssetBase> getContent()
     {
         return content;
     }
 
-    public void setContent(List<FieldDef> content)
+    public void setContent(List<AssetBase> content)
     {
         this.content = content;
+    }
+
+    public List<Script> getScripts()
+    {
+        if (scriptList == null)
+        {
+            scriptList = new LinkedList<>();
+            content.forEach(field ->
+            {
+                if (Script.class.isAssignableFrom(field.getClass()))
+                {
+                    scriptList.add((Script) field);
+                }
+            });
+        }
+        return scriptList;
+    }
+
+    public List<Style> getStyles()
+    {
+        if (styleList == null)
+        {
+            styleList = new LinkedList<>();
+            content.forEach(field ->
+            {
+                if (Style.class.isAssignableFrom(field.getClass()))
+                {
+                    styleList.add((Style) field);
+                }
+            });
+        }
+        return styleList;
+    }
+
+    public List<Link> getLinks()
+    {
+        if (linkList == null)
+        {
+            linkList = new LinkedList<>();
+            content.forEach(field ->
+            {
+                if (Link.class.isAssignableFrom(field.getClass()))
+                {
+                    linkList.add((Link) field);
+                }
+            });
+        }
+        return linkList;
     }
 }
