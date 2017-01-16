@@ -44,6 +44,10 @@ public class Script extends AssetBase
 
     public Boolean getAsync()
     {
+        if (async == null)
+        {
+            async = false;
+        }
         return async;
     }
 
@@ -54,6 +58,10 @@ public class Script extends AssetBase
 
     public Boolean getDefer()
     {
+        if (defer == null)
+        {
+            defer = false;
+        }
         return defer;
     }
 
