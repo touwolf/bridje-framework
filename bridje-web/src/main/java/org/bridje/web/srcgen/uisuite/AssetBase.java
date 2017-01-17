@@ -2,11 +2,13 @@
 package org.bridje.web.srcgen.uisuite;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This is the base class for all the resources assets, (script, link, style,
  * etc...).
  */
+@XmlTransient
 public class AssetBase
 {
     @XmlAttribute
