@@ -20,30 +20,54 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * This class defines a child control mapping for the control in witch is
+ * deifned.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ChildFlield implements FieldDef
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute
     private String type;
 
+    /**
+     * The name of the field and/or mapping for the child control.
+     * 
+     * @return The name of the field and/or mapping for the child control.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the field and/or mapping for the child control.
+     * 
+     * @param name The name of the field and/or mapping for the child control.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The name of the control for this field/mapping.
+     * 
+     * @return The name of the control for this field/mapping.
+     */
     public String getType()
     {
         return type;
     }
 
+    /**
+     * The name of the control for this field/mapping.
+     * 
+     * @param type The name of the control for this field/mapping.
+     */
     public void setType(String type)
     {
         this.type = type;

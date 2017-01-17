@@ -21,45 +21,81 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * A base class for all the data fields that can be defined in the controls.
+ */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class BaseDataFlield implements FieldDef
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute
     private String type;
-    
+
     @XmlAttribute(name = "def")
     private String defaultValue;
 
+    /**
+     * The name of the field.
+     * 
+     * @return The name of the field.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the field.
+     * 
+     * @param name The name of the field.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The java type for this field.
+     * 
+     * @return The java type for this field.
+     */
     public String getType()
     {
         return type;
     }
 
+    /**
+     * The java type for this field.
+     * 
+     * @param type The java type for this field.
+     */
     public void setType(String type)
     {
         this.type = type;
     }
 
+    /**
+     * The default value to be use when the expression evaluates to null.
+     * 
+     * @return The default value to be use when the expression evaluates to null.
+     */
     public String getDefaultValue()
     {
-        if(defaultValue == null || defaultValue.trim().isEmpty()) return "null";
+        if (defaultValue == null || defaultValue.trim().isEmpty())
+        {
+            return "null";
+        }
         return defaultValue;
     }
 
+    /**
+     * The default value to be use when the expression evaluates to null.
+     * 
+     * @param defaultValue The default value to be use when the expression evaluates to null.
+     */
     public void setDefaultValue(String defaultValue)
     {
         this.defaultValue = defaultValue;

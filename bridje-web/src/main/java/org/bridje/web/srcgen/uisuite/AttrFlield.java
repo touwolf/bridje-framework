@@ -19,6 +19,9 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * This class defines an attribute field of a control.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AttrFlield extends BaseDataFlield
 {

@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * The base class for all the event type fields that can be use in the controls.
+ */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class BaseEventFlield implements FieldDef
@@ -28,11 +31,21 @@ public abstract class BaseEventFlield implements FieldDef
     @XmlAttribute
     private String name;
     
+    /**
+     * The name of the field.
+     * 
+     * @return The name of the field.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the field.
+     * 
+     * @param name The name of the field.
+     */
     public void setName(String name)
     {
         this.name = name;

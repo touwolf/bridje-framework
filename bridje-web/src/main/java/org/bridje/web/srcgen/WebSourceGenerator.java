@@ -28,6 +28,10 @@ import org.bridje.srcgen.SrcGenService;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
+/**
+ * This components is resposable for the source code generation of the web
+ * controls and freemarker themes for the given UISuite.
+ */
 @Component
 public class WebSourceGenerator implements SourceGenerator
 {
@@ -38,20 +42,33 @@ public class WebSourceGenerator implements SourceGenerator
     public void generateSources() throws IOException, JAXBException
     {
         List<UISuite> uiSuites = srcGen.findData("web/*.xml", UISuite.class);
-        Map<String, Object> data;
         for (UISuite uiSuite : uiSuites)
+        {
+            generateSources(uiSuite);
+        }
+    }
+
+    /**
+     * This method generates the source code for the controls and the ftl theme
+     * for the given UISuite.
+     *
+     * @param uiSuite The UISuite definition.
+     *
+     * @throws IOException If any i/o exception occurs reading or writing the source files.
+     */
+    public void generateSources(UISuite uiSuite) throws IOException
+    {
+        Map<String, Object> data = new HashMap<>();
+        data.put("uisuite", uiSuite);
+        srcGen.createResource("BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
+        srcGen.createClass(uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
+        for (ControlDef controlDef : uiSuite.getControls())
         {
             data = new HashMap<>();
             data.put("uisuite", uiSuite);
-            srcGen.createResource( "BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
-            srcGen.createClass( uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
-            for (ControlDef controlDef : uiSuite.getControls())
-            {
-                data = new HashMap<>();
-                data.put("uisuite", uiSuite);
-                data.put("control", controlDef);
-                srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
-            }
+            data.put("control", controlDef);
+            srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
         }
     }
+
 }
