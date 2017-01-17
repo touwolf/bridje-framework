@@ -310,7 +310,7 @@ public class Path implements Iterable<Path>
     {
         if(isRoot()) return null;
         String[] split = getName().split("[\\.]");
-        if(split.length > 1) return split[split.length];
+        if(split.length > 1) return split[split.length - 1];
         return null;
     }
 
