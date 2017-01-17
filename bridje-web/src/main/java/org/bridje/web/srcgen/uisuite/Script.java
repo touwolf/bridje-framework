@@ -24,23 +24,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class Script extends AssetBase
 {
     @XmlAttribute
-    private String href;
-
-    @XmlAttribute
     private Boolean async;
 
     @XmlAttribute
     private Boolean defer;
-
-    public String getHref()
-    {
-        return href;
-    }
-
-    public void setHref(String href)
-    {
-        this.href = href;
-    }
 
     public Boolean getAsync()
     {
