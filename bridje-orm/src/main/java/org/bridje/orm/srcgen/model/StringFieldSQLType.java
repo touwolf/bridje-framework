@@ -26,8 +26,7 @@ public enum StringFieldSQLType
 {
     @XmlEnumValue("VARCHAR") VARCHAR,
     @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("TEXT") TEXT,
-    @XmlEnumValue("LONGTEXT") LONGTEXT,
+    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
     @XmlEnumValue("CHAR") CHAR,
     @XmlEnumValue("NCHAR") NCHAR;
 }

@@ -31,8 +31,7 @@ public enum EnumFieldSQLType
     @XmlEnumValue("CHAR") CHAR,
     @XmlEnumValue("VARCHAR") VARCHAR,
     @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("TEXT") TEXT,
-    @XmlEnumValue("LONGTEXT") LONGTEXT,
+    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
     @XmlEnumValue("NCHAR") NCHAR,
     @XmlEnumValue("TINYINT") TINYINT;
 }
