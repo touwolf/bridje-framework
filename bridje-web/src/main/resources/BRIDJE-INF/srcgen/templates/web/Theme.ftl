@@ -1,6 +1,9 @@
 [#ftl]
 <#ftl encoding="UTF-8">
 <#include "../ThemeBase.ftl" >
+<#list uisuite.ftlIncludes![] as ftlInc>
+<#include "${ftlInc}" >
+</#list>
 
 [#list uisuite.resources as r]
 <#macro render${r.name?cap_first}Scripts themeName>

@@ -44,6 +44,13 @@ public class UISuite
     
     private String renderHead;
     
+    @XmlElementWrapper(name = "ftlIncludes")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlIncludes", type = String.class)
+    })
+    private List<String> ftlIncludes;
+
     @XmlElementWrapper(name = "resources")
     @XmlElements(
     {
@@ -165,5 +172,15 @@ public class UISuite
     public void setControlsTemplates(List<ControlDef> controlsTemplates)
     {
         this.controlsTemplates = controlsTemplates;
+    }
+
+    public List<String> getFtlIncludes()
+    {
+        return ftlIncludes;
+    }
+
+    public void setFtlIncludes(List<String> ftlIncludes)
+    {
+        this.ftlIncludes = ftlIncludes;
     }
 }
