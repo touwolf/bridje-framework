@@ -41,7 +41,7 @@ public class WebSourceGenerator implements SourceGenerator
     @Override
     public void generateSources() throws IOException, JAXBException
     {
-        List<UISuite> uiSuites = srcGen.findData("*.uisuite.xml", UISuite.class);
+        List<UISuite> uiSuites = srcGen.findData("**.uisuite.xml", UISuite.class);
         for (UISuite uiSuite : uiSuites)
         {
             generateSources(uiSuite);
