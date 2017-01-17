@@ -56,7 +56,7 @@ import org.bridje.vfs.VFile;
 )
 public class GenerateMojo extends AbstractMojo
 {
-    @Parameter(defaultValue = "src/main/bridje", readonly = false)
+    @Parameter(defaultValue = "src/main/resources/BRIDJE-INF/srcgen/data", readonly = false)
     private File sourceFolder;
 
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/bridje", readonly = false)
@@ -74,7 +74,7 @@ public class GenerateMojo extends AbstractMojo
         try
         {
             getLog().info("Generating Source Code");
-            if(!sourceFolder.exists()) sourceFolder.mkdirs();
+            if(!sourceFolder.exists()) return;
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
