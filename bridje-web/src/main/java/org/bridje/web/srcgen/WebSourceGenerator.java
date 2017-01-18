@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
@@ -39,9 +38,9 @@ public class WebSourceGenerator implements SourceGenerator
     private SrcGenService srcGen;
 
     @Override
-    public void generateSources() throws IOException, JAXBException
+    public void generateSources() throws IOException
     {
-        List<UISuite> uiSuites = srcGen.findData("**.uisuite.xml", UISuite.class);
+        List<UISuite> uiSuites = srcGen.findData(UISuite.class);
         for (UISuite uiSuite : uiSuites)
         {
             generateSources(uiSuite);

@@ -48,9 +48,9 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
     private Map<String,String> customTypes;
     
     @Override
-    public void generateSources() throws IOException, JAXBException
+    public void generateSources() throws IOException
     {
-        List<ModelInf> models = srcGen.findData("**.ormmodel.xml", ModelInf.class);
+        List<ModelInf> models = srcGen.findData(ModelInf.class);
         Map<String, Object> data;
         for (ModelInf modelInf : models)
         {

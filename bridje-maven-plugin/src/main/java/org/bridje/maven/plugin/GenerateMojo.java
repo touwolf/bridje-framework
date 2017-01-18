@@ -90,12 +90,7 @@ public class GenerateMojo extends AbstractMojo
             res.setDirectory(targetResFolder.getAbsolutePath());
             project.addResource(res);
         }
-        catch (JAXBException | IOException e)
-        {
-            getLog().error(e.getMessage(), e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
-        catch(Exception e)
+        catch (IOException e)
         {
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);
