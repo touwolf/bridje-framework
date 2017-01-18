@@ -112,10 +112,10 @@ class SrcGenServicesImpl implements SrcGenService
     }
 
     @Override
-    public <T> List<T> findSuplementaryData(Class<T> cls) throws IOException
+    public <T> List<T> findSuplData(Class<T> cls) throws IOException
     {
         List<T> result = new ArrayList<>();
-        VFile[] files = new VFile(SUPLEMENTARY_PATH).search(new GlobExpr("**.xml"));
+        VFile[] files = new VFile(SUPL_PATH).search(new GlobExpr("**.xml"));
         for (VFile vfile : files)
         {
             if(vfile.isFile())

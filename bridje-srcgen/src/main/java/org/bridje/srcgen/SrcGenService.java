@@ -33,7 +33,7 @@ public interface SrcGenService
     /**
      * 
      */
-    public static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
+    public static final Path SUPL_PATH = new Path("/srcgen/supl");
 
     /**
      * 
@@ -66,7 +66,7 @@ public interface SrcGenService
      * @return
      * @throws IOException 
      */
-    <T> List<T> findSuplementaryData(Class<T> cls) throws IOException;
+    <T> List<T> findSuplData(Class<T> cls) throws IOException;
 
     /**
      * 
