@@ -223,7 +223,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         {
             cls = customType.adapter();
         }
-        if(cls == null)
+        if(cls == null || cls == SQLAdapter.class)
         {
             Class<? extends SQLAdapter> defAdapt = getDefAdaters().get(type);
             if(defAdapt != null) return defAdapt;
