@@ -22,16 +22,10 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlType
 @XmlEnum
-public enum EnumFieldSQLType
+public enum EnumPropertyType
 {
-    @XmlEnumValue("BIGINT") BIGINT,
     @XmlEnumValue("INTEGER") INTEGER,
-    @XmlEnumValue("BYTE") BYTE,
-    @XmlEnumValue("SMALLINT") SMALLINT,
-    @XmlEnumValue("CHAR") CHAR,
-    @XmlEnumValue("VARCHAR") VARCHAR,
-    @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
-    @XmlEnumValue("NCHAR") NCHAR,
-    @XmlEnumValue("TINYINT") TINYINT
+    @XmlEnumValue("STRING") STRING,
+    @XmlEnumValue("DOUBLE") DOUBLE,
+    @XmlEnumValue("LONG") LONG
 }

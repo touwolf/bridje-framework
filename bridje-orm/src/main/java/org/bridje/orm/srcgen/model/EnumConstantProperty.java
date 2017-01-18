@@ -16,22 +16,34 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
-@XmlType
-@XmlEnum
-public enum EnumFieldSQLType
+@XmlAccessorType(XmlAccessType.FIELD)
+public class EnumConstantProperty
 {
-    @XmlEnumValue("BIGINT") BIGINT,
-    @XmlEnumValue("INTEGER") INTEGER,
-    @XmlEnumValue("BYTE") BYTE,
-    @XmlEnumValue("SMALLINT") SMALLINT,
-    @XmlEnumValue("CHAR") CHAR,
-    @XmlEnumValue("VARCHAR") VARCHAR,
-    @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
-    @XmlEnumValue("NCHAR") NCHAR,
-    @XmlEnumValue("TINYINT") TINYINT
+    @XmlAttribute
+    private String name;
+
+    @XmlValue
+    private String value;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
 }

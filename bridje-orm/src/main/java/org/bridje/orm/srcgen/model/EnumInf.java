@@ -19,13 +19,7 @@ package org.bridje.orm.srcgen.model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumInf
@@ -37,11 +31,20 @@ public class EnumInf
     @XmlAttribute
     private String description;
 
+    @XmlAttribute
+    private Boolean descriptionAsProperty;
+
     @XmlElements(
     {
         @XmlElement(name = "constant", type = EnumConstantInf.class)
     })
     private List<EnumConstantInf> constants;
+
+    @XmlElementWrapper(name = "properties")
+    @XmlElements({
+        @XmlElement(name = "property", type = EnumPropertyInf.class)
+    })
+    private List<EnumPropertyInf> properties;
 
     @XmlTransient
     private ModelInf model;
@@ -71,6 +74,20 @@ public class EnumInf
         this.description = description;
     }
 
+    public Boolean getDescriptionAsProperty()
+    {
+        if (descriptionAsProperty == null)
+        {
+            descriptionAsProperty = false;
+        }
+        return descriptionAsProperty;
+    }
+
+    public void setDescriptionAsProperty(Boolean descriptionAsProperty)
+    {
+        this.descriptionAsProperty = descriptionAsProperty;
+    }
+
     public List<EnumConstantInf> getConstants()
     {
         if(constants == null)
@@ -78,6 +95,15 @@ public class EnumInf
             constants = new ArrayList<>();
         }
         return constants;
+    }
+
+    public List<EnumPropertyInf> getProperties()
+    {
+        if (properties == null)
+        {
+            properties = new ArrayList<>();
+        }
+        return properties;
     }
 
     public void afterUnmarshal(Unmarshaller u, Object parent)
