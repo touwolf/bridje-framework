@@ -16,9 +16,32 @@
 
 package org.bridje.orm.srcgen.model;
 
+/**
+ * This interface represents a custom data type provider, it must be implemente
+ * by all components that provices custom data type to the source code
+ * generation proccess.
+ */
 public interface CustomTypesProvider
 {
+    /**
+     * Gets the java type of the given (by its name) custom type.
+     *
+     * @param type The name of the custom type.
+     *
+     * @return The full java type name to be use in the source code generarion
+     *         for the given custom type.
+     */
     public String getJavaType(String type);
-    
+
+    /**
+     * Gets the type of column that the custom type field must use. This is the
+     * name of a class that extends TableColumn class, ex: TableStringColumn or
+     * TableNumberColumn, etc...
+     *
+     * @param type The name of the custom type.
+     *
+     * @return The name of the class for the column of the given custom type.
+     */
     public String getColumnClass(String type);
+
 }

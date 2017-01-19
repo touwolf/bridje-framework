@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * This class represents a kind of fild that will hold date and time values.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DateTimeFieldInf extends FieldInfBase
 {
@@ -29,22 +32,40 @@ public class DateTimeFieldInf extends FieldInfBase
     @XmlAttribute
     private DateTimeFieldSQLType sqlType;
 
+    /**
+     * The type for this field, it must be one of the date/times types.
+     *
+     * @return The date/time type of the field.
+     */
     public DateTimeFieldType getType()
     {
-        if(type == null) return DateTimeFieldType.LOCALDATETIME;
+        if (type == null)
+        {
+            return DateTimeFieldType.LOCALDATETIME;
+        }
         return type;
     }
 
+    /**
+     * The type for this field, it must be one of the date/times types.
+     *
+     * @param type The date/time type of the field.
+     */
     public void setType(DateTimeFieldType type)
     {
         this.type = type;
     }
 
+    /**
+     * Gets the SQL type (JDBCType) that must be use for this field.
+     * 
+     * @return The SQL type that must be use for this field.
+     */
     public DateTimeFieldSQLType getSqlType()
     {
-        if(sqlType == null)
+        if (sqlType == null)
         {
-            switch(getType())
+            switch (getType())
             {
                 case DATE:
                     return DateTimeFieldSQLType.DATE;
@@ -65,6 +86,11 @@ public class DateTimeFieldInf extends FieldInfBase
         return sqlType;
     }
 
+    /**
+     * Gets the SQL type (JDBCType) that must be use for this field.
+     * 
+     * @param sqlType The SQL type that must be use for this field.
+     */
     public void setSqlType(DateTimeFieldSQLType sqlType)
     {
         this.sqlType = sqlType;
@@ -73,7 +99,7 @@ public class DateTimeFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
-        switch(getType())
+        switch (getType())
         {
             case DATE:
                 return "Date";
@@ -102,4 +128,5 @@ public class DateTimeFieldInf extends FieldInfBase
         result.sqlType = sqlType;
         return result;
     }
+
 }

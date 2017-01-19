@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * This class represents a decimal field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DecimalFieldInf extends FieldInfBase
 {
@@ -35,42 +38,85 @@ public class DecimalFieldInf extends FieldInfBase
     @XmlAttribute
     private Integer precision;
 
+    /**
+     * The java type of the decimal field, it must be Float, Double, BigDecimal.
+     * 
+     * @return The java type of the decimal field, it must be Float, Double, BigDecimal.
+     */
     public DecimalFieldType getType()
     {
-        if(type == null) return DecimalFieldType.DOUBLE;
+        if (type == null)
+        {
+            return DecimalFieldType.DOUBLE;
+        }
         return type;
     }
 
+    /**
+     * The java type of the decimal field, it must be Float, Double, BigDecimal.
+     * 
+     * @param type The java type of the decimal field, it must be Float, Double, BigDecimal.
+     */
     public void setType(DecimalFieldType type)
     {
         this.type = type;
     }
 
+    /**
+     * The SQL (JDBCType) of the decimal field.
+     * 
+     * @return The SQL (JDBCType) of the decimal field.
+     */
     public DecimalFieldSQLType getSqlType()
     {
         return sqlType;
     }
 
+    /**
+     * The SQL (JDBCType) of the decimal field.
+     * 
+     * @param sqlType The SQL (JDBCType) of the decimal field.
+     */
     public void setSqlType(DecimalFieldSQLType sqlType)
     {
         this.sqlType = sqlType;
     }
 
+    /**
+     * The length of the field, for the column generation in the RDBMS.
+     * 
+     * @return The length of the field, for the column generation in the RDBMS.
+     */
     public Integer getLength()
     {
         return length;
     }
 
+    /**
+     * The length of the field, for the column generation in the RDBMS.
+     * 
+     * @param length The length of the field, for the column generation in the RDBMS.
+     */
     public void setLength(Integer length)
     {
         this.length = length;
     }
 
+    /**
+     * The precision of the field, for the column generation in the RDBMS.
+     * 
+     * @return The precision of the field, for the column generation in the RDBMS.
+     */
     public Integer getPrecision()
     {
         return precision;
     }
 
+    /**
+     * The precision of the field, for the column generation in the RDBMS.
+     * 
+     * @param precision The precision of the field, for the column generation in the RDBMS.
+     */
     public void setPrecision(Integer precision)
     {
         this.precision = precision;
@@ -79,7 +125,7 @@ public class DecimalFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
-        switch(getType())
+        switch (getType())
         {
             case BIGDECIMAL:
                 return "BigDecimal";
@@ -106,4 +152,5 @@ public class DecimalFieldInf extends FieldInfBase
         result.sqlType = sqlType;
         return result;
     }
+
 }

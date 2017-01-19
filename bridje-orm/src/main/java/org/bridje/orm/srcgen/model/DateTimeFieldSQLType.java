@@ -20,11 +20,28 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator represents the JDBC date times types that can be use in a
+ * datetime field.
+ */
 @XmlType
 @XmlEnum
 public enum DateTimeFieldSQLType
 {
-    @XmlEnumValue("DATE") DATE,
-    @XmlEnumValue("TIME") TIME,
-    @XmlEnumValue("TIMESTAMP") TIMESTAMP;
+    /**
+     * JDBCType.DATE
+     */
+    @XmlEnumValue("DATE")
+    DATE,
+    /**
+     * JDBCType.TIME
+     */
+    @XmlEnumValue("TIME")
+    TIME,
+    /**
+     * JDBCType.TIMESTAMP
+     */
+    @XmlEnumValue("TIMESTAMP")
+    TIMESTAMP;
+
 }

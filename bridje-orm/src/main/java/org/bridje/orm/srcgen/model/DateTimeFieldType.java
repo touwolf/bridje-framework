@@ -20,15 +20,48 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator represents the java types that can be use for a datetime
+ * field.
+ */
 @XmlType
 @XmlEnum
 public enum DateTimeFieldType
 {
-    @XmlEnumValue("Date") DATE,
-    @XmlEnumValue("SQLTime") SQLTIME,
-    @XmlEnumValue("SQLDate") SQLDATE,
-    @XmlEnumValue("Timestamp") TIMESTAMP,
-    @XmlEnumValue("LocalTime") LOCALTIME,
-    @XmlEnumValue("LocalDate") LOCALDATE,
-    @XmlEnumValue("LocalDateTime") LOCALDATETIME;
+    /**
+     * java.util.Date
+     */
+    @XmlEnumValue("Date")
+    DATE,
+    /**
+     * java.sql.Time
+     */
+    @XmlEnumValue("SQLTime")
+    SQLTIME,
+    /**
+     * java.sql.Date
+     */
+    @XmlEnumValue("SQLDate")
+    SQLDATE,
+    /**
+     * java.sql.Timestamp
+     */
+    @XmlEnumValue("Timestamp")
+    TIMESTAMP,
+    /**
+     * java.time.LocalTime
+     */
+    @XmlEnumValue("LocalTime")
+    LOCALTIME,
+    /**
+     * java.time.LocalDate
+     */
+    @XmlEnumValue("LocalDate")
+    LOCALDATE,
+    /**
+     * java.time.LocalDateTime
+     */
+    @XmlEnumValue("LocalDateTime")
+    LOCALDATETIME;
+
 }

@@ -21,6 +21,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import org.bridje.ioc.Ioc;
 
+/**
+ * This class represents a custom field, a field whos type is defined in a
+ * separate jar, bridje will read the custom data type and generate an entity
+ * field with the given class name and properties.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CustomFieldInf extends FieldInfBase
 {
@@ -30,22 +35,47 @@ public class CustomFieldInf extends FieldInfBase
     @XmlAttribute
     private Boolean autoIncrement;
 
+    /**
+     * The name of the custom field type.
+     *
+     * @return The name of the custom field type.
+     */
     public String getType()
     {
         return type;
     }
 
+    /**
+     * The name of the custom field type.
+     *
+     * @param type The name of the custom field type.
+     */
     public void setType(String type)
     {
         this.type = type;
     }
 
+    /**
+     * Determines when ever this field must be mark as an auto increment column
+     * on the RDBMS.
+     *
+     * @return If the field is auto increment.
+     */
     public boolean getAutoIncrement()
     {
-        if(autoIncrement == null) return false;
+        if (autoIncrement == null)
+        {
+            return false;
+        }
         return autoIncrement;
     }
 
+    /**
+     * Sets when ever this field must be mark as an auto increment column
+     * on the RDBMS.
+     *
+     * @param autoIncrement If the field is auto increment.
+     */
     public void setAutoIncrement(boolean autoIncrement)
     {
         this.autoIncrement = autoIncrement;
@@ -64,7 +94,7 @@ public class CustomFieldInf extends FieldInfBase
         CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
         return prov.getColumnClass(getType());
     }
-    
+
     @Override
     public FieldInfBase clone(EntityInfBase entity)
     {
@@ -74,4 +104,5 @@ public class CustomFieldInf extends FieldInfBase
         result.autoIncrement = autoIncrement;
         return result;
     }
+
 }

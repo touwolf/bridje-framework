@@ -23,18 +23,28 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
+/**
+ * This class represents a create operation for an Entity, The create operation
+ * will be added to the ORM model class in the source code generation.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CreateOperationInf extends ParametizedOperationInf
 {
     @XmlElements(
-    {
-        @XmlElement(name = "set", type = OperationSetField.class)
-    })
+            {
+                @XmlElement(name = "set", type = OperationSetField.class)
+            })
     private List<OperationSetField> sets;
 
+    /**
+     * The list of fields and the values that will be set to does fields in the
+     * create operation.
+     *
+     * @return A list of fields to set and their values.
+     */
     public List<OperationSetField> getSets()
     {
-        if(sets == null)
+        if (sets == null)
         {
             sets = new ArrayList<>();
         }
@@ -46,4 +56,5 @@ public class CreateOperationInf extends ParametizedOperationInf
     {
         return OperationType.CREATE;
     }
+
 }

@@ -37,6 +37,11 @@ import org.bridje.orm.srcgen.model.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 
+/**
+ * This components is the source code generator for the ORM API. it will read
+ * the ORM model files in from the SrcGenService and will generate al the
+ * entityts and enumerators for that model.
+ */
 @Component
 public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
 {
@@ -44,9 +49,9 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
 
     @Inject
     private SrcGenService srcGen;
-    
-    private Map<String,String> customTypes;
-    
+
+    private Map<String, String> customTypes;
+
     @Override
     public void generateSources() throws IOException, JAXBException
     {
@@ -84,11 +89,11 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
         {
             URL nextElement = resources.nextElement();
             Properties prop = new Properties();
-            try(InputStream is = nextElement.openStream())
+            try (InputStream is = nextElement.openStream())
             {
                 prop.load(is);
             }
-            prop.forEach((k, v) -> result.put((String)k, (String)v));
+            prop.forEach((k, v) -> result.put((String) k, (String) v));
         }
         return result;
     }
@@ -98,12 +103,15 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
     {
         try
         {
-            if(customTypes == null)
+            if (customTypes == null)
             {
                 customTypes = findCustomTypes();
             }
             String value = customTypes.get(type);
-            if(value == null || value.isEmpty()) return null;
+            if (value == null || value.isEmpty())
+            {
+                return null;
+            }
             String[] arr = value.split(":");
             return arr[0];
         }
@@ -119,12 +127,15 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
     {
         try
         {
-            if(customTypes == null)
+            if (customTypes == null)
             {
                 customTypes = findCustomTypes();
             }
             String value = customTypes.get(type);
-            if(value == null || value.isEmpty()) return null;
+            if (value == null || value.isEmpty())
+            {
+                return null;
+            }
             String[] arr = value.split(":");
             return arr[1];
         }
@@ -134,4 +145,5 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
         }
         return null;
     }
+
 }
