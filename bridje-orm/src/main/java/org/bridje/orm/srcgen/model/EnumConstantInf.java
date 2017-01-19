@@ -16,10 +16,9 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumConstantInf
@@ -30,6 +29,11 @@ public class EnumConstantInf
 
     @XmlAttribute
     private String description;
+
+    @XmlElements({
+        @XmlElement(name = "property", type = EnumConstantProperty.class)
+    })
+    private List<EnumConstantProperty> properties;
 
     public String getName()
     {
@@ -49,5 +53,29 @@ public class EnumConstantInf
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public List<EnumConstantProperty> getProperties()
+    {
+        if (properties == null)
+        {
+            properties = new ArrayList<>();
+        }
+        return properties;
+    }
+
+    public String propertyValue(String propertyName)
+    {
+        if (propertyName != null)
+        {
+            for (EnumConstantProperty property : getProperties())
+            {
+                if (propertyName.equals(property.getName()))
+                {
+                    return property.getValue();
+                }
+            }
+        }
+        return "";
     }
 }

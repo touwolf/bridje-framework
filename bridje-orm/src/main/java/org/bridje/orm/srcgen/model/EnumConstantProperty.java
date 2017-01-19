@@ -14,18 +14,36 @@
  * limitations under the License.
  */
 
-package org.bridje.srcgen;
+package org.bridje.orm.srcgen.model;
 
-import java.io.IOException;
+import javax.xml.bind.annotation.*;
 
-/**
- * 
- */
-public interface SourceGenerator
+@XmlAccessorType(XmlAccessType.FIELD)
+public class EnumConstantProperty
 {
-    /**
-     * 
-     * @throws IOException
-     */
-    void generateSources() throws IOException;
+    @XmlAttribute
+    private String name;
+
+    @XmlValue
+    private String value;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
 }

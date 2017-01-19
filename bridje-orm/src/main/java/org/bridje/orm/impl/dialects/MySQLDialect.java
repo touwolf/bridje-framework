@@ -123,6 +123,8 @@ class MySQLDialect implements SQLDialect
     {
         switch(column.getSqlType())
         {
+            case DATE:
+                return "DATETIME";
             case VARCHAR:
             case NVARCHAR:
                 if(column.getLength() > 21845)

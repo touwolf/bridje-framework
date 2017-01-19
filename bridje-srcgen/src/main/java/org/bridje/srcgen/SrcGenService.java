@@ -18,7 +18,6 @@ package org.bridje.srcgen;
 
 import java.io.IOException;
 import java.util.List;
-import javax.xml.bind.JAXBException;
 import org.bridje.vfs.Path;
 
 /**
@@ -34,7 +33,7 @@ public interface SrcGenService
     /**
      * 
      */
-    public static final Path SUPLEMENTARY_PATH = new Path("/srcgen/suplementary");
+    public static final Path SUPL_PATH = new Path("/srcgen/supl");
 
     /**
      * 
@@ -54,24 +53,20 @@ public interface SrcGenService
     /**
      * 
      * @param <T>
-     * @param expr
      * @param cls
      * @return
-     * @throws JAXBException
      * @throws IOException 
      */
-    <T> List<T> findData(String expr, Class<T> cls) throws JAXBException, IOException;
+    <T> List<T> findData(Class<T> cls) throws IOException;
 
     /**
      * 
      * @param <T>
-     * @param expr
      * @param cls
      * @return
-     * @throws JAXBException
      * @throws IOException 
      */
-    <T> List<T> findSuplementaryData(String expr, Class<T> cls) throws JAXBException, IOException;
+    <T> List<T> findSuplData(Class<T> cls) throws IOException;
 
     /**
      * 

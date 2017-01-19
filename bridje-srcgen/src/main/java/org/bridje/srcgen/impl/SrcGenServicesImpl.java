@@ -92,34 +92,40 @@ class SrcGenServicesImpl implements SrcGenService
     }
 
     @Override
-    public <T> List<T> findData(String expr, Class<T> cls) throws JAXBException, IOException
+    public <T> List<T> findData(Class<T> cls) throws IOException
     {
         List<T> result = new ArrayList<>();
-        VFile[] files = new VFile(DATA_PATH).search(new GlobExpr(expr));
+        VFile[] files = new VFile(DATA_PATH).search(new GlobExpr("**.xml"));
         for (VFile vfile : files)
         {
             if(vfile.isFile())
             {
                 LOG.log(Level.INFO, "Reading Data File {0}", vfile.getPath().toString());
                 T data = readFile(vfile, cls);
-                result.add(data);
+                if(data != null)
+                {
+                    result.add(data);
+                }
             }
         }
         return result;
     }
 
     @Override
-    public <T> List<T> findSuplementaryData(String expr, Class<T> cls) throws JAXBException, IOException
+    public <T> List<T> findSuplData(Class<T> cls) throws IOException
     {
         List<T> result = new ArrayList<>();
-        VFile[] files = new VFile(SUPLEMENTARY_PATH).search(new GlobExpr(expr));
+        VFile[] files = new VFile(SUPL_PATH).search(new GlobExpr("**.xml"));
         for (VFile vfile : files)
         {
             if(vfile.isFile())
             {
                 LOG.log(Level.INFO, "Reading Suplementary Data File {0}", vfile.getPath().toString());
                 T data = readFile(vfile, cls);
-                result.add(data);
+                if(data != null)
+                {
+                    result.add(data);
+                }
             }
         }
         return result;
@@ -152,12 +158,19 @@ class SrcGenServicesImpl implements SrcGenService
         }
     }
 
-    private <T> T readFile(VFile file, Class<T> cls) throws JAXBException, IOException
+    private <T> T readFile(VFile file, Class<T> cls) throws IOException
     {
-        JAXBContext ctx = JAXBContext.newInstance(cls);
-        try(InputStream is = new VFileInputStream(file))
+        try
         {
-            return (T)ctx.createUnmarshaller().unmarshal(is);
+            JAXBContext ctx = JAXBContext.newInstance(cls);
+            try(InputStream is = new VFileInputStream(file))
+            {
+                return (T)ctx.createUnmarshaller().unmarshal(is);
+            }
+        }
+        catch (JAXBException e)
+        {
+            return null;
         }
     }
 }

@@ -1,13 +1,10 @@
 
 package ${enum.package};
-<#list enum.properties as prop>
-<#if prop.mapped>
+<#if enum.properties?size != 0>
 
 import java.util.Map;
 import java.util.HashMap;
-<#break />
 </#if>
-</#list>
 
 /**
  * This class represents the ${enum.name} enumerator.
@@ -17,8 +14,8 @@ public enum ${enum.name}
 {
     <#list enum.constants as ct>
     /**
-     * The ${ct.name} constant for the ${enum.name} enumerator.
-     * ${ct.description!}
+     * The ${ct.name} constant for the ${enum.name} enumerator.<#if ct.description?? && ct.description?has_content>
+     * ${ct.description}</#if>
      */
     <#assign hasProps = false />
     <#if enum.properties?size != 0>
@@ -28,7 +25,7 @@ public enum ${enum.name}
     <#if enum.descriptionAsProperty>
     <#assign hasDescr = true />
     </#if>
-    ${ct.name}<#if hasDescr || hasProps>(</#if><#if hasDescr>"${ct.description!}"<#if hasProps>, </#if></#if><#list enum.properties![] as prop><#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"<#elseif prop.type == "Long">L<#elseif prop.type == "Double">D</#if><#if prop?has_next>, </#if></#list><#if hasDescr || hasProps>)</#if><#if ct?has_next>,<#else>;</#if>
+    ${ct.name}<#if hasDescr || hasProps>(</#if><#if hasDescr>"${ct.description!}"<#if hasProps>, </#if></#if><#list enum.properties![] as prop><#if prop.javaType == "String">"</#if>${ct.propertyValue(prop.name)}<#if prop.javaType == "String">"<#elseif prop.javaType == "Long">L<#elseif prop.javaType == "Double">D</#if><#if prop?has_next>, </#if></#list><#if hasDescr || hasProps>)</#if><#if ct?has_next>,<#else>;</#if>
     </#list>
     <#if hasDescr || hasProps>
     <#if hasDescr>
@@ -37,22 +34,20 @@ public enum ${enum.name}
     </#if>
     <#list enum.properties as prop>
 
-    private final ${prop.type} ${prop.name};<#if prop.mapped>
+    private final ${prop.javaType} ${prop.name};
 
-    private final static Map<${prop.type}, ${enum.name}> ${prop.name}Map = new HashMap<>();
+    private final static Map<${prop.javaType}, ${enum.name}> ${prop.name}Map = new HashMap<>();
     static
     {
         <#list enum.constants as ct>
-        ${prop.name}Map.put(<#if prop.type == "String">"</#if>${ct.properties[prop.name]}<#if prop.type == "String">"<#elseif prop.type == "Long">L<#elseif prop.type == "Double">D</#if>, ${ct.name});
+        ${prop.name}Map.put(<#if prop.javaType == "String">"</#if>${ct.propertyValue(prop.name)}<#if prop.javaType == "String">"<#elseif prop.javaType == "Long">L<#elseif prop.javaType == "Double">D</#if>, ${ct.name});
         </#list>
     }
 
-    </#if>
     </#list>
-    private ${enum.name}(<#if hasDescr>String description<#if hasProps>, </#if></#if><#list enum.properties as prop>${prop.type} ${prop.name}<#if prop?has_next>, </#if></#list>)
+    private ${enum.name}(<#if hasDescr>String description<#if hasProps>, </#if></#if><#list enum.properties as prop>${prop.javaType} ${prop.name}<#if prop?has_next>, </#if></#list>)
     {
-        <#if hasDescr>
-        this.description = description;</#if>
+        <#if hasDescr>this.description = description;</#if>
         <#list enum.properties as prop>
         this.${prop.name} = ${prop.name};
         </#list>
@@ -74,23 +69,21 @@ public enum ${enum.name}
      * Gets the value of the ${prop.name} property for this constant.
      * @return The value of the ${prop.name} property.
      */
-    public ${prop.type} get${prop.name?cap_first}()
+    public ${prop.javaType} get${prop.name?cap_first}()
     {
         return ${prop.name};
     }
 
-    <#if prop.mapped>
     /**
      * Gets the constant assigned to the given value of the ${prop.name} property.
      * @param ${prop.name} The value of the ${prop.name} property.
      * @return The enum constant for the ${prop.name} property.
      */
-    public static ${enum.name} from${prop.name?cap_first}(${prop.type} ${prop.name})
+    public static ${enum.name} from${prop.name?cap_first}(${prop.javaType} ${prop.name})
     {
         return ${prop.name}Map.get(${prop.name});
     }
 
-    </#if>
     </#list>
     </#if>
 }

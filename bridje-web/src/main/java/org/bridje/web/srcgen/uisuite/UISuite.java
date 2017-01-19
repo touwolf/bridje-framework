@@ -47,7 +47,7 @@ public class UISuite
     @XmlElementWrapper(name = "ftlIncludes")
     @XmlElements(
     {
-        @XmlElement(name = "ftlIncludes", type = String.class)
+        @XmlElement(name = "ftlInclude", type = String.class)
     })
     private List<String> ftlIncludes;
 

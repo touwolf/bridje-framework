@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package org.bridje.srcgen;
+package org.bridje.orm.srcgen.model;
 
-import java.io.IOException;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
 
-/**
- * 
- */
-public interface SourceGenerator
+@XmlType
+@XmlEnum
+public enum EnumPropertyType
 {
-    /**
-     * 
-     * @throws IOException
-     */
-    void generateSources() throws IOException;
+    @XmlEnumValue("INTEGER") INTEGER,
+    @XmlEnumValue("STRING") STRING,
+    @XmlEnumValue("DOUBLE") DOUBLE,
+    @XmlEnumValue("LONG") LONG
 }
