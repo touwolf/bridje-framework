@@ -20,11 +20,27 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator holds the SQL (JDBCType) types for the decimal fields.
+ */
 @XmlType
 @XmlEnum
 public enum DecimalFieldSQLType
 {
-    @XmlEnumValue("FLOAT") FLOAT,
-    @XmlEnumValue("DOUBLE") DOUBLE,
-    @XmlEnumValue("DECIMAL") DECIMAL;
+    /**
+     * JDBCType.FLOAT
+     */
+    @XmlEnumValue("FLOAT")
+    FLOAT,
+    /**
+     * JDBCType.DOUBLE
+     */
+    @XmlEnumValue("DOUBLE")
+    DOUBLE,
+    /**
+     * JDBCType.DECIMAL
+     */
+    @XmlEnumValue("DECIMAL")
+    DECIMAL;
+
 }

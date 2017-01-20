@@ -19,19 +19,37 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * This class represents an entity, entity classes will be generated out of the
+ * information present in this object.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInf extends EntityInfBase
 {
     private String table;
 
+    /**
+     * The name of the table for this entity.
+     *
+     * @return An string representing the table name for this entity.
+     */
     public String getTable()
     {
-        if(this.table == null) this.table = Utils.toSQLName(this.getName());
+        if (this.table == null)
+        {
+            this.table = Utils.toSQLName(this.getName());
+        }
         return table;
     }
 
+    /**
+     * The name of the table for this entity.
+     *
+     * @param table An string representing the table name for this entity.
+     */
     public void setTable(String table)
     {
         this.table = table;
     }
+
 }

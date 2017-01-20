@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 
+/**
+ * THis class represents an enumerator constant.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumConstantInf
 {
@@ -35,26 +38,51 @@ public class EnumConstantInf
     })
     private List<EnumConstantProperty> properties;
 
+    /**
+     * The name of the constant.
+     * 
+     * @return The name of the constant.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the constant.
+     * 
+     * @param name The name of the constant.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The description of the constant.
+     * 
+     * @return The description of the constant.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * The description of the constant.
+     * 
+     * @param description The description of the constant.
+     */
     public void setDescription(String description)
     {
         this.description = description;
     }
 
+    /**
+     * The properties values of the enumerator for this constant.
+     * 
+     * @return The properties values of the enumerator for this constant.
+     */
     public List<EnumConstantProperty> getProperties()
     {
         if (properties == null)
@@ -64,6 +92,12 @@ public class EnumConstantInf
         return properties;
     }
 
+    /**
+     * Gets the value of the given property for this constant.
+     * 
+     * @param propertyName The name of the property to get.
+     * @return The value of the given property for this constant.
+     */
     public String propertyValue(String propertyName)
     {
         if (propertyName != null)

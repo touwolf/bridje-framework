@@ -19,6 +19,10 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * This class represents an entity template, entitys can extends from templates
+ * in other to reuse the information.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInfTemplate extends EntityInfBase
 {

@@ -20,11 +20,27 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator holds the java types for the decimal fields.
+ */
 @XmlType
 @XmlEnum
 public enum DecimalFieldType
 {
-    @XmlEnumValue("Float") FLOAT,
-    @XmlEnumValue("Double") DOUBLE,
-    @XmlEnumValue("BigDecimal") BIGDECIMAL;
+    /**
+     * java.lang.Float
+     */
+    @XmlEnumValue("Float")
+    FLOAT,
+    /**
+     * java.lang.Double
+     */
+    @XmlEnumValue("Double")
+    DOUBLE,
+    /**
+     * java.lang.BigDecimal
+     */
+    @XmlEnumValue("BigDecimal")
+    BIGDECIMAL;
+
 }

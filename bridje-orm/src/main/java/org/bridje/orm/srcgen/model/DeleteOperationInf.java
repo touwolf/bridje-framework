@@ -19,6 +19,10 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * This class represents a detele operation for an Entity, The delete operation
+ * will be added to the ORM model class in the source code generation.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DeleteOperationInf extends ParametizedOperationInf
 {
