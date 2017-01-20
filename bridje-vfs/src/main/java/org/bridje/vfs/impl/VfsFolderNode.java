@@ -149,7 +149,7 @@ class VfsFolderNode extends VfsNode
         if(path == null)
         {
             String[] result = new String[childs.size()];
-            childs.stream().map(c -> c.getName()).collect(Collectors.toList()).toArray(result);
+            childs.stream().map(VfsNode::getName).collect(Collectors.toList()).toArray(result);
             return result;
         }
         else
