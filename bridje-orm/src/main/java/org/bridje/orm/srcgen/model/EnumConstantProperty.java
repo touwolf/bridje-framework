@@ -24,7 +24,7 @@ public class EnumConstantProperty
     @XmlAttribute
     private String name;
 
-    @XmlValue
+    @XmlAttribute
     private String value;
 
     public String getName()
