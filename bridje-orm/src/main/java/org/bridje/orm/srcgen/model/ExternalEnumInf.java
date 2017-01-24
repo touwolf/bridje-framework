@@ -16,23 +16,31 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.*;
 
+/**
+ * This class defines an enumerator, the source code generator will generate an
+ * enumerator class base on the information provided by each instance of this
+ * object.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SaveOperationInf extends OperationInfBase
+public class ExternalEnumInf extends EnumBaseInf
 {
+    @XmlAttribute(name = "package")
+    private String packageName;
+
     @Override
-    public OperationType getOperationType()
+    public String getPackage()
     {
-        return OperationType.SAVE;
+        if(packageName == null)
+        {
+            packageName = getModel().getPackage();
+        }
+        return packageName;
     }
 
-    @Override
-    public OperationInfBase clone(EntityInfBase entity)
+    public void setPackage(String packageName)
     {
-        SaveOperationInf result = new SaveOperationInf();
-        clone(result, entity);
-        return result;
+        this.packageName = packageName;
     }
 }

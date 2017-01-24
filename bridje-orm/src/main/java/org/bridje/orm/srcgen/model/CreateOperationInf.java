@@ -57,4 +57,12 @@ public class CreateOperationInf extends ParametizedOperationInf
         return OperationType.CREATE;
     }
 
+    @Override
+    public OperationInfBase clone(EntityInfBase entity)
+    {
+        CreateOperationInf result = new CreateOperationInf();
+        clone(result, entity);
+        result.sets = this.sets;
+        return result;
+    }
 }

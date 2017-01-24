@@ -18,7 +18,6 @@ package org.bridje.orm.srcgen.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 
 /**
@@ -27,12 +26,8 @@ import javax.xml.bind.annotation.*;
  * object.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EnumInf
+public class EnumInf extends EnumBaseInf
 {
-    @XmlID
-    @XmlAttribute
-    private String name;
-
     @XmlAttribute
     private String description;
 
@@ -51,39 +46,6 @@ public class EnumInf
                 @XmlElement(name = "property", type = EnumPropertyInf.class)
             })
     private List<EnumPropertyInf> properties;
-
-    @XmlTransient
-    private ModelInf model;
-
-    /**
-     * The model that this enumerator belongs to.
-     *
-     * @return The model that this enumerator belongs to.
-     */
-    public ModelInf getModel()
-    {
-        return model;
-    }
-
-    /**
-     * The name of the enumerator.
-     *
-     * @return The name of the enumerator.
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * The name of the enumerator.
-     *
-     * @param name The name of the enumerator.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
 
     /**
      * The description of the enumerator.
@@ -161,33 +123,13 @@ public class EnumInf
     }
 
     /**
-     * Called by JAXB after unmarshal.
-     *
-     * @param u      The unmarshaller.
-     * @param parent The parent object.
-     */
-    public void afterUnmarshal(Unmarshaller u, Object parent)
-    {
-        model = (ModelInf) parent;
-    }
-
-    /**
      * The name of the package for this enumerator.
      * 
      * @return The name of the package for this enumerator.
      */
+    @Override
     public String getPackage()
     {
-        return model.getPackage();
-    }
-
-    /**
-     * The full java class name for this enumerator.
-     * 
-     * @return The full java class name for this enumerator.
-     */
-    public String getFullName()
-    {
-        return getPackage() + "." + getName();
+        return getModel().getPackage();
     }
 }

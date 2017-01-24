@@ -31,6 +31,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
 import org.bridje.orm.srcgen.model.CustomTypesProvider;
 import org.bridje.orm.srcgen.model.EntityInf;
+import org.bridje.orm.srcgen.model.EnumBaseInf;
 import org.bridje.orm.srcgen.model.EnumInf;
 import org.bridje.orm.srcgen.model.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
@@ -72,10 +73,13 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
 
             data = new HashMap<>();
             data.put("model", modelInf);
-            for (EnumInf enumInf : modelInf.getEnums())
+            for (EnumBaseInf enumInf : modelInf.getEnums())
             {
-                data.put("enum", enumInf);
-                srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
+                if(enumInf instanceof EnumInf)
+                {
+                    data.put("enum", enumInf);
+                    srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
+                }
             }
         }
     }

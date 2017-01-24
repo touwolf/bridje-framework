@@ -67,4 +67,13 @@ public abstract class OperationInfBase
     }
 
     public abstract OperationType getOperationType();
+    
+    public abstract OperationInfBase clone(EntityInfBase entity);
+    
+    protected void clone(OperationInfBase result, EntityInfBase entity)
+    {
+        result.entity = entity;
+        result.name = name;
+        result.description = description;
+    }
 }

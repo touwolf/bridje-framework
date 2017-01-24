@@ -20,18 +20,24 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SaveOperationInf extends OperationInfBase
+public class BooleanFieldInf extends FieldInfBase
 {
     @Override
-    public OperationType getOperationType()
+    public String getJavaType()
     {
-        return OperationType.SAVE;
+        return "Boolean";
     }
 
     @Override
-    public OperationInfBase clone(EntityInfBase entity)
+    public String getTableColumn()
     {
-        SaveOperationInf result = new SaveOperationInf();
+        return "TableComparableColumn";
+    }
+
+    @Override
+    public FieldInfBase clone(EntityInfBase entity)
+    {
+        BooleanFieldInf result = new BooleanFieldInf();
         clone(result, entity);
         return result;
     }

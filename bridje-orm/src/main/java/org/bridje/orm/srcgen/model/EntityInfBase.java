@@ -17,6 +17,7 @@
 package org.bridje.orm.srcgen.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -57,7 +58,8 @@ public class EntityInfBase
         @XmlElement(name = "enum", type = EnumFieldInf.class),
         @XmlElement(name = "relation", type = RelationFieldInf.class),
         @XmlElement(name = "datetime", type = DateTimeFieldInf.class),
-        @XmlElement(name = "custom", type = CustomFieldInf.class)
+        @XmlElement(name = "custom", type = CustomFieldInf.class),
+        @XmlElement(name = "boolean", type = BooleanFieldInf.class)
     })
     private List<FieldInfBase> fields;
 
@@ -67,16 +69,11 @@ public class EntityInfBase
     @XmlElementWrapper(name = "operations")
     @XmlElements(
             {
-                @XmlElement(name = "create", type = CreateOperationInf.class)
-                ,
-                @XmlElement(name = "read", type = ReadOperationInf.class)
-                ,
-                @XmlElement(name = "update", type = UpdateOperationInf.class)
-                ,
-                @XmlElement(name = "delete", type = DeleteOperationInf.class)
-                ,
-                @XmlElement(name = "deleteEntity", type = DeleteOperationInf.class)
-                ,
+                @XmlElement(name = "create", type = CreateOperationInf.class),
+                @XmlElement(name = "read", type = ReadOperationInf.class),
+                @XmlElement(name = "update", type = UpdateOperationInf.class),
+                @XmlElement(name = "delete", type = DeleteOperationInf.class),
+                @XmlElement(name = "deleteEntity", type = DeleteEntityOperationInf.class),
                 @XmlElement(name = "save", type = SaveOperationInf.class)
             })
     private List<OperationInfBase> operations;
@@ -194,7 +191,7 @@ public class EntityInfBase
             allOperations = new ArrayList<>();
             if (base != null)
             {
-                allOperations.addAll(base.getOperations());
+                allOperations.addAll(cloneOperations(base.getOperations()));
             }
             if (operations != null)
             {
@@ -281,6 +278,16 @@ public class EntityInfBase
         for (FieldInfBase field : fields)
         {
             result.add(field.clone(this));
+        }
+        return result;
+    }
+
+    private Collection<? extends OperationInfBase> cloneOperations(List<OperationInfBase> operations)
+    {
+        List<OperationInfBase> result = new ArrayList<>();
+        for (OperationInfBase operation : operations)
+        {
+            result.add(operation.clone(this));
         }
         return result;
     }

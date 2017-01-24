@@ -67,9 +67,10 @@ public class ModelInf
     @XmlElementWrapper(name = "enums")
     @XmlElements(
     {
-        @XmlElement(name = "enum", type = EnumInf.class)
+        @XmlElement(name = "enum", type = EnumInf.class),
+        @XmlElement(name = "external", type = ExternalEnumInf.class)
     })
-    private List<EnumInf> enums;
+    private List<EnumBaseInf> enums;
 
     public String getFullName()
     {
@@ -154,7 +155,7 @@ public class ModelInf
         return templates;
     }
 
-    public List<EnumInf> getEnums()
+    public List<EnumBaseInf> getEnums()
     {
         if(enums == null)
         {

@@ -95,6 +95,11 @@ public class GenerateMojo extends AbstractMojo
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);
         }
+        catch (Exception e)
+        {
+            getLog().error(e.getMessage(), e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
     }
 
     /**

@@ -16,25 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import org.bridje.orm.srcgen.model.ModelInf;
-import org.bridje.orm.srcgen.model.IntegerFieldSQLType;
-import org.bridje.orm.srcgen.model.DecimalFieldType;
-import org.bridje.orm.srcgen.model.IntegerFieldType;
-import org.bridje.orm.srcgen.model.EnumConstantInf;
-import org.bridje.orm.srcgen.model.DateTimeFieldSQLType;
-import org.bridje.orm.srcgen.model.EnumInf;
-import org.bridje.orm.srcgen.model.RelationFieldInf;
-import org.bridje.orm.srcgen.model.EnumFieldSQLType;
-import org.bridje.orm.srcgen.model.DateTimeFieldInf;
-import org.bridje.orm.srcgen.model.DecimalFieldSQLType;
-import org.bridje.orm.srcgen.model.StringFieldSQLType;
-import org.bridje.orm.srcgen.model.DecimalFieldInf;
-import org.bridje.orm.srcgen.model.StringFieldInf;
-import org.bridje.orm.srcgen.model.EnumFieldInf;
-import org.bridje.orm.srcgen.model.CustomFieldInf;
-import org.bridje.orm.srcgen.model.DateTimeFieldType;
-import org.bridje.orm.srcgen.model.EntityInf;
-import org.bridje.orm.srcgen.model.IntegerFieldInf;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -123,7 +104,7 @@ public class SrcGenInfTest
         Assert.assertFalse(customField1.getKey());
         Assert.assertEquals("Some custom field", customField1.getDescription());
 
-        EnumInf enum1 = model.getEnums().get(0);
+        EnumInf enum1 = (EnumInf)model.getEnums().get(0);
         Assert.assertEquals("SomeEnum", enum1.getName());
         Assert.assertEquals(2, enum1.getConstants().size());
         EnumConstantInf enumConst1 = enum1.getConstants().get(0);

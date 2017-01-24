@@ -28,7 +28,7 @@ public class ReadOperationInf extends ParametizedOperationInf
 
     @XmlAttribute
     private String result;
-
+    
     public ReadOperationResultType getResultType()
     {
         return resultType;
@@ -48,10 +48,28 @@ public class ReadOperationInf extends ParametizedOperationInf
     {
         this.result = result;
     }
+    
+    public FieldInfBase getResultField()
+    {
+        return getEntity().getFields()
+                            .stream()
+                            .filter(f -> f.getName().equalsIgnoreCase(result))
+                            .findAny().orElse(null);
+    }
 
     @Override
     public OperationType getOperationType()
     {
         return OperationType.READ;
+    }
+
+    @Override
+    public OperationInfBase clone(EntityInfBase entity)
+    {
+        ReadOperationInf result = new ReadOperationInf();
+        clone(result, entity);
+        result.resultType = this.resultType;
+        result.result = this.result;
+        return result;
     }
 }

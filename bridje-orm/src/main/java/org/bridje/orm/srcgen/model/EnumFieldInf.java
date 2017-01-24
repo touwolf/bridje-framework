@@ -29,7 +29,7 @@ public class EnumFieldInf extends FieldInfBase
 {
     @XmlIDREF
     @XmlAttribute(name = "type")
-    private EnumInf type;
+    private EnumBaseInf type;
 
     @XmlAttribute
     private EnumFieldSQLType sqlType;
@@ -42,7 +42,7 @@ public class EnumFieldInf extends FieldInfBase
      * 
      * @return The enumerator for this field.
      */
-    public EnumInf getType()
+    public EnumBaseInf getType()
     {
         return type;
     }
@@ -52,7 +52,7 @@ public class EnumFieldInf extends FieldInfBase
      * 
      * @param type The enumerator for this field.
      */
-    public void setType(EnumInf type)
+    public void setType(EnumBaseInf type)
     {
         this.type = type;
     }
@@ -101,6 +101,10 @@ public class EnumFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
+        if(!getType().getPackage().equalsIgnoreCase(getEntity().getPackage()))
+        {
+            return getType().getFullName();
+        }
         return getType().getName();
     }
 
