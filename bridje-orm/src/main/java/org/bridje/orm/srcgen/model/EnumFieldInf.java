@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
+/**
+ * A field hows type is an enumerator.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumFieldInf extends FieldInfBase
 {
@@ -34,32 +37,62 @@ public class EnumFieldInf extends FieldInfBase
     @XmlAttribute
     private Integer length;
 
+    /**
+     * The enumerator for this field.
+     * 
+     * @return The enumerator for this field.
+     */
     public EnumInf getType()
     {
         return type;
     }
 
+    /**
+     * The enumerator for this field.
+     * 
+     * @param type The enumerator for this field.
+     */
     public void setType(EnumInf type)
     {
         this.type = type;
     }
 
+    /**
+     * The length of this SQL column for this field.
+     * 
+     * @return The length of this SQL column for this field.
+     */
     public Integer getLength()
     {
         return length;
     }
 
+    /**
+     * The length of this SQL column for this field.
+     * 
+     * @param length The length of this SQL column for this field.
+     */
     public void setLength(Integer length)
     {
         this.length = length;
     }
 
+    /**
+     * The SQL type for this field.
+     * 
+     * @return The SQL type for this field.
+     */
     public EnumFieldSQLType getSqlType()
     {
         if(sqlType == null) return EnumFieldSQLType.BYTE;
         return sqlType;
     }
 
+    /**
+     * The SQL type for this field.
+     * 
+     * @param sqlType The SQL type for this field.
+     */
     public void setSqlType(EnumFieldSQLType sqlType)
     {
         this.sqlType = sqlType;

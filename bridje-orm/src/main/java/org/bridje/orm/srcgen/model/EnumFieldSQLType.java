@@ -20,18 +20,62 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator represents the SQL types that an enumerator field can use.
+ */
 @XmlType
 @XmlEnum
 public enum EnumFieldSQLType
 {
-    @XmlEnumValue("BIGINT") BIGINT,
-    @XmlEnumValue("INTEGER") INTEGER,
-    @XmlEnumValue("BYTE") BYTE,
-    @XmlEnumValue("SMALLINT") SMALLINT,
-    @XmlEnumValue("CHAR") CHAR,
-    @XmlEnumValue("VARCHAR") VARCHAR,
-    @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
-    @XmlEnumValue("NCHAR") NCHAR,
-    @XmlEnumValue("TINYINT") TINYINT
+    /**
+     * JDBCType.BIGINT
+     */
+    @XmlEnumValue("BIGINT")
+    BIGINT,
+    /**
+     * JDBCType.INTEGER
+     */
+    @XmlEnumValue("INTEGER")
+    INTEGER,
+    /**
+     * JDBCType.BYTE
+     */
+    @XmlEnumValue("BYTE")
+    BYTE,
+    /**
+     * JDBCType.SMALLINT
+     */
+    @XmlEnumValue("SMALLINT")
+    SMALLINT,
+    /**
+     * JDBCType.CHAR
+     */
+    @XmlEnumValue("CHAR")
+    CHAR,
+    /**
+     * JDBCType.VARCHAR
+     */
+    @XmlEnumValue("VARCHAR")
+    VARCHAR,
+    /**
+     * JDBCType.NVARCHAR
+     */
+    @XmlEnumValue("NVARCHAR")
+    NVARCHAR,
+    /**
+     * JDBCType.LONGVARCHAR
+     */
+    @XmlEnumValue("LONGVARCHAR")
+    LONGVARCHAR,
+    /**
+     * JDBCType.NCHAR
+     */
+    @XmlEnumValue("NCHAR")
+    NCHAR,
+    /**
+     * JDBCType.TINYINT
+     */
+    @XmlEnumValue("TINYINT")
+    TINYINT
+
 }

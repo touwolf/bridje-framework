@@ -21,7 +21,7 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 /**
- * THis class represents an enumerator constant.
+ * This class represents an enumerator constant.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumConstantInf
@@ -33,7 +33,8 @@ public class EnumConstantInf
     @XmlAttribute
     private String description;
 
-    @XmlElements({
+    @XmlElements(
+    {
         @XmlElement(name = "property", type = EnumConstantProperty.class)
     })
     private List<EnumConstantProperty> properties;

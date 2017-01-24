@@ -50,21 +50,15 @@ public class EntityInfBase
 
     @XmlElementWrapper(name = "fields")
     @XmlElements(
-            {
-                @XmlElement(name = "string", type = StringFieldInf.class)
-                ,
-                @XmlElement(name = "integer", type = IntegerFieldInf.class)
-                ,
-                @XmlElement(name = "decimal", type = DecimalFieldInf.class)
-                ,
-                @XmlElement(name = "enum", type = EnumFieldInf.class)
-                ,
-                @XmlElement(name = "relation", type = RelationFieldInf.class)
-                ,
-                @XmlElement(name = "datetime", type = DateTimeFieldInf.class)
-                ,
-                @XmlElement(name = "custom", type = CustomFieldInf.class)
-            })
+    {
+        @XmlElement(name = "string", type = StringFieldInf.class),
+        @XmlElement(name = "integer", type = IntegerFieldInf.class),
+        @XmlElement(name = "decimal", type = DecimalFieldInf.class),
+        @XmlElement(name = "enum", type = EnumFieldInf.class),
+        @XmlElement(name = "relation", type = RelationFieldInf.class),
+        @XmlElement(name = "datetime", type = DateTimeFieldInf.class),
+        @XmlElement(name = "custom", type = CustomFieldInf.class)
+    })
     private List<FieldInfBase> fields;
 
     @XmlTransient

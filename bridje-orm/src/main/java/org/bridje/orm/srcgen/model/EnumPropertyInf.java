@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 
+/**
+ * This class defines the information for a property of an enumerator.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumPropertyInf
 {
@@ -31,26 +34,51 @@ public class EnumPropertyInf
     @XmlAttribute
     private EnumPropertyType type;
 
+    /**
+     * The name of the property.
+     * 
+     * @return The name of the property.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the property.
+     * 
+     * @param name The name of the property.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The type of the property.
+     * 
+     * @return The type of the property.
+     */
     public EnumPropertyType getType()
     {
         return type;
     }
 
+    /**
+     * The type of the property.
+     * 
+     * @param type The type of the property.
+     */
     public void setType(EnumPropertyType type)
     {
         this.type = type;
     }
 
+    /**
+     * The java type for this property.
+     * 
+     * @return The java type for this property.
+     */
     public String getJavaType()
     {
         switch(type)
