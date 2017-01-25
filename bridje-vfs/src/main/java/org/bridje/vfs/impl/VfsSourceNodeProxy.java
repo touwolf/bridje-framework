@@ -10,17 +10,19 @@ import org.bridje.vfs.VfsSource;
 
 public class VfsSourceNodeProxy extends VfsNode
 {
-    private List<VfsSourceNode> nodes;
+    private final List<VfsSourceNode> nodes;
 
     public VfsSourceNodeProxy(String name)
     {
         super(name);
-        nodes = new Stack<>();
+        nodes = new ArrayList<>();
     }
 
     public void add(VfsSource source)
     {
-        nodes.add(new VfsSourceNode(getName(), source));
+        VfsSourceNode node = new VfsSourceNode(getName(), source);
+        node.setParent(this.getParent());
+        nodes.add(node);
     }
 
     @Override

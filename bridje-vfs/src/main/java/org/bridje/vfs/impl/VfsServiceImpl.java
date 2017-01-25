@@ -36,14 +36,14 @@ class VfsServiceImpl implements VfsService
         VFile vfsBridje = new VFile("/vfs/bridje");
         vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
         VFile mimeTypes = new VFile(vfsBridje.getPath().join("mime-types.properties"));
-        try(InputStream is = mimeTypes.openForRead())
+        try(VFileInputStream is = new VFileInputStream(mimeTypes))
         {
             this.mimeTypes.load(is);
         }
         VFile[] sources = vfsBridje.search(new GlobExpr("*-classpath-sources.properties"));
         for (VFile source : sources)
         {
-            try(InputStream is = source.openForRead())
+            try(VFileInputStream is = new VFileInputStream(source))
             {
                 Properties prop = new Properties();
                 prop.load(is);

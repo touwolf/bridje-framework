@@ -68,8 +68,8 @@ class VfsFolderNode extends VfsNode
         if(child == null)
         {
             VfsSourceNodeProxy proxy = new VfsSourceNodeProxy(path.getName());
-            proxy.add(source);
             addChild(proxy);
+            proxy.add(source);
         }
         else
         {
