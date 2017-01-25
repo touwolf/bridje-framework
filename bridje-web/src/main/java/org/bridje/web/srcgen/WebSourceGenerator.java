@@ -28,7 +28,7 @@ import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
- * This components is resposable for the source code generation of the web
+ * This components is responsible for the source code generation of the web
  * controls and freemarker themes for the given UISuite.
  */
 @Component
@@ -69,5 +69,4 @@ public class WebSourceGenerator implements SourceGenerator
             srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
         }
     }
-
 }

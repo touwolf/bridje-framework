@@ -28,27 +28,27 @@ public interface SrcGenService
     /**
      * 
      */
-    public static final Path DATA_PATH = new Path("/srcgen/data");
+    Path DATA_PATH = new Path("/srcgen/data");
 
     /**
      * 
      */
-    public static final Path SUPL_PATH = new Path("/srcgen/supl");
+    Path SUPL_PATH = new Path("/srcgen/supl");
 
     /**
      * 
      */
-    public static final Path RESOURCE_PATH = new Path("/srcgen/resources");
+    Path RESOURCE_PATH = new Path("/srcgen/resources");
 
     /**
      * 
      */
-    public static final Path CLASSES_PATH = new Path("/srcgen/classes");
+    Path CLASSES_PATH = new Path("/srcgen/classes");
 
     /**
      * 
      */
-    public static final Path TEMPLATES_PATH = new Path("/srcgen/templates");
+    Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
     /**
      * 
