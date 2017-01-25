@@ -32,7 +32,7 @@ abstract class VfsNode
     {
         this.parent = parent;
     }
-    
+
     public void removeFromParent()
     {
         if(parent != null)
@@ -47,7 +47,7 @@ abstract class VfsNode
         return getParentPath().join(name);
     }
     
-    public Path getParentPath()
+    private Path getParentPath()
     {
         if(name == null) return new Path();
         if(parent == null) return new Path();
