@@ -275,20 +275,14 @@ public class EntityInfBase
     private List<FieldInfBase> cloneFields(List<FieldInfBase> fields)
     {
         List<FieldInfBase> result = new ArrayList<>();
-        for (FieldInfBase field : fields)
-        {
-            result.add(field.clone(this));
-        }
+        fields.forEach(f -> result.add(f.clone(this)));
         return result;
     }
 
     private Collection<? extends OperationInfBase> cloneOperations(List<OperationInfBase> operations)
     {
         List<OperationInfBase> result = new ArrayList<>();
-        for (OperationInfBase operation : operations)
-        {
-            result.add(operation.clone(this));
-        }
+        operations.forEach(op -> result.add(op.clone(this)));
         return result;
     }
 

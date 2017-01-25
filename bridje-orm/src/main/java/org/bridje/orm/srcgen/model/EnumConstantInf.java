@@ -34,14 +34,14 @@ public class EnumConstantInf
     private String description;
 
     @XmlElements(
-    {
-        @XmlElement(name = "property", type = EnumConstantProperty.class)
-    })
+            {
+                @XmlElement(name = "property", type = EnumConstantProperty.class)
+            })
     private List<EnumConstantProperty> properties;
 
     /**
      * The name of the constant.
-     * 
+     *
      * @return The name of the constant.
      */
     public String getName()
@@ -51,7 +51,7 @@ public class EnumConstantInf
 
     /**
      * The name of the constant.
-     * 
+     *
      * @param name The name of the constant.
      */
     public void setName(String name)
@@ -61,7 +61,7 @@ public class EnumConstantInf
 
     /**
      * The description of the constant.
-     * 
+     *
      * @return The description of the constant.
      */
     public String getDescription()
@@ -71,7 +71,7 @@ public class EnumConstantInf
 
     /**
      * The description of the constant.
-     * 
+     *
      * @param description The description of the constant.
      */
     public void setDescription(String description)
@@ -81,7 +81,7 @@ public class EnumConstantInf
 
     /**
      * The properties values of the enumerator for this constant.
-     * 
+     *
      * @return The properties values of the enumerator for this constant.
      */
     public List<EnumConstantProperty> getProperties()
@@ -95,22 +95,19 @@ public class EnumConstantInf
 
     /**
      * Gets the value of the given property for this constant.
-     * 
+     *
      * @param propertyName The name of the property to get.
+     *
      * @return The value of the given property for this constant.
      */
     public String propertyValue(String propertyName)
     {
-        if (propertyName != null)
-        {
-            for (EnumConstantProperty property : getProperties())
-            {
-                if (propertyName.equals(property.getName()))
-                {
-                    return property.getValue();
-                }
-            }
-        }
-        return "";
+        if (propertyName == null) return "";
+        return getProperties().stream()
+                        .filter(p -> propertyName.equals(p.getName()))
+                        .map(p -> p.getValue())
+                        .findFirst()
+                        .orElse("");
     }
+
 }

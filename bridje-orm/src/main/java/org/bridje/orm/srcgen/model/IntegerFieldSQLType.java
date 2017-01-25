@@ -20,13 +20,37 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enums holds the SQL types that a integer field can have.
+ */
 @XmlType
 @XmlEnum
 public enum IntegerFieldSQLType
 {
-    @XmlEnumValue("BIGINT") BIGINT,
-    @XmlEnumValue("INTEGER") INTEGER,
-    @XmlEnumValue("BYTE") BYTE,
-    @XmlEnumValue("SMALLINT") SMALLINT,
-    @XmlEnumValue("CHAR") CHAR;
+    /**
+     * JDBCType.BIGINT
+     */
+    @XmlEnumValue("BIGINT")
+    BIGINT,
+    /**
+     * JDBCType.INTEGER
+     */
+    @XmlEnumValue("INTEGER")
+    INTEGER,
+    /**
+     * JDBCType.BYTE
+     */
+    @XmlEnumValue("BYTE")
+    BYTE,
+    /**
+     * JDBCType.SMALLINT
+     */
+    @XmlEnumValue("SMALLINT")
+    SMALLINT,
+    /**
+     * JDBCType.CHAR
+     */
+    @XmlEnumValue("CHAR")
+    CHAR;
+
 }

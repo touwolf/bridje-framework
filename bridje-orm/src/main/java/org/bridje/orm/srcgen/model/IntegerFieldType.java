@@ -20,14 +20,42 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enum holds the java type fields that an integer field can have.
+ */
 @XmlType
 @XmlEnum
 public enum IntegerFieldType
 {
-    @XmlEnumValue("Long") LONG,
-    @XmlEnumValue("Integer") INTEGER,
-    @XmlEnumValue("Byte") BYTE,
-    @XmlEnumValue("Short") SHORT,
-    @XmlEnumValue("Character") CHARACTER,
-    @XmlEnumValue("BigInteger") BIGINTEGER;
+    /**
+     * Long
+     */
+    @XmlEnumValue("Long")
+    LONG,
+    /**
+     * Integer
+     */
+    @XmlEnumValue("Integer")
+    INTEGER,
+    /**
+     * Byte
+     */
+    @XmlEnumValue("Byte")
+    BYTE,
+    /**
+     * Short
+     */
+    @XmlEnumValue("Short")
+    SHORT,
+    /**
+     * Character
+     */
+    @XmlEnumValue("Character")
+    CHARACTER,
+    /**
+     * BigInteger
+     */
+    @XmlEnumValue("BigInteger")
+    BIGINTEGER;
+
 }

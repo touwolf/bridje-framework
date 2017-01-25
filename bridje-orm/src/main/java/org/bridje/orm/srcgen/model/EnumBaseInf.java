@@ -20,9 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 
 /**
- * This class defines an enumerator, the source code generator will generate an
- * enumerator class base on the information provided by each instance of this
- * object.
+ * This class is the base class for the enumerators information clases.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class EnumBaseInf
@@ -74,16 +72,17 @@ public abstract class EnumBaseInf
     {
         model = (ModelInf) parent;
     }
-    
+
     public abstract String getPackage();
-    
+
     /**
      * The full java class name for this enumerator.
-     * 
+     *
      * @return The full java class name for this enumerator.
      */
     public String getFullName()
     {
         return getPackage() + "." + getName();
     }
+
 }

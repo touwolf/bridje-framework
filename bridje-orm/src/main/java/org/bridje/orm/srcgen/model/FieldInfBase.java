@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * The base class for all the fields that an entity may have.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class FieldInfBase
 {
@@ -42,91 +45,192 @@ public abstract class FieldInfBase
 
     @XmlAttribute
     private Boolean key;
-    
+
     @XmlTransient
     private EntityInfBase entity;
 
+    /**
+     * The name of the field.
+     *
+     * @return The name of the field.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the field.
+     *
+     * @param name The name of the field.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The name of the column for this field.
+     *
+     * @return The name of the column for this field.
+     */
     public String getColumn()
     {
-        if(this.column == null) this.column = Utils.toSQLName(this.name);
+        if (this.column == null)
+        {
+            this.column = Utils.toSQLName(this.name);
+        }
         return column;
     }
 
+    /**
+     * The name of the column for this field.
+     *
+     * @param column The name of the column for this field.
+     */
     public void setColumn(String column)
     {
         this.column = column;
     }
 
+    /**
+     * The description of the field.
+     *
+     * @return The description of the field.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * The description of the field.
+     *
+     * @param description The description of the field.
+     */
     public void setDescription(String description)
     {
         this.description = description;
     }
 
+    /**
+     * If the field must have a value.
+     *
+     * @return If the field must have a value.
+     */
     public Boolean isRequired()
     {
         return required;
     }
 
+    /**
+     * If the field must have a value.
+     *
+     * @param required If the field must have a value.
+     */
     public void setRequired(Boolean required)
     {
         this.required = required;
     }
 
+    /**
+     * If the column for this field must be indexed or not.
+     *
+     * @return If the column for this field must be indexed or not.
+     */
     public Boolean isIndexed()
     {
         return indexed;
     }
 
+    /**
+     * If the column for this field must be indexed or not.
+     *
+     * @param indexed If the column for this field must be indexed or not.
+     */
     public void setIndexed(Boolean indexed)
     {
         this.indexed = indexed;
     }
 
+    /**
+     * If the field is the key field for the entity.
+     *
+     * @return If the field is the key field for the entity.
+     */
     public Boolean getKey()
     {
-        if(key == null) return false;
+        if (key == null)
+        {
+            return false;
+        }
         return key;
     }
 
+    /**
+     * If the field is the key field for the entity.
+     *
+     * @param key If the field is the key field for the entity.
+     */
     public void setKey(Boolean key)
     {
         this.key = key;
     }
 
+    /**
+     * The entity that this field belongs to.
+     *
+     * @return The entity that this field belongs to.
+     */
     public EntityInfBase getEntity()
     {
         return entity;
     }
-    
+
+    /**
+     * The java type for this field.
+     *
+     * @return The java type for this field.
+     */
     public abstract String getJavaType();
-    
+
+    /**
+     * The table columnb for this field.
+     *
+     * @return The table columnb for this field.
+     */
     public String getTableColumn()
     {
         return "TableComparableColumn";
     }
 
+    /**
+     * This method will be called by JABX after unmarshall.
+     *
+     * @param u      The unmarshaller.
+     * @param parent The parent object.
+     */
     public void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        entity = (EntityInfBase)parent;
+        entity = (EntityInfBase) parent;
     }
-    
+
+    /**
+     * this methods clone the current object and sets his entity to the given
+     * entity.
+     *
+     * @param entity The parent entity for the new cloned object.
+     *
+     * @return The cloned object.
+     */
     public abstract FieldInfBase clone(EntityInfBase entity);
 
+    /**
+     * Used by child classes to clone thenself.
+     *
+     * @param result The cloned object to fill.
+     * @param entity The parent entity.
+     */
     protected void clone(FieldInfBase result, EntityInfBase entity)
     {
         result.entity = entity;
@@ -137,4 +241,5 @@ public abstract class FieldInfBase
         result.name = name;
         result.required = required;
     }
+
 }

@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * This class represents a field hows type is an integer type field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IntegerFieldInf extends FieldInfBase
 {
@@ -34,43 +37,89 @@ public class IntegerFieldInf extends FieldInfBase
 
     private Boolean autoIncrement;
 
+    /**
+     * The actual integer java type for this field.
+     * 
+     * @return The actual integer java type for this field.
+     */
     public IntegerFieldType getType()
     {
-        if(type == null) return IntegerFieldType.INTEGER;
+        if (type == null)
+        {
+            return IntegerFieldType.INTEGER;
+        }
         return type;
     }
 
+    /**
+     * The actual integer java type for this field.
+     * 
+     * @param type The actual integer java type for this field.
+     */
     public void setType(IntegerFieldType type)
     {
         this.type = type;
     }
 
+    /**
+     * The SQL type for this field.
+     * 
+     * @return The SQL type for this field.
+     */
     public IntegerFieldSQLType getSqlType()
     {
         return sqlType;
     }
 
+    /**
+     * The SQL type for this field.
+     * 
+     * @param sqlType The SQL type for this field.
+     */
     public void setSqlType(IntegerFieldSQLType sqlType)
     {
         this.sqlType = sqlType;
     }
 
+    /**
+     * The columns length for this field.
+     * 
+     * @return The columns length for this field.
+     */
     public Integer getLength()
     {
         return length;
     }
 
+    /**
+     * The columns length for this field.
+     * 
+     * @param length The columns length for this field.
+     */
     public void setLength(Integer length)
     {
         this.length = length;
     }
 
+    /**
+     * If this field column´s must be mark as auto increment.
+     * 
+     * @return If this field column´s must be mark as auto increment.
+     */
     public boolean getAutoIncrement()
     {
-        if(autoIncrement == null) return false;
+        if (autoIncrement == null)
+        {
+            return false;
+        }
         return autoIncrement;
     }
 
+    /**
+     * If this field column´s must be mark as auto increment.
+     * 
+     * @param autoIncrement If this field column´s must be mark as auto increment.
+     */
     public void setAutoIncrement(Boolean autoIncrement)
     {
         this.autoIncrement = autoIncrement;
@@ -79,7 +128,7 @@ public class IntegerFieldInf extends FieldInfBase
     @Override
     public String getJavaType()
     {
-        switch(getType())
+        switch (getType())
         {
             case BIGINTEGER:
                 return "BigInteger";
@@ -114,4 +163,5 @@ public class IntegerFieldInf extends FieldInfBase
         result.autoIncrement = autoIncrement;
         return result;
     }
+
 }

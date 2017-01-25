@@ -19,6 +19,9 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * This class represents a boolean field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BooleanFieldInf extends FieldInfBase
 {

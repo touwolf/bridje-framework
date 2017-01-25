@@ -20,12 +20,33 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This class represents the types that the properties of the enumerators may
+ * have.
+ */
 @XmlType
 @XmlEnum
 public enum EnumPropertyType
 {
-    @XmlEnumValue("INTEGER") INTEGER,
-    @XmlEnumValue("STRING") STRING,
-    @XmlEnumValue("DOUBLE") DOUBLE,
-    @XmlEnumValue("LONG") LONG
+    /**
+     * Integer
+     */
+    @XmlEnumValue("INTEGER")
+    INTEGER,
+    /**
+     * String
+     */
+    @XmlEnumValue("STRING")
+    STRING,
+    /**
+     * Double
+     */
+    @XmlEnumValue("DOUBLE")
+    DOUBLE,
+    /**
+     * Long
+     */
+    @XmlEnumValue("LONG")
+    LONG
+
 }
