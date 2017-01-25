@@ -119,10 +119,16 @@ public class VfsSourceNodeProxy extends VfsNode
     @Override
     public InputStream openForRead(Path path)
     {
-        VfsSourceNode last = last();
-        if (last != null)
+        if (nodes.isEmpty())
         {
-            return last.openForRead(path);
+            return null;
+        }
+        for (int i = nodes.size() - 1; i >= 0; i--)
+        {
+            if (nodes.get(i).exists(path))
+            {
+                return nodes.get(i).openForRead(path);
+            }
         }
         return null;
     }
@@ -130,10 +136,16 @@ public class VfsSourceNodeProxy extends VfsNode
     @Override
     public OutputStream openForWrite(Path path)
     {
-        VfsSourceNode last = last();
-        if (last != null)
+        if (nodes.isEmpty())
         {
-            return last.openForWrite(path);
+            return null;
+        }
+        for (int i = nodes.size() - 1; i >= 0; i--)
+        {
+            if (nodes.get(i).exists(path))
+            {
+                return nodes.get(i).openForWrite(path);
+            }
         }
         return null;
     }

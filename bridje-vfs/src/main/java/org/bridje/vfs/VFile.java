@@ -110,12 +110,12 @@ public class VFile
         return result;
     }
 
-    InputStream openForRead()
+    public InputStream openForRead()
     {
         return getVfs().openForRead(path);
     }
 
-    OutputStream openForWrite()
+    public OutputStream openForWrite()
     {
         return getVfs().openForWrite(path);
     }
