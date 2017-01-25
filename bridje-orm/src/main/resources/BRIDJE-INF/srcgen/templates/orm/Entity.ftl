@@ -9,7 +9,7 @@ import java.util.Objects;
  * This class represents the  ${entity.name} entity.
  * ${entity.description!}
  */
-@Entity(table = "${entity.table}")
+@Entity(table = "${model.tablePrefix}_${entity.table}")
 public class ${entity.name}
 {
     /**
