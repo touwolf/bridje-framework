@@ -33,4 +33,10 @@ public class ElementField extends BaseDataFlield
     {
         return "element";
     }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
+    }
 }

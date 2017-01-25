@@ -100,4 +100,16 @@ public abstract class BaseDataFlield implements FieldDef
     {
         this.defaultValue = defaultValue;
     }
+
+    @Override
+    public boolean getIsChild()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getIsEvent()
+    {
+        return false;
+    }
 }

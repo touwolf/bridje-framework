@@ -33,4 +33,10 @@ public class OutValueField extends BaseDataFlield
     {
         return "value";
     }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
+    }
 }

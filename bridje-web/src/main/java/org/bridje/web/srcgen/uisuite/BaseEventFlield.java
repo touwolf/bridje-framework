@@ -30,7 +30,7 @@ public abstract class BaseEventFlield implements FieldDef
 {
     @XmlAttribute
     private String name;
-    
+
     /**
      * The name of the field.
      * 
@@ -55,5 +55,23 @@ public abstract class BaseEventFlield implements FieldDef
     public String getJavaType()
     {
         return "UIEvent";
+    }
+        
+    @Override
+    public boolean getIsChild()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getIsEvent()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
     }
 }

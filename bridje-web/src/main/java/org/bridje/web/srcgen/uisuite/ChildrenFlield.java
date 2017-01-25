@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChildrenFlield
+public class ChildrenFlield implements FieldDef
 {
     @XmlAttribute
     private String name;
@@ -40,9 +40,9 @@ public class ChildrenFlield
                 
     @XmlElements(
     {
-        @XmlElement(name = "child", type = ChildFlield.class)
+        @XmlElement(name = "child", type = ChildField.class)
     })
-    private List<ChildFlield> content;
+    private List<ChildField> content;
 
     public String getName()
     {
@@ -75,7 +75,7 @@ public class ChildrenFlield
         this.wrapper = wrapper;
     }
 
-    public boolean getSingle()
+    public boolean getIsSingle()
     {
         if(single == null) return false;
         return single;
@@ -86,22 +86,24 @@ public class ChildrenFlield
         this.single = single;
     }
 
-    public List<ChildFlield> getContent()
+    public List<ChildField> getContent()
     {
         return content;
     }
 
-    public void setContent(List<ChildFlield> content)
+    public void setContent(List<ChildField> content)
     {
         this.content = content;
     }
 
+    @Override
     public String getJavaType()
     {
-        if(getSingle()) return "Control";
+        if(getIsSingle()) return "Control";
         return "List<Control>";
     }
 
+    @Override
     public String getFieldType()
     {
         return "children";
@@ -109,7 +111,25 @@ public class ChildrenFlield
 
     public String getDefaultValue()
     {
-        if(getSingle()) return null;
+        if(getIsSingle()) return null;
         return "new ArrayList<>()";
+    }
+
+    @Override
+    public boolean getIsChild()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean getIsEvent()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
     }
 }

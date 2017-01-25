@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * deifned.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChildFlield implements FieldDef
+public class ChildField implements FieldDef
 {
     @XmlAttribute
     private String name;
@@ -33,6 +33,8 @@ public class ChildFlield implements FieldDef
     @XmlAttribute
     private String type;
 
+    private Boolean allowPlaceHolder;
+    
     /**
      * The name of the field and/or mapping for the child control.
      * 
@@ -73,6 +75,17 @@ public class ChildFlield implements FieldDef
         this.type = type;
     }
 
+    public boolean getAllowPlaceHolder()
+    {
+        if(this.allowPlaceHolder == null) return false;
+        return allowPlaceHolder;
+    }
+
+    public void setAllowPlaceHolder(boolean allowPlaceHolder)
+    {
+        this.allowPlaceHolder = allowPlaceHolder;
+    }
+
     @Override
     public String getJavaType()
     {
@@ -83,5 +96,23 @@ public class ChildFlield implements FieldDef
     public String getFieldType()
     {
         return "child";
+    }
+
+    @Override
+    public boolean getIsChild()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean getIsEvent()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
     }
 }

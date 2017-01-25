@@ -36,4 +36,10 @@ public class AttrFlield extends BaseDataFlield
     {
         return "attribute";
     }
+
+    @Override
+    public boolean getIsInput()
+    {
+        return false;
+    }
 }

@@ -65,7 +65,7 @@ public class BaseControlDef
                 @XmlElement(name = "inValue", type = InValueFlield.class),
                 @XmlElement(name = "eventValue", type = EventValueFlield.class),
                 @XmlElement(name = "value", type = ValueFlield.class),
-                @XmlElement(name = "child", type = ChildFlield.class),
+                @XmlElement(name = "child", type = ChildField.class),
                 @XmlElement(name = "children", type = ChildrenFlield.class)
             })
     private List<FieldDef> fields;
@@ -265,5 +265,25 @@ public class BaseControlDef
     public String getPackage()
     {
         return uiSuite.getPackage();
+    }
+    
+    public boolean getHasChildren()
+    {
+        return getFields().stream().anyMatch(f -> f.getIsChild());
+    }
+
+    public boolean getHasInputs()
+    {
+        return getFields().stream().anyMatch(f -> f.getIsInput());
+    }
+
+    public boolean getHasEvents()
+    {
+        return getFields().stream().anyMatch(f -> f.getIsEvent());
+    }
+
+    public boolean getHasResources()
+    {
+        return !getResources().isEmpty();
     }
 }

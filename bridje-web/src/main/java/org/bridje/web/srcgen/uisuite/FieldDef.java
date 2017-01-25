@@ -21,5 +21,10 @@ public interface FieldDef
     public String getJavaType();
     
     public String getFieldType();
+    
+    public boolean getIsChild();
 
+    public boolean getIsEvent();
+
+    public boolean getIsInput();
 }
