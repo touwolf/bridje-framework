@@ -21,7 +21,7 @@ public class VfsSourceNodeProxy extends VfsNode
     public void add(VfsSource source)
     {
         VfsSourceNode node = new VfsSourceNode(getName(), source);
-        node.setParent(this.getParent());
+        node.setParent(getParent());
         nodes.add(node);
     }
 
