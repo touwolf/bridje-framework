@@ -194,7 +194,7 @@ public class ${control.name} extends ${control.base}
         {
             resources = new ArrayList<>();
             <#list control.resources as r>
-            resources.add("${r}");
+            resources.add("${r.name}");
             </#list>
         }
         return resources;
