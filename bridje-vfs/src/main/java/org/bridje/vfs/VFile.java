@@ -196,11 +196,22 @@ public class VFile
         getVfs().mount(path, source);
     }
     
+    /**
+     * Return String Array with the names of files and folder that they exist in this path attribute.
+     * <p>
+     * @return String[] ,String Array with the names of files and folder that they exist in this path attribute. 
+     */
+    
     public String[] list()
     {
         return getVfs().list(path);
     }
-
+    
+    /**
+     * Return VFile Array with the names of files and folder that they exist in this path attribute.
+     * <p>
+     * @return VFile[] ,VFiles Array with the names of files and folder that they exist in this path attribute. 
+     */
     public VFile[] listFiles()
     {
         String[] list = getVfs().list(path);
@@ -212,28 +223,63 @@ public class VFile
         }
         return result;
     }
+    
+     /**
+     * Return InputStream object, then we can read the files.
+     * This method we utilized it when we want to read a file
+     * <p>
+     * @return InputStream object. 
+     */
 
     InputStream openForRead()
     {
         return getVfs().openForRead(path);
     }
+    
+    /**
+     * Return OutputStream object, then we can write the file.
+     * This method we utilized it when we want to write a file
+     * <p>
+     * @return OutputStream object. 
+     */
 
     OutputStream openForWrite()
     {
         return getVfs().openForWrite(path);
     }
+    
+     /**
+     * This method we utilized it when we want to search any file inside of the path
+     * for example: VFile[] files = file.search(new GlobExpr("*.txt"));
+     * this code return VFile[] with all files with txt extension, we can utilize in the quest any regular expression.
+     * <p>
+     * @return VFile[], return VFile Array that result of the quest. 
+     */
 
     public VFile[] search(GlobExpr globExpr)
     {
         return getVfs().search(globExpr, path);
     }
-
+    
+    /**
+     *  Return String object with the name of the file type, for example:
+     * For the case of the files .txt, this method return "text/plain" 
+     * <p>
+     * @return String object, return String object with name of the file type. 
+     */
+    
     public String getMimeType()
     {
         String ext = path.getExtension();
         if(ext == null || ext.trim().isEmpty()) return null;
         return getVfs().getMimeType(ext);
     }
+    
+    /**
+     *  Return String object, convert a path object to the String representation. 
+     * <p>
+     * @return String object, return String object that represent el path of files that String.
+     */
     
     @Override
     public String toString()
