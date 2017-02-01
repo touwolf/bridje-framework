@@ -3,7 +3,7 @@
 @XmlSchema(namespace = "${uisuite.namespace}",
         attributeFormDefault = XmlNsForm.UNQUALIFIED,
         elementFormDefault = XmlNsForm.QUALIFIED)
-@DefaultTheme(name = "${uisuite.name}")
+@DefaultTheme(name = "${uisuite.name?lower_case}")
 package ${uisuite.package};
 
 import javax.xml.bind.annotation.XmlNsForm;

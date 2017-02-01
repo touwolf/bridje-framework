@@ -1,11 +1,6 @@
 
 package org.bridje.vfs.impl;
 
-import org.bridje.vfs.GlobExpr;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VfsSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
-import org.bridje.vfs.CpSource;
-import org.bridje.vfs.VFileInputStream;
+import org.bridje.vfs.*;
 
 @Component
 class VfsServiceImpl implements VfsService
@@ -41,31 +35,35 @@ class VfsServiceImpl implements VfsService
     {
         VFile vfsBridje = new VFile("/vfs/bridje");
         vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
-        VFile mimeFiles = new VFile(vfsBridje.getPath().join("mime-types.properties"));
-        try(VFileInputStream is = new VFileInputStream(mimeFiles))
+        VFile mimeTypes = new VFile(vfsBridje.getPath().join("mime-types.properties"));
+        try(VFileInputStream is = new VFileInputStream(mimeTypes))
         {
             this.mimeTypes.load(is);
         }
         VFile[] sources = vfsBridje.search(new GlobExpr("*-classpath-sources.properties"));
         for (VFile source : sources)
         {
-            Properties prop = new Properties();
             try(VFileInputStream is = new VFileInputStream(source))
             {
+                Properties prop = new Properties();
                 prop.load(is);
+                Set<Map.Entry<Object, Object>> entrySet = prop.entrySet();
+                for (Map.Entry<Object, Object> entry : entrySet)
+                {
+                    try
+                    {
+                        VFile folder = new VFile((String)entry.getKey());
+                        folder.mount(new CpSource((String)entry.getValue()));
+                    }
+                    catch (Exception e)
+                    {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
+                }
             }
-            Set<Map.Entry<Object, Object>> entrySet = prop.entrySet();
-            for (Map.Entry<Object, Object> entry : entrySet)
+            catch (Exception ex)
             {
-                try
-                {
-                    VFile folder = new VFile((String)entry.getKey());
-                    folder.mount(new CpSource((String)entry.getValue()));
-                }
-                catch (Exception e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
+                LOG.log(Level.SEVERE, "Reading " + source.getName() + ": " + ex.getMessage(), ex);
             }
         }
     }

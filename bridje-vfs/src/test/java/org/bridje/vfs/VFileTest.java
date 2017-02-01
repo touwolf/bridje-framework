@@ -16,8 +16,9 @@
 
 package org.bridje.vfs;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -42,5 +43,48 @@ public class VFileTest
         Assert.assertTrue(srcMainJava.exists());
         Assert.assertTrue(srcMainJava.isDirectory());
         Assert.assertEquals(1, srcMainJava.list().length);
+    }
+
+    @Test
+    public void test3MountMerged() throws IOException
+    {
+        VFile pathToMount = new VFile("/merged");
+        pathToMount.mount(new FileSource(new File("./target/test-classes/merged/folder1")));
+        Assert.assertTrue(pathToMount.exists());
+        Assert.assertTrue(pathToMount.isDirectory());
+        String[] list = pathToMount.list();
+        Assert.assertNotNull(list);
+        Assert.assertEquals(2, list.length);
+        List<String> files = Arrays.asList(list);
+        Assert.assertTrue(files.contains("common.txt"));
+        Assert.assertTrue(files.contains("document1.txt"));
+        VFile[] search = pathToMount.search(new GlobExpr("/common.txt"));
+        Assert.assertNotNull(search);
+        Assert.assertEquals(1, search.length);
+        Assert.assertEquals("folder1", readFirstLine(search[0]));
+        //now merge...
+        pathToMount.mount(new FileSource(new File("./target/test-classes/merged/folder2")));
+        Assert.assertTrue(pathToMount.exists());
+        Assert.assertTrue(pathToMount.isDirectory());
+        list = pathToMount.list();
+        Assert.assertNotNull(list);
+        Assert.assertEquals(3, list.length);
+        files = Arrays.asList(list);
+        Assert.assertTrue(files.contains("common.txt"));
+        Assert.assertTrue(files.contains("document1.txt"));
+        Assert.assertTrue(files.contains("document2.txt"));
+        search = pathToMount.search(new GlobExpr("/common.txt"));
+        Assert.assertNotNull(search);
+        Assert.assertEquals(1, search.length);
+        Assert.assertEquals("folder2", readFirstLine(search[0]));
+    }
+
+    private String readFirstLine(VFile file) throws IOException
+    {
+        try (InputStream is = file.openForRead())
+        {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            return reader.readLine();
+        }
     }
 }

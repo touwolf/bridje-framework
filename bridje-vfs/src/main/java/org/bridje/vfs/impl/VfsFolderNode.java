@@ -30,12 +30,12 @@ class VfsFolderNode extends VfsNode
         return childs;
     }
 
-    public VfsNode getChild(String name)
+    private VfsNode getChild(String name)
     {
         return childsMap.get(name);
     }
 
-    public void addChild(VfsNode node)
+    private void addChild(VfsNode node)
     {
         node.setParent(this);
         childs.add(node);
@@ -54,44 +54,60 @@ class VfsFolderNode extends VfsNode
         if(path == null || path.isRoot()) throw new FileNotFoundException("Could not mount the source in this folder.");
         if(path.isLast())
         {
-            VfsNode child = getChild(path.getName());
-            if(child == null)
+            mountLast(path, source);
+        }
+        else
+        {
+            mountFirst(path, source);
+        }
+    }
+
+    private void mountLast(Path path, VfsSource source) throws FileNotFoundException
+    {
+        VfsNode child = getChild(path.getName());
+        if(child == null)
+        {
+            VfsSourceNodeProxy proxy = new VfsSourceNodeProxy(path.getName());
+            addChild(proxy);
+            proxy.add(source);
+        }
+        else
+        {
+            if(child instanceof VfsSourceNodeProxy)
             {
+                ((VfsSourceNodeProxy) child).add(source);
+            }
+            else if(child instanceof VfsSourceNode)
+            {
+                removeChild(child);
                 addChild(new VfsSourceNode(path.getName(), source));
             }
             else
             {
-                if(child instanceof VfsSourceNode)
-                {
-                    removeChild(child);
-                    addChild(new VfsSourceNode(path.getName(), source));
-                }
-                else
-                {
-                    throw new FileNotFoundException("Could not mount the source in " + getPath() + " folder.");
-                }
+                throw new FileNotFoundException("Could not mount the source in " + getPath() + " folder.");
             }
+        }
+    }
+
+    private void mountFirst(Path path, VfsSource source) throws FileNotFoundException
+    {
+        String first = path.getFirstElement();
+        VfsNode child = getChild(first);
+        if(child == null)
+        {
+            child = new VfsFolderNode(first);
+            addChild(child);
+            ((VfsFolderNode)child).mount(path.getNext(), source);
         }
         else
         {
-            String first = path.getFirstElement();
-            VfsNode child = getChild(first);
-            if(child == null)
+            if(child instanceof VfsFolderNode)
             {
-                child = new VfsFolderNode(first);
-                addChild(child);
                 ((VfsFolderNode)child).mount(path.getNext(), source);
             }
             else
             {
-                if(child instanceof VfsFolderNode)
-                {
-                    ((VfsFolderNode)child).mount(path.getNext(), source);
-                }
-                else
-                {
-                    throw new FileNotFoundException("Could not find the folder.");
-                }
+                throw new FileNotFoundException("Could not find the folder.");
             }
         }
     }
@@ -101,8 +117,7 @@ class VfsFolderNode extends VfsNode
     {
         if(path == null || path.isRoot())return true;
         VfsNode child = getChild(path.getFirstElement());
-        if(child == null) return false;
-        return child.isDirectory(path.getNext());
+        return child != null && child.isDirectory(path.getNext());
     }
 
     @Override
@@ -111,8 +126,7 @@ class VfsFolderNode extends VfsNode
         if(path.isLast()) return false;
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
-        if(child == null) return false;
-        return child.isFile(path.getNext());
+        return child != null && child.isFile(path.getNext());
     }
 
     @Override
@@ -121,8 +135,7 @@ class VfsFolderNode extends VfsNode
         if(path.isLast()) return getChild(path.getName()) != null;
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
-        if(child == null) return false;
-        return child.exists(path.getNext());
+        return child != null && child.exists(path.getNext());
     }
 
     @Override
@@ -194,8 +207,7 @@ class VfsFolderNode extends VfsNode
     {
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());
-        if(child == null) return false;
-        return child.createNewFile(path.getNext());
+        return child != null && child.createNewFile(path.getNext());
     }
 
     @Override
@@ -203,8 +215,7 @@ class VfsFolderNode extends VfsNode
     {
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());
-        if(child == null) return false;
-        return child.createNewFile(path.getNext());
+        return child != null && child.createNewFile(path.getNext());
     }
 
     @Override
@@ -212,7 +223,6 @@ class VfsFolderNode extends VfsNode
     {
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());
-        if(child == null) return false;
-        return child.mkdir(path.getNext());
+        return child != null && child.mkdir(path.getNext());
     }
 }

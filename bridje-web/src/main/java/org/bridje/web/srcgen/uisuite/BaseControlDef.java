@@ -16,6 +16,7 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -77,6 +78,12 @@ public class BaseControlDef
             })
     private List<ResourceRef> resources;
 
+    @XmlTransient
+    private List<FieldDef> allFields;
+    
+    @XmlTransient
+    private List<ResourceRef> allResources;
+    
     @XmlTransient
     private UISuite uiSuite;
 
@@ -193,17 +200,16 @@ public class BaseControlDef
      */
     public List<FieldDef> getFields()
     {
-        return fields;
-    }
-
-    /**
-     * The list of fields that this control will support.
-     * 
-     * @param fields The list of fields that this control will support.
-     */
-    public void setFields(List<FieldDef> fields)
-    {
-        this.fields = fields;
+        if(allFields == null)
+        {
+            allFields = new ArrayList<>();
+            if(baseTemplate != null)
+            {
+                allFields.addAll(baseTemplate.getFields());
+            }
+            allFields.addAll(fields);
+        }
+        return allFields;
     }
 
     /**
@@ -213,17 +219,16 @@ public class BaseControlDef
      */
     public List<ResourceRef> getResources()
     {
-        return resources;
-    }
-
-    /**
-     * The resources this control needs.
-     * 
-     * @param resources The resources this control needs.
-     */
-    public void setResources(List<ResourceRef> resources)
-    {
-        this.resources = resources;
+        if(allResources == null)
+        {
+            allResources = new ArrayList<>();
+            if(baseTemplate != null)
+            {
+                allResources.addAll(baseTemplate.getResources());
+            }
+            allResources.addAll(resources);
+        }
+        return allResources;
     }
 
     /**

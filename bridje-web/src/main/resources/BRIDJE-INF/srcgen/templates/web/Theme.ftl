@@ -86,4 +86,4 @@
 </#macro>
 [/#if]
 
-<@renderMain "${uisuite.name}" />
+<@renderMain "${uisuite.name?lower_case}" />
