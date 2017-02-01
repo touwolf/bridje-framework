@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.cookie.Cookie;
 import io.netty.handler.codec.http.multipart.FileUpload;
+import io.netty.util.ReferenceCounted;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -179,7 +180,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     protected void release()
     {
-        uploadedFiles.stream().forEach((f) -> f.release());
+        uploadedFiles.forEach(ReferenceCounted::release);
         if(this.buffer != null)
         {
             this.buffer.release();
@@ -270,12 +271,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
         {
             postParameters = new HashMap<>();
         }
-        HttpReqParamImpl param = postParameters.get(name);
-        if(param == null)
-        {
-            param = new HttpReqParamImpl(name);
-            postParameters.put(name, param);
-        }
+        HttpReqParamImpl param = postParameters.computeIfAbsent(name, k -> new HttpReqParamImpl(name));
         param.addValue(value);
     }
 
@@ -284,7 +280,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(postParameters == null)
         {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(postParameters);
     }
@@ -311,7 +307,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         UploadedFile[] result = new UploadedFile[uploadedFiles.size()];
         return uploadedFiles.stream()
-                .map((f) -> new UploadedFileImpl(f))
+                .map(UploadedFileImpl::new)
                 .collect(Collectors.toList()).toArray(result);
     }
 
@@ -320,7 +316,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(getParameters == null)
         {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(getParameters);
     }
@@ -355,7 +351,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     protected void setCookies(Set<Cookie> parseCookies)
     {
         cookies = parseCookies.stream()
-                .map((c) -> new HttpCookieImpl(c))
+                .map(HttpCookieImpl::new)
                 .collect(Collectors.toMap(HttpCookie::getName, (c) -> (HttpCookie)c));
     }
 
@@ -364,7 +360,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(getParameters == null)
         {
-            return Collections.EMPTY_MAP;
+            return Collections.emptyMap();
         }
         return Collections.unmodifiableMap(cookies);
     }
