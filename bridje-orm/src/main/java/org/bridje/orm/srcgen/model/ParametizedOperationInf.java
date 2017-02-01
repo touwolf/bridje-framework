@@ -23,6 +23,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * This class is the base clase for all the parametized operations.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ParametizedOperationInf extends OperationInfBase
 {
@@ -32,6 +35,11 @@ public abstract class ParametizedOperationInf extends OperationInfBase
     @XmlTransient
     private List<FieldInfBase> paramsFields;
 
+    /**
+     * The list of params that this operation have.
+     * 
+     * @return A list of field information objects that represents the params.
+     */
     public List<FieldInfBase> getParams()
     {
         if(paramsFields == null)
@@ -41,6 +49,11 @@ public abstract class ParametizedOperationInf extends OperationInfBase
         return paramsFields;
     }
 
+    /**
+     * Utility method to parse all the params, out of the params attribute.
+     * 
+     * @return The list of fields for the params.
+     */
     private List<FieldInfBase> parseParams()
     {
         List<FieldInfBase> result = new ArrayList<>();

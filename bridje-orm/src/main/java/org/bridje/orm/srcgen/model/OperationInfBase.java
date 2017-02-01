@@ -23,6 +23,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * This class represents the operation base class for all entitios operations.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class OperationInfBase
 {

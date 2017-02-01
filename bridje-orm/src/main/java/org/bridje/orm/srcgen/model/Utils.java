@@ -16,8 +16,17 @@
 
 package org.bridje.orm.srcgen.model;
 
+/**
+ * Utility class for ORM source code generation model package.
+ */
 public class Utils
 {
+    /**
+     * Converts the given name from camel case to lower case with "_".
+     * 
+     * @param name The camel case name.
+     * @return The SQL name for the given name.
+     */
     public static String toSQLName(String name)
     {
         String result = name;

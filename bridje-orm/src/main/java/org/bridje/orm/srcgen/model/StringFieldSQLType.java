@@ -20,13 +20,37 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enums holds the SQL types that a string field can have.
+ */
 @XmlType
 @XmlEnum
 public enum StringFieldSQLType
 {
-    @XmlEnumValue("VARCHAR") VARCHAR,
-    @XmlEnumValue("NVARCHAR") NVARCHAR,
-    @XmlEnumValue("LONGVARCHAR") LONGVARCHAR,
-    @XmlEnumValue("CHAR") CHAR,
-    @XmlEnumValue("NCHAR") NCHAR;
+    /**
+     * JDBCType.VARCHAR
+     */
+    @XmlEnumValue("VARCHAR")
+    VARCHAR,
+    /**
+     * JDBCType.NVARCHAR
+     */
+    @XmlEnumValue("NVARCHAR")
+    NVARCHAR,
+    /**
+     * JDBCType.LONGVARCHAR
+     */
+    @XmlEnumValue("LONGVARCHAR")
+    LONGVARCHAR,
+    /**
+     * JDBCType.CHAR
+     */
+    @XmlEnumValue("CHAR")
+    CHAR,
+    /**
+     * JDBCType.NCHAR
+     */
+    @XmlEnumValue("NCHAR")
+    NCHAR;
+
 }

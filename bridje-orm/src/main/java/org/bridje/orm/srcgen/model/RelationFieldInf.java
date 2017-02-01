@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 
+/**
+ * This class represents a relationship field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RelationFieldInf extends FieldInfBase
 {

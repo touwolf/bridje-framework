@@ -20,6 +20,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * This class represents the read operation for an Entity, The read operation
+ * will be added to the ORM model class in the source code generation.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadOperationInf extends ParametizedOperationInf
 {

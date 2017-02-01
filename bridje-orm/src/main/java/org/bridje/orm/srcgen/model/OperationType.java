@@ -19,14 +19,35 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enumerator represents the type of operations that this model have.
+ */
 @XmlType
 @XmlEnum
 public enum OperationType
 {
+    /**
+     * Create operation.
+     */
     CREATE,
+    /**
+     * Read operation.
+     */
     READ,
+    /**
+     * Update operation.
+     */
     UPDATE,
+    /**
+     * Delete operation.
+     */
     DELETE,
+    /**
+     * Delete entity operation.
+     */
     DELETE_ENTITY,
+    /**
+     * Save entity operation.
+     */
     SAVE;
 }

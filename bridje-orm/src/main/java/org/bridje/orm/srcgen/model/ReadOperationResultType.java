@@ -20,10 +20,16 @@ import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * This enums holds the amount of return elements that a read operation may have.
+ */
 @XmlType
 @XmlEnum
 public enum ReadOperationResultType
 {
-    @XmlEnumValue("one") ONE,
-    @XmlEnumValue("all") ALL;
+    @XmlEnumValue("one")
+    ONE,
+    @XmlEnumValue("all")
+    ALL;
+
 }
