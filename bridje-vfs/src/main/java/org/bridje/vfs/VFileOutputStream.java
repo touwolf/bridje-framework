@@ -9,7 +9,7 @@ public class VFileOutputStream extends OutputStream
     private final VFile vfile;
 
     private final OutputStream os;
-    
+
     public VFileOutputStream(VFile vfile)
     {
         this.vfile = vfile;
@@ -50,4 +50,5 @@ public class VFileOutputStream extends OutputStream
     {
         this.os.close();
     }
+
 }

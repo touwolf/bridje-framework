@@ -87,10 +87,7 @@ public class FileSource implements VfsSource
         try
         {
             File pathFile = findFile(path);
-            if(pathFile.isFile())
-            {
-                return new FileInputStream(findFile(path));
-            }
+            if(pathFile.isFile()) return new FileInputStream(findFile(path));
         }
         catch (FileNotFoundException ex)
         {
@@ -105,10 +102,7 @@ public class FileSource implements VfsSource
         try
         {
             File pathFile = findFile(path);
-            if(pathFile.isFile())
-            {
-                return new FileOutputStream(pathFile);
-            }
+            if(pathFile.isFile()) return new FileOutputStream(pathFile);
         }
         catch (FileNotFoundException ex)
         {

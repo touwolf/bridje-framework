@@ -10,7 +10,7 @@ public class VFileInputStream extends InputStream
     private final VFile vfile;
 
     private final InputStream is;
-    
+
     public VFileInputStream(VFile vfile) throws FileNotFoundException
     {
         this.vfile = vfile;
