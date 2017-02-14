@@ -16,6 +16,7 @@
 
 package org.bridje.srcgen.impl;
 
+import org.bridje.srcgen.impl.edit.SrcEditorApplication;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -172,5 +173,11 @@ class SrcGenServicesImpl implements SrcGenService
         {
             return null;
         }
+    }
+
+    @Override
+    public void showDataEditor()
+    {
+        SrcEditorApplication.showDataEditor();
     }
 }

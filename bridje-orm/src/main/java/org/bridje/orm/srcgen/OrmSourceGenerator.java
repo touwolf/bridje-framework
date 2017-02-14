@@ -26,6 +26,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
@@ -43,7 +46,7 @@ import org.bridje.srcgen.SrcGenService;
  * entityts and enumerators for that model.
  */
 @Component
-public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
+public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomTypesProvider
 {
     private static final Logger LOG = Logger.getLogger(OrmSourceGenerator.class.getName());
 
@@ -51,38 +54,6 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
     private SrcGenService srcGen;
 
     private Map<String, String> customTypes;
-
-    @Override
-    public void generateSources() throws IOException
-    {
-        List<ModelInf> models = srcGen.findData(ModelInf.class);
-        Map<String, Object> data;
-        for (ModelInf modelInf : models)
-        {
-            data = new HashMap<>();
-            data.put("model", modelInf);
-            srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
-
-            data = new HashMap<>();
-            data.put("model", modelInf);
-            for (EntityInf entity : modelInf.getEntities())
-            {
-                data.put("entity", entity);
-                srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
-            }
-
-            data = new HashMap<>();
-            data.put("model", modelInf);
-            for (EnumBaseInf enumInf : modelInf.getEnums())
-            {
-                if(enumInf instanceof EnumInf)
-                {
-                    data.put("enum", enumInf);
-                    srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
-                }
-            }
-        }
-    }
 
     private Map<String, String> findCustomTypes() throws IOException
     {
@@ -149,4 +120,78 @@ public class OrmSourceGenerator implements SourceGenerator, CustomTypesProvider
         return null;
     }
 
+    @Override
+    public List<ModelInf> findData()
+    {
+        try
+        {
+            return srcGen.findData(ModelInf.class);
+        }
+        catch (IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    @Override
+    public String getName(ModelInf data)
+    {
+        return data.getName();
+    }
+
+    @Override
+    public void generateSources(ModelInf modelInf) throws IOException
+    {
+        Map<String, Object> data;
+        data = new HashMap<>();
+        data.put("model", modelInf);
+        srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
+
+        data = new HashMap<>();
+        data.put("model", modelInf);
+        for (EntityInf entity : modelInf.getEntities())
+        {
+            data.put("entity", entity);
+            srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
+        }
+
+        data = new HashMap<>();
+        data.put("model", modelInf);
+        for (EnumBaseInf enumInf : modelInf.getEnums())
+        {
+            if(enumInf instanceof EnumInf)
+            {
+                data.put("enum", enumInf);
+                srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
+            }
+        }
+    }
+
+    @Override
+    public String getName()
+    {
+        return "ORM Models";
+    }
+
+    @Override
+    public TreeItem<ModelInf> createTreeNode(ModelInf data)
+    {
+        TreeItem<ModelInf> treeView = new TreeItem<>(data, createImageView("database.png"));
+        return treeView;
+    }
+
+    private static ImageView createImageView(String image)
+    {
+        ImageView imageView = new ImageView(new Image(OrmSourceGenerator.class.getResourceAsStream(image)));
+        imageView.setFitHeight(18);
+        imageView.setFitWidth(18);
+        return imageView;
+    }
+
+    @Override
+    public ImageView getImage()
+    {
+        return createImageView("database.png");
+    }
 }

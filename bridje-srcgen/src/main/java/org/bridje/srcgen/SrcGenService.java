@@ -85,4 +85,9 @@ public interface SrcGenService
      * @throws IOException 
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
+
+    /**
+     * 
+     */
+    void showDataEditor();
 }

@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
@@ -32,20 +37,12 @@ import org.bridje.web.srcgen.uisuite.UISuite;
  * controls and freemarker themes for the given UISuite.
  */
 @Component
-public class WebSourceGenerator implements SourceGenerator
+public class WebSourceGenerator implements SourceGenerator<UISuite>
 {
+    private static final Logger LOG = Logger.getLogger(WebSourceGenerator.class.getName());
+
     @Inject
     private SrcGenService srcGen;
-
-    @Override
-    public void generateSources() throws IOException
-    {
-        List<UISuite> uiSuites = srcGen.findData(UISuite.class);
-        for (UISuite uiSuite : uiSuites)
-        {
-            generateSources(uiSuite);
-        }
-    }
 
     /**
      * This method generates the source code for the controls and the ftl theme
@@ -55,6 +52,7 @@ public class WebSourceGenerator implements SourceGenerator
      *
      * @throws IOException If any i/o exception occurs reading or writing the source files.
      */
+    @Override
     public void generateSources(UISuite uiSuite) throws IOException
     {
         Map<String, Object> data = new HashMap<>();
@@ -68,5 +66,52 @@ public class WebSourceGenerator implements SourceGenerator
             data.put("control", controlDef);
             srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
         }
+    }
+
+    @Override
+    public List<UISuite> findData()
+    {
+        try
+        {
+            return srcGen.findData(UISuite.class);
+        }
+        catch (IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    @Override
+    public String getName(UISuite data)
+    {
+        return data.getName();
+    }
+
+    @Override
+    public String getName()
+    {
+        return "Web UI Suites";
+    }
+
+    @Override
+    public TreeItem<UISuite> createTreeNode(UISuite data)
+    {
+        TreeItem<UISuite> treeView = new TreeItem<>(data, createImageView("uisuite.png"));
+        return treeView;
+    }
+
+    private static ImageView createImageView(String image)
+    {
+        ImageView imageView = new ImageView(new Image(WebSourceGenerator.class.getResourceAsStream(image)));
+        imageView.setFitHeight(18);
+        imageView.setFitWidth(18);
+        return imageView;
+    }
+
+    @Override
+    public ImageView getImage()
+    {
+        return createImageView("uisuite.png");
     }
 }

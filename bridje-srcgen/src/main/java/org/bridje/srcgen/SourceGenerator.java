@@ -17,15 +17,55 @@
 package org.bridje.srcgen;
 
 import java.io.IOException;
+import java.util.List;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.ImageView;
 
 /**
  * 
+ * @param <T>
  */
-public interface SourceGenerator
+public interface SourceGenerator<T>
 {
     /**
      * 
+     * @return 
+     */
+    String getName();
+
+    /**
+     * 
+     * 
+     * @return 
+     */
+    List<T> findData();
+    
+    /**
+     * 
+     * 
+     * @param data
+     * @return 
+     */
+    String getName(T data);
+    
+    /**
+     * 
+     * 
+     * @param data
      * @throws IOException
      */
-    void generateSources() throws IOException;
+    void generateSources(T data) throws IOException;
+    
+    /**
+     * 
+     * @param data
+     * @return 
+     */
+    TreeItem<T> createTreeNode(T data);
+
+    /**
+     * 
+     * @return 
+     */
+    ImageView getImage();
 }

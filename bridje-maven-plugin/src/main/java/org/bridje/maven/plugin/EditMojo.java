@@ -51,9 +51,9 @@ import org.bridje.vfs.VFile;
  * the data for the code.
  */
 @Mojo(
-        name = "generate-sources"
+        name = "edit-generation-data"
 )
-public class GenerateMojo extends AbstractMojo
+public class EditMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "src/main/resources/BRIDJE-INF/srcgen/data", readonly = false)
     private File sourceFolder;
@@ -72,29 +72,14 @@ public class GenerateMojo extends AbstractMojo
     {
         try
         {
-            getLog().info("Generating Source Code");
+            getLog().info("Editing Source Code Generation Data ");
             if(!sourceFolder.exists()) return;
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(sourceFolder));
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
-            SourceGenerator<Object>[] generators = Ioc.context().findAll(SourceGenerator.class);
-            for (SourceGenerator<Object> generator : generators)
-            {
-                List<Object> datas = generator.findData();
-                if(datas != null)
-                {
-                    for (Object data : datas)
-                    {
-                        generator.generateSources(data);
-                    }
-                }
-            }
-            project.addCompileSourceRoot(targetFolder.getAbsolutePath());
-            Resource res = new Resource();
-            res.setDirectory(targetResFolder.getAbsolutePath());
-            project.addResource(res);
+            Ioc.context().find(SrcGenService.class).showDataEditor();
         }
         catch (IOException e)
         {

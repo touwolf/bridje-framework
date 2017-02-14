@@ -251,4 +251,9 @@ public class ModelInf
         return enums;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }
