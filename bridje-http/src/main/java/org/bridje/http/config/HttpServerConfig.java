@@ -333,7 +333,7 @@ public class HttpServerConfig
      * @return
      * @throws JAXBException 
      */
-    public static HttpServerConfig load(InputStream is) throws JAXBException
+    private static HttpServerConfig load(InputStream is) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
         return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);

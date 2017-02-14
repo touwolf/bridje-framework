@@ -165,10 +165,10 @@ class SrcGenServicesImpl implements SrcGenService
             JAXBContext ctx = JAXBContext.newInstance(cls);
             try(InputStream is = new VFileInputStream(file))
             {
-                return (T)ctx.createUnmarshaller().unmarshal(is);
+                return cls.cast(ctx.createUnmarshaller().unmarshal(is));
             }
         }
-        catch (JAXBException e)
+        catch (JAXBException | ClassCastException e)
         {
             return null;
         }

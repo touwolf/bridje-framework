@@ -71,7 +71,14 @@ public class ControlManager
 
     public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
-        return (T) toWebView(vf);
+        try
+        {
+            return resultCls.cast(toWebView(vf));
+        }
+        catch (ClassCastException ex)
+        {
+            return null;
+        }
     }
 
     public <T> void write(VFile vf, T contentObj) throws IOException
@@ -86,7 +93,7 @@ public class ControlManager
         result.add(WebLayout.class);
         List<URL> files = findModelsFiles();
         files.stream()
-                .map((url) -> readFile(url))
+                .map(this::readFile)
                 .forEach((prop) -> readClasses(result, prop));
         Class<?>[] arr = new Class<?>[result.size()];
         return result.toArray(arr);
@@ -140,7 +147,6 @@ public class ControlManager
 
     private AbstractWebView toWebView(VFile f)
     {
-        AbstractWebView result = null;
         try (InputStream is = new VFileInputStream(f))
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
@@ -153,7 +159,7 @@ public class ControlManager
         {
             LOG.log(Level.SEVERE, "Could not load the  view " + f.getPath() + " " + ex.getMessage(), ex);
         }
-        return result;
+        return null;
     }
 
     private void writeWebView(VFile f, WebView view)
