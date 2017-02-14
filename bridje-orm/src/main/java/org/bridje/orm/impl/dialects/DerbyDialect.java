@@ -151,5 +151,11 @@ class DerbyDialect implements SQLDialect
         sb.append(" ROWS ONLY");
         return sb.toString();
     }
+
+    @Override
+    public Object parseSQLValue(Object sqlValue)
+    {
+        return sqlValue;
+    }
 }
 

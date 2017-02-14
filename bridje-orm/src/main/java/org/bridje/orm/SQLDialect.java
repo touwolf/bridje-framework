@@ -76,4 +76,11 @@ public interface SQLDialect
      * @return The limit statement.
      */
     public String limit(int index, int size);
+
+    /**
+     * 
+     * @param sqlValue
+     * @return 
+     */
+    public Object parseSQLValue(Object sqlValue);
 }

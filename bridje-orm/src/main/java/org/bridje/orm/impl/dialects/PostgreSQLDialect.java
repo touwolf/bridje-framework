@@ -140,4 +140,10 @@ class PostgreSQLDialect implements SQLDialect
         sb.append(size);
         return sb.toString();
     }
+
+    @Override
+    public Object parseSQLValue(Object sqlValue)
+    {
+        return sqlValue;
+    }
 }

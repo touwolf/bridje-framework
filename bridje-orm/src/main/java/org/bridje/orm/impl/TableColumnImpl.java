@@ -18,6 +18,8 @@ package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -515,5 +517,22 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         DEF_ADAPTERS.putIfAbsent(LocalDateTime.class, LocalDateTimeAdapter.class);
         DEF_ADAPTERS.putIfAbsent(LocalTime.class, LocalTimeAdapter.class);
         return DEF_ADAPTERS;
+    }
+
+    @Override
+    public T readValue(int index, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object sqlValue = rs.getObject(index);
+        Object value = ctx.getDialect().parseSQLValue(sqlValue);
+        T realValue = CastUtils.castValue(getType(), value, ctx);
+        return realValue;
+    }
+
+    public T readValue(ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object sqlValue = rs.getObject(getName());
+        Object value = ctx.getDialect().parseSQLValue(sqlValue);
+        T realValue = CastUtils.castValue(getType(), value, ctx);
+        return unserialize(realValue);
     }
 }
