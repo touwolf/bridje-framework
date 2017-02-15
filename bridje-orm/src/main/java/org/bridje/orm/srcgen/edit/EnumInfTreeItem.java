@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,15 @@
  * limitations under the License.
  */
 
-package org.bridje.srcgen;
+package org.bridje.orm.srcgen.edit;
 
-import java.io.IOException;
-import java.util.Map;
 import javafx.scene.control.TreeItem;
-import org.bridje.vfs.VFile;
+import org.bridje.orm.srcgen.model.EnumBaseInf;
 
-/**
- * 
- * @param <T>
- */
-public interface SourceGenerator<T>
+public class EnumInfTreeItem extends TreeItem<Object>
 {
-    /**
-     * 
-     * 
-     * @return 
-     */
-    Map<T, VFile> findData();
-    
-    /**
-     * 
-     * 
-     * @param data
-     * @throws IOException
-     */
-    void generateSources(T data) throws IOException;
-
-    /**
-     * 
-     * @return 
-     */
-    TreeItem<?> createTreeNode();
+    public EnumInfTreeItem(EnumBaseInf enumInf)
+    {
+        super(enumInf, Utils.createImageView(OrmSrcGenTreeItem.class, "enumeration.png"));
+    }
 }

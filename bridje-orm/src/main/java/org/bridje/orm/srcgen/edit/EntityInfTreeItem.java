@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.bridje.srcgen.impl.edit;
+package org.bridje.orm.srcgen.edit;
 
-import java.util.List;
+import java.util.stream.Collectors;
 import javafx.scene.control.TreeItem;
-import org.bridje.srcgen.SourceGenerator;
+import org.bridje.orm.srcgen.model.EntityInf;
 
-class SrcGenerationNode extends TreeItem<Object>
+public class EntityInfTreeItem extends TreeItem<Object>
 {
-    public SrcGenerationNode(SourceGenerator<Object> gen)
+    public EntityInfTreeItem(EntityInf entityInf)
     {
-        super(gen.getName(), gen.getImage());
-        List<Object> lstFata = gen.findData();
-        for (Object object : lstFata)
-        {
-            getChildren().add(gen.createTreeNode(object));
-        }
+        super(entityInf, Utils.createImageView(OrmSrcGenTreeItem.class, "entity.png"));
+        getChildren()
+                .addAll(entityInf.getFields()
+                .stream()
+                .map(f -> new FieldInfTreeItem(f))
+                .collect(Collectors.toList()));
     }
 }

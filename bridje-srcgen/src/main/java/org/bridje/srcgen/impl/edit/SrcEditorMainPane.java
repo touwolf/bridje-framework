@@ -16,11 +16,13 @@
 
 package org.bridje.srcgen.impl.edit;
 
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import org.bridje.ioc.Ioc;
 import org.bridje.srcgen.SourceGenerator;
 
@@ -37,6 +39,7 @@ public class SrcEditorMainPane extends SplitPane
         getItems().add(treeView);
         getItems().add(rightPane);
         setOrientation(Orientation.HORIZONTAL);
+        setResizableWithParent(treeView, false);
         setDividerPositions(0.3f);
     }
 
@@ -48,18 +51,36 @@ public class SrcEditorMainPane extends SplitPane
         
         for (SourceGenerator sourceGenerator : srcGenerator)
         {
-            SrcGenerationNode srcGenNode = new SrcGenerationNode(sourceGenerator);
-            root.getChildren().add(srcGenNode);
+            root.getChildren().add(sourceGenerator.createTreeNode());
         }
         root.setExpanded(true);
         result.setShowRoot(false);
         result.setRoot(root);
+        result.getSelectionModel().selectedItemProperty()
+                .addListener((ObservableValue observable, Object oldValue, Object newValue) ->
+                {
+                    rightPane.getChildren().clear();
+                    if(oldValue instanceof EditableItem)
+                    {
+                        ((EditableItem)oldValue).commit();
+                    }
+                    if(newValue instanceof EditableItem)
+                    {
+                        Pane editor = ((EditableItem)newValue).getEditor();
+                        if(editor != null)
+                        {
+                            rightPane.getChildren().add(editor);
+                            ((EditableItem)newValue).startEdit();
+                        }
+                    }
+                });
+        result.setMinWidth(200);
         return result;
     }
 
     private Pane createRightPane()
     {
-        Pane pane = new Pane();
+        StackPane pane = new StackPane();
         return pane;
     }
 }

@@ -242,4 +242,9 @@ public abstract class FieldInfBase
         result.required = required;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

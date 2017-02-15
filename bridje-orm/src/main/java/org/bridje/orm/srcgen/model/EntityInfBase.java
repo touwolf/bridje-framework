@@ -286,4 +286,9 @@ public class EntityInfBase
         return result;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

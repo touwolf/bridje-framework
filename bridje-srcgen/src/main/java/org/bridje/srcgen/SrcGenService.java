@@ -18,7 +18,9 @@ package org.bridje.srcgen;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import org.bridje.vfs.Path;
+import org.bridje.vfs.VFile;
 
 /**
  * 
@@ -57,7 +59,7 @@ public interface SrcGenService
      * @return
      * @throws IOException 
      */
-    <T> List<T> findData(Class<T> cls) throws IOException;
+    <T> Map<T, VFile> findData(Class<T> cls) throws IOException;
 
     /**
      * 

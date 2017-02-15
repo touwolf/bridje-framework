@@ -85,4 +85,9 @@ public abstract class EnumBaseInf
         return getPackage() + "." + getName();
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

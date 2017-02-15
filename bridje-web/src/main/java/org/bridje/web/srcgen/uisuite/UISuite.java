@@ -183,4 +183,10 @@ public class UISuite
     {
         this.ftlIncludes = ftlIncludes;
     }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 }

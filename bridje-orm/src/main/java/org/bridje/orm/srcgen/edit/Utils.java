@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,18 @@
  * limitations under the License.
  */
 
-package org.bridje.srcgen;
+package org.bridje.orm.srcgen.edit;
 
-import java.io.IOException;
-import java.util.Map;
-import javafx.scene.control.TreeItem;
-import org.bridje.vfs.VFile;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-/**
- * 
- * @param <T>
- */
-public interface SourceGenerator<T>
+public class Utils
 {
-    /**
-     * 
-     * 
-     * @return 
-     */
-    Map<T, VFile> findData();
-    
-    /**
-     * 
-     * 
-     * @param data
-     * @throws IOException
-     */
-    void generateSources(T data) throws IOException;
-
-    /**
-     * 
-     * @return 
-     */
-    TreeItem<?> createTreeNode();
+    public static ImageView createImageView(Class<?> cls, String image)
+    {
+        ImageView imageView = new ImageView(new Image(cls.getResourceAsStream(image)));
+        imageView.setFitHeight(18);
+        imageView.setFitWidth(18);
+        return imageView;
+    }
 }

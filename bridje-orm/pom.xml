@@ -66,7 +66,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <sources>
-                                <source>src/main/java/org/bridje/orm/srcgen</source>
+                                <source>src/main/java/org/bridje/orm/srcgen/model</source>
                             </sources>
                         </configuration>
                     </execution>

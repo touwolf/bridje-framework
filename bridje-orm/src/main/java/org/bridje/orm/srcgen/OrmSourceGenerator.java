@@ -21,17 +21,15 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.TreeItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
+import org.bridje.orm.srcgen.edit.OrmSrcGenTreeItem;
 import org.bridje.orm.srcgen.model.CustomTypesProvider;
 import org.bridje.orm.srcgen.model.EntityInf;
 import org.bridje.orm.srcgen.model.EnumBaseInf;
@@ -39,6 +37,7 @@ import org.bridje.orm.srcgen.model.EnumInf;
 import org.bridje.orm.srcgen.model.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.VFile;
 
 /**
  * This components is the source code generator for the ORM API. it will read
@@ -121,7 +120,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     }
 
     @Override
-    public List<ModelInf> findData()
+    public Map<ModelInf, VFile> findData()
     {
         try
         {
@@ -132,12 +131,6 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
-    }
-
-    @Override
-    public String getName(ModelInf data)
-    {
-        return data.getName();
     }
 
     @Override
@@ -169,29 +162,14 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     }
 
     @Override
-    public String getName()
+    public String toString()
     {
         return "ORM Models";
     }
 
     @Override
-    public TreeItem<ModelInf> createTreeNode(ModelInf data)
+    public TreeItem<?> createTreeNode()
     {
-        TreeItem<ModelInf> treeView = new TreeItem<>(data, createImageView("database.png"));
-        return treeView;
-    }
-
-    private static ImageView createImageView(String image)
-    {
-        ImageView imageView = new ImageView(new Image(OrmSourceGenerator.class.getResourceAsStream(image)));
-        imageView.setFitHeight(18);
-        imageView.setFitWidth(18);
-        return imageView;
-    }
-
-    @Override
-    public ImageView getImage()
-    {
-        return createImageView("database.png");
+        return new OrmSrcGenTreeItem(this);
     }
 }

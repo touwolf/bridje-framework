@@ -28,7 +28,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -93,9 +95,9 @@ class SrcGenServicesImpl implements SrcGenService
     }
 
     @Override
-    public <T> List<T> findData(Class<T> cls) throws IOException
+    public <T> Map<T, VFile> findData(Class<T> cls) throws IOException
     {
-        List<T> result = new ArrayList<>();
+        Map<T, VFile> result = new LinkedHashMap<>();
         VFile[] files = new VFile(DATA_PATH).search(new GlobExpr("**.xml"));
         for (VFile vfile : files)
         {
@@ -105,7 +107,7 @@ class SrcGenServicesImpl implements SrcGenService
                 T data = readFile(vfile, cls);
                 if(data != null)
                 {
-                    result.add(data);
+                    result.put(data, vfile);
                 }
             }
         }

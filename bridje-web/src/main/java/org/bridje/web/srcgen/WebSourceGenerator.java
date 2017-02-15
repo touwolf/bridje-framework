@@ -29,6 +29,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.VFile;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
@@ -69,7 +70,7 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     }
 
     @Override
-    public List<UISuite> findData()
+    public Map<UISuite, VFile> findData()
     {
         try
         {
@@ -83,22 +84,15 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     }
 
     @Override
-    public String getName(UISuite data)
+    public TreeItem<?> createTreeNode()
     {
-        return data.getName();
-    }
-
-    @Override
-    public String getName()
-    {
-        return "Web UI Suites";
-    }
-
-    @Override
-    public TreeItem<UISuite> createTreeNode(UISuite data)
-    {
-        TreeItem<UISuite> treeView = new TreeItem<>(data, createImageView("uisuite.png"));
-        return treeView;
+        TreeItem<Object> treeItem = new TreeItem<>(this, createImageView());
+        Map<UISuite, VFile> data = findData();
+        for (UISuite uISuite : data.keySet())
+        {
+            treeItem.getChildren().add(new TreeItem<>(uISuite, createImageView()));
+        }
+        return treeItem;
     }
 
     private static ImageView createImageView(String image)
@@ -109,9 +103,14 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
         return imageView;
     }
 
-    @Override
-    public ImageView getImage()
+    public ImageView createImageView()
     {
         return createImageView("uisuite.png");
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Web UI Suites";
     }
 }

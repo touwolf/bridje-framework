@@ -51,5 +51,4 @@ public class EntityInf extends EntityInfBase
     {
         this.table = table;
     }
-
 }
