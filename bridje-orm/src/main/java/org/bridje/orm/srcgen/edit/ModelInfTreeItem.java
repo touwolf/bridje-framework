@@ -16,35 +16,18 @@
 
 package org.bridje.orm.srcgen.edit;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.bridje.orm.srcgen.model.ModelInf;
-import org.bridje.srcgen.impl.edit.EditableItem;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileOutputStream;
 
-public class ModelInfTreeItem extends TreeItem<Object> implements EditableItem
+public class ModelInfTreeItem extends TreeItemBase
 {
-    private static final Logger LOG = Logger.getLogger(ModelInfTreeItem.class.getName());
-
     private static final ModelInfEditor EDITOR = new ModelInfEditor();
-    
-    private final ModelInf model;
-    
-    private final VFile file;
 
     public ModelInfTreeItem(ModelInf modelInf, VFile file)
     {
-        super(modelInf, Utils.createImageView(OrmSrcGenTreeItem.class, "database.png"));
-        this.model = modelInf;
-        this.file = file;
+        super(modelInf, modelInf, file, Utils.createImageView(ModelInfEditor.class, "database.png"));
         getChildren()
                 .addAll(modelInf.getTemplates()
                 .stream()
@@ -53,7 +36,7 @@ public class ModelInfTreeItem extends TreeItem<Object> implements EditableItem
         getChildren()
                 .addAll(modelInf.getEntities()
                 .stream()
-                .map(f -> new EntityInfTreeItem(f))
+                .map(f -> new EntityInfTreeItem(this, f))
                 .collect(Collectors.toList()));
         getChildren()
                 .addAll(modelInf.getEnums()
@@ -71,23 +54,13 @@ public class ModelInfTreeItem extends TreeItem<Object> implements EditableItem
     @Override
     public void startEdit()
     {
-        EDITOR.setModel(model);
+        EDITOR.setModel(getModel());
     }
 
     @Override
     public void commit()
     {
         EDITOR.updateModel();
-        try(VFileOutputStream os = new VFileOutputStream(file))
-        {
-            JAXBContext context = JAXBContext.newInstance(ModelInf.class);
-            Marshaller marshaller = context.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(model, os);
-        }
-        catch (JAXBException | IOException ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+        saveModel();
     }
 }

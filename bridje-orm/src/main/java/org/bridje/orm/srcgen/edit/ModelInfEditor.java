@@ -16,21 +16,12 @@
 
 package org.bridje.orm.srcgen.edit;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import org.bridje.orm.srcgen.model.ModelInf;
 
-public class ModelInfEditor extends GridPane
+public class ModelInfEditor extends EditorBase<ModelInf>
 {
     private TextField tfName;
     
@@ -42,27 +33,15 @@ public class ModelInfEditor extends GridPane
     
     private TextArea tfFieldDesc;
 
-    private final SimpleObjectProperty<ModelInf> modelProperty = new SimpleObjectProperty<>();
-    
-    private int index = 0;
-    
     public ModelInfEditor()
     {
-        setAlignment(Pos.TOP_LEFT);
-        setPadding(new Insets(25));
-        setHgap(10);
-        setVgap(10);
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(25);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(75);
-        getColumnConstraints().addAll(col1,col2);
+        super();
         tfName = addRow("Name", createTextField());
         tfPackage = addRow("Package", createTextField());
         tfTablePrefix = addRow("Table Prefix", createTextField());
         tfEntityDesc = addRow("Entity Desc.", createTextArea(3));
         tfFieldDesc = addRow("Field Desc.", createTextArea(3));
-        modelProperty.addListener((ObservableValue<? extends ModelInf> observable, ModelInf oldValue, ModelInf newValue) ->
+        modelProperty().addListener((ObservableValue<? extends ModelInf> observable, ModelInf oldValue, ModelInf newValue) ->
         {
             tfName.setText(newValue.getName());
             tfPackage.setText(newValue.getPackage());
@@ -72,45 +51,6 @@ public class ModelInfEditor extends GridPane
         });
     }
 
-    public SimpleObjectProperty<ModelInf> modelProperty()
-    {
-        return modelProperty;
-    }
-
-    public ModelInf getModel()
-    {
-        return modelProperty.get();
-    }
-
-    public void setModel(ModelInf model)
-    {
-        this.modelProperty.set(model);
-    }
-
-    private TextField createTextField()
-    {
-        TextField result = new TextField();
-        result.setFont(Font.font(12d));
-        return result;
-    }
-
-    private TextArea createTextArea(int rowCount)
-    {
-        TextArea result = new TextArea();
-        result.setPrefRowCount(rowCount);
-        result.setFont(Font.font(12d));
-        return result;
-    }
-
-    private <T extends Node> T addRow(String label, T field)
-    {
-        Label lb = new Label(label);
-        lb.setTextAlignment(TextAlignment.RIGHT);
-        addRow(index++, lb, field);
-        setFillWidth(field, true);
-        return field;
-    }
-    
     public void updateModel()
     {
         getModel().setName(tfName.getText());

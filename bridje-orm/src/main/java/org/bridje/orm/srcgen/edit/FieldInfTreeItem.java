@@ -23,6 +23,6 @@ public class FieldInfTreeItem extends TreeItem<Object>
 {
     public FieldInfTreeItem(FieldInfBase fieldInf)
     {
-        super(fieldInf, Utils.createImageView(OrmSrcGenTreeItem.class, "field.png"));
+        super(fieldInf, Utils.createImageView(FieldInfTreeItem.class, "field.png"));
     }
 }

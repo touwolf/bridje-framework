@@ -24,7 +24,7 @@ public class TemplateInfTreeItem extends TreeItem<Object>
 {
     public TemplateInfTreeItem(EntityInfTemplate entityInf)
     {
-        super(entityInf, Utils.createImageView(OrmSrcGenTreeItem.class, "template.png"));
+        super(entityInf, Utils.createImageView(TemplateInfTreeItem.class, "template.png"));
         getChildren()
                 .addAll(entityInf.getFields()
                 .stream()

@@ -23,6 +23,6 @@ public class EnumInfTreeItem extends TreeItem<Object>
 {
     public EnumInfTreeItem(EnumBaseInf enumInf)
     {
-        super(enumInf, Utils.createImageView(OrmSrcGenTreeItem.class, "enumeration.png"));
+        super(enumInf, Utils.createImageView(EnumInfTreeItem.class, "enumeration.png"));
     }
 }

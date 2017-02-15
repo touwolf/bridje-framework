@@ -272,6 +272,16 @@ public class EntityInfBase
                 .orElse(null);
     }
 
+    public List<FieldInfBase> getDeclaredFields()
+    {
+        return fields;
+    }
+
+    public List<OperationInfBase> getDeclaredOperations()
+    {
+        return operations;
+    }
+
     private List<FieldInfBase> cloneFields(List<FieldInfBase> fields)
     {
         List<FieldInfBase> result = new ArrayList<>();

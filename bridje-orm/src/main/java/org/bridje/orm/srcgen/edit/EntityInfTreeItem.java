@@ -17,18 +17,38 @@
 package org.bridje.orm.srcgen.edit;
 
 import java.util.stream.Collectors;
-import javafx.scene.control.TreeItem;
+import javafx.scene.layout.Pane;
 import org.bridje.orm.srcgen.model.EntityInf;
 
-public class EntityInfTreeItem extends TreeItem<Object>
+public class EntityInfTreeItem extends TreeItemBase<EntityInf>
 {
-    public EntityInfTreeItem(EntityInf entityInf)
+    private static final EntityInfEditor EDITOR = new EntityInfEditor();
+    
+    public EntityInfTreeItem(ModelInfTreeItem modelItem, EntityInf entityInf)
     {
-        super(entityInf, Utils.createImageView(OrmSrcGenTreeItem.class, "entity.png"));
+        super(entityInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, "entity.png"));
         getChildren()
-                .addAll(entityInf.getFields()
+                .addAll(entityInf.getDeclaredFields()
                 .stream()
                 .map(f -> new FieldInfTreeItem(f))
                 .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Pane getEditor()
+    {
+        return EDITOR;
+    }
+
+    @Override
+    public void startEdit()
+    {
+        EDITOR.setModel(getData());
+    }
+
+    @Override
+    public void commit()
+    {
+        saveModel();
     }
 }

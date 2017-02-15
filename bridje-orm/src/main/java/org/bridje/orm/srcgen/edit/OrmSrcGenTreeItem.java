@@ -16,44 +16,21 @@
 
 package org.bridje.orm.srcgen.edit;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import javafx.scene.control.TreeItem;
-import javafx.scene.layout.Pane;
 import org.bridje.orm.srcgen.OrmSourceGenerator;
-import org.bridje.srcgen.impl.edit.EditableItem;
 
-public class OrmSrcGenTreeItem extends TreeItem<Object> implements EditableItem
+public class OrmSrcGenTreeItem extends TreeItem<Object>
 {
-    private static final SimpleNavEditor EDITOR = new SimpleNavEditor();
-
-    private final OrmSourceGenerator srcGen;
-    
     public OrmSrcGenTreeItem(OrmSourceGenerator srcGen)
     {
         super(srcGen, Utils.createImageView(OrmSrcGenTreeItem.class, "database.png"));
-        this.srcGen = srcGen;
         setExpanded(true);
-        getChildren()
-                .addAll(srcGen.findData().entrySet()
+        List<TreeItem<Object>> lst = srcGen.findData().entrySet()
                 .stream()
-                .map(f -> new ModelInfTreeItem(f.getKey(), f.getValue()))
-                .collect(Collectors.toList()));
-    }
-
-    @Override
-    public Pane getEditor()
-    {
-        return EDITOR;
-    }
-
-    @Override
-    public void startEdit()
-    {
-        EDITOR.setTitle(getValue().toString());
-    }
-
-    @Override
-    public void commit()
-    {
+                .map(f -> (TreeItem<Object>)new ModelInfTreeItem(f.getKey(), f.getValue()))
+                .collect(Collectors.toList());
+        getChildren().addAll(lst);
     }
 }
