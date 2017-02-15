@@ -57,15 +57,11 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     private Map<String, String> findCustomTypes() throws IOException
     {
         Map<String, String> result = new HashMap<>();
-        Enumeration<URL> resources = getClass().getClassLoader().getResources(SQLCustomTypeProcessor.CUSTOM_DATATYPE_FILE);
+        Enumeration<URL> resources = loadDataTypeFiles();
         while (resources.hasMoreElements())
         {
-            URL nextElement = resources.nextElement();
-            Properties prop = new Properties();
-            try (InputStream is = nextElement.openStream())
-            {
-                prop.load(is);
-            }
+            URL url = resources.nextElement();
+            Properties prop = loadProperties(url);
             prop.forEach((k, v) -> result.put((String) k, (String) v));
         }
         return result;
@@ -76,15 +72,9 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     {
         try
         {
-            if (customTypes == null)
-            {
-                customTypes = findCustomTypes();
-            }
+            if (customTypes == null) customTypes = findCustomTypes();
             String value = customTypes.get(type);
-            if (value == null || value.isEmpty())
-            {
-                return null;
-            }
+            if (value == null || value.isEmpty()) return null;
             String[] arr = value.split(":");
             return arr[0];
         }
@@ -100,15 +90,9 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     {
         try
         {
-            if (customTypes == null)
-            {
-                customTypes = findCustomTypes();
-            }
+            if (customTypes == null) customTypes = findCustomTypes();
             String value = customTypes.get(type);
-            if (value == null || value.isEmpty())
-            {
-                return null;
-            }
+            if (value == null || value.isEmpty()) return null;
             String[] arr = value.split(":");
             return arr[1];
         }
@@ -171,5 +155,20 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     public TreeItem<?> createTreeNode()
     {
         return new OrmSrcGenTreeItem(this);
+    }
+
+    private Properties loadProperties(URL url) throws IOException
+    {
+        Properties prop = new Properties();
+        try (InputStream is = url.openStream())
+        {
+            prop.load(is);
+        }
+        return prop;
+    }
+
+    private Enumeration<URL> loadDataTypeFiles() throws IOException
+    {
+        return getClass().getClassLoader().getResources(SQLCustomTypeProcessor.CUSTOM_DATATYPE_FILE);
     }
 }

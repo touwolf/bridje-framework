@@ -82,10 +82,10 @@ public class GenerateMojo extends AbstractMojo
             SourceGenerator<Object>[] generators = Ioc.context().findAll(SourceGenerator.class);
             for (SourceGenerator<Object> generator : generators)
             {
-                List<Object> datas = generator.findData();
+                Map<Object, VFile> datas = generator.findData();
                 if(datas != null)
                 {
-                    for (Object data : datas)
+                    for (Object data : datas.keySet())
                     {
                         generator.generateSources(data);
                     }
