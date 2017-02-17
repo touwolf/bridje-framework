@@ -16,13 +16,33 @@
 
 package org.bridje.orm.srcgen.edit;
 
-import javafx.scene.control.TreeItem;
+import javafx.scene.layout.Pane;
 import org.bridje.orm.srcgen.model.FieldInfBase;
 
-public class FieldInfTreeItem extends TreeItem<Object>
+public class FieldInfTreeItem extends TreeItemBase<FieldInfBase>
 {
-    public FieldInfTreeItem(FieldInfBase fieldInf)
+    private static final FieldInfEditor EDITOR = new FieldInfEditor();
+    
+    public FieldInfTreeItem(ModelInfTreeItem modelItem, FieldInfBase fieldInf)
     {
-        super(fieldInf, Utils.createImageView(FieldInfTreeItem.class, "field.png"));
+        super(fieldInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, "field.png"));
+    }
+
+    @Override
+    public Pane getEditor()
+    {
+        return EDITOR;
+    }
+
+    @Override
+    public void startEdit()
+    {
+        EDITOR.setModel(getData());
+    }
+
+    @Override
+    public void commit()
+    {
+        saveModel();
     }
 }

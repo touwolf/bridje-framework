@@ -23,14 +23,14 @@ import org.bridje.orm.srcgen.model.EntityInf;
 public class EntityInfTreeItem extends TreeItemBase<EntityInf>
 {
     private static final EntityInfEditor EDITOR = new EntityInfEditor();
-    
+
     public EntityInfTreeItem(ModelInfTreeItem modelItem, EntityInf entityInf)
     {
         super(entityInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, "entity.png"));
         getChildren()
                 .addAll(entityInf.getDeclaredFields()
                 .stream()
-                .map(f -> new FieldInfTreeItem(f))
+                .map(f -> new FieldInfTreeItem(modelItem, f))
                 .collect(Collectors.toList()));
     }
 

@@ -18,6 +18,7 @@ package org.bridje.srcgen.impl.edit;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class SrcEditorApplication extends Application
@@ -44,6 +45,7 @@ public class SrcEditorApplication extends Application
         Scene scene = new Scene(new SrcEditorMainPane());
         stage.setTitle("Bridje Source Generation Data Editor");
         stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("generator.png")));
         stage.show();
     }
 }

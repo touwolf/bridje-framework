@@ -31,7 +31,7 @@ public class ModelInfTreeItem extends TreeItemBase
         getChildren()
                 .addAll(modelInf.getTemplates()
                 .stream()
-                .map(f -> new TemplateInfTreeItem(f))
+                .map(f -> new TemplateInfTreeItem(this, f))
                 .collect(Collectors.toList()));
         getChildren()
                 .addAll(modelInf.getEntities()
