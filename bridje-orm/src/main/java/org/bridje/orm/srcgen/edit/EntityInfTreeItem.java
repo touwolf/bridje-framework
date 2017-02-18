@@ -28,6 +28,11 @@ public class EntityInfTreeItem extends TreeItemBase<EntityInf>
     {
         super(entityInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, "entity.png"));
         getChildren()
+                .addAll(entityInf.getDeclaredOperations()
+                .stream()
+                .map(f -> new OperationInfTreeItem(modelItem, f))
+                .collect(Collectors.toList()));
+        getChildren()
                 .addAll(entityInf.getDeclaredFields()
                 .stream()
                 .map(f -> new FieldInfTreeItem(modelItem, f))
@@ -43,6 +48,9 @@ public class EntityInfTreeItem extends TreeItemBase<EntityInf>
     @Override
     public void startEdit()
     {
+        EDITOR.setModel(null);
+        EDITOR.getBaseTemplates().clear();
+        EDITOR.getBaseTemplates().addAll(getModel().getTemplates());
         EDITOR.setModel(getData());
     }
 

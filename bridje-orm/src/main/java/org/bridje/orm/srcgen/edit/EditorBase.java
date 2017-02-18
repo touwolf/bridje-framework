@@ -20,6 +20,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -66,6 +67,12 @@ public class EditorBase<T> extends GridPane
         TextArea result = new TextArea();
         result.setPrefRowCount(rowCount);
         result.setFont(Font.font(12d));
+        return result;
+    }
+
+    protected <T> ComboBox createComboBox(Class<T> cls)
+    {
+        ComboBox<T> result = new ComboBox<>();
         return result;
     }
 

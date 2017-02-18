@@ -17,7 +17,15 @@
 package org.bridje.orm.srcgen.edit;
 
 import javafx.scene.layout.Pane;
+import org.bridje.orm.srcgen.model.BooleanFieldInf;
+import org.bridje.orm.srcgen.model.CustomFieldInf;
+import org.bridje.orm.srcgen.model.DateTimeFieldInf;
+import org.bridje.orm.srcgen.model.DecimalFieldInf;
+import org.bridje.orm.srcgen.model.EnumFieldInf;
 import org.bridje.orm.srcgen.model.FieldInfBase;
+import org.bridje.orm.srcgen.model.IntegerFieldInf;
+import org.bridje.orm.srcgen.model.RelationFieldInf;
+import org.bridje.orm.srcgen.model.StringFieldInf;
 
 public class FieldInfTreeItem extends TreeItemBase<FieldInfBase>
 {
@@ -25,7 +33,7 @@ public class FieldInfTreeItem extends TreeItemBase<FieldInfBase>
     
     public FieldInfTreeItem(ModelInfTreeItem modelItem, FieldInfBase fieldInf)
     {
-        super(fieldInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, "field.png"));
+        super(fieldInf, modelItem.getModel(), modelItem.getFile(), Utils.createImageView(EntityInfTreeItem.class, findFieldIcon(fieldInf)));
     }
 
     @Override
@@ -44,5 +52,42 @@ public class FieldInfTreeItem extends TreeItemBase<FieldInfBase>
     public void commit()
     {
         saveModel();
+    }
+
+    private static String findFieldIcon(FieldInfBase fieldInf)
+    {
+        if(fieldInf instanceof IntegerFieldInf)
+        {
+            return "integer-field.png";
+        }
+        else if(fieldInf instanceof DecimalFieldInf)
+        {
+            return "decimal-field.png";
+        }
+        else if(fieldInf instanceof EnumFieldInf)
+        {
+            return "enumeration.png";
+        }
+        else if(fieldInf instanceof DateTimeFieldInf)
+        {
+            return "date-field.png";
+        }
+        else if(fieldInf instanceof CustomFieldInf)
+        {
+            return "custom-field.png";
+        }
+        else if(fieldInf instanceof BooleanFieldInf)
+        {
+            return "boolean-field.png";
+        }
+        else if(fieldInf instanceof StringFieldInf)
+        {
+            return "string-field.png";
+        }
+        else if(fieldInf instanceof RelationFieldInf)
+        {
+            return "relation-field.png";
+        }
+        return "field.png";
     }
 }

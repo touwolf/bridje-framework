@@ -79,4 +79,10 @@ public abstract class OperationInfBase
         result.name = name;
         result.description = description;
     }
+
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

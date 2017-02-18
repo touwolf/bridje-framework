@@ -16,30 +16,31 @@
 
 package org.bridje.orm.srcgen.edit;
 
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import org.bridje.orm.srcgen.model.EntityInf;
+import org.bridje.orm.srcgen.model.OperationInfBase;
 
-public class EntityInfEditor extends EntityEditorBase<EntityInf>
+public class OperationInfEditor extends EditorBase<OperationInfBase>
 {
-    private TextField tfTable;
+    private TextField tfName;
 
-    public EntityInfEditor()
+    private TextArea taDescription;
+
+    public OperationInfEditor()
     {
         super();
-        tfTable = addRow("Table", createTextField());
+        tfName = addRow("Name", createTextField());
+        taDescription = addRow("Description", createTextArea(3));
         modelProperty().addListener((observable, oldValue, newValue) ->
         {
-            if(newValue != null)
-            {
-                tfTable.setText(newValue.getTable());
-            }
+            tfName.setText(newValue.getName());
+            taDescription.setText(newValue.getDescription());
         });
     }
 
-    @Override
     public void updateModel()
     {
-        super.updateModel();
-        getModel().setTable(tfTable.getText());
+        getModel().setName(tfName.getText());
+        getModel().setDescription(taDescription.getText());
     }
 }
