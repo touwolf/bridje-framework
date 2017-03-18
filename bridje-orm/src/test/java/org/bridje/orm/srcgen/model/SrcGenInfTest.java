@@ -89,7 +89,7 @@ public class SrcGenInfTest
         EnumFieldInf enumField1 = (EnumFieldInf)entity1.getFields().get(6);
         Assert.assertEquals("someEnum", enumField1.getName());
         Assert.assertEquals("SomeEnum", enumField1.getType().getName());
-        Assert.assertEquals(EnumFieldSQLType.BYTE, enumField1.getSqlType());
+        Assert.assertEquals(EnumFieldSQLType.TINYINT, enumField1.getSqlType());
         Assert.assertFalse(enumField1.isRequired());
         Assert.assertTrue(enumField1.isIndexed());
         Assert.assertFalse(enumField1.getKey());

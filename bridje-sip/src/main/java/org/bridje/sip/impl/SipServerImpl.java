@@ -32,13 +32,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBException;
-import org.bridje.sip.config.SipServerConfig;
 import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.sip.SipBridlet;
 import org.bridje.sip.SipServer;
+import org.bridje.sip.config.SipServerConfig;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 

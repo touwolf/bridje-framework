@@ -1,7 +1,6 @@
 
 package org.bridje.sip.impl;
 
-import org.bridje.sip.SipRequest;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.sip.SipRequest;
 
 class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
 {

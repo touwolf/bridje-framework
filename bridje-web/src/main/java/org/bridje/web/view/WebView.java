@@ -20,9 +20,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.*;
+import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.controls.UIInputExpression;
-import org.bridje.web.view.controls.Control;
 
 /**
  * Represents a view of the application, views are render by themes and are

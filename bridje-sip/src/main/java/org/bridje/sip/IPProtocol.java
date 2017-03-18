@@ -16,6 +16,9 @@
 
 package org.bridje.sip;
 
+/**
+ * The protocols associeted with the IP Protocol. UDP or TCP.
+ */
 public enum IPProtocol
 {
     TCP,

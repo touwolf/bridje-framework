@@ -45,8 +45,8 @@ import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
-import org.bridje.web.view.state.StateRenderProvider;
 import org.bridje.web.view.controls.Control;
+import org.bridje.web.view.state.StateRenderProvider;
 
 /**
  * The manager for the web themes that can be used in the web application.

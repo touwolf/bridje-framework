@@ -24,6 +24,10 @@ import org.bridje.vfs.VFile;
  */
 public interface HttpServer
 {
+    
+    /**
+     * Default configuration file for the HTTP Server.
+     */
     public static VFile CONFIG_FILE = new VFile("/etc/http.xml");
 
     /**

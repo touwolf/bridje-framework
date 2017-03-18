@@ -15,6 +15,9 @@ public class Path implements Iterable<Path>
 {
     private final String[] pathElements;
 
+    /**
+     * Default constructor for the Path class.
+     */
     public Path()
     {
         this.pathElements = null;
@@ -312,6 +315,11 @@ public class Path implements Iterable<Path>
         return arr;
     }
 
+    /**
+     * Gets the extension for the last component of this path.
+     * 
+     * @return The extension of the last component of this path.
+     */
     public String getExtension()
     {
         if(isRoot()) return null;

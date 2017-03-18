@@ -23,73 +23,94 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 
 /**
- * 
+ * This interface defines the services for source code generation in the bridje
+ * modules.
  */
 public interface SrcGenService
 {
     /**
-     * 
+     * The virtual path for the data in the source code generation process.
      */
     Path DATA_PATH = new Path("/srcgen/data");
 
     /**
-     * 
+     * The virtual path for the suplementary data in the source code generation
+     * process.
      */
     Path SUPL_PATH = new Path("/srcgen/supl");
 
     /**
-     * 
+     * The virtual path for the generated resources in the source code
+     * generation process.
      */
     Path RESOURCE_PATH = new Path("/srcgen/resources");
 
     /**
-     * 
+     * The virtual path for the generated classes in the source code generation
+     * process.
      */
     Path CLASSES_PATH = new Path("/srcgen/classes");
 
     /**
-     * 
+     * The virtual path for the templates in the source code generation process.
      */
     Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
     /**
-     * 
-     * @param <T>
-     * @param cls
-     * @return
-     * @throws IOException 
+     * Finds the data by the given class, this method will read the data from
+     * the default virtual path in the VFS tree and parse all the files that
+     * have the content of the given class.
+     *
+     * @param <T> The type of the data to read.
+     * @param cls The class of the data to read.
+     *
+     * @return A map with the data readed as the key and the corresponding
+     *         VFile.
+     *
+     * @throws IOException If any IO exception occurs.
      */
     <T> Map<T, VFile> findData(Class<T> cls) throws IOException;
 
     /**
-     * 
-     * @param <T>
-     * @param cls
-     * @return
-     * @throws IOException 
+     * Finds the suplementary data by the given class, this method will read the
+     * data from the default virtual path in the VFS tree and parse all the
+     * files that have the content of the given class.
+     *
+     * @param <T> The type of the data to read.
+     * @param cls The class of the data to read.
+     *
+     * @return A map with the data readed as the key and the corresponding
+     *         VFile.
+     *
+     * @throws IOException
      */
     <T> List<T> findSuplData(Class<T> cls) throws IOException;
 
     /**
+     * Create a class with the given data and the given template.
      * 
-     * @param clsFullName
-     * @param tplPath
-     * @param data
-     * @throws IOException 
+     * @param clsFullName The full name of the class to create.
+     * @param tplPath The path of the template to use to create the class.
+     * @param data The data to use by the template to create the class.
+     *
+     * @throws IOException If any IO exception occurs.
      */
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
 
     /**
+     * Creates a new resource with the given data and the given template.
      * 
-     * @param resourcePath
-     * @param tplPath
-     * @param data
-     * @throws IOException 
+     * @param resourcePath The path and name of the resource file to create.
+     * @param tplPath The path of the template to use to create the class.
+     * @param data The data to use by the template to create the class.
+     *
+     * @throws IOException If any IO exception occurs.
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
 
     /**
-     * 
+     *
      */
     void showDataEditor();
+
 }

@@ -13,12 +13,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This object represents a real file system source fot the virtual file system tree.
+ */
 public class FileSource implements VfsSource
 {
     private static final Logger LOG = Logger.getLogger(FileSource.class.getName());
 
     private final File file;
 
+    /**
+     * Default contructor for this object.
+     * 
+     * @param file The file for this VFS source object.
+     * @throws IOException If any IO occurs.
+     */
     public FileSource(File file) throws IOException
     {
         this.file = file.getAbsoluteFile().getCanonicalFile();
@@ -124,6 +133,14 @@ public class FileSource implements VfsSource
         return null;
     }
 
+    /**
+     * Search for all the files that match the globExpr provided.
+     * 
+     * @param globExpr The glob expr provided.
+     * @param pathFile The path under witch the search must start.
+     * @param path The path that needs to prefix all paths resulting from this search.
+     * @param files The resulting paths for the search.
+     */
     public void search(GlobExpr globExpr, File pathFile, Path path, List<Path> files)
     {
         File[] listFiles = pathFile.listFiles();

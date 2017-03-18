@@ -21,6 +21,9 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * This object represents a Class Path source for the virtual file system.
+ */
 public class CpSource implements VfsSource
 {
     private final String resource;
@@ -218,6 +221,12 @@ public class CpSource implements VfsSource
         return null;
     }
     
+    /**
+     * Finds a Class Path source associeted with the given path.
+     * 
+     * @param path The path of the resource.
+     * @return The Class Path source associeted with the given path.
+     */
     public CpSource findResource(Path path)
     {
         if(path == null || path.isRoot()) return this;
@@ -226,6 +235,13 @@ public class CpSource implements VfsSource
         return child.findResource(path.getNext());
     }
 
+    /**
+     * Search for all the files that match the globExpr provided.
+     * 
+     * @param globExpr The glob expr provided.
+     * @param path The path that needs to prefix all paths resulting from this search.
+     * @param files The resulting paths for the search.
+     */
     public void search(GlobExpr globExpr, Path path, List<Path> files)
     {
         for (Entry<String, CpSource> entry : childs.entrySet())

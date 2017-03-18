@@ -16,27 +16,53 @@
 
 package org.bridje.sip;
 
+/**
+ * The SIP protocol definition for a SIP message.
+ */
 public class SipProtocol
 {
     private SipVersion version;
 
+    /**
+     * 
+     */
     private IPProtocol type;
 
+    /**
+     * The version of the SIP protocol for this message.
+     * 
+     * @return The version of the SIP protocol for this message.
+     */
     public SipVersion getVersion()
     {
         return version;
     }
 
+    /**
+     * The version of the SIP protocol for this message.
+     * 
+     * @param version The version of the SIP protocol for this message.
+     */
     public void setVersion(SipVersion version)
     {
         this.version = version;
     }
 
+    /**
+     * The type of IP protocol for this SIP message.
+     * 
+     * @return The type of IP protocol for this SIP message.
+     */
     public IPProtocol getType()
     {
         return type;
     }
 
+    /**
+     * The type of IP protocol for this SIP message.
+     * 
+     * @param type The type of IP protocol for this SIP message.
+     */
     public void setType(IPProtocol type)
     {
         this.type = type;
@@ -48,6 +74,12 @@ public class SipProtocol
         return this.version + "/" + this.type.name();
     }
     
+    /**
+     * Creates a new SIP protocol definition from the corresponding text.
+     * 
+     * @param value The text taht defines the SIP protocol definition.
+     * @return The SIP protocol definition object.
+     */
     public static SipProtocol fromString(String value)
     {
         String[] split = value.split("[/]");

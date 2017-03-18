@@ -80,6 +80,14 @@ public final class CastUtils
         return null;
     }
 
+    /**
+     * Cast the given value to the given class.
+     * 
+     * @param <F> The type to cass the object to.
+     * @param fieldType The class to cass the object to.
+     * @param value The object to cass.
+     * @return THe cassted value.
+     */
     public static <F> F castValue(Class<F> fieldType, Object value)
     {
         if (value != null)

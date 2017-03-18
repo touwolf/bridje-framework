@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.controls.UIExpression;
 import org.bridje.web.view.controls.UIExpressionAdapter;
-import org.bridje.web.view.controls.Control;
 
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)

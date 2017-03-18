@@ -38,11 +38,6 @@ public enum EnumFieldSQLType
     @XmlEnumValue("INTEGER")
     INTEGER,
     /**
-     * JDBCType.BYTE
-     */
-    @XmlEnumValue("BYTE")
-    BYTE,
-    /**
      * JDBCType.SMALLINT
      */
     @XmlEnumValue("SMALLINT")

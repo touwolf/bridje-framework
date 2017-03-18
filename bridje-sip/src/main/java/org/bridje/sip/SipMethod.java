@@ -16,20 +16,65 @@
 
 package org.bridje.sip;
 
+/**
+ * The SIP protocol methods.
+ */
 public enum SipMethod
 {
+    /**
+     * INVITE
+     */
     INVITE,
+    /**
+     * ACK
+     */
     ACK,
+    /**
+     * BYE
+     */
     BYE,
+    /**
+     * CANCEL
+     */
     CANCEL,
+    /**
+     * REGISTER
+     */
     REGISTER,
+    /**
+     * OPTIONS
+     */
     OPTIONS,
+    /**
+     * PRACK
+     */
     PRACK,
+    /**
+     * SUBSCRIBE
+     */
     SUBSCRIBE,
+    /**
+     * NOTIFY
+     */
     NOTIFY,
+    /**
+     * PUBLISH
+     */
     PUBLISH,
+    /**
+     * INFO
+     */
     INFO,
+    /**
+     * REFER
+     */
     REFER,
+    /**
+     * MESSAGE
+     */
     MESSAGE,
+    /**
+     * UPDATE
+     */
     UPDATE;
 }

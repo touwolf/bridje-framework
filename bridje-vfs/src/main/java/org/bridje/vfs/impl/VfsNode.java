@@ -1,11 +1,11 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 abstract class VfsNode
 {

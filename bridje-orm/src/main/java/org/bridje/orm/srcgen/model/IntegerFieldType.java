@@ -40,8 +40,8 @@ public enum IntegerFieldType
     /**
      * Byte
      */
-    @XmlEnumValue("Byte")
-    BYTE,
+    @XmlEnumValue("Tinyint")
+    TINYINT,
     /**
      * Short
      */

@@ -16,7 +16,6 @@
 
 package org.bridje.srcgen.impl;
 
-import org.bridje.srcgen.impl.edit.SrcEditorApplication;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -39,6 +38,7 @@ import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.srcgen.impl.edit.SrcEditorApplication;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;

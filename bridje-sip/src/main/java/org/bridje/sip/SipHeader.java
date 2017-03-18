@@ -18,38 +18,71 @@ package org.bridje.sip;
 
 import java.util.List;
 
+/**
+ * A SIP Heather
+ */
 public class SipHeader
 {
     private String name;
 
     private List<String> values;
 
+    /**
+     * The name of the SIP header.
+     * 
+     * @return The name of the SIP header.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the SIP header.
+     * 
+     * @param name The name of the SIP header.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The first (or only) value of the SIP header.
+     * 
+     * @return The value of the SIP header.
+     */
     public String getValue()
     {
         return values.get(0);
     }
 
+    /**
+     * The first (or only) value of the SIP header.
+     * 
+     * @param value The value of the SIP header.
+     */
     public void setValue(String value)
     {
         this.values.remove(0);
         this.values.add(0, value);
     }
     
+    /**
+     * The lis of values for the SIP header.
+     * 
+     * @return THe list values for the SIP header.
+     */
     public List<String> getValues()
     {
         return values;
     }
 
+    /**
+     * The list of values for the SIP header.
+     * 
+     * @param values The list of values for the SIP header.
+     */
     public void setValues(List<String> values)
     {
         this.values = values;

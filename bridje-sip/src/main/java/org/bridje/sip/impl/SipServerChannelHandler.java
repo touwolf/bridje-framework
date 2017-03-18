@@ -1,10 +1,10 @@
 
 package org.bridje.sip.impl;
 
-import org.bridje.sip.SipRequest;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.bridje.ioc.Ioc;
+import org.bridje.sip.SipRequest;
 import org.bridje.sip.SipResponse;
 
 public class SipServerChannelHandler extends SimpleChannelInboundHandler<SipRequest>

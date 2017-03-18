@@ -132,7 +132,7 @@ public class IntegerFieldInf extends FieldInfBase
         {
             case BIGINTEGER:
                 return "BigInteger";
-            case BYTE:
+            case TINYINT:
                 return "Byte";
             case CHARACTER:
                 return "Character";

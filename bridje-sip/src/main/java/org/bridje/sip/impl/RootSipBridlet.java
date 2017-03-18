@@ -19,11 +19,11 @@ package org.bridje.sip.impl;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.sip.SipBridlet;
-import org.bridje.sip.SipException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
+import org.bridje.sip.SipBridlet;
+import org.bridje.sip.SipException;
 import org.bridje.sip.SipRequest;
 import org.bridje.sip.SipResponse;
 

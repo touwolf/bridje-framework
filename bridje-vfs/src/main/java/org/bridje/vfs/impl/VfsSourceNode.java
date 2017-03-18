@@ -1,14 +1,14 @@
 
 package org.bridje.vfs.impl;
 
-import org.bridje.vfs.GlobExpr;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsSource;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.bridje.vfs.GlobExpr;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VfsSource;
 
 class VfsSourceNode extends VfsNode
 {

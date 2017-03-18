@@ -1,10 +1,6 @@
 
 package org.bridje.vfs.impl;
 
-import org.bridje.vfs.GlobExpr;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsSource;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.bridje.vfs.GlobExpr;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VfsSource;
 
 class VfsFolderNode extends VfsNode
 {

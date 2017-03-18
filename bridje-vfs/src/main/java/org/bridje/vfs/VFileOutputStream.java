@@ -3,7 +3,9 @@ package org.bridje.vfs;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
+/**
+ * This object represents an output stream for a virtual file.
+ */
 public class VFileOutputStream extends OutputStream
 {
     private final VFile vfile;

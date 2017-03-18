@@ -42,10 +42,10 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
+import org.bridje.web.view.controls.ControlManager;
+import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.state.StateManager;
 import org.bridje.web.view.themes.ThemesManager;
-import org.bridje.web.view.controls.UIEvent;
-import org.bridje.web.view.controls.ControlManager;
 
 /**
  * A manager for all the web views present in the application. with this
