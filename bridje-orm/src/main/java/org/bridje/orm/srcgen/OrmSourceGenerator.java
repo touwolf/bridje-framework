@@ -118,7 +118,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     }
 
     @Override
-    public void generateSources(ModelInf modelInf) throws IOException
+    public void generateSources(ModelInf modelInf, VFile file) throws IOException
     {
         Map<String, Object> data;
         data = new HashMap<>();

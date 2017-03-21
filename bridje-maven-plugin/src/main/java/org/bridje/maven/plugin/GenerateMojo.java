@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.apache.maven.model.Resource;
@@ -85,9 +86,9 @@ public class GenerateMojo extends AbstractMojo
                 Map<Object, VFile> datas = generator.findData();
                 if(datas != null)
                 {
-                    for (Object data : datas.keySet())
+                    for (Entry<Object, VFile> data : datas.entrySet())
                     {
-                        generator.generateSources(data);
+                        generator.generateSources(data.getKey(), data.getValue());
                     }
                 }
             }

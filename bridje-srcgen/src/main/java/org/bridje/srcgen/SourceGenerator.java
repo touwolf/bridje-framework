@@ -38,9 +38,10 @@ public interface SourceGenerator<T>
      * 
      * 
      * @param data
+     * @param file
      * @throws IOException
      */
-    void generateSources(T data) throws IOException;
+    void generateSources(T data, VFile file) throws IOException;
 
     /**
      * 

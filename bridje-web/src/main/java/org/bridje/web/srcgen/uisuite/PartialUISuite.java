@@ -20,49 +20,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 
-@XmlRootElement(name = "uisuite")
+@XmlRootElement(name = "partialuisuite")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UISuite
+public class PartialUISuite
 {
-    private static final Logger LOG = Logger.getLogger(UISuite.class.getName());
-
-    @XmlAttribute
-    private String name;
-    
-    @XmlAttribute(name = "package")
-    private String packageName;
-    
-    @XmlAttribute
-    private String namespace;
-
-    private String renderViewContainer;
-    
-    private String renderBody;
-    
-    private String renderHead;
-    
-    @XmlElementWrapper(name = "includes")
-    @XmlElements(
-    {
-        @XmlElement(name = "include", type = String.class)
-    })
-    private List<String> includes;
-
     @XmlElementWrapper(name = "ftlIncludes")
     @XmlElements(
     {
@@ -93,157 +65,94 @@ public class UISuite
     })
     private List<ControlDef> controlsTemplates;
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getPackage()
-    {
-        return packageName;
-    }
-
-    public void setPackage(String packageName)
-    {
-        this.packageName = packageName;
-    }
-
-    public String getNamespace()
-    {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace)
-    {
-        this.namespace = namespace;
-    }
-
-    public String getRenderViewContainer()
-    {
-        return renderViewContainer;
-    }
-
-    public void setRenderViewContainer(String renderViewContainer)
-    {
-        this.renderViewContainer = renderViewContainer;
-    }
-
-    public String getRenderBody()
-    {
-        return renderBody;
-    }
-
-    public void setRenderBody(String renderBody)
-    {
-        this.renderBody = renderBody;
-    }
-
-    public String getRenderHead()
-    {
-        return renderHead;
-    }
-
-    public void setRenderHead(String renderHead)
-    {
-        this.renderHead = renderHead;
-    }
-
+    /**
+     * 
+     * @return 
+     */
     public List<Resource> getResources()
     {
         return resources;
     }
 
+    /**
+     * 
+     * @param resources 
+     */
     public void setResources(List<Resource> resources)
     {
         this.resources = resources;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Resource getDefaultResources()
     {
         return defaultResources;
     }
 
+    /**
+     * 
+     * @param defaultResources 
+     */
     public void setDefaultResources(Resource defaultResources)
     {
         this.defaultResources = defaultResources;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<ControlDef> getControls()
     {
         return controls;
     }
 
+    /**
+     * 
+     * @param controls 
+     */
     public void setControls(List<ControlDef> controls)
     {
         this.controls = controls;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<ControlDef> getControlsTemplates()
     {
         return controlsTemplates;
     }
 
+    /**
+     * 
+     * @param controlsTemplates 
+     */
     public void setControlsTemplates(List<ControlDef> controlsTemplates)
     {
         this.controlsTemplates = controlsTemplates;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<String> getFtlIncludes()
     {
         return ftlIncludes;
     }
 
+    /**
+     * 
+     * @param ftlIncludes 
+     */
     public void setFtlIncludes(List<String> ftlIncludes)
     {
         this.ftlIncludes = ftlIncludes;
-    }
-
-    public List<String> getIncludes()
-    {
-        return includes;
-    }
-
-    public void setIncludes(List<String> includes)
-    {
-        this.includes = includes;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
-    
-    public void processIncludes(VFile currentDir)
-    {
-        for (String include : includes)
-        {
-            VFile includeFile = new VFile(currentDir.getPath().join(new Path(include)));
-            if(includeFile.exists())
-            {
-                try
-                {
-                    PartialUISuite partial = PartialUISuite.load(includeFile);
-                    if(partial != null)
-                    {
-                        controls.addAll(partial.getControls());
-                        controlsTemplates.addAll(partial.getControlsTemplates());
-                        resources.addAll(partial.getResources());
-                        ftlIncludes.addAll(partial.getFtlIncludes());
-                    }
-                }
-                catch (IOException | JAXBException e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
-            }
-        }
-        includes.clear();
     }
 
     /**
@@ -253,7 +162,7 @@ public class UISuite
      * @throws JAXBException 
      * @throws IOException 
      */
-    public static UISuite load(VFile xmlFile) throws JAXBException, IOException
+    public static PartialUISuite load(VFile xmlFile) throws JAXBException, IOException
     {
         if(!xmlFile.exists()) return null;
         try(InputStream is = new VFileInputStream(xmlFile))
@@ -268,10 +177,10 @@ public class UISuite
      * @return 
      * @throws JAXBException 
      */
-    public static UISuite load(InputStream is) throws JAXBException
+    public static PartialUISuite load(InputStream is) throws JAXBException
     {
-        JAXBContext ctx = JAXBContext.newInstance(UISuite.class);
-        return (UISuite)ctx.createUnmarshaller().unmarshal(is);
+        JAXBContext ctx = JAXBContext.newInstance(PartialUISuite.class);
+        return (PartialUISuite)ctx.createUnmarshaller().unmarshal(is);
     }
 
     /**
@@ -280,9 +189,9 @@ public class UISuite
      * @param config 
      * @throws JAXBException 
      */
-    public static void save(OutputStream os, UISuite config) throws JAXBException
+    public static void save(OutputStream os, PartialUISuite config) throws JAXBException
     {
-        JAXBContext ctx = JAXBContext.newInstance(UISuite.class);
+        JAXBContext ctx = JAXBContext.newInstance(PartialUISuite.class);
         ctx.createMarshaller().marshal(config, os);
     }
 }

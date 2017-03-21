@@ -53,9 +53,10 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
      * @throws IOException If any i/o exception occurs reading or writing the source files.
      */
     @Override
-    public void generateSources(UISuite uiSuite) throws IOException
+    public void generateSources(UISuite uiSuite, VFile file) throws IOException
     {
         Map<String, Object> data = new HashMap<>();
+        uiSuite.processIncludes(file.getParent());
         data.put("uisuite", uiSuite);
         srcGen.createResource("BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
         srcGen.createClass(uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
