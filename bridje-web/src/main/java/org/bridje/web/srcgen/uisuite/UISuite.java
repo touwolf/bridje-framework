@@ -19,6 +19,7 @@ package org.bridje.web.srcgen.uisuite;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -231,10 +232,28 @@ public class UISuite
                     PartialUISuite partial = PartialUISuite.load(includeFile);
                     if(partial != null)
                     {
-                        controls.addAll(partial.getControls());
-                        controlsTemplates.addAll(partial.getControlsTemplates());
-                        resources.addAll(partial.getResources());
-                        ftlIncludes.addAll(partial.getFtlIncludes());
+                        if(partial.getControls() != null)
+                        {
+                            if(controls == null) controls = new ArrayList<>();
+                            partial.getControls().stream().forEach(c -> c.setUiSuite(this));
+                            controls.addAll(partial.getControls());
+                        }
+                        if(partial.getControlsTemplates() != null)
+                        {
+                            if(controlsTemplates == null) controlsTemplates = new ArrayList<>();
+                            partial.getControlsTemplates().stream().forEach(c -> c.setUiSuite(this));
+                            controlsTemplates.addAll(partial.getControlsTemplates());
+                        }
+                        if(partial.getResources() != null)
+                        {
+                            if(resources == null) resources = new ArrayList<>();
+                            resources.addAll(partial.getResources());
+                        }
+                        if(partial.getFtlIncludes() != null)
+                        {
+                            if(ftlIncludes == null) ftlIncludes = new ArrayList<>();
+                            ftlIncludes.addAll(partial.getFtlIncludes());
+                        }
                     }
                 }
                 catch (IOException | JAXBException e)

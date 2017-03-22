@@ -249,7 +249,10 @@ public class BaseControlDef
      */
     public void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        uiSuite = (UISuite) parent;
+        if(parent instanceof UISuite)
+        {
+            uiSuite = (UISuite) parent;
+        }
     }
 
     /**
@@ -260,6 +263,16 @@ public class BaseControlDef
     public UISuite getUISuite()
     {
         return uiSuite;
+    }
+
+    /**
+     * Sets the parent UISuite object.
+     * 
+     * @param uiSuite The parent UISuite object.
+     */
+    void setUiSuite(UISuite uiSuite)
+    {
+        this.uiSuite = uiSuite;
     }
 
     /**
