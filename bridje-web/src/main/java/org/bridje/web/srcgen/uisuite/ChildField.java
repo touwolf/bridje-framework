@@ -75,12 +75,22 @@ public class ChildField implements FieldDef
         this.type = type;
     }
 
+    /**
+     * If this child field allows a placeholder.
+     * 
+     * @return true this child field allows palceholders.
+     */
     public boolean getAllowPlaceHolder()
     {
         if(this.allowPlaceHolder == null) return false;
         return allowPlaceHolder;
     }
 
+    /**
+     * If this child field allows a placeholder.
+     * 
+     * @param allowPlaceHolder true this child field allows palceholders.
+     */
     public void setAllowPlaceHolder(boolean allowPlaceHolder)
     {
         this.allowPlaceHolder = allowPlaceHolder;

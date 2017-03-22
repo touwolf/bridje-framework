@@ -16,15 +16,43 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+/**
+ * An interface for all the fields that a control can have.
+ */
 public interface FieldDef
 {
+    /**
+     * The java type of the field.
+     * 
+     * @return The string representation of the java type of the field.
+     */
     public String getJavaType();
     
+    /**
+     * The kind of field this is.
+     * 
+     * @return An string representation of the field type.
+     */
     public String getFieldType();
     
+    /**
+     * If this is a child field, or a basic field.
+     * 
+     * @return true this is a child field.
+     */
     public boolean getIsChild();
 
+    /**
+     * If this is an event field.
+     * 
+     * @return true this is an event field.
+     */
     public boolean getIsEvent();
 
+    /**
+     * If this is an input field.
+     * 
+     * @return true this is an input field.
+     */
     public boolean getIsInput();
 }

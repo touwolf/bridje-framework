@@ -272,21 +272,41 @@ public class BaseControlDef
         return uiSuite.getPackage();
     }
     
+    /**
+     * If this control has any children.
+     * 
+     * @return true the control has childrens, false otherwise.
+     */
     public boolean getHasChildren()
     {
         return getFields().stream().anyMatch(f -> f.getIsChild());
     }
 
+    /**
+     * If the control has inputs.
+     * 
+     * @return true the control has inputs, false otherwise.
+     */
     public boolean getHasInputs()
     {
         return getFields().stream().anyMatch(f -> f.getIsInput());
     }
 
+    /**
+     * If the control has any event.
+     * 
+     * @return true the control has events, false otherwise.
+     */
     public boolean getHasEvents()
     {
         return getFields().stream().anyMatch(f -> f.getIsEvent());
     }
 
+    /**
+     * If the control has resources.
+     * 
+     * @return true the control has resources, false otherwise.
+     */
     public boolean getHasResources()
     {
         return !getResources().isEmpty();
