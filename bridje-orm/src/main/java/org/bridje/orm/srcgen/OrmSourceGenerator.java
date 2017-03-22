@@ -25,11 +25,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
-import org.bridje.orm.srcgen.edit.OrmSrcGenTreeItem;
 import org.bridje.orm.srcgen.model.CustomTypesProvider;
 import org.bridje.orm.srcgen.model.EntityInf;
 import org.bridje.orm.srcgen.model.EnumBaseInf;
@@ -149,12 +147,6 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     public String toString()
     {
         return "ORM Models";
-    }
-
-    @Override
-    public TreeItem<?> createTreeNode()
-    {
-        return new OrmSrcGenTreeItem(this);
     }
 
     private Properties loadProperties(URL url) throws IOException

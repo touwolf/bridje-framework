@@ -18,7 +18,6 @@ package org.bridje.srcgen;
 
 import java.io.IOException;
 import java.util.Map;
-import javafx.scene.control.TreeItem;
 import org.bridje.vfs.VFile;
 
 /**
@@ -42,10 +41,4 @@ public interface SourceGenerator<T>
      * @throws IOException
      */
     void generateSources(T data, VFile file) throws IOException;
-
-    /**
-     * 
-     * @return 
-     */
-    TreeItem<?> createTreeNode();
 }

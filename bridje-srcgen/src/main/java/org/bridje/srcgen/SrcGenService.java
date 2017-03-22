@@ -107,10 +107,4 @@ public interface SrcGenService
      * @throws IOException If any IO exception occurs.
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
-
-    /**
-     *
-     */
-    void showDataEditor();
-
 }

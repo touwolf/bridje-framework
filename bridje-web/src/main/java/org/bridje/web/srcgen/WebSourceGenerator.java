@@ -21,9 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
@@ -81,31 +78,6 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
-    }
-
-    @Override
-    public TreeItem<?> createTreeNode()
-    {
-        TreeItem<Object> treeItem = new TreeItem<>(this, createImageView());
-        Map<UISuite, VFile> data = findData();
-        for (UISuite uISuite : data.keySet())
-        {
-            treeItem.getChildren().add(new TreeItem<>(uISuite, createImageView()));
-        }
-        return treeItem;
-    }
-
-    private static ImageView createImageView(String image)
-    {
-        ImageView imageView = new ImageView(new Image(WebSourceGenerator.class.getResourceAsStream(image)));
-        imageView.setFitHeight(18);
-        imageView.setFitWidth(18);
-        return imageView;
-    }
-
-    public ImageView createImageView()
-    {
-        return createImageView("uisuite.png");
     }
 
     @Override
