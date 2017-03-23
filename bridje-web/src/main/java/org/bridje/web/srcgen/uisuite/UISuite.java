@@ -222,47 +222,50 @@ public class UISuite
     
     public void processIncludes(VFile currentDir)
     {
-        for (String include : includes)
+        if(includes != null)
         {
-            VFile includeFile = new VFile(currentDir.getPath().join(new Path(include)));
-            if(includeFile.exists())
+            for (String include : includes)
             {
-                try
+                VFile includeFile = new VFile(currentDir.getPath().join(new Path(include)));
+                if(includeFile.exists())
                 {
-                    PartialUISuite partial = PartialUISuite.load(includeFile);
-                    if(partial != null)
+                    try
                     {
-                        if(partial.getControls() != null)
+                        PartialUISuite partial = PartialUISuite.load(includeFile);
+                        if(partial != null)
                         {
-                            if(controls == null) controls = new ArrayList<>();
-                            partial.getControls().stream().forEach(c -> c.setUiSuite(this));
-                            controls.addAll(partial.getControls());
-                        }
-                        if(partial.getControlsTemplates() != null)
-                        {
-                            if(controlsTemplates == null) controlsTemplates = new ArrayList<>();
-                            partial.getControlsTemplates().stream().forEach(c -> c.setUiSuite(this));
-                            controlsTemplates.addAll(partial.getControlsTemplates());
-                        }
-                        if(partial.getResources() != null)
-                        {
-                            if(resources == null) resources = new ArrayList<>();
-                            resources.addAll(partial.getResources());
-                        }
-                        if(partial.getFtlIncludes() != null)
-                        {
-                            if(ftlIncludes == null) ftlIncludes = new ArrayList<>();
-                            ftlIncludes.addAll(partial.getFtlIncludes());
+                            if(partial.getControls() != null)
+                            {
+                                if(controls == null) controls = new ArrayList<>();
+                                partial.getControls().stream().forEach(c -> c.setUiSuite(this));
+                                controls.addAll(partial.getControls());
+                            }
+                            if(partial.getControlsTemplates() != null)
+                            {
+                                if(controlsTemplates == null) controlsTemplates = new ArrayList<>();
+                                partial.getControlsTemplates().stream().forEach(c -> c.setUiSuite(this));
+                                controlsTemplates.addAll(partial.getControlsTemplates());
+                            }
+                            if(partial.getResources() != null)
+                            {
+                                if(resources == null) resources = new ArrayList<>();
+                                resources.addAll(partial.getResources());
+                            }
+                            if(partial.getFtlIncludes() != null)
+                            {
+                                if(ftlIncludes == null) ftlIncludes = new ArrayList<>();
+                                ftlIncludes.addAll(partial.getFtlIncludes());
+                            }
                         }
                     }
-                }
-                catch (IOException | JAXBException e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    catch (IOException | JAXBException e)
+                    {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                 }
             }
+            includes.clear();
         }
-        includes.clear();
     }
 
     /**
