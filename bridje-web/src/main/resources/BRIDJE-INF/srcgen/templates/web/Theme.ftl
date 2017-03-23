@@ -49,9 +49,13 @@
     [#list uisuite.defaultResources.scripts as s]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
     [/#list]
-    <#list view.resources as r>
-        <#assign macroName = "render" + r?cap_first + "Scripts" />
-        <@.vars[macroName] themeName />
+    <#list view.resources as res>
+        <#assign macroName = "render" + res?cap_first + "Scripts" />
+        <#if .vars[macroName]?? >
+            <@.vars[macroName] themeName />
+        <#else>
+            <!-- ERROR Invalid resource ${r"${res}"} -->
+        </#if>
     </#list>
 </#macro>
 
@@ -62,9 +66,13 @@
     [#list uisuite.defaultResources.links as l]
     <@renderLink themeName "${l.rel}" "${l.href}" />
     [/#list]
-    <#list view.resources as r>
-        <#assign macroName = "render" + r?cap_first + "Styles" />
-        <@.vars[macroName] themeName />
+    <#list view.resources as res>
+        <#assign macroName = "render" + res?cap_first + "Styles" />
+        <#if .vars[macroName]?? >
+            <@.vars[macroName] themeName />
+        <#else>
+            <!-- ERROR Invalid resource ${r"${res}"} -->
+        </#if>
     </#list>
 </#macro>
 

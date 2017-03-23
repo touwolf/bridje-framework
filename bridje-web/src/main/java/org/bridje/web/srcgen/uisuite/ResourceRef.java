@@ -17,25 +17,65 @@
 package org.bridje.web.srcgen.uisuite;
 
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResourceRef
 {
-    @XmlIDREF
     @XmlAttribute(name = "name")
+    private String name;
+    
+    @XmlTransient
     private Resource resource;
+
+    @XmlTransient
+    private UISuite uiSuite;
 
     public String getName()
     {
-        return resource.getName();
+        return name;
     }
 
     public List<AssetBase> getContent()
     {
+        if(getResource() == null) return null;
         return resource.getContent();
+    }
+
+    private Resource getResource()
+    {
+        if(resource == null)
+        {
+            resource = uiSuite.getResources().stream().filter(r -> r.getName().equals(name)).findFirst().orElse(null);
+        }
+        return resource;
+    }
+
+    public UISuite getUiSuite()
+    {
+        return uiSuite;
+    }
+
+    void setUiSuite(UISuite uiSuite)
+    {
+        this.uiSuite = uiSuite;
+    }
+
+    /**
+     * This method is called by JAXB after the unmarshal has happend.
+     * 
+     * @param u The unmarshaller.
+     * @param parent The parent.
+     */
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        if(parent instanceof UISuite)
+        {
+            uiSuite = (UISuite) parent;
+        }
     }
 }

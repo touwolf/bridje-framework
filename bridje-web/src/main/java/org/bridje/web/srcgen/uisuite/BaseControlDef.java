@@ -272,6 +272,7 @@ public class BaseControlDef
      */
     void setUiSuite(UISuite uiSuite)
     {
+        if(resources != null) resources.stream().forEach(r -> r.setUiSuite(uiSuite));
         this.uiSuite = uiSuite;
     }
 
