@@ -73,6 +73,11 @@ public abstract class EnumBaseInf
         model = (ModelInf) parent;
     }
 
+    /**
+     * The package for this enitty.
+     * 
+     * @return The package for this enitty.
+     */
     public abstract String getPackage();
 
     /**

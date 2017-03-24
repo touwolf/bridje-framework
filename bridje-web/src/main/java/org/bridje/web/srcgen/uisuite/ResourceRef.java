@@ -23,6 +23,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * A reference to a resource.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResourceRef
 {
@@ -35,17 +38,32 @@ public class ResourceRef
     @XmlTransient
     private UISuite uiSuite;
 
+    /**
+     * Gets the name of the referenced resource.
+     * 
+     * @return The name of the referenced resource.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Gets the list of assets for the referenced resource.
+     * 
+     * @return The list of assets for the referenced resource.
+     */
     public List<AssetBase> getContent()
     {
         if(getResource() == null) return null;
         return resource.getContent();
     }
 
+    /**
+     * Gets the actual referenced resource.
+     * 
+     * @return The actual referenced resource.
+     */
     private Resource getResource()
     {
         if(resource == null)
@@ -55,11 +73,21 @@ public class ResourceRef
         return resource;
     }
 
+    /**
+     * The parent UISuite for this resource.
+     * 
+     * @return The parent UISuite for this resource.
+     */
     public UISuite getUiSuite()
     {
         return uiSuite;
     }
 
+    /**
+     * The parent UISuite for this resource.
+     * 
+     * @param uiSuite The parent UISuite for this resource.
+     */
     void setUiSuite(UISuite uiSuite)
     {
         this.uiSuite = uiSuite;

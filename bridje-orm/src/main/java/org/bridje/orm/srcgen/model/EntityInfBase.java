@@ -272,11 +272,21 @@ public class EntityInfBase
                 .orElse(null);
     }
 
+    /**
+     * Gets only the declared fields in this entity.
+     * 
+     * @return Gets only the declared fields in this entity.
+     */
     public List<FieldInfBase> getDeclaredFields()
     {
         return fields;
     }
 
+    /**
+     * Gets only the declared operations in this entity.
+     * 
+     * @return Gets only the declared operations in this entity.
+     */
     public List<OperationInfBase> getDeclaredOperations()
     {
         return operations;

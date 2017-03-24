@@ -20,6 +20,9 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 
+/**
+ * A resource declaration for an UI suite.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resource
 {
@@ -44,26 +47,51 @@ public class Resource
     @XmlTransient
     private List<Link> linkList;
 
+    /**
+     * The name of the resource.
+     * 
+     * @return The name of the resource.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the resource.
+     * 
+     * @param name The name of the resource.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The list of assets for this resource.
+     * 
+     * @return The list of assets for this resource.
+     */
     public List<AssetBase> getContent()
     {
         return content;
     }
 
+    /**
+     * The list of assets for this resource.
+     * 
+     * @param content The list of assets for this resource.
+     */
     public void setContent(List<AssetBase> content)
     {
         this.content = content;
     }
 
+    /**
+     * Gets all the scripts declared for this resource.
+     * 
+     * @return The list of scripts declared for this resource.
+     */
     public List<Script> getScripts()
     {
         if (scriptList == null)
@@ -80,6 +108,11 @@ public class Resource
         return scriptList;
     }
 
+    /**
+     * Gets all the styles declared for this resource.
+     * 
+     * @return The list of styles declared for this resource.
+     */
     public List<Style> getStyles()
     {
         if (styleList == null)
@@ -96,6 +129,11 @@ public class Resource
         return styleList;
     }
 
+    /**
+     * Gets all the links declared for this resource.
+     * 
+     * @return The list of links declared for this resource.
+     */
     public List<Link> getLinks()
     {
         if (linkList == null)

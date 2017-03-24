@@ -20,6 +20,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Parent class for all the resources assets for an UI suite.
+ * 
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Script extends AssetBase
 {
@@ -29,6 +33,11 @@ public class Script extends AssetBase
     @XmlAttribute
     private Boolean defer;
 
+    /**
+     * If this asset must be declared as async.
+     * 
+     * @return If this asset must be declared as async.
+     */
     public Boolean getAsync()
     {
         if (async == null)
@@ -38,11 +47,21 @@ public class Script extends AssetBase
         return async;
     }
 
+    /**
+     * If this asset must be declared as async.
+     * 
+     * @param async If this asset must be declared as async.
+     */
     public void setAsync(Boolean async)
     {
         this.async = async;
     }
 
+    /**
+     * If this asset must be declared as defer.
+     * 
+     * @return If this asset must be declared as defer.
+     */
     public Boolean getDefer()
     {
         if (defer == null)
@@ -52,6 +71,11 @@ public class Script extends AssetBase
         return defer;
     }
 
+    /**
+     * If this asset must be declared as defer.
+     * 
+     * @param defer If this asset must be declared as defer.
+     */
     public void setDefer(Boolean defer)
     {
         this.defer = defer;

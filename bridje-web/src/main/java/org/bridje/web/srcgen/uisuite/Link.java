@@ -20,17 +20,30 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * A custom link declaration for a resource.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Link extends AssetBase
 {
     @XmlAttribute
     private String rel;
 
+    /**
+     * The rel attribute for the link.
+     * 
+     * @return The rel attribute for the link.
+     */
     public String getRel()
     {
         return rel;
     }
 
+    /**
+     * The rel attribute for the link.
+     * 
+     * @param rel The rel attribute for the link.
+     */
     public void setRel(String rel)
     {
         this.rel = rel;

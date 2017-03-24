@@ -3,6 +3,7 @@ package org.bridje.vfs;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
 /**
  * This object represents an output stream for a virtual file.
  */
@@ -12,12 +13,22 @@ public class VFileOutputStream extends OutputStream
 
     private final OutputStream os;
 
+    /**
+     * Defaults constructor for this object.
+     * 
+     * @param vfile The file to write to.
+     */
     public VFileOutputStream(VFile vfile)
     {
         this.vfile = vfile;
         this.os = this.vfile.openForWrite();
     }
 
+    /**
+     * Gets the VFile that this stream writes to.
+     * 
+     * @return The VFile that this stream writes to.
+     */
     public VFile getVFile()
     {
         return vfile;

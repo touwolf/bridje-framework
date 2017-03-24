@@ -19,6 +19,9 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * A UI suite control definition.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlDef extends BaseControlDef
 {

@@ -19,6 +19,9 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * A definition of a control that can act as a template for other controls.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TemplateControlDef extends BaseControlDef
 {

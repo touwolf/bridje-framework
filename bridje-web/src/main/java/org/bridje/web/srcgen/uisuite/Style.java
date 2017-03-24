@@ -20,17 +20,30 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * An style asset for a resource of an UI suite.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Style extends AssetBase
 {
     @XmlAttribute
     private String style;
 
+    /**
+     * The actual url for the style.
+     * 
+     * @return The actual url for the style.
+     */
     public String getStyle()
     {
         return style;
     }
 
+    /**
+     * The actual url for the style.
+     * 
+     * @param style The actual url for the style.
+     */
     public void setStyle(String style)
     {
         this.style = style;

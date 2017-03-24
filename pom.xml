@@ -32,7 +32,6 @@
         <module>bridje-web</module>
         <module>bridje-el</module>
         <module>bridje-maven-plugin</module>
-        <module>bridje-sip</module>
         <module>bridje-srcgen</module>
     </modules>
 

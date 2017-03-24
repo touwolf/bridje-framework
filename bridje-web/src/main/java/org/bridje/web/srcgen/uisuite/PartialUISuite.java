@@ -31,6 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 
+/**
+ * A partial UI suite definition.
+ */
 @XmlRootElement(name = "partialuisuite")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PartialUISuite
@@ -66,8 +69,9 @@ public class PartialUISuite
     private List<ControlDef> controlsTemplates;
 
     /**
+     * The resources for this partial UI suite declaration.
      * 
-     * @return 
+     * @return The resources for this partial UI suite declaration.
      */
     public List<Resource> getResources()
     {
@@ -75,8 +79,9 @@ public class PartialUISuite
     }
 
     /**
+     * The resources for this partial UI suite declaration.
      * 
-     * @param resources 
+     * @param resources The resources for this partial UI suite declaration.
      */
     public void setResources(List<Resource> resources)
     {
@@ -84,26 +89,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of controls for this partial declaration.
      * 
-     * @return 
-     */
-    public Resource getDefaultResources()
-    {
-        return defaultResources;
-    }
-
-    /**
-     * 
-     * @param defaultResources 
-     */
-    public void setDefaultResources(Resource defaultResources)
-    {
-        this.defaultResources = defaultResources;
-    }
-
-    /**
-     * 
-     * @return 
+     * @return The list of controls for this partial declaration.
      */
     public List<ControlDef> getControls()
     {
@@ -111,8 +99,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of controls for this partial declaration.
      * 
-     * @param controls 
+     * @param controls The list of controls for this partial declaration.
      */
     public void setControls(List<ControlDef> controls)
     {
@@ -120,8 +109,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of controls templates for this partial declaration.
      * 
-     * @return 
+     * @return The list of controls templates for this partial declaration.
      */
     public List<ControlDef> getControlsTemplates()
     {
@@ -129,8 +119,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of controls templates for this partial declaration.
      * 
-     * @param controlsTemplates 
+     * @param controlsTemplates The list of controls templates for this partial declaration.
      */
     public void setControlsTemplates(List<ControlDef> controlsTemplates)
     {
@@ -138,8 +129,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of freemarker templates to be includes.
      * 
-     * @return 
+     * @return The list of freemarker templates to be includes.
      */
     public List<String> getFtlIncludes()
     {
@@ -147,8 +139,9 @@ public class PartialUISuite
     }
 
     /**
+     * The list of freemarker templates to be includes.
      * 
-     * @param ftlIncludes 
+     * @param ftlIncludes The list of freemarker templates to be includes.
      */
     public void setFtlIncludes(List<String> ftlIncludes)
     {
@@ -156,11 +149,12 @@ public class PartialUISuite
     }
 
     /**
+     * Loads a PartialUISuite from a file.
      * 
-     * @param xmlFile 
-     * @return 
-     * @throws JAXBException 
-     * @throws IOException 
+     * @param xmlFile The file to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     * @throws IOException If any IO Exception occurs.
      */
     public static PartialUISuite load(VFile xmlFile) throws JAXBException, IOException
     {
@@ -172,10 +166,11 @@ public class PartialUISuite
     }
 
     /**
+     * Loads a PartialUISuite from an input stream.
      * 
-     * @param is 
-     * @return 
-     * @throws JAXBException 
+     * @param is The input stream to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
      */
     public static PartialUISuite load(InputStream is) throws JAXBException
     {
@@ -184,14 +179,15 @@ public class PartialUISuite
     }
 
     /**
+     * Save a PartialUISuite to an output stream.
      * 
-     * @param os 
-     * @param config 
-     * @throws JAXBException 
+     * @param os The output stream to write the object to.
+     * @param object The object to write.
+     * @throws JAXBException If any JAXB Exception occurs.
      */
-    public static void save(OutputStream os, PartialUISuite config) throws JAXBException
+    public static void save(OutputStream os, PartialUISuite object) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(PartialUISuite.class);
-        ctx.createMarshaller().marshal(config, os);
+        ctx.createMarshaller().marshal(object, os);
     }
 }

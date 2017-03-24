@@ -39,40 +39,88 @@ public abstract class OperationInfBase
     @XmlTransient
     private EntityInfBase entity;
     
+    /**
+     * The name of the operation.
+     * 
+     * @return The name of the operation.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the operation.
+     * 
+     * @param name The name of the operation.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * The description of the operation.
+     * 
+     * @return The description of the operation.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * The description of the operation.
+     * 
+     * @param description The description of the operation.
+     */
     public void setDescription(String description)
     {
         this.description = description;
     }
 
+    /**
+     * The parent entity.
+     * 
+     * @return The parent entity.
+     */
     public EntityInfBase getEntity()
     {
         return entity;
     }
 
+    /**
+     * Called by JAXB after unmarshal.
+     * 
+     * @param u The unmarshaller.
+     * @param parent The parent object.
+     */
     public void afterUnmarshal(Unmarshaller u, Object parent)
     {
         entity = (EntityInfBase)parent;
     }
 
+    /**
+     * The kind of operation this object represents.
+     * 
+     * @return The kind of operation this object represents.
+     */
     public abstract OperationType getOperationType();
     
+    /**
+     * Clone this object to the given entity.
+     * 
+     * @param entity The parent entity for the clone.
+     * @return The new cloned object.
+     */
     public abstract OperationInfBase clone(EntityInfBase entity);
     
+    /**
+     * Convinient clone method for the classes that extends from this one.
+     * 
+     * @param result The resulting object.
+     * @param entity The parent entity.
+     */
     protected void clone(OperationInfBase result, EntityInfBase entity)
     {
         result.entity = entity;

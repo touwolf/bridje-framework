@@ -8,7 +8,7 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VfsSource;
 
-public class VfsSourceNodeProxy extends VfsNode
+class VfsSourceNodeProxy extends VfsNode
 {
     private final List<VfsSourceNode> nodes;
 

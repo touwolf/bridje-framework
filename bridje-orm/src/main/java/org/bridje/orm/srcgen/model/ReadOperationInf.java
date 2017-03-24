@@ -33,26 +33,50 @@ public class ReadOperationInf extends ParametizedOperationInf
     @XmlAttribute
     private String result;
     
+    /**
+     * The result type for the read operation.
+     * 
+     * @return The result type for the read operation.
+     */
     public ReadOperationResultType getResultType()
     {
         return resultType;
     }
 
+    /**
+     * The result type for the read operation.
+     * 
+     * @param resultType The result type for the read operation.
+     */
     public void setResultType(ReadOperationResultType resultType)
     {
         this.resultType = resultType;
     }
 
+    /**
+     * The java type for the result of this operation.
+     * 
+     * @return The java type for the result of this operation.
+     */
     public String getResult()
     {
         return result;
     }
 
+    /**
+     * The java type for the result of this operation.
+     * 
+     * @param result The java type for the result of this operation.
+     */
     public void setResult(String result)
     {
         this.result = result;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public FieldInfBase getResultField()
     {
         return getEntity().getFields()

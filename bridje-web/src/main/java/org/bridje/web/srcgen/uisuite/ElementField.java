@@ -19,6 +19,10 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * A literal value base control field that must be declared as an element 
+ * rather than as an attribute.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ElementField extends BaseDataFlield
 {
