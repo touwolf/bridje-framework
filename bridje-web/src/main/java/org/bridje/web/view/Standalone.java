@@ -16,23 +16,9 @@
 
 package org.bridje.web.view;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import org.bridje.web.view.controls.Control;
-
 /**
  * Defines a view that will not extend from any layout, an standalone view.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Standalone extends ViewDefinition
+public interface Standalone extends ViewDefinition
 {
-    @XmlAnyElement(lax = true)
-    private Control root;
-
-    @Override
-    public Control findRoot()
-    {
-        return root;
-    }
 }

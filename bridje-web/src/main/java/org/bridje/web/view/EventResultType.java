@@ -16,13 +16,10 @@
 
 package org.bridje.web.view;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
  * The kind of the message that must be show to the user after an event
  * invocation.
  */
-@XmlTransient
 public enum EventResultType
 {
     /**

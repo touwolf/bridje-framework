@@ -62,7 +62,6 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <sources>
-                                <source>src/main/java/org/bridje/web/view</source>
                                 <source>src/main/java/org/bridje/web/srcgen/uisuite</source>
                             </sources>
                         </configuration>
@@ -84,11 +83,6 @@
                             <artifacts>
                                 <artifact>
                                     <file>target/generated-resources/schemagen/schema1.xsd</file>
-                                    <type>xsd</type>
-                                    <classifier>view</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>target/generated-resources/schemagen/schema2.xsd</file>
                                     <type>xsd</type>
                                     <classifier>uisuite</classifier>
                                 </artifact>

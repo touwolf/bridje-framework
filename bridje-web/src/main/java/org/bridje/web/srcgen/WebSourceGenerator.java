@@ -52,17 +52,38 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     @Override
     public void generateSources(UISuite uiSuite, VFile file) throws IOException
     {
+        if(uiSuite.getName() == null)
+        {
+            LOG.log(Level.SEVERE, "The UISuite for {0} does not have a name.", file.getPath().toString());
+            return;
+        }
+        if(uiSuite.getPackage() == null)
+        {
+            LOG.log(Level.SEVERE, "The UISuite for {0} does not have a package.", file.getPath().toString());
+            return;            
+        }
         Map<String, Object> data = new HashMap<>();
         uiSuite.processIncludes(file.getParent());
         data.put("uisuite", uiSuite);
         srcGen.createResource("BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
         srcGen.createClass(uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
-        for (ControlDef controlDef : uiSuite.getControls())
+        String fullName = uiSuite.getPackage() + "." + uiSuite.getName();
+        srcGen.createClass(fullName + "AbstractView", "web/AbstractView.ftl", data);
+        srcGen.createClass(fullName + "Defines", "web/Defines.ftl", data);
+        srcGen.createClass(fullName + "ExtendsFrom", "web/ExtendsFrom.ftl", data);
+        srcGen.createClass(fullName + "Layout", "web/Layout.ftl", data);
+        srcGen.createClass(fullName + "MetaTag", "web/MetaTag.ftl", data);
+        srcGen.createClass(fullName + "Standalone", "web/Standalone.ftl", data);
+        srcGen.createClass(fullName + "View", "web/View.ftl", data);
+        if(uiSuite.getControls() != null)
         {
-            data = new HashMap<>();
-            data.put("uisuite", uiSuite);
-            data.put("control", controlDef);
-            srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
+            for (ControlDef controlDef : uiSuite.getControls())
+            {
+                data = new HashMap<>();
+                data.put("uisuite", uiSuite);
+                data.put("control", controlDef);
+                srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
+            }
         }
     }
 

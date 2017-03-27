@@ -16,35 +16,19 @@
 
 package org.bridje.web.view;
 
-import java.util.Collections;
 import java.util.List;
-import javax.xml.bind.annotation.*;
 
 /**
  * Represents a view of the application, views are render by themes and are
  * composed from controls. The views are inmutables so once defined they will
  * stay the same at runtime.
  */
-@XmlRootElement(name = "layout")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class WebLayout extends AbstractWebView
+public interface WebLayout extends AbstractView
 {
-    @XmlElements(
-        @XmlElement(name = "meta", type = MetaTag.class)
-    )
-    private List<MetaTag> metaTags;
-
     /**
      * Gets a list of meta information tags information to be rendered with views that extends this layout.
      *
      * @return A list of meta information tags assigned to views.
      */
-    public List<MetaTag> getMetaTags()
-    {
-        if (metaTags == null)
-        {
-            metaTags = Collections.emptyList();
-        }
-        return metaTags;
-    }
+    List<MetaTag> getMetaTags();
 }

@@ -36,9 +36,9 @@ import org.bridje.ioc.Component;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
-import org.bridje.web.view.AbstractWebView;
 import org.bridje.web.view.WebLayout;
 import org.bridje.web.view.WebView;
+import org.bridje.web.view.AbstractView;
 
 /**
  * A service for reading web views, and keep track of all controls classes
@@ -162,14 +162,14 @@ public class ControlManager
         });
     }
 
-    private AbstractWebView toWebView(VFile f)
+    private AbstractView toWebView(VFile f)
     {
         try (InputStream is = new VFileInputStream(f))
         {
             Object unmObj = webViewUnmarsh.unmarshal(is);
-            if (unmObj instanceof AbstractWebView)
+            if (unmObj instanceof AbstractView)
             {
-                return (AbstractWebView) unmObj;
+                return (AbstractView) unmObj;
             }
         }
         catch (JAXBException | IOException ex)
