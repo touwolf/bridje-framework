@@ -40,9 +40,6 @@ public class BaseControlDef
     private String name;
 
     @XmlAttribute
-    private String rootElement;
-
-    @XmlAttribute
     private String base;
 
     @XmlIDREF
@@ -53,29 +50,29 @@ public class BaseControlDef
 
     @XmlElementWrapper(name = "fields")
     @XmlElements(
-            {
-                @XmlElement(name = "outAttr", type = OutAttrField.class),
-                @XmlElement(name = "inAttr", type = InAttrFlield.class),
-                @XmlElement(name = "eventAttr", type = EventAttrFlield.class),
-                @XmlElement(name = "attr", type = AttrFlield.class),
-                @XmlElement(name = "outEl", type = OutElementField.class),
-                @XmlElement(name = "inEl", type = InElementFlield.class),
-                @XmlElement(name = "eventEl", type = EventElementFlield.class),
-                @XmlElement(name = "el", type = ElementField.class),
-                @XmlElement(name = "outValue", type = OutValueField.class),
-                @XmlElement(name = "inValue", type = InValueFlield.class),
-                @XmlElement(name = "eventValue", type = EventValueFlield.class),
-                @XmlElement(name = "value", type = ValueFlield.class),
-                @XmlElement(name = "child", type = ChildField.class),
-                @XmlElement(name = "children", type = ChildrenFlield.class)
-            })
+    {
+        @XmlElement(name = "outAttr", type = OutAttrField.class),
+        @XmlElement(name = "inAttr", type = InAttrFlield.class),
+        @XmlElement(name = "eventAttr", type = EventAttrFlield.class),
+        @XmlElement(name = "attr", type = AttrFlield.class),
+        @XmlElement(name = "outEl", type = OutElementField.class),
+        @XmlElement(name = "inEl", type = InElementFlield.class),
+        @XmlElement(name = "eventEl", type = EventElementFlield.class),
+        @XmlElement(name = "el", type = ElementField.class),
+        @XmlElement(name = "outValue", type = OutValueField.class),
+        @XmlElement(name = "inValue", type = InValueFlield.class),
+        @XmlElement(name = "eventValue", type = EventValueFlield.class),
+        @XmlElement(name = "value", type = ValueFlield.class),
+        @XmlElement(name = "child", type = ChildField.class),
+        @XmlElement(name = "children", type = ChildrenFlield.class)
+    })
     private List<FieldDef> fields;
 
     @XmlElementWrapper(name = "resources")
     @XmlElements(
-            {
-                @XmlElement(name = "resource", type = ResourceRef.class)
-            })
+    {
+        @XmlElement(name = "resource", type = ResourceRef.class)
+    })
     private List<ResourceRef> resources;
 
     @XmlTransient
@@ -105,28 +102,6 @@ public class BaseControlDef
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    /**
-     * Defines the name of the root element for this object. this determines if
-     * this control can be use as the root of the xml hierarchy.
-     *
-     * @return The name of the root element to be use.
-     */
-    public String getRootElement()
-    {
-        return rootElement;
-    }
-
-    /**
-     * Defines the name of the root element for this object. this determines if
-     * this control can be use as the root of the xml hierarchy.
-     *
-     * @param rootElement The name of the root element to be use.
-     */
-    public void setRootElement(String rootElement)
-    {
-        this.rootElement = rootElement;
     }
 
     /**

@@ -67,6 +67,10 @@ public class UISuite
         @XmlElement(name = "include", type = String.class)
     })
     private List<String> includes;
+    
+    private StandaloneDef standalone;
+    
+    private StandaloneDef defines;
 
     @XmlElementWrapper(name = "ftlIncludes")
     @XmlElements(
@@ -307,7 +311,7 @@ public class UISuite
     {
         return ftlIncludes;
     }
-
+    
     /**
      * The freemarker templates to includes for this suite.
      * 
@@ -336,6 +340,26 @@ public class UISuite
     public void setIncludes(List<String> includes)
     {
         this.includes = includes;
+    }
+
+    public StandaloneDef getStandalone()
+    {
+        return standalone;
+    }
+
+    public void setStandalone(StandaloneDef standalone)
+    {
+        this.standalone = standalone;
+    }
+
+    public StandaloneDef getDefines()
+    {
+        return defines;
+    }
+
+    public void setDefines(StandaloneDef defines)
+    {
+        this.defines = defines;
     }
     
     @Override

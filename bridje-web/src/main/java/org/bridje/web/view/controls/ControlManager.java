@@ -106,8 +106,6 @@ public class ControlManager
     private Class<?>[] findComponentsClasses() throws IOException
     {
         List<Class<?>> result = new ArrayList<>();
-        result.add(WebView.class);
-        result.add(WebLayout.class);
         List<URL> files = findModelsFiles();
         files.stream()
                 .map(this::readFile)

@@ -18,6 +18,7 @@ package org.bridje.web.view.controls;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.annotation.processing.AbstractProcessor;
@@ -37,6 +38,8 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.web.view.WebLayout;
+import org.bridje.web.view.WebView;
 
 /**
  * Annotations processor for the Web Components.
@@ -117,21 +120,16 @@ public class ControlProcessor extends AbstractProcessor
 
     private boolean isControl(TypeElement element)
     {
-        TypeMirror superclass = element.getSuperclass();
-        if(superclass.toString().equalsIgnoreCase(Control.class.getName()))
+        List<? extends TypeMirror> interfaces = element.getInterfaces();
+        for (TypeMirror ifc : interfaces)
         {
-            return true;
-        }
-        if(superclass.toString().equalsIgnoreCase(Object.class.getName()))
-        {
-            return false;
-        }
-        if(superclass instanceof DeclaredType)
-        {
-            Element el = ((DeclaredType)superclass).asElement();
-            if(el instanceof TypeElement)
+            if(ifc.toString().equalsIgnoreCase(WebView.class.getName()))
             {
-                return isControl((TypeElement)el);
+                return true;
+            }
+            if(ifc.toString().equalsIgnoreCase(WebLayout.class.getName()))
+            {
+                return true;
             }
         }
         return false;

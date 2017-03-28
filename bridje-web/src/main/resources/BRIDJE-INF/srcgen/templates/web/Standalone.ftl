@@ -4,7 +4,9 @@ package ${uisuite.package};
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import org.bridje.web.view.*;
 import org.bridje.web.view.controls.Control;
 
@@ -14,7 +16,16 @@ import org.bridje.web.view.controls.Control;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ${uisuite.name}Standalone implements ViewDefinition, Standalone
 {
-    @XmlAnyElement(lax = true)
+    <#if uisuite.standalone?? && uisuite.standalone.content??>
+    @XmlElements(
+    {
+        <#list uisuite.standalone.content![] as c>
+        @XmlElement( name = "${c.name}", type = ${c.type}.class ),
+        </#list>
+    })
+    <#else>
+    @XmlTrasient
+    </#if>
     private Control root;
 
     @Override

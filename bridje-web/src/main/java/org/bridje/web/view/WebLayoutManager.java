@@ -38,7 +38,7 @@ public class WebLayoutManager
 
     @Inject
     private ControlManager controlManag;
-
+    
     private final Path basePath = new Path("/web");
 
     /**

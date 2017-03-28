@@ -20,9 +20,6 @@ import org.bridje.web.view.controls.*;
 /**
  * This object represents the ${control.name} for the ${theme.name} Theme.
  */
-<#if control.rootElement != "">
-@XmlRootElement( name = "${control.rootElement}" )
-</#if>
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ${control.name} extends ${control.base}
 {
