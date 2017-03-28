@@ -24,7 +24,7 @@ public class ${uisuite.name}Standalone implements ViewDefinition, Standalone
         </#list>
     })
     <#else>
-    @XmlTrasient
+    @XmlTransient
     </#if>
     private Control root;
 

@@ -23,15 +23,15 @@ public class ${uisuite.name}Defines implements Defines
     @XmlAttribute
     private String name;
 
-    <#if uisuite.standalone?? && uisuite.standalone.content??>
+    <#if uisuite.defines?? && uisuite.defines.content??>
     @XmlElements(
     {
-        <#list uisuite.standalone.content![] as c>
+        <#list uisuite.defines.content![] as c>
         @XmlElement( name = "${c.name}", type = ${c.type}.class ),
         </#list>
     })
     <#else>
-    @XmlTrasient
+    @XmlTransient
     </#if>
     private List<Control> controls;
 
