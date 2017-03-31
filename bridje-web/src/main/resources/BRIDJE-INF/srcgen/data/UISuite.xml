@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.com/schemas/jfxmodel'
+    xsi:schemaLocation='http://www.bridje.com/schemas/jfxmodel ../../../../../../../bridje-jfx/target/generated-resources/schemagen/schema1.xsd'
+    name="UISuitesModel" package="org.bridje.web.srcgen.models">
+
+    <includes>
+    </includes>
+
+    <properties>
+        <observableList type="UISuiteModel" name="suites" />
+    </properties>
+
+    <objects>
+        <object name="UISuiteModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="String" name="packageName" />
+                <property type="String" name="namespace" />
+                <property type="String" name="renderViewContainer" />
+                <property type="String" name="renderBody" />
+                <property type="String" name="renderHead" />
+                <property type="StandaloneDefModel" name="standalone" />
+                <property type="StandaloneDefModel" name="defines" />
+                <property type="ResourceModel" name="defaultResources" />
+                <observableList type="String" name="includes" />
+                <observableList type="String" name="ftlIncludes" />
+                <observableList type="ResourceModel" name="resources" />
+                <observableList type="ControlDefModel" name="controls" />
+                <observableList type="ControlDefModel" name="controlsTemplates" />
+            </properties>
+        </object>
+        <object name="StandaloneDefModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <observableList type="ChildFieldModel" name="content" />
+            </properties>
+        </object>
+        <object name="ResourceModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <observableList type="AssetModel" name="content" />
+            </properties>
+        </object>
+        <object name="ControlDefModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="String" name="base" />
+                <observableList type="ResourceRefModel" name="resources" />
+                <observableList type="FieldDefModel" name="fields" />
+                <property type="String" name="baseTemplate" />
+                <property type="String" name="render" />
+            </properties>
+        </object>
+        <object name="AssetModel">
+            <key type="String" name="href" key="true" />
+            <properties>
+                <property type="String" name="rel" />
+            </properties>
+        </object>
+        <object name="FieldDefModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="String" name="fieldType" />
+                <property type="String" name="xmlType" />
+                <property type="String" name="childType" />
+                <property type="String" name="defaultValue" />
+            </properties>
+        </object>
+        <object name="ChildFieldModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="String" name="fieldType" />
+                <property type="String" name="xmlType" />
+                <property type="String" name="childType" />
+                <property type="String" name="defaultValue" />
+            </properties>
+        </object>
+        <object name="ResourceRefModel">
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="Boolean" name="selected" />
+            </properties>
+        </object>
+    </objects>
+
+</model>

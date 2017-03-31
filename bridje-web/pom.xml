@@ -17,6 +17,27 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.bridje</groupId>
+                <artifactId>bridje-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <goals>
+                            <goal>generate-sources</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.bridje</groupId>
+                        <artifactId>bridje-jfx</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -128,6 +149,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>bridje-srcgen</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-jfx</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

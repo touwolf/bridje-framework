@@ -22,6 +22,12 @@ package org.bridje.web.srcgen.uisuite;
 public interface FieldDef
 {
     /**
+     * 
+     * @return 
+     */
+    public String getName();
+
+    /**
      * The java type of the field.
      * 
      * @return The string representation of the java type of the field.

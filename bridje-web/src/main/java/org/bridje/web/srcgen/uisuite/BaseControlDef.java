@@ -169,6 +169,24 @@ public class BaseControlDef
     }
 
     /**
+     * 
+     * @return 
+     */
+    public List<ResourceRef> getDeclaredResources()
+    {
+        return resources;
+    }
+
+    /**
+     * 
+     * @param resources 
+     */
+    public void setDeclaredResources(List<ResourceRef> resources)
+    {
+        this.resources = resources;
+    }
+    
+    /**
      * The list of fields that this control will support.
      * 
      * @return The list of fields that this control will support.
@@ -201,7 +219,10 @@ public class BaseControlDef
             {
                 allResources.addAll(baseTemplate.getResources());
             }
-            allResources.addAll(resources);
+            if(resources != null)
+            {
+                allResources.addAll(resources);
+            }
         }
         return allResources;
     }
