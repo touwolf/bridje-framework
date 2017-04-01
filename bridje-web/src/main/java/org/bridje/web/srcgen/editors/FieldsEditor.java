@@ -35,8 +35,6 @@ public class FieldsEditor extends StackPane
         table.editableFieldColumn(null);
         table.addNameColumn("Name");
         table.editableNameColumn(null);
-        table.addDeclarationColumn("Declaration");
-        table.editableDeclarationColumn(null);
         table.addTypeColumn("Type");
         table.editableTypeColumn(null);
         table.addDefaultValueColumn("Default");

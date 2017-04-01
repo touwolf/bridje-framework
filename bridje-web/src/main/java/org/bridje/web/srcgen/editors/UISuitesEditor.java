@@ -16,39 +16,62 @@
 
 package org.bridje.web.srcgen.editors;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javax.xml.bind.JAXBException;
+import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
+import org.bridje.web.srcgen.uisuite.UISuite;
 
 public class UISuitesEditor extends BorderPane
 {
+    private static final Logger LOG = Logger.getLogger(UISuitesEditor.class.getName());
+
+    private UISuiteConverter converter;
+
     private final TreeView<Object> tree;
-    
+
     private final TreeItem<Object> root;
-    
+
     private final ControlEditor ctrlEditor;
-    
+
     private final UISuiteEditor stEditor;
-    
+
     private final StackPane editArea;
-    
+
+    private final ToolBar toolBar;
+
+    private final Button btSave;
+
     private final SimpleObjectProperty<UISuitesModel> suitesProperty = new SimpleObjectProperty<>();
 
     public UISuitesEditor()
     {
+        btSave = new Button("Save");
+        btSave.setOnAction(this::save);
+        toolBar = new ToolBar(btSave);
+        setTop(toolBar);
+        
         tree = new TreeView<>();
         ctrlEditor = new ControlEditor();
         stEditor = new UISuiteEditor();
         editArea = new StackPane();
-        
+                
         SplitPane sp = new SplitPane(tree, editArea);
         sp.setDividerPositions(0.3d);
         setCenter(sp);
@@ -86,6 +109,23 @@ public class UISuitesEditor extends BorderPane
                 });
     }
 
+    public void save(ActionEvent event)
+    {
+        UISuiteModel uiSuite = getCurrentUISuite();
+        if(uiSuite != null)
+        {
+            UISuite data = converter.fromModel(uiSuite);
+            try(OutputStream os = new VFileOutputStream(uiSuite.getFile()))
+            {
+                UISuite.save(os, data);
+            }
+            catch(JAXBException | IOException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    }
+    
     public SimpleObjectProperty<UISuitesModel> suitesProperty()
     {
         return this.suitesProperty;
@@ -113,7 +153,7 @@ public class UISuitesEditor extends BorderPane
         TreeItem<Object> tiControl = new TreeItem<>(control);
         return tiControl;
     }
-    
+
     private TreeItem<Object> toTreeItem(UISuiteModel suite)
     {
         TreeItem<Object> tiSuite = new TreeItem<>(suite);
@@ -130,5 +170,19 @@ public class UISuitesEditor extends BorderPane
         {
             root.getChildren().addAll(toTreeItems(newValue));
         }
+    }
+
+    private UISuiteModel getCurrentUISuite()
+    {
+        TreeItem<Object> selectedItem = tree.getSelectionModel().getSelectedItem();
+        while(selectedItem != null)
+        {
+            if(selectedItem.getValue() instanceof UISuiteModel)
+            {
+                return (UISuiteModel)selectedItem.getValue();
+            }
+            selectedItem = selectedItem.getParent();
+        }
+        return null;
     }
 }

@@ -183,7 +183,27 @@ public class BaseControlDef
      */
     public void setDeclaredResources(List<ResourceRef> resources)
     {
+        resources = null;
         this.resources = resources;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public List<FieldDef> getDeclaredFields()
+    {
+        return fields;
+    }
+
+    /**
+     * 
+     * @param resources 
+     */
+    public void setDeclaredFields(List<FieldDef> fields)
+    {
+        allFields = null;
+        this.fields = fields;
     }
     
     /**

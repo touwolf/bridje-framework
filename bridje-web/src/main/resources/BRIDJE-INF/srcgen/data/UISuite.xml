@@ -6,6 +6,7 @@
     name="UISuitesModel" package="org.bridje.web.srcgen.models">
 
     <includes>
+        
     </includes>
 
     <properties>
@@ -14,8 +15,12 @@
 
     <objects>
         <object name="UISuiteModel">
+            <includes>
+                <include fullName="org.bridje.vfs.VFile" />
+            </includes>
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="VFile" name="file" />
                 <property type="String" name="packageName" />
                 <property type="String" name="namespace" />
                 <property type="String" name="renderViewContainer" />
@@ -64,8 +69,8 @@
             <properties>
                 <property type="String" name="field" />
                 <property type="String" name="type" />
-                <property type="String" name="declaration" />
                 <property type="String" name="defaultValue" />
+                <observableList type="ChildFieldModel" name="childs" />
             </properties>
         </object>
         <object name="ChildFieldModel">
