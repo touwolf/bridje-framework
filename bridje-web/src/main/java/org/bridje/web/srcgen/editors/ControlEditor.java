@@ -107,7 +107,7 @@ public class ControlEditor extends GridPane
                 Bindings.unbindBidirectional(cbBaseTemplate.valueProperty(), oldValue.baseTemplateProperty());
                 fieldsEditor.fieldsProperty().unbindBidirectional(oldValue.fieldsProperty());
                 resourcesSelector.itemsProperty().unbindBidirectional(oldValue.resourcesProperty());
-                taRender.textProperty().unbindBidirectional(getControl().renderProperty());
+                taRender.textProperty().unbindBidirectional(oldValue.renderProperty());
             }
             if(getControl() != null)
             {

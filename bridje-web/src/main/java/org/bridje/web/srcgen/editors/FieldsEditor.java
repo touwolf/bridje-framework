@@ -31,16 +31,16 @@ public class FieldsEditor extends StackPane
     public FieldsEditor()
     {
         table = new FieldDefModelTable();
+        table.addFieldColumn("Field");
+        table.editableFieldColumn(null);
         table.addNameColumn("Name");
         table.editableNameColumn(null);
-        table.addXmlTypeColumn("XML Type");
-        table.editableXmlTypeColumn(null);
-        table.addFieldTypeColumn("Field Type");
-        table.editableFieldTypeColumn(null);
+        table.addDeclarationColumn("Declaration");
+        table.editableDeclarationColumn(null);
+        table.addTypeColumn("Type");
+        table.editableTypeColumn(null);
         table.addDefaultValueColumn("Default");
         table.editableDefaultValueColumn(null);
-        table.addChildTypeColumn("Child Type");
-        table.editableChildTypeColumn(null);
 
         getChildren().add(table);
         

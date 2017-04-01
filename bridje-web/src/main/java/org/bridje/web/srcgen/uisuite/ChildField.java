@@ -40,6 +40,7 @@ public class ChildField implements FieldDef
      * 
      * @return The name of the field and/or mapping for the child control.
      */
+    @Override
     public String getName()
     {
         return name;

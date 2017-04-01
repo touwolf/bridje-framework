@@ -62,19 +62,16 @@
         <object name="FieldDefModel">
             <key type="String" name="name" key="true" />
             <properties>
-                <property type="String" name="fieldType" />
-                <property type="String" name="xmlType" />
-                <property type="String" name="childType" />
+                <property type="String" name="field" />
+                <property type="String" name="type" />
+                <property type="String" name="declaration" />
                 <property type="String" name="defaultValue" />
             </properties>
         </object>
         <object name="ChildFieldModel">
             <key type="String" name="name" key="true" />
             <properties>
-                <property type="String" name="fieldType" />
-                <property type="String" name="xmlType" />
-                <property type="String" name="childType" />
-                <property type="String" name="defaultValue" />
+                <property type="String" name="type" />
             </properties>
         </object>
         <object name="ResourceRefModel">

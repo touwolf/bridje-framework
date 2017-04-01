@@ -26,9 +26,12 @@ import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.ResourceRefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.UISuitesModel;
+import org.bridje.web.srcgen.uisuite.AttrFlield;
+import org.bridje.web.srcgen.uisuite.BaseDataFlield;
 import org.bridje.web.srcgen.uisuite.ChildField;
-import org.bridje.web.srcgen.uisuite.ChildrenFlield;
 import org.bridje.web.srcgen.uisuite.ControlDef;
+import org.bridje.web.srcgen.uisuite.ElementField;
 import org.bridje.web.srcgen.uisuite.FieldDef;
 import org.bridje.web.srcgen.uisuite.ResourceRef;
 import org.bridje.web.srcgen.uisuite.UISuite;
@@ -40,18 +43,27 @@ public class EditorApplication extends Application
     {
         UISuite suite = UISuite.load(new FileInputStream(new File("Himu.xml")));
         UISuiteModel model = createUISuite(suite);
+        UISuitesModel suites = new UISuitesModel();
+        suites.setSuites(FXCollections.observableArrayList());
+        suites.getSuites().add(model);
         
-        ControlEditor editor = new ControlEditor();
-        editor.setUISuite(model);
-        editor.setControl(model.getControls().get(0));
+        UISuitesEditor editor = new UISuitesEditor();
+        editor.setSuites(suites);
         Scene scene = new Scene(editor);
         stage.setScene(scene);
+        stage.setWidth(800);
+        stage.setHeight(600);
         stage.show();
     }
 
     private UISuiteModel createUISuite(UISuite suiteModel)
     {
         UISuiteModel model = new UISuiteModel();
+        model.setName(suiteModel.getName());
+        model.setNamespace(suiteModel.getNamespace());
+        model.setPackageName(suiteModel.getPackage());
+        model.setRenderBody(suiteModel.getRenderBody());
+        model.setRenderViewContainer(suiteModel.getRenderViewContainer());
         model.setControls(FXCollections.observableArrayList());
         suiteModel.getControls().forEach(c -> model.getControls().add(createControl(c)));
         return model;
@@ -75,7 +87,10 @@ public class EditorApplication extends Application
     {
         FieldDefModel result = new FieldDefModel();
         result.setName(fieldDef.getName());
-        result.setChildType(createChildType(fieldDef));
+        result.setType(findType(fieldDef));
+        result.setField(findField(fieldDef));
+        result.setDeclaration(findDeclaration(fieldDef));
+        result.setDefaultValue(findDefaultValue(fieldDef));
         return result;
     }
 
@@ -86,10 +101,36 @@ public class EditorApplication extends Application
         return result;
     }
 
-    private String createChildType(FieldDef fieldDef)
+    private String findDeclaration(FieldDef fieldDef)
     {
-        if(fieldDef instanceof ChildField) return "child";
-        if(fieldDef instanceof ChildrenFlield) return "children";
-        return null;
+        if(fieldDef instanceof BaseDataFlield) return ((BaseDataFlield)fieldDef).getFieldType();
+        return "element";
+    }
+
+    private String findType(FieldDef fieldDef)
+    {
+        if(fieldDef instanceof BaseDataFlield) return ((BaseDataFlield)fieldDef).getType();
+        if(fieldDef instanceof ChildField) return ((ChildField)fieldDef).getType();
+        return "";
+    }
+
+    private String findField(FieldDef fieldDef)
+    {
+        if(fieldDef.getIsChild()) return "child";
+        if(fieldDef.getIsEvent()) return "event";
+        if(fieldDef instanceof BaseDataFlield)
+        {
+            if( fieldDef instanceof ElementField ) return "raw";
+            if( fieldDef instanceof AttrFlield ) return "raw";
+            if ( ((BaseDataFlield)fieldDef).getIsInput() ) return "in";
+            return "out";
+        }
+        return "";
+    }
+
+    private String findDefaultValue(FieldDef fieldDef)
+    {
+        if(fieldDef instanceof BaseDataFlield) return ((BaseDataFlield)fieldDef).getDefaultValue();
+        return "";
     }
 }
