@@ -62,6 +62,7 @@ public class UISuitesEditor extends BorderPane
 
     public UISuitesEditor()
     {
+        converter = new UISuiteConverter();
         btSave = new Button("Save");
         btSave.setOnAction(this::save);
         toolBar = new ToolBar(btSave);

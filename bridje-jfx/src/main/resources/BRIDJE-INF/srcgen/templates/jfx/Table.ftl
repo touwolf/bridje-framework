@@ -39,14 +39,17 @@ public class ${object.name}Table extends TableView<${object.name}>
 
     public void editable${property.name?cap_first}Column(Callback<TableColumn<${object.name}, ${property.javaType}>, TableCell<${object.name}, ${property.javaType}>> editor, EventHandler<CellEditEvent<${object.name}, ${property.javaType}>> eventHandler)
     {
-        if(editor != null) this.setEditable(true);
         get${property.name?cap_first}Column().setEditable(editor != null);
-        get${property.name?cap_first}Column().setCellFactory(editor);
-        get${property.name?cap_first}Column().setOnEditCommit(event -> 
+        if(editor != null)
         {
-            event.getRowValue().set${property.name?cap_first}(event.getNewValue());
-            if(eventHandler != null) eventHandler.handle(event);
-        });
+            this.setEditable(true);
+            get${property.name?cap_first}Column().setCellFactory(editor);
+            get${property.name?cap_first}Column().setOnEditCommit(event -> 
+            {
+                event.getRowValue().set${property.name?cap_first}(event.getNewValue());
+                if(eventHandler != null) eventHandler.handle(event);
+            });
+        }
     }
 
     public void editable${property.name?cap_first}Column(<#if property.javaType != "String">StringConverter<${property.javaType}> converter, </#if>EventHandler<CellEditEvent<${object.name}, ${property.javaType}>> eventHandler)

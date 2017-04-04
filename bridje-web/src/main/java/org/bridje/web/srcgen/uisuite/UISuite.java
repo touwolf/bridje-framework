@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -461,6 +462,8 @@ public class UISuite
     public static void save(OutputStream os, UISuite object) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(UISuite.class);
-        ctx.createMarshaller().marshal(object, os);
+        Marshaller marshaller = ctx.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(object, os);
     }
 }

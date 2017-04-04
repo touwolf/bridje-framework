@@ -18,7 +18,11 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.FieldDefModelTable;
 
@@ -39,6 +43,12 @@ public class FieldsEditor extends StackPane
         table.editableTypeColumn(null);
         table.addDefaultValueColumn("Default");
         table.editableDefaultValueColumn(null);
+        table.addAllowPlaceHolderColumn("Allow Place Holder");
+        table.editableAllowPlaceHolderColumn(boolEditor(), null);
+        table.addWrapperColumn("Wrapper");
+        table.editableWrapperColumn(null);
+        table.addSingleColumn("Single");
+        table.editableSingleColumn(boolEditor(), null);
 
         getChildren().add(table);
         
@@ -58,5 +68,10 @@ public class FieldsEditor extends StackPane
     public void setFields(ObservableList<FieldDefModel> fields)
     {
         this.fieldsProperty.set(fields);
+    }
+
+    private Callback<TableColumn<FieldDefModel, Boolean>, TableCell<FieldDefModel, Boolean>> boolEditor()
+    {
+        return ComboBoxTableCell.forTableColumn(true, false);
     }
 }

@@ -30,6 +30,6 @@ public class Main
      */
     public static void main(String[] args) throws FileNotFoundException, JAXBException
     {
-        Application.launch(EditorApplication.class, args);
+        Application.launch(UISuitesEditorApplication.class, args);
     }
 }

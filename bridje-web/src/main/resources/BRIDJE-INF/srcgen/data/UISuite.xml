@@ -70,6 +70,9 @@
                 <property type="String" name="field" />
                 <property type="String" name="type" />
                 <property type="String" name="defaultValue" />
+                <property type="Boolean" name="allowPlaceHolder" />
+                <property type="String" name="wrapper" />
+                <property type="Boolean" name="single" />
                 <observableList type="ChildFieldModel" name="childs" />
             </properties>
         </object>

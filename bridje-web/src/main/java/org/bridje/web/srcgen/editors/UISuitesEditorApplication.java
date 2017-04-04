@@ -17,23 +17,30 @@
 package org.bridje.web.srcgen.editors;
 
 import java.io.File;
-import java.io.FileInputStream;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.bridje.ioc.Ioc;
+import org.bridje.vfs.FileSource;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
+import org.bridje.vfs.VfsService;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
-public class EditorApplication extends Application
+public class UISuitesEditorApplication extends Application
 {
     @Override
     public void start(Stage stage) throws Exception
     {
-        UISuite suite = UISuite.load(new FileInputStream(new File("Himu.xml")));
+        Ioc.context().find(VfsService.class).mount(new Path("/data"), new FileSource(new File(".")));
+        UISuite suite = UISuite.load(new VFileInputStream(new VFile("/data/Himu.xml")));
         UISuiteConverter converter = new UISuiteConverter();
         UISuiteModel model = converter.toModel(suite);
+        model.setFile(new VFile("/data/Himu.xml"));
         UISuitesModel suites = new UISuitesModel();
         suites.setSuites(FXCollections.observableArrayList());
         suites.getSuites().add(model);
