@@ -65,6 +65,7 @@ public class UISuiteConverter
         result.setIncludes(stringListToModel(suite.getIncludes()));
         result.setName(suite.getName());
         result.setNamespace(suite.getNamespace());
+        result.setPackageName(suite.getPackage());
         result.setRenderBody(suite.getRenderBody());
         result.setRenderHead(suite.getRenderHead());
         result.setRenderViewContainer(suite.getRenderViewContainer());
@@ -84,6 +85,7 @@ public class UISuiteConverter
         result.setIncludes(stringListFromModel(suiteModel.getIncludes()));
         result.setName(suiteModel.getName());
         result.setNamespace(suiteModel.getNamespace());
+        result.setPackage(suiteModel.getPackageName());
         result.setRenderBody(suiteModel.getRenderBody());
         result.setRenderHead(suiteModel.getRenderHead());
         result.setRenderViewContainer(suiteModel.getRenderViewContainer());

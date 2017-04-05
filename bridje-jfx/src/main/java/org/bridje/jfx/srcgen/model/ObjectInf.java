@@ -52,6 +52,13 @@ public class ObjectInf
     
     @XmlTransient
     private List<PropertyInf> allProperties;
+    
+    @XmlElementWrapper(name = "components")
+    @XmlElements(
+    {
+        @XmlElement(name = "table", type = TableComponent.class)
+    })
+    private List<JFxComponent> components;
 
     public String getName()
     {
@@ -122,6 +129,16 @@ public class ObjectInf
     public void setToStringProperty(PropertyInf toStringProperty)
     {
         this.toStringProperty = toStringProperty;
+    }
+
+    public List<JFxComponent> getComponents()
+    {
+        return components;
+    }
+
+    public void setComponents(List<JFxComponent> components)
+    {
+        this.components = components;
     }
 
     public List<PropertyInf> getAllProperties()

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<uisuite xmlns="http://www.bridje.org/schemas/web/uisuite" name="Himu" namespace="http://www.touwolf.com/themes/himu">
+<uisuite xmlns="http://www.bridje.org/schemas/web/uisuite" 
+         name="Himu" 
+         namespace="http://www.touwolf.com/themes/himu"
+         package="somepackage.himu">
     <renderViewContainer>
         
             &lt;div id="view-form"&gt;

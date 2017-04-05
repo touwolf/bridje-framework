@@ -3,11 +3,13 @@ package org.bridje.jfx.srcgen;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.jfx.srcgen.model.JFxComponent;
 import org.bridje.jfx.srcgen.model.ModelInf;
 import org.bridje.jfx.srcgen.model.ObjectInf;
 import org.bridje.srcgen.SourceGenerator;
@@ -45,13 +47,24 @@ public class JFxSourceGenerator implements SourceGenerator<ModelInf>
 
         data = new HashMap<>();
         data.put("model", modelInf);
-        for (ObjectInf objectInf : modelInf.getObjects())
+        if(modelInf.getObjects() != null)
         {
-            data.put("object", objectInf);
-            srcGen.createClass(objectInf.getFullName(), "jfx/Object.ftl", data);
+            for (ObjectInf objectInf : modelInf.getObjects())
+            {
+                data.put("object", objectInf);
+                srcGen.createClass(objectInf.getFullName(), "jfx/Object.ftl", data);
 
-            data.put("object", objectInf);
-            srcGen.createClass(objectInf.getFullName() + "Table", "jfx/Table.ftl", data);
+                List<JFxComponent> components = objectInf.getComponents();
+                if(objectInf.getComponents() != null)
+                {
+                    for (JFxComponent component : components)
+                    {
+                        data.put("object", objectInf);
+                        data.put("component", component);
+                        srcGen.createClass(objectInf.getFullName() + component.getType(), "jfx/" + component.getType() + ".ftl", data);
+                    }
+                }
+            }
         }
     }
 

@@ -36,7 +36,7 @@ public class FieldsEditor extends StackPane
     {
         table = new FieldDefModelTable();
         table.addFieldColumn("Field");
-        table.editableFieldColumn(null);
+        table.editableFieldColumn(fieldEditor(), null);
         table.addNameColumn("Name");
         table.editableNameColumn(null);
         table.addTypeColumn("Type");
@@ -73,5 +73,25 @@ public class FieldsEditor extends StackPane
     private Callback<TableColumn<FieldDefModel, Boolean>, TableCell<FieldDefModel, Boolean>> boolEditor()
     {
         return ComboBoxTableCell.forTableColumn(true, false);
+    }
+
+    private Callback<TableColumn<FieldDefModel, String>, TableCell<FieldDefModel, String>> fieldEditor()
+    {
+        return ComboBoxTableCell.forTableColumn(
+            "outAttr",
+            "inAttr",
+            "eventAttr",
+            "attr",
+            "outEl",
+            "inEl",
+            "eventEl",
+            "el",
+            "outValue",
+            "inValue",
+            "eventValue",
+            "value",
+            "child",
+            "children"
+        );
     }
 }

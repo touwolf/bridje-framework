@@ -75,6 +75,9 @@
                 <property type="Boolean" name="single" />
                 <observableList type="ChildFieldModel" name="childs" />
             </properties>
+            <components>
+                <table />
+            </components>
         </object>
         <object name="ChildFieldModel">
             <key type="String" name="name" key="true" />
