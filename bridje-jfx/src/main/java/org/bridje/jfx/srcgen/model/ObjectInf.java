@@ -56,7 +56,8 @@ public class ObjectInf
     @XmlElementWrapper(name = "components")
     @XmlElements(
     {
-        @XmlElement(name = "table", type = TableComponent.class)
+        @XmlElement(name = "table", type = TableComponent.class),
+        @XmlElement(name = "treeTable", type = TreeTableComponent.class)
     })
     private List<JFxComponent> components;
 

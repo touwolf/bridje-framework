@@ -21,7 +21,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.bridje.web.srcgen.models.AssetModel;
-import org.bridje.web.srcgen.models.ChildFieldModel;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.ResourceModel;
@@ -129,7 +128,7 @@ public class UISuiteConverter
     private StandaloneDefModel standaloneToModel(StandaloneDef standalone)
     {
         StandaloneDefModel result = new StandaloneDefModel();
-        result.setContent(childFieldsToModel(standalone.getContent()));
+        result.setContent(childsToModel(standalone.getContent()));
         return result;
     }
 
@@ -148,6 +147,13 @@ public class UISuiteConverter
     }
 
     private ObservableList<FieldDefModel> fieldsToModel(List<FieldDef> fields)
+    {
+        ObservableList<FieldDefModel> result = FXCollections.observableArrayList();
+        fields.forEach(c -> result.add(fieldToModel(c)));
+        return result;
+    }
+
+    private ObservableList<FieldDefModel> childsToModel(List<ChildField> fields)
     {
         ObservableList<FieldDefModel> result = FXCollections.observableArrayList();
         fields.forEach(c -> result.add(fieldToModel(c)));
@@ -186,29 +192,6 @@ public class UISuiteConverter
         return result;
     }
 
-    private ObservableList<ChildFieldModel> childFieldsToModel(List<ChildField> content)
-    {
-        ObservableList<ChildFieldModel> result = FXCollections.observableArrayList();
-        if(content != null)
-        {
-            content.stream()
-                    .map(c -> childFieldToModel(c))
-                    .filter(c -> c != null)
-                    .forEach(c -> result.add(c));
-        }
-        return result;
-    }
-
-    private ChildFieldModel childFieldToModel(ChildField child)
-    {
-        ChildFieldModel result = new ChildFieldModel();
-        
-        result.setName(child.getName());
-        result.setType(child.getType());
-        
-        return result;
-    }
-
     private List<ControlDef> controlsFromModel(ObservableList<ControlDefModel> controls)
     {
         List<ControlDef> result = new ArrayList<>();
@@ -219,7 +202,7 @@ public class UISuiteConverter
     private StandaloneDef standaloneFromModel(StandaloneDefModel defines)
     {
         StandaloneDef result = new StandaloneDef();
-        result.setContent(childFieldsFromModel(defines.getContent()));
+        result.setContent(childsFromModel(defines.getContent()));
         return result;
     }
 
@@ -257,13 +240,6 @@ public class UISuiteConverter
         return result;
     }
 
-    private List<ChildField> childFieldsFromModel(ObservableList<ChildFieldModel> content)
-    {
-        List<ChildField> result = new ArrayList<>();
-        content.forEach(r -> result.add(childFieldFromModel(r)));
-        return result;
-    }
-
     private List<AssetBase> assetsFromModel(ObservableList<AssetModel> content)
     {
         List<AssetBase> result = new ArrayList<>();
@@ -275,14 +251,6 @@ public class UISuiteConverter
     {
         List<ResourceRef> result = new ArrayList<>();
         resources.forEach(r -> result.add(resourceRefFromModel(r)));
-        return result;
-    }
-
-    private ChildField childFieldFromModel(ChildFieldModel r)
-    {
-        ChildField result = new ChildField();
-        result.setName(r.getName());
-        result.setType(r.getType());
         return result;
     }
 
@@ -304,6 +272,14 @@ public class UISuiteConverter
     {
         List<FieldDef> result = new ArrayList<>();
         fields.forEach(f -> result.add(fieldFromModel(f)));
+        return result;
+    }
+    
+
+    private List<ChildField> childsFromModel(ObservableList<FieldDefModel> fields)
+    {
+        List<ChildField> result = new ArrayList<>();
+        fields.forEach(f -> result.add((ChildField)fieldFromModel(f)));
         return result;
     }
 

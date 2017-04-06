@@ -29,10 +29,7 @@ public class ${object.name}Table extends TableView<${object.name}>
     <#list object.allProperties as property>
     public TableColumn<${object.name}, ${property.javaType}> add${property.name?cap_first}Column(String title)
     {
-        if(title != null)
-        {
-            get${property.name?cap_first}Column().setText(title);
-        }
+        if(title != null) get${property.name?cap_first}Column().setText(title);
         getColumns().add(get${property.name?cap_first}Column());
         return get${property.name?cap_first}Column();
     }

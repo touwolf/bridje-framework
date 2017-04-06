@@ -16,25 +16,29 @@
 
 package org.bridje.web.srcgen.editors;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ListBinding;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableCell;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.ComboBoxTreeTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.bridje.web.srcgen.models.FieldDefModel;
-import org.bridje.web.srcgen.models.FieldDefModelTable;
+import org.bridje.web.srcgen.models.FieldDefModelTreeTable;
 
 public class FieldsEditor extends StackPane
 {
     private final SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty = new SimpleObjectProperty<>();
 
-    private final FieldDefModelTable table;
+    private final FieldDefModelTreeTable table;
 
     public FieldsEditor()
     {
-        table = new FieldDefModelTable();
+        table = new FieldDefModelTreeTable();
         table.addFieldColumn("Field");
         table.editableFieldColumn(fieldEditor(), null);
         table.addNameColumn("Name");
@@ -52,7 +56,8 @@ public class FieldsEditor extends StackPane
 
         getChildren().add(table);
         
-        table.itemsProperty().bindBidirectional(fieldsProperty());
+        TreeItem<FieldDefModel> root = new TreeItem<>();
+        table.setRoot(root);
     }
 
     public SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty()
@@ -70,14 +75,14 @@ public class FieldsEditor extends StackPane
         this.fieldsProperty.set(fields);
     }
 
-    private Callback<TableColumn<FieldDefModel, Boolean>, TableCell<FieldDefModel, Boolean>> boolEditor()
+    private Callback<TreeTableColumn<FieldDefModel, Boolean>, TreeTableCell<FieldDefModel, Boolean>> boolEditor()
     {
-        return ComboBoxTableCell.forTableColumn(true, false);
+        return ComboBoxTreeTableCell.forTreeTableColumn(true, false);
     }
 
-    private Callback<TableColumn<FieldDefModel, String>, TableCell<FieldDefModel, String>> fieldEditor()
+    private Callback<TreeTableColumn<FieldDefModel, String>, TreeTableCell<FieldDefModel, String>> fieldEditor()
     {
-        return ComboBoxTableCell.forTableColumn(
+        return ComboBoxTreeTableCell.forTreeTableColumn(
             "outAttr",
             "inAttr",
             "eventAttr",

@@ -39,7 +39,7 @@
         <object name="StandaloneDefModel">
             <key type="String" name="name" key="true" />
             <properties>
-                <observableList type="ChildFieldModel" name="content" />
+                <observableList type="FieldDefModel" name="content" />
             </properties>
         </object>
         <object name="ResourceModel">
@@ -73,17 +73,11 @@
                 <property type="Boolean" name="allowPlaceHolder" />
                 <property type="String" name="wrapper" />
                 <property type="Boolean" name="single" />
-                <observableList type="ChildFieldModel" name="childs" />
+                <observableList type="FieldDefModel" name="childs" />
             </properties>
             <components>
-                <table />
+                <treeTable />
             </components>
-        </object>
-        <object name="ChildFieldModel">
-            <key type="String" name="name" key="true" />
-            <properties>
-                <property type="String" name="type" />
-            </properties>
         </object>
         <object name="ResourceRefModel">
             <key type="String" name="name" key="true" />
