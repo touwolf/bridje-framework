@@ -20,7 +20,6 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.WeakListener;
-import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
