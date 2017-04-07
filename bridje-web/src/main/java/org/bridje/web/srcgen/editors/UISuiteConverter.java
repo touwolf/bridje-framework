@@ -156,14 +156,14 @@ public class UISuiteConverter
     private ObservableList<FieldDefModel> childsToModel(List<ChildField> fields)
     {
         ObservableList<FieldDefModel> result = FXCollections.observableArrayList();
-        fields.forEach(c -> result.add(fieldToModel(c)));
+        if(fields != null) fields.forEach(c -> result.add(fieldToModel(c)));
         return result;
     }
 
     private ObservableList<ResourceRefModel> resourcesRefToModel(List<ResourceRef> resources)
     {
         ObservableList<ResourceRefModel> result = FXCollections.observableArrayList();
-        resources.forEach(c -> result.add(resourceRefToModel(c)));
+        if(resources != null) resources.forEach(c -> result.add(resourceRefToModel(c)));
         return result;
     }
 

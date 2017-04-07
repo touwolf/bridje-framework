@@ -16,10 +16,7 @@
 
 package org.bridje.web.srcgen.editors;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ListBinding;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
@@ -56,7 +53,7 @@ public class FieldsEditor extends StackPane
 
         getChildren().add(table);
         
-        TreeItem<FieldDefModel> root = new TreeItem<>();
+        TreeItem<FieldDefModel> root = new TreeItem<>(new FieldDefModel());
         table.setRoot(root);
     }
 
