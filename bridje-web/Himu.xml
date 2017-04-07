@@ -1,778 +1,775 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<uisuite xmlns="http://www.bridje.org/schemas/web/uisuite" 
-         name="Himu" 
-         namespace="http://www.touwolf.com/themes/himu"
-         package="somepackage.himu">
-    <renderViewContainer>
-        
-            &lt;div id="view-form"&gt;
-                &lt;#nested /&gt;
-            &lt;/div&gt;
-        
-    </renderViewContainer>
-    <renderBody>
-        
-            &lt;body&gt;
-                &lt;#nested /&gt;
-            &lt;/body&gt;
-        
-    </renderBody>
+<?xml version="1.0" encoding="UTF-8"?>
+<uisuite
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/uisuite'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite https://oss.sonatype.org/content/repositories/snapshots/org/bridje/bridje-web/0.3.1-SNAPSHOT/bridje-web-0.3.1-20170328.231052-21-uisuite.xsd'
+    name="Himu"
+    package="com.touwolf.themes.bootstrap.himu" 
+    namespace="http://www.touwolf.com/themes/himu">
+
     <renderHead>
-        
-            &lt;head&gt;
-                &lt;title&gt;${view.title!}&lt;/title&gt;
-                &lt;meta charset="UTF-8"&gt;
-                &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-                &lt;#nested /&gt;
-                &lt;!--[if lt IE 9]&gt;
-                &lt;script src="__themes/himu/resources/js/html5shiv.js"&gt;&lt;/script&gt; 
-                &lt;script src="__themes/himu/resources/js/respond.min.js"&gt;&lt;/script&gt;
-                &lt;![endif]--&gt;
-                &lt;link rel="shortcut icon" href="images/ico/favicon.png"&gt; 
-                &lt;link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png"&gt; 
-                &lt;link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png"&gt; 
-                &lt;link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png"&gt; 
-                &lt;link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png"&gt;
-            &lt;/head&gt;
-        
+        <![CDATA[
+            <head>
+                <title>${view.title!}</title>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <#nested />
+                <!--[if lt IE 9]>
+                <script src="__themes/himu/resources/js/html5shiv.js"></script> 
+                <script src="__themes/himu/resources/js/respond.min.js"></script>
+                <![endif]-->
+                <link rel="shortcut icon" href="images/ico/favicon.png"> 
+                <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png"> 
+                <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png"> 
+                <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png"> 
+                <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+            </head>
+        ]]>
     </renderHead>
-    <includes/>
+    <renderBody>
+        <![CDATA[
+            <body>
+                <#nested />
+            </body>
+        ]]>
+    </renderBody>
+    <renderViewContainer>
+        <![CDATA[
+            <div id="view-form">
+                <#nested />
+            </div>
+        ]]>
+    </renderViewContainer>
+
     <standalone>
-        <child name="page" type="Page"/>
+        <child name="page" type="Page" />
     </standalone>
-    <defines/>
-    <ftlIncludes/>
-    <resources/>
+    <defines>
+        
+    </defines>
+
     <defaultResources>
-        <script href="css/bootstrap.min.css"/>
-        <script href="css/prettyPhoto.css"/>
-        <script href="css/font-awesome.min.css"/>
-        <script href="css/animate.css"/>
-        <script href="css/main.css"/>
-        <script href="css/responsive.css"/>
-        <script href="js/jquery.js"/>
-        <script href="js/bootstrap.min.js"/>
-        <script href="js/smoothscroll.js"/>
-        <script href="js/jquery.isotope.min.js"/>
-        <script href="js/jquery.prettyPhoto.js"/>
-        <script href="js/jquery.parallax.js"/>
-        <script href="js/main.js"/>
-        <script href="js/script.js"/>
+        <style href="css/bootstrap.min.css" />
+        <style href="css/prettyPhoto.css" />
+        <style href="css/font-awesome.min.css" />
+        <style href="css/animate.css" />
+        <style href="css/main.css" />
+        <style href="css/responsive.css" />
+	<script href="js/jquery.js"></script> 
+	<script href="js/bootstrap.min.js"></script>
+	<script href="js/smoothscroll.js"></script> 
+	<script href="js/jquery.isotope.min.js"></script>
+	<script href="js/jquery.prettyPhoto.js"></script> 
+	<script href="js/jquery.parallax.js"></script> 
+	<script href="js/main.js"></script> 
+        <script href="js/script.js" />
     </defaultResources>
+
     <controls>
-        <control name="Logo" base="Control">
-            <render>
-                
-                    &lt;a class="navbar-brand" href="${control.href!}"&gt;&lt;h1&gt;&lt;img src="${control.image!}" alt="logo"&gt;&lt;/h1&gt;&lt;/a&gt;
-                
-            </render>
+        <control name="Logo" >
             <fields>
-                <attr name="href" type="String" def="null"/>
-                <attr name="image" type="String" def="null"/>
+                <attr name="href" type="String" />
+                <attr name="image" type="String" />
             </fields>
-        </control>
-        <control name="Navigation" base="Control">
             <render>
-                
-                    &lt;header id="navigation"&gt; 
-                        &lt;div class="navbar navbar-inverse navbar-fixed-top" role="banner"&gt; 
-                            &lt;div class="container"&gt; 
-                                &lt;div class="navbar-header"&gt; 
-                                    &lt;button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"&gt; 
-                                        &lt;span class="sr-only"&gt;Toggle navigation&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; &lt;span class="icon-bar"&gt;&lt;/span&gt; 
-                                    &lt;/button&gt; 
-                                    &lt;@renderControl control.logo /&gt;
-                                &lt;/div&gt; 
-                                &lt;div class="collapse navbar-collapse"&gt; 
-                                    &lt;ul class="nav navbar-nav navbar-right"&gt;
-                                        &lt;#if pageControl.home?? &gt;
-                                            &lt;li class="scroll active"&gt;&lt;a href="#navigation"&gt;Home&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.aboutus?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#about-us"&gt;About Us&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.services?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#services"&gt;Services&lt;/a&gt;&lt;/li&gt;
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.ourteam?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#our-team"&gt;Our Team&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.portfolio?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#portfolio"&gt;Portfolio&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.clients?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#clients"&gt;Clients&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.blog?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#blog"&gt;Blog&lt;/a&gt;&lt;/li&gt; 
-                                        &lt;/#if&gt;
-                                        &lt;#if pageControl.contact?? &gt;
-                                            &lt;li class="scroll"&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
-                                        &lt;/#if&gt;
-                                    &lt;/ul&gt; 
-                                &lt;/div&gt; 
-                            &lt;/div&gt; 
-                        &lt;/div&gt;
-                    &lt;/header&gt;
-                
+                <![CDATA[
+                    <a class="navbar-brand" href="${control.href!}"><h1><img src="${control.image!}" alt="logo"></h1></a>
+                ]]>
             </render>
-            <fields>
-                <child name="logo" type="Logo">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-            </fields>
         </control>
-        <control name="Link" base="Control">
+        <control name="Navigation" >
+            <fields>
+                <child name="logo" type="Logo" />
+            </fields>
             <render>
-                
-                    &lt;a class="${linkCssClasses!}" href="${control.href!}"&gt;${control.value!}&lt;/a&gt; 
-                
+                <![CDATA[
+                    <header id="navigation"> 
+                        <div class="navbar navbar-inverse navbar-fixed-top" role="banner"> 
+                            <div class="container"> 
+                                <div class="navbar-header"> 
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> 
+                                        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> 
+                                    </button> 
+                                    <@renderControl control.logo />
+                                </div> 
+                                <div class="collapse navbar-collapse"> 
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <#if pageControl.home?? >
+                                            <li class="scroll active"><a href="#navigation">Home</a></li> 
+                                        </#if>
+                                        <#if pageControl.aboutus?? >
+                                            <li class="scroll"><a href="#about-us">About Us</a></li> 
+                                        </#if>
+                                        <#if pageControl.services?? >
+                                            <li class="scroll"><a href="#services">Services</a></li>
+                                        </#if>
+                                        <#if pageControl.ourteam?? >
+                                            <li class="scroll"><a href="#our-team">Our Team</a></li> 
+                                        </#if>
+                                        <#if pageControl.portfolio?? >
+                                            <li class="scroll"><a href="#portfolio">Portfolio</a></li> 
+                                        </#if>
+                                        <#if pageControl.clients?? >
+                                            <li class="scroll"><a href="#clients">Clients</a></li> 
+                                        </#if>
+                                        <#if pageControl.blog?? >
+                                            <li class="scroll"><a href="#blog">Blog</a></li> 
+                                        </#if>
+                                        <#if pageControl.contact?? >
+                                            <li class="scroll"><a href="#contact">Contact</a></li>
+                                        </#if>
+                                    </ul> 
+                                </div> 
+                            </div> 
+                        </div>
+                    </header>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="href" type="String" def="null"/>
-                <outValue name="value" type="String" def="null"/>
-            </fields>
         </control>
-        <control name="CarouselSlide" base="Control">
+        <control name="Link" >
+            <fields>
+                <outAttr name="href" type="String" />
+                <outValue name="value" type="String" />
+            </fields>
             <render>
-                
-                    &lt;div class="item &lt;#if control.active&gt;active&lt;/#if&gt;" style="background-image: url(${control.image!})"&gt; 
-                        &lt;div class="carousel-caption"&gt; 
-                            &lt;div&gt; 
-                                &lt;h2 class="heading animated bounceInDown"&gt;${control.title!}&lt;/h2&gt; 
-                                &lt;p class="animated bounceInUp"&gt;${control.content!}&lt;/p&gt; 
-                                &lt;#assign linkCssClasses = "btn btn-default slider-btn animated fadeIn" /&gt;
-                                &lt;#if control.link??&gt;
-                                    &lt;@renderControl control.link /&gt;
-                                &lt;/#if&gt;
-                            &lt;/div&gt; 
-                        &lt;/div&gt; 
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <a class="${linkCssClasses!}" href="${control.href!}">${control.value!}</a> 
+                ]]>
             </render>
-            <fields>
-                <outAttr name="image" type="String" def="null"/>
-                <outAttr name="title" type="String" def="null"/>
-                <outAttr name="content" type="String" def="null"/>
-                <outAttr name="active" type="Boolean" def="false"/>
-                <child name="link" type="Link">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-            </fields>
         </control>
-        <control name="Home" base="Control">
+        <control name="CarouselSlide" >
+            <fields>
+                <outAttr name="image" type="String" />
+                <outAttr name="title" type="String" />
+                <outAttr name="content" type="String" />
+                <outAttr name="active" type="Boolean" def="false" />
+                <child name="link" type="Link" />
+            </fields>
             <render>
-                
-                    &lt;section id="home"&gt;
-                        &lt;div class="home-pattern"&gt;&lt;/div&gt;
-                        &lt;div id="main-carousel" class="carousel slide" data-ride="carousel"&gt; 
-                            &lt;ol class="carousel-indicators"&gt;
-                                &lt;#list control.slides as slide&gt;
-                                    &lt;li data-target="#main-carousel" data-slide-to="${slide_index}" &lt;#if slide.active&gt;class="active"&lt;/#if&gt; &gt;&lt;/li&gt;
-                                &lt;/#list&gt;
-                            &lt;/ol&gt;
-                            &lt;div class="carousel-inner"&gt;
-                                &lt;#list control.slides as slide&gt;
-                                    &lt;@renderControl slide /&gt;
-                                &lt;/#list&gt;
-                            &lt;/div&gt;
+                <![CDATA[
+                    <div class="item <#if control.active>active</#if>" style="background-image: url(${control.image!})"> 
+                        <div class="carousel-caption"> 
+                            <div> 
+                                <h2 class="heading animated bounceInDown">${control.title!}</h2> 
+                                <p class="animated bounceInUp">${control.content!}</p> 
+                                <#assign linkCssClasses = "btn btn-default slider-btn animated fadeIn" />
+                                <#if control.link??>
+                                    <@renderControl control.link />
+                                </#if>
+                            </div> 
+                        </div> 
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="Home" >
+            <fields>
+                <children name="slides">
+                    <child name="slide" type="CarouselSlide" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <section id="home">
+                        <div class="home-pattern"></div>
+                        <div id="main-carousel" class="carousel slide" data-ride="carousel"> 
+                            <ol class="carousel-indicators">
+                                <#list control.slides as slide>
+                                    <li data-target="#main-carousel" data-slide-to="${slide_index}" <#if slide.active>class="active"</#if> ></li>
+                                </#list>
+                            </ol>
+                            <div class="carousel-inner">
+                                <#list control.slides as slide>
+                                    <@renderControl slide />
+                                </#list>
+                            </div>
 
-                            &lt;a class="carousel-left member-carousel-control hidden-xs" href="#main-carousel" data-slide="prev"&gt;&lt;i class="fa fa-angle-left"&gt;&lt;/i&gt;&lt;/a&gt;
-                            &lt;a class="carousel-right member-carousel-control hidden-xs" href="#main-carousel" data-slide="next"&gt;&lt;i class="fa fa-angle-right"&gt;&lt;/i&gt;&lt;/a&gt;
-                        &lt;/div&gt;
-                    &lt;/section&gt;
-                
+                            <a class="carousel-left member-carousel-control hidden-xs" href="#main-carousel" data-slide="prev"><i class="fa fa-angle-left"></i></a>
+                            <a class="carousel-right member-carousel-control hidden-xs" href="#main-carousel" data-slide="next"><i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </section>
+                ]]>
             </render>
-            <fields>
-                <children name="slides" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="AboutUsTab" base="Control">
+        <control name="AboutUsTab" >
+            <fields>
+                <outAttr name="id" type="String" def='"sometab"' />
+                <outAttr name="active" type="Boolean" def='false' />
+                <outAttr name="title" type="String" def='""' />
+                <outEl name="description" type="String" def='""' />
+                <outAttr name="image" type="String" def='"#"' />
+                <outAttr name="icon" type="String" def='"#"' />
+                <outAttr name="alt" type="String" def='""' />
+            </fields>
             <render>
-                
-                    &lt;div class="tab-pane fade in &lt;#if control.active&gt;active&lt;/#if&gt;" id="${control.id!}"&gt;
-                        &lt;div class="media"&gt;
-                            &lt;img class="pull-left media-object" src="${control.image!}" alt="${control.alt!}"&gt; 
-                            &lt;div class="media-body"&gt;
-                                &lt;p&gt;${control.description!}&lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="tab-pane fade in <#if control.active>active</#if>" id="${control.id!}">
+                        <div class="media">
+                            <img class="pull-left media-object" src="${control.image!}" alt="${control.alt!}"> 
+                            <div class="media-body">
+                                <p>${control.description!}</p>
+                            </div>
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="id" type="String" def="&quot;sometab&quot;"/>
-                <outAttr name="active" type="Boolean" def="false"/>
-                <outAttr name="title" type="String" def="&quot;&quot;"/>
-                <outEl name="description" type="String" def="&quot;&quot;"/>
-                <outAttr name="image" type="String" def="&quot;#&quot;"/>
-                <outAttr name="icon" type="String" def="&quot;#&quot;"/>
-                <outAttr name="alt" type="String" def="&quot;&quot;"/>
-            </fields>
         </control>
-        <control name="AboutUsTabs" base="Control">
+        <control name="AboutUsTabs" >
+            <fields>
+                <outAttr name="title" type="String" def='""' />
+                <children name="tabs" >
+                    <child name="tab" type="AboutUsTab" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;div class="col-sm-6"&gt;
-                        &lt;h3&gt;${control.title!}&lt;/h3&gt;
-                        &lt;ul class="nav nav-tabs"&gt;
-                            &lt;#list control.tabs as tab&gt;
-                                &lt;li &lt;#if tab.active&gt;class="active"&lt;/#if&gt;&gt;&lt;a href="#${tab.id!}" data-toggle="tab"&gt;&lt;i class="fa ${tab.icon!}"&gt;&lt;/i&gt; ${tab.title!}&lt;/a&gt;&lt;/li&gt;
-                            &lt;/#list&gt;
-                        &lt;/ul&gt;
-                        &lt;div class="tab-content"&gt;
-                            &lt;#list control.tabs as tab&gt;
-                                &lt;@renderControl tab /&gt;
-                            &lt;/#list&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="col-sm-6">
+                        <h3>${control.title!}</h3>
+                        <ul class="nav nav-tabs">
+                            <#list control.tabs as tab>
+                                <li <#if tab.active>class="active"</#if>><a href="#${tab.id!}" data-toggle="tab"><i class="fa ${tab.icon!}"></i> ${tab.title!}</a></li>
+                            </#list>
+                        </ul>
+                        <div class="tab-content">
+                            <#list control.tabs as tab>
+                                <@renderControl tab />
+                            </#list>
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;&quot;"/>
-                <children name="tabs" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="AboutUsBar" base="Control">
+        <control name="AboutUsBar" >
+            <fields>
+                <outAttr name="title" type="String" def='""' />
+                <outAttr name="percent" type="Integer" def='0' />
+            </fields>
             <render>
-                
-                    &lt;div class="skillbar clearfix " data-percent="${control.percent?string.computer}%"&gt;
-                        &lt;div class="skillbar-title"&gt;
-                            &lt;span&gt;${control.title!}&lt;/span&gt;
-                        &lt;/div&gt;
-                        &lt;div class="skillbar-bar"&gt;&lt;/div&gt;
-                        &lt;div class="skill-bar-percent"&gt;${control.percent?string.computer}%&lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="skillbar clearfix " data-percent="${control.percent?string.computer}%">
+                        <div class="skillbar-title">
+                            <span>${control.title!}</span>
+                        </div>
+                        <div class="skillbar-bar"></div>
+                        <div class="skill-bar-percent">${control.percent?string.computer}%</div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;&quot;"/>
-                <outAttr name="percent" type="Integer" def="0"/>
-            </fields>
         </control>
-        <control name="AboutUsBars" base="Control">
+        <control name="AboutUsBars" >
+            <fields>
+                <outAttr name="title" type="String" def='""' />
+                <children name="bars" >
+                    <child name="bar" type="AboutUsBar" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;div class="col-sm-6"&gt;
-                        &lt;h3&gt;${control.title!}&lt;/h3&gt;
-                        &lt;div class="skill-bar"&gt;
-                            &lt;#list control.bars as bar&gt;
-                                &lt;@renderControl bar /&gt;
-                            &lt;/#list&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="col-sm-6">
+                        <h3>${control.title!}</h3>
+                        <div class="skill-bar">
+                            <#list control.bars as bar>
+                                <@renderControl bar />
+                            </#list>
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;&quot;"/>
-                <children name="bars" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="AboutUs" base="Control">
+        <control name="AboutUs" >
+            <fields>
+                <outAttr name="title" type="String" def='""' />
+                <outEl name="description" type="String" def='""' />
+                <child name="tabs" type="AboutUsTabs" />
+                <child name="bars" type="AboutUsBars" />
+            </fields>
             <render>
-                
-                    &lt;section id="about-us"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="text-center"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                    &lt;p&gt;${control.description!}&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;div class="about-us"&gt;
-                                &lt;div class="row"&gt;
-                                    &lt;#if control.tabs??&gt;
-                                        &lt;@renderControl control.tabs /&gt;
-                                    &lt;/#if&gt;
-                                    &lt;#if control.bars??&gt;
-                                        &lt;@renderControl control.bars /&gt;
-                                    &lt;/#if&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="about-us">
+                        <div class="container">
+                            <div class="text-center">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h2 class="title-one">${control.title!}</h2>
+                                    <p>${control.description!}</p>
+                                </div>
+                            </div>
+                            <div class="about-us">
+                                <div class="row">
+                                    <#if control.tabs??>
+                                        <@renderControl control.tabs />
+                                    </#if>
+                                    <#if control.bars??>
+                                        <@renderControl control.bars />
+                                    </#if>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;&quot;"/>
-                <outEl name="description" type="String" def="&quot;&quot;"/>
-                <child name="tabs" type="AboutUsTabs">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="bars" type="AboutUsBars">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-            </fields>
         </control>
-        <control name="ServiceBlock" base="Control">
+        <control name="ServiceBlock" >
+            <fields>
+                <outAttr name="title" type="String" def='"Modern Design"' />
+                <outAttr name="icon" type="String" def='"fa-th"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore."' />
+            </fields>
             <render>
-                
-                    &lt;div class="col-sm-4"&gt;
-                        &lt;div class="single-service"&gt;
-                            &lt;i class="fa ${control.icon!}"&gt;&lt;/i&gt;
-                            &lt;h2&gt;${control.title!}&lt;/h2&gt;
-                            &lt;p&gt;${control.description!}&lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="col-sm-4">
+                        <div class="single-service">
+                            <i class="fa ${control.icon!}"></i>
+                            <h2>${control.title!}</h2>
+                            <p>${control.description!}</p>
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;Modern Design&quot;"/>
-                <outAttr name="icon" type="String" def="&quot;fa-th&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.&quot;"/>
-            </fields>
         </control>
-        <control name="Services" base="Control">
+        <control name="Services" >
+            <fields>
+                <outAttr name="title" type="String" def='"Services"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."' />
+                <children name="services" >
+                    <child name="service" type="ServiceBlock" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;section id="services" class="parallax-section"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="row text-center"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                    &lt;p&gt;${control.description!}&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;div class="row"&gt;
-                                &lt;div class="col-sm-12"&gt;
-                                    &lt;div class="our-service"&gt;
-                                        &lt;div class="services row"&gt;
-                                            &lt;@renderAllControls control.services![] /&gt;
-                                        &lt;/div&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="services" class="parallax-section">
+                        <div class="container">
+                            <div class="row text-center">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h2 class="title-one">${control.title!}</h2>
+                                    <p>${control.description!}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="our-service">
+                                        <div class="services row">
+                                            <@renderAllControls control.services![] />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;Services&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.&quot;"/>
-                <children name="services" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="OurTeamRow" base="Control">
+        <control name="OurTeamRow" >
+            <fields>
+                <outAttr name="active" type="Boolean" def="false" />
+                <children name="members">
+                    <child name="member" type="OurTeamMember" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;div class="row item &lt;#if control.active&gt;active&lt;/#if&gt;"&gt;
-                        &lt;@renderAllControls control.members![] /&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="row item <#if control.active>active</#if>">
+                        <@renderAllControls control.members![] />
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="active" type="Boolean" def="false"/>
-                <children name="members" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="OurTeamMemberSocial" base="Control">
+        <control name="OurTeamMemberSocial" >
+            <fields>
+                <outEl name="facebook" type="String" def='"#"' />
+                <outEl name="twitter" type="String" def='"#"' />
+                <outEl name="googlePlus" type="String" def='"#"' />
+                <outEl name="dribbble" type="String" def='"#"' />
+                <outEl name="linkedin" type="String" def='"#"' />
+            </fields>
             <render>
-                
-                    &lt;div class="socials"&gt;
-                        &lt;a href="${control.facebook!}"&gt;&lt;i class="fa fa-facebook"&gt;&lt;/i&gt;&lt;/a&gt;
-                        &lt;a href="${control.twitter!}"&gt;&lt;i class="fa fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
-                        &lt;a href="${control.googlePlus!}"&gt;&lt;i class="fa fa-google-plus"&gt;&lt;/i&gt;&lt;/a&gt;
-                        &lt;a href="${control.dribbble!}"&gt;&lt;i class="fa fa-dribbble"&gt;&lt;/i&gt;&lt;/a&gt;
-                        &lt;a href="${control.linkedin!}"&gt;&lt;i class="fa fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="socials">
+                        <a href="${control.facebook!}"><i class="fa fa-facebook"></i></a>
+                        <a href="${control.twitter!}"><i class="fa fa-twitter"></i></a>
+                        <a href="${control.googlePlus!}"><i class="fa fa-google-plus"></i></a>
+                        <a href="${control.dribbble!}"><i class="fa fa-dribbble"></i></a>
+                        <a href="${control.linkedin!}"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outEl name="facebook" type="String" def="&quot;#&quot;"/>
-                <outEl name="twitter" type="String" def="&quot;#&quot;"/>
-                <outEl name="googlePlus" type="String" def="&quot;#&quot;"/>
-                <outEl name="dribbble" type="String" def="&quot;#&quot;"/>
-                <outEl name="linkedin" type="String" def="&quot;#&quot;"/>
-            </fields>
         </control>
-        <control name="OurTeamMember" base="Control">
+        <control name="OurTeamMember" >
+            <fields>
+                <outAttr name="image" type="String" def='"images/our-team/member1.jpg"' />
+                <outAttr name="name" type="String" def='"William Hurt"' />
+                <outAttr name="job" type="String" def='"Sr. Web Developer"' />
+                <outAttr name="alt" type="String" def='"team member"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod"' />
+                <child name="socials" type="OurTeamMemberSocial" />
+            </fields>
             <render>
-                
-                    &lt;div class="col-sm-6 col-md-3"&gt;
-                        &lt;div class="single-member"&gt;
-                            &lt;img src="${control.image!}" alt="${control.alt!}" /&gt;
-                            &lt;h4&gt;${control.name!}&lt;/h4&gt;
-                            &lt;h5&gt;${control.job!}&lt;/h5&gt;
-                            &lt;p&gt;${control.description!}&lt;/p&gt;
-                            &lt;@renderControl control.socials![] /&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="col-sm-6 col-md-3">
+                        <div class="single-member">
+                            <img src="${control.image!}" alt="${control.alt!}" />
+                            <h4>${control.name!}</h4>
+                            <h5>${control.job!}</h5>
+                            <p>${control.description!}</p>
+                            <@renderControl control.socials![] />
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="image" type="String" def="&quot;images/our-team/member1.jpg&quot;"/>
-                <outAttr name="name" type="String" def="&quot;William Hurt&quot;"/>
-                <outAttr name="job" type="String" def="&quot;Sr. Web Developer&quot;"/>
-                <outAttr name="alt" type="String" def="&quot;team member&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod&quot;"/>
-                <child name="socials" type="OurTeamMemberSocial">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-            </fields>
         </control>
-        <control name="OurTeam" base="Control">
+        <control name="OurTeam" >
+            <fields>
+                <outAttr name="title" type="String" def='"Meet The Team"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit."' />
+                <children name="rows">
+                    <child name="row" type="OurTeamRow" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;section id="our-team"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="row text-center"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                    &lt;p&gt;${control.description!}&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;div id="team-carousel" class="carousel slide" data-interval="false"&gt;
-                                &lt;a class="member-left" href="#team-carousel" data-slide="prev"&gt;&lt;span class="glyphicon glyphicon-chevron-left"&gt;&lt;/span&gt;&lt;/a&gt;
-                                &lt;a class="member-right" href="#team-carousel" data-slide="next"&gt;&lt;span class="glyphicon glyphicon-chevron-right"&gt;&lt;/span&gt;&lt;/a&gt;
-                                &lt;div class="carousel-inner team-members"&gt;
-                                    &lt;@renderAllControls control.rows![] /&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="our-team">
+                        <div class="container">
+                            <div class="row text-center">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h2 class="title-one">${control.title!}</h2>
+                                    <p>${control.description!}</p>
+                                </div>
+                            </div>
+                            <div id="team-carousel" class="carousel slide" data-interval="false">
+                                <a class="member-left" href="#team-carousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                                <a class="member-right" href="#team-carousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+                                <div class="carousel-inner team-members">
+                                    <@renderAllControls control.rows![] />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="title" type="String" def="&quot;Meet The Team&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.&quot;"/>
-                <children name="rows" allowPlaceHolder="false" single="false"/>
-            </fields>
         </control>
-        <control name="PortfolioItem" base="Control">
+        <control name="PortfolioItem" >
+            <fields>
+                <outAttr name="category" type="String" def='"html"' />
+                <outAttr name="image" type="String" def='"__themes/himu/images/portfolio/1.jpg"' />
+                <outAttr name="title" type="String" def='"Novel"' />
+                <outAttr name="description" type="String" def='"Lorem ipsum dolor sit amet consectetur"' />
+            </fields>
             <render>
-                
-                    &lt;div class="col-sm-3 col-xs-12 portfolio-item ${control.category!}"&gt;
-                        &lt;div class="view efffect"&gt;
-                            &lt;div class="portfolio-image"&gt;
-                                &lt;img src="${control.image!}" alt=""&gt;
-                            &lt;/div&gt;
-                            &lt;div class="mask text-center"&gt;
-                                &lt;h3&gt;${control.title!}&lt;/h3&gt;
-                                &lt;h4&gt;${control.description!}&lt;/h4&gt;
-                                &lt;a href="#"&gt;&lt;i class="fa fa-link"&gt;&lt;/i&gt;&lt;/a&gt;
-                                &lt;a href="__themes/himu/images/portfolio/big-item.jpg" data-gallery="prettyPhoto"&gt;&lt;i class="fa fa-search-plus"&gt;&lt;/i&gt;&lt;/a&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                
+                <![CDATA[
+                    <div class="col-sm-3 col-xs-12 portfolio-item ${control.category!}">
+                        <div class="view efffect">
+                            <div class="portfolio-image">
+                                <img src="${control.image!}" alt="">
+                            </div>
+                            <div class="mask text-center">
+                                <h3>${control.title!}</h3>
+                                <h4>${control.description!}</h4>
+                                <a href="#"><i class="fa fa-link"></i></a>
+                                <a href="__themes/himu/images/portfolio/big-item.jpg" data-gallery="prettyPhoto"><i class="fa fa-search-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                ]]>
             </render>
-            <fields>
-                <outAttr name="category" type="String" def="&quot;html&quot;"/>
-                <outAttr name="image" type="String" def="&quot;__themes/himu/images/portfolio/1.jpg&quot;"/>
-                <outAttr name="title" type="String" def="&quot;Novel&quot;"/>
-                <outAttr name="description" type="String" def="&quot;Lorem ipsum dolor sit amet consectetur&quot;"/>
-            </fields>
         </control>
-        <control name="PortfolioCategory" base="Control">
+        <control name="PortfolioCategory" >
+            <fields>
+                <outAttr name="name" type="String" def='"html"' />
+                <outAttr name="title" type="String" def='"Html"' />
+            </fields>
             <render>
-		
-                    &lt;li&gt;&lt;a class="btn btn-default" href="#" data-filter=".${control.name!}"&gt;${control.title!}&lt;/a&gt;&lt;/li&gt;
-		
+		<![CDATA[
+                    <li><a class="btn btn-default" href="#" data-filter=".${control.name!}">${control.title!}</a></li>
+		]]>
             </render>
-            <fields>
-                <outAttr name="name" type="String" def="&quot;html&quot;"/>
-                <outAttr name="title" type="String" def="&quot;Html&quot;"/>
-            </fields>
         </control>
-        <control name="Portfolio" base="Control">
+        <control name="Portfolio" >
+            <fields>
+                <outAttr name="title" type="String" def='"Portfolio"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit."' />
+                <children name="items" wrapper="items" >
+                    <child name="item" type="PortfolioItem" />
+                </children>
+                <children name="categories" wrapper="categories" >
+                    <child name="category" type="PortfolioCategory" />
+                </children>
+            </fields>
             <render>
-                
-                    &lt;section id="portfolio"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="row text-center"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                    &lt;p&gt;${control.description!}&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;ul class="portfolio-filter text-center"&gt;
-                                &lt;li&gt;&lt;a class="btn btn-default active" href="#" data-filter="*"&gt;All&lt;/a&gt;&lt;/li&gt;
-                                &lt;@renderAllControls control.categories![] /&gt;
-                            &lt;/ul&gt;
-                            &lt;div class="portfolio-items"&gt;
-                                &lt;@renderAllControls control.items![] /&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt; 
+                <![CDATA[
+                    <section id="portfolio">
+                        <div class="container">
+                            <div class="row text-center">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h2 class="title-one">${control.title!}</h2>
+                                    <p>${control.description!}</p>
+                                </div>
+                            </div>
+                            <ul class="portfolio-filter text-center">
+                                <li><a class="btn btn-default active" href="#" data-filter="*">All</a></li>
+                                <@renderAllControls control.categories![] />
+                            </ul>
+                            <div class="portfolio-items">
+                                <@renderAllControls control.items![] />
+                            </div>
+                        </div> 
 
-                    &lt;/section&gt;
-                
+                    </section>
+                ]]>
             </render>
+        </control>
+        <control name="Client" >
             <fields>
-                <outAttr name="title" type="String" def="&quot;Portfolio&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit.&quot;"/>
-                <children name="items" allowPlaceHolder="false" wrapper="items" single="false"/>
-                <children name="categories" allowPlaceHolder="false" wrapper="categories" single="false"/>
+                <outAttr name="active" type="Boolean" def="false" />
+                <outAttr name="image" type="String" def='""' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."' />
+                <outAttr name="subtitle" type="String" def='""' />
+                <outAttr name="link" type="String" def='"www.yourwebsite.com"' />
             </fields>
-        </control>
-        <control name="Client" base="Control">
             <render>
-		
-                    &lt;div class="item &lt;#if control.active&gt;active&lt;/#if&gt;"&gt;
-                        &lt;div class="single-client"&gt;
-                            &lt;div class="media"&gt;
-                                &lt;img class="pull-left" src="${control.image!}" alt=""&gt;
-                                &lt;div class="media-body"&gt;
-                                    &lt;blockquote&gt;
-                                        &lt;p&gt;${control.description!}&lt;/p&gt;
-                                        &lt;small&gt;${control.subtitle!}&lt;/small&gt;
-                                        &lt;a href="${control.link!}"&gt;${control.link!}&lt;/a&gt;
-                                    &lt;/blockquote&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-		
+		<![CDATA[
+                    <div class="item <#if control.active>active</#if>">
+                        <div class="single-client">
+                            <div class="media">
+                                <img class="pull-left" src="${control.image!}" alt="">
+                                <div class="media-body">
+                                    <blockquote>
+                                        <p>${control.description!}</p>
+                                        <small>${control.subtitle!}</small>
+                                        <a href="${control.link!}">${control.link!}</a>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+		]]>
             </render>
+        </control>
+        <control name="Clients" >
             <fields>
-                <outAttr name="active" type="Boolean" def="false"/>
-                <outAttr name="image" type="String" def="&quot;&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.&quot;"/>
-                <outAttr name="subtitle" type="String" def="&quot;&quot;"/>
-                <outAttr name="link" type="String" def="&quot;www.yourwebsite.com&quot;"/>
+                <outAttr name="title" type="String" def='"Clients Say About Us"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit. Lorem ipsum dolor sit amet, consectetuer adipiscing elit"' />
+                <children name="clients">
+                    <child name="client" type="Client" />
+                </children>
             </fields>
-        </control>
-        <control name="Clients" base="Control">
             <render>
-                
-                    &lt;section id="clients" class="parallax-section"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="clients-wrapper"&gt;
-                                &lt;div class="row text-center"&gt;
-                                    &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                        &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                        &lt;p&gt;${control.description!}&lt;/p&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                                &lt;div id="clients-carousel" class="carousel slide" data-ride="carousel"&gt;
-                                    &lt;ol class="carousel-indicators"&gt;
-                                        &lt;#list control.clients as client&gt;
-                                            &lt;li data-target="#clients-carousel" data-slide-to="${client_index}" &lt;#if client_index == 0&gt;class="active"&lt;/#if&gt; &gt;&lt;/li&gt;
-                                        &lt;/#list&gt;
-                                    &lt;/ol&gt;
-                                    &lt;div class="carousel-inner"&gt;
-                                        &lt;@renderAllControls control.clients![] /&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="clients" class="parallax-section">
+                        <div class="container">
+                            <div class="clients-wrapper">
+                                <div class="row text-center">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        <h2 class="title-one">${control.title!}</h2>
+                                        <p>${control.description!}</p>
+                                    </div>
+                                </div>
+                                <div id="clients-carousel" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        <#list control.clients as client>
+                                            <li data-target="#clients-carousel" data-slide-to="${client_index}" <#if client_index == 0>class="active"</#if> ></li>
+                                        </#list>
+                                    </ol>
+                                    <div class="carousel-inner">
+                                        <@renderAllControls control.clients![] />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                ]]>
             </render>
+        </control>
+        <control name="BlogPost" >
             <fields>
-                <outAttr name="title" type="String" def="&quot;Clients Say About Us&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit. Lorem ipsum dolor sit amet, consectetuer adipiscing elit&quot;"/>
-                <children name="clients" allowPlaceHolder="false" single="false"/>
+                <outAttr name="image" type="String" def='"__themes/himu/images/blog/1.jpg"' />
+                <outAttr name="title" type="String" def='"Lorem ipsum dolor sit amet"' />
+                <outAttr name="author" type="String" def='"John"' />
+                <outAttr name="date" type="String" def='"Apr 15 2014"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat."' />
+                <outAttr name="link" type="String" def='"#"' />
             </fields>
-        </control>
-        <control name="BlogPost" base="Control">
             <render>
-		
-                    &lt;div class="col-sm-4"&gt;
-                        &lt;div class="single-blog"&gt;
-                            &lt;img src="${control.image!}" alt="" /&gt;
-                            &lt;h2&gt;${control.title!}&lt;/h2&gt;
-                            &lt;ul class="post-meta"&gt;
-                                &lt;li&gt;&lt;i class="fa fa-pencil-square-o"&gt;&lt;/i&gt;&lt;strong&gt; Posted By:&lt;/strong&gt; ${control.author!}&lt;/li&gt;
-                                &lt;li&gt;&lt;i class="fa fa-clock-o"&gt;&lt;/i&gt;&lt;strong&gt; Posted On:&lt;/strong&gt; ${control.date!}&lt;/li&gt;
-                            &lt;/ul&gt;
-                            &lt;div class="blog-content"&gt;
-                                &lt;p&gt;${control.description!}&lt;/p&gt;
-                            &lt;/div&gt;
-                            &lt;a href="${control.link!}" class="btn btn-primary" data-toggle="modal" data-target="#blog-detail"&gt;Read More&lt;/a&gt;
-                        &lt;/div&gt;
-                        &lt;div class="modal fade" id="blog-detail" tabindex="-1" role="dialog" aria-hidden="true"&gt;
-                            &lt;div class="modal-dialog"&gt;
-                                &lt;div class="modal-content"&gt;
-                                    &lt;div class="modal-body"&gt;
-                                        &lt;button type="button" class="close" data-dismiss="modal" aria-hidden="true"&gt;&amp;times;&lt;/button&gt;
-                                        &lt;img src="${control.image!}" alt="" /&gt;
-                                        &lt;h2&gt;${control.title!}&lt;/h2&gt;
-                                        &lt;p&gt;${control.description!}&lt;/p&gt;
-                                    &lt;/div&gt; 
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-		
+		<![CDATA[
+                    <div class="col-sm-4">
+                        <div class="single-blog">
+                            <img src="${control.image!}" alt="" />
+                            <h2>${control.title!}</h2>
+                            <ul class="post-meta">
+                                <li><i class="fa fa-pencil-square-o"></i><strong> Posted By:</strong> ${control.author!}</li>
+                                <li><i class="fa fa-clock-o"></i><strong> Posted On:</strong> ${control.date!}</li>
+                            </ul>
+                            <div class="blog-content">
+                                <p>${control.description!}</p>
+                            </div>
+                            <a href="${control.link!}" class="btn btn-primary" data-toggle="modal" data-target="#blog-detail">Read More</a>
+                        </div>
+                        <div class="modal fade" id="blog-detail" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <img src="${control.image!}" alt="" />
+                                        <h2>${control.title!}</h2>
+                                        <p>${control.description!}</p>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+		]]>
             </render>
+        </control>
+        <control name="Blog" >
             <fields>
-                <outAttr name="image" type="String" def="&quot;__themes/himu/images/blog/1.jpg&quot;"/>
-                <outAttr name="title" type="String" def="&quot;Lorem ipsum dolor sit amet&quot;"/>
-                <outAttr name="author" type="String" def="&quot;John&quot;"/>
-                <outAttr name="date" type="String" def="&quot;Apr 15 2014&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.&quot;"/>
-                <outAttr name="link" type="String" def="&quot;#&quot;"/>
+                <outAttr name="title" type="String" def='"Our Blog"' />
+                <outEl name="description" type="String" def='"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat."' />
+                <children name="posts">
+                    <child name="post" type="BlogPost" />
+                </children>
             </fields>
-        </control>
-        <control name="Blog" base="Control">
             <render>
-                
-                    &lt;section id="blog"&gt; 
-                        &lt;div class="container"&gt;
-                            &lt;div class="row text-center clearfix"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;h2 class="title-one"&gt;${control.title!}&lt;/h2&gt;
-                                    &lt;p class="blog-heading"&gt;${control.description!}&lt;/p&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                            &lt;div class="row"&gt;
-                                &lt;@renderAllControls control.posts![] /&gt;
-                            &lt;/div&gt; 
-                        &lt;/div&gt; 
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="blog"> 
+                        <div class="container">
+                            <div class="row text-center clearfix">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <h2 class="title-one">${control.title!}</h2>
+                                    <p class="blog-heading">${control.description!}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <@renderAllControls control.posts![] />
+                            </div> 
+                        </div> 
+                    </section>
+                ]]>
             </render>
+        </control>
+        <control name="Contact" >
             <fields>
-                <outAttr name="title" type="String" def="&quot;Our Blog&quot;"/>
-                <outEl name="description" type="String" def="&quot;Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.&quot;"/>
-                <children name="posts" allowPlaceHolder="false" single="false"/>
             </fields>
-        </control>
-        <control name="Contact" base="Control">
             <render>
-                
-                    &lt;section id="contact"&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="row text-center clearfix"&gt;
-                                &lt;div class="col-sm-8 col-sm-offset-2"&gt;
-                                    &lt;div class="contact-heading"&gt;
-                                        &lt;h2 class="title-one"&gt;Contact With Us&lt;/h2&gt;
-                                        &lt;p&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit&lt;/p&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                        &lt;div class="container"&gt;
-                            &lt;div class="contact-details"&gt;
-                                &lt;div class="pattern"&gt;&lt;/div&gt;
-                                &lt;div class="row text-center clearfix"&gt;
-                                    &lt;div class="col-sm-6"&gt;
-                                        &lt;div class="contact-address"&gt;&lt;address&gt;&lt;p&gt;&lt;span&gt;Devs&lt;/span&gt;Cluster&lt;/p&gt;&lt;strong&gt;36 North Kafrul&lt;br&gt;Dhaka Cantonment Area&lt;br&gt; Dhaka-1206, Bangladesh&lt;/strong&gt;&lt;br&gt;&lt;small&gt;( Lorem ipsum dolor sit amet, consectetuer adipiscing elit )&lt;/small&gt;&lt;/address&gt;
-                                            &lt;div class="social-icons"&gt;
-                                                &lt;a href="#"&gt;&lt;i class="fa fa-facebook"&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href="#"&gt;&lt;i class="fa fa-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
-                                                &lt;a href="#"&gt;&lt;i class="fa fa-google-plus"&gt;&lt;/i&gt;&lt;/a&gt;&lt;a href="#"&gt;&lt;i class="fa fa-dribbble"&gt;&lt;/i&gt;&lt;/a&gt;
-                                                &lt;a href="#"&gt;&lt;i class="fa fa-linkedin"&gt;&lt;/i&gt;&lt;/a&gt;
-                                            &lt;/div&gt;
-                                        &lt;/div&gt;
-                                    &lt;/div&gt;
-                                    &lt;div class="col-sm-6"&gt; 
-                                        &lt;div id="contact-form-section"&gt;
-                                            &lt;div class="status alert alert-success" style="display: none"&gt;&lt;/div&gt;
-                                            &lt;form id="contact-form" class="contact" name="contact-form" method="post" action="send-mail.php"&gt;
-                                                &lt;div class="form-group"&gt;
-                                                    &lt;input type="text" name="name" class="form-control name-field" required="required" placeholder="Your Name"&gt;&lt;/div&gt;
-                                                &lt;div class="form-group"&gt;
-                                                    &lt;input type="email" name="email" class="form-control mail-field" required="required" placeholder="Your Email"&gt;
-                                                &lt;/div&gt; 
-                                                &lt;div class="form-group"&gt;
-                                                    &lt;textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Message"&gt;&lt;/textarea&gt;
-                                                &lt;/div&gt; 
-                                                &lt;div class="form-group"&gt;
-                                                    &lt;button type="submit" class="btn btn-primary"&gt;Send&lt;/button&gt;
-                                                &lt;/div&gt;
-                                            &lt;/form&gt; 
-                                        &lt;/div&gt;
-                                    &lt;/div&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt; 
-                    &lt;/section&gt;
-                
+                <![CDATA[
+                    <section id="contact">
+                        <div class="container">
+                            <div class="row text-center clearfix">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <div class="contact-heading">
+                                        <h2 class="title-one">Contact With Us</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="contact-details">
+                                <div class="pattern"></div>
+                                <div class="row text-center clearfix">
+                                    <div class="col-sm-6">
+                                        <div class="contact-address"><address><p><span>Devs</span>Cluster</p><strong>36 North Kafrul<br>Dhaka Cantonment Area<br> Dhaka-1206, Bangladesh</strong><br><small>( Lorem ipsum dolor sit amet, consectetuer adipiscing elit )</small></address>
+                                            <div class="social-icons">
+                                                <a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a>
+                                                <a href="#"><i class="fa fa-google-plus"></i></a><a href="#"><i class="fa fa-dribbble"></i></a>
+                                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6"> 
+                                        <div id="contact-form-section">
+                                            <div class="status alert alert-success" style="display: none"></div>
+                                            <form id="contact-form" class="contact" name="contact-form" method="post" action="send-mail.php">
+                                                <div class="form-group">
+                                                    <input type="text" name="name" class="form-control name-field" required="required" placeholder="Your Name"></div>
+                                                <div class="form-group">
+                                                    <input type="email" name="email" class="form-control mail-field" required="required" placeholder="Your Email">
+                                                </div> 
+                                                <div class="form-group">
+                                                    <textarea name="message" id="message" required="required" class="form-control" rows="8" placeholder="Message"></textarea>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary">Send</button>
+                                                </div>
+                                            </form> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </section>
+                ]]>
             </render>
-            <fields/>
         </control>
-        <control name="Footer" base="Control">
-            <render>
-                
-                    &lt;footer id="footer"&gt; 
-                        &lt;div class="container"&gt; 
-                            &lt;div class="text-center"&gt; 
-                                &lt;p&gt;Copyright &amp;copy; 2014 - &lt;a href="http://mostafiz.me/"&gt;Mostafiz&lt;/a&gt; | All Rights Reserved&lt;/p&gt; 
-                            &lt;/div&gt; 
-                        &lt;/div&gt; 
-                    &lt;/footer&gt;
-                
-            </render>
-            <fields/>
-        </control>
-        <control name="Page" base="Control">
-            <render>
-                
-                    &lt;#assign pageControl = control /&gt;
-                    &lt;div class="preloader"&gt;
-                        &lt;div class="preloder-wrap"&gt;
-                            &lt;div class="preloder-inner"&gt;
-                                &lt;#list 1..7 as x&gt;
-                                    &lt;div class="ball"&gt;&lt;/div&gt; 
-                                &lt;/#list&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;#if control.navigation?? &gt;
-                        &lt;@renderControl control.navigation /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.home?? &gt;
-                        &lt;@renderControl control.home /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.aboutus?? &gt;
-                        &lt;@renderControl control.aboutus /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.services?? &gt;
-                        &lt;@renderControl control.services /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.ourteam?? &gt;
-                        &lt;@renderControl control.ourteam /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.portfolio?? &gt;
-                        &lt;@renderControl control.portfolio /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.clients?? &gt;
-                        &lt;@renderControl control.clients /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.blog?? &gt;
-                        &lt;@renderControl control.blog /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.contact?? &gt;
-                        &lt;@renderControl control.contact /&gt;
-                    &lt;/#if&gt;
-                    &lt;#if control.footer?? &gt;
-                        &lt;@renderControl control.footer /&gt;
-                    &lt;/#if&gt;
-                
-            </render>
+        <control name="Footer" >
             <fields>
-                <child name="navigation" type="Navigation">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="home" type="Home">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="aboutus" type="AboutUs">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="services" type="Services">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="ourteam" type="OurTeam">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="portfolio" type="Portfolio">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="clients" type="Clients">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="blog" type="Blog">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="contact" type="Contact">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
-                <child name="footer" type="Footer">
-                    <allowPlaceHolder>false</allowPlaceHolder>
-                </child>
             </fields>
+            <render>
+                <![CDATA[
+                    <footer id="footer"> 
+                        <div class="container"> 
+                            <div class="text-center"> 
+                                <p>Copyright &copy; 2014 - <a href="http://mostafiz.me/">Mostafiz</a> | All Rights Reserved</p> 
+                            </div> 
+                        </div> 
+                    </footer>
+                ]]>
+            </render>
+        </control>
+        <control name="Page">
+            <fields>
+                <child name="navigation" type="Navigation" />
+                <child name="home" type="Home" />
+                <child name="aboutus" type="AboutUs" />
+                <child name="services" type="Services" />
+                <child name="ourteam" type="OurTeam" />
+                <child name="portfolio" type="Portfolio" />
+                <child name="clients" type="Clients" />
+                <child name="blog" type="Blog" />
+                <child name="contact" type="Contact" />
+                <child name="footer" type="Footer" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <#assign pageControl = control />
+                    <div class="preloader">
+                        <div class="preloder-wrap">
+                            <div class="preloder-inner">
+                                <#list 1..7 as x>
+                                    <div class="ball"></div> 
+                                </#list>
+                            </div>
+                        </div>
+                    </div>
+                    <#if control.navigation?? >
+                        <@renderControl control.navigation />
+                    </#if>
+                    <#if control.home?? >
+                        <@renderControl control.home />
+                    </#if>
+                    <#if control.aboutus?? >
+                        <@renderControl control.aboutus />
+                    </#if>
+                    <#if control.services?? >
+                        <@renderControl control.services />
+                    </#if>
+                    <#if control.ourteam?? >
+                        <@renderControl control.ourteam />
+                    </#if>
+                    <#if control.portfolio?? >
+                        <@renderControl control.portfolio />
+                    </#if>
+                    <#if control.clients?? >
+                        <@renderControl control.clients />
+                    </#if>
+                    <#if control.blog?? >
+                        <@renderControl control.blog />
+                    </#if>
+                    <#if control.contact?? >
+                        <@renderControl control.contact />
+                    </#if>
+                    <#if control.footer?? >
+                        <@renderControl control.footer />
+                    </#if>
+                ]]>
+            </render>
         </control>
     </controls>
-    <controlsTemplates/>
 </uisuite>

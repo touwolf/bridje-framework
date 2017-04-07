@@ -18,6 +18,7 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
@@ -25,6 +26,8 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.ComboBoxTreeTableCell;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import org.bridje.jfx.utils.BiContentConverter;
+import org.bridje.jfx.utils.ExBindings;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.FieldDefModelTreeTable;
 
@@ -34,6 +37,8 @@ public class FieldsEditor extends StackPane
 
     private final FieldDefModelTreeTable table;
 
+    private final BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> converter;
+    
     public FieldsEditor()
     {
         table = new FieldDefModelTreeTable();
@@ -53,8 +58,17 @@ public class FieldsEditor extends StackPane
         table.editableSingleColumn(boolEditor(), null);
 
         getChildren().add(table);
-        
-        TreeItem<FieldDefModel> root = new TreeItem<>(new FieldDefModel());
+        converter = createConverter(createChildsConverter());
+
+        FieldDefModel rootField = new FieldDefModel();
+        rootField.setChilds(FXCollections.observableArrayList());
+        TreeItem<FieldDefModel> root = new TreeItem<>(rootField);
+        ExBindings.bindContentBidirectional(root.getChildren(), rootField.getChilds(), converter);
+        fieldsProperty.addListener((observable, oldValue, newValue) ->
+        {
+            if(oldValue != null) Bindings.unbindContentBidirectional(rootField.getChilds(), oldValue);
+            if(newValue != null) Bindings.bindContentBidirectional(rootField.getChilds(), newValue);
+        });
         table.setRoot(root);
         table.setShowRoot(false);
     }
@@ -82,20 +96,49 @@ public class FieldsEditor extends StackPane
     private Callback<TreeTableColumn<FieldDefModel, String>, TreeTableCell<FieldDefModel, String>> fieldEditor()
     {
         return ComboBoxTreeTableCell.forTreeTableColumn(
-            "outAttr",
-            "inAttr",
-            "eventAttr",
-            "attr",
-            "outEl",
-            "inEl",
-            "eventEl",
-            "el",
-            "outValue",
-            "inValue",
-            "eventValue",
-            "value",
-            "child",
-            "children"
-        );
+            "outAttr", "inAttr", "eventAttr", "attr", 
+            "outEl", "inEl", "eventEl", "el", 
+            "outValue", "inValue", "eventValue", "value", 
+            "child", "children");
+    }
+
+    private BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> createConverter(BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> childsConverter)
+    {
+        return new BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel>()
+        {
+            @Override
+            public FieldDefModel convertFrom(TreeItem<FieldDefModel> value)
+            {
+                return value.getValue();
+            }
+
+            @Override
+            public TreeItem<FieldDefModel> convertTo(FieldDefModel value)
+            {
+                TreeItem<FieldDefModel> result = new TreeItem<>(value);
+                if(value.getChilds() == null) value.setChilds(FXCollections.observableArrayList());
+                ExBindings.bindContentBidirectional(result.getChildren(), value.getChilds(), childsConverter);
+                return result;
+            }
+        };
+    }
+
+    private BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> createChildsConverter()
+    {
+        return new BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel>()
+        {
+            @Override
+            public TreeItem<FieldDefModel> convertTo(FieldDefModel value)
+            {
+                TreeItem<FieldDefModel> result = new TreeItem<>(value);
+                return result;
+            }
+
+            @Override
+            public FieldDefModel convertFrom(TreeItem<FieldDefModel> value)
+            {
+                return value.getValue();
+            }
+        };
     }
 }

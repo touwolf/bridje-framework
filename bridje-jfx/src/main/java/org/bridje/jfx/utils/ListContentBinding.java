@@ -83,16 +83,9 @@ public class ListContentBinding<E, T> implements ListChangeListener<E>, WeakList
     @Override
     public boolean equals(Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-
+        if (this == obj) return true;
         final List<T> list1 = listRef.get();
-        if (list1 == null)
-        {
-            return false;
-        }
+        if (list1 == null) return false;
 
         if (obj instanceof ListContentBinding)
         {
@@ -105,6 +98,8 @@ public class ListContentBinding<E, T> implements ListChangeListener<E>, WeakList
 
     private Collection<? extends T> convert(List<? extends E> subList)
     {
-        return subList.stream().map(e -> converter.convert(e)).collect(Collectors.toList());
+        return subList.stream()
+                        .map(e -> converter.convert(e))
+                        .collect(Collectors.toList());
     }
 }

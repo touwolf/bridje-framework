@@ -380,6 +380,7 @@ public class UISuiteConverter
             result.setAllowPlaceHolder(children.getAllowPlaceHolder());
             result.setWrapper(children.getWrapper());
             result.setSingle(children.getIsSingle());
+            result.setChilds(childsToModel(children.getContent()));
         }
         return result;
     }
@@ -466,6 +467,7 @@ public class UISuiteConverter
                 children.setWrapper(model.getWrapper());
                 children.setName(model.getName());
                 children.setAllowPlaceHolder(model.getAllowPlaceHolder());
+                children.setContent(childsFromModel(model.getChilds()));
                 return children;
         }
         return null;
