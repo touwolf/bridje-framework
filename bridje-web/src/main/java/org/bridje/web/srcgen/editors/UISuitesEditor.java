@@ -18,18 +18,19 @@ package org.bridje.web.srcgen.editors;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javax.xml.bind.JAXBException;
@@ -44,8 +45,6 @@ import org.bridje.web.srcgen.uisuite.UISuite;
 public class UISuitesEditor extends BorderPane
 {
     private static final Logger LOG = Logger.getLogger(UISuitesEditor.class.getName());
-
-    private final UISuiteConverter converter;
 
     private final TreeView<Object> tree;
 
@@ -64,25 +63,13 @@ public class UISuitesEditor extends BorderPane
     private final Button btAddControl;
 
     private final Button btAddTemplate;
+    
+    private final Button btAddField;
 
     private final SimpleObjectProperty<UISuitesModel> suitesProperty = new SimpleObjectProperty<>();
 
     public UISuitesEditor()
     {
-        converter = new UISuiteConverter();
-
-        btSave = new Button("Save");
-        btSave.setOnAction(this::save);
-
-        btAddControl = new Button("Add Control");
-        btAddControl.setOnAction(this::addControl);
-
-        btAddTemplate = new Button("Add Template");
-        btAddTemplate.setOnAction(this::addTemplate);
-
-        toolBar = new ToolBar(btSave, btAddControl, btAddTemplate);
-        setTop(toolBar);
-
         tree = new TreeView<>();
         ctrlEditor = new ControlEditor();
         stEditor = new UISuiteEditor();
@@ -96,8 +83,33 @@ public class UISuitesEditor extends BorderPane
         tree.setRoot(root);
         tree.setShowRoot(false);
 
+        btSave = new Button("Save");
+        btSave.setOnAction(this::save);
+
+        btAddControl = new Button("Add Control");
+        btAddControl.setOnAction(this::addControl);
+
+        btAddTemplate = new Button("Add Template");
+        btAddTemplate.setOnAction(this::addTemplate);
+
+        btAddField = new Button("Add Field");
+        btAddField.setOnAction(ctrlEditor::addField);
+        
+        toolBar = new ToolBar(btSave, btAddControl, btAddTemplate, btAddField);
+        setTop(toolBar);
+
         suitesProperty
-                .addListener((observable, oldValue, newValue) -> initChildrens(newValue));
+                .addListener((observable, oldValue, newValue) -> 
+                {
+                    if(oldValue != null)
+                    {
+                        ExBindings.unbindContentBidirectional(root.getChildren(), oldValue.getSuites());
+                    }
+                    if(newValue != null)
+                    {
+                        ExBindings.bindContentBidirectional(root.getChildren(), newValue.getSuites(), createSuitesTreeConverter());
+                    }
+                });
 
         tree.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) ->
@@ -134,7 +146,7 @@ public class UISuitesEditor extends BorderPane
             uiSuite.getControlsTemplates().add(ctrl);
         }        
     }
-    
+
     public void addControl(ActionEvent event)
     {
         UISuiteModel uiSuite = getCurrentUISuite();
@@ -144,15 +156,15 @@ public class UISuitesEditor extends BorderPane
             ctrl.setName("NewControl");
             ctrl.setFields(FXCollections.observableArrayList());
             uiSuite.getControls().add(ctrl);
-        }        
+        }
     }
-    
+
     public void save(ActionEvent event)
     {
         UISuiteModel uiSuite = getCurrentUISuite();
         if(uiSuite != null)
         {
-            UISuite data = converter.fromModel(uiSuite);
+            UISuite data = ModelUtils.fromModel(uiSuite);
             try(OutputStream os = new VFileOutputStream(uiSuite.getFile()))
             {
                 UISuite.save(os, data);
@@ -163,7 +175,7 @@ public class UISuitesEditor extends BorderPane
             }
         }
     }
-    
+
     public SimpleObjectProperty<UISuitesModel> suitesProperty()
     {
         return this.suitesProperty;
@@ -177,13 +189,6 @@ public class UISuitesEditor extends BorderPane
     public void setSuites(UISuitesModel suites)
     {
         this.suitesProperty.set(suites);
-    }    
-
-    private List<TreeItem<Object>> toTreeItems(UISuitesModel newValue)
-    {
-        List<TreeItem<Object>> result = new ArrayList<>();
-        newValue.getSuites().forEach(s -> result.add(toTreeItem(s)));
-        return result;
     }
 
     private TreeItem<Object> toTreeItem(ControlDefModel control)
@@ -195,6 +200,7 @@ public class UISuitesEditor extends BorderPane
     private TreeItem<Object> toTreeItem(UISuiteModel suite)
     {
         TreeItem<Object> tiSuite = new TreeItem<>(suite);
+        tiSuite.setGraphic(createIcon("uisuite.png"));
         TreeItem<Object> tiTemplates = new TreeItem<>("Templates");
         TreeItem<Object> tiControls = new TreeItem<>("Controls");
         tiSuite.getChildren().addAll(tiTemplates, tiControls);
@@ -203,15 +209,6 @@ public class UISuitesEditor extends BorderPane
         ExBindings.bindContentBidirectional(tiControls.getChildren(), suite.getControls(), ctrlConverter);
         
         return tiSuite;
-    }
-
-    private void initChildrens(UISuitesModel newValue)
-    {
-        root.getChildren().clear();
-        if(newValue != null)
-        {
-            root.getChildren().addAll(toTreeItems(newValue));
-        }
     }
 
     private UISuiteModel getCurrentUISuite()
@@ -244,5 +241,32 @@ public class UISuitesEditor extends BorderPane
                 return toTreeItem(value);
             }
         };
+    }
+    
+    private BiContentConverter<TreeItem<Object>, UISuiteModel> createSuitesTreeConverter()
+    {
+        return new BiContentConverter<TreeItem<Object>, UISuiteModel>()
+        {
+            @Override
+            public UISuiteModel convertFrom(TreeItem<Object> value)
+            {
+                return (UISuiteModel)value.getValue();
+            }
+
+            @Override
+            public TreeItem<Object> convertTo(UISuiteModel value)
+            {
+                return toTreeItem(value);
+            }
+        };
+    }
+
+    private Node createIcon(String resource)
+    {
+        Image img = new Image(getClass().getResourceAsStream(resource));
+        ImageView iv = new ImageView(img);
+        iv.setFitHeight(16d);
+        iv.setFitWidth(16d);
+        return iv;
     }
 }

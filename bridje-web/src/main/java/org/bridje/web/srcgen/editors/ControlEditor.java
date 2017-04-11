@@ -18,6 +18,7 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -28,6 +29,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bridje.web.srcgen.models.ControlDefModel;
+import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
 public class ControlEditor extends GridPane
@@ -198,5 +200,11 @@ public class ControlEditor extends GridPane
     public void setUISuite(UISuiteModel control)
     {
         this.uiSuiteProperty.set(control);
+    }
+
+    public void addField(ActionEvent event)
+    {
+        FieldDefModel field = new FieldDefModel();
+        getControl().getFields().add(field);
     }
 }

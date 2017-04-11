@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package org.bridje.web.srcgen.editors;
+package org.bridje.srcgen.editor;
 
-import java.io.FileNotFoundException;
 import javafx.application.Application;
-import javax.xml.bind.JAXBException;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
-public class Main
+public class EditorApplication extends Application
 {
-    /**
-     * 
-     * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     * @throws javax.xml.bind.JAXBException
-     */
-    public static void main(String[] args) throws FileNotFoundException, JAXBException
+    @Override
+    public void start(Stage stage) throws Exception
     {
-        Application.launch(UISuitesEditorApplication.class, args);
+        EditorMainPane mainPane = new EditorMainPane();
+        Scene scene = new Scene(mainPane);
+        stage.setScene(scene);
+        stage.setWidth(1024);
+        stage.setHeight(768);
+        stage.setTitle("Source Generation Data Editor");
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("generator.png")));
+        stage.show();
     }
 }

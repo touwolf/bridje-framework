@@ -16,10 +16,18 @@
 
 package org.bridje.web.srcgen.editors;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.xml.bind.JAXBException;
+import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.srcgen.models.AssetModel;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
@@ -51,13 +59,38 @@ import org.bridje.web.srcgen.uisuite.StandaloneDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 import org.bridje.web.srcgen.uisuite.ValueFlield;
 
-public class UISuiteConverter
+public class ModelUtils
 {
-    public UISuiteModel toModel(UISuite suite)
+    private static final Logger LOG = Logger.getLogger(ModelUtils.class.getName());
+
+    public static void saveUISuite(UISuiteModel uiSuite)
+    {
+        if(uiSuite.getName() != null)
+        {
+            if(uiSuite.getFile() == null)
+            {
+                uiSuite.setFile(new VFile(SrcGenService.DATA_PATH.join(uiSuite.getName() + ".xml")));
+                uiSuite.getFile().createNewFile();
+            }
+            UISuite data = ModelUtils.fromModel(uiSuite);
+            try(OutputStream os = new VFileOutputStream(uiSuite.getFile()))
+            {
+                UISuite.save(os, data);
+            }
+            catch(JAXBException | IOException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public static UISuiteModel toModel(UISuite suite, VFile file)
     {
         UISuiteModel result = new UISuiteModel();
+        result.setFile(file);
         result.setControls(controlsToModel(suite.getControls()));
         result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
         result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
         result.setDefines(standaloneToModel(suite.getDefines()));
         result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
@@ -73,7 +106,7 @@ public class UISuiteConverter
         return result;
     }
 
-    public UISuite fromModel(UISuiteModel suiteModel)
+    public static UISuite fromModel(UISuiteModel suiteModel)
     {
         UISuite result = new UISuite();
         result.setControls(controlsFromModel(suiteModel.getControls()));
@@ -93,14 +126,14 @@ public class UISuiteConverter
         return result;
     }
 
-    private ObservableList<ControlDefModel> controlsToModel(List<ControlDef> controls)
+    private static ObservableList<ControlDefModel> controlsToModel(List<ControlDef> controls)
     {
         ObservableList<ControlDefModel> result = FXCollections.observableArrayList();
         if(controls != null) controls.forEach(c -> result.add(controlToModel(c)));
         return result;
     }
     
-    private ControlDefModel controlToModel(ControlDef control)
+    private static ControlDefModel controlToModel(ControlDef control)
     {
         ControlDefModel result = new ControlDefModel();
 
@@ -115,73 +148,73 @@ public class UISuiteConverter
         return result;
     }
 
-    private ResourceModel resourceToModel(Resource resource)
+    private static ResourceModel resourceToModel(Resource resource)
     {
         ResourceModel result = new ResourceModel();
-
+        if(resource == null) return null;
         result.setName(resource.getName());
         result.setContent(assetsToModel(resource.getContent()));
 
         return result;
     }
 
-    private StandaloneDefModel standaloneToModel(StandaloneDef standalone)
+    private static StandaloneDefModel standaloneToModel(StandaloneDef standalone)
     {
         StandaloneDefModel result = new StandaloneDefModel();
-        result.setContent(childsToModel(standalone.getContent()));
+        if(standalone != null) result.setContent(childsToModel(standalone.getContent()));
         return result;
     }
 
-    private ObservableList<String> stringListToModel(List<String> stringList)
+    private static ObservableList<String> stringListToModel(List<String> stringList)
     {
         ObservableList<String> result = FXCollections.observableArrayList();
         if(stringList != null) result.addAll(stringList);
         return result;
     }
 
-    private ObservableList<ResourceModel> resourcesToModel(List<Resource> resources)
+    private static ObservableList<ResourceModel> resourcesToModel(List<Resource> resources)
     {
         ObservableList<ResourceModel> result = FXCollections.observableArrayList();
         if(resources != null) resources.forEach(c -> result.add(resourceToModel(c)));
         return result;
     }
 
-    private ObservableList<FieldDefModel> fieldsToModel(List<FieldDef> fields)
+    private static ObservableList<FieldDefModel> fieldsToModel(List<FieldDef> fields)
     {
         ObservableList<FieldDefModel> result = FXCollections.observableArrayList();
         fields.forEach(c -> result.add(fieldToModel(c)));
         return result;
     }
 
-    private ObservableList<FieldDefModel> childsToModel(List<ChildField> fields)
+    private static ObservableList<FieldDefModel> childsToModel(List<ChildField> fields)
     {
         ObservableList<FieldDefModel> result = FXCollections.observableArrayList();
         if(fields != null) fields.forEach(c -> result.add(fieldToModel(c)));
         return result;
     }
 
-    private ObservableList<ResourceRefModel> resourcesRefToModel(List<ResourceRef> resources)
+    private static ObservableList<ResourceRefModel> resourcesRefToModel(List<ResourceRef> resources)
     {
         ObservableList<ResourceRefModel> result = FXCollections.observableArrayList();
         if(resources != null) resources.forEach(c -> result.add(resourceRefToModel(c)));
         return result;
     }
 
-    private ResourceRefModel resourceRefToModel(ResourceRef resource)
+    private static ResourceRefModel resourceRefToModel(ResourceRef resource)
     {
         ResourceRefModel result = new ResourceRefModel();
         result.setName(resource.getName());
         return result;
     }
 
-    private ObservableList<AssetModel> assetsToModel(List<AssetBase> content)
+    private static ObservableList<AssetModel> assetsToModel(List<AssetBase> content)
     {
         ObservableList<AssetModel> result = FXCollections.observableArrayList();
-        content.forEach(c -> result.add(assetToModel(c)));
+        if(content != null) content.forEach(c -> result.add(assetToModel(c)));
         return result;
     }
     
-    private AssetModel assetToModel(AssetBase asset)
+    private static AssetModel assetToModel(AssetBase asset)
     {
         AssetModel result = new AssetModel();
         result.setHref(asset.getHref());
@@ -192,35 +225,35 @@ public class UISuiteConverter
         return result;
     }
 
-    private List<ControlDef> controlsFromModel(ObservableList<ControlDefModel> controls)
+    private static List<ControlDef> controlsFromModel(ObservableList<ControlDefModel> controls)
     {
         List<ControlDef> result = new ArrayList<>();
-        controls.forEach(c -> result.add(controlFromModel(c)));
+        if(controls != null) controls.forEach(c -> result.add(controlFromModel(c)));
         return result;
     }
 
-    private StandaloneDef standaloneFromModel(StandaloneDefModel defines)
+    private static StandaloneDef standaloneFromModel(StandaloneDefModel defines)
     {
         StandaloneDef result = new StandaloneDef();
-        result.setContent(childsFromModel(defines.getContent()));
+        if(defines != null) result.setContent(childsFromModel(defines.getContent()));
         return result;
     }
 
-    private List<String> stringListFromModel(ObservableList<String> stringList)
+    private static List<String> stringListFromModel(ObservableList<String> stringList)
     {
         List<String> result = new ArrayList<>();
-        result.addAll(stringList);
+        if(stringList != null) result.addAll(stringList);
         return result;
     }
 
-    private List<Resource> resourcesFromModel(ObservableList<ResourceModel> resources)
+    private static List<Resource> resourcesFromModel(ObservableList<ResourceModel> resources)
     {
         List<Resource> result = new ArrayList<>();
-        resources.forEach(r -> result.add(resourceFromModel(r)));
+        if(resources != null) resources.forEach(r -> result.add(resourceFromModel(r)));
         return result;
     }
 
-    private Resource resourceFromModel(ResourceModel resource)
+    private static Resource resourceFromModel(ResourceModel resource)
     {
         Resource result = new Resource();
         result.setName(resource.getName());
@@ -228,7 +261,7 @@ public class UISuiteConverter
         return result;
     }
 
-    private ControlDef controlFromModel(ControlDefModel control)
+    private static ControlDef controlFromModel(ControlDefModel control)
     {
         ControlDef result = new ControlDef();
         result.setBase(control.getBase());
@@ -240,50 +273,50 @@ public class UISuiteConverter
         return result;
     }
 
-    private List<AssetBase> assetsFromModel(ObservableList<AssetModel> content)
+    private static List<AssetBase> assetsFromModel(ObservableList<AssetModel> content)
     {
         List<AssetBase> result = new ArrayList<>();
-        content.forEach(c -> result.add(assetFromModel(c)));
+        if(content != null) content.forEach(c -> result.add(assetFromModel(c)));
         return result;
     }
 
-    private List<ResourceRef> resourcesRefFromModel(ObservableList<ResourceRefModel> resources)
+    private static List<ResourceRef> resourcesRefFromModel(ObservableList<ResourceRefModel> resources)
     {
         List<ResourceRef> result = new ArrayList<>();
-        resources.forEach(r -> result.add(resourceRefFromModel(r)));
+        if(resources != null) resources.forEach(r -> result.add(resourceRefFromModel(r)));
         return result;
     }
 
-    private AssetBase assetFromModel(AssetModel c)
+    private static AssetBase assetFromModel(AssetModel c)
     {
         AssetBase result = new Script();
         result.setHref(c.getHref());
         return result;
     }
 
-    private ResourceRef resourceRefFromModel(ResourceRefModel r)
+    private static ResourceRef resourceRefFromModel(ResourceRefModel r)
     {
         ResourceRef result = new ResourceRef();
         result.setName(r.getName());
         return result;
     }
 
-    private List<FieldDef> fieldsFromModel(ObservableList<FieldDefModel> fields)
+    private static List<FieldDef> fieldsFromModel(ObservableList<FieldDefModel> fields)
     {
         List<FieldDef> result = new ArrayList<>();
-        fields.forEach(f -> result.add(fieldFromModel(f)));
+        if(fields != null) fields.forEach(f -> result.add(fieldFromModel(f)));
         return result;
     }
     
 
-    private List<ChildField> childsFromModel(ObservableList<FieldDefModel> fields)
+    private static List<ChildField> childsFromModel(ObservableList<FieldDefModel> fields)
     {
         List<ChildField> result = new ArrayList<>();
-        fields.forEach(f -> result.add((ChildField)fieldFromModel(f)));
+        if(fields != null) fields.forEach(f -> result.add((ChildField)fieldFromModel(f)));
         return result;
     }
 
-    private FieldDefModel fieldToModel(FieldDef fieldDef)
+    private static FieldDefModel fieldToModel(FieldDef fieldDef)
     {
         FieldDefModel result = new FieldDefModel();
         Class<?> cls = fieldDef.getClass();
@@ -385,7 +418,7 @@ public class UISuiteConverter
         return result;
     }
 
-    private FieldDef fieldFromModel(FieldDefModel model)
+    private static FieldDef fieldFromModel(FieldDefModel model)
     {
         switch(model.getField())
         {

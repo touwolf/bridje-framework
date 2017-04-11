@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.impl.SQLCustomTypeProcessor;
@@ -162,5 +163,11 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     private Enumeration<URL> loadDataTypeFiles() throws IOException
     {
         return getClass().getClassLoader().getResources(SQLCustomTypeProcessor.CUSTOM_DATATYPE_FILE);
+    }
+
+    @Override
+    public TreeItem<Object> createEditorTreeItem()
+    {
+        return null;
     }
 }
