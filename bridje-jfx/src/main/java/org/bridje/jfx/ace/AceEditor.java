@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
@@ -20,7 +22,7 @@ import netscape.javascript.JSObject;
  *     AceEditor editor = new AceEditor(AceEditor.Mode.FTL);
  *
  *     //fill content on ready
- *     editor.onReady(() -> editor.setText("<#ftl encoding='UTF-8'>\n"));
+ *     editor.onReady(() -> editor.setText("&lt;#ftl encoding='UTF-8'&gt;\n"));
  *
  *     //handle replacement of editor selected text
  *     editor.onReplace(text ->
@@ -30,7 +32,7 @@ import netscape.javascript.JSObject;
  *          dialog.setHeaderText("Please enter the replacement text.");
  *          dialog.setContentText("Replacement text:");
  *
- *          Optional<String> result = dialog.showAndWait();
+ *          Optional&lt;String&gt; result = dialog.showAndWait();
  *          String replaceValue = "";
  *          if (result.isPresent())
  *          {
@@ -49,7 +51,7 @@ public class AceEditor extends VBox
     /**
      * Text content of the editor.
      */
-    private final SimpleStringProperty text;
+    private final SimpleStringProperty textProperty = new SimpleStringProperty("");
 
     /**
      * Initialize control.
@@ -63,11 +65,12 @@ public class AceEditor extends VBox
         WebView editor = new WebView();
         createContextMenu(editor);
         loadContent(editor, mode);
-        text = new SimpleStringProperty("");
         getChildren().add(editor);
     }
 
     private JsGate gate;
+    
+    private ChangeListener<String> listener;
 
     private void createContextMenu(WebView editor)
     {
@@ -112,6 +115,8 @@ public class AceEditor extends VBox
 
         editor.setContextMenuEnabled(false);
         editor.setOnContextMenuRequested(e -> contextMenu.show(editor, e.getScreenX(), e.getScreenY()));
+        listener = (observable, oldValue, newValue) -> updateEditorContent(newValue);
+        textProperty().addListener(listener);
     }
 
     private ReplaceHandler replaceHandler;
@@ -123,26 +128,29 @@ public class AceEditor extends VBox
 
     public String getText()
     {
-        return text.get();
+        return textProperty.get();
     }
 
     public SimpleStringProperty textProperty()
     {
-        return text;
+        return textProperty;
     }
 
     public void setText(String text)
     {
-        setText(text, true);
+        this.textProperty.set(text);
     }
 
-    void setText(String text, boolean trigger)
+    void updateEditorContent(String text)
     {
-        this.text.set(text);
-        if (trigger && gate != null)
-        {
-            gate.exec("editorContent", text);
-        }
+        gate.exec("editorContent", text);
+    }
+    
+    void setTextFromJs(String text)
+    {
+        textProperty().removeListener(listener);
+        setText(text);
+        textProperty().addListener(listener);
     }
 
     private ReadyListener readyListener;

@@ -16,7 +16,7 @@
 
 package org.bridje.srcgen.editor;
 
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.TreeItem;
@@ -63,10 +63,14 @@ public class EditorMainPane extends BorderPane
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) ->
                 {
+                    stpContent.getChildren().clear();
                     if(newValue != null && newValue instanceof EditorTreeItem)
                     {
-                        tvMain.setContextMenu(((EditorTreeItem)newValue).getContextMenu());
-                        setTop(((EditorTreeItem)newValue).getToolBar());
+                        EditorTreeItem ti = (EditorTreeItem)newValue;
+                        tvMain.setContextMenu(ti.getContextMenu());
+                        setTop(ti.getToolBar());
+                        Node editor = ti.edit();
+                        if(editor != null) stpContent.getChildren().add(editor);
                     }
                     else
                     {

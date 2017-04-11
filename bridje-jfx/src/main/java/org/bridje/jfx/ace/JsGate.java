@@ -23,7 +23,7 @@ public class JsGate
 
     public void textChanged(String text)
     {
-        editor.setText(text, false);
+        editor.setTextFromJs(text);
     }
 
     public String findReplace(String text)

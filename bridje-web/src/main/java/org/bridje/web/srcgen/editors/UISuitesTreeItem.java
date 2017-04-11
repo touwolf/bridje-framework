@@ -16,7 +16,6 @@
 
 package org.bridje.web.srcgen.editors;
 
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ContextMenu;
@@ -31,8 +30,6 @@ import org.bridje.web.srcgen.models.UISuitesModel;
 
 public class UISuitesTreeItem extends EditorTreeItem
 {
-    private static final Logger LOG = Logger.getLogger(UISuitesTreeItem.class.getName());
-
     private final SimpleObjectProperty<UISuitesModel> suitesProperty = new SimpleObjectProperty<>();
 
     public UISuitesTreeItem()

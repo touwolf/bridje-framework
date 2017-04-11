@@ -16,7 +16,6 @@
 
 package org.bridje.web.srcgen.editors;
 
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -32,7 +31,7 @@ import org.bridje.web.srcgen.models.UISuiteModel;
 
 public class UISuiteTreeItem extends EditorTreeItem
 {
-    private static final Logger LOG = Logger.getLogger(UISuiteTreeItem.class.getName());
+    private final static UISuiteEditor editor = new UISuiteEditor();
 
     private final UISuiteModel suite;
     
@@ -77,9 +76,9 @@ public class UISuiteTreeItem extends EditorTreeItem
         };
     }
 
-    private EditorTreeItem toTreeItem(ControlDefModel control)
+    private ControlTreeItem toTreeItem(ControlDefModel control)
     {
-        EditorTreeItem tiControl = new EditorTreeItem(control, loadImage("control.png", 16));
+        ControlTreeItem tiControl = new ControlTreeItem(control, suite);
         return tiControl;
     }
 
@@ -151,5 +150,12 @@ public class UISuiteTreeItem extends EditorTreeItem
     private static Node loadImage(String image, int size)
     {
         return JfxUtils.loadImage(UISuiteTreeItem.class, image, size, size);
+    }
+
+    @Override
+    public Node edit()
+    {
+        editor.setUISuite(suite);
+        return editor;
     }
 }

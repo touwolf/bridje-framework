@@ -63,4 +63,9 @@ public class EditorTreeItem extends TreeItem<Object>
     {
         toolBarProperty.set(value);
     }
+
+    public Node edit()
+    {
+        return null;
+    }
 }
