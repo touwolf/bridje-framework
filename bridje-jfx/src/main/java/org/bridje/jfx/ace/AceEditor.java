@@ -56,9 +56,10 @@ public final class AceEditor extends VBox
      */
     private final SimpleStringProperty textProperty = new SimpleStringProperty("");
 
-    /**
-     * 
-     */
+    private JsGate gate;
+
+    private ChangeListener<String> listener;
+
     private ReplaceHandler replaceHandler;
 
     /**
@@ -77,17 +78,103 @@ public final class AceEditor extends VBox
             editor.setContextMenuEnabled(false);
             editor.setOnContextMenuRequested(e -> newValue.show(editor, e.getScreenX(), e.getScreenY()));
         });
-        setContextMenu(createDefaultContextMenu(editor));
+        setContextMenu(createDefaultContextMenu());
 
         listener = (observable, oldValue, newValue) -> updateEditorContent(newValue);
         textProperty().addListener(listener);
     }
 
-    private JsGate gate;
-    
-    private ChangeListener<String> listener;
+    /**
+     * Called when editor has loaded.
+     *
+     * @param listener ready event listener.
+     */
+    public final void onReady(ReadyListener listener)
+    {
+        readyListener = listener;
+    }
 
-    private ContextMenu createDefaultContextMenu(WebView editor)
+    /**
+     * Obtains selected text on editor.
+     *
+     * @return selected text.
+     */
+    public String findSelection()
+    {
+        if (gate != null)
+        {
+            Object raw = gate.exec("editorSelected");
+            if (raw != null)
+            {
+                return raw.toString();
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Replaces selected text on editor.
+     *
+     * @param text replacement for selected text.
+     */
+    public void replaceSelection(String text)
+    {
+        if (gate != null)
+        {
+            gate.exec("editorReplaceSelected", text);
+        }
+    }
+
+    /**
+     * Search and replace text on editor.
+     *
+     * @param oldValue text to search.
+     * @param newValue new text.
+     */
+    public void searchAndReplace(String oldValue, String newValue)
+    {
+        if (gate != null)
+        {
+            gate.exec("editorSearchAndReplace", oldValue, newValue);
+        }
+    }
+    
+    public ObjectProperty<ContextMenu> contextMenuProperty()
+    {
+        return contextMenuProperty;
+    }
+
+    public ContextMenu getContextMenu()
+    {
+        return contextMenuProperty.get();
+    }
+
+    public void setContextMenu(ContextMenu value)
+    {
+        contextMenuProperty.set(value);
+    }
+
+    public void onReplace(ReplaceHandler handler)
+    {
+        replaceHandler = handler;
+    }
+
+    public String getText()
+    {
+        return textProperty.get();
+    }
+
+    public SimpleStringProperty textProperty()
+    {
+        return textProperty;
+    }
+
+    public void setText(String text)
+    {
+        this.textProperty.set(text);
+    }
+
+    private ContextMenu createDefaultContextMenu()
     {
         MenuItem cut = new MenuItem("Cut");//todo: i18n
         cut.setOnAction(event ->
@@ -129,64 +216,8 @@ public final class AceEditor extends VBox
         contextMenu.getItems().addAll(cut, copy, paste, replace);
         return contextMenu;
     }
-    
-    public String findSelection()
-    {
-        if (gate != null)
-        {
-            Object raw = gate.exec("editorSelected");
-            if (raw != null)
-            {
-                return raw.toString();
-            }
-        }
-        return "";
-    }
-    
-    public void replaceSelection(String text)
-    {
-        if (gate != null)
-        {
-            gate.exec("editorReplaceSelected", text);
-        }
-    }
-    
-    public ObjectProperty<ContextMenu> contextMenuProperty()
-    {
-        return contextMenuProperty;
-    }
 
-    public ContextMenu getContextMenu()
-    {
-        return contextMenuProperty.get();
-    }
-
-    public void setContextMenu(ContextMenu value)
-    {
-        contextMenuProperty.set(value);
-    }
-
-    public void onReplace(ReplaceHandler handler)
-    {
-        replaceHandler = handler;
-    }
-
-    public String getText()
-    {
-        return textProperty.get();
-    }
-
-    public SimpleStringProperty textProperty()
-    {
-        return textProperty;
-    }
-
-    public void setText(String text)
-    {
-        this.textProperty.set(text);
-    }
-
-    void updateEditorContent(String text)
+    private void updateEditorContent(String text)
     {
         String realText = text;
         if(realText == null) realText = "";
@@ -201,11 +232,6 @@ public final class AceEditor extends VBox
     }
 
     private ReadyListener readyListener;
-
-    public final void onReady(ReadyListener listener)
-    {
-        readyListener = listener;
-    }
 
     private void loadContent(WebView editor, Mode mode)
     {

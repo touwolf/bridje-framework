@@ -50,6 +50,18 @@ var editorReplaceSelected = function(replace)
     editor.getSession().replace(range, replace);
 };
 
+var editorSearchAndReplace = function(oldValue, newValue)
+{
+    editor.find(oldValue,{
+        backwards: true,//Whether to search backwards from where cursor currently is.
+        wrap: true,//Whether to wrap the search back to the beginning when it hits the end.
+        caseSensitive: true,//Whether the search ought to be case-sensitive.
+        wholeWord: false,//Whether the search matches only on whole words.
+        regExp: false//Whether the search is a regular expression or not.
+    });
+    editor.replaceAll(newValue);
+};
+
 var editorContent = function(text)
 {
     editor.setValue(text);
