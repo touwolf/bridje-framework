@@ -16,6 +16,8 @@
 
 package org.bridje.web.srcgen.editors;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
@@ -25,7 +27,7 @@ import org.bridje.srcgen.editor.EditorTreeItem;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
-public class ControlTreeItem extends EditorTreeItem
+public final class ControlTreeItem extends EditorTreeItem
 {
     private final ControlDefModel control;
 
@@ -40,6 +42,11 @@ public class ControlTreeItem extends EditorTreeItem
         this.suite = suite;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
+        this.control.nameProperty().addListener((observable, oldValue, newValue) ->
+        {
+            setValue(null);
+            setValue(control);
+        });
     }
 
     private ContextMenu createContextMenu()

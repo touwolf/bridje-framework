@@ -99,8 +99,11 @@ public class ModelUtils
         result.setNamespace(suite.getNamespace());
         result.setPackageName(suite.getPackage());
         result.setRenderBody(suite.getRenderBody());
+        if(isBlank(result.getRenderBody())) result.setRenderBody("<body>\n\t<#nested />\n</body>");
         result.setRenderHead(suite.getRenderHead());
+        if(isBlank(result.getRenderHead())) result.setRenderHead("<head>\n\t<title>${view.title!}</title>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n\t<#nested />\n</head>");
         result.setRenderViewContainer(suite.getRenderViewContainer());
+        if(isBlank(result.getRenderViewContainer())) result.setRenderViewContainer("<div id=\"view-form\">\n\t<#nested />\n</div>");
         result.setResources(resourcesToModel(suite.getResources()));
         result.setStandalone(standaloneToModel(suite.getStandalone()));
         return result;
@@ -504,5 +507,10 @@ public class ModelUtils
                 return children;
         }
         return null;
+    }
+
+    private static boolean isBlank(String str)
+    {
+        return str == null || str.trim().isEmpty();
     }
 }

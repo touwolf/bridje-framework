@@ -31,7 +31,7 @@ import org.bridje.jfx.utils.ExBindings;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.FieldDefModelTreeTable;
 
-public class FieldsEditor extends StackPane
+public final class FieldsEditor extends StackPane
 {
     private final SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty = new SimpleObjectProperty<>();
 

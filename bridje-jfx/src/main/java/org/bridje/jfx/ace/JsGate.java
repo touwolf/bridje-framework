@@ -8,7 +8,7 @@ import netscape.javascript.JSObject;
 /**
  * Manage the js editor communication.
  */
-public class JsGate
+public final class JsGate
 {
     private final AceEditor editor;
 
@@ -17,8 +17,8 @@ public class JsGate
     JsGate(AceEditor editor, JSObject js)
     {
         this.editor = editor;
-        js.setMember("java", this);
         this.js = js;
+        this.js.setMember("java", this);
     }
 
     public void textChanged(String text)
@@ -50,11 +50,12 @@ public class JsGate
         return String.valueOf(clipboard.getContent(DataFormat.PLAIN_TEXT));
     }
 
-    void exec(String method, Object... args)
+    Object exec(String method, Object... args)
     {
         if (js != null)
         {
-            js.call(method, args);
+            return js.call(method, args);
         }
+        return null;
     }
 }

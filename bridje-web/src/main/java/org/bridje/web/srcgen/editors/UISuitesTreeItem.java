@@ -28,7 +28,7 @@ import org.bridje.srcgen.editor.EditorTreeItem;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
-public class UISuitesTreeItem extends EditorTreeItem
+public final class UISuitesTreeItem extends EditorTreeItem
 {
     private final SimpleObjectProperty<UISuitesModel> suitesProperty = new SimpleObjectProperty<>();
 
@@ -40,14 +40,8 @@ public class UISuitesTreeItem extends EditorTreeItem
         suitesProperty
                 .addListener((observable, oldValue, newValue) -> 
                 {
-                    if(oldValue != null)
-                    {
-                        ExBindings.unbindContentBidirectional(getChildren(), oldValue.getSuites());
-                    }
-                    if(newValue != null)
-                    {
-                        ExBindings.bindContentBidirectional(getChildren(), newValue.getSuites(), createSuitesTreeConverter());
-                    }
+                    if(oldValue != null) ExBindings.unbindContentBidirectional(getChildren(), oldValue.getSuites());
+                    if(newValue != null) ExBindings.bindContentBidirectional(getChildren(), newValue.getSuites(), createSuitesTreeConverter());
                 });
     }
 

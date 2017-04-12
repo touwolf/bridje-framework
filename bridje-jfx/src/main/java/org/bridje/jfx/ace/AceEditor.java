@@ -4,9 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
@@ -46,12 +47,19 @@ import netscape.javascript.JSObject;
  *            .addListener((observable, oldValue, newValue) -> System.out.println(newValue));
  * </code></pre>
  */
-public class AceEditor extends VBox
+public final class AceEditor extends VBox
 {
+    private final ObjectProperty<ContextMenu> contextMenuProperty = new SimpleObjectProperty<>();
+
     /**
      * Text content of the editor.
      */
     private final SimpleStringProperty textProperty = new SimpleStringProperty("");
+
+    /**
+     * 
+     */
+    private ReplaceHandler replaceHandler;
 
     /**
      * Initialize control.
@@ -61,18 +69,25 @@ public class AceEditor extends VBox
      */
     public AceEditor(Mode mode)
     {
-        super();
         WebView editor = new WebView();
-        createContextMenu(editor);
         loadContent(editor, mode);
         getChildren().add(editor);
+        contextMenuProperty.addListener((observable, oldValue, newValue) ->
+        {
+            editor.setContextMenuEnabled(false);
+            editor.setOnContextMenuRequested(e -> newValue.show(editor, e.getScreenX(), e.getScreenY()));
+        });
+        setContextMenu(createDefaultContextMenu(editor));
+
+        listener = (observable, oldValue, newValue) -> updateEditorContent(newValue);
+        textProperty().addListener(listener);
     }
 
     private JsGate gate;
     
     private ChangeListener<String> listener;
 
-    private void createContextMenu(WebView editor)
+    private ContextMenu createDefaultContextMenu(WebView editor)
     {
         MenuItem cut = new MenuItem("Cut");//todo: i18n
         cut.setOnAction(event ->
@@ -112,14 +127,44 @@ public class AceEditor extends VBox
 
         ContextMenu contextMenu = new ContextMenu();
         contextMenu.getItems().addAll(cut, copy, paste, replace);
-
-        editor.setContextMenuEnabled(false);
-        editor.setOnContextMenuRequested(e -> contextMenu.show(editor, e.getScreenX(), e.getScreenY()));
-        listener = (observable, oldValue, newValue) -> updateEditorContent(newValue);
-        textProperty().addListener(listener);
+        return contextMenu;
+    }
+    
+    public String findSelection()
+    {
+        if (gate != null)
+        {
+            Object raw = gate.exec("editorSelected");
+            if (raw != null)
+            {
+                return raw.toString();
+            }
+        }
+        return "";
+    }
+    
+    public void replaceSelection(String text)
+    {
+        if (gate != null)
+        {
+            gate.exec("editorReplaceSelected", text);
+        }
+    }
+    
+    public ObjectProperty<ContextMenu> contextMenuProperty()
+    {
+        return contextMenuProperty;
     }
 
-    private ReplaceHandler replaceHandler;
+    public ContextMenu getContextMenu()
+    {
+        return contextMenuProperty.get();
+    }
+
+    public void setContextMenu(ContextMenu value)
+    {
+        contextMenuProperty.set(value);
+    }
 
     public void onReplace(ReplaceHandler handler)
     {
@@ -143,7 +188,9 @@ public class AceEditor extends VBox
 
     void updateEditorContent(String text)
     {
-        gate.exec("editorContent", text);
+        String realText = text;
+        if(realText == null) realText = "";
+        gate.exec("editorContent", realText);
     }
     
     void setTextFromJs(String text)

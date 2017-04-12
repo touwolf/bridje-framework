@@ -29,7 +29,7 @@ import org.bridje.srcgen.editor.EditorTreeItem;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
-public class UISuiteTreeItem extends EditorTreeItem
+public final class UISuiteTreeItem extends EditorTreeItem
 {
     private final static UISuiteEditor editor = new UISuiteEditor();
 

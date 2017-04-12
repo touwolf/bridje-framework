@@ -18,10 +18,11 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -29,11 +30,12 @@ import javafx.scene.layout.RowConstraints;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bridje.jfx.ace.AceEditor;
+import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
-public class ControlEditor extends GridPane
+public final class ControlEditor extends GridPane
 {
     private final SimpleObjectProperty<ControlDefModel> controlProperty = new SimpleObjectProperty<>();
 
@@ -51,6 +53,8 @@ public class ControlEditor extends GridPane
 
     private final AceEditor taRender = new AceEditor(AceEditor.Mode.FTL);
 
+    private ChangeListener<String> nameListener;
+    
     public ControlEditor()
     {
         setVgap(10);
@@ -75,11 +79,13 @@ public class ControlEditor extends GridPane
         setHgrow(taRender, Priority.ALWAYS);
         setFillHeight(taRender, true);
         setVgrow(taRender, Priority.ALWAYS);
-        
+
         getRowConstraints().add(new RowConstraints());
         RowConstraints rowConst = new RowConstraints();
         rowConst.setPercentHeight(45d);
         getRowConstraints().add(rowConst);
+        
+        nameListener = (observable, oldValue, newValue) -> updateName(oldValue, newValue);
 
         uiSuiteProperty.addListener((observable, oldValue, newValue) ->
         {
@@ -90,14 +96,10 @@ public class ControlEditor extends GridPane
             }
             if(getUISuite() != null)
             {
-                if(getUISuite().getControls() != null)
-                {
-                    Bindings.bindContent(cbBase.getItems(), getUISuite().getControls());
-                }
-                if(getUISuite().getControlsTemplates() != null)
-                {
-                    Bindings.bindContent(cbBaseTemplate.getItems(), getUISuite().getControlsTemplates());
-                }
+                if(getUISuite().getControls() == null) getUISuite().setControls(FXCollections.observableArrayList());
+                Bindings.bindContent(cbBase.getItems(), getUISuite().getControls());
+                if(getUISuite().getControlsTemplates() == null) getUISuite().setControlsTemplates(FXCollections.observableArrayList());
+                Bindings.bindContent(cbBaseTemplate.getItems(), getUISuite().getControlsTemplates());
             }
         });
 
@@ -105,6 +107,7 @@ public class ControlEditor extends GridPane
         {
             if(oldValue != null)
             {
+                oldValue.nameProperty().removeListener(nameListener);
                 tfName.textProperty().unbindBidirectional(oldValue.nameProperty());
                 Bindings.unbindBidirectional(cbBase.valueProperty(), oldValue.baseProperty());
                 Bindings.unbindBidirectional(cbBaseTemplate.valueProperty(), oldValue.baseTemplateProperty());
@@ -119,11 +122,16 @@ public class ControlEditor extends GridPane
                 getControl().baseProperty().bindBidirectional(cbBase.valueProperty(), contConvert);
                 StringConverter<ControlDefModel> tmplConverter = createStringConverter(name -> findTemplate(name));
                 getControl().baseTemplateProperty().bindBidirectional(cbBaseTemplate.valueProperty(), tmplConverter);
+                if(getControl().getFields() == null) getControl().setFields(FXCollections.observableArrayList());
                 fieldsEditor.fieldsProperty().bindBidirectional(getControl().fieldsProperty());
+                if(getControl().getResources() == null) getControl().setResources(FXCollections.observableArrayList());
                 resourcesSelector.itemsProperty().bindBidirectional(getControl().resourcesProperty());
                 taRender.textProperty().bindBidirectional(getControl().renderProperty());
+                newValue.nameProperty().addListener(nameListener);
             }
         });
+        
+        taRender.getContextMenu().getItems().add(0, JfxUtils.createMenuItem("Create Child", null, this::createChildFildFromCurrentSelection));
     }
 
     public StringConverter<ControlDefModel> createStringConverter(Callback<String, ControlDefModel> callback)
@@ -207,5 +215,53 @@ public class ControlEditor extends GridPane
     {
         FieldDefModel field = new FieldDefModel();
         getControl().getFields().add(field);
+    }
+    
+    public void createChildFildFromCurrentSelection(ActionEvent event)
+    {
+        String selection = taRender.findSelection();
+        if(selection != null && !selection.isEmpty())
+        {
+            ControlDefModel ctrl = new ControlDefModel();
+            ctrl.setName("NewControl" + getUISuite().getControls().size());
+            ctrl.setRender(selection);
+            getUISuite().getControls().add(ctrl);
+
+            FieldDefModel field = new FieldDefModel();
+            field.setName("newChildField" + getControl().getFields().size());
+            field.setType(ctrl.getName());
+            field.setField("child");
+            getControl().getFields().add(field);
+
+            taRender.replaceSelection("<#if control.newChild??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
+        }
+    }
+
+    private void updateName(String oldValue, String newValue)
+    {
+        getUISuite().getControls().forEach(c -> updateChildTypes(c, oldValue, newValue));
+    }
+
+    private void updateChildTypes(ControlDefModel control, String oldValue, String newValue)
+    {
+        control.getFields()
+                .stream()
+                .filter(f -> "child".equalsIgnoreCase(f.getField()))
+                .filter(f -> oldValue.equals(f.getType()))
+                .forEach(f -> f.setType(newValue));
+
+        control.getFields()
+                .stream()
+                .filter(f -> "children".equalsIgnoreCase(f.getField()))
+                .forEach(f -> updateChildrenTypes(f, oldValue, newValue));
+    }
+    
+    private void updateChildrenTypes(FieldDefModel field, String oldValue, String newValue)
+    {
+        if(field.getChilds() == null) return;
+        field.getChilds()
+                .stream()
+                .filter(f -> oldValue.equals(f.getType()))
+                .forEach(f -> f.setType(newValue));
     }
 }

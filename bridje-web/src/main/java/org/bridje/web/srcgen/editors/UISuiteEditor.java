@@ -18,28 +18,29 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import static javafx.scene.layout.GridPane.setFillWidth;
 import static javafx.scene.layout.GridPane.setHgrow;
 import javafx.scene.layout.Priority;
+import org.bridje.jfx.ace.AceEditor;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
-public class UISuiteEditor extends GridPane
+public final class UISuiteEditor extends GridPane
 {
     private final TextField tfName = new TextField();
-    
+
     private final TextField tfNamespace = new TextField();
-    
+
     private final TextField tfPackage = new TextField();
 
-    private final TextArea taRenderBody = new TextArea();
-    
-    private final TextArea taRenderHead = new TextArea();
-    
-    private final TextArea taRenderView = new TextArea();
-    
+    private final AceEditor taRenderBody = new AceEditor(AceEditor.Mode.FTL);
+
+    private final AceEditor taRenderHead = new AceEditor(AceEditor.Mode.FTL);
+
+    private final AceEditor taRenderView = new AceEditor(AceEditor.Mode.FTL);
+
     private final SimpleObjectProperty<UISuiteModel> uiSuiteProperty = new SimpleObjectProperty<>();
 
     public UISuiteEditor()
@@ -52,9 +53,12 @@ public class UISuiteEditor extends GridPane
         add(tfName, 0, 0);
         add(tfNamespace, 1, 0);
         add(tfPackage, 2, 0);
-        add(taRenderHead, 0, 1, 3, 1);
-        add(taRenderBody, 0, 2, 3, 1);
-        add(taRenderView, 0, 3, 3, 1);
+        add(new Label("Render Head"), 0, 1);
+        add(taRenderHead, 0, 2, 3, 1);
+        add(new Label("Render Body"), 0, 3);
+        add(taRenderBody, 0, 4, 3, 1);
+        add(new Label("Render View"), 0, 5);
+        add(taRenderView, 0, 6, 3, 1);
 
         setFillWidth(tfName, true);
         setHgrow(tfName, Priority.ALWAYS);

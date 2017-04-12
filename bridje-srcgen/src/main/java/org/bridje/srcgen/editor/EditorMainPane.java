@@ -16,6 +16,8 @@
 
 package org.bridje.srcgen.editor;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
@@ -47,6 +49,7 @@ public class EditorMainPane extends BorderPane
         stpContent = new StackPane();
         spCenter = new SplitPane(tvMain, stpContent);
         spCenter.setDividerPositions(0.3d);
+        spCenter.widthProperty().addListener((observable, oldValue, ewValue) -> spCenter.setDividerPositions(0.2d));
         setCenter(spCenter);
         setTop(tbEmpty);
 

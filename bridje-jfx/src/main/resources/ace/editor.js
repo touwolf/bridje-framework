@@ -38,6 +38,18 @@ var editorReplace = function()
     doReplace(editor);
 };
 
+var editorSelected = function()
+{
+    var range = editor.getSelectionRange();
+    return editor.getSession().getTextRange(range);
+};
+
+var editorReplaceSelected = function(replace)
+{
+    var range = editor.getSelectionRange();
+    editor.getSession().replace(range, replace);
+};
+
 var editorContent = function(text)
 {
     editor.setValue(text);
