@@ -27,6 +27,7 @@ import org.bridje.jfx.utils.ExBindings;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
 import org.bridje.web.srcgen.models.ControlDefModel;
+import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
 public final class UISuiteTreeItem extends EditorTreeItem
@@ -42,6 +43,13 @@ public final class UISuiteTreeItem extends EditorTreeItem
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
 
+        EditorTreeItem tiResources = new EditorTreeItem("Resources", loadImage("resource.png", 16));
+        BiContentConverter<TreeItem<Object>, ResourceModel> resConverter = createResConverter();
+        if(suite.getResources() == null) suite.setResources(FXCollections.observableArrayList());
+        ExBindings.bindContentBidirectional(tiResources.getChildren(), suite.getResources(), resConverter);
+        tiResources.setContextMenu(createResourcesContextMenu());
+        tiResources.setToolBar(createResourcesToolBar());
+
         EditorTreeItem tiTemplates = new EditorTreeItem("Templates", loadImage("control.png", 16));
         BiContentConverter<TreeItem<Object>, ControlDefModel> ctrlConverter = createCtrlConverter();
         if(suite.getControlsTemplates() == null) suite.setControlsTemplates(FXCollections.observableArrayList());
@@ -55,7 +63,7 @@ public final class UISuiteTreeItem extends EditorTreeItem
         tiControls.setContextMenu(createControlsContextMenu());
         tiControls.setToolBar(createControlsToolBar());
 
-        getChildren().addAll(tiTemplates, tiControls);
+        getChildren().addAll(tiResources, tiTemplates, tiControls);
     }
 
     private BiContentConverter<TreeItem<Object>, ControlDefModel> createCtrlConverter()
@@ -80,6 +88,22 @@ public final class UISuiteTreeItem extends EditorTreeItem
     {
         ControlTreeItem tiControl = new ControlTreeItem(control, suite);
         return tiControl;
+    }
+
+    private ContextMenu createResourcesContextMenu()
+    {
+        ContextMenu ctx = new ContextMenu();
+        ctx.getItems().add(JfxUtils.createMenuItem("Save", loadImage("save.png", 24), this::saveModel));
+        ctx.getItems().add(JfxUtils.createMenuItem("Add Resource", loadImage("add.png", 24), this::addResource));
+        return ctx;
+    }
+
+    private ToolBar createResourcesToolBar()
+    {
+        ToolBar tb = new ToolBar();
+        tb.getItems().add(JfxUtils.createToolButton(loadImage("save.png", 32), this::saveModel));
+        tb.getItems().add(JfxUtils.createToolButton(loadImage("add.png", 32), this::addResource));
+        return tb;
     }
 
     private ContextMenu createTemplatesContextMenu()
@@ -128,17 +152,25 @@ public final class UISuiteTreeItem extends EditorTreeItem
         return tb;
     }
 
+    public void addResource(ActionEvent event)
+    {
+        ResourceModel ctrl = new ResourceModel();
+        ctrl.setName("newResource" + suite.getResources().size());
+        ctrl.setContent(FXCollections.observableArrayList());
+        suite.getResources().add(ctrl);
+    }
+
     public void addTemplate(ActionEvent event)
     {
         ControlDefModel ctrl = new ControlDefModel();
-        ctrl.setName("NewTemplate");
+        ctrl.setName("NewTemplate" + suite.getControlsTemplates().size());
         suite.getControlsTemplates().add(ctrl);
     }
 
     public void addControl(ActionEvent event)
     {
         ControlDefModel ctrl = new ControlDefModel();
-        ctrl.setName("NewControl");
+        ctrl.setName("NewControl" + suite.getControls().size());
         suite.getControls().add(ctrl);
     }
 
@@ -158,4 +190,29 @@ public final class UISuiteTreeItem extends EditorTreeItem
         editor.setUISuite(suite);
         return editor;
     }
+
+    private BiContentConverter<TreeItem<Object>, ResourceModel> createResConverter()
+    {
+        return new BiContentConverter<TreeItem<Object>, ResourceModel>()
+        {
+            @Override
+            public ResourceModel convertFrom(TreeItem<Object> value)
+            {
+                return (ResourceModel)value.getValue();
+            }
+
+            @Override
+            public TreeItem<Object> convertTo(ResourceModel value)
+            {
+                return toTreeItem(value);
+            }
+        };
+    }
+
+    private ResourceTreeItem toTreeItem(ResourceModel resource)
+    {
+        ResourceTreeItem tiResource = new ResourceTreeItem(resource, suite);
+        return tiResource;
+    }
+
 }

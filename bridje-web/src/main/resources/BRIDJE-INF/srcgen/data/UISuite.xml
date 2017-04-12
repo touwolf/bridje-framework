@@ -61,8 +61,12 @@
         <object name="AssetModel">
             <key type="String" name="href" key="true" />
             <properties>
+                <property type="String" name="type" />
                 <property type="String" name="rel" />
             </properties>
+            <components>
+                <table />
+            </components>
         </object>
         <object name="FieldDefModel">
             <key type="String" name="name" key="true" />

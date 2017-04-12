@@ -56,6 +56,7 @@ import org.bridje.web.srcgen.uisuite.Resource;
 import org.bridje.web.srcgen.uisuite.ResourceRef;
 import org.bridje.web.srcgen.uisuite.Script;
 import org.bridje.web.srcgen.uisuite.StandaloneDef;
+import org.bridje.web.srcgen.uisuite.Style;
 import org.bridje.web.srcgen.uisuite.UISuite;
 import org.bridje.web.srcgen.uisuite.ValueFlield;
 
@@ -223,7 +224,16 @@ public class ModelUtils
         result.setHref(asset.getHref());
         if(asset instanceof Link)
         {
+            result.setType("link");
             result.setRel(((Link)asset).getRel());
+        }
+        else if(asset instanceof Script)
+        {
+            result.setType("script");
+        }
+        else if(asset instanceof Style)
+        {
+            result.setType("style");
         }
         return result;
     }
@@ -292,9 +302,22 @@ public class ModelUtils
 
     private static AssetBase assetFromModel(AssetModel c)
     {
-        AssetBase result = new Script();
-        result.setHref(c.getHref());
-        return result;
+        switch(c.getType())
+        {
+            case "link":
+                Link link = new Link();
+                link.setHref(c.getHref());
+                link.setRel(c.getRel());
+                return link;
+            case "script":
+                Script script = new Script();
+                script.setHref(c.getHref());
+                return script;
+            default:
+                Style style = new Style();
+                style.setHref(c.getHref());
+                return style;
+        }
     }
 
     private static ResourceRef resourceRefFromModel(ResourceRefModel r)

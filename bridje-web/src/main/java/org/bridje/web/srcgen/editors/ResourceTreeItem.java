@@ -22,28 +22,28 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ToolBar;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
-import org.bridje.web.srcgen.models.ControlDefModel;
+import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
-public final class ControlTreeItem extends EditorTreeItem
+public final class ResourceTreeItem extends EditorTreeItem
 {
-    private final ControlDefModel control;
+    private final ResourceModel resource;
 
     private final UISuiteModel suite;
     
-    private final static ControlEditor editor = new ControlEditor();
+    private final static ResourceEditor editor = new ResourceEditor();
 
-    public ControlTreeItem(ControlDefModel control, UISuiteModel suite)
+    public ResourceTreeItem(ResourceModel resource, UISuiteModel suite)
     {
-        super(control, loadImage("control.png", 16));
-        this.control = control;
+        super(resource, loadImage("resource.png", 16));
+        this.resource = resource;
         this.suite = suite;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
-        this.control.nameProperty().addListener((observable, oldValue, newValue) ->
+        this.resource.nameProperty().addListener((observable, oldValue, newValue) ->
         {
             setValue(null);
-            setValue(control);
+            setValue(resource);
         });
     }
 
@@ -70,26 +70,19 @@ public final class ControlTreeItem extends EditorTreeItem
 
     public void deleteControl(ActionEvent event)
     {
-        if(suite.getControls().contains(control))
-        {
-            suite.getControls().remove(control);
-        }
-        else 
-        {
-            suite.getControlsTemplates().remove(control);
-        }
+        suite.getResources().remove(resource);
     }
 
     private static Node loadImage(String image, int size)
     {
-        return JfxUtils.loadImage(ControlTreeItem.class, image, size, size);
+        return JfxUtils.loadImage(ResourceTreeItem.class, image, size, size);
     }
 
     @Override
     public Node edit()
     {
-        if(editor.getUISuite() == null || !editor.getUISuite().equals(suite)) editor.setUISuite(suite);
-        editor.setControl(control);
+        editor.setUISuite(suite);
+        editor.setResource(resource);
         return editor;
     }
 }
