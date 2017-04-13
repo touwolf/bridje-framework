@@ -18,6 +18,7 @@ package org.bridje.web.srcgen.editors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -38,6 +39,8 @@ public final class FieldsEditor extends StackPane
     private final FieldDefModelTreeTable table;
 
     private final BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> converter;
+    
+    private ChangeListener<String> nameListener;
     
     public FieldsEditor()
     {
@@ -66,8 +69,16 @@ public final class FieldsEditor extends StackPane
         ExBindings.bindContentBidirectional(root.getChildren(), rootField.getChilds(), converter);
         fieldsProperty.addListener((observable, oldValue, newValue) ->
         {
-            if(oldValue != null) Bindings.unbindContentBidirectional(rootField.getChilds(), oldValue);
-            if(newValue != null) Bindings.bindContentBidirectional(rootField.getChilds(), newValue);
+            if(oldValue != null)
+            {
+                if(nameListener != null) oldValue.stream().forEach(f -> f.nameProperty().removeListener(nameListener));
+                Bindings.unbindContentBidirectional(rootField.getChilds(), oldValue);
+            }
+            if(newValue != null)
+            {
+                if(nameListener != null) newValue.stream().forEach(f -> f.nameProperty().addListener(nameListener));
+                Bindings.bindContentBidirectional(rootField.getChilds(), newValue);
+            }
         });
         table.setRoot(root);
         table.setShowRoot(false);
@@ -88,6 +99,16 @@ public final class FieldsEditor extends StackPane
         this.fieldsProperty.set(fields);
     }
 
+    public ChangeListener<String> getNameListener()
+    {
+        return nameListener;
+    }
+
+    public void setNameListener(ChangeListener<String> nameListener)
+    {
+        this.nameListener = nameListener;
+    }
+    
     private Callback<TreeTableColumn<FieldDefModel, Boolean>, TreeTableCell<FieldDefModel, Boolean>> boolEditor()
     {
         return ComboBoxTreeTableCell.forTreeTableColumn(true, false);
