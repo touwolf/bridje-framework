@@ -9,6 +9,15 @@
         
     </includes>
 
+    <icons>
+        <icon name="add" file="add.png" />
+        <icon name="control" file="control.png" />
+        <icon name="delete" file="delete.png" />
+        <icon name="resource" file="resource.png" />
+        <icon name="save" file="save.png" />
+        <icon name="uisuite" file="uisuite.png" />
+    </icons>
+
     <properties>
         <observableList type="UISuiteModel" name="suites" />
     </properties>
@@ -21,6 +30,7 @@
             <key type="String" name="name" key="true" />
             <properties>
                 <property type="VFile" name="file" />
+                <property type="UISuiteModel" name="parent" />
                 <observableList type="String" name="ftlIncludes" />
                 <observableList type="ResourceModel" name="resources" />
                 <observableList type="ControlDefModel" name="controls" />
@@ -52,18 +62,23 @@
         <object name="StandaloneDefModel">
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="UISuiteModel" name="parent" />
                 <observableList type="FieldDefModel" name="content" />
             </properties>
         </object>
         <object name="ResourceModel">
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="UISuiteModel" name="parent" />
+                <property type="PartialUISuiteModel" name="partialSuite" />
                 <observableList type="AssetModel" name="content" />
             </properties>
         </object>
         <object name="ControlDefModel">
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="UISuiteModel" name="parent" />
+                <property type="PartialUISuiteModel" name="partialSuite" />
                 <property type="String" name="base" />
                 <observableList type="ResourceRefModel" name="resources" />
                 <observableList type="FieldDefModel" name="fields" />
@@ -74,6 +89,7 @@
         <object name="AssetModel">
             <key type="String" name="href" key="true" />
             <properties>
+                <property type="ResourceModel" name="parent" />
                 <property type="String" name="type" />
                 <property type="String" name="rel" />
             </properties>
@@ -84,6 +100,7 @@
         <object name="FieldDefModel">
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="ControlDefModel" name="parent" />
                 <property type="String" name="field" />
                 <property type="String" name="type" />
                 <property type="String" name="defaultValue" />
@@ -99,6 +116,7 @@
         <object name="ResourceRefModel">
             <key type="String" name="name" key="true" />
             <properties>
+                <property type="ControlDefModel" name="parent" />
                 <property type="Boolean" name="selected" />
             </properties>
         </object>

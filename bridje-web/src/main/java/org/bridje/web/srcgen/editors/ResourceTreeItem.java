@@ -24,20 +24,18 @@ import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
 import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.UISuitesModel;
 
 public final class ResourceTreeItem extends EditorTreeItem
 {
     private final ResourceModel resource;
 
-    private final UISuiteModel suite;
-    
     private final static ResourceEditor editor = new ResourceEditor();
 
-    public ResourceTreeItem(ResourceModel resource, UISuiteModel suite)
+    public ResourceTreeItem(ResourceModel resource)
     {
-        super(resource, loadImage("resource.png", 16));
+        super(resource, UISuitesModel.resource(16));
         this.resource = resource;
-        this.suite = suite;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
         this.resource.nameProperty().addListener((observable, oldValue, newValue) ->
@@ -50,37 +48,35 @@ public final class ResourceTreeItem extends EditorTreeItem
     private ContextMenu createContextMenu()
     {
         ContextMenu ctx = new ContextMenu();
-        ctx.getItems().add(JfxUtils.createMenuItem("Save", loadImage("save.png", 24), this::saveModel));
-        ctx.getItems().add(JfxUtils.createMenuItem("Delete", loadImage("delete.png", 24), this::deleteControl));
+        ctx.getItems().add(JfxUtils.createMenuItem("Save", UISuitesModel.save(24), this::saveModel));
+        ctx.getItems().add(JfxUtils.createMenuItem("Delete", UISuitesModel.delete(24), this::deleteControl));
         return ctx;
     }
 
     private ToolBar createToolBar()
     {
         ToolBar tb = new ToolBar();
-        tb.getItems().add(JfxUtils.createToolButton(loadImage("save.png", 32), this::saveModel));
-        tb.getItems().add(JfxUtils.createToolButton(loadImage("delete.png", 32), this::deleteControl));
+        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveModel));
+        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteControl));
         return tb;
     }
     
     public void saveModel(ActionEvent event)
     {
+        UISuiteModel suite = this.resource.getParent();
         ModelUtils.saveUISuite(suite);
     }
 
     public void deleteControl(ActionEvent event)
     {
+        UISuiteModel suite = this.resource.getParent();
         suite.getResources().remove(resource);
-    }
-
-    private static Node loadImage(String image, int size)
-    {
-        return JfxUtils.loadImage(ResourceTreeItem.class, image, size, size);
     }
 
     @Override
     public Node edit()
     {
+        UISuiteModel suite = this.resource.getParent();
         editor.setUISuite(suite);
         editor.setResource(resource);
         return editor;

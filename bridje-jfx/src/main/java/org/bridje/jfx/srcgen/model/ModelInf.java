@@ -29,6 +29,13 @@ public class ModelInf
     })
     private List<ObjectInf> objects;
 
+    @XmlElementWrapper(name = "icons")
+    @XmlElements(
+    {
+        @XmlElement(name = "icon", type = IconDef.class)
+    })
+    private List<IconDef> icons;
+
     @XmlElementWrapper(name = "properties")
     @XmlElements(
     {
@@ -92,5 +99,15 @@ public class ModelInf
     public void setProperties(List<PropertyInf> properties)
     {
         this.properties = properties;
+    }
+
+    public List<IconDef> getIcons()
+    {
+        return icons;
+    }
+
+    public void setIcons(List<IconDef> icons)
+    {
+        this.icons = icons;
     }
 }

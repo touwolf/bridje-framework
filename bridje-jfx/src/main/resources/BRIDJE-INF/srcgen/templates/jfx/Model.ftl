@@ -7,9 +7,19 @@ import ${inc.fullName};
 </#list>
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
+import javafx.scene.image.ImageView;
+import org.bridje.jfx.utils.JfxUtils;
 
 public class ${model.name}
 {
+    <#list model.icons as icon>
+    public static ImageView ${icon.name}(int size)
+    {
+        return JfxUtils.loadImage(${model.name}.class, "${icon.file}", size, size);
+    }
+
+    </#list>
+
     <#list model.properties as property>
     private final ${property.propertyDec} ${property.name}Property = new ${property.propertyDimDec}();
 

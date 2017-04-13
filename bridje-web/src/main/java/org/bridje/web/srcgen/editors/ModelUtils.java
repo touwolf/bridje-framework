@@ -93,13 +93,7 @@ public class ModelUtils
     {
         UISuiteModel result = new UISuiteModel();
         result.setFile(file);
-        result.setControls(controlsToModel(suite.getControls()));
-        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
-        if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
-        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
-        result.setDefines(standaloneToModel(suite.getDefines()));
-        result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
-        result.setIncludes(includesToModel(suite.getIncludes(), file));
+
         result.setName(suite.getName());
         result.setNamespace(suite.getNamespace());
         result.setPackageName(suite.getPackage());
@@ -109,8 +103,24 @@ public class ModelUtils
         if(isBlank(result.getRenderHead())) result.setRenderHead("<head>\n\t<title>${view.title!}</title>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n\t<#nested />\n</head>");
         result.setRenderViewContainer(suite.getRenderViewContainer());
         if(isBlank(result.getRenderViewContainer())) result.setRenderViewContainer("<div id=\"view-form\">\n\t<#nested />\n</div>");
+
+        result.setControls(controlsToModel(suite.getControls()));
+        result.getControls().forEach(c -> c.setParent(result));
+        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.getControlsTemplates().forEach(c -> c.setParent(result));
+        if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
+        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
+        result.getDefaultResources().setParent(result);
+        result.setDefines(standaloneToModel(suite.getDefines()));
+        result.getDefines().setParent(result);
+        result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
+        result.setIncludes(includesToModel(suite.getIncludes(), file));
+        result.getIncludes().forEach(c -> c.setParent(result));
         result.setResources(resourcesToModel(suite.getResources()));
+        result.getResources().forEach(c -> c.setParent(result));
         result.setStandalone(standaloneToModel(suite.getStandalone()));
+        result.getStandalone().setParent(result);
+
         return result;
     }
 
@@ -145,23 +155,26 @@ public class ModelUtils
     {
         ControlDefModel result = new ControlDefModel();
 
+        result.setName(control.getName());
         result.setBase(control.getBase());
         if(control.getBaseTemplate() != null)
             result.setBaseTemplate(control.getBaseTemplate().getName());
         result.setFields(fieldsToModel(control.getFields()));
-        result.setName(control.getName());
+        result.getFields().forEach(f -> f.setParent(result));
         result.setRender(control.getRender());
         result.setResources(resourcesRefToModel(control.getResources()));
+        result.getResources().forEach(f -> f.setParent(result));
 
         return result;
     }
 
     private static ResourceModel resourceToModel(Resource resource)
     {
-        ResourceModel result = new ResourceModel();
         if(resource == null) return null;
+        ResourceModel result = new ResourceModel();
         result.setName(resource.getName());
         result.setContent(assetsToModel(resource.getContent()));
+        result.getContent().forEach(f -> f.setParent(result));
 
         return result;
     }
@@ -202,9 +215,12 @@ public class ModelUtils
         PartialUISuiteModel result = new PartialUISuiteModel();
         result.setFile(incFile);
         result.setControls(controlsToModel(suite.getControls()));
+        result.getControls().forEach(c -> c.setPartialSuite(result));
         result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.getControlsTemplates().forEach(c -> c.setPartialSuite(result));
         result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
         result.setResources(resourcesToModel(suite.getResources()));
+        result.getResources().forEach(c -> c.setPartialSuite(result));
         return result;
     }
     

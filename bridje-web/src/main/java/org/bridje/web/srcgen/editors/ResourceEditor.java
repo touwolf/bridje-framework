@@ -20,13 +20,12 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 import org.bridje.jfx.utils.JfxUtils;
@@ -34,6 +33,7 @@ import org.bridje.web.srcgen.models.AssetModel;
 import org.bridje.web.srcgen.models.AssetModelTable;
 import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.UISuitesModel;
 
 public final class ResourceEditor extends GridPane
 {
@@ -45,7 +45,7 @@ public final class ResourceEditor extends GridPane
 
     private AssetModelTable tbAssets = new AssetModelTable();
 
-    private final ToolBar tbActions = new ToolBar();
+    private final HBox tbActions = new HBox();
 
     public ResourceEditor()
     {
@@ -61,7 +61,7 @@ public final class ResourceEditor extends GridPane
         tbAssets.addRelColumn("Rel");
         tbAssets.editableRelColumn(null);
 
-        tbActions.getItems().add(JfxUtils.createToolButton(loadImage("add.png", 32), this::addAsset));
+        tbActions.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addAsset));
 
         add(tfName, 0, 0);
         add(tbActions, 0, 1);
@@ -87,11 +87,6 @@ public final class ResourceEditor extends GridPane
                 Bindings.bindContentBidirectional(tbAssets.getItems(), newValue.getContent());
             }
         });
-    }
-
-    private static Node loadImage(String image, int size)
-    {
-        return JfxUtils.loadImage(ResourceEditor.class, image, size, size);
     }
 
     public SimpleObjectProperty<ResourceModel> controlsProperty()
