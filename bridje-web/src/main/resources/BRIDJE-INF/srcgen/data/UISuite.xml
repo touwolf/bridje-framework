@@ -14,6 +14,19 @@
     </properties>
 
     <objects>
+        <object name="PartialUISuiteModel">
+            <includes>
+                <include fullName="org.bridje.vfs.VFile" />
+            </includes>
+            <key type="String" name="name" key="true" />
+            <properties>
+                <property type="VFile" name="file" />
+                <observableList type="String" name="ftlIncludes" />
+                <observableList type="ResourceModel" name="resources" />
+                <observableList type="ControlDefModel" name="controls" />
+                <observableList type="ControlDefModel" name="controlsTemplates" />
+            </properties>
+        </object>
         <object name="UISuiteModel">
             <includes>
                 <include fullName="org.bridje.vfs.VFile" />
@@ -29,7 +42,7 @@
                 <property type="StandaloneDefModel" name="standalone" />
                 <property type="StandaloneDefModel" name="defines" />
                 <property type="ResourceModel" name="defaultResources" />
-                <observableList type="String" name="includes" />
+                <observableList type="PartialUISuiteModel" name="includes" />
                 <observableList type="String" name="ftlIncludes" />
                 <observableList type="ResourceModel" name="resources" />
                 <observableList type="ControlDefModel" name="controls" />
