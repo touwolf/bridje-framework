@@ -26,6 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.util.Callback;
@@ -35,6 +36,7 @@ import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.UISuitesModel;
 
 public final class ControlEditor extends GridPane
 {
@@ -56,6 +58,8 @@ public final class ControlEditor extends GridPane
 
     private ChangeListener<String> nameListener;
     
+    private HBox hbToolbar = new HBox();
+
     public ControlEditor()
     {
         setVgap(10);
@@ -66,10 +70,13 @@ public final class ControlEditor extends GridPane
         add(tfName, 0, 0);
         add(cbBase, 1, 0);
         add(cbBaseTemplate, 2, 0);
-        add(resourcesSelector, 0, 1);
-        add(fieldsEditor, 1, 1, 2, 1);
-        add(taRender, 0, 2, 3, 1);
+        add(resourcesSelector, 0, 1, 1, 2);
+        add(hbToolbar, 1, 1, 2, 1);
+        add(fieldsEditor, 1, 2, 2, 1);
+        add(taRender, 0, 3, 3, 1);
 
+        setFillWidth(hbToolbar, true);
+        setHgrow(hbToolbar, Priority.ALWAYS);
         setFillWidth(fieldsEditor, true);
         setHgrow(fieldsEditor, Priority.ALWAYS);
 
@@ -82,10 +89,14 @@ public final class ControlEditor extends GridPane
         setVgrow(taRender, Priority.ALWAYS);
 
         getRowConstraints().add(new RowConstraints());
+        getRowConstraints().add(new RowConstraints());
         RowConstraints rowConst = new RowConstraints();
         rowConst.setPercentHeight(45d);
         getRowConstraints().add(rowConst);
         
+        hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addField));
+        hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addChild));
+
         nameListener = (observable, oldValue, newValue) -> updateName(oldValue, newValue);
         fieldsEditor.setNameListener((observable, oldValue, newValue) -> taRender.searchAndReplace("control." + oldValue, "control." + newValue));
 
@@ -136,6 +147,7 @@ public final class ControlEditor extends GridPane
         Menu createMenu = new Menu("Create");
         taRender.getContextMenu().getItems().add(0, createMenu);
         createMenu.getItems().add(JfxUtils.createMenuItem("Child Field", null, this::createChildFieldFromCurrentSelection));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Children Field", null, this::createChildrenFieldFromCurrentSelection));
         createMenu.getItems().add(JfxUtils.createMenuItem("Expresion Field", null, this::createExprFieldFromCurrentSelection));
         createMenu.getItems().add(JfxUtils.createMenuItem("Boolean Field", null, this::createBooleanFieldFromCurrentSelection));
     }
@@ -222,7 +234,20 @@ public final class ControlEditor extends GridPane
         FieldDefModel field = new FieldDefModel();
         getControl().getFields().add(field);
     }
-    
+
+    public void addChild(ActionEvent event)
+    {
+        if(fieldsEditor.getSelected() != null)
+        {
+            if("children".equalsIgnoreCase(fieldsEditor.getSelected().getType()))
+            {
+                FieldDefModel field = new FieldDefModel();
+                field.setType("child");
+                fieldsEditor.getSelected().getChilds().add(field);
+            }
+        }
+    }
+
     public void createChildFieldFromCurrentSelection(ActionEvent event)
     {
         String selection = taRender.findSelection();
@@ -243,7 +268,32 @@ public final class ControlEditor extends GridPane
             taRender.replaceSelection("<#if control." + field.getName() + "??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
         }
     }
-    
+
+    public void createChildrenFieldFromCurrentSelection(ActionEvent event)
+    {
+        String selection = taRender.findSelection();
+        if(selection != null && !selection.isEmpty())
+        {
+            ControlDefModel ctrl = new ControlDefModel();
+            ctrl.setName("NewControl" + getUISuite().getControls().size());
+            ctrl.setRender(selection);
+            getUISuite().getControls().add(ctrl);
+            FieldDefModel field = new FieldDefModel();
+            field.setName("newChildrenField" + getControl().getFields().size());
+            field.setField("children");
+            FieldDefModel childField = new FieldDefModel();
+            childField.setName(ctrl.getName().toLowerCase());
+            childField.setType(ctrl.getName());
+            field.setChilds(FXCollections.observableArrayList());
+            field.getChilds().add(childField);
+
+            field.nameProperty().addListener(fieldsEditor.getNameListener());
+            getControl().getFields().add(field);
+
+            taRender.replaceSelection("<#if control." + field.getName() + "??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
+        }
+    }
+
     public void createExprFieldFromCurrentSelection(ActionEvent event)
     {
         String selection = taRender.findSelection();
@@ -297,7 +347,7 @@ public final class ControlEditor extends GridPane
                 .filter(f -> "children".equalsIgnoreCase(f.getField()))
                 .forEach(f -> updateChildrenTypes(f, oldValue, newValue));
     }
-    
+
     private void updateChildrenTypes(FieldDefModel field, String oldValue, String newValue)
     {
         if(field.getChilds() == null) return;

@@ -19,6 +19,7 @@ package org.bridje.web.srcgen.editors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -36,12 +37,14 @@ public final class FieldsEditor extends StackPane
 {
     private final SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty = new SimpleObjectProperty<>();
 
+    private final SimpleObjectProperty<FieldDefModel> selectedProperty = new SimpleObjectProperty<>();
+
     private final FieldDefModelTreeTable table;
 
     private final BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> converter;
-    
+
     private ChangeListener<String> nameListener;
-    
+
     public FieldsEditor()
     {
         table = new FieldDefModelTreeTable();
@@ -82,6 +85,34 @@ public final class FieldsEditor extends StackPane
         });
         table.setRoot(root);
         table.setShowRoot(false);
+
+        table.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) ->
+                {
+                    if(newValue == null)
+                    {
+                        selectedProperty.set(null);
+                    }
+                    else
+                    {
+                        selectedProperty.set(newValue.getValue());
+                    }
+                });
+    }
+
+    public SimpleObjectProperty<FieldDefModel> selectedProperty()
+    {
+        return this.selectedProperty;
+    }
+
+    public FieldDefModel getSelected()
+    {
+        return this.selectedProperty.get();
+    }
+
+    public void setSelected(FieldDefModel fields)
+    {
+        this.selectedProperty.set(fields);
     }
 
     public SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty()

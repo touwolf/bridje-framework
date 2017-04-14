@@ -97,7 +97,7 @@ public final class UISuitesTreeItem extends EditorTreeItem
         model.setName("NewUISuite");
         getSuites().getSuites().add(model);
     }
-    
+
     public void saveAllSuites(ActionEvent event)
     {
         getSuites().getSuites().forEach(s -> ModelUtils.saveUISuite(s));
