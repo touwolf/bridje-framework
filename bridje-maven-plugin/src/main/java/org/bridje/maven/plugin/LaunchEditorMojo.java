@@ -31,9 +31,7 @@ import org.bridje.vfs.VFile;
 /**
  * This MOJO is responsible for launching the source generation data editor.
  */
-@Mojo(
-        name = "launch-editor"
-)
+@Mojo(name = "launch-editor")
 public class LaunchEditorMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "src/main/resources/BRIDJE-INF/srcgen/data", readonly = false)

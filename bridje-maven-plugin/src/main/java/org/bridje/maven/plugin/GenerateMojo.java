@@ -51,9 +51,7 @@ import org.bridje.vfs.VFile;
  * Each API defines the code that it needs and the user need`s only to define
  * the data for the code.
  */
-@Mojo(
-        name = "generate-sources"
-)
+@Mojo(name = "generate-sources")
 public class GenerateMojo extends AbstractMojo
 {
     @Parameter(defaultValue = "src/main/resources/BRIDJE-INF/srcgen/data", readonly = false)

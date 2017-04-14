@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.bridje.web.srcgen.adapter.CData;
 
 /**
  * Base class for the control definitions and control templates.
@@ -46,6 +48,7 @@ public class BaseControlDef
     @XmlAttribute
     private TemplateControlDef baseTemplate;
 
+    @XmlJavaTypeAdapter(CData.class)
     private String render;
 
     @XmlElementWrapper(name = "fields")

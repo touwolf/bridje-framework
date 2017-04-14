@@ -33,9 +33,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
+import org.bridje.web.srcgen.adapter.CData;
 
 /**
  * An UI suite definition that can be use to generate the controls and templates 
@@ -56,10 +58,13 @@ public class UISuite
     @XmlAttribute
     private String namespace;
 
+    @XmlJavaTypeAdapter(CData.class)
     private String renderViewContainer;
-    
+
+    @XmlJavaTypeAdapter(CData.class)
     private String renderBody;
-    
+
+    @XmlJavaTypeAdapter(CData.class)
     private String renderHead;
     
     @XmlElementWrapper(name = "includes")
