@@ -52,7 +52,11 @@ public class WebLayoutManager
     {
         if (name == null || name.isEmpty()) return null;
         VFile file = new VFile(basePath.join(name + ".layout.xml"));
-        if(!file.isFile()) return null;
+        if(!file.isFile())
+        {
+            LOG.log(Level.WARNING, "Could not load parent layout {0}", name);
+            return null;
+        }
         return readLayout(file);
     }
 

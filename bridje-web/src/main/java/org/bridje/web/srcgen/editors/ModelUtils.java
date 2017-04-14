@@ -26,11 +26,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.xml.bind.JAXBException;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.srcgen.models.AssetModel;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
+import org.bridje.web.srcgen.models.PartialUISuiteModel;
 import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.ResourceRefModel;
 import org.bridje.web.srcgen.models.StandaloneDefModel;
@@ -52,6 +55,7 @@ import org.bridje.web.srcgen.uisuite.Link;
 import org.bridje.web.srcgen.uisuite.OutAttrField;
 import org.bridje.web.srcgen.uisuite.OutElementField;
 import org.bridje.web.srcgen.uisuite.OutValueField;
+import org.bridje.web.srcgen.uisuite.PartialUISuite;
 import org.bridje.web.srcgen.uisuite.Resource;
 import org.bridje.web.srcgen.uisuite.ResourceRef;
 import org.bridje.web.srcgen.uisuite.Script;
@@ -89,13 +93,7 @@ public class ModelUtils
     {
         UISuiteModel result = new UISuiteModel();
         result.setFile(file);
-        result.setControls(controlsToModel(suite.getControls()));
-        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
-        if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
-        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
-        result.setDefines(standaloneToModel(suite.getDefines()));
-        result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
-        result.setIncludes(stringListToModel(suite.getIncludes()));
+
         result.setName(suite.getName());
         result.setNamespace(suite.getNamespace());
         result.setPackageName(suite.getPackage());
@@ -105,8 +103,24 @@ public class ModelUtils
         if(isBlank(result.getRenderHead())) result.setRenderHead("<head>\n\t<title>${view.title!}</title>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n\t<#nested />\n</head>");
         result.setRenderViewContainer(suite.getRenderViewContainer());
         if(isBlank(result.getRenderViewContainer())) result.setRenderViewContainer("<div id=\"view-form\">\n\t<#nested />\n</div>");
+
+        result.setControls(controlsToModel(suite.getControls()));
+        result.getControls().forEach(c -> c.setParent(result));
+        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.getControlsTemplates().forEach(c -> c.setParent(result));
+        if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
+        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
+        result.getDefaultResources().setParent(result);
+        result.setDefines(standaloneToModel(suite.getDefines()));
+        result.getDefines().setParent(result);
+        result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
+        result.setIncludes(includesToModel(suite.getIncludes(), file));
+        result.getIncludes().forEach(c -> c.setParent(result));
         result.setResources(resourcesToModel(suite.getResources()));
+        result.getResources().forEach(c -> c.setParent(result));
         result.setStandalone(standaloneToModel(suite.getStandalone()));
+        result.getStandalone().setParent(result);
+
         return result;
     }
 
@@ -118,7 +132,7 @@ public class ModelUtils
         result.setDefaultResources(resourceFromModel(suiteModel.getDefaultResources()));
         result.setDefines(standaloneFromModel(suiteModel.getDefines()));
         result.setFtlIncludes(stringListFromModel(suiteModel.getFtlIncludes()));
-        result.setIncludes(stringListFromModel(suiteModel.getIncludes()));
+        //result.setIncludes(includesFromModel(suiteModel.getIncludes()));
         result.setName(suiteModel.getName());
         result.setNamespace(suiteModel.getNamespace());
         result.setPackage(suiteModel.getPackageName());
@@ -141,23 +155,26 @@ public class ModelUtils
     {
         ControlDefModel result = new ControlDefModel();
 
+        result.setName(control.getName());
         result.setBase(control.getBase());
         if(control.getBaseTemplate() != null)
             result.setBaseTemplate(control.getBaseTemplate().getName());
         result.setFields(fieldsToModel(control.getFields()));
-        result.setName(control.getName());
+        result.getFields().forEach(f -> f.setParent(result));
         result.setRender(control.getRender());
         result.setResources(resourcesRefToModel(control.getResources()));
+        result.getResources().forEach(f -> f.setParent(result));
 
         return result;
     }
 
     private static ResourceModel resourceToModel(Resource resource)
     {
-        ResourceModel result = new ResourceModel();
         if(resource == null) return null;
+        ResourceModel result = new ResourceModel();
         result.setName(resource.getName());
         result.setContent(assetsToModel(resource.getContent()));
+        result.getContent().forEach(f -> f.setParent(result));
 
         return result;
     }
@@ -169,6 +186,44 @@ public class ModelUtils
         return result;
     }
 
+    private static ObservableList<PartialUISuiteModel> includesToModel(List<String> includes, VFile file)
+    {
+        ObservableList<PartialUISuiteModel> result = FXCollections.observableArrayList();
+        if(includes != null) includes.forEach(i -> result.add(loadPartialUISuite(i, file)));
+        return result;
+    }
+
+    private static PartialUISuiteModel loadPartialUISuite(String include, VFile file)
+    {
+        Path incPath = file.getPath().getParent().join(include);
+        VFile incFile = new VFile(incPath);
+        try(VFileInputStream is = new VFileInputStream(incFile))
+        {
+            PartialUISuite load = PartialUISuite.load(is);
+            return partialUISuiteToModel(load, incFile);
+        }
+        catch(IOException | JAXBException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    private static PartialUISuiteModel partialUISuiteToModel(PartialUISuite suite, VFile incFile)
+    {
+        if(suite == null) return null;
+        PartialUISuiteModel result = new PartialUISuiteModel();
+        result.setFile(incFile);
+        result.setControls(controlsToModel(suite.getControls()));
+        result.getControls().forEach(c -> c.setPartialSuite(result));
+        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.getControlsTemplates().forEach(c -> c.setPartialSuite(result));
+        result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
+        result.setResources(resourcesToModel(suite.getResources()));
+        result.getResources().forEach(c -> c.setPartialSuite(result));
+        return result;
+    }
+    
     private static ObservableList<String> stringListToModel(List<String> stringList)
     {
         ObservableList<String> result = FXCollections.observableArrayList();

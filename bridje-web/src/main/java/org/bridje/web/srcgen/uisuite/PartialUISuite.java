@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,8 +52,6 @@ public class PartialUISuite
         @XmlElement(name = "resource", type = Resource.class)
     })
     private List<Resource> resources;
-
-    private Resource defaultResources;
 
     @XmlElementWrapper(name = "controls")
     @XmlElements(
@@ -188,6 +187,8 @@ public class PartialUISuite
     public static void save(OutputStream os, PartialUISuite object) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(PartialUISuite.class);
-        ctx.createMarshaller().marshal(object, os);
+        Marshaller marshaller = ctx.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(object, os);
     }
 }

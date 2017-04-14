@@ -23,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -86,6 +87,7 @@ public final class ControlEditor extends GridPane
         getRowConstraints().add(rowConst);
         
         nameListener = (observable, oldValue, newValue) -> updateName(oldValue, newValue);
+        fieldsEditor.setNameListener((observable, oldValue, newValue) -> taRender.searchAndReplace("control." + oldValue, "control." + newValue));
 
         uiSuiteProperty.addListener((observable, oldValue, newValue) ->
         {
@@ -131,7 +133,11 @@ public final class ControlEditor extends GridPane
             }
         });
         
-        taRender.getContextMenu().getItems().add(0, JfxUtils.createMenuItem("Create Child", null, this::createChildFildFromCurrentSelection));
+        Menu createMenu = new Menu("Create");
+        taRender.getContextMenu().getItems().add(0, createMenu);
+        createMenu.getItems().add(JfxUtils.createMenuItem("Child Field", null, this::createChildFieldFromCurrentSelection));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Expresion Field", null, this::createExprFieldFromCurrentSelection));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Boolean Field", null, this::createBooleanFieldFromCurrentSelection));
     }
 
     public StringConverter<ControlDefModel> createStringConverter(Callback<String, ControlDefModel> callback)
@@ -217,7 +223,7 @@ public final class ControlEditor extends GridPane
         getControl().getFields().add(field);
     }
     
-    public void createChildFildFromCurrentSelection(ActionEvent event)
+    public void createChildFieldFromCurrentSelection(ActionEvent event)
     {
         String selection = taRender.findSelection();
         if(selection != null && !selection.isEmpty())
@@ -231,9 +237,44 @@ public final class ControlEditor extends GridPane
             field.setName("newChildField" + getControl().getFields().size());
             field.setType(ctrl.getName());
             field.setField("child");
+            field.nameProperty().addListener(fieldsEditor.getNameListener());
             getControl().getFields().add(field);
 
-            taRender.replaceSelection("<#if control.newChild??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
+            taRender.replaceSelection("<#if control." + field.getName() + "??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
+        }
+    }
+    
+    public void createExprFieldFromCurrentSelection(ActionEvent event)
+    {
+        String selection = taRender.findSelection();
+        if(selection != null && !selection.isEmpty())
+        {
+            FieldDefModel field = new FieldDefModel();
+            field.setName("newExprAttr" + getControl().getFields().size());
+            field.setType("String");
+            field.setField("outAttr");
+            field.setDefaultValue("\"" + selection + "\"");
+            field.nameProperty().addListener(fieldsEditor.getNameListener());
+            getControl().getFields().add(field);
+
+            taRender.replaceSelection("${control." + field.getName() + "}");
+        }
+    }
+
+    public void createBooleanFieldFromCurrentSelection(ActionEvent event)
+    {
+        String selection = taRender.findSelection();
+        if(selection != null && !selection.isEmpty())
+        {
+            FieldDefModel field = new FieldDefModel();
+            field.setName("newBoolAttr" + getControl().getFields().size());
+            field.setType("Boolean");
+            field.setField("outAttr");
+            field.setDefaultValue("false");
+            field.nameProperty().addListener(fieldsEditor.getNameListener());
+            getControl().getFields().add(field);
+
+            taRender.replaceSelection("<#if control." + field.getName() + "?? && control." + field.getName() + ">" + selection + "</#if>");
         }
     }
 
@@ -244,6 +285,7 @@ public final class ControlEditor extends GridPane
 
     private void updateChildTypes(ControlDefModel control, String oldValue, String newValue)
     {
+        if(control.getFields() == null) return;
         control.getFields()
                 .stream()
                 .filter(f -> "child".equalsIgnoreCase(f.getField()))

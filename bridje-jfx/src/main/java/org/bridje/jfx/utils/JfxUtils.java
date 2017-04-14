@@ -1,14 +1,3 @@
-
-package org.bridje.jfx.utils;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /*
  * Copyright 2017 Bridje Framework.
  *
@@ -25,9 +14,19 @@ import javafx.scene.image.ImageView;
  * limitations under the License.
  */
 
+package org.bridje.jfx.utils;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class JfxUtils
 {
-    public static Node loadImage(Class<?> cls, String resource, double height, double width)
+    public static ImageView loadImage(Class<?> cls, String resource, double height, double width)
     {
         Image img = new Image(cls.getResourceAsStream(resource));
         ImageView iv = new ImageView(img);

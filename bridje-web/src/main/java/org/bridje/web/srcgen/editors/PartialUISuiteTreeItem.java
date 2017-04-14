@@ -20,36 +20,36 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.TreeItem;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
-import org.bridje.web.srcgen.models.ControlDefModel;
+import org.bridje.web.srcgen.models.PartialUISuiteModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
-public final class ControlTreeItem extends EditorTreeItem
+public final class PartialUISuiteTreeItem extends EditorTreeItem
 {
-    private final ControlDefModel control;
-
-    private final static ControlEditor editor = new ControlEditor();
-
-    public ControlTreeItem(ControlDefModel control)
+    private final PartialUISuiteModel partialSuite;
+    
+    public PartialUISuiteTreeItem(PartialUISuiteModel partialSuite)
     {
-        super(control, UISuitesModel.control(16));
-        this.control = control;
+        super(partialSuite, UISuitesModel.uisuite(16));
+        this.partialSuite = partialSuite;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
-        this.control.nameProperty().addListener((observable, oldValue, newValue) ->
-        {
-            setValue(null);
-            setValue(control);
-        });
+
+        UISuiteModel suite = partialSuite.getParent();
+        TreeItem<Object> tiResources = new ResourcesTreeItem(suite);
+        TreeItem<Object> tiTemplates = new TemplatesTreeItem(suite);
+        TreeItem<Object> tiControls = new ControlsTreeItem(suite);
+
+        getChildren().addAll(tiResources, tiTemplates, tiControls);
     }
 
     private ContextMenu createContextMenu()
     {
         ContextMenu ctx = new ContextMenu();
         ctx.getItems().add(JfxUtils.createMenuItem("Save", UISuitesModel.save(24), this::saveModel));
-        ctx.getItems().add(JfxUtils.createMenuItem("Delete", UISuitesModel.delete(24), this::deleteControl));
         return ctx;
     }
 
@@ -57,34 +57,11 @@ public final class ControlTreeItem extends EditorTreeItem
     {
         ToolBar tb = new ToolBar();
         tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveModel));
-        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteControl));
         return tb;
     }
-    
+
     public void saveModel(ActionEvent event)
     {
-        ModelUtils.saveUISuite(control.getParent());
-    }
-
-    public void deleteControl(ActionEvent event)
-    {
-        UISuiteModel suite = control.getParent();
-        if(suite.getControls().contains(control))
-        {
-            suite.getControls().remove(control);
-        }
-        else 
-        {
-            suite.getControlsTemplates().remove(control);
-        }
-    }
-
-    @Override
-    public Node edit()
-    {
-        UISuiteModel suite = control.getParent();
-        if(editor.getUISuite() == null || !editor.getUISuite().equals(suite)) editor.setUISuite(suite);
-        editor.setControl(control);
-        return editor;
+        ModelUtils.saveUISuite(partialSuite.getParent());
     }
 }

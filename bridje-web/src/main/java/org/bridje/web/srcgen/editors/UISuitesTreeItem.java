@@ -34,7 +34,7 @@ public final class UISuitesTreeItem extends EditorTreeItem
 
     public UISuitesTreeItem()
     {
-        super("UI Suites", JfxUtils.loadImage(UISuitesTreeItem.class, "uisuite.png", 16, 16));
+        super("UI Suites", UISuitesModel.uisuite(16));
         setContextMenu(createMenu());
         setToolBar(createToolBar());
         suitesProperty
@@ -84,11 +84,10 @@ public final class UISuitesTreeItem extends EditorTreeItem
         };
     }
 
-
     private ContextMenu createMenu()
     {
         ContextMenu result = new ContextMenu();
-        result.getItems().add(JfxUtils.createMenuItem("Create a new UI Suite", JfxUtils.loadImage(getClass(), "add.png", 24, 24), this::addUISuite));
+        result.getItems().add(JfxUtils.createMenuItem("Create a new UI Suite", UISuitesModel.add(24), this::addUISuite));
         return result;
     }
 
@@ -107,8 +106,8 @@ public final class UISuitesTreeItem extends EditorTreeItem
     private ToolBar createToolBar()
     {
         ToolBar mBar = new ToolBar();
-        mBar.getItems().add(JfxUtils.createToolButton(JfxUtils.loadImage(getClass(), "save.png", 32, 32), this::saveAllSuites));
-        mBar.getItems().add(JfxUtils.createToolButton(JfxUtils.loadImage(getClass(), "add.png", 32, 32), this::addUISuite));
+        mBar.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveAllSuites));
+        mBar.getItems().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addUISuite));
         return mBar;
     }
 }
