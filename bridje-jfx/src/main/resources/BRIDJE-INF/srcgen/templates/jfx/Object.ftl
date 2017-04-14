@@ -72,7 +72,12 @@ public class ${object.name}
     @Override
     public String toString()
     {
+        <#if object.toStringProperty.type != "String">
+        if(get${object.toStringProperty.name?cap_first}() != null) return get${object.toStringProperty.name?cap_first}().toString();
+        return null;
+        <#else>
         return get${object.toStringProperty.name?cap_first}();
+        </#if>
     }
 
     </#if>

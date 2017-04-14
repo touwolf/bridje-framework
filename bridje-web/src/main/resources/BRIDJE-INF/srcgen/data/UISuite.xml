@@ -16,6 +16,7 @@
         <icon name="resource" file="resource.png" />
         <icon name="save" file="save.png" />
         <icon name="uisuite" file="uisuite.png" />
+        <icon name="field" file="field.png" />
     </icons>
 
     <properties>
@@ -27,7 +28,7 @@
             <includes>
                 <include fullName="org.bridje.vfs.VFile" />
             </includes>
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="VFile" name="file" />
                 <property type="UISuiteModel" name="parent" />
@@ -41,7 +42,7 @@
             <includes>
                 <include fullName="org.bridje.vfs.VFile" />
             </includes>
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="VFile" name="file" />
                 <property type="String" name="packageName" />
@@ -60,14 +61,14 @@
             </properties>
         </object>
         <object name="StandaloneDefModel">
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="UISuiteModel" name="parent" />
                 <observableList type="FieldDefModel" name="content" />
             </properties>
         </object>
         <object name="ResourceModel">
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="UISuiteModel" name="parent" />
                 <property type="PartialUISuiteModel" name="partialSuite" />
@@ -75,7 +76,7 @@
             </properties>
         </object>
         <object name="ControlDefModel">
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="UISuiteModel" name="parent" />
                 <property type="PartialUISuiteModel" name="partialSuite" />
@@ -87,7 +88,7 @@
             </properties>
         </object>
         <object name="AssetModel">
-            <key type="String" name="href" key="true" />
+            <key type="String" name="href" />
             <properties>
                 <property type="ResourceModel" name="parent" />
                 <property type="String" name="type" />
@@ -98,7 +99,7 @@
             </components>
         </object>
         <object name="FieldDefModel">
-            <key type="String" name="name" key="true" />
+            <key type="String" name="name" />
             <properties>
                 <property type="ControlDefModel" name="parent" />
                 <property type="String" name="field" />
@@ -114,9 +115,8 @@
             </components>
         </object>
         <object name="ResourceRefModel">
-            <key type="String" name="name" key="true" />
+            <key type="ResourceModel" name="resource" />
             <properties>
-                <property type="ControlDefModel" name="parent" />
                 <property type="Boolean" name="selected" />
             </properties>
         </object>

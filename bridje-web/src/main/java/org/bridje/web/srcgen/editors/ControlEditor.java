@@ -19,12 +19,15 @@ package org.bridje.web.srcgen.editors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -34,17 +37,15 @@ import org.bridje.jfx.ace.AceEditor;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
-import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.ResourceRefModel;
 
 public final class ControlEditor extends GridPane
 {
     private final SimpleObjectProperty<ControlDefModel> controlProperty = new SimpleObjectProperty<>();
 
-    private final SimpleObjectProperty<UISuiteModel> uiSuiteProperty = new SimpleObjectProperty<>();
-
     private final FieldsEditor fieldsEditor = new FieldsEditor();
 
-    private final ResourcesSelector resourcesSelector = new ResourcesSelector();
+    private final ListView<ResourceRefModel> resourcesSelector = new ListView<>();
 
     private final TextField tfName = new TextField();
 
@@ -88,27 +89,24 @@ public final class ControlEditor extends GridPane
         
         nameListener = (observable, oldValue, newValue) -> updateName(oldValue, newValue);
         fieldsEditor.setNameListener((observable, oldValue, newValue) -> taRender.searchAndReplace("control." + oldValue, "control." + newValue));
-
-        uiSuiteProperty.addListener((observable, oldValue, newValue) ->
+        
+        ChangeListener<Boolean> print = new ChangeListener<Boolean>()
         {
-            if(oldValue != null)
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
             {
-                Bindings.unbindContent(cbBase.getItems(), oldValue.getControls());
-                Bindings.unbindContent(cbBaseTemplate.getItems(), oldValue.getControlsTemplates());
+                System.out.println(newValue);
             }
-            if(getUISuite() != null)
-            {
-                if(getUISuite().getControls() == null) getUISuite().setControls(FXCollections.observableArrayList());
-                Bindings.bindContent(cbBase.getItems(), getUISuite().getControls());
-                if(getUISuite().getControlsTemplates() == null) getUISuite().setControlsTemplates(FXCollections.observableArrayList());
-                Bindings.bindContent(cbBaseTemplate.getItems(), getUISuite().getControlsTemplates());
-            }
-        });
-
+        };
+        
         controlProperty.addListener((observable, oldValue, newValue) ->
         {
             if(oldValue != null)
             {
+                Bindings.unbindContent(cbBase.getItems(), oldValue.getParent().getControls());
+                Bindings.unbindContent(cbBaseTemplate.getItems(), oldValue.getParent().getControlsTemplates());
+
+                oldValue.getResources().forEach(r -> r.selectedProperty().removeListener(print));
                 oldValue.nameProperty().removeListener(nameListener);
                 tfName.textProperty().unbindBidirectional(oldValue.nameProperty());
                 Bindings.unbindBidirectional(cbBase.valueProperty(), oldValue.baseProperty());
@@ -117,20 +115,28 @@ public final class ControlEditor extends GridPane
                 resourcesSelector.itemsProperty().unbindBidirectional(oldValue.resourcesProperty());
                 taRender.textProperty().unbindBidirectional(oldValue.renderProperty());
             }
-            if(getControl() != null)
+            if(newValue != null)
             {
-                tfName.textProperty().bindBidirectional(getControl().nameProperty());
+                if(newValue.getParent().getControls() == null) newValue.getParent().setControls(FXCollections.observableArrayList());
+                Bindings.bindContent(cbBase.getItems(), newValue.getParent().getControls());
+                if(newValue.getParent().getControlsTemplates() == null) newValue.getParent().setControlsTemplates(FXCollections.observableArrayList());
+                Bindings.bindContent(cbBaseTemplate.getItems(), newValue.getParent().getControlsTemplates());
+
+                tfName.textProperty().bindBidirectional(newValue.nameProperty());
                 StringConverter<ControlDefModel> contConvert = createStringConverter(name -> findControl(name));
-                getControl().baseProperty().bindBidirectional(cbBase.valueProperty(), contConvert);
+                newValue.baseProperty().bindBidirectional(cbBase.valueProperty(), contConvert);
                 StringConverter<ControlDefModel> tmplConverter = createStringConverter(name -> findTemplate(name));
-                getControl().baseTemplateProperty().bindBidirectional(cbBaseTemplate.valueProperty(), tmplConverter);
-                if(getControl().getFields() == null) getControl().setFields(FXCollections.observableArrayList());
-                fieldsEditor.fieldsProperty().bindBidirectional(getControl().fieldsProperty());
-                if(getControl().getResources() == null) getControl().setResources(FXCollections.observableArrayList());
-                resourcesSelector.itemsProperty().bindBidirectional(getControl().resourcesProperty());
-                taRender.textProperty().bindBidirectional(getControl().renderProperty());
+                newValue.baseTemplateProperty().bindBidirectional(cbBaseTemplate.valueProperty(), tmplConverter);
+                if(newValue.getFields() == null) newValue.setFields(FXCollections.observableArrayList());
+                fieldsEditor.fieldsProperty().bindBidirectional(newValue.fieldsProperty());
+                if(newValue.getResources() == null) newValue.setResources(FXCollections.observableArrayList());
+                resourcesSelector.itemsProperty().bindBidirectional(newValue.resourcesProperty());
+                taRender.textProperty().bindBidirectional(newValue.renderProperty());
                 newValue.nameProperty().addListener(nameListener);
+                
+                newValue.getResources().forEach(r -> r.selectedProperty().addListener(print));
             }
+            resourcesSelector.setCellFactory(CheckBoxListCell.forListView(ResourceRefModel::selectedProperty));
         });
         
         Menu createMenu = new Menu("Create");
@@ -161,11 +167,9 @@ public final class ControlEditor extends GridPane
 
     public ControlDefModel findTemplate(String base)
     {
-        if(getUISuite() == null) return null;
-        if(getUISuite().getControlsTemplates() == null) return null;
         if(getControl() == null) return null;
         if(getControl().getBaseTemplate() == null) return null;
-        return getUISuite()
+        return getControl().getParent()
                     .getControlsTemplates()
                     .stream()
                     .filter(c -> c.getName().equals(base))
@@ -175,11 +179,9 @@ public final class ControlEditor extends GridPane
 
     public ControlDefModel findControl(String base)
     {
-        if(getUISuite() == null) return null;
-        if(getUISuite().getControls() == null) return null;
         if(getControl() == null) return null;
         if(getControl().getBase() == null) return null;
-        return getUISuite()
+        return getControl().getParent()
                     .getControls()
                     .stream()
                     .filter(c -> c.getName().equals(getControl().getBase()))
@@ -202,21 +204,6 @@ public final class ControlEditor extends GridPane
         this.controlProperty.set(control);
     }
 
-    public SimpleObjectProperty<UISuiteModel> uiSuiteProperty()
-    {
-        return this.uiSuiteProperty;
-    }
-
-    public UISuiteModel getUISuite()
-    {
-        return this.uiSuiteProperty.get();
-    }
-
-    public void setUISuite(UISuiteModel control)
-    {
-        this.uiSuiteProperty.set(control);
-    }
-
     public void addField(ActionEvent event)
     {
         FieldDefModel field = new FieldDefModel();
@@ -229,9 +216,9 @@ public final class ControlEditor extends GridPane
         if(selection != null && !selection.isEmpty())
         {
             ControlDefModel ctrl = new ControlDefModel();
-            ctrl.setName("NewControl" + getUISuite().getControls().size());
+            ctrl.setName("NewControl" + getControl().getParent().getControls().size());
             ctrl.setRender(selection);
-            getUISuite().getControls().add(ctrl);
+            getControl().getParent().getControls().add(ctrl);
 
             FieldDefModel field = new FieldDefModel();
             field.setName("newChildField" + getControl().getFields().size());
@@ -280,7 +267,8 @@ public final class ControlEditor extends GridPane
 
     private void updateName(String oldValue, String newValue)
     {
-        getUISuite().getControls().forEach(c -> updateChildTypes(c, oldValue, newValue));
+        if(getControl() == null) return;
+        getControl().getParent().getControls().forEach(c -> updateChildTypes(c, oldValue, newValue));
     }
 
     private void updateChildTypes(ControlDefModel control, String oldValue, String newValue)

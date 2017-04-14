@@ -30,7 +30,7 @@ public final class ControlTreeItem extends EditorTreeItem
 {
     private final ControlDefModel control;
 
-    private final static ControlEditor editor = new ControlEditor();
+    private final static ControlEditor EDITOR = new ControlEditor();
 
     public ControlTreeItem(ControlDefModel control)
     {
@@ -60,7 +60,7 @@ public final class ControlTreeItem extends EditorTreeItem
         tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteControl));
         return tb;
     }
-    
+
     public void saveModel(ActionEvent event)
     {
         ModelUtils.saveUISuite(control.getParent());
@@ -82,9 +82,7 @@ public final class ControlTreeItem extends EditorTreeItem
     @Override
     public Node edit()
     {
-        UISuiteModel suite = control.getParent();
-        if(editor.getUISuite() == null || !editor.getUISuite().equals(suite)) editor.setUISuite(suite);
-        editor.setControl(control);
-        return editor;
+        EDITOR.setControl(control);
+        return EDITOR;
     }
 }

@@ -186,7 +186,7 @@ public class BaseControlDef
      */
     public void setDeclaredResources(List<ResourceRef> resources)
     {
-        resources = null;
+        allResources = null;
         this.resources = resources;
     }
 
@@ -201,7 +201,7 @@ public class BaseControlDef
 
     /**
      * 
-     * @param resources 
+     * @param fields
      */
     public void setDeclaredFields(List<FieldDef> fields)
     {

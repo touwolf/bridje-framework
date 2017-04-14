@@ -31,6 +31,7 @@ import org.bridje.jfx.utils.BiContentConverter;
 import org.bridje.jfx.utils.ExBindings;
 import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.FieldDefModelTreeTable;
+import org.bridje.web.srcgen.models.UISuitesModel;
 
 public final class FieldsEditor extends StackPane
 {
@@ -136,7 +137,7 @@ public final class FieldsEditor extends StackPane
             @Override
             public TreeItem<FieldDefModel> convertTo(FieldDefModel value)
             {
-                TreeItem<FieldDefModel> result = new TreeItem<>(value);
+                TreeItem<FieldDefModel> result = new TreeItem<>(value, UISuitesModel.field(24));
                 if(value.getChilds() == null) value.setChilds(FXCollections.observableArrayList());
                 ExBindings.bindContentBidirectional(result.getChildren(), value.getChilds(), childsConverter);
                 return result;
