@@ -120,6 +120,8 @@ public class ModelUtils
         result.getResources().forEach(c -> c.setParent(result));
         result.setStandalone(standaloneToModel(suite.getStandalone()));
         result.getStandalone().setParent(result);
+        result.getControls().forEach(c -> updateResourcesRef(c, suite));
+        result.getControlsTemplates().forEach(c -> updateResourcesRef(c, suite));
 
         return result;
     }
@@ -162,8 +164,6 @@ public class ModelUtils
         result.setFields(fieldsToModel(control.getFields()));
         result.getFields().forEach(f -> f.setParent(result));
         result.setRender(control.getRender());
-        result.setResources(resourcesRefToModel(control.getResources()));
-        result.getResources().forEach(f -> f.setParent(result));
 
         return result;
     }
@@ -252,20 +252,6 @@ public class ModelUtils
         return result;
     }
 
-    private static ObservableList<ResourceRefModel> resourcesRefToModel(List<ResourceRef> resources)
-    {
-        ObservableList<ResourceRefModel> result = FXCollections.observableArrayList();
-        if(resources != null) resources.forEach(c -> result.add(resourceRefToModel(c)));
-        return result;
-    }
-
-    private static ResourceRefModel resourceRefToModel(ResourceRef resource)
-    {
-        ResourceRefModel result = new ResourceRefModel();
-        result.setName(resource.getName());
-        return result;
-    }
-
     private static ObservableList<AssetModel> assetsToModel(List<AssetBase> content)
     {
         ObservableList<AssetModel> result = FXCollections.observableArrayList();
@@ -351,7 +337,12 @@ public class ModelUtils
     private static List<ResourceRef> resourcesRefFromModel(ObservableList<ResourceRefModel> resources)
     {
         List<ResourceRef> result = new ArrayList<>();
-        if(resources != null) resources.forEach(r -> result.add(resourceRefFromModel(r)));
+        if(resources != null)
+        {
+            resources.stream()
+                .filter(r -> r.getSelected())
+                .forEach(r -> result.add(resourceRefFromModel(r)));
+        }
         return result;
     }
 
@@ -378,7 +369,7 @@ public class ModelUtils
     private static ResourceRef resourceRefFromModel(ResourceRefModel r)
     {
         ResourceRef result = new ResourceRef();
-        result.setName(r.getName());
+        result.setName(r.getResource().getName());
         return result;
     }
 
@@ -590,5 +581,29 @@ public class ModelUtils
     private static boolean isBlank(String str)
     {
         return str == null || str.trim().isEmpty();
+    }
+
+    private static void updateResourcesRef(ControlDefModel control, UISuite suite)
+    {
+        control.setResources(FXCollections.observableArrayList());
+        ControlDef controlDef = suite.getControls()
+                                        .stream()
+                                        .filter(c -> c.getName().equals(control.getName()))
+                                        .findAny()
+                                        .orElse(null);
+        if(controlDef != null)
+        {
+            
+            control.getParent().getResources()
+                        .forEach(r -> control.getResources().add(createResourceRef(r, controlDef)));
+        }
+    }
+    
+    private static ResourceRefModel createResourceRef(ResourceModel resource, ControlDef control)
+    {
+        ResourceRefModel resRefModel = new ResourceRefModel();
+        resRefModel.setSelected(control.getResources().stream().filter(r -> r.getName().equals(resource.getName())).count() > 0);
+        resRefModel.setResource(resource);
+        return resRefModel;
     }
 }
