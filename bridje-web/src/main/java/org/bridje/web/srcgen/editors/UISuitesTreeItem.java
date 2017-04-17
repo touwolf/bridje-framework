@@ -107,7 +107,7 @@ public final class UISuitesTreeItem extends EditorTreeItem
     {
         ToolBar mBar = new ToolBar();
         mBar.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveAllSuites));
-        mBar.getItems().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addUISuite));
+        mBar.getItems().add(JfxUtils.createToolButton(UISuitesModel.addUISuite(32), this::addUISuite));
         return mBar;
     }
 }

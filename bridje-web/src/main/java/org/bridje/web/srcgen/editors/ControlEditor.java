@@ -19,7 +19,6 @@ package org.bridje.web.srcgen.editors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -59,7 +58,7 @@ public final class ControlEditor extends GridPane
 
     private ChangeListener<String> nameListener;
     
-    private HBox hbToolbar = new HBox();
+    private final HBox hbToolbar = new HBox();
 
     public ControlEditor()
     {
@@ -95,20 +94,12 @@ public final class ControlEditor extends GridPane
         rowConst.setPercentHeight(45d);
         getRowConstraints().add(rowConst);
         
-        hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addField));
+        hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.addField(32), this::addField));
         hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addChild));
+        hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteField));
 
         nameListener = (observable, oldValue, newValue) -> updateName(oldValue, newValue);
         fieldsEditor.setNameListener((observable, oldValue, newValue) -> taRender.searchAndReplace("control." + oldValue, "control." + newValue));
-        
-        ChangeListener<Boolean> print = new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
-            {
-                System.out.println(newValue);
-            }
-        };
         
         controlProperty.addListener((observable, oldValue, newValue) ->
         {
@@ -117,7 +108,6 @@ public final class ControlEditor extends GridPane
                 Bindings.unbindContent(cbBase.getItems(), oldValue.getParent().getControls());
                 Bindings.unbindContent(cbBaseTemplate.getItems(), oldValue.getParent().getControlsTemplates());
 
-                oldValue.getResources().forEach(r -> r.selectedProperty().removeListener(print));
                 oldValue.nameProperty().removeListener(nameListener);
                 tfName.textProperty().unbindBidirectional(oldValue.nameProperty());
                 Bindings.unbindBidirectional(cbBase.valueProperty(), oldValue.baseProperty());
@@ -144,8 +134,6 @@ public final class ControlEditor extends GridPane
                 resourcesSelector.itemsProperty().bindBidirectional(newValue.resourcesProperty());
                 taRender.textProperty().bindBidirectional(newValue.renderProperty());
                 newValue.nameProperty().addListener(nameListener);
-                
-                newValue.getResources().forEach(r -> r.selectedProperty().addListener(print));
             }
             resourcesSelector.setCellFactory(CheckBoxListCell.forListView(ResourceRefModel::selectedProperty));
         });
@@ -226,15 +214,25 @@ public final class ControlEditor extends GridPane
     {
         if(fieldsEditor.getSelected() != null)
         {
-            if("children".equalsIgnoreCase(fieldsEditor.getSelected().getType()))
+            if(fieldsEditor.isSelectedParentRoot()
+                    && "children".equalsIgnoreCase(fieldsEditor.getSelected().getField()))
             {
                 FieldDefModel field = new FieldDefModel();
-                field.setType("child");
+                field.setField("child");
+                field.setName("newChild" + fieldsEditor.getSelected().getChilds().size());
                 fieldsEditor.getSelected().getChilds().add(field);
             }
         }
     }
 
+    public void deleteField(ActionEvent event)
+    {
+        if(fieldsEditor.getSelectedParent() != null && fieldsEditor.getSelected() != null)
+        {
+            fieldsEditor.getSelectedParent().getChilds().remove(fieldsEditor.getSelected());
+        }
+    }
+    
     public void createChildFieldFromCurrentSelection(ActionEvent event)
     {
         String selection = taRender.findSelection();
@@ -262,9 +260,9 @@ public final class ControlEditor extends GridPane
         if(selection != null && !selection.isEmpty())
         {
             ControlDefModel ctrl = new ControlDefModel();
-            ctrl.setName("NewControl" + getUISuite().getControls().size());
+            ctrl.setName("NewControl" + getControl().getParent().getControls().size());
             ctrl.setRender(selection);
-            getUISuite().getControls().add(ctrl);
+            getControl().getParent().getControls().add(ctrl);
             FieldDefModel field = new FieldDefModel();
             field.setName("newChildrenField" + getControl().getFields().size());
             field.setField("children");

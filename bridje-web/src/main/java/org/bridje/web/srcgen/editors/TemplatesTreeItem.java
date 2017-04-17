@@ -81,7 +81,7 @@ public final class TemplatesTreeItem extends EditorTreeItem
     {
         ContextMenu ctx = new ContextMenu();
         ctx.getItems().add(JfxUtils.createMenuItem("Save", UISuitesModel.save(24), this::saveModel));
-        ctx.getItems().add(JfxUtils.createMenuItem("Add Template", UISuitesModel.add(24), this::addTemplate));
+        ctx.getItems().add(JfxUtils.createMenuItem("Add Template", UISuitesModel.addControl(24), this::addTemplate));
         return ctx;
     }
 
@@ -89,7 +89,7 @@ public final class TemplatesTreeItem extends EditorTreeItem
     {
         ToolBar tb = new ToolBar();
         tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveModel));
-        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addTemplate));
+        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.addControl(32), this::addTemplate));
         return tb;
     }
 

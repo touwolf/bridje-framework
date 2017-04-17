@@ -48,7 +48,7 @@ public final class ControlsTreeItem extends EditorTreeItem
     {
         ContextMenu ctx = new ContextMenu();
         ctx.getItems().add(JfxUtils.createMenuItem("Save", UISuitesModel.save(24), this::saveModel));
-        ctx.getItems().add(JfxUtils.createMenuItem("Add Control", UISuitesModel.add(24), this::addControl));
+        ctx.getItems().add(JfxUtils.createMenuItem("Add Control", UISuitesModel.addControl(24), this::addControl));
         return ctx;
     }
 
@@ -56,7 +56,7 @@ public final class ControlsTreeItem extends EditorTreeItem
     {
         ToolBar tb = new ToolBar();
         tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveModel));
-        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addControl));
+        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.addControl(32), this::addControl));
         return tb;
     }
 

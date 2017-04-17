@@ -19,7 +19,6 @@ package org.bridje.web.srcgen.editors;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
@@ -40,11 +39,15 @@ public final class FieldsEditor extends StackPane
 
     private final SimpleObjectProperty<FieldDefModel> selectedProperty = new SimpleObjectProperty<>();
 
+    private final SimpleObjectProperty<FieldDefModel> selectedParentProperty = new SimpleObjectProperty<>();
+
     private final FieldDefModelTreeTable table;
 
     private final BiContentConverter<TreeItem<FieldDefModel>, FieldDefModel> converter;
 
     private ChangeListener<String> nameListener;
+    
+    private FieldDefModel rootField;
 
     public FieldsEditor()
     {
@@ -67,7 +70,7 @@ public final class FieldsEditor extends StackPane
         getChildren().add(table);
         converter = createConverter(createChildsConverter());
 
-        FieldDefModel rootField = new FieldDefModel();
+        rootField = new FieldDefModel();
         rootField.setChilds(FXCollections.observableArrayList());
         TreeItem<FieldDefModel> root = new TreeItem<>(rootField);
         ExBindings.bindContentBidirectional(root.getChildren(), rootField.getChilds(), converter);
@@ -93,14 +96,38 @@ public final class FieldsEditor extends StackPane
                     if(newValue == null)
                     {
                         selectedProperty.set(null);
+                        selectedParentProperty.set(null);
                     }
                     else
                     {
                         selectedProperty.set(newValue.getValue());
+                        if(newValue.getParent() != null)
+                        {
+                            selectedParentProperty.set(newValue.getParent().getValue());
+                        }
+                        else
+                        {
+                            selectedParentProperty.set(null);
+                        }
                     }
                 });
     }
 
+    public SimpleObjectProperty<FieldDefModel> selectedParentProperty()
+    {
+        return this.selectedParentProperty;
+    }
+
+    public FieldDefModel getSelectedParent()
+    {
+        return this.selectedParentProperty.get();
+    }
+
+    public void setSelectedParent(FieldDefModel fields)
+    {
+        this.selectedParentProperty.set(fields);
+    }
+    
     public SimpleObjectProperty<FieldDefModel> selectedProperty()
     {
         return this.selectedProperty;
@@ -193,5 +220,11 @@ public final class FieldsEditor extends StackPane
                 return value.getValue();
             }
         };
+    }
+
+    public boolean isSelectedParentRoot()
+    {
+        if(getSelectedParent() == null) return false;
+        return rootField.equals(getSelectedParent());
     }
 }

@@ -10,6 +10,9 @@
     </includes>
 
     <icons>
+        <icon name="addField" file="add-field.png" />
+        <icon name="addUISuite" file="add-uisuite.png" />
+        <icon name="addControl" file="add-control.png" />
         <icon name="add" file="add.png" />
         <icon name="control" file="control.png" />
         <icon name="delete" file="delete.png" />
