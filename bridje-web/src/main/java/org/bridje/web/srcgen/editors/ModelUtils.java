@@ -112,6 +112,7 @@ public class ModelUtils
         result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
         result.getDefaultResources().setParent(result);
         result.setDefines(standaloneToModel(suite.getDefines()));
+        result.getDefines().setName("Defines");
         result.getDefines().setParent(result);
         result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
         result.setIncludes(includesToModel(suite.getIncludes(), file));
@@ -119,6 +120,7 @@ public class ModelUtils
         result.setResources(resourcesToModel(suite.getResources()));
         result.getResources().forEach(c -> c.setParent(result));
         result.setStandalone(standaloneToModel(suite.getStandalone()));
+        result.getStandalone().setName("Standalone");
         result.getStandalone().setParent(result);
         result.getControls().forEach(c -> updateResourcesRef(c, suite));
         result.getControlsTemplates().forEach(c -> updateResourcesRef(c, suite));

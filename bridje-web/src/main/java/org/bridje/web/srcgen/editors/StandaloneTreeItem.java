@@ -20,32 +20,28 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.TreeItem;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
-import org.bridje.web.srcgen.models.UISuiteModel;
+import org.bridje.web.srcgen.models.StandaloneDefModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
-public final class UISuiteTreeItem extends EditorTreeItem
+public final class StandaloneTreeItem extends EditorTreeItem
 {
-    private final static UISuiteEditor editor = new UISuiteEditor();
+    private final StandaloneDefModel standalone;
 
-    private final UISuiteModel suite;
-    
-    public UISuiteTreeItem(UISuiteModel suite)
+    private final static StandaloneEditor editor = new StandaloneEditor();
+
+    public StandaloneTreeItem(StandaloneDefModel standalone)
     {
-        super(suite, UISuitesModel.uisuite(16));
-        this.suite = suite;
+        super(standalone, UISuitesModel.control(16));
+        this.standalone = standalone;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
-
-        TreeItem<Object> tiStandalone = new StandaloneTreeItem(suite.getStandalone());
-        TreeItem<Object> tiDefines = new StandaloneTreeItem(suite.getDefines());
-        TreeItem<Object> tiResources = new ResourcesTreeItem(suite);
-        TreeItem<Object> tiTemplates = new TemplatesTreeItem(suite);
-        TreeItem<Object> tiControls = new ControlsTreeItem(suite);
-
-        getChildren().addAll(tiStandalone, tiDefines, tiResources, tiTemplates, tiControls);
+        this.standalone.nameProperty().addListener((observable, oldValue, newValue) ->
+        {
+            setValue(null);
+            setValue(standalone);
+        });
     }
 
     private ContextMenu createContextMenu()
@@ -64,13 +60,13 @@ public final class UISuiteTreeItem extends EditorTreeItem
 
     public void saveModel(ActionEvent event)
     {
-        ModelUtils.saveUISuite(suite);
+        ModelUtils.saveUISuite(this.standalone.getParent());
     }
 
     @Override
     public Node edit()
     {
-        editor.setUISuite(suite);
+        editor.setStandalone(standalone);
         return editor;
     }
 }
