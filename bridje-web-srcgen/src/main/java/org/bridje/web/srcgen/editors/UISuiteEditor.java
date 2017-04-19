@@ -25,6 +25,7 @@ import static javafx.scene.layout.GridPane.setFillWidth;
 import static javafx.scene.layout.GridPane.setHgrow;
 import javafx.scene.layout.Priority;
 import org.bridje.jfx.ace.AceEditor;
+import org.bridje.jfx.ace.AceMode;
 import org.bridje.web.srcgen.models.UISuiteModel;
 
 public final class UISuiteEditor extends GridPane
@@ -35,11 +36,11 @@ public final class UISuiteEditor extends GridPane
 
     private final TextField tfPackage = new TextField();
 
-    private final AceEditor taRenderBody = new AceEditor(AceEditor.Mode.FTL);
+    private final AceEditor taRenderBody = new AceEditor(AceMode.FTL);
 
-    private final AceEditor taRenderHead = new AceEditor(AceEditor.Mode.FTL);
+    private final AceEditor taRenderHead = new AceEditor(AceMode.FTL);
 
-    private final AceEditor taRenderView = new AceEditor(AceEditor.Mode.FTL);
+    private final AceEditor taRenderView = new AceEditor(AceMode.FTL);
 
     private final SimpleObjectProperty<UISuiteModel> uiSuiteProperty = new SimpleObjectProperty<>();
 

@@ -34,6 +34,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bridje.jfx.ace.AceEditor;
+import org.bridje.jfx.ace.AceMode;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.FieldDefModel;
@@ -57,7 +58,7 @@ public final class ControlEditor extends GridPane
 
     private final ComboBox<ControlDefModel> cbBaseTemplate = new ComboBox<>();
 
-    private final AceEditor taRender = new AceEditor(AceEditor.Mode.FTL);
+    private final AceEditor taRender = new AceEditor(AceMode.FTL);
 
     private ChangeListener<String> nameListener;
     
