@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.jfx.utils;
+package org.bridje.jfx.binding;
 
 import java.util.List;
 import java.util.stream.Collectors;

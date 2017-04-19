@@ -14,10 +14,24 @@
  * limitations under the License.
  */
 
-package org.bridje.jfx.utils;
+package org.bridje.jfx.binding;
 
-@FunctionalInterface
-public interface ContentConverter<E, T>
+import com.sun.javafx.binding.BidirectionalContentBinding;
+import javafx.collections.ObservableList;
+
+/**
+ *
+ * @author gilbe
+ */
+public class ExBindings
 {
-    T convert(E value);
+    public static <E, T> void bindContentBidirectional(ObservableList<E> list1, ObservableList<T> list2, BiContentConverter<E, T> converter)
+    {
+        ExBiContentBinding.bind(list1, list2, converter);
+    }
+
+    public static void unbindContentBidirectional(Object obj1, Object obj2)
+    {
+        ExBiContentBinding.unbind(obj1, obj2);
+    }
 }

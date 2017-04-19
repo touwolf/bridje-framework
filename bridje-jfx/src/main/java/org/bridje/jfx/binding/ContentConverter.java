@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package org.bridje.jfx.utils;
+package org.bridje.jfx.binding;
 
-public interface BiContentConverter<E, T>
+@FunctionalInterface
+public interface ContentConverter<E, T>
 {
-    T convertFrom(E value);
-    
-    E convertTo(T value);
+    T convert(E value);
 }
