@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -49,18 +51,19 @@ import netscape.javascript.JSObject;
  */
 public final class AceEditor extends VBox
 {
+    private static final Logger LOG = Logger.getLogger(AceEditor.class.getName());
+
     private final ObjectProperty<ContextMenu> contextMenuProperty = new SimpleObjectProperty<>();
 
-    /**
-     * Text content of the editor.
-     */
     private final SimpleStringProperty textProperty = new SimpleStringProperty("");
 
-    private JsGate gate;
+    private AceJsGate gate;
+    
+    private AceReadyListener readyListener;
 
     private final ChangeListener<String> listener;
 
-    private ReplaceHandler replaceHandler;
+    private AceReplaceHandler replaceHandler;
 
     /**
      * Initialize control.
@@ -68,7 +71,7 @@ public final class AceEditor extends VBox
      * @param mode indicates the language to edit. (FTL, JAVA, etc).
      * @see <a href="https://github.com/ajaxorg/ace/tree/master/lib/ace/mode">Ace Modes</a>
      */
-    public AceEditor(Mode mode)
+    public AceEditor(AceMode mode)
     {
         WebView editor = new WebView();
         loadContent(editor, mode);
@@ -89,7 +92,7 @@ public final class AceEditor extends VBox
      *
      * @param listener ready event listener.
      */
-    public final void onReady(ReadyListener listener)
+    public final void onReady(AceReadyListener listener)
     {
         readyListener = listener;
     }
@@ -139,36 +142,71 @@ public final class AceEditor extends VBox
         }
     }
     
+    /**
+     * The property for the context menu of this component.
+     * 
+     * @return The property for the context menu of this component.
+     */
     public ObjectProperty<ContextMenu> contextMenuProperty()
     {
         return contextMenuProperty;
     }
 
+    /**
+     * The context menu of this component.
+     * 
+     * @return The context menu of this component.
+     */
     public ContextMenu getContextMenu()
     {
         return contextMenuProperty.get();
     }
 
+    /**
+     * The context menu of this component.
+     * 
+     * @param value The context menu of this component.
+     */
     public void setContextMenu(ContextMenu value)
     {
         contextMenuProperty.set(value);
     }
 
-    public void onReplace(ReplaceHandler handler)
+    /**
+     * Called after a replace has happend.
+     * 
+     * @param handler The replace handler.
+     */
+    public void onReplace(AceReplaceHandler handler)
     {
         replaceHandler = handler;
     }
 
-    public String getText()
-    {
-        return textProperty.get();
-    }
-
+    /**
+     * The property for the content of the editor.
+     * 
+     * @return The property for the content of the editor.
+     */
     public SimpleStringProperty textProperty()
     {
         return textProperty;
     }
 
+    /**
+     * The content of the editor.
+     * 
+     * @return The content of the editor.
+     */
+    public String getText()
+    {
+        return textProperty.get();
+    }
+
+    /**
+     * The content of the editor.
+     * 
+     * @param text The content of the editor.
+     */
     public void setText(String text)
     {
         this.textProperty.set(text);
@@ -176,45 +214,25 @@ public final class AceEditor extends VBox
 
     private ContextMenu createDefaultContextMenu()
     {
-        MenuItem cut = new MenuItem("Cut");//todo: i18n
-        cut.setOnAction(event ->
-        {
-            if (gate != null)
-            {
-                gate.exec("editorCut");
-            }
-        });
-
-        MenuItem copy = new MenuItem("Copy");//todo: i18n
-        copy.setOnAction(event ->
-        {
-            if (gate != null)
-            {
-                gate.exec("editorCopy");
-            }
-        });
-
-        MenuItem paste = new MenuItem("Paste");//todo: i18n
-        paste.setOnAction(event ->
-        {
-            if (gate != null)
-            {
-                gate.exec("editorPaste");
-            }
-        });
-
-        MenuItem replace = new MenuItem("Replace...");//todo: i18n
-        replace.setOnAction(event ->
-        {
-            if (gate != null)
-            {
-                gate.exec("editorReplace");
-            }
-        });
-
         ContextMenu contextMenu = new ContextMenu();
-        contextMenu.getItems().addAll(cut, copy, paste, replace);
+        contextMenu.getItems().addAll(
+                gateExecMenuItem("Cut", "editorCut"), 
+                gateExecMenuItem("Copy", "editorCopy"), 
+                gateExecMenuItem("Paste", "editorPaste"), 
+                gateExecMenuItem("Replace...", "editorReplace"));
         return contextMenu;
+    }
+
+    private MenuItem gateExecMenuItem(String title, String command)
+    {
+        MenuItem mi = new MenuItem(title);
+        mi.setOnAction(event -> gateExec(command));
+        return mi;
+    }
+    
+    private void gateExec(String command)
+    {
+        if (gate != null) gate.exec(command);
     }
 
     private void updateEditorContent(String text)
@@ -231,15 +249,10 @@ public final class AceEditor extends VBox
         textProperty().addListener(listener);
     }
 
-    private ReadyListener readyListener;
-
-    private void loadContent(WebView editor, Mode mode)
+    private void loadContent(WebView editor, AceMode mode)
     {
         WebEngine engine = editor.getEngine();
-        if (mode == null)
-        {
-            mode = Mode.JAVA;
-        }
+        if (mode == null) mode = AceMode.JAVA;
         String strMode = "var mode = 'VALUE';\n{{mode-VALUE.js}}"
                 .replaceAll("VALUE", mode.name().toLowerCase());
         engine.loadContent(readContent("ace.html", true, strMode));
@@ -249,11 +262,8 @@ public final class AceEditor extends VBox
             {
                 case SUCCEEDED:
                     JSObject js = (JSObject) engine.executeScript("window");
-                    gate = new JsGate(AceEditor.this, js);
-                    if (readyListener != null)
-                    {
-                        readyListener.ready();
-                    }
+                    gate = new AceJsGate(AceEditor.this, js);
+                    if (readyListener != null) readyListener.ready();
                     break;
             }
         });
@@ -271,20 +281,15 @@ public final class AceEditor extends VBox
                 String line = buf.readLine();
                 while (line != null)
                 {
-                    if (mode != null)
-                    {
-                        line = line.replace("[[MODE]]", mode);
-                    }
-                    if (replace)
-                    {
-                        line = doReplace(line);
-                    }
+                    if (mode != null) line = line.replace("[[MODE]]", mode);
+                    if (replace) line = doReplace(line);
                     builder.append(line).append("\n");
                     line = buf.readLine();
                 }
             }
             catch (IOException ignored)
             {
+                LOG.log(Level.SEVERE, ignored.getMessage(), ignored);
             }
             return builder.toString();
         }
@@ -294,60 +299,18 @@ public final class AceEditor extends VBox
     private static String doReplace(String line)
     {
         int startIndex = line.indexOf("{{");
-        if (startIndex < 0)
-        {
-            return line;
-        }
+        if (startIndex < 0) return line;
         int endIndex = line.indexOf("}}", startIndex);
-        if (endIndex < 0)
-        {
-            return line;
-        }
+        if (endIndex < 0) return line;
         String name = line.substring(startIndex + 2, endIndex);
         String replacement = readContent(name, false, null);
         endIndex += 3;
-        if (endIndex > line.length())
-        {
-            endIndex = line.length();
-        }
+        if (endIndex > line.length()) endIndex = line.length();
         return line.substring(0, startIndex) + replacement + line.substring(endIndex);
     }
 
-    ReplaceHandler getReplaceHandler()
+    public AceReplaceHandler getReplaceHandler()
     {
         return replaceHandler;
-    }
-
-    /**
-     * Supported modes.
-     */
-    public enum Mode
-    {
-        JAVA, JAVASCRIPT, FTL
-    }
-
-    /**
-     * Listener for ready event of editor.
-     */
-    public interface ReadyListener
-    {
-        /**
-         * Called when editor has load and it's ready.
-         */
-        void ready();
-    }
-
-    /**
-     * Handler for replace operation on editor.
-     */
-    public interface ReplaceHandler
-    {
-        /**
-         * Called when replace action was called on editor.
-         *
-         * @param text the selected text in editor to replace
-         * @return the value that was gathered to replace.
-         */
-        String replace(String text);
     }
 }

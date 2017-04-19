@@ -8,13 +8,13 @@ import netscape.javascript.JSObject;
 /**
  * Manage the js editor communication.
  */
-public final class JsGate
+public final class AceJsGate
 {
     private final AceEditor editor;
 
     private final JSObject js;
 
-    JsGate(AceEditor editor, JSObject js)
+    AceJsGate(AceEditor editor, JSObject js)
     {
         this.editor = editor;
         this.js = js;
