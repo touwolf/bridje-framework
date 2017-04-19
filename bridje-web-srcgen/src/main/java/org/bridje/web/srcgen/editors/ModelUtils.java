@@ -64,10 +64,18 @@ import org.bridje.web.srcgen.uisuite.Style;
 import org.bridje.web.srcgen.uisuite.UISuite;
 import org.bridje.web.srcgen.uisuite.ValueFlield;
 
+/**
+ * Utility class to parse and write from a raw UISuite from/to UISuiteModel
+ */
 public class ModelUtils
 {
     private static final Logger LOG = Logger.getLogger(ModelUtils.class.getName());
 
+    /**
+     * Converts the given model to its raw form and save it to its file.
+     * 
+     * @param uiSuite The model to save.
+     */
     public static void saveUISuite(UISuiteModel uiSuite)
     {
         if(uiSuite.getName() != null)
@@ -89,6 +97,13 @@ public class ModelUtils
         }
     }
 
+    /**
+     * Parses an UISuite and creates a UISuiteModel from it.
+     * 
+     * @param suite The UISuite to parse.
+     * @param file The file that the model was readed from.
+     * @return The new UISuiteModel object.
+     */
     public static UISuiteModel toModel(UISuite suite, VFile file)
     {
         UISuiteModel result = new UISuiteModel();
@@ -128,6 +143,12 @@ public class ModelUtils
         return result;
     }
 
+    /**
+     * Writes the given model to an UISuite object.
+     * 
+     * @param suiteModel The model to write the UISuite object.
+     * @return The new UISuite object.
+     */
     public static UISuite fromModel(UISuiteModel suiteModel)
     {
         UISuite result = new UISuite();

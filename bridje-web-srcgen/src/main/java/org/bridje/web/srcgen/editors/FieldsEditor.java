@@ -33,6 +33,9 @@ import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.FieldDefModelTreeTable;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
+/**
+ * Editor for the FieldDefModel class.
+ */
 public final class FieldsEditor extends StackPane
 {
     private final SimpleObjectProperty<ObservableList<FieldDefModel>> fieldsProperty = new SimpleObjectProperty<>();

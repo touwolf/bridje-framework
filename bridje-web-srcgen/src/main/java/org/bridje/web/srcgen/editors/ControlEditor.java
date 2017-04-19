@@ -40,6 +40,9 @@ import org.bridje.web.srcgen.models.FieldDefModel;
 import org.bridje.web.srcgen.models.ResourceRefModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
+/**
+ * Editor for the ControlDefModel class.
+ */
 public final class ControlEditor extends GridPane
 {
     private final SimpleObjectProperty<ControlDefModel> controlProperty = new SimpleObjectProperty<>();
@@ -60,6 +63,9 @@ public final class ControlEditor extends GridPane
     
     private final HBox hbToolbar = new HBox();
 
+    /**
+     * Default Constructor
+     */
     public ControlEditor()
     {
         setVgap(10);
@@ -139,14 +145,44 @@ public final class ControlEditor extends GridPane
         });
         
         Menu createMenu = new Menu("Create");
+        createMenu.getItems().add(JfxUtils.createMenuItem("Child Field", null, this::createChildField));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Children Field", null, this::createChildrenField));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Expresion Field", null, this::createExprField));
+        createMenu.getItems().add(JfxUtils.createMenuItem("Boolean Field", null, this::createBooleanField));
         taRender.getContextMenu().getItems().add(0, createMenu);
-        createMenu.getItems().add(JfxUtils.createMenuItem("Child Field", null, this::createChildFieldFromCurrentSelection));
-        createMenu.getItems().add(JfxUtils.createMenuItem("Children Field", null, this::createChildrenFieldFromCurrentSelection));
-        createMenu.getItems().add(JfxUtils.createMenuItem("Expresion Field", null, this::createExprFieldFromCurrentSelection));
-        createMenu.getItems().add(JfxUtils.createMenuItem("Boolean Field", null, this::createBooleanFieldFromCurrentSelection));
     }
 
-    public StringConverter<ControlDefModel> createStringConverter(Callback<String, ControlDefModel> callback)
+    /**
+     * The property for the current control being edited.
+     * 
+     * @return The control property.
+     */
+    public SimpleObjectProperty<ControlDefModel> controlsProperty()
+    {
+        return this.controlProperty;
+    }
+
+    /**
+     * The the current control being edited.
+     * 
+     * @return The current control.
+     */
+    public ControlDefModel getControl()
+    {
+        return this.controlProperty.get();
+    }
+
+    /**
+     * The the current control being edited.
+     * 
+     * @param control The current control.
+     */
+    public void setControl(ControlDefModel control)
+    {
+        this.controlProperty.set(control);
+    }
+
+    private StringConverter<ControlDefModel> createStringConverter(Callback<String, ControlDefModel> callback)
     {
         return new StringConverter<ControlDefModel>()
         {
@@ -165,7 +201,7 @@ public final class ControlEditor extends GridPane
         };
     }
 
-    public ControlDefModel findTemplate(String base)
+    private ControlDefModel findTemplate(String base)
     {
         if(getControl() == null) return null;
         if(getControl().getBaseTemplate() == null) return null;
@@ -177,7 +213,7 @@ public final class ControlEditor extends GridPane
                     .orElse(null);
     }
 
-    public ControlDefModel findControl(String base)
+    private ControlDefModel findControl(String base)
     {
         if(getControl() == null) return null;
         if(getControl().getBase() == null) return null;
@@ -189,28 +225,13 @@ public final class ControlEditor extends GridPane
                     .orElse(null);
     }
 
-    public SimpleObjectProperty<ControlDefModel> controlsProperty()
-    {
-        return this.controlProperty;
-    }
-
-    public ControlDefModel getControl()
-    {
-        return this.controlProperty.get();
-    }
-
-    public void setControl(ControlDefModel control)
-    {
-        this.controlProperty.set(control);
-    }
-
-    public void addField(ActionEvent event)
+    private void addField(ActionEvent event)
     {
         FieldDefModel field = new FieldDefModel();
         getControl().getFields().add(field);
     }
 
-    public void addChild(ActionEvent event)
+    private void addChild(ActionEvent event)
     {
         if(fieldsEditor.getSelected() != null)
         {
@@ -225,7 +246,7 @@ public final class ControlEditor extends GridPane
         }
     }
 
-    public void deleteField(ActionEvent event)
+    private void deleteField(ActionEvent event)
     {
         if(fieldsEditor.getSelectedParent() != null && fieldsEditor.getSelected() != null)
         {
@@ -233,7 +254,7 @@ public final class ControlEditor extends GridPane
         }
     }
     
-    public void createChildFieldFromCurrentSelection(ActionEvent event)
+    private void createChildField(ActionEvent event)
     {
         String selection = taRender.findSelection();
         if(selection != null && !selection.isEmpty())
@@ -254,7 +275,7 @@ public final class ControlEditor extends GridPane
         }
     }
 
-    public void createChildrenFieldFromCurrentSelection(ActionEvent event)
+    private void createChildrenField(ActionEvent event)
     {
         String selection = taRender.findSelection();
         if(selection != null && !selection.isEmpty())
@@ -279,7 +300,7 @@ public final class ControlEditor extends GridPane
         }
     }
 
-    public void createExprFieldFromCurrentSelection(ActionEvent event)
+    private void createExprField(ActionEvent event)
     {
         String selection = taRender.findSelection();
         if(selection != null && !selection.isEmpty())
@@ -296,7 +317,7 @@ public final class ControlEditor extends GridPane
         }
     }
 
-    public void createBooleanFieldFromCurrentSelection(ActionEvent event)
+    private void createBooleanField(ActionEvent event)
     {
         String selection = taRender.findSelection();
         if(selection != null && !selection.isEmpty())

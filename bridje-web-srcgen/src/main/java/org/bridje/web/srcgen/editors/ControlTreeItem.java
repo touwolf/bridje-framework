@@ -26,12 +26,20 @@ import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
+/**
+ * A Tree Item for the ControlDefModel class.
+ */
 public final class ControlTreeItem extends EditorTreeItem
 {
     private final ControlDefModel control;
 
     private final static ControlEditor EDITOR = new ControlEditor();
 
+    /**
+     * Constructor that receives the control.
+     * 
+     * @param control The control for this Tree Item.
+     */
     public ControlTreeItem(ControlDefModel control)
     {
         super(control, UISuitesModel.control(16));
@@ -45,6 +53,13 @@ public final class ControlTreeItem extends EditorTreeItem
         });
     }
 
+    @Override
+    public Node edit()
+    {
+        EDITOR.setControl(control);
+        return EDITOR;
+    }
+    
     private ContextMenu createContextMenu()
     {
         ContextMenu ctx = new ContextMenu();
@@ -61,12 +76,12 @@ public final class ControlTreeItem extends EditorTreeItem
         return tb;
     }
 
-    public void saveModel(ActionEvent event)
+    private void saveModel(ActionEvent event)
     {
         ModelUtils.saveUISuite(control.getParent());
     }
 
-    public void deleteControl(ActionEvent event)
+    private void deleteControl(ActionEvent event)
     {
         UISuiteModel suite = control.getParent();
         if(suite.getControls().contains(control))
@@ -77,12 +92,5 @@ public final class ControlTreeItem extends EditorTreeItem
         {
             suite.getControlsTemplates().remove(control);
         }
-    }
-
-    @Override
-    public Node edit()
-    {
-        EDITOR.setControl(control);
-        return EDITOR;
     }
 }

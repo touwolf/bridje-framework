@@ -29,6 +29,9 @@ import org.bridje.web.srcgen.models.ControlDefModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
 
+/**
+ * A Tree Item for a list of ControlDefModel objects.
+ */
 public final class ControlsTreeItem extends EditorTreeItem
 {
     private final UISuiteModel suite;

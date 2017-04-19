@@ -58,7 +58,7 @@ public final class AceEditor extends VBox
 
     private JsGate gate;
 
-    private ChangeListener<String> listener;
+    private final ChangeListener<String> listener;
 
     private ReplaceHandler replaceHandler;
 
@@ -242,7 +242,7 @@ public final class AceEditor extends VBox
         }
         String strMode = "var mode = 'VALUE';\n{{mode-VALUE.js}}"
                 .replaceAll("VALUE", mode.name().toLowerCase());
-        engine.loadContent(readContent("ace", "ace.html", true, strMode));
+        engine.loadContent(readContent("ace.html", true, strMode));
         engine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) ->
         {
             switch (newState)
@@ -259,10 +259,9 @@ public final class AceEditor extends VBox
         });
     }
 
-    private static String readContent(String basePath, String name, boolean replace, String mode)
+    private static String readContent(String resource, boolean replace, String mode)
     {
-        String path = "/" + basePath + "/" + name;
-        InputStream stream = AceEditor.class.getResourceAsStream(path);
+        InputStream stream = AceEditor.class.getResourceAsStream(resource);
         if (stream != null)
         {
             BufferedReader buf = new BufferedReader(new InputStreamReader(stream));
@@ -278,7 +277,7 @@ public final class AceEditor extends VBox
                     }
                     if (replace)
                     {
-                        line = doReplace(basePath, line);
+                        line = doReplace(line);
                     }
                     builder.append(line).append("\n");
                     line = buf.readLine();
@@ -292,7 +291,7 @@ public final class AceEditor extends VBox
         return "";
     }
 
-    private static String doReplace(String basePath, String line)
+    private static String doReplace(String line)
     {
         int startIndex = line.indexOf("{{");
         if (startIndex < 0)
@@ -305,7 +304,7 @@ public final class AceEditor extends VBox
             return line;
         }
         String name = line.substring(startIndex + 2, endIndex);
-        String replacement = readContent(basePath, name, false, null);
+        String replacement = readContent(name, false, null);
         endIndex += 3;
         if (endIndex > line.length())
         {
