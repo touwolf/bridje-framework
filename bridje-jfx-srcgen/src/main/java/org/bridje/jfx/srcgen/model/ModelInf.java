@@ -22,6 +22,8 @@ public class ModelInf
     @XmlAttribute(name = "package")
     private String packageName;
 
+    private String description;
+    
     @XmlElementWrapper(name = "objects")
     @XmlElements(
     {
@@ -109,5 +111,15 @@ public class ModelInf
     public void setIcons(List<IconDef> icons)
     {
         this.icons = icons;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

@@ -20,6 +20,8 @@ public class ObjectInf
     @XmlAttribute
     private String name;
 
+    private String description;
+
     @XmlElements(
     {
         @XmlElement(name = "key", type = PropertyInf.class)
@@ -31,7 +33,7 @@ public class ObjectInf
         @XmlElement(name = "toString", type = PropertyInf.class)
     })
     private PropertyInf toStringProperty;
-    
+
     @XmlElementWrapper(name = "properties")
     @XmlElements(
     {
@@ -49,10 +51,10 @@ public class ObjectInf
 
     @XmlTransient
     private ModelInf model;
-    
+
     @XmlTransient
     private List<PropertyInf> allProperties;
-    
+
     @XmlElementWrapper(name = "components")
     @XmlElements(
     {
@@ -69,6 +71,16 @@ public class ObjectInf
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public List<PropertyInf> getProperties()

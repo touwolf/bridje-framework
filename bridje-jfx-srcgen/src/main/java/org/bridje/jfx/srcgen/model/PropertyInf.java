@@ -19,6 +19,9 @@ public class PropertyInf
 
     @XmlAttribute
     private String type;
+    
+    @XmlAttribute
+    private String description;
 
     public String getName()
     {
@@ -38,6 +41,16 @@ public class PropertyInf
     public void setType(String type)
     {
         this.type = type;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public String getJavaType()
