@@ -363,7 +363,7 @@ public class WebViewsManager
         VFile publicFolder = new VFile(basePath);
         if (publicFolder.isDirectory())
         {
-            GlobExpr exp = new GlobExpr("**/*.view.xml");
+            GlobExpr exp = new GlobExpr("**.view.xml");
             VFile[] files = publicFolder.search(exp);
             Arrays.asList(files).forEach(this::readView);
         }

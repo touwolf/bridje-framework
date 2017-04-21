@@ -36,7 +36,7 @@ public class ${entity.name}
     <#if field.key >
     @Key<#if field.autoIncrement>(autoIncrement = true)</#if>
     </#if>
-    @Field(column = "${field.column}"<#if field.length != "">, length = ${field.length}</#if><#if field.isRequired>, required = true</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
+    @Field(column = "${field.column}"<#if field.length?? && field.length &gt; 0>, length = ${field.length?string.computer}</#if><#if field.isRequired>, required = true</#if><#if field.isIndexed>, index = true</#if><#if field.sqlType != "">, type = JDBCType.${field.sqlType}</#if><#if field.adapter != "">, adapter = ${field.adapter}.class</#if>)
     private ${field.javaType} ${field.name};
 
     </#list>
