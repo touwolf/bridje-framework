@@ -33,7 +33,10 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 /**
  * SIP server configuration.
@@ -304,20 +307,53 @@ public class SipServerConfig
         return serverContext;
     }
 
-    private InputStream readKeyStoreData() throws FileNotFoundException
+    /**
+     * Loads a SipServerConfig from a file.
+     * 
+     * @param xmlFile The file to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     * @throws IOException If any IO Exception occurs.
+     */
+    public static SipServerConfig load(VFile xmlFile) throws JAXBException, IOException
     {
-        return new FileInputStream(new File(keyStoreFile));
+        if(!xmlFile.exists()) return null;
+        try(InputStream is = new VFileInputStream(xmlFile))
+        {
+            return load(is);
+        }
     }
 
+    /**
+     * Loads a SipServerConfig from an input stream.
+     * 
+     * @param is The input stream to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     */
     public static SipServerConfig load(InputStream is) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(SipServerConfig.class);
         return (SipServerConfig)ctx.createUnmarshaller().unmarshal(is);
     }
 
-    public static void save(OutputStream os, SipServerConfig config) throws JAXBException
+    /**
+     * Save a SipServerConfig to an output stream.
+     * 
+     * @param os The output stream to write the object to.
+     * @param object The object to write.
+     * @throws JAXBException If any JAXB Exception occurs.
+     */
+    public static void save(OutputStream os, SipServerConfig object) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(SipServerConfig.class);
-        ctx.createMarshaller().marshal(config, os);
+        Marshaller marshaller = ctx.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(object, os);
+    }
+
+    private InputStream readKeyStoreData() throws FileNotFoundException
+    {
+        return new FileInputStream(new File(keyStoreFile));
     }
 }

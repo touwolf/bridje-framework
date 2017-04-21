@@ -23,12 +23,24 @@ import java.util.stream.Collectors;
 import javafx.beans.WeakListener;
 import javafx.collections.ListChangeListener;
 
+/**
+ * A content binding for two lists of diferent types.
+ * 
+ * @param <E> The type of the first list.
+ * @param <T> The type of the second list.
+ */
 public class ListContentBinding<E, T> implements ListChangeListener<E>, WeakListener
 {
     private final WeakReference<List<T>> listRef;
     
     private final ContentConverter<E, T> converter;
 
+    /**
+     * The only constructor for this object.
+     * 
+     * @param list The list to update.
+     * @param converter The converter for the type of the second list.
+     */
     public ListContentBinding(List<T> list, ContentConverter<E, T> converter)
     {
         this.listRef = new WeakReference<>(list);

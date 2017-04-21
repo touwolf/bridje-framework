@@ -16,9 +16,27 @@
 
 package org.bridje.jfx.binding;
 
+/**
+ * A bidirectional converter from/to two diferent types, for the content of two collections.
+ * 
+ * @param <E> The first type.
+ * @param <T> The second type.
+ */
 public interface BiContentConverter<E, T>
 {
+    /**
+     * Converts from the first type to the second.
+     * 
+     * @param value The value to convert.
+     * @return The new converted value.
+     */
     T convertFrom(E value);
     
+    /**
+     * Converts from the second type to the first.
+     * 
+     * @param value The value to convert.
+     * @return The new converted value.
+     */
     E convertTo(T value);
 }

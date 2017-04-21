@@ -25,10 +25,10 @@ import netscape.javascript.JSObject;
  *     AceEditor editor = new AceEditor(AceEditor.Mode.FTL);
  *
  *     //fill content on ready
- *     editor.onReady(() -> editor.setText("&lt;#ftl encoding='UTF-8'&gt;\n"));
+ *     editor.onReady(() -{@literal &gt;} editor.setText("{@literal <}#ftl encoding='UTF-8'{@literal >}\n"));
  *
  *     //handle replacement of editor selected text
- *     editor.onReplace(text ->
+ *     editor.onReplace(text -{@literal &gt;}
  *     {
  *          TextInputDialog dialog = new TextInputDialog("");
  *          dialog.setTitle("Replace...");
@@ -46,7 +46,7 @@ import netscape.javascript.JSObject;
  *
  *      //listen for text changes
  *      editor.textProperty()
- *            .addListener((observable, oldValue, newValue) -> System.out.println(newValue));
+ *            .addListener((observable, oldValue, newValue) -{@literal &gt;} System.out.println(newValue));
  * </code></pre>
  */
 public final class AceEditor extends VBox

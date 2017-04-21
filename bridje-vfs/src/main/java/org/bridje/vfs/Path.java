@@ -44,8 +44,9 @@ public class Path implements Iterable<Path>
     }
 
     /**
-     *
-     * @return
+     * Gets an array with the list of elements for this path.
+     * <p>
+     * @return The list of elements for this path.
      */
     public String[] getPathElements()
     {
@@ -134,7 +135,7 @@ public class Path implements Iterable<Path>
 
     /**
      * If this path is the root path "/".
-     *
+     * <p>
      * @return true this path is the root path.
      */
     public boolean isRoot()
@@ -201,14 +202,8 @@ public class Path implements Iterable<Path>
         {
             if (pe.equalsIgnoreCase(".."))
             {
-                if (str.isEmpty())
-                {
-                    return null;
-                }
-                else
-                {
-                    str.remove(str.size() - 1);
-                }
+                if (str.isEmpty()) return null;
+                str.remove(str.size() - 1);
             }
             else if (!pe.equalsIgnoreCase("."))
             {
@@ -302,19 +297,6 @@ public class Path implements Iterable<Path>
         };
     }
 
-    private static String[] createElements(String path)
-    {
-        if (path == null || path.trim().isEmpty())
-        {
-            throw new IllegalArgumentException("The specified path is not valid.");
-        }
-
-        String normPath = normalize(path);
-        String[] arr = normPath.split("/");
-
-        return arr;
-    }
-
     /**
      * Gets the extension for the last component of this path.
      * 
@@ -328,6 +310,19 @@ public class Path implements Iterable<Path>
         return null;
     }
 
+    private static String[] createElements(String path)
+    {
+        if (path == null || path.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("The specified path is not valid.");
+        }
+
+        String normPath = normalize(path);
+        String[] arr = normPath.split("/");
+
+        return arr;
+    }
+
     private static String normalize(String path)
     {
         String normPath = path;
@@ -337,14 +332,8 @@ public class Path implements Iterable<Path>
             normPath = normPath.replace(toReplace, "/");
         }
 
-        if (path.startsWith("/"))
-        {
-            normPath = normPath.substring(1);
-        }
-        if (normPath.endsWith("/"))
-        {
-            normPath = normPath.substring(0, normPath.length() - 1);
-        }
+        if (path.startsWith("/")) normPath = normPath.substring(1);
+        if (normPath.endsWith("/")) normPath = normPath.substring(0, normPath.length() - 1);
 
         return normPath.trim();
     }

@@ -18,14 +18,12 @@ package org.bridje.jfx.binding;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 
-/**
- *
- * @author gilbe
- */
-public class ExContentBinding
+class ExContentBinding
 {
     private static void checkParameters(Object property1, Object property2)
     {
@@ -64,11 +62,11 @@ public class ExContentBinding
         {
             ((ObservableList) obj2).removeListener(new ListContentBinding((List) obj1, null));
         }
-        /*
         else if ((obj1 instanceof Set) && (obj2 instanceof ObservableSet))
         {
             ((ObservableSet) obj2).removeListener(new SetContentBinding((Set) obj1, null));
         }
+        /*
         else if ((obj1 instanceof Map) && (obj2 instanceof ObservableMap))
         {
             ((ObservableMap) obj2).removeListener(new MapContentBinding((Map) obj1, null));

@@ -16,8 +16,20 @@
 
 package org.bridje.jfx.binding;
 
+/**
+ * A converter for the content of a collection.
+ * 
+ * @param <E> The first type.
+ * @param <T> The second type.
+ */
 @FunctionalInterface
 public interface ContentConverter<E, T>
 {
+    /**
+     * Converts the given value.
+     * 
+     * @param value The value to convert from.
+     * @return The converted value.
+     */
     T convert(E value);
 }

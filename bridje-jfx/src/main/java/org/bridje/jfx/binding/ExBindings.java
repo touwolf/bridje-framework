@@ -16,12 +16,12 @@
 
 package org.bridje.jfx.binding;
 
-import com.sun.javafx.binding.BidirectionalContentBinding;
+import java.util.List;
 import javafx.collections.ObservableList;
 
 /**
- *
- * @author gilbe
+ * Utility functions for binding of the content of collections. This functions extend the 
+ * funtionality provided by the javafx Bindings class.
  */
 public class ExBindings
 {
@@ -33,5 +33,15 @@ public class ExBindings
     public static void unbindContentBidirectional(Object obj1, Object obj2)
     {
         ExBiContentBinding.unbind(obj1, obj2);
+    }
+
+    public static <E, T> Object bindContent(List<T> list1, ObservableList<? extends E> list2, ContentConverter<E, T> converter)
+    {
+        return ExContentBinding.bind(list1, list2, converter);
+    }
+
+    public static void unbindContent(Object obj1, Object obj2)
+    {
+        ExContentBinding.unbind(obj1, obj2);
     }
 }

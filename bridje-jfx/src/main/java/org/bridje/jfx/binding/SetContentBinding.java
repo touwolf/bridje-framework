@@ -21,12 +21,24 @@ import java.util.Set;
 import javafx.beans.WeakListener;
 import javafx.collections.SetChangeListener;
 
+/**
+ * A content binding for two sets of diferent types.
+ * 
+ * @param <E> The type of the first list.
+ * @param <T> The type of the second list.
+ */
 public class SetContentBinding<E, T> implements SetChangeListener<E>, WeakListener
 {
     private final WeakReference<Set<T>> setRef;
 
     private final ContentConverter<E, T> converter;
 
+    /**
+     * The only constructor for this object.
+     * 
+     * @param set The set to update.
+     * @param converter The converter for the type of the second set.
+     */
     public SetContentBinding(Set<T> set, ContentConverter<E, T> converter)
     {
         this.setRef = new WeakReference<>(set);

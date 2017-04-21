@@ -19,12 +19,9 @@ package org.bridje.jfx.binding;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 
-/**
- *
- * @author gilbe
- */
-public class ExBiContentBinding
+class ExBiContentBinding
 {
     private static void checkParameters(Object property1, Object property2)
     {
@@ -59,15 +56,15 @@ public class ExBiContentBinding
             list1.removeListener(binding);
             list2.removeListener(binding);
         }
-        /*
         else if ((obj1 instanceof ObservableSet) && (obj2 instanceof ObservableSet))
         {
             final ObservableSet set1 = (ObservableSet) obj1;
             final ObservableSet set2 = (ObservableSet) obj2;
-            final SetContentBinding binding = new SetContentBinding(set1, set2);
+            final BiSetContentBinding binding = new BiSetContentBinding(set1, set2, null);
             set1.removeListener(binding);
             set2.removeListener(binding);
         }
+        /*
         else if ((obj1 instanceof ObservableMap) && (obj2 instanceof ObservableMap))
         {
             final ObservableMap map1 = (ObservableMap) obj1;
@@ -79,15 +76,7 @@ public class ExBiContentBinding
         */
     }
 
-
-    public static <E, T> List<T> convertFrom(List<E> subList, BiContentConverter<E, T> converter)
-    {
-        return subList.stream()
-                        .map(e -> converter.convertFrom(e))
-                        .collect(Collectors.toList());
-    }
-
-    public static <E, T> List<E> convertTo(List<T> subList, BiContentConverter<E, T> converter)
+    private static <E, T> List<E> convertTo(List<T> subList, BiContentConverter<E, T> converter)
     {
         return subList.stream()
                         .map(e -> converter.convertTo(e))

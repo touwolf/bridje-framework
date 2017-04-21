@@ -18,7 +18,7 @@ import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
 
 @Component
-public class JFxSourceGenerator implements SourceGenerator<ModelInf>
+class JFxSourceGenerator implements SourceGenerator<ModelInf>
 {
     private static final Logger LOG = Logger.getLogger(JFxSourceGenerator.class.getName());
 

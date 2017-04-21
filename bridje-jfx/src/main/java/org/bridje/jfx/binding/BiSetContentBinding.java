@@ -23,10 +23,10 @@ import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener.Change;
 
 /**
- *
- * @author gilbe
- * @param <E>
- * @param <T>
+ * A bidirectional binding for two sets of diferent types.
+ * 
+ * @param <E> The type of the first list.
+ * @param <T> The type of the second list.
  */
 public class BiSetContentBinding<E, T> implements SetChangeListener<Object>, WeakListener
 {
@@ -38,6 +38,13 @@ public class BiSetContentBinding<E, T> implements SetChangeListener<Object>, Wea
 
     private final BiContentConverter<E, T> converter;
 
+    /**
+     * The only constructor for this binding.
+     * 
+     * @param set1 The first set.
+     * @param set2 The second set.
+     * @param converter The converter from/to the two types of the sets.
+     */
     public BiSetContentBinding(ObservableSet<E> set1, ObservableSet<T> set2, BiContentConverter<E, T> converter)
     {
         propertyRef1 = new WeakReference<>(set1);

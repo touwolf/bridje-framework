@@ -8,13 +8,14 @@ import netscape.javascript.JSObject;
 /**
  * Manage the js editor communication.
  */
-public final class AceJsGate
+final class AceJsGate
 {
     private final AceEditor editor;
 
     private final JSObject js;
 
-    AceJsGate(AceEditor editor, JSObject js)
+    @SuppressWarnings("LeakingThisInConstructor")
+    public AceJsGate(AceEditor editor, JSObject js)
     {
         this.editor = editor;
         this.js = js;
@@ -28,11 +29,9 @@ public final class AceJsGate
 
     public String findReplace(String text)
     {
+        if (editor.getReplaceHandler() != null) return text;
         String replace = text;
-        if (editor.getReplaceHandler() != null)
-        {
-            replace = editor.getReplaceHandler().replace(text);
-        }
+        replace = editor.getReplaceHandler().replace(text);
         return replace;
     }
 
@@ -50,12 +49,9 @@ public final class AceJsGate
         return String.valueOf(clipboard.getContent(DataFormat.PLAIN_TEXT));
     }
 
-    Object exec(String method, Object... args)
+    public Object exec(String method, Object... args)
     {
-        if (js != null)
-        {
-            return js.call(method, args);
-        }
+        if (js != null) return js.call(method, args);
         return null;
     }
 }

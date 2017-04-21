@@ -27,8 +27,6 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.KeyManagementException;
@@ -42,7 +40,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpServer;
@@ -204,17 +201,5 @@ class HttpServerImpl implements HttpServer
         pw.println("HTTP Bridlets Chain:");
         printBridlets(pw);
         LOG.log(Level.INFO, sw.toString());
-    }
-
-    public static HttpServerConfig load(InputStream is) throws JAXBException
-    {
-        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
-        return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);
-    }
-
-    public static void save(OutputStream os, HttpServerConfig config) throws JAXBException
-    {
-        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
-        ctx.createMarshaller().marshal(config, os);
     }
 }

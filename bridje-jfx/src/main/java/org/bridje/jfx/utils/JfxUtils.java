@@ -24,8 +24,20 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Utilities for javafx applications.
+ */
 public class JfxUtils
 {
+    /**
+     * Loads an image from the given resource, and creates an ImageView for it.
+     * 
+     * @param cls The class to load the resource.
+     * @param resource The resource name or path.
+     * @param height The height of the ImageView
+     * @param width The width of the ImageView
+     * @return The new ImageView.
+     */
     public static ImageView loadImage(Class<?> cls, String resource, double height, double width)
     {
         Image img = new Image(cls.getResourceAsStream(resource));
@@ -35,14 +47,29 @@ public class JfxUtils
         return iv;
     }
 
-    public static MenuItem createMenuItem(String title, Node icon, EventHandler<ActionEvent> handler)
+    /**
+     * Create an item for a menu.
+     * 
+     * @param title The title of the item.
+     * @param icon The icon of the item.
+     * @param handler The handler for the item.
+     * @return The new created MenuItem.
+     */
+    public static MenuItem createMenuItem(String title, ImageView icon, EventHandler<ActionEvent> handler)
     {
         MenuItem mi = new MenuItem(title, icon);
         mi.setOnAction(handler);
         return mi;
     }
 
-    public static Button createToolButton(Node icon, EventHandler<ActionEvent> handler)
+    /**
+     * Create a button with no text, only with the image.
+     * 
+     * @param icon The icon of the button.
+     * @param handler The handler for the button.
+     * @return The new created Button.
+     */
+    public static Button createToolButton(ImageView icon, EventHandler<ActionEvent> handler)
     {
         Button mi = new Button("", icon);
         mi.setOnAction(handler);

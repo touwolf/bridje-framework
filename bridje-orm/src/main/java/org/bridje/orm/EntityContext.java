@@ -141,7 +141,6 @@ public interface EntityContext
      */
     SQLDialect getDialect();
 
-
     /**
      * Finds the table for the given entity.
      *

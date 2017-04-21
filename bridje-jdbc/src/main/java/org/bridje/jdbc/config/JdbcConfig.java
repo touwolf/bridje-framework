@@ -75,26 +75,28 @@ public class JdbcConfig
     }
 
     /**
+     * Loads a HttpServerConfig from a file.
      * 
-     * @param configFile 
-     * @return 
-     * @throws JAXBException 
-     * @throws IOException 
+     * @param xmlFile The file to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     * @throws IOException If any IO Exception occurs.
      */
-    public static JdbcConfig load(VFile configFile) throws JAXBException, IOException
+    public static JdbcConfig load(VFile xmlFile) throws JAXBException, IOException
     {
-        if(!configFile.exists()) return null;
-        try(InputStream is = new VFileInputStream(configFile))
+        if(!xmlFile.exists()) return null;
+        try(InputStream is = new VFileInputStream(xmlFile))
         {
             return load(is);
         }
     }
 
     /**
+     * Loads a JdbcConfig from an input stream.
      * 
-     * @param is 
-     * @return 
-     * @throws JAXBException 
+     * @param is The input stream to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
      */
     public static JdbcConfig load(InputStream is) throws JAXBException
     {
@@ -103,14 +105,15 @@ public class JdbcConfig
     }
 
     /**
+     * Save a SipServerConfig to an output stream.
      * 
-     * @param os 
-     * @param config 
-     * @throws JAXBException 
+     * @param os The output stream to write the object to.
+     * @param object The object to write.
+     * @throws JAXBException If any JAXB Exception occurs.
      */
-    public static void save(OutputStream os, JdbcConfig config) throws JAXBException
+    public static void save(OutputStream os, JdbcConfig object) throws JAXBException
     {
         JAXBContext ctx = JAXBContext.newInstance(JdbcConfig.class);
-        ctx.createMarshaller().marshal(config, os);
+        ctx.createMarshaller().marshal(object, os);
     }
 }
