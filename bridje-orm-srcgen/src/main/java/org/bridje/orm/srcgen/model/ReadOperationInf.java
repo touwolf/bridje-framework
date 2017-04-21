@@ -74,8 +74,9 @@ public class ReadOperationInf extends ParametizedOperationInf
     }
     
     /**
+     * The field that will be returned by this read operation.
      * 
-     * @return 
+     * @return The field that will be returned by this read operation..
      */
     public FieldInfBase getResultField()
     {
@@ -94,10 +95,10 @@ public class ReadOperationInf extends ParametizedOperationInf
     @Override
     public OperationInfBase clone(EntityInfBase entity)
     {
-        ReadOperationInf result = new ReadOperationInf();
-        clone(result, entity);
-        result.resultType = this.resultType;
-        result.result = this.result;
-        return result;
+        ReadOperationInf res = new ReadOperationInf();
+        clone(res, entity);
+        res.resultType = this.resultType;
+        res.result = this.result;
+        return res;
     }
 }

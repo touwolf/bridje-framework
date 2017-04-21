@@ -81,7 +81,7 @@ public class ModelInf
     /**
      * Gets the full name "package.name" for this model.
      *
-     * @return
+     * @return The full name "package.name" for this model.
      */
     public String getFullName()
     {
