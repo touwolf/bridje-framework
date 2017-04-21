@@ -8,7 +8,7 @@ import netscape.javascript.JSObject;
 /**
  * Manage the js editor communication.
  */
-final class AceJsGate
+public final class AceJsGate
 {
     private final AceEditor editor;
 
@@ -22,19 +22,34 @@ final class AceJsGate
         this.js.setMember("java", this);
     }
 
+    /**
+     * Called on text changed.
+     * 
+     * @param text The new text.
+     */
     public void textChanged(String text)
     {
         editor.setTextFromJs(text);
     }
 
+    /**
+     * Called to replace the selected text.
+     * 
+     * @param text The selected text.
+     * @return The text for wich the selected text should be replaced.
+     */
     public String findReplace(String text)
     {
         if (editor.getReplaceHandler() != null) return text;
-        String replace = text;
-        replace = editor.getReplaceHandler().replace(text);
+        String replace = editor.getReplaceHandler().replace(text);
         return replace;
     }
 
+    /**
+     * Copy the given text to the clipboard.
+     * 
+     * @param text The text to copy.
+     */
     public void copyToClipboard(String text)
     {
         ClipboardContent content = new ClipboardContent();
@@ -43,12 +58,24 @@ final class AceJsGate
         clipboard.setContent(content);
     }
 
+    /**
+     * Gets the content of the clipboard.
+     * 
+     * @return The content of the clipboard.
+     */
     public String getClipboardContent()
     {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         return String.valueOf(clipboard.getContent(DataFormat.PLAIN_TEXT));
     }
 
+    /**
+     * Executes a js method.
+     * 
+     * @param method The method to executed.
+     * @param args The arguments of the method.
+     * @return The result of the method.
+     */
     public Object exec(String method, Object... args)
     {
         if (js != null) return js.call(method, args);
