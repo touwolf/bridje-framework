@@ -19,11 +19,9 @@ package org.bridje.web.srcgen.editors;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.control.Menu;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.bridje.jfx.utils.JfxUtils;
@@ -68,9 +66,6 @@ public final class StandaloneEditor extends GridPane
                 fieldsEditor.fieldsProperty().bindBidirectional(newValue.contentProperty());
             }
         });
-
-        Menu createMenu = new Menu("Create");
-        //createMenu.getItems().add(JfxUtils.createMenuItem("Child Field", null, this::createChildFieldFromCurrentSelection));
     }
 
     public StringConverter<StandaloneDefModel> createStringConverter(Callback<String, StandaloneDefModel> callback)
@@ -111,7 +106,7 @@ public final class StandaloneEditor extends GridPane
     {
         FieldDefModel field = new FieldDefModel();
         field.setField("child");
-        field.setName("newChild" + fieldsEditor.getSelected().getChilds().size());
+        field.setName("newChild" + getStandalone().getContent().size());
         getStandalone().getContent().add(field);
     }
 
