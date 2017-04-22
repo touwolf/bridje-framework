@@ -30,7 +30,7 @@ public final class ResourceTreeItem extends EditorTreeItem
 {
     private final ResourceModel resource;
 
-    private final static ResourceEditor editor = new ResourceEditor();
+    private final static ResourceEditor EDITOR = new ResourceEditor();
 
     public ResourceTreeItem(ResourceModel resource)
     {
@@ -49,7 +49,7 @@ public final class ResourceTreeItem extends EditorTreeItem
     {
         ContextMenu ctx = new ContextMenu();
         ctx.getItems().add(JfxUtils.createMenuItem("Save", UISuitesModel.save(24), this::saveModel));
-        ctx.getItems().add(JfxUtils.createMenuItem("Delete", UISuitesModel.delete(24), this::deleteControl));
+        ctx.getItems().add(JfxUtils.createMenuItem("Delete", UISuitesModel.delete(24), this::deleteResource));
         return ctx;
     }
 
@@ -57,7 +57,7 @@ public final class ResourceTreeItem extends EditorTreeItem
     {
         ToolBar tb = new ToolBar();
         tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.save(32), this::saveModel));
-        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteControl));
+        tb.getItems().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteResource));
         return tb;
     }
     
@@ -67,7 +67,7 @@ public final class ResourceTreeItem extends EditorTreeItem
         ModelUtils.saveUISuite(suite);
     }
 
-    public void deleteControl(ActionEvent event)
+    private void deleteResource(ActionEvent event)
     {
         UISuiteModel suite = this.resource.getParent();
         suite.getResources().remove(resource);
@@ -77,8 +77,8 @@ public final class ResourceTreeItem extends EditorTreeItem
     public Node edit()
     {
         UISuiteModel suite = this.resource.getParent();
-        editor.setUISuite(suite);
-        editor.setResource(resource);
-        return editor;
+        EDITOR.setUISuite(suite);
+        EDITOR.setResource(resource);
+        return EDITOR;
     }
 }

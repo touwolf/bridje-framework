@@ -42,7 +42,7 @@ public final class ControlsTreeItem extends EditorTreeItem
         this.suite = suite;
         BiContentConverter<TreeItem<Object>, ControlDefModel> ctrlConverter = createCtrlConverter();
         if(suite.getControls() == null) suite.setControls(FXCollections.observableArrayList());        
-        ExBindings.bindContentBidirectional(getChildren(), suite.getControls(), ctrlConverter);
+        ExBindings.bindContentBidirectional(getChildren(), this.suite.getControls(), ctrlConverter);
         setContextMenu(createControlsContextMenu());
         setToolBar(createControlsToolBar());
     }
@@ -76,20 +76,15 @@ public final class ControlsTreeItem extends EditorTreeItem
             @Override
             public TreeItem<Object> convertTo(ControlDefModel value)
             {
-                return toTreeItem(value);
+                return new ControlTreeItem(value);
             }
         };
-    }
-
-    private ControlTreeItem toTreeItem(ControlDefModel control)
-    {
-        ControlTreeItem tiControl = new ControlTreeItem(control);
-        return tiControl;
     }
 
     public void addControl(ActionEvent event)
     {
         ControlDefModel ctrl = new ControlDefModel();
+        ctrl.setParent(suite);
         ctrl.setName("NewControl" + suite.getControls().size());
         suite.getControls().add(ctrl);
     }

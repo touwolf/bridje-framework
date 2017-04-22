@@ -51,6 +51,8 @@ public final class StandaloneEditor extends GridPane
         setHgrow(hbToolbar, Priority.ALWAYS);
         setFillWidth(fieldsEditor, true);
         setHgrow(fieldsEditor, Priority.ALWAYS);
+        setFillHeight(fieldsEditor, true);
+        setVgrow(fieldsEditor, Priority.ALWAYS);
         
         hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addChild));
         hbToolbar.getChildren().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteField));

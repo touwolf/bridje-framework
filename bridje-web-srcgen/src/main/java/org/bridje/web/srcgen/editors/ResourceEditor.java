@@ -124,6 +124,7 @@ public final class ResourceEditor extends GridPane
         AssetModel asset = new AssetModel();
         asset.setType("style");
         asset.setHref("http://somelink.com");
+        asset.setParent(getResource());
         getResource().getContent().add(asset);
     }
 

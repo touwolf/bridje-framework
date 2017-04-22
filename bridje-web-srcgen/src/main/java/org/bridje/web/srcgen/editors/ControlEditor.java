@@ -229,6 +229,10 @@ public final class ControlEditor extends GridPane
     private void addField(ActionEvent event)
     {
         FieldDefModel field = new FieldDefModel();
+        field.setName("newField" + getControl().getFields().size());
+        field.setType("String");
+        field.setField("outAttr");
+        field.setParent(getControl());
         getControl().getFields().add(field);
     }
 
@@ -242,6 +246,7 @@ public final class ControlEditor extends GridPane
                 FieldDefModel field = new FieldDefModel();
                 field.setField("child");
                 field.setName("newChild" + fieldsEditor.getSelected().getChilds().size());
+                field.setParent(getControl());
                 fieldsEditor.getSelected().getChilds().add(field);
             }
         }
@@ -263,6 +268,7 @@ public final class ControlEditor extends GridPane
             ControlDefModel ctrl = new ControlDefModel();
             ctrl.setName("NewControl" + getControl().getParent().getControls().size());
             ctrl.setRender(selection);
+            ctrl.setParent(getControl().getParent());
             getControl().getParent().getControls().add(ctrl);
 
             FieldDefModel field = new FieldDefModel();
@@ -270,6 +276,7 @@ public final class ControlEditor extends GridPane
             field.setType(ctrl.getName());
             field.setField("child");
             field.nameProperty().addListener(fieldsEditor.getNameListener());
+            field.setParent(getControl());
             getControl().getFields().add(field);
 
             taRender.replaceSelection("<#if control." + field.getName() + "??>\n\t<@renderControl control." + field.getName() + " />\n</#if>");
@@ -284,13 +291,16 @@ public final class ControlEditor extends GridPane
             ControlDefModel ctrl = new ControlDefModel();
             ctrl.setName("NewControl" + getControl().getParent().getControls().size());
             ctrl.setRender(selection);
+            ctrl.setParent(getControl().getParent());
             getControl().getParent().getControls().add(ctrl);
             FieldDefModel field = new FieldDefModel();
             field.setName("newChildrenField" + getControl().getFields().size());
             field.setField("children");
+            field.setParent(ctrl);
             FieldDefModel childField = new FieldDefModel();
             childField.setName(ctrl.getName().toLowerCase());
             childField.setType(ctrl.getName());
+            childField.setParent(ctrl);
             field.setChilds(FXCollections.observableArrayList());
             field.getChilds().add(childField);
 
@@ -312,6 +322,7 @@ public final class ControlEditor extends GridPane
             field.setField("outAttr");
             field.setDefaultValue("\"" + selection + "\"");
             field.nameProperty().addListener(fieldsEditor.getNameListener());
+            field.setParent(getControl());
             getControl().getFields().add(field);
 
             taRender.replaceSelection("${control." + field.getName() + "}");
@@ -329,6 +340,7 @@ public final class ControlEditor extends GridPane
             field.setField("outAttr");
             field.setDefaultValue("false");
             field.nameProperty().addListener(fieldsEditor.getNameListener());
+            field.setParent(getControl());
             getControl().getFields().add(field);
 
             taRender.replaceSelection("<#if control." + field.getName() + "?? && control." + field.getName() + ">" + selection + "</#if>");
