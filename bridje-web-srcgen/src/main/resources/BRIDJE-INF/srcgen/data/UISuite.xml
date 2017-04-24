@@ -96,6 +96,7 @@
                 <property type="ResourceModel" name="parent" />
                 <property type="String" name="type" />
                 <property type="String" name="rel" />
+                <property type="String" name="sizes" />
             </properties>
             <components>
                 <table />

@@ -16,6 +16,7 @@
 
 package org.bridje.web.srcgen.editors;
 
+import java.io.File;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -34,6 +35,10 @@ import org.bridje.web.srcgen.models.AssetModelTable;
 import org.bridje.web.srcgen.models.ResourceModel;
 import org.bridje.web.srcgen.models.UISuiteModel;
 import org.bridje.web.srcgen.models.UISuitesModel;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public final class ResourceEditor extends GridPane
 {
@@ -60,8 +65,12 @@ public final class ResourceEditor extends GridPane
         tbAssets.editableHrefColumn(null);
         tbAssets.addRelColumn("Rel");
         tbAssets.editableRelColumn(null);
+        tbAssets.addSizesColumn("Sizes");
+        tbAssets.editableSizesColumn(null);
 
         tbActions.getChildren().add(JfxUtils.createToolButton(UISuitesModel.add(32), this::addAsset));
+        tbActions.getChildren().add(JfxUtils.createToolButton(UISuitesModel.resource(32), this::parseAssets));
+        tbActions.getChildren().add(JfxUtils.createToolButton(UISuitesModel.delete(32), this::deleteAsset));
 
         add(tfName, 0, 0);
         add(tbActions, 0, 1);
@@ -128,8 +137,64 @@ public final class ResourceEditor extends GridPane
         getResource().getContent().add(asset);
     }
 
+    public void parseAssets(ActionEvent event)
+    {
+        String html = inputHtml();
+        if(html != null && !html.isEmpty())
+        {
+            parseHtml(html);
+        }
+    }
+
+    public void deleteAsset(ActionEvent event)
+    {
+        if(getResource() != null)
+        {
+            AssetModel asset = tbAssets.getSelectionModel().getSelectedItem();
+            if(asset != null)
+            {
+                getResource().getContent().remove(asset);
+            }
+        }
+    }
+
     private Callback<TableColumn<AssetModel, String>, TableCell<AssetModel, String>> typeEditor()
     {
         return ComboBoxTableCell.forTableColumn("style", "script", "link");
+    }
+
+    private String inputHtml()
+    {
+        InputHtmlDialog dialog = new InputHtmlDialog();
+        return dialog.showAndWait().orElse(null);
+    }
+
+    private void parseHtml(String html)
+    {
+        Document doc = Jsoup.parse(html);
+        Elements links = doc.select("link");
+        for (Element link : links)
+        {
+            if("stylesheet".equals(link.attr("rel")))
+            {
+                System.out.println(link.attr("href"));
+            }
+            else
+            {
+                System.out.println(link.attr("rel"));
+                System.out.println(link.attr("href"));
+                System.out.println(link.attr("sizes"));
+            }
+        }
+        Elements styles = doc.select("style");
+        for (Element style : styles)
+        {
+            System.out.println(style.attr("src"));
+        }
+        Elements scripts = doc.select("script");
+        for (Element script : scripts)
+        {
+            System.out.println(script.attr("src"));
+        }
     }
 }

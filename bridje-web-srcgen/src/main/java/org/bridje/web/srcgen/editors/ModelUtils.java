@@ -78,6 +78,7 @@ public class ModelUtils
      */
     public static void saveUISuite(UISuiteModel uiSuite)
     {
+        if(uiSuite == null) return;
         if(uiSuite.getName() != null)
         {
             if(uiSuite.getFile() == null)
@@ -377,6 +378,7 @@ public class ModelUtils
                 Link link = new Link();
                 link.setHref(c.getHref());
                 link.setRel(c.getRel());
+                link.setSizes(c.getSizes());
                 return link;
             case "script":
                 Script script = new Script();

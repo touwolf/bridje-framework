@@ -23,11 +23,11 @@
     </#if>
 </#macro>
 
-<#macro renderLink theme rel href>
+<#macro renderLink theme rel href sizes>
     <#if href?starts_with("http://") || href?starts_with("https://")>
-        <link rel="${rel!}" href="${href}" />
+        <link rel="${rel!}" href="${href}" <#if sizes != "">sizes="${sizes!}"</#if> />
     <#else>
-        <link rel="${rel!}" href="/__themes/${theme}/${href}" />
+        <link rel="${rel!}" href="/__themes/${theme}/${href}" <#if sizes != "">sizes="${sizes!}"</#if> />
     </#if>
 </#macro>
 

@@ -29,6 +29,9 @@ public class Link extends AssetBase
     @XmlAttribute
     private String rel;
 
+    @XmlAttribute
+    private String sizes;
+
     /**
      * The rel attribute for the link.
      * 
@@ -47,5 +50,25 @@ public class Link extends AssetBase
     public void setRel(String rel)
     {
         this.rel = rel;
+    }
+
+    /**
+     * The sizes for the link.
+     * 
+     * @return The sizes for the link.
+     */
+    public String getSizes()
+    {
+        return sizes;
+    }
+
+    /**
+     * The sizes for the link.
+     * 
+     * @param sizes The sizes for the link.
+     */
+    public void setSizes(String sizes)
+    {
+        this.sizes = sizes;
     }
 }

@@ -64,7 +64,7 @@
     <@renderStyle themeName "${s.href}" />
     [/#list]
     [#list uisuite.defaultResources.links as l]
-    <@renderLink themeName "${l.rel}" "${l.href}" />
+    <@renderLink themeName "${l.rel!}" "${l.href!}" "${l.sizes!}" />
     [/#list]
     <#list view.resources as res>
         <#assign macroName = "render" + res?cap_first + "Styles" />

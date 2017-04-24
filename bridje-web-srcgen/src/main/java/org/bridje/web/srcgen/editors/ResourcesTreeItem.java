@@ -64,6 +64,7 @@ public final class ResourcesTreeItem extends EditorTreeItem
     {
         ResourceModel ctrl = new ResourceModel();
         ctrl.setName("newResource" + suite.getResources().size());
+        ctrl.setParent(suite);
         ctrl.setContent(FXCollections.observableArrayList());
         suite.getResources().add(ctrl);
     }
