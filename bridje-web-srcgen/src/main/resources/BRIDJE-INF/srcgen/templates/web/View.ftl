@@ -184,7 +184,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         {
             if (checkIsValidView())
             {
-                Map<String, UIEvent> eventsMap = new HashMap<>();
+                Map<String, UIEvent> eventsMap = new LinkedHashMap<>();
                 findEvents(getRoot(), eventsMap);
                 events = eventsMap;
             }
@@ -201,7 +201,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         {
             if (checkIsValidView())
             {
-                Set<Class<?>> controlsSet = new HashSet<>();
+                Set<Class<?>> controlsSet = new LinkedHashSet<>();
                 findControls(getRoot(), controlsSet);
                 controls = controlsSet;
             }
