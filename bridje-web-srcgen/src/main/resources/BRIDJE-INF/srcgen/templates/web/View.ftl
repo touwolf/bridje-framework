@@ -218,7 +218,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         {
             if (checkIsValidView())
             {
-                Set<String> resourcesSet = new HashSet<>();
+                Set<String> resourcesSet = new LinkedHashSet<>();
                 findResources(getRoot(), resourcesSet);
                 resources = resourcesSet;
             }
@@ -235,7 +235,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         {
             if (checkIsValidView())
             {
-                Map<String, UIInputExpression> inputsMap = new HashMap<>();
+                Map<String, UIInputExpression> inputsMap = new LinkedHashMap<>();
                 findInputs(getRoot(), inputsMap);
                 inputs = inputsMap;
             }
