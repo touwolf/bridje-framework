@@ -63,9 +63,9 @@ public class PartialUISuite
     @XmlElementWrapper(name = "controlsTemplates")
     @XmlElements(
     {
-        @XmlElement(name = "controlTemplate", type = ControlDef.class)
+        @XmlElement(name = "controlTemplate", type = TemplateControlDef.class)
     })
-    private List<ControlDef> controlsTemplates;
+    private List<TemplateControlDef> controlsTemplates;
 
     /**
      * The resources for this partial UI suite declaration.
@@ -112,7 +112,7 @@ public class PartialUISuite
      * 
      * @return The list of controls templates for this partial declaration.
      */
-    public List<ControlDef> getControlsTemplates()
+    public List<TemplateControlDef> getControlsTemplates()
     {
         return controlsTemplates;
     }
@@ -122,7 +122,7 @@ public class PartialUISuite
      * 
      * @param controlsTemplates The list of controls templates for this partial declaration.
      */
-    public void setControlsTemplates(List<ControlDef> controlsTemplates)
+    public void setControlsTemplates(List<TemplateControlDef> controlsTemplates)
     {
         this.controlsTemplates = controlsTemplates;
     }

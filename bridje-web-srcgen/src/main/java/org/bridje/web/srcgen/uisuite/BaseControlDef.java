@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -42,9 +41,8 @@ public class BaseControlDef
     @XmlAttribute
     private String base;
 
-    @XmlIDREF
     @XmlAttribute
-    private TemplateControlDef baseTemplate;
+    private String baseTemplate;
 
     private String render;
 
@@ -133,7 +131,7 @@ public class BaseControlDef
      * 
      * @return The template to be use by this control.
      */
-    public TemplateControlDef getBaseTemplate()
+    public String getBaseTemplate()
     {
         return baseTemplate;
     }
@@ -143,7 +141,7 @@ public class BaseControlDef
      * 
      * @param baseTemplate The template to be use by this control.
      */
-    public void setBaseTemplate(TemplateControlDef baseTemplate)
+    public void setBaseTemplate(String baseTemplate)
     {
         this.baseTemplate = baseTemplate;
     }
@@ -215,11 +213,9 @@ public class BaseControlDef
     {
         if(allFields == null)
         {
+            TemplateControlDef tmpl = findBaseTemplate();
             allFields = new ArrayList<>();
-            if(baseTemplate != null)
-            {
-                allFields.addAll(baseTemplate.getFields());
-            }
+            if(tmpl != null) allFields.addAll(tmpl.getFields());
             allFields.addAll(fields);
         }
         return allFields;
@@ -234,11 +230,9 @@ public class BaseControlDef
     {
         if(allResources == null)
         {
+            TemplateControlDef tmpl = findBaseTemplate();
             allResources = new ArrayList<>();
-            if(baseTemplate != null)
-            {
-                allResources.addAll(baseTemplate.getResources());
-            }
+            if(tmpl != null) allResources.addAll(tmpl.getResources());
             if(resources != null)
             {
                 allResources.addAll(resources);
@@ -340,5 +334,16 @@ public class BaseControlDef
     public boolean getHasResources()
     {
         return !getResources().isEmpty();
+    }
+
+    /**
+     * Finds the base template for this control.
+     * 
+     * @return The base template for this control.
+     */
+    private TemplateControlDef findBaseTemplate()
+    {
+        if(baseTemplate == null) return null;
+        return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
     }
 }

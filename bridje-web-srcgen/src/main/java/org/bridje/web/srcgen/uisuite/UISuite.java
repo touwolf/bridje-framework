@@ -99,9 +99,9 @@ public class UISuite
     @XmlElementWrapper(name = "controlsTemplates")
     @XmlElements(
     {
-        @XmlElement(name = "controlTemplate", type = ControlDef.class)
+        @XmlElement(name = "controlTemplate", type = TemplateControlDef.class)
     })
-    private List<ControlDef> controlsTemplates;
+    private List<TemplateControlDef> controlsTemplates;
 
     /**
      * The name of the suite.
@@ -288,7 +288,7 @@ public class UISuite
      * 
      * @return The list of controls templates for this suite.
      */
-    public List<ControlDef> getControlsTemplates()
+    public List<TemplateControlDef> getControlsTemplates()
     {
         return controlsTemplates;
     }
@@ -298,7 +298,7 @@ public class UISuite
      * 
      * @param controlsTemplates The list of controls templates for this suite.
      */
-    public void setControlsTemplates(List<ControlDef> controlsTemplates)
+    public void setControlsTemplates(List<TemplateControlDef> controlsTemplates)
     {
         this.controlsTemplates = controlsTemplates;
     }

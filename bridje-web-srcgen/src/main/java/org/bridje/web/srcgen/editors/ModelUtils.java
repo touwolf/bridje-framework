@@ -61,6 +61,7 @@ import org.bridje.web.srcgen.uisuite.ResourceRef;
 import org.bridje.web.srcgen.uisuite.Script;
 import org.bridje.web.srcgen.uisuite.StandaloneDef;
 import org.bridje.web.srcgen.uisuite.Style;
+import org.bridje.web.srcgen.uisuite.TemplateControlDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 import org.bridje.web.srcgen.uisuite.ValueFlield;
 
@@ -122,7 +123,7 @@ public class ModelUtils
 
         result.setControls(controlsToModel(suite.getControls()));
         result.getControls().forEach(c -> c.setParent(result));
-        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.setControlsTemplates(templateControlsToModel(suite.getControlsTemplates()));
         result.getControlsTemplates().forEach(c -> c.setParent(result));
         if(suite.getDefaultResources() == null) suite.setDefaultResources(new Resource());
         result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
@@ -154,7 +155,7 @@ public class ModelUtils
     {
         UISuite result = new UISuite();
         result.setControls(controlsFromModel(suiteModel.getControls()));
-        result.setControlsTemplates(controlsFromModel(suiteModel.getControlsTemplates()));
+        result.setControlsTemplates(templateControlsFromModel(suiteModel.getControlsTemplates()));
         result.setDefaultResources(resourceFromModel(suiteModel.getDefaultResources()));
         result.setDefines(standaloneFromModel(suiteModel.getDefines()));
         result.setFtlIncludes(stringListFromModel(suiteModel.getFtlIncludes()));
@@ -176,6 +177,13 @@ public class ModelUtils
         if(controls != null) controls.forEach(c -> result.add(controlToModel(c)));
         return result;
     }
+
+    private static ObservableList<ControlDefModel> templateControlsToModel(List<TemplateControlDef> controls)
+    {
+        ObservableList<ControlDefModel> result = FXCollections.observableArrayList();
+        if(controls != null) controls.forEach(c -> result.add(templateControlToModel(c)));
+        return result;
+    }
     
     private static ControlDefModel controlToModel(ControlDef control)
     {
@@ -183,8 +191,21 @@ public class ModelUtils
 
         result.setName(control.getName());
         result.setBase(control.getBase());
-        if(control.getBaseTemplate() != null)
-            result.setBaseTemplate(control.getBaseTemplate().getName());
+        result.setBaseTemplate(control.getBaseTemplate());
+        result.setFields(fieldsToModel(control.getFields()));
+        result.getFields().forEach(f -> f.setParent(result));
+        result.setRender(control.getRender());
+
+        return result;
+    }
+    
+    private static ControlDefModel templateControlToModel(TemplateControlDef control)
+    {
+        ControlDefModel result = new ControlDefModel();
+
+        result.setName(control.getName());
+        result.setBase(control.getBase());
+        result.setBaseTemplate(control.getBaseTemplate());
         result.setFields(fieldsToModel(control.getFields()));
         result.getFields().forEach(f -> f.setParent(result));
         result.setRender(control.getRender());
@@ -240,7 +261,7 @@ public class ModelUtils
         result.setFile(incFile);
         result.setControls(controlsToModel(suite.getControls()));
         result.getControls().forEach(c -> c.setPartialSuite(result));
-        result.setControlsTemplates(controlsToModel(suite.getControlsTemplates()));
+        result.setControlsTemplates(templateControlsToModel(suite.getControlsTemplates()));
         result.getControlsTemplates().forEach(c -> c.setPartialSuite(result));
         result.setFtlIncludes(stringListToModel(suite.getFtlIncludes()));
         result.setResources(resourcesToModel(suite.getResources()));
@@ -303,6 +324,13 @@ public class ModelUtils
         return result;
     }
 
+    private static List<TemplateControlDef> templateControlsFromModel(ObservableList<ControlDefModel> controls)
+    {
+        List<TemplateControlDef> result = new ArrayList<>();
+        if(controls != null) controls.forEach(c -> result.add(templateControlFromModel(c)));
+        return result;
+    }
+
     private static List<ControlDef> controlsFromModel(ObservableList<ControlDefModel> controls)
     {
         List<ControlDef> result = new ArrayList<>();
@@ -339,6 +367,18 @@ public class ModelUtils
         return result;
     }
 
+    private static TemplateControlDef templateControlFromModel(ControlDefModel control)
+    {
+        TemplateControlDef result = new TemplateControlDef();
+        result.setBase(control.getBase());
+        result.setBaseTemplate(null);
+        result.setDeclaredResources(resourcesRefFromModel(control.getResources()));
+        result.setDeclaredFields(fieldsFromModel(control.getFields()));
+        result.setName(control.getName());
+        result.setRender(control.getRender());
+        return result;
+    }
+    
     private static ControlDef controlFromModel(ControlDefModel control)
     {
         ControlDef result = new ControlDef();
