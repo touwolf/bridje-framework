@@ -46,7 +46,7 @@ public class Resource
 
     @XmlTransient
     private List<Link> linkList;
-
+    
     /**
      * The name of the resource.
      * 

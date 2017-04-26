@@ -39,6 +39,9 @@
     </#if>
 </#macro>
 
+<#macro renderViewScripts themeName>
+</#macro>
+
 <#macro renderThemeScripts themeName>
 </#macro>
 
@@ -92,7 +95,7 @@
         <@renderBody>
             <@renderViewContainer>
                 <#if view.root??>
-                    <@renderPartialView view.root />
+                    <@renderPartialView view.root themeName />
                 </#if>
             </@renderViewContainer>
 
@@ -101,11 +104,12 @@
     </html>
 </#macro>
 
-<#macro renderPartialView currentControl>
+<#macro renderPartialView currentControl themeName>
     <input type="hidden" name="__view" value="${view.name}" />
     <input type="hidden" name="__action" value="" />
     <@renderState />
     <@renderControl currentControl />
+    <@renderViewScripts themeName />
 </#macro>
 
 <#macro renderState>
@@ -126,8 +130,10 @@
         </script>
     <#else>
         <#if control??>
-            <@renderPartialView control />
+            <#assign renderType = "partial" />
+            <@renderPartialView control themeName />
         <#else>
+            <#assign renderType = "full" />
             <@renderFullView themeName />
         </#if>
     </#if>

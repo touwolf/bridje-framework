@@ -6,9 +6,15 @@
 [/#list]
 
 [#list uisuite.resources as r]
-<#macro render${r.name?cap_first}Scripts themeName>
+<#macro render${r.name?cap_first}Scripts themeName insideView>
 [#list r.scripts as s]
-    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
+    [#if s.inview?? && s.inview]
+    <#if insideView>
+    [#else]
+    <#if !insideView>
+    [/#if]
+        <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
+    </#if>
 [/#list]
 </#macro>
 
@@ -36,23 +42,41 @@
         <#switch control.class.simpleName>
             [#list uisuite.controls as w]
             <#case "${w.name}">
-              <@render${w.name} control />
-              <#break>
+                <@render${w.name} control />
+                <#break>
             [/#list]
             <#default>
-                Control control.class.simpleName Not Found
+                Control ${control.class.simpleName} Not Found
         </#switch>
     </#if>
 </#macro>
 
-<#macro renderThemeScripts themeName>
+<#macro renderViewScripts themeName>
     [#list uisuite.defaultResources.scripts as s]
+    [#if s.inview?? && s.inview]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
+    [/#if]
     [/#list]
     <#list view.resources as res>
         <#assign macroName = "render" + res?cap_first + "Scripts" />
         <#if .vars[macroName]?? >
-            <@.vars[macroName] themeName />
+            <@.vars[macroName] themeName true />
+        <#else>
+            <!-- ERROR Invalid resource ${r"${res}"} -->
+        </#if>
+    </#list>
+</#macro>
+
+<#macro renderThemeScripts themeName>
+    [#list uisuite.defaultResources.scripts as s]
+    [#if !(s.inview?? && s.inview)]
+    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
+    [/#if]
+    [/#list]
+    <#list view.resources as res>
+        <#assign macroName = "render" + res?cap_first + "Scripts" />
+        <#if .vars[macroName]?? >
+            <@.vars[macroName] themeName false />
         <#else>
             <!-- ERROR Invalid resource ${r"${res}"} -->
         </#if>
