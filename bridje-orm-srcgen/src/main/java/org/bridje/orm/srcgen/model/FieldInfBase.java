@@ -100,6 +100,10 @@ public abstract class FieldInfBase
      */
     public String getDescription()
     {
+        if(description == null || description.trim().isEmpty())
+        {
+            return entity.getModel().getFieldDescription();
+        }
         return description;
     }
 

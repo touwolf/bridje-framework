@@ -144,6 +144,10 @@ public class EntityInfBase
      */
     public String getDescription()
     {
+        if(description == null || description.trim().isEmpty())
+        {
+            return model.getEntityDescription();
+        }
         return description;
     }
 
