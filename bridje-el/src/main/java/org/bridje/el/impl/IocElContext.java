@@ -21,10 +21,12 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.el.CompositeELResolver;
 import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
 import javax.el.FunctionMapper;
+import javax.el.ResourceBundleELResolver;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 import org.bridje.el.ModelResolver;
@@ -43,7 +45,7 @@ class IocElContext extends ELContext
     private ELResolver resolver;
 
     private final IocContext context;
-    
+
     private static Map<String, Class<?>> getModels(IocContext<?> ctx)
     {
         if(MODELS == null)
@@ -116,7 +118,11 @@ class IocElContext extends ELContext
     {
         if (resolver == null)
         {
-            resolver = new SimpleResolver();
+            CompositeELResolver cr = new CompositeELResolver();
+            cr.add(new CompositeELResolver());
+            cr.add(new SimpleResolver());
+            resolver = cr;
+            
         }
         return resolver;
     }

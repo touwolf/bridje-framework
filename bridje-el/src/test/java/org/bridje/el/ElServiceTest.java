@@ -75,4 +75,14 @@ public class ElServiceTest
         assertNotNull(lst);
         assertEquals(0, lst.size());
     }
+
+    @Test
+    public void testI18n()
+    {
+        ElService elServ = Ioc.context().find(ElService.class);
+        ElEnvironment elEnv = elServ.createElEnvironment(Ioc.context());
+        String result = elEnv.get("${i18n.someRes.name}", String.class);
+        assertNotNull(result);
+        assertEquals("Hola", result);
+    }
 }
