@@ -11,6 +11,9 @@ import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.controls.UIInputExpression;
 import javax.annotation.Generated;
+import org.bridje.ioc.Ioc;
+import org.bridje.vfs.Path;
+import org.bridje.vfs.VFile;
 
 /**
  * Represents a view of the application, views are render by themes and are
@@ -47,22 +50,13 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     @XmlTransient
     private Set<String> resources;
 
-    /**
-     * Gets a list of meta information tags information to be rendered with this
-     * view.
-     *
-     * @return A list of meta information tags assigned to this view.
-     */
+    @Override
     public List<MetaTag> getMetaTags()
     {
         return metaTags;
     }
 
-    /**
-     * Adds the given meta tags for this view.
-     * 
-     * @param metas The list of meta tags to be added.
-     */
+    @Override
     public void updateMetaTags(List<MetaTag> metas)
     {
         if (metas == null || metas.isEmpty())
@@ -78,42 +72,38 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
                 .forEachOrdered(metaTags::add);
     }
 
-    /**
-     * The title for this view.
-     *
-     * @return The title for this view.
-     */
+    @Override
     public String getTitle()
     {
         return title;
     }
 
-    /**
-     * The name of this view.
-     *
-     * @return The name of this view.
-     */
+    @Override
     public String getName()
     {
         return name;
     }
 
-    /**
-     * Sets the name of this view. for internal use of this API only.
-     *
-     * @param name The name to be set.
-     */
-    public void setName(String name)
+    @Override
+    public void setFile(VFile file)
     {
-        this.name = name;
+        super.setFile(file);
+        if(file != null) 
+        {
+            String viewPath = toViewPath(file.getPath());
+            this.name = viewPath;
+        }
     }
 
-    /**
-     * Finds the set of resources used in this view by all the controls defined 
-     * in it.
-     *
-     * @return A set with all the names of the resources.
-     */
+    private String toViewPath(Path path)
+    {
+        Path basePath = Ioc.context().find(WebViewsManager.class).getBasePath();
+        String viewPath = path.toString().substring(basePath.toString().length());
+        viewPath = viewPath.substring(0, viewPath.length() - ".view.xml".length());
+        return viewPath;
+    }
+
+    @Override
     public Set<String> getResources()
     {
         if (resources == null)
@@ -123,11 +113,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         return resources;
     }
 
-    /**
-     * Gets the set of controls classes used in this view.
-     *
-     * @return All the controls classes used in this view.
-     */
+    @Override
     public Set<Class<?>> getControls()
     {
         if (controls == null)
@@ -137,13 +123,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         return controls;
     }
 
-    /**
-     * Finds the input expression that match the given string.
-     *
-     * @param exp The expression.
-     * @return The UIInputExpression object that match whit the given String if
-     * any.
-     */
+    @Override
     public UIInputExpression findInput(String exp)
     {
         if (inputs == null)
@@ -153,12 +133,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         return inputs.get(exp);
     }
 
-    /**
-     * Finds the event that match with the given action.
-     *
-     * @param action The name of the action.
-     * @return The UIEvent object that match the given expression.
-     */
+    @Override
     public UIEvent findEvent(String action)
     {
         if (events == null)

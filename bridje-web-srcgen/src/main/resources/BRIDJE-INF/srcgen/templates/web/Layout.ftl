@@ -28,6 +28,7 @@ public class ${uisuite.name}Layout extends ${uisuite.name}AbstractView implement
      *
      * @return A list of meta information tags assigned to views.
      */
+    @Override
     public List<MetaTag> getMetaTags()
     {
         if (metaTags == null)

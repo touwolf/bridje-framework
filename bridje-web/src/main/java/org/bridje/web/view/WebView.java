@@ -57,13 +57,6 @@ public interface WebView extends AbstractView
     public String getName();
 
     /**
-     * Sets the name of this view. for internal use of this API only.
-     *
-     * @param name The name to be set.
-     */
-    void setName(String name);
-
-    /**
      * Finds the set of resources used in this view by all the controls defined 
      * in it.
      *

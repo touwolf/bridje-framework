@@ -38,20 +38,21 @@ public class WebLayoutManager
 
     @Inject
     private ControlManager controlManag;
-    
+
     private final Path basePath = new Path("/web");
 
     /**
      * Loads the given web layout file.
      *
+     * @param currentView 
      * @param name The path and name without ".layout.xml" suffix.
      * @return The WebLayout or null if it does not exists, or it cannot be
      * read.
      */
-    public WebLayout loadLayout(String name)
+    public WebLayout loadLayout(AbstractView currentView, String name)
     {
         if (name == null || name.isEmpty()) return null;
-        VFile file = new VFile(basePath.join(name + ".layout.xml"));
+        VFile file = new VFile(currentView.getFile().getParent().getPath().join(name + ".layout.xml"));
         if(!file.isFile())
         {
             LOG.log(Level.WARNING, "Could not load parent layout {0}", name);

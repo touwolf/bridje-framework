@@ -15,6 +15,7 @@ import org.bridje.ioc.Ioc;
 import org.bridje.web.view.*;
 import org.bridje.web.view.controls.Control;
 import javax.annotation.Generated;
+import javax.xml.bind.Unmarshaller;
 
 /**
  * Defines that the view will extend from the given layout.
@@ -35,12 +36,16 @@ public class ${uisuite.name}ExtendsFrom implements ViewDefinition, ExtendsFrom
     @XmlTransient
     private Map<String, Defines> definesMap;
 
+    @XmlTransient
+    private AbstractView parent;
+
     /**
      * Gets all the placeholder definitions for this view.
      *
      * @return A map with the name of the placeholder an the corresponding
      * Defines object.
      */
+    @Override
     public Map<String, Defines> getDefinesMap()
     {
         if (definesMap == null)
@@ -55,6 +60,7 @@ public class ${uisuite.name}ExtendsFrom implements ViewDefinition, ExtendsFrom
      *
      * @return A list of Defines objects.
      */
+    @Override
     public List<Defines> getDefines()
     {
         return defines;
@@ -65,6 +71,7 @@ public class ${uisuite.name}ExtendsFrom implements ViewDefinition, ExtendsFrom
      * 
      * @return An string with the name of the parent layout.
      */
+    @Override
     public String getLayout()
     {
         return layout;
@@ -74,7 +81,7 @@ public class ${uisuite.name}ExtendsFrom implements ViewDefinition, ExtendsFrom
     public Control findRoot()
     {
         WebLayoutManager layoutManag = Ioc.context().find(WebLayoutManager.class);
-        WebLayout webLayout = layoutManag.loadLayout(layout);
+        WebLayout webLayout = layoutManag.loadLayout(parent, layout);
         if (webLayout != null)
         {
             Control control = webLayout.getRoot();
@@ -94,5 +101,10 @@ public class ${uisuite.name}ExtendsFrom implements ViewDefinition, ExtendsFrom
                 definesMap.put(define.getName(), define);
             }
         }
+    }
+
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        this.parent = (AbstractView)parent;
     }
 }

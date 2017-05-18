@@ -42,6 +42,7 @@ public class ${uisuite.name}Defines implements Defines
      * 
      * @return The name of the placeholder.
      */
+    @Override
     public String getName()
     {
         return name;
@@ -52,6 +53,7 @@ public class ${uisuite.name}Defines implements Defines
      * 
      * @return A list of controls.
      */
+    @Override
     public List<Control> getControls()
     {
         if (controls == null)
@@ -66,6 +68,7 @@ public class ${uisuite.name}Defines implements Defines
      * 
      * @return The control.
      */
+    @Override
     public Control getControl()
     {
         if (controls != null && controls.size() > 0)

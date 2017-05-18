@@ -16,6 +16,7 @@
 
 package org.bridje.web.view;
 
+import org.bridje.vfs.VFile;
 import org.bridje.web.view.controls.Control;
 
 /**
@@ -25,6 +26,18 @@ import org.bridje.web.view.controls.Control;
  */
 public interface AbstractView
 {
+    /**
+     * 
+     * @return 
+     */
+    VFile getFile();
+    
+    /**
+     * 
+     * @param file 
+     */
+    void setFile(VFile file);
+    
     /**
      * The root control of this view.
      *

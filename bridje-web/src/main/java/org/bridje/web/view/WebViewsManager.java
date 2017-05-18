@@ -156,6 +156,16 @@ public class WebViewsManager
     }
 
     /**
+     * Base path for all views.
+     * 
+     * @return The base path for all views.
+     */
+    public Path getBasePath()
+    {
+        return basePath;
+    }
+
+    /**
      * Finds the name of the view to be updated by the __view param name sended
      * to the server.
      *
@@ -369,13 +379,6 @@ public class WebViewsManager
         }
     }
 
-    private String toViewPath(Path path)
-    {
-        String viewPath = path.toString().substring(basePath.toString().length());
-        viewPath = viewPath.substring(0, viewPath.length() - ".view.xml".length());
-        return viewPath;
-    }
-
     private void readView(VFile f)
     {
         try
@@ -383,10 +386,9 @@ public class WebViewsManager
             WebView view = controlManag.read(f, WebView.class);
             if (view != null)
             {
-                String viewPath = toViewPath(f.getPath());
-                view.setName(viewPath);
+                view.setFile(f);
                 updateViewMetaTags(view);
-                views.put(viewPath, view);
+                views.put(view.getName(), view);
             }
         }
         catch (IOException e)
@@ -402,7 +404,7 @@ public class WebViewsManager
             return;
         }
         String layout = ((ExtendsFrom) view.getDefinition()).getLayout();
-        WebLayout webLayout = layoutManag.loadLayout(layout);
+        WebLayout webLayout = layoutManag.loadLayout(view, layout);
         if (webLayout != null)
         {
             view.updateMetaTags(webLayout.getMetaTags());

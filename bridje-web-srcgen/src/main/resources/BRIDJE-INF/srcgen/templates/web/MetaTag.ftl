@@ -20,41 +20,25 @@ public class ${uisuite.name}MetaTag implements MetaTag
     @XmlValue
     private String content;
 
-    /**
-     * The name of the meta tag.
-     * 
-     * @return The name of the meta tag.
-     */
+    @Override
     public String getName()
     {
         return name;
     }
 
-    /**
-     * The name of the meta tag.
-     * 
-     * @param name The name of the meta tag.
-     */
+    @Override
     public void setName(String name)
     {
         this.name = name;
     }
 
-    /**
-     * The content of the meta tag.
-     * 
-     * @return The content of the meta tag.
-     */
+    @Override
     public String getContent()
     {
         return content;
     }
 
-    /**
-     * The name of the meta tag.
-     * 
-     * @param content The content of the meta tag.
-     */
+    @Override
     public void setContent(String content)
     {
         this.content = content;

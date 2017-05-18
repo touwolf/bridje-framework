@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.web.view.*;
 import org.bridje.web.view.controls.Control;
 import javax.annotation.Generated;
+import org.bridje.vfs.VFile;
 
 /**
  * Represents a view of the application, views are render by themes and are
@@ -33,11 +34,10 @@ public class ${uisuite.name}AbstractView implements AbstractView
 
     private String defaultTheme;
 
-    /**
-     * The root control of this view.
-     *
-     * @return The root control.
-     */
+    @XmlTransient
+    private VFile file;
+
+    @Override
     public Control getRoot()
     {
         if(root == null && definition != null)
@@ -53,11 +53,7 @@ public class ${uisuite.name}AbstractView implements AbstractView
         return root;
     }
 
-    /**
-     * Gets the default theme associated with the roor control of the view.
-     * 
-     * @return The default theme for the root control of the view.
-     */
+    @Override
     public String getDefaultTheme()
     {
         if(defaultTheme == null)
@@ -67,13 +63,21 @@ public class ${uisuite.name}AbstractView implements AbstractView
         return defaultTheme;
     }
 
-    /**
-     * Gets the view definition control for this view.
-     * 
-     * @return The view definition control, standalone or extends.
-     */
+    @Override
     public ViewDefinition getDefinition()
     {
         return definition;
+    }
+
+    @Override
+    public VFile getFile()
+    {
+        return file;
+    }
+
+    @Override
+    public void setFile(VFile file)
+    {
+        this.file = file;
     }
 }
