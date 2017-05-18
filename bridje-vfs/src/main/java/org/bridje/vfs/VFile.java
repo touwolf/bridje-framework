@@ -35,7 +35,14 @@ public class VFile
      */
     public VFile(Path path)
     {
-        this.path = path;
+        if(path != null)
+        {
+            this.path = path.getCanonicalPath();
+        }
+        else
+        {
+            this.path = null;
+        }
     }
 
     /**
@@ -45,7 +52,7 @@ public class VFile
      */
     public VFile(String path)
     {
-        this.path = new Path(path);
+        this(new Path(path));
     }
 
     /**
