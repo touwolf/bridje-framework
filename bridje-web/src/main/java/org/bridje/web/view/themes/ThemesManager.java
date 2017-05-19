@@ -115,10 +115,10 @@ public class ThemesManager
      * @param control The control
      * @param view The view to be render.
      * @param os The output stream to render the view.
-     * @param result The result of the event invocation.
+     * @param eventResult The result of the event invocation.
      * @param stateProv The provider for the current state of the view.
      */
-    public void render(Control control, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
+    public void render(Control control, WebView view, OutputStream os, EventResult eventResult, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -129,7 +129,7 @@ public class ThemesManager
             data.put("tools", themeTools);
             data.put("view", view);
             data.put("control", control);
-            data.put("result", result);
+            data.put("eventResult", eventResult);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
             tpl.process(data, w);

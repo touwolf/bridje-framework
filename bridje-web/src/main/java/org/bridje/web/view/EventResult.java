@@ -16,6 +16,8 @@
 
 package org.bridje.web.view;
 
+import java.util.Arrays;
+import java.util.List;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.web.view.controls.UIEvent;
 
@@ -33,6 +35,8 @@ public class EventResult
     private final Exception exception;
 
     private final Object data;
+    
+    private final List<FieldStatusInf> fields;
 
     /**
      * Creates a new info event result object, that will show an information
@@ -46,7 +50,24 @@ public class EventResult
      */
     public static EventResult info(String message, Object data)
     {
-        return new EventResult(EventResultType.INFO, message, data, null);
+        return new EventResult(EventResultType.INFO, message, data, null, null);
+    }
+    
+
+    /**
+     * Creates a new info event result object, that will show an information
+     * type message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     * @param fields
+     *
+     * @return An EventResult object of type info.
+     */
+    public static EventResult info(String message, Object data, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.INFO, message, data, null, Arrays.asList(fields));
     }
 
     /**
@@ -59,7 +80,22 @@ public class EventResult
      */
     public static EventResult info(String message)
     {
-        return new EventResult(EventResultType.INFO, message, null, null);
+        return new EventResult(EventResultType.INFO, message, null, null, null);
+    }
+
+
+    /**
+     * Creates a new info event result object, that will show an information
+     * type message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param fields
+     *
+     * @return An EventResult object of type info.
+     */
+    public static EventResult info(String message, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.INFO, message, null, null, Arrays.asList(fields));
     }
 
     /**
@@ -74,9 +110,25 @@ public class EventResult
      */
     public static EventResult success(String message, Object data)
     {
-        return new EventResult(EventResultType.SUCCESS, message, data, null);
+        return new EventResult(EventResultType.SUCCESS, message, data, null, null);
     }
     
+    /**
+     * Creates a new success event result object, that will show an success type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     * @param fields
+     *
+     * @return An EventResult object of type success.
+     */
+    public static EventResult success(String message, Object data, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.SUCCESS, message, data, null, Arrays.asList(fields));
+    }
+
     /**
      * Creates a new success event result object, that will show an success type
      * message to the end user.
@@ -87,7 +139,21 @@ public class EventResult
      */
     public static EventResult success(String message)
     {
-        return new EventResult(EventResultType.SUCCESS, message, null, null);
+        return new EventResult(EventResultType.SUCCESS, message, null, null, null);
+    }
+    
+    /**
+     * Creates a new success event result object, that will show an success type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param fields
+     * 
+     * @return An EventResult object of type success.
+     */
+    public static EventResult success(String message, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.SUCCESS, message, null, null, Arrays.asList(fields));
     }
 
     /**
@@ -102,9 +168,24 @@ public class EventResult
      */
     public static EventResult warn(String message, Object data)
     {
-        return new EventResult(EventResultType.WARNING, message, data, null);
+        return new EventResult(EventResultType.WARNING, message, data, null, null);
     }
 
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param data    The data to pass to the web view as the result of the
+     *                event.
+     * @param fields
+     *
+     * @return An EventResult object of type warning.
+     */
+    public static EventResult warn(String message, Object data, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.WARNING, message, data, null, Arrays.asList(fields));
+    }
 
     /**
      * Creates a new warning event result object, that will show an warning type
@@ -116,7 +197,21 @@ public class EventResult
      */
     public static EventResult warn(String message)
     {
-        return new EventResult(EventResultType.WARNING, message, null, null);
+        return new EventResult(EventResultType.WARNING, message, null, null, null);
+    }
+    
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message The message to show to the user.
+     * @param fields
+     *
+     * @return An EventResult object of type warning.
+     */
+    public static EventResult warn(String message, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.WARNING, message, null, null, Arrays.asList(fields));
     }
 
     /**
@@ -132,7 +227,24 @@ public class EventResult
      */
     public static EventResult warn(String message, Object data, Exception exception)
     {
-        return new EventResult(EventResultType.WARNING, message, data, null);
+        return new EventResult(EventResultType.WARNING, message, data, null, null);
+    }
+
+    /**
+     * Creates a new warning event result object, that will show an warning type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     * @param data      The data to pass to the web view as the result of the
+     *                  event.
+     * @param exception The exception responsable for this warning.
+     * @param fields
+     *
+     * @return An EventResult object of type warning.
+     */
+    public static EventResult warn(String message, Object data, Exception exception, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.WARNING, message, data, null, Arrays.asList(fields));
     }
 
     /**
@@ -146,7 +258,7 @@ public class EventResult
      */
     public static EventResult error(String message, Exception exception)
     {
-        return new EventResult(EventResultType.ERROR, message, null, exception);
+        return new EventResult(EventResultType.ERROR, message, null, exception, null);
     }
 
     /**
@@ -159,7 +271,36 @@ public class EventResult
      */
     public static EventResult error(String message)
     {
-        return new EventResult(EventResultType.ERROR, message, null, null);
+        return new EventResult(EventResultType.ERROR, message, null, null, null);
+    }
+
+    /**
+     * Creates a new error event result object, that will show an error type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     * @param exception The exception responsable for this error.
+     * @param fields
+     *
+     * @return An EventResult object of type error.
+     */
+    public static EventResult error(String message, Exception exception, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.ERROR, message, null, exception, Arrays.asList(fields));
+    }
+
+    /**
+     * Creates a new error event result object, that will show an error type
+     * message to the end user.
+     *
+     * @param message   The message to show to the user.
+     * @param fields
+     *
+     * @return An EventResult object of type error.
+     */
+    public static EventResult error(String message, FieldStatusInf... fields)
+    {
+        return new EventResult(EventResultType.ERROR, message, null, null, Arrays.asList(fields));
     }
 
     /**
@@ -176,16 +317,44 @@ public class EventResult
      */
     public static EventResult of(EventResultType type, String message, Object data, Exception exception)
     {
-        return new EventResult(type, message, data, exception);
+        return new EventResult(type, message, data, exception, null);
     }
 
-    private EventResult(EventResultType type, String message, Object data, Exception exception)
+    /**
+     * Creates a new event result, for the given type, that will show a message
+     * to the end user.
+     *
+     * @param type      The type of message to show to the end user.
+     * @param message   The message to show to the user.
+     * @param data      The data to pass to the web view as the result of the
+     *                  event.
+     * @param exception The exception responsable for this error.
+     * @param fields
+     *
+     * @return An EventResult object of type error.
+     */
+    public static EventResult of(EventResultType type, String message, Object data, Exception exception, FieldStatusInf... fields)
+    {
+        return new EventResult(type, message, data, exception, Arrays.asList(fields));
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public static EventResult none()
+    {
+        return new EventResult(EventResultType.NONE, null, null, null, null);
+    }
+    
+    private EventResult(EventResultType type, String message, Object data, Exception exception, List<FieldStatusInf> fields)
     {
         this.event = Thls.get(UIEvent.class);
         this.type = type;
         this.message = message;
         this.data = data;
         this.exception = exception;
+        this.fields = fields;
     }
 
     /**
@@ -238,5 +407,40 @@ public class EventResult
     public Object getData()
     {
         return data;
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public List<FieldStatusInf> getFields()
+    {
+        return fields;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    public boolean hasFieldStatus(String name)
+    {
+        if(fields == null) return false;
+        return fields.stream()
+                    .anyMatch(f -> f.getFieldName().equalsIgnoreCase(name));
+    }
+
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    public FieldStatusInf findFieldStatus(String name)
+    {
+        if(fields == null) return null;
+        return fields.stream()
+                    .filter(f -> f.getFieldName().equalsIgnoreCase(name))
+                    .findFirst()
+                    .orElse(null);
     }
 }

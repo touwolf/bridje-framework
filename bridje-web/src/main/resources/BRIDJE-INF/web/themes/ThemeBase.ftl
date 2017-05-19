@@ -120,13 +120,14 @@
 </#macro>
 
 <#macro renderMain themeName >
-    <#if result??
-         && result.data??
-         && result.data.class.simpleName == "RedirectTo"
-         && result.data.status??
-         && result.data.resource??>
+    <#if eventResult??
+         && eventResult.data??
+         && eventResult.data?is_hash
+         && eventResult.data.class.simpleName == "RedirectTo"
+         && eventResult.data.status??
+         && eventResult.data.resource??>
         <script>
-            window.location = '${result.data.resource}';
+            window.location = '${eventResult.data.resource}';
         </script>
     <#else>
         <#if control??>

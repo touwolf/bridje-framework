@@ -26,7 +26,6 @@ import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
 import javax.el.FunctionMapper;
-import javax.el.ResourceBundleELResolver;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 import org.bridje.el.ModelResolver;
@@ -195,7 +194,7 @@ class IocElContext extends ELContext
         {
             if(expression == null)
             {
-                map.remove(variable);
+                map.put(variable, null);
                 return null;
             }
             return map.put(variable, expression);

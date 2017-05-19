@@ -202,6 +202,7 @@ public class WebViewsManager
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             elEnv.setVar("params", params);
+            elEnv.setVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
                 themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
@@ -228,6 +229,7 @@ public class WebViewsManager
         try (OutputStream os = resp.getOutputStream())
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            elEnv.setVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
                 themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
@@ -254,10 +256,12 @@ public class WebViewsManager
         HttpBridletRequest req = context.get(HttpBridletRequest.class);
         try
         {
+            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             Thls.doAsEx(() ->
             {
                 view.getRoot().readInput(req);
                 EventResult result = invokeEvent(req, view);
+                elEnv.setVar("eventResult", result);
                 HttpBridletResponse resp = context.get(HttpBridletResponse.class);
                 try (OutputStream os = resp.getOutputStream())
                 {
@@ -265,7 +269,7 @@ public class WebViewsManager
                     os.flush();
                 }
                 return null;
-            }, ElEnvironment.class, elServ.createElEnvironment(wrsCtx));
+            }, ElEnvironment.class, elEnv);
         }
         catch (Exception ex)
         {
@@ -316,7 +320,7 @@ public class WebViewsManager
                 if (e.getCause() != null && e.getCause() instanceof Exception)
                 {
                     Exception real = (Exception) e.getCause();
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    LOG.log(Level.SEVERE, real.getMessage(), real);
                     return EventResult.error(real.getMessage(), real);
                 }
                 LOG.log(Level.SEVERE, e.getMessage(), e);

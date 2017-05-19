@@ -23,6 +23,10 @@ package org.bridje.web.view;
 public enum EventResultType
 {
     /**
+     * None message should be shown.
+     */
+    NONE,
+    /**
      * Show a success message.
      */
     SUCCESS,
