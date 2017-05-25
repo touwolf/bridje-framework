@@ -16,11 +16,9 @@
 
 package org.bridje.el.impl;
 
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ExpressionFactory;
-import javax.el.ResourceBundleELResolver;
 import javax.el.ValueExpression;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.Ioc;

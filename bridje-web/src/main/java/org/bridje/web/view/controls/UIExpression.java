@@ -66,9 +66,26 @@ public class UIExpression
         }
         catch (Exception e)
         {
-            LOG.log(Level.WARNING, "The expression " + expression + " is not valid: " + e.getMessage());
+            LOG.log(Level.WARNING, "The expression {0} is not valid: {1}", new Object[]{expression, e.getMessage()});
         }
         return null;
     }
 
+    /**
+     * Evaluates the expression and return the result casted to the given class.
+     *
+     * @return The result of the expression evaluation.
+     */
+    public String getAsString()
+    {
+        try
+        {
+            return Thls.get(ElEnvironment.class).get(expression, String.class);
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.WARNING, "The expression {0} is not valid: {1}", new Object[]{expression, e.getMessage()});
+        }
+        return null;
+    }
 }
