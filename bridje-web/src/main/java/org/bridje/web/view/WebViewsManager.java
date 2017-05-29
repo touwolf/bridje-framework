@@ -276,6 +276,38 @@ public class WebViewsManager
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
+    
+    /**
+     * 
+     * @param view
+     * @param context
+     * @param result 
+     * @param params 
+     */
+    public void renderPartialView(WebView view, HttpBridletContext context, EventResult result, Map<String,Object> params)
+    {
+        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        try
+        {
+            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            Thls.doAsEx(() ->
+            {
+                elEnv.setVar("params", params);
+                elEnv.setVar("eventResult", result);
+                HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+                try (OutputStream os = resp.getOutputStream())
+                {
+                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
+                    os.flush();
+                }
+                return null;
+            }, ElEnvironment.class, elEnv);
+        }
+        catch (Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
 
     /**
      * Invokes the event expression sent to the server.
