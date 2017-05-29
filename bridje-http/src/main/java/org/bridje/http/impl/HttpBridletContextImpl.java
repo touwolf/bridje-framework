@@ -19,6 +19,8 @@ package org.bridje.http.impl;
 import java.util.HashMap;
 import java.util.Map;
 import org.bridje.http.HttpBridletContext;
+import org.bridje.http.HttpBridletRequest;
+import org.bridje.http.HttpBridletResponse;
 
 /**
  *
@@ -27,11 +29,15 @@ class HttpBridletContextImpl implements HttpBridletContext
 {
     private final Map<Class<?>, Object> dataMap;
 
+    private HttpBridletRequest request;
+    
+    private HttpBridletResponse response;
+    
     public HttpBridletContextImpl()
     {
         this.dataMap = new HashMap<>();
     }
-    
+
     @Override
     public <T> T get(Class<T> cls)
     {
@@ -42,6 +48,26 @@ class HttpBridletContextImpl implements HttpBridletContext
     public <T> void set(Class<T> cls, T data)
     {
         dataMap.put(cls, data);
+    }
+
+    @Override
+    public HttpBridletRequest getRequest()
+    {
+        if(request == null)
+        {
+            request = get(HttpBridletRequest.class);
+        }
+        return request;
+    }
+
+    @Override
+    public HttpBridletResponse getResponse()
+    {
+        if(response == null)
+        {
+            response = get(HttpBridletResponse.class);
+        }
+        return response;
     }
     
 }

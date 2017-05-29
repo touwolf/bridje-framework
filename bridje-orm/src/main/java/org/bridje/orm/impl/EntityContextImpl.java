@@ -190,15 +190,22 @@ class EntityContextImpl implements EntityContext
     public <T> T doQuery(String query, QueryConsumer<T> consumer, Object... parameters) throws SQLException
     {
         T result;
-        try (Connection conn = ds.getConnection(); PreparedStatement stmt = conn.prepareStatement(query))
+        try (Connection conn = ds.getConnection())
         {
-            for (int i = 0; i < parameters.length; i++)
+            if(conn == null)
             {
-                setParam(stmt, parameters[i], i + 1);
+                throw new SQLException("Could not create a new connection with the database.");
             }
-            try (ResultSet resultSet = stmt.executeQuery())
+            try(PreparedStatement stmt = conn.prepareStatement(query))
             {
-                result = consumer.parse(resultSet);
+                for (int i = 0; i < parameters.length; i++)
+                {
+                    setParam(stmt, parameters[i], i + 1);
+                }
+                try (ResultSet resultSet = stmt.executeQuery())
+                {
+                    result = consumer.parse(resultSet);
+                }
             }
         }
         catch (SQLException e)

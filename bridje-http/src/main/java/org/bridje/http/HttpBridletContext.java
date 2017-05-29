@@ -45,4 +45,15 @@ public interface HttpBridletContext
      */
     <T> void set(Class<T> cls, T data);
 
+    /**
+     * 
+     * @return 
+     */
+    HttpBridletRequest getRequest();
+
+    /**
+     * 
+     * @return 
+     */
+    HttpBridletResponse getResponse();
 }
