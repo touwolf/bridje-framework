@@ -86,6 +86,6 @@ public final class ReqPathRef
         {
             return ref.getReqPath();
         }
-        return ctx.get(HttpBridletRequest.class).getPath();
+        return ctx.getRequest().getPath();
     }
 }

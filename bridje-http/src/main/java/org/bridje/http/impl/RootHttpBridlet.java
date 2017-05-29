@@ -44,8 +44,8 @@ class RootHttpBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException
     {
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
-        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+        HttpBridletRequest req = context.getRequest();
+        HttpBridletResponse resp = context.getResponse();
         LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
         try
         {

@@ -43,7 +43,7 @@ class RenderFileBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpBridletRequest req = context.getRequest();
         String pathStr = req.getPath();
         if(pathStr != null && 
                 !(pathStr.endsWith(".view.xml") || pathStr.endsWith(".layout.xml")))
@@ -55,7 +55,7 @@ class RenderFileBridlet implements HttpBridlet
                 VFile file = new VFile(path);
                 if(file.exists())
                 {
-                    HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+                    HttpBridletResponse resp = context.getResponse();
                     try(InputStream is = new VFileInputStream(file))
                     {
                         try(OutputStream os = resp.getOutputStream())

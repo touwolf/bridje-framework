@@ -42,7 +42,7 @@ class ThemesBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpBridletRequest req = context.getRequest();
         if(req.getPath().startsWith("/__themes"))
         {
             String[] arrPath = ReqPathRef.findCurrentPath(context).split("[//]");
@@ -51,7 +51,7 @@ class ThemesBridlet implements HttpBridlet
                 String themeName = arrPath[2];
                 String[] arrResPath = Arrays.copyOfRange(arrPath, 3, arrPath.length);
                 String resPath = String.join("/", arrResPath);
-                HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+                HttpBridletResponse resp = context.getResponse();
                 return themesMang.serveResource(themeName, resPath, resp);
             }
         }

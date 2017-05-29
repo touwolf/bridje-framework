@@ -53,8 +53,8 @@ public final class WebScope implements Scope
     public WebScope(HttpBridletContext ctx)
     {
         this.srvCtx = ctx;
-        this.req = ctx.get(HttpBridletRequest.class);
-        this.resp = ctx.get(HttpBridletResponse.class);
+        this.req = ctx.getRequest();
+        this.resp = ctx.getResponse();
     }
 
     /**

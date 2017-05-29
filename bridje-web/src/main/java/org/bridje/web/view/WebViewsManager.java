@@ -177,7 +177,7 @@ public class WebViewsManager
      */
     public String findUpdateViewName(HttpBridletContext context)
     {
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpBridletRequest req = context.getRequest();
         HttpReqParam viewUpdate = req.getPostParameter("__view");
         if (viewUpdate != null && !viewUpdate.isEmpty())
         {
@@ -197,7 +197,7 @@ public class WebViewsManager
     {
         if(view == null) return;
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
-        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+        HttpBridletResponse resp = context.getResponse();
         try (OutputStream os = resp.getOutputStream())
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
@@ -225,7 +225,7 @@ public class WebViewsManager
     public void renderView(WebView view, HttpBridletContext context)
     {
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
-        HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+        HttpBridletResponse resp = context.getResponse();
         try (OutputStream os = resp.getOutputStream())
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
@@ -253,7 +253,7 @@ public class WebViewsManager
     public void updateView(WebView view, HttpBridletContext context)
     {
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
-        HttpBridletRequest req = context.get(HttpBridletRequest.class);
+        HttpBridletRequest req = context.getRequest();
         try
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
@@ -262,7 +262,7 @@ public class WebViewsManager
                 view.getRoot().readInput(req);
                 EventResult result = invokeEvent(req, view);
                 elEnv.setVar("eventResult", result);
-                HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+                HttpBridletResponse resp = context.getResponse();
                 try (OutputStream os = resp.getOutputStream())
                 {
                     themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
@@ -294,7 +294,7 @@ public class WebViewsManager
             {
                 elEnv.setVar("params", params);
                 elEnv.setVar("eventResult", result);
-                HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+                HttpBridletResponse resp = context.getResponse();
                 try (OutputStream os = resp.getOutputStream())
                 {
                     themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));

@@ -39,7 +39,7 @@ class RedirectBridlet implements HttpBridlet
         RedirectTo r = context.get(RedirectTo.class);
         if(r != null && r.getResource() != null && !r.getResource().isEmpty())
         {
-            HttpBridletResponse resp = context.get(HttpBridletResponse.class);
+            HttpBridletResponse resp = context.getResponse();
             resp.setHeader("Location", r.getResource());
             resp.setStatusCode(r.getStatus());
         }
