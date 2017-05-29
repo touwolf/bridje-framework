@@ -18,6 +18,7 @@ package org.bridje.orm.srcgen.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * This class represents an entity, entity classes will be generated out of the
@@ -26,6 +27,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInf extends EntityInfBase
 {
+    @XmlAttribute
     private String table;
 
     /**
