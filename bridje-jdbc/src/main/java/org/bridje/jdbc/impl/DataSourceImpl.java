@@ -123,16 +123,20 @@ class DataSourceImpl implements DataSource
 
     private synchronized Connection waitFreeConnection() throws SQLException
     {
-        try
+        Connection cnn = null;
+        while(cnn == null)
         {
-            wait();
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException ex)
+            {
+                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+            cnn = getFreeConnection();
         }
-        catch (InterruptedException ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
-        }
-        return getFreeConnection();
+        return cnn;
     }
 
     @Override
