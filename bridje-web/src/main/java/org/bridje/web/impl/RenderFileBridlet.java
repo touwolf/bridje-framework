@@ -53,7 +53,7 @@ class RenderFileBridlet implements HttpBridlet
             {
                 path = PUBLIC_PATH.join(path);
                 VFile file = new VFile(path);
-                if(file.exists())
+                if(file.exists() && file.isFile())
                 {
                     HttpBridletResponse resp = context.getResponse();
                     try(InputStream is = new VFileInputStream(file))
