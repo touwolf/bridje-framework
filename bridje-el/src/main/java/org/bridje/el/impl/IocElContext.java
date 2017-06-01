@@ -26,6 +26,8 @@ import javax.el.ELContext;
 import javax.el.ELResolver;
 import javax.el.ExpressionFactory;
 import javax.el.FunctionMapper;
+import javax.el.MapELResolver;
+import javax.el.ResourceBundleELResolver;
 import javax.el.ValueExpression;
 import javax.el.VariableMapper;
 import org.bridje.el.ModelResolver;
@@ -119,9 +121,10 @@ class IocElContext extends ELContext
         {
             CompositeELResolver cr = new CompositeELResolver();
             cr.add(new CompositeELResolver());
+            cr.add(new ResourceBundleELResolver());
+            cr.add(new MapELResolver(false));
             cr.add(new SimpleResolver());
             resolver = cr;
-            
         }
         return resolver;
     }

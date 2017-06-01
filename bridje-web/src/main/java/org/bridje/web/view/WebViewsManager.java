@@ -16,6 +16,7 @@
 
 package org.bridje.web.view;
 
+import org.bridje.web.i18n.WebI18nServices;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -69,9 +70,12 @@ public class WebViewsManager
 
     @Inject
     private StateManager stateManag;
-    
+
     @Inject
     private WebLayoutManager layoutManag;
+    
+    @Inject
+    private WebI18nServices webI18nServ;
 
     private Map<String, WebView> views;
 
@@ -201,6 +205,8 @@ public class WebViewsManager
         try (OutputStream os = resp.getOutputStream())
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            elEnv.setVar("view", view);
+            elEnv.setVar("i18n", webI18nServ.getI18nMap());
             elEnv.setVar("params", params);
             elEnv.setVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
@@ -229,6 +235,8 @@ public class WebViewsManager
         try (OutputStream os = resp.getOutputStream())
         {
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            elEnv.setVar("view", view);
+            elEnv.setVar("i18n", webI18nServ.getI18nMap());
             elEnv.setVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
@@ -261,6 +269,8 @@ public class WebViewsManager
             {
                 view.getRoot().readInput(req);
                 EventResult result = invokeEvent(req, view);
+                elEnv.setVar("view", view);
+                elEnv.setVar("i18n", webI18nServ.getI18nMap());
                 elEnv.setVar("eventResult", result);
                 HttpBridletResponse resp = context.getResponse();
                 try (OutputStream os = resp.getOutputStream())
@@ -292,6 +302,8 @@ public class WebViewsManager
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             Thls.doAsEx(() ->
             {
+                elEnv.setVar("view", view);
+                elEnv.setVar("i18n", webI18nServ.getI18nMap());
                 elEnv.setVar("params", params);
                 elEnv.setVar("eventResult", result);
                 HttpBridletResponse resp = context.getResponse();

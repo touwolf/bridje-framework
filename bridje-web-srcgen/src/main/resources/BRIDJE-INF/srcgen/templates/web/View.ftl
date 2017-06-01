@@ -7,9 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.*;
 import org.bridje.web.view.*;
-import org.bridje.web.view.controls.Control;
-import org.bridje.web.view.controls.UIEvent;
-import org.bridje.web.view.controls.UIInputExpression;
+import org.bridje.web.view.controls.*;
 import javax.annotation.Generated;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.Path;
@@ -31,7 +29,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     private String name;
 
     @XmlAttribute(name = "title")
-    private String title;
+    private UIExpression title;
 
     @XmlElements(
         @XmlElement(name = "meta", type = ${uisuite.name}MetaTag.class)
@@ -75,7 +73,7 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     @Override
     public String getTitle()
     {
-        return title;
+        return Control.get(title, String.class, null);
     }
 
     @Override

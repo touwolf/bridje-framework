@@ -5,6 +5,7 @@ package ${uisuite.package};
 import java.util.Objects;
 import javax.xml.bind.annotation.*;
 import org.bridje.web.view.*;
+import org.bridje.web.view.controls.*;
 import javax.annotation.Generated;
 
 /**
@@ -18,7 +19,7 @@ public class ${uisuite.name}MetaTag implements MetaTag
     private String name;
 
     @XmlValue
-    private String content;
+    private UIExpression content;
 
     @Override
     public String getName()
@@ -27,21 +28,9 @@ public class ${uisuite.name}MetaTag implements MetaTag
     }
 
     @Override
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    @Override
     public String getContent()
     {
-        return content;
-    }
-
-    @Override
-    public void setContent(String content)
-    {
-        this.content = content;
+        return Control.get(content, String.class, null);
     }
 
     @Override

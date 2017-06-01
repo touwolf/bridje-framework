@@ -36,7 +36,6 @@ import org.bridje.ioc.Component;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
-import org.bridje.web.view.WebLayout;
 import org.bridje.web.view.WebView;
 import org.bridje.web.view.AbstractView;
 

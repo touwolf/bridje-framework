@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view;
+package org.bridje.web.i18n;
 
-/**
- * Defines a meta information for the current view.
- */
-public interface MetaTag
+import java.util.Map;
+import java.util.ResourceBundle;
+
+public interface WebI18nProvider
 {
-    /**
-     * The name of the meta tag.
-     * 
-     * @return The name of the meta tag.
-     */
-    String getName();
-
-    /**
-     * The content of the meta tag.
-     * 
-     * @return The content of the meta tag.
-     */
-    String getContent();
+    Map<String, ResourceBundle> findResourceBundles();
 }

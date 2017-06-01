@@ -31,7 +31,7 @@ class IocEnviromentImpl implements ElEnvironment
     private final IocElContext context;
 
     private final ExpressionFactory factory;
-    
+
     public IocEnviromentImpl(IocContext context)
     {
         this.factory = Ioc.context().find(ExpressionFactoryImpl.class);

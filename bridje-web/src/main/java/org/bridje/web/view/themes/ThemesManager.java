@@ -43,6 +43,7 @@ import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
+import org.bridje.web.i18n.WebI18nServices;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
 import org.bridje.web.view.controls.Control;
@@ -62,6 +63,9 @@ public class ThemesManager
     private IocContext<Application> context;
 
     private Map<String, Object> themeTools;
+
+    @Inject
+    private WebI18nServices webI18nServ;
 
     /**
      * Component Initializer
@@ -96,6 +100,7 @@ public class ThemesManager
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
+            data.put("i18n", webI18nServ.getI18nMap());
             data.put("tools", themeTools);
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
@@ -126,6 +131,7 @@ public class ThemesManager
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
+            data.put("i18n", webI18nServ.getI18nMap());
             data.put("tools", themeTools);
             data.put("view", view);
             data.put("control", control);
