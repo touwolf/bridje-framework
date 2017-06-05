@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -108,7 +109,9 @@ public class ControlManager
         List<URL> files = findModelsFiles();
         files.stream()
                 .map(this::readFile)
-                .forEach((prop) -> readClasses(result, prop));
+                .forEach(prop -> readClasses(result, prop));
+        String ctrlClasses = result.stream().map(c -> c.toString()).collect(Collectors.joining("\n - "));
+        LOG.log(Level.INFO, "Control Classes:\n - {0}", ctrlClasses);
         Class<?>[] arr = new Class<?>[result.size()];
         return result.toArray(arr);
     }
