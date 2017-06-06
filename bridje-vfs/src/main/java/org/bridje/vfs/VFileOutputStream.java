@@ -17,11 +17,13 @@ public class VFileOutputStream extends OutputStream
      * Defaults constructor for this object.
      * 
      * @param vfile The file to write to.
+     * @throws java.io.IOException
      */
-    public VFileOutputStream(VFile vfile)
+    public VFileOutputStream(VFile vfile) throws IOException
     {
         this.vfile = vfile;
         this.os = this.vfile.openForWrite();
+        if(this.os == null) throw new IOException("The file cannot be open for write.");
     }
 
     /**
