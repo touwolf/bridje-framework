@@ -35,6 +35,11 @@ public class ${control.name} extends ${control.base}
     private List<UIInputExpression> inputs;
 
     </#if>
+    <#if control.hasInputFiles>
+    @XmlTransient
+    private List<UIInputExpression> inputFiles;
+
+    </#if>
     <#if control.hasEvents>
     @XmlTransient
     private List<UIEvent> events;
@@ -153,7 +158,7 @@ public class ${control.name} extends ${control.base}
         {
             inputs = new ArrayList<>();
             <#list control.fields as f>
-            <#if f.javaType == "UIInputExpression">
+            <#if f.isInput>
             if(${f.name} != null && ${f.name}.isValid())
             {
                 inputs.add(${f.name});
@@ -165,6 +170,26 @@ public class ${control.name} extends ${control.base}
     }
 
     </#if>
+    <#if control.hasInputFiles>
+    @Override
+    public List<UIInputExpression> inputFiles()
+    {
+        if(inputFiles == null)
+        {
+            inputFiles = new ArrayList<>();
+            <#list control.fields as f>
+            <#if f.isInputFile>
+            if(${f.name} != null && ${f.name}.isValid())
+            {
+                inputFiles.add(${f.name});
+            }
+            </#if>
+            </#list>
+        }
+        return inputFiles;
+    }
+
+    </#if>
     <#if control.hasEvents>
     @Override
     public List<UIEvent> events()
@@ -173,7 +198,7 @@ public class ${control.name} extends ${control.base}
         {
             events = new ArrayList<>();
             <#list control.fields as f>
-            <#if f.javaType == "UIEvent">
+            <#if f.isEvent>
             if(${f.name} != null)
             {
                 events.add(${f.name});

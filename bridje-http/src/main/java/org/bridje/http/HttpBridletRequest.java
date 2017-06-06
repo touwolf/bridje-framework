@@ -198,7 +198,14 @@ public interface HttpBridletRequest
      *
      * @return The array of uploaded files if any.
      */
-    UploadedFile[] getUploadedFiles();
+    UploadedFile[] getAllUploadedFiles();
+    
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    UploadedFile getUploadedFile(String name);
 
     /**
      * All the headers names in this request.

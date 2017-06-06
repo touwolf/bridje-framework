@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpReqParam;
+import org.bridje.http.UploadedFile;
 import org.bridje.web.view.Defines;
 
 /**
@@ -73,6 +74,24 @@ public abstract class Control
             }
         }
     }
+    
+    /**
+     * Sets the value of the given UIInputExpression so that the web component
+     * can receive the value.
+     *
+     * @param expression The expression object.
+     * @param file The uploaded file received in the request for this expression.
+     */
+    public static void set(UIInputExpression expression, UploadedFile file)
+    {
+        if (file != null)
+        {
+            if (expression != null && expression.isValid())
+            {
+                expression.set(file);
+            }
+        }
+    }
 
     /**
      * Gets all the UIInputExpressions in this control.
@@ -80,6 +99,16 @@ public abstract class Control
      * @return A list of the UIInputExpressions available in this control.
      */
     public List<UIInputExpression> inputs()
+    {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Gets all the UIInputExpressions for uploaded files in this control.
+     *
+     * @return A list of the UIInputExpressions for uploaded files available in this control.
+     */
+    public List<UIInputExpression> inputFiles()
     {
         return Collections.emptyList();
     }
@@ -122,8 +151,9 @@ public abstract class Control
      */
     public void readInput(HttpBridletRequest req)
     {
-        inputs().forEach((input) -> set(input, req.getPostParameter(input.getParameter())));
-        childs().forEach((control) -> control.readInput(req));
+        inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
+        inputs().stream().forEach(input -> set(input, req.getPostParameter(input.getParameter())));
+        childs().forEach(control -> control.readInput(req));
     }
 
     /**

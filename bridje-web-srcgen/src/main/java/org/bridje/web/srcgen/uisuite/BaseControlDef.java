@@ -317,6 +317,16 @@ public class BaseControlDef
     }
 
     /**
+     * If the control has inputs.
+     * 
+     * @return true the control has inputs, false otherwise.
+     */
+    public boolean getHasInputFiles()
+    {
+        return getFields().stream().anyMatch(f -> f.getIsInputFile());
+    }
+
+    /**
      * If the control has any event.
      * 
      * @return true the control has events, false otherwise.

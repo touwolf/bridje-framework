@@ -126,4 +126,10 @@ public class ChildField implements FieldDef
     {
         return false;
     }
+
+    @Override
+    public boolean getIsInputFile()
+    {
+        return false;
+    }
 }

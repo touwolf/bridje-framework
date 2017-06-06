@@ -75,4 +75,10 @@ public abstract class BaseEventFlield implements FieldDef
     {
         return false;
     }
+
+    @Override
+    public boolean getIsInputFile()
+    {
+        return false;
+    }    
 }

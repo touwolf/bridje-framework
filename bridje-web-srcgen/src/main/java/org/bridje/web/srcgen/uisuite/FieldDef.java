@@ -61,4 +61,11 @@ public interface FieldDef
      * @return true this is an input field.
      */
     public boolean getIsInput();
+
+    /**
+     * If this is an input field.
+     * 
+     * @return true this is an input field.
+     */
+    public boolean getIsInputFile();
 }

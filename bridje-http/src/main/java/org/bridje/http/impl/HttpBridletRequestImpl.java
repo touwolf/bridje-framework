@@ -303,12 +303,21 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     }
 
     @Override
-    public UploadedFile[] getUploadedFiles()
+    public UploadedFile[] getAllUploadedFiles()
     {
         UploadedFile[] result = new UploadedFile[uploadedFiles.size()];
         return uploadedFiles.stream()
                 .map(UploadedFileImpl::new)
                 .collect(Collectors.toList()).toArray(result);
+    }
+    
+    @Override
+    public UploadedFile getUploadedFile(String name)
+    {
+        return uploadedFiles.stream()
+                .filter(f -> name.equalsIgnoreCase(f.getName()))
+                .map(UploadedFileImpl::new)
+                .findFirst().orElse(null);
     }
 
     @Override

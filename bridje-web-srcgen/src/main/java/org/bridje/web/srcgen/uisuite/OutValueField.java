@@ -42,4 +42,10 @@ public class OutValueField extends BaseDataFlield
     {
         return false;
     }
+
+    @Override
+    public boolean getIsInputFile()
+    {
+        return false;
+    }
 }
