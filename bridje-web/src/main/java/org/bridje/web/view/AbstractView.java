@@ -27,14 +27,16 @@ import org.bridje.web.view.controls.Control;
 public interface AbstractView
 {
     /**
+     * The file this view was readed from.
      * 
-     * @return 
+     * @return The file this view was readed from.
      */
     VFile getFile();
     
     /**
+     * The file this view was readed from.
      * 
-     * @param file 
+     * @param file The file this view was readed from.
      */
     void setFile(VFile file);
     

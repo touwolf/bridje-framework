@@ -82,7 +82,7 @@ public interface SrcGenService
      * @return A map with the data readed as the key and the corresponding
      *         VFile.
      *
-     * @throws IOException
+     * @throws IOException If any IO exception occurs.
      */
     <T> List<T> findSuplData(Class<T> cls) throws IOException;
 

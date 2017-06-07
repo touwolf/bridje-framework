@@ -52,7 +52,6 @@ public class EventResult
     {
         return new EventResult(EventResultType.INFO, message, data, null, null);
     }
-    
 
     /**
      * Creates a new info event result object, that will show an information
@@ -82,7 +81,6 @@ public class EventResult
     {
         return new EventResult(EventResultType.INFO, message, null, null, null);
     }
-
 
     /**
      * Creates a new info event result object, that will show an information
@@ -238,7 +236,7 @@ public class EventResult
      * @param data      The data to pass to the web view as the result of the
      *                  event.
      * @param exception The exception responsable for this warning.
-     * @param fields
+     * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type warning.
      */
@@ -253,7 +251,7 @@ public class EventResult
      *
      * @param message   The message to show to the user.
      * @param exception The exception responsable for this error.
-     *
+     * 
      * @return An EventResult object of type error.
      */
     public static EventResult error(String message, Exception exception)
@@ -266,7 +264,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message   The message to show to the user.
-     *
+     * 
      * @return An EventResult object of type error.
      */
     public static EventResult error(String message)
@@ -280,7 +278,7 @@ public class EventResult
      *
      * @param message   The message to show to the user.
      * @param exception The exception responsable for this error.
-     * @param fields
+     * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type error.
      */
@@ -294,7 +292,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message   The message to show to the user.
-     * @param fields
+     * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type error.
      */
@@ -329,7 +327,7 @@ public class EventResult
      * @param data      The data to pass to the web view as the result of the
      *                  event.
      * @param exception The exception responsable for this error.
-     * @param fields
+     * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type error.
      */
@@ -339,14 +337,24 @@ public class EventResult
     }
 
     /**
+     * Creates a new event result for the EventResultType.NONE type, and sets all data to null.
      * 
-     * @return 
+     * @return An EventResult object of type none.
      */
     public static EventResult none()
     {
         return new EventResult(EventResultType.NONE, null, null, null, null);
     }
-    
+
+    /**
+     * Default constructor for this object.
+     * 
+     * @param type The type of the result.
+     * @param message The text message.
+     * @param data The user data for this result.
+     * @param exception The exception if any occur for this result.
+     * @param fields A list of field status information objects.
+     */
     private EventResult(EventResultType type, String message, Object data, Exception exception, List<FieldStatusInf> fields)
     {
         this.event = Thls.get(UIEvent.class);
@@ -410,8 +418,9 @@ public class EventResult
     }
 
     /**
+     * Gets all the fields status information objects for this result.
      * 
-     * @return 
+     * @return All the fields status information objects for this result.
      */
     public List<FieldStatusInf> getFields()
     {
@@ -419,9 +428,10 @@ public class EventResult
     }
     
     /**
+     * Determines if the given field has an explicit status information object set in this result.
      * 
-     * @param name
-     * @return 
+     * @param name The name of the field.
+     * @return true the field has an field status information object in this result, false othewise.
      */
     public boolean hasFieldStatus(String name)
     {
@@ -431,9 +441,10 @@ public class EventResult
     }
 
     /**
+     * Gets the status information object set in this result for the given field.
      * 
-     * @param name
-     * @return 
+     * @param name The full expresion for the field.
+     * @return The field status information object.
      */
     public FieldStatusInf findFieldStatus(String name)
     {

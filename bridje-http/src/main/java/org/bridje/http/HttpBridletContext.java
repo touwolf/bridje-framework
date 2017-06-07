@@ -46,14 +46,16 @@ public interface HttpBridletContext
     <T> void set(Class<T> cls, T data);
 
     /**
+     * The HTTP request.
      * 
-     * @return 
+     * @return The HTTP request.
      */
     HttpBridletRequest getRequest();
 
     /**
+     * The HTTP response.
      * 
-     * @return 
+     * @return The HTTP response.
      */
     HttpBridletResponse getResponse();
 }
