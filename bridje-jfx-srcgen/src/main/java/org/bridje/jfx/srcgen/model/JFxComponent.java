@@ -16,7 +16,15 @@
 
 package org.bridje.jfx.srcgen.model;
 
+/**
+ * Base class for all definitions of JavaFX components.
+ */
 public abstract class JFxComponent
 {
+    /**
+     * Gets the type of the JavaFx component.
+     * 
+     * @return The type of the JavaFx component.
+     */
     public abstract String getType();
 }

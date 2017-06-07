@@ -25,21 +25,53 @@ import javafx.collections.ObservableList;
  */
 public class ExBindings
 {
-    public static <E, T> void bindContentBidirectional(ObservableList<E> list1, ObservableList<T> list2, BiContentConverter<E, T> converter)
+    /**
+     * Binds the content of two lists in both directions.
+     * 
+     * @param <E> The type for the first list.
+     * @param <T> The type for the second list.
+     * @param list1 The first list.
+     * @param list2 The second list.
+     * @param converter The bidirectional converter.
+     * @return The binding object.
+     */
+    public static <E, T> Object bindContentBidirectional(ObservableList<E> list1, ObservableList<T> list2, BiContentConverter<E, T> converter)
     {
-        ExBiContentBinding.bind(list1, list2, converter);
+        return ExBiContentBinding.bind(list1, list2, converter);
     }
 
+    /**
+     * Unbinds a bidirectino binding.
+     * 
+     * @param obj1 The first object.
+     * @param obj2 The second object.
+     */
     public static void unbindContentBidirectional(Object obj1, Object obj2)
     {
         ExBiContentBinding.unbind(obj1, obj2);
     }
 
+    /**
+     * Binds the content of two lists.
+     * 
+     * @param <E> The type for the first list.
+     * @param <T> The type for the second list.
+     * @param list1 The first list.
+     * @param list2 The second list.
+     * @param converter The converter.
+     * @return The binding object.
+     */
     public static <E, T> Object bindContent(List<T> list1, ObservableList<? extends E> list2, ContentConverter<E, T> converter)
     {
         return ExContentBinding.bind(list1, list2, converter);
     }
 
+    /**
+     * Unbinds two bindable objects.
+     * 
+     * @param obj1 The first object.
+     * @param obj2 The second object.
+     */
     public static void unbindContent(Object obj1, Object obj2)
     {
         ExContentBinding.unbind(obj1, obj2);

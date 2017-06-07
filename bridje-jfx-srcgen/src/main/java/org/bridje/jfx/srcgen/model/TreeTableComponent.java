@@ -16,6 +16,9 @@
 
 package org.bridje.jfx.srcgen.model;
 
+/**
+ * JavaFX tree table component definition.
+ */
 public class TreeTableComponent extends JFxComponent
 {
     @Override

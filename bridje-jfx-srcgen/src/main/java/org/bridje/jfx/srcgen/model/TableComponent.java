@@ -16,6 +16,9 @@
 
 package org.bridje.jfx.srcgen.model;
 
+/**
+ * JavaFX Table component definition.
+ */
 public class TableComponent extends JFxComponent
 {
     @Override

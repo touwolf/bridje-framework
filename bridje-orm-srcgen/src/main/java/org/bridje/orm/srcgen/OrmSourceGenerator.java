@@ -165,10 +165,4 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     {
         return getClass().getClassLoader().getResources(CUSTOM_DATATYPE_FILE);
     }
-
-    @Override
-    public TreeItem<Object> createEditorTreeItem()
-    {
-        return null;
-    }
 }

@@ -20,30 +20,53 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Icon definition.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IconDef
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute
     private String file;
 
+    /**
+     * Gets the name for the icon.
+     * 
+     * @return The name for the icon.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Sets the name for the icon.
+     * 
+     * @param name The name for the icon.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Gets the file for the icon.
+     * 
+     * @return The file for the icon.
+     */
     public String getFile()
     {
         return file;
     }
 
+    /**
+     * Sets the file for the icon.
+     * 
+     * @param file The file for the icon.
+     */
     public void setFile(String file)
     {
         this.file = file;
