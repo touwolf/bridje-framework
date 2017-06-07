@@ -16,9 +16,12 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This class represents the read operation for an Entity, The read operation
@@ -32,7 +35,13 @@ public class ReadOperationInf extends ParametizedOperationInf
 
     @XmlAttribute
     private String result;
-    
+
+    @XmlAttribute
+    private String orderBys;
+
+    @XmlTransient
+    private List<OrderByInf> orderBysFields;
+
     /**
      * The result type for the read operation.
      * 
@@ -72,7 +81,7 @@ public class ReadOperationInf extends ParametizedOperationInf
     {
         this.result = result;
     }
-    
+
     /**
      * The field that will be returned by this read operation.
      * 
@@ -100,5 +109,43 @@ public class ReadOperationInf extends ParametizedOperationInf
         res.resultType = this.resultType;
         res.result = this.result;
         return res;
+    }
+
+    /**
+     * The list of order by fields that this operation have.
+     * 
+     * @return A list of field information objects that represents the order by statement.
+     */
+    public List<OrderByInf> getOrderBys()
+    {
+        if(orderBysFields == null)
+        {
+            orderBysFields = parseOrderBys(orderBys);
+        }
+        return orderBysFields;
+    }
+
+    /**
+     * Utility method to parse all the params, out of the params attribute.
+     * 
+     * @param fields The comma separated fields String.
+     * @return The list of fields for the params.
+     */
+    protected List<OrderByInf> parseOrderBys(String fields)
+    {
+        List<OrderByInf> result = new ArrayList<>();
+        if(fields == null || fields.isEmpty()) return result;
+        String[] split = fields.split(",");
+        for (String orderByField : split)
+        {
+            String[] orderByArr = orderByField.split(" ");
+            String fieldName = orderByArr[0];
+            String type = "asc";
+            if(orderByArr.length > 1) type = orderByArr[1];
+            FieldInfBase field = getEntity().findField(fieldName);
+            if(field == null) continue;
+            result.add(new OrderByInf(field, type.equals("desc") ? OrderByType.DESC : OrderByType.ASC));
+        }
+        return result;
     }
 }

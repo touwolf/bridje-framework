@@ -265,6 +265,7 @@ public class ${model.name}
     public List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
+                        <#if crudOp.params?? && crudOp.params?has_content>
                         .where(
                             <#assign first = true />
                             <#list crudOp.params as param>
@@ -284,6 +285,10 @@ public class ${model.name}
                             <#assign first = false />
                             </#list>
                         )
+                        </#if>
+                        <#if crudOp.orderBys?? && crudOp.orderBys?has_content>
+                        .orderBy(<#list crudOp.orderBys as ob>${entity.name}.${ob.field.column?upper_case}.${ob.type?lower_case}()<#sep>, </#sep></#list>)
+                        </#if>
                         .fetchAll(<#if crudOp.resultField??>${entity.name}.${crudOp.resultField.column?upper_case}</#if>);
     }
 
@@ -299,6 +304,7 @@ public class ${model.name}
     public <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
+                        <#if crudOp.params?? && crudOp.params?has_content>
                         .where(
                             <#assign first = true />
                             <#list crudOp.params as param>
@@ -318,6 +324,10 @@ public class ${model.name}
                             <#assign first = false />
                             </#list>
                         )
+                        </#if>
+                        <#if crudOp.orderBys?? && crudOp.orderBys?has_content>
+                        .orderBy(<#list crudOp.orderBys as ob>${entity.name}.${ob.field.column?upper_case}.${ob.type?lower_case}()<#sep>, </#sep></#list>)
+                        </#if>
                         .fetchOne(<#if crudOp.resultField??>${entity.name}.${crudOp.resultField.column?upper_case}</#if>);
     }
 
@@ -364,6 +374,7 @@ public class ${model.name}
     public int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
+                        <#if crudOp.params?? && crudOp.params?has_content>
                         .where(
                             <#assign first = true />
                             <#list crudOp.params as param>
@@ -383,6 +394,7 @@ public class ${model.name}
                             <#assign first = false />
                             </#list>
                         )
+                        </#if>
                         .delete();
     }
 

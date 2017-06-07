@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,42 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
-
 /**
- * This enums holds the amount of return elements that a read operation may have.
+ * 
  */
-@XmlType
-@XmlEnum
-public enum ReadOperationResultType
+public class OrderByInf
 {
-    @XmlEnumValue("one")
-    ONE,
-    @XmlEnumValue("all")
-    ALL;
+    private FieldInfBase field;
+
+    private OrderByType type;
+
+    public OrderByInf()
+    {
+    }
+
+    public OrderByInf(FieldInfBase field, OrderByType type)
+    {
+        this.field = field;
+        this.type = type;
+    }
+    
+    public FieldInfBase getField()
+    {
+        return field;
+    }
+
+    public void setField(FieldInfBase field)
+    {
+        this.field = field;
+    }
+
+    public OrderByType getType()
+    {
+        return type;
+    }
+
+    public void setType(OrderByType type)
+    {
+        this.type = type;
+    }
 }

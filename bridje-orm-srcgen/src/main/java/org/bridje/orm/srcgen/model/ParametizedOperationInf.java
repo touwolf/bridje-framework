@@ -44,7 +44,7 @@ public abstract class ParametizedOperationInf extends OperationInfBase
     {
         if(paramsFields == null)
         {
-            paramsFields = parseParams();
+            paramsFields = parseFields(params);
         }
         return paramsFields;
     }
@@ -52,13 +52,14 @@ public abstract class ParametizedOperationInf extends OperationInfBase
     /**
      * Utility method to parse all the params, out of the params attribute.
      * 
+     * @param fields The comma separated fields String.
      * @return The list of fields for the params.
      */
-    private List<FieldInfBase> parseParams()
+    protected List<FieldInfBase> parseFields(String fields)
     {
         List<FieldInfBase> result = new ArrayList<>();
-        if(params == null || params.isEmpty()) return result;
-        String[] split = params.split(",");
+        if(fields == null || fields.isEmpty()) return result;
+        String[] split = fields.split(",");
         for (String fieldName : split)
         {
             FieldInfBase field = getEntity().findField(fieldName);

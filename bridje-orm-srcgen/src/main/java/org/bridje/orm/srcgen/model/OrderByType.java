@@ -17,18 +17,21 @@
 package org.bridje.orm.srcgen.model;
 
 import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * This enums holds the amount of return elements that a read operation may have.
+ * This enumerator represents the type of operations that this model have.
  */
 @XmlType
 @XmlEnum
-public enum ReadOperationResultType
+public enum OrderByType
 {
-    @XmlEnumValue("one")
-    ONE,
-    @XmlEnumValue("all")
-    ALL;
+    /**
+     * Ascending
+     */
+    ASC,
+    /**
+     * Descending
+     */
+    DESC;
 }

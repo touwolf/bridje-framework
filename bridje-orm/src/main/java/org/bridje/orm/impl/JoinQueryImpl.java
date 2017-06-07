@@ -95,10 +95,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     @Override
     protected TableImpl<R> getTable()
     {
-        if(relation == null)
-        {
-            return related;
-        }
+        if(relation == null) return related;
         return (TableImpl<R>)relation.getRelated();
     }
 
@@ -121,10 +118,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
         qb.select(fields)
             .from(getCtx().getDialect().identifier(getBaseTable().getName()));
         createJoins(qb, parameters);
-        if(getCondition() != null)
-        {
-            qb.where(getCondition().writeSQL(parameters, getCtx()));
-        }
+        if(getCondition() != null) qb.where(getCondition().writeSQL(parameters, getCtx()));
         if(getOrderBy() != null)
         {
             qb.orderBy(Arrays
