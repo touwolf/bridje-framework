@@ -49,15 +49,6 @@ public class ResourceRef
     }
 
     /**
-     * 
-     * @param name 
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    /**
      * Gets the list of assets for the referenced resource.
      * 
      * @return The list of assets for the referenced resource.

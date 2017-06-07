@@ -288,11 +288,12 @@ public class WebViewsManager
     }
     
     /**
-     * 
-     * @param view
-     * @param context
-     * @param result 
-     * @param params 
+     * Renders the given web view partially, (as the result of an update) to the response output stream.
+     *
+     * @param view    The view to render.
+     * @param context The HTTP bridlet context for the current request.
+     * @param result  The event result for this render operation.
+     * @param params  The parameters that can be accessed within the view.
      */
     public void renderPartialView(WebView view, HttpBridletContext context, EventResult result, Map<String,Object> params)
     {

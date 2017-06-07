@@ -22,8 +22,9 @@ package org.bridje.web.srcgen.uisuite;
 public interface FieldDef
 {
     /**
+     * The name for this field.
      * 
-     * @return 
+     * @return The name for this field.
      */
     public String getName();
 

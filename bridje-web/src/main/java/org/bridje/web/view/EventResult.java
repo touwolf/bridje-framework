@@ -60,7 +60,7 @@ public class EventResult
      * @param message The message to show to the user.
      * @param data    The data to pass to the web view as the result of the
      *                event.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      *
      * @return An EventResult object of type info.
      */
@@ -87,7 +87,7 @@ public class EventResult
      * type message to the end user.
      *
      * @param message The message to show to the user.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      *
      * @return An EventResult object of type info.
      */
@@ -118,7 +118,7 @@ public class EventResult
      * @param message The message to show to the user.
      * @param data    The data to pass to the web view as the result of the
      *                event.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      *
      * @return An EventResult object of type success.
      */
@@ -145,7 +145,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message The message to show to the user.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      * 
      * @return An EventResult object of type success.
      */
@@ -176,7 +176,7 @@ public class EventResult
      * @param message The message to show to the user.
      * @param data    The data to pass to the web view as the result of the
      *                event.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      *
      * @return An EventResult object of type warning.
      */
@@ -203,7 +203,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message The message to show to the user.
-     * @param fields
+     * @param fields  The information of the fields status after this event execution.
      *
      * @return An EventResult object of type warning.
      */

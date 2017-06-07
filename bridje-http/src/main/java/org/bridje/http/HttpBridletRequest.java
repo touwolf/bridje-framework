@@ -201,9 +201,10 @@ public interface HttpBridletRequest
     UploadedFile[] getAllUploadedFiles();
     
     /**
+     * Gets the given uploaded file.
      * 
-     * @param name
-     * @return 
+     * @param name The param name for the uploaded file.
+     * @return The uploaded file or null if it does not exists.
      */
     UploadedFile getUploadedFile(String name);
 

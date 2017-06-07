@@ -39,12 +39,10 @@ public class WebLayoutManager
     @Inject
     private ControlManager controlManag;
 
-    private final Path basePath = new Path("/web");
-
     /**
      * Loads the given web layout file.
      *
-     * @param currentView 
+     * @param currentView The current view being loaded.
      * @param name The path and name without ".layout.xml" suffix.
      * @return The WebLayout or null if it does not exists, or it cannot be
      * read.

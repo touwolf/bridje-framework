@@ -167,8 +167,9 @@ public class BaseControlDef
     }
 
     /**
+     * Gets the list of declared resources for this control. (only the declared ones).
      * 
-     * @return 
+     * @return The list of declard resources for this control.
      */
     public List<ResourceRef> getDeclaredResources()
     {
@@ -176,32 +177,13 @@ public class BaseControlDef
     }
 
     /**
+     * Gets the list of declared fields for this control. (only the declared ones).
      * 
-     * @param resources 
-     */
-    public void setDeclaredResources(List<ResourceRef> resources)
-    {
-        allResources = null;
-        this.resources = resources;
-    }
-
-    /**
-     * 
-     * @return 
+     * @return The list of declard fields for this control.
      */
     public List<FieldDef> getDeclaredFields()
     {
         return fields;
-    }
-
-    /**
-     * 
-     * @param fields
-     */
-    public void setDeclaredFields(List<FieldDef> fields)
-    {
-        allFields = null;
-        this.fields = fields;
     }
     
     /**
