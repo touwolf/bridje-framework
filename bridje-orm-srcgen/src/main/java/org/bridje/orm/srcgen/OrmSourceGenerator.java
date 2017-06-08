@@ -123,7 +123,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     @Override
     public void generateSources(ModelInf modelInf, VFile file) throws IOException
     {
-        List<CompilationUnit> supportClasses = srcGen.findJavaClasses(this::hasModelSupportAnnotation);
+        List<CompilationUnit> supportClasses = srcGen.findJavaClasses(cu -> hasModelSupportAnnotation(modelInf, cu));
 
         Map<String, Object> data;
         data = new HashMap<>();
@@ -166,12 +166,15 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
         return getClass().getClassLoader().getResources(CUSTOM_DATATYPE_FILE);
     }
 
-    private boolean hasModelSupportAnnotation(CompilationUnit cu)
+    private boolean hasModelSupportAnnotation(ModelInf modelInf, CompilationUnit cu)
     {
-        TypeDeclaration typeDec = cu.getTypes().get(0);
-        if(typeDec instanceof ClassOrInterfaceDeclaration)
+        if(cu.getPackage().getPackageName().equals(modelInf.getPackage()))
         {
-            return hasModelSupportAnnotation(cu, (ClassOrInterfaceDeclaration)typeDec);
+            TypeDeclaration typeDec = cu.getTypes().get(0);
+            if(typeDec instanceof ClassOrInterfaceDeclaration)
+            {
+                return hasModelSupportAnnotation(cu, (ClassOrInterfaceDeclaration)typeDec);
+            }
         }
         return false;
     }
@@ -183,9 +186,6 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
                 .map(a -> a.getName().getName())
                 .anyMatch(a -> a.equals("ModelSupport")))
         {
-            cu.getImports().stream()
-                        .map(i -> i.getName().toString())
-                        .forEach(System.out::print);
             return cu.getImports().stream()
                             .map(i -> i.getName().toString())
                             .anyMatch(i -> i.equals("org.bridje.orm.ModelSupport") 
