@@ -13,9 +13,7 @@ import org.bridje.ioc.thls.ThlsActionException;
 import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.orm.*;
 import javax.annotation.Generated;
-<#list support.allImports as imp>
-${imp}
-</#list>
+<#list support.allImports as imp>${imp}</#list>
 
 /**
  * This class represents the ${model.name} data model.

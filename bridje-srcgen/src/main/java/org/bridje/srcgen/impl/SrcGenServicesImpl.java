@@ -20,6 +20,8 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import freemarker.template.Configuration;
@@ -205,7 +207,7 @@ class SrcGenServicesImpl implements SrcGenService
         return result;
     }
 
-    private void findAnnotation(CompilationUnit cu, String annotCls, BiConsumer<? super NormalAnnotationExpr, ? super ClassOrInterfaceDeclaration> consumer)
+    private void findAnnotation(CompilationUnit cu, String annotCls, BiConsumer<? super AnnotationExpr, ? super ClassOrInterfaceDeclaration> consumer)
     {
         new VoidVisitorAdapter<Object>()
         {
@@ -213,8 +215,6 @@ class SrcGenServicesImpl implements SrcGenService
             public void visit(ClassOrInterfaceDeclaration clsDec, Object arg)
             {
                 clsDec.getAnnotations().stream()
-                        .filter(annot -> annot instanceof NormalAnnotationExpr)
-                        .map(annot -> (NormalAnnotationExpr) annot)
                         .filter(nae -> nae.getName().getName().equals(annotCls))
                         .forEach(nae -> consumer.accept(nae, clsDec));
             }
@@ -227,11 +227,13 @@ class SrcGenServicesImpl implements SrcGenService
     {
         List<CompilationUnit> result = new ArrayList<>();
         VFile[] files = new VFile(SOURCES_PATH).search(new GlobExpr("**.java"));
-        for (VFile file : files)
+        if(files != null)
         {
-            CompilationUnit cu = parseJavaClass(file);
-            if(cu != null) findAnnotation(cu, annotation, (annotExp, clsDec) -> result.add(cu));
-            
+            for (VFile file : files)
+            {
+                CompilationUnit cu = parseJavaClass(file);
+                if(cu != null) findAnnotation(cu, annotation, (annotExp, clsDec) -> result.add(cu));
+            }
         }
         return result;
     }

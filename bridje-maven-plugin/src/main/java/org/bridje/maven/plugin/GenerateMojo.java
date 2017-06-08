@@ -44,7 +44,7 @@ public class GenerateMojo extends AbstractMojo
     @Parameter(defaultValue = "src/main/resources/BRIDJE-INF/srcgen/data", readonly = false)
     private File dataFolder;
 
-    @Parameter(defaultValue = "src/main/java", readonly = false)
+    @Parameter(defaultValue = "src/main/java", readonly = true)
     private File sourcesFolder;
 
     @Parameter(defaultValue = "${project.build.directory}/generated-sources/bridje", readonly = false)
@@ -66,7 +66,7 @@ public class GenerateMojo extends AbstractMojo
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(dataFolder));
-            if(!sourcesFolder.exists()) new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
+            if(sourcesFolder.exists()) new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
             SourceGenerator<Object>[] generators = Ioc.context().findAll(SourceGenerator.class);
