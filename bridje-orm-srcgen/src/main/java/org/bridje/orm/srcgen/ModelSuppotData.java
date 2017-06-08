@@ -127,12 +127,18 @@ public class ModelSuppotData
         if(type.equals(ormModel.getName()) || type.equals(ormModel.getFullName()))
         {
             m.getParameters().remove(0);
-            String[] lines = m.getJavaDoc().getContent().split("\\n");
-            String comment = Arrays.asList(lines).stream()
-                                    .map(s -> s.toString())
-                                    .filter(s -> !s.contains("* @param " + name))
-                                    .collect(Collectors.joining("\n"));
-            m.getJavaDoc().setContent(comment);
+            if(m.getJavaDoc() != null && m.getJavaDoc().getContent() != null)
+            {
+                String[] lines = m.getJavaDoc().getContent().split("\\n");
+                if(lines != null && lines.length > 0)
+                {
+                    String comment = Arrays.asList(lines).stream()
+                                            .map(s -> s.toString())
+                                            .filter(s -> !s.contains("* @param " + name))
+                                            .collect(Collectors.joining("\n"));
+                    m.getJavaDoc().setContent(comment);
+                }
+            }
             return true;
         }
         return false;
