@@ -431,7 +431,7 @@ public class ${model.name}
     </#list>
     </#list>
     <#list support.allMethods as methodInf>
-    ${methodInf.method.javaDoc}    ${methodInf.method.declarationAsString}
+    <#if methodInf.method.javaDoc! != "">${methodInf.method.javaDoc}    </#if>${methodInf.method.declarationAsString}
     {
         if(support${methodInf.classDec.name} == null) support${methodInf.classDec.name} = Ioc.context().find(${methodInf.classDec.name}.class);
         <#if methodInf.method.type != "void">return </#if>support${methodInf.classDec.name}.${methodInf.method.name}(this<#if methodInf.method.parameters?has_content>, </#if><#list methodInf.method.parameters as param>${param.name}<#sep>, </#sep></#list>);
