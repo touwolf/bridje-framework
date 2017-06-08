@@ -20,6 +20,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 
@@ -72,18 +73,18 @@ public interface SrcGenService
 
     /**
      * 
-     * @param packageName
+     * @param predicate
      * @return 
      */
-    List<CompilationUnit> findJavaClassesOnPackage(String packageName);
+    List<CompilationUnit> findJavaClasses(Predicate<CompilationUnit> predicate);
 
     /**
      * 
-     * @param annotation
+     * @param clsFile
      * @return 
      */
-    List<CompilationUnit> findAnnotatedJavaClasses(String annotation);
-
+    CompilationUnit parseJavaClass(VFile clsFile);
+    
     /**
      * Finds the data by the given class, this method will read the data from
      * the default virtual path in the VFS tree and parse all the files that

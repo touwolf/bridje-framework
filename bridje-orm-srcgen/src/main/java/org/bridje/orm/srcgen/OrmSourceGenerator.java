@@ -17,6 +17,8 @@
 package org.bridje.orm.srcgen;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -121,12 +123,12 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     @Override
     public void generateSources(ModelInf modelInf, VFile file) throws IOException
     {
-        List<CompilationUnit> supportClasses = srcGen.findAnnotatedJavaClasses("ModelSupport");
+        List<CompilationUnit> supportClasses = srcGen.findJavaClasses(this::hasModelSupportAnnotation);
 
         Map<String, Object> data;
         data = new HashMap<>();
         data.put("model", modelInf);
-        data.put("support", new ModelSuppotData(supportClasses));
+        data.put("support", new ModelSuppotData(modelInf, supportClasses));
         srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
 
         data = new HashMap<>();
@@ -162,5 +164,35 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     private Enumeration<URL> loadDataTypeFiles() throws IOException
     {
         return getClass().getClassLoader().getResources(CUSTOM_DATATYPE_FILE);
+    }
+
+    private boolean hasModelSupportAnnotation(CompilationUnit cu)
+    {
+        TypeDeclaration typeDec = cu.getTypes().get(0);
+        if(typeDec instanceof ClassOrInterfaceDeclaration)
+        {
+            return hasModelSupportAnnotation(cu, (ClassOrInterfaceDeclaration)typeDec);
+        }
+        return false;
+    }
+    
+    private boolean hasModelSupportAnnotation(CompilationUnit cu, ClassOrInterfaceDeclaration clsDec)
+    {
+        if(clsDec.isInterface()) return false;
+        if(clsDec.getAnnotations().stream()
+                .map(a -> a.getName().getName())
+                .anyMatch(a -> a.equals("ModelSupport")))
+        {
+            cu.getImports().stream()
+                        .map(i -> i.getName().toString())
+                        .forEach(System.out::print);
+            return cu.getImports().stream()
+                            .map(i -> i.getName().toString())
+                            .anyMatch(i -> i.equals("org.bridje.orm.ModelSupport") 
+                                            || i.equals("org.bridje.orm.*"));
+        }
+        return clsDec.getAnnotations().stream()
+                            .map(a -> a.getName().getName())
+                            .anyMatch(a -> a.equals("org.bridje.orm.ModelSupport"));
     }
 }

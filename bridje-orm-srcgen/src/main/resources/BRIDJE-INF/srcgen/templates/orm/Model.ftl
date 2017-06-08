@@ -32,6 +32,10 @@ public class ${model.name}
 
     private final EntityContext context;
 
+    <#list support.allClasses as cls>
+    private ${cls.name} support${cls.name};
+
+    </#list>
     /**
      * Creates a new model from an EntityContext object.
      * @param context The context to be use.
@@ -425,5 +429,13 @@ public class ${model.name}
 
     </#if>
     </#list>
+    </#list>
+    <#list support.allMethods as methodInf>
+    ${methodInf.method.javaDoc}    ${methodInf.method.declarationAsString}
+    {
+        if(support${methodInf.classDec.name} == null) support${methodInf.classDec.name} = Ioc.context().find(${methodInf.classDec.name}.class);
+        <#if methodInf.method.type != "void">return </#if>support${methodInf.classDec.name}.${methodInf.method.name}(this<#if methodInf.method.parameters?has_content>, </#if><#list methodInf.method.parameters as param>${param.name}<#sep>, </#sep></#list>);
+    }
+
     </#list>
 }
