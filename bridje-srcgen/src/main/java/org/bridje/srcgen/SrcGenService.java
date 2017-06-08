@@ -16,6 +16,7 @@
 
 package org.bridje.srcgen;
 
+import com.github.javaparser.ast.CompilationUnit;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,12 @@ public interface SrcGenService
     Path RESOURCE_PATH = new Path("/srcgen/resources");
 
     /**
+     * The virtual path for the the java sources in the code generation
+     * process.
+     */
+    Path SOURCES_PATH = new Path("/srcgen/sources");
+
+    /**
      * The virtual path for the generated classes in the source code generation
      * process.
      */
@@ -55,6 +62,27 @@ public interface SrcGenService
      * The virtual path for the templates in the source code generation process.
      */
     Path TEMPLATES_PATH = new Path("/srcgen/templates");
+
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    CompilationUnit findJavaClass(String name);
+
+    /**
+     * 
+     * @param packageName
+     * @return 
+     */
+    List<CompilationUnit> findJavaClassesOnPackage(String packageName);
+
+    /**
+     * 
+     * @param annotation
+     * @return 
+     */
+    List<CompilationUnit> findAnnotatedJavaClasses(String annotation);
 
     /**
      * Finds the data by the given class, this method will read the data from

@@ -16,6 +16,12 @@
 
 package org.bridje.srcgen.impl;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -30,6 +36,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -174,5 +181,71 @@ class SrcGenServicesImpl implements SrcGenService
         {
             return null;
         }
+    }
+
+    @Override
+    public CompilationUnit findJavaClass(String name)
+    {
+        String path = toClassPath(name);
+        VFile clsFile = new VFile(SOURCES_PATH.join(path));
+        return parseJavaClass(clsFile);
+    }
+
+    @Override
+    public List<CompilationUnit> findJavaClassesOnPackage(String packageName)
+    {
+        List<CompilationUnit> result = new ArrayList<>();
+        String packPath = toClassPath(packageName);
+        VFile[] files = new VFile(SOURCES_PATH.join(packPath)).search(new GlobExpr("**.java"));
+        for (VFile file : files)
+        {
+            CompilationUnit cu = parseJavaClass(file);
+            if(cu != null) result.add(cu);
+        }
+        return result;
+    }
+
+    private void findAnnotation(CompilationUnit cu, String annotCls, BiConsumer<? super NormalAnnotationExpr, ? super ClassOrInterfaceDeclaration> consumer)
+    {
+        new VoidVisitorAdapter<Object>()
+        {
+            @Override
+            public void visit(ClassOrInterfaceDeclaration clsDec, Object arg)
+            {
+                clsDec.getAnnotations().stream()
+                        .filter(annot -> annot instanceof NormalAnnotationExpr)
+                        .map(annot -> (NormalAnnotationExpr) annot)
+                        .filter(nae -> nae.getName().getName().equals(annotCls))
+                        .forEach(nae -> consumer.accept(nae, clsDec));
+            }
+        }
+        .visit(cu, null);
+    }
+
+    @Override
+    public List<CompilationUnit> findAnnotatedJavaClasses(String annotation)
+    {
+        List<CompilationUnit> result = new ArrayList<>();
+        VFile[] files = new VFile(SOURCES_PATH).search(new GlobExpr("**.java"));
+        for (VFile file : files)
+        {
+            CompilationUnit cu = parseJavaClass(file);
+            if(cu != null) findAnnotation(cu, annotation, (annotExp, clsDec) -> result.add(cu));
+            
+        }
+        return result;
+    }
+    
+    public CompilationUnit parseJavaClass(VFile clsFile)
+    {
+        try(VFileInputStream is = new VFileInputStream(clsFile))
+        {
+            return JavaParser.parse(is);
+        }
+        catch (ParseException | IOException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
     }
 }

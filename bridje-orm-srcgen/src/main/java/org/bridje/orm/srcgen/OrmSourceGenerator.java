@@ -16,16 +16,17 @@
 
 package org.bridje.orm.srcgen;
 
+import com.github.javaparser.ast.CompilationUnit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.srcgen.model.CustomTypesProvider;
@@ -120,9 +121,12 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     @Override
     public void generateSources(ModelInf modelInf, VFile file) throws IOException
     {
+        List<CompilationUnit> supportClasses = srcGen.findAnnotatedJavaClasses("ModelSupport");
+
         Map<String, Object> data;
         data = new HashMap<>();
         data.put("model", modelInf);
+        data.put("support", new ModelSuppotData(supportClasses));
         srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
 
         data = new HashMap<>();
@@ -143,12 +147,6 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
                 srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
             }
         }
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ORM Models";
     }
 
     private Properties loadProperties(URL url) throws IOException
