@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
 
 import java.io.IOException;
 import javax.annotation.processing.SupportedAnnotationTypes;

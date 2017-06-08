@@ -1,2 +1,3 @@
 org.bridje.orm.impl.EntityProcessor
 org.bridje.orm.impl.SQLCustomTypeProcessor
+org.bridje.orm.impl.ModelSupportProcessor
