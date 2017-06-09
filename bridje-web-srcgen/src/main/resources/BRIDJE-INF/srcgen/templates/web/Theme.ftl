@@ -27,13 +27,13 @@
 [/#list]
 [#list uisuite.macros as m]
 <#macro ${m.name} ${m.parameters}>
-[#compress]${w.content}[/#compress]
+    [@compress single_line=true][#compress]${w.content}[/#compress][/@compress]
 </#macro>
 
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name} control>
-[#compress]${w.render}[/#compress]
+    [@compress single_line=true][#compress]${w.render}[/#compress][/@compress]
 </#macro>
 
 [/#list]
@@ -102,19 +102,19 @@
 
 [#if uisuite.renderBody?? && uisuite.renderBody?has_content]
 <#macro renderBody>
-[#compress]${uisuite.renderBody!}[/#compress]
+    [@compress single_line=true][#compress]${uisuite.renderBody!}[/#compress][/@compress]
 </#macro>
 [/#if]
 
 [#if uisuite.renderHead?? && uisuite.renderHead?has_content]
 <#macro renderHead>
-[#compress]${uisuite.renderHead!}[/#compress]
+    [@compress single_line=true][#compress]${uisuite.renderHead!}[/#compress][/@compress]
 </#macro>
 [/#if]
 
 [#if uisuite.renderViewContainer?? && uisuite.renderViewContainer?has_content]
 <#macro renderViewContainer>
-[#compress]${uisuite.renderViewContainer!}[/#compress]
+    [@compress single_line=true][#compress]${uisuite.renderViewContainer!}[/#compress][/@compress]
 </#macro>
 [/#if]
 
