@@ -43,30 +43,37 @@ class RenderFileBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        HttpBridletRequest req = context.getRequest();
-        String pathStr = req.getPath();
-        if(pathStr != null && 
-                !(pathStr.endsWith(".view.xml") || pathStr.endsWith(".layout.xml")))
+        VFile file = context.get(VFile.class);
+        if(file == null)
         {
-            Path path = new Path(pathStr).getCanonicalPath();
-            if(path != null)
+            HttpBridletRequest req = context.getRequest();
+            String pathStr = req.getPath();
+            if(pathStr != null && 
+                    !(pathStr.endsWith(".view.xml") || pathStr.endsWith(".layout.xml")))
             {
-                path = PUBLIC_PATH.join(path);
-                VFile file = new VFile(path);
-                if(file.exists() && file.isFile())
+                Path path = new Path(pathStr).getCanonicalPath();
+                if(path != null)
                 {
-                    HttpBridletResponse resp = context.getResponse();
-                    try(InputStream is = new VFileInputStream(file))
-                    {
-                        try(OutputStream os = resp.getOutputStream())
-                        {
-                            resp.setContentType(file.getMimeType());
-                            copy(is, os);
-                            os.flush();
-                        }
-                    }
-                    return true;
+                    path = PUBLIC_PATH.join(path);
+                    file = new VFile(path);
                 }
+            }
+        }
+        if(file != null)
+        {
+            if(file.exists() && file.isFile())
+            {
+                HttpBridletResponse resp = context.getResponse();
+                try(InputStream is = new VFileInputStream(file))
+                {
+                    try(OutputStream os = resp.getOutputStream())
+                    {
+                        resp.setContentType(file.getMimeType());
+                        copy(is, os);
+                        os.flush();
+                    }
+                }
+                return true;
             }
         }
         if(nextHandler != null)
