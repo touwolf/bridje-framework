@@ -35,7 +35,7 @@ public class DeleteOperationInf extends ParametizedOperationInf
     @Override
     public OperationInfBase clone(EntityInfBase entity)
     {
-        SaveOperationInf result = new SaveOperationInf();
+        DeleteOperationInf result = new DeleteOperationInf();
         clone(result, entity);
         return result;
     }

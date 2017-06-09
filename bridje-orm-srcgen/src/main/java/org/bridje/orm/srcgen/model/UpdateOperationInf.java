@@ -35,7 +35,7 @@ public class UpdateOperationInf extends ParametizedOperationInf
     @Override
     public OperationInfBase clone(EntityInfBase entity)
     {
-        SaveOperationInf result = new SaveOperationInf();
+        UpdateOperationInf result = new UpdateOperationInf();
         clone(result, entity);
         return result;
     }

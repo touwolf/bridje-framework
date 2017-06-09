@@ -36,7 +36,7 @@ public class DeleteEntityOperationInf extends OperationInfBase
     @Override
     public OperationInfBase clone(EntityInfBase entity)
     {
-        SaveOperationInf result = new SaveOperationInf();
+        DeleteEntityOperationInf result = new DeleteEntityOperationInf();
         clone(result, entity);
         return result;
     }

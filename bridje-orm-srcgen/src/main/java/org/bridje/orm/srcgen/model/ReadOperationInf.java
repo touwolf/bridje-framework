@@ -106,6 +106,8 @@ public class ReadOperationInf extends ParametizedOperationInf
     {
         ReadOperationInf res = new ReadOperationInf();
         clone(res, entity);
+        res.orderBys = this.orderBys;
+        res.orderBysFields = this.orderBysFields;
         res.resultType = this.resultType;
         res.result = this.result;
         return res;
