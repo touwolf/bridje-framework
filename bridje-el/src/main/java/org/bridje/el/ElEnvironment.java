@@ -60,4 +60,11 @@ public interface ElEnvironment
      * @param value The value of the variable.
      */
     <T> void setVar(String name, T value);
+    
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    String getVarAsString(String name);
 }

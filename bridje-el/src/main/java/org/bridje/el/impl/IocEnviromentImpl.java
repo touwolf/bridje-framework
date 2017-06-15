@@ -82,4 +82,10 @@ class IocEnviromentImpl implements ElEnvironment
     {
         return get("${" + name + "}", resultCls);
     }
+
+    @Override
+    public String getVarAsString(String name)
+    {
+        return get("${" + name + "}", String.class);
+    }
 }
