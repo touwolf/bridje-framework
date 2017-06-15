@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import org.bridje.web.view.Defines;
 import org.bridje.web.view.controls.*;
+import org.bridje.http.UploadedFile;
 import javax.annotation.Generated;
 
 /**
@@ -37,7 +38,7 @@ public class ${control.name} extends ${control.base}
     </#if>
     <#if control.hasInputFiles>
     @XmlTransient
-    private List<UIInputExpression> inputFiles;
+    private List<UIFileExpression> inputFiles;
 
     </#if>
     <#if control.hasEvents>
@@ -100,6 +101,16 @@ public class ${control.name} extends ${control.base}
     public ${f.type} get${f.name?cap_first}()
     {
         return get(${f.name}, ${f.type}.class, ${f.defaultValue});
+    }
+    <#elseif f.javaType == "UIFileExpression">
+    public ${f.javaType} get${f.name?cap_first}Expression()
+    {
+        return ${f.name};
+    }
+
+    public UploadedFile get${f.name?cap_first}()
+    {
+        return get(${f.name});
     }
     <#elseif f.javaType == "UIEvent">
     public ${f.javaType} get${f.name?cap_first}()
@@ -172,7 +183,7 @@ public class ${control.name} extends ${control.base}
     </#if>
     <#if control.hasInputFiles>
     @Override
-    public List<UIInputExpression> inputFiles()
+    public List<UIFileExpression> inputFiles()
     {
         if(inputFiles == null)
         {

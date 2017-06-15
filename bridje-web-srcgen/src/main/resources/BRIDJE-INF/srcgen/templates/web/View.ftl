@@ -43,6 +43,9 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     private Map<String, UIInputExpression> inputs;
 
     @XmlTransient
+    private Map<String, UIFileExpression> fileInputs;
+
+    @XmlTransient
     private Set<Class<?>> controls;
 
     @XmlTransient
@@ -141,6 +144,26 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         return events.get(action);
     }
 
+    @Override
+    public boolean hasFileInput()
+    {
+        if (fileInputs == null)
+        {
+            initFileInputs();
+        }
+        return !fileInputs.isEmpty();
+    }
+
+    @Override
+    public UIFileExpression findFileInput(String exp)
+    {
+        if (fileInputs == null)
+        {
+            initFileInputs();
+        }
+        return fileInputs.get(exp);
+    }
+
     private boolean checkIsValidView()
     {
         if(getRoot() != null)
@@ -219,6 +242,23 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         }
     }
 
+    private synchronized void initFileInputs()
+    {
+        if (fileInputs == null)
+        {
+            if (checkIsValidView())
+            {
+                Map<String, UIFileExpression> inputsMap = new LinkedHashMap<>();
+                findFileInputs(getRoot(), inputsMap);
+                fileInputs = inputsMap;
+            }
+            else
+            {
+                fileInputs = Collections.emptyMap();
+            }
+        }
+    }
+
     private void findEvents(Control control, Map<String, UIEvent> eventsMap)
     {
         control.events().forEach((ev) -> eventsMap.put(ev.getExpression(), ev));
@@ -241,5 +281,11 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     {
         controlsSet.add(control.getClass());
         control.childs().forEach((child) -> findControls(child, controlsSet));
+    }
+
+    private void findFileInputs(Control control, Map<String, UIFileExpression> inputsMap)
+    {
+        control.inputFiles().forEach((in) -> inputsMap.put(in.getParameter(), in));
+        control.childs().forEach((child) -> findFileInputs(child, inputsMap));
     }
 }

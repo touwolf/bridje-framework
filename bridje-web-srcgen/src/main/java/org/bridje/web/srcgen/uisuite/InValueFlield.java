@@ -40,12 +40,12 @@ public class InValueFlield extends BaseDataFlield
     @Override
     public boolean getIsInput()
     {
-        return !"org.bridje.http.UploadedFile".equals(getType());
+        return true;
     }
 
     @Override
     public boolean getIsInputFile()
     {
-        return "org.bridje.http.UploadedFile".equals(getType());
+        return false;
     }
 }

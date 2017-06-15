@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,26 @@
  * limitations under the License.
  */
 
-package org.bridje.web.srcgen.uisuite;
+package org.bridje.web.view.controls;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * An input expression attribute field for a control.
+ * An XmlAdapter for UIFileExpression
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class InAttrFlield extends BaseDataFlield
+@XmlTransient
+public class UIFileExpressionAdapter extends XmlAdapter<String, UIFileExpression>
 {
     @Override
-    public String getJavaType()
+    public String marshal(UIFileExpression v)
     {
-        return "UIInputExpression";
+        return v.getExpression();
     }
 
     @Override
-    public String getFieldType()
+    public UIFileExpression unmarshal(String v)
     {
-        return "attribute";
-    }
-
-    @Override
-    public boolean getIsInput()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean getIsInputFile()
-    {
-        return false;
+        return new UIFileExpression(v);
     }
 }

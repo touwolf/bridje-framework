@@ -56,6 +56,21 @@ public abstract class Control
         }
         return def;
     }
+    
+    /**
+     * Evaluates the given expression in the current ElEnvironment.
+     *
+     * @param expression The expression to evaluate.
+     * @return The result of the evaluation.
+     */
+    public static UploadedFile get(UIFileExpression expression)
+    {
+        if (expression != null)
+        {
+            return expression.get();
+        }
+        return null;
+    }
 
     /**
      * Sets the value of the given UIInputExpression so that the web component
@@ -82,7 +97,7 @@ public abstract class Control
      * @param expression The expression object.
      * @param file The uploaded file received in the request for this expression.
      */
-    public static void set(UIInputExpression expression, UploadedFile file)
+    public static void set(UIFileExpression expression, UploadedFile file)
     {
         if (file != null)
         {
@@ -108,7 +123,7 @@ public abstract class Control
      *
      * @return A list of the UIInputExpressions for uploaded files available in this control.
      */
-    public List<UIInputExpression> inputFiles()
+    public List<UIFileExpression> inputFiles()
     {
         return Collections.emptyList();
     }

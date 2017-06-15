@@ -18,6 +18,7 @@ package org.bridje.web.view;
 
 import java.util.*;
 import org.bridje.web.view.controls.UIEvent;
+import org.bridje.web.view.controls.UIFileExpression;
 import org.bridje.web.view.controls.UIInputExpression;
 
 /**
@@ -72,10 +73,25 @@ public interface WebView extends AbstractView
     public Set<Class<?>> getControls();
 
     /**
+     * 
+     * @return 
+     */
+    public boolean hasFileInput();
+    
+    /**
+     * Finds the file upload input expression that match the given string.
+     *
+     * @param exp The expression.
+     * @return The UIInputExpression object that match with the given String if
+     * any.
+     */
+    public UIFileExpression findFileInput(String exp);
+
+    /**
      * Finds the input expression that match the given string.
      *
      * @param exp The expression.
-     * @return The UIInputExpression object that match whit the given String if
+     * @return The UIInputExpression object that match with the given String if
      * any.
      */
     public UIInputExpression findInput(String exp);
