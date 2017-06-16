@@ -32,6 +32,7 @@ public class ReadInputWorkFlow
     @XmlElements(
     {
         @XmlElement(name = "for", type = ForEachData.class),
+        @XmlElement(name = "setVar", type = SetEnvVar.class),
         @XmlElement(name = "pop", type = PopFieldInput.class),
         @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
         @XmlElement(name = "get", type = ReadFieldInput.class),

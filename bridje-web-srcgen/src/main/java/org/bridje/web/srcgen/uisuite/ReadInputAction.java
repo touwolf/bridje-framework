@@ -16,10 +16,6 @@
 
 package org.bridje.web.srcgen.uisuite;
 
-/**
- *
- * @author gilbe
- */
 public interface ReadInputAction
 {
     

@@ -268,7 +268,7 @@ public class WebViewsManager
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             Thls.doAsEx(() ->
             {
-                view.getRoot().readInput(new ControlImputReader(req));
+                view.getRoot().readInput(new ControlImputReader(req), elEnv);
                 EventResult result = invokeEvent(req, view);
                 elEnv.setVar("view", view);
                 elEnv.setVar("i18n", webI18nServ.getI18nMap());

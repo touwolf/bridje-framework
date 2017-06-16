@@ -18,8 +18,34 @@ package org.bridje.web.srcgen.uisuite;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadAllChildren implements ReadInputAction
+public class SetEnvVar implements ReadInputAction
 {
+    @XmlAttribute
+    private String var;
+
+    @XmlAttribute
+    private String value;
+
+    public String getVar()
+    {
+        return var;
+    }
+
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
 }

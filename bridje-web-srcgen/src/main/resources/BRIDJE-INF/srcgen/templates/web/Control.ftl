@@ -17,6 +17,7 @@ import java.util.Map;
 import org.bridje.web.view.Defines;
 import org.bridje.web.view.controls.*;
 import org.bridje.http.UploadedFile;
+import org.bridje.el.ElEnvironment;
 import javax.annotation.Generated;
 
 /**
@@ -264,47 +265,61 @@ public class ${control.name} extends ${control.base}
     }
 
     <#if control.readInputFlow??>
-    @Override
-    public void readInput(ControlImputReader req)
-    {
-        <#list control.readInputFlow.actions as ria>
+    <#macro printReadInputActions actions ident>
+        <#list actions as ria>
         <#switch ria.class.simpleName>
+            <#case "SetEnvVar">
+        ${ident}env.setVar("${ria.var}", ${ria.value});
+                <#break>
             <#case "ForEachData">
+                <@printForActions ria ident />
                 <#break>
             <#case "PopFieldInput">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
-        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popUploadedFile(this.${ria.fieldName}.getParameter()));
+        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popUploadedFile(this.${ria.fieldName}.getParameter()));
                 <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
-        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popParameter(this.${ria.fieldName}.getParameter()));
+        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popParameter(this.${ria.fieldName}.getParameter()));
                 </#if>
                 <#break>
             <#case "PopAllFieldInputs">
-        inputFiles().stream().forEach(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
-        inputs().stream().forEach(input -> set(input, req.popParameter(input.getParameter())));
+        ${ident}inputFiles().stream().forEach(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
+        ${ident}inputs().stream().forEach(input -> set(input, req.popParameter(input.getParameter())));
                 <#break>
             <#case "ReadFieldInput">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
-        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getUploadedFile(this.${ria.fieldName}.getParameter()));
+        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getUploadedFile(this.${ria.fieldName}.getParameter()));
                 <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
-        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getParameter(this.${ria.fieldName}.getParameter()));
+        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getParameter(this.${ria.fieldName}.getParameter()));
                 </#if>
                 <#break>
             <#case "ReadAllFieldInputs">
-        inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
-        inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
+        ${ident}inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
+        ${ident}inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
                 <#break>
             <#case "ReadChildren">
                 <#if control.findField(ria.fieldName).javaType.startsWith("List")>
-        if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEach(control -> control.readInput(req));
+        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEach(control -> control.readInput(req, env));
                 <#else>
-        if(this.${ria.fieldName} != null) this.${ria.fieldName}.readInput(req);
+        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.readInput(req, env);
                 </#if>
                 <#break>
             <#case "ReadAllChildren">
-        childs().forEach(control -> control.readInput(req));
+        ${ident}childs().forEach(control -> control.readInput(req, env));
                 <#break>
         </#switch>
         </#list>
+    </#macro>
+    <#macro printForActions forStmt ident>
+        ${ident}for(Object ${forStmt.var} : get${forStmt.in?cap_first}())
+        ${ident}{
+            <#assign newIdent = ident + "    " />
+            <@printReadInputActions forStmt.actions newIdent />
+        ${ident}}
+    </#macro>
+    @Override
+    public void readInput(ControlImputReader req, ElEnvironment env)
+    {
+        <@printReadInputActions control.readInputFlow.actions "" />
     }
 
     </#if>

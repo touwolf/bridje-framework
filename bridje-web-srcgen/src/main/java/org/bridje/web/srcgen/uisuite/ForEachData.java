@@ -16,21 +16,57 @@
 
 package org.bridje.web.srcgen.uisuite;
 
-/**
- *
- * @author gilbe
- */
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ForEachData implements ReadInputAction
 {
-    private String fieldName;
+    @XmlAttribute
+    private String var;
 
-    public String getFieldName()
+    @XmlAttribute
+    private String in;
+
+    @XmlElements(
     {
-        return fieldName;
+        @XmlElement(name = "for", type = ForEachData.class),
+        @XmlElement(name = "setVar", type = SetEnvVar.class),
+        @XmlElement(name = "pop", type = PopFieldInput.class),
+        @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
+        @XmlElement(name = "get", type = ReadFieldInput.class),
+        @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
+        @XmlElement(name = "children", type = ReadChildren.class),
+        @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
+    })
+    private List<ReadInputAction> actions;
+
+    public String getVar()
+    {
+        return var;
     }
 
-    public void setFieldName(String fieldName)
+    public void setVar(String var)
     {
-        this.fieldName = fieldName;
+        this.var = var;
+    }
+
+    public String getIn()
+    {
+        return in;
+    }
+
+    public void setIn(String in)
+    {
+        this.in = in;
+    }
+    
+    public List<ReadInputAction> getActions()
+    {
+        return actions;
     }
 }
