@@ -17,9 +17,11 @@
 package org.bridje.web.view.controls;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
@@ -47,6 +49,17 @@ public class ControlImputReader
                 filesMap.put(file.getName(), lst);
             }
             lst.add(file);
+        }
+        Map<String, HttpReqParam> postParameters = req.getPostParameters();
+        for (Entry<String, HttpReqParam> param : postParameters.entrySet())
+        {
+            List<HttpReqParam> lst = parametersMap.get(param.getKey());
+            if(lst == null)
+            {
+                lst = new ArrayList<>();
+                parametersMap.put(param.getKey(), lst);
+            }
+            lst.addAll(Arrays.asList(param.getValue().separate()));
         }
     }
     
