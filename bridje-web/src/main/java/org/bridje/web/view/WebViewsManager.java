@@ -43,6 +43,7 @@ import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
+import org.bridje.web.view.controls.ControlImputReader;
 import org.bridje.web.view.controls.ControlManager;
 import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.state.StateManager;
@@ -267,7 +268,7 @@ public class WebViewsManager
             ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
             Thls.doAsEx(() ->
             {
-                view.getRoot().readInput(req);
+                view.getRoot().readInput(new ControlImputReader(req));
                 EventResult result = invokeEvent(req, view);
                 elEnv.setVar("view", view);
                 elEnv.setVar("i18n", webI18nServ.getI18nMap());

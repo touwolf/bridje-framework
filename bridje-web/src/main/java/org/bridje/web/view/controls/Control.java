@@ -23,7 +23,6 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
 import org.bridje.web.view.Defines;
@@ -164,10 +163,10 @@ public abstract class Control
      *
      * @param req The HTTP request to read the input from.
      */
-    public void readInput(HttpBridletRequest req)
+    public void readInput(ControlImputReader req)
     {
         inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
-        inputs().stream().forEach(input -> set(input, req.getPostParameter(input.getParameter())));
+        inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
         childs().forEach(control -> control.readInput(req));
     }
 

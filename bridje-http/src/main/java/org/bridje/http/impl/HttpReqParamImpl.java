@@ -18,6 +18,7 @@ package org.bridje.http.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.bridje.http.HttpReqParam;
 
 class HttpReqParamImpl implements HttpReqParam
@@ -36,6 +37,13 @@ class HttpReqParamImpl implements HttpReqParam
     {
         this.name = name;
         this.values = values;
+    }
+    
+    public HttpReqParamImpl(String name, String value)
+    {
+        this.name = name;
+        this.values = new ArrayList<>();
+        this.values.add(value);
     }
     
     public void addValue(String value)
@@ -86,5 +94,14 @@ class HttpReqParamImpl implements HttpReqParam
             return true;
         }
         return values.get(0).trim().isEmpty();
+    }
+
+    @Override
+    public HttpReqParam[] separate()
+    {
+        return values.stream()
+                        .map(p -> new HttpReqParamImpl(name, p))
+                        .collect(Collectors.toList())
+                        .toArray(new HttpReqParam[0]);
     }
 }

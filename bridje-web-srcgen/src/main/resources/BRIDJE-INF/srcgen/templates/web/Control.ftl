@@ -262,4 +262,35 @@ public class ${control.name} extends ${control.base}
         </#if>
         </#list>
     }
+
+    <#if control.readInputFlow??>
+    @Override
+    public void readInput(ControlImputReader req)
+    {
+        <#list control.readInputFlow.actions as ria>
+        <#switch ria.class.simpleName>
+            <#case "ForEachData">
+                <#break>
+            <#case "PopFieldInput">
+                <#break>
+            <#case "PopAllFieldInputs">
+                <#break>
+            <#case "ReadFieldInput">
+                <#break>
+            <#case "ReadAllFieldInputs">
+        inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
+        inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
+                <#break>
+            <#case "ReadChild">
+                <#break>
+            <#case "ReadChildren">
+                <#break>
+            <#case "ReadAllChildren">
+        childs().forEach(control -> control.readInput(req));
+                <#break>
+        </#switch>
+        </#if>
+    }
+
+    </#if>
 }

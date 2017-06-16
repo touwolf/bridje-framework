@@ -70,4 +70,9 @@ public interface HttpReqParam
      */
     boolean isEmpty();
 
+    /**
+     * 
+     * @return 
+     */
+    HttpReqParam[] separate();
 }

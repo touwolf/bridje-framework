@@ -16,19 +16,21 @@
 
 package org.bridje.web.srcgen.uisuite;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
 /**
- * A UI suite control definition.
+ *
+ * @author gilbe
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ControlDef extends BaseControlDef
+public class ReadFieldInput implements ReadInputAction
 {
-    private ReadInputWorkFlow readInputFlow;
+    private String fieldName;
 
-    public ReadInputWorkFlow getReadInputFlow()
+    public String getFieldName()
     {
-        return readInputFlow;
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName)
+    {
+        this.fieldName = fieldName;
     }
 }
