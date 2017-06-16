@@ -272,24 +272,39 @@ public class ${control.name} extends ${control.base}
             <#case "ForEachData">
                 <#break>
             <#case "PopFieldInput">
+                <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
+        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popUploadedFile(this.${ria.fieldName}.getParameter()));
+                <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
+        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popParameter(this.${ria.fieldName}.getParameter()));
+                </#if>
                 <#break>
             <#case "PopAllFieldInputs">
+        inputFiles().stream().forEach(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
+        inputs().stream().forEach(input -> set(input, req.popParameter(input.getParameter())));
                 <#break>
             <#case "ReadFieldInput">
+                <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
+        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getUploadedFile(this.${ria.fieldName}.getParameter()));
+                <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
+        if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getParameter(this.${ria.fieldName}.getParameter()));
+                </#if>
                 <#break>
             <#case "ReadAllFieldInputs">
         inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
         inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
                 <#break>
-            <#case "ReadChild">
-                <#break>
             <#case "ReadChildren">
+                <#if control.findField(ria.fieldName).javaType.startsWith("List")>
+        if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEach(control -> control.readInput(req));
+                <#else>
+        if(this.${ria.fieldName} != null) this.${ria.fieldName}.readInput(req);
+                </#if>
                 <#break>
             <#case "ReadAllChildren">
         childs().forEach(control -> control.readInput(req));
                 <#break>
         </#switch>
-        </#if>
+        </#list>
     }
 
     </#if>

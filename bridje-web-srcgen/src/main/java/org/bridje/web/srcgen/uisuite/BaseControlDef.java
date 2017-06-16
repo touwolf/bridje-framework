@@ -341,4 +341,9 @@ public class BaseControlDef
         if(baseTemplate == null) return null;
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
     }
+    
+    public FieldDef findField(String fieldName)
+    {
+        return getFields().stream().filter(f -> f.getName().equals(fieldName)).findFirst().orElse(null);
+    }
 }

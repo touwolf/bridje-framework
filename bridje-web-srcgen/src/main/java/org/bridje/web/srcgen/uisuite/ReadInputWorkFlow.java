@@ -36,9 +36,8 @@ public class ReadInputWorkFlow
         @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
         @XmlElement(name = "get", type = ReadFieldInput.class),
         @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
-        @XmlElement(name = "child", type = ReadChild.class),
         @XmlElement(name = "children", type = ReadChildren.class),
-        @XmlElement(name = "allChildren", type = ReadAllChildren.class)
+        @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
     })
     private List<ReadInputAction> actions;
 

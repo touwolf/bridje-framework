@@ -16,21 +16,11 @@
 
 package org.bridje.web.srcgen.uisuite;
 
-/**
- *
- * @author gilbe
- */
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ReadAllChildren implements ReadInputAction
 {
-    private String fieldName;
-
-    public String getFieldName()
-    {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName)
-    {
-        this.fieldName = fieldName;
-    }
 }

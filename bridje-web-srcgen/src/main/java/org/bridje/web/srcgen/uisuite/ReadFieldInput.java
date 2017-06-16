@@ -16,12 +16,15 @@
 
 package org.bridje.web.srcgen.uisuite;
 
-/**
- *
- * @author gilbe
- */
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ReadFieldInput implements ReadInputAction
 {
+    @XmlAttribute
     private String fieldName;
 
     public String getFieldName()
