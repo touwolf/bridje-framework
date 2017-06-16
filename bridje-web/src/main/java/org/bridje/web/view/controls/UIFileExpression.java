@@ -28,7 +28,7 @@ import org.bridje.ioc.thls.Thls;
  * Represents an input expression for a control.
  */
 @XmlTransient
-@XmlJavaTypeAdapter(UIInputExpressionAdapter.class)
+@XmlJavaTypeAdapter(UIFileExpressionAdapter.class)
 public class UIFileExpression
 {
     private static final Logger LOG = Logger.getLogger(UIFileExpression.class.getName());
