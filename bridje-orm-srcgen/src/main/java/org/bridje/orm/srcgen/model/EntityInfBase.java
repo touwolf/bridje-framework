@@ -17,8 +17,10 @@
 package org.bridje.orm.srcgen.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -170,15 +172,14 @@ public class EntityInfBase
     {
         if (allFields == null)
         {
+            Set<String> fieldNameSet = new HashSet<>();
+            if (fields != null) fields.forEach(o -> fieldNameSet.add(o.getName()));
             allFields = new ArrayList<>();
-            if (base != null)
-            {
-                allFields.addAll(cloneFields(base.getFields()));
-            }
-            if (fields != null)
-            {
-                allFields.addAll(fields);
-            }
+            if (base != null) allFields.addAll(cloneFields(base.getFields())
+                                                    .stream()
+                                                    .filter(o -> !fieldNameSet.contains(o.getName()))
+                                                    .collect(Collectors.toList()));
+            if (fields != null) allFields.addAll(fields);
         }
         return allFields;
     }
@@ -192,15 +193,14 @@ public class EntityInfBase
     {
         if (allOperations == null)
         {
+            Set<String> opNameSet = new HashSet<>();
+            if (operations != null) operations.forEach(o -> opNameSet.add(o.getSignature()));
             allOperations = new ArrayList<>();
-            if (base != null)
-            {
-                allOperations.addAll(cloneOperations(base.getOperations()));
-            }
-            if (operations != null)
-            {
-                allOperations.addAll(operations);
-            }
+            if (base != null) allOperations.addAll(cloneOperations(base.getOperations())
+                                                        .stream()
+                                                        .filter(o -> !opNameSet.contains(o.getSignature()))
+                                                        .collect(Collectors.toList()));
+            if (operations != null) allOperations.addAll(operations);
         }
         return allOperations;
     }

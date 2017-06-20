@@ -68,4 +68,10 @@ public abstract class ParametizedOperationInf extends OperationInfBase
         }
         return result;
     }
+
+    @Override
+    public String getSignature()
+    {
+        return getName() + "(" + params + ")";
+    }
 }

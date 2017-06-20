@@ -72,4 +72,10 @@ public class SaveOperationInf extends OperationInfBase
         conditions.forEach(op -> result.add(op.clone(this)));
         return result;
     }
+
+    @Override
+    public String getSignature()
+    {
+        return getName() + "()";
+    }
 }

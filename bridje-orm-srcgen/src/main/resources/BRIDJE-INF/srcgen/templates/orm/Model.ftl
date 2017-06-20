@@ -248,6 +248,7 @@ public class ${model.name}
     ${crudOp.modifier?lower_case} ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         ${entity.name} entity = new ${entity.name}();
+        <#list crudOp.sets as setField>
         <#if setField.ifNull>
         if(entity.get${setField.field.name?cap_first}() == null)
         {
@@ -256,6 +257,7 @@ public class ${model.name}
         <#else>
         entity.set${setField.field.name?cap_first}(${setField.value});
         </#if>
+        </#list>
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
         </#list>
@@ -421,7 +423,7 @@ public class ${model.name}
      * @param entity The entity to be saved.
      * @throws SQLException If any SQLException occurs.
      */
-    ${crudOp.modifier?lower_case} void save(${entity.name} entity) throws SQLException
+    ${crudOp.modifier?lower_case} void ${crudOp.name}(${entity.name} entity) throws SQLException
     {
         <#list crudOp.sets as setField>
         <#if setField.ifNull>

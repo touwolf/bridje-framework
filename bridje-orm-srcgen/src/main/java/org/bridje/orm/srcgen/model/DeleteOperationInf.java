@@ -72,5 +72,4 @@ public class DeleteOperationInf extends ParametizedOperationInf
         conditions.forEach(op -> result.add(op.clone(this)));
         return result;
     }
-
 }

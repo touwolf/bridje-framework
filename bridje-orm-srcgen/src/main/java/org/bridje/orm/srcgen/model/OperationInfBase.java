@@ -16,6 +16,7 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.Objects;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -156,4 +157,6 @@ public abstract class OperationInfBase
     {
         return name;
     }
+
+    public abstract String getSignature();
 }

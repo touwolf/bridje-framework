@@ -40,4 +40,10 @@ public class DeleteEntityOperationInf extends OperationInfBase
         clone(result, entity);
         return result;
     }
+
+    @Override
+    public String getSignature()
+    {
+        return getName() + "()";
+    }
 }
