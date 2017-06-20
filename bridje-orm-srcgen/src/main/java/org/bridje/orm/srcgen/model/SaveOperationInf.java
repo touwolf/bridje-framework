@@ -16,8 +16,12 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
  * This class represents the save operation for an Entity, The save operation
@@ -26,6 +30,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SaveOperationInf extends OperationInfBase
 {
+    @XmlElements(
+            {
+                @XmlElement(name = "set", type = OperationSetField.class)
+            })
+    private List<OperationSetField> sets;
+
+    /**
+     * The list of fields and the values that will be set to does fields in the
+     * create operation.
+     *
+     * @return A list of fields to set and their values.
+     */
+    public List<OperationSetField> getSets()
+    {
+        if (sets == null)
+        {
+            sets = new ArrayList<>();
+        }
+        return sets;
+    }
+
     @Override
     public OperationType getOperationType()
     {
@@ -37,6 +62,14 @@ public class SaveOperationInf extends OperationInfBase
     {
         SaveOperationInf result = new SaveOperationInf();
         clone(result, entity);
+        result.sets = cloneSets(this.sets);
+        return result;
+    }
+
+    private List<OperationSetField> cloneSets(List<OperationSetField> conditions)
+    {
+        List<OperationSetField> result = new ArrayList<>();
+        conditions.forEach(op -> result.add(op.clone(this)));
         return result;
     }
 }

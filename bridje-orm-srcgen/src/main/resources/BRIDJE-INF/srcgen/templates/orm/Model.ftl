@@ -245,12 +245,17 @@ public class ${model.name}
      * @return The created ${entity.name} object.
      * @throws SQLException If any SQLException occurs.
      */
-    public ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    ${crudOp.modifier?lower_case} ${entity.name} ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         ${entity.name} entity = new ${entity.name}();
-        <#list crudOp.setFields as setField>
+        <#if setField.ifNull>
+        if(entity.get${setField.field.name?cap_first}() == null)
+        {
+            entity.set${setField.field.name?cap_first}(${setField.value});
+        }
+        <#else>
         entity.set${setField.field.name?cap_first}(${setField.value});
-        </#list>
+        </#if>
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
         </#list>
@@ -267,7 +272,7 @@ public class ${model.name}
      * @return A list of <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> objects.
      * @throws SQLException If any SQLException occurs.
      */
-    public List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    ${crudOp.modifier?lower_case} List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
                         <#if crudOp.params?? && crudOp.params?has_content>
@@ -306,7 +311,7 @@ public class ${model.name}
      * @return A <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> object.
      * @throws SQLException If any SQLException occurs.
      */
-    public <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    ${crudOp.modifier?lower_case} <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
                         <#if crudOp.params?? && crudOp.params?has_content>
@@ -345,10 +350,17 @@ public class ${model.name}
     </#list>
      * @throws SQLException If any SQLException occurs.
      */
-    public void ${crudOp.name}(${entity.name} entity<#list crudOp.params as param>, ${param.javaType} ${param.name}</#list>) throws SQLException
+    ${crudOp.modifier?lower_case} void ${crudOp.name}(${entity.name} entity<#list crudOp.params as param>, ${param.javaType} ${param.name}</#list>) throws SQLException
     {
-        <#list crudOp.setFields as setField>
+        <#list crudOp.sets as setField>
+        <#if setField.ifNull>
+        if(entity.get${setField.field.name?cap_first}() == null)
+        {
+            entity.set${setField.field.name?cap_first}(${setField.value});
+        }
+        <#else>
         entity.set${setField.field.name?cap_first}(${setField.value});
+        </#if>
         </#list>
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
@@ -362,7 +374,7 @@ public class ${model.name}
      * @param entity The entity to be deleted.
      * @throws SQLException If any SQLException occurs.
      */
-    public void ${crudOp.name}(${entity.name} entity) throws SQLException
+    ${crudOp.modifier?lower_case} void ${crudOp.name}(${entity.name} entity) throws SQLException
     {
         context.delete(entity);
     }
@@ -376,7 +388,7 @@ public class ${model.name}
     </#list>
      * @throws SQLException If any SQLException occurs.
      */
-    public int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
+    ${crudOp.modifier?lower_case} int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
                         <#if crudOp.params?? && crudOp.params?has_content>
@@ -409,13 +421,17 @@ public class ${model.name}
      * @param entity The entity to be saved.
      * @throws SQLException If any SQLException occurs.
      */
-    public void save(${entity.name} entity) throws SQLException
+    ${crudOp.modifier?lower_case} void save(${entity.name} entity) throws SQLException
     {
-        <#list crudOp.setFields as setField>
+        <#list crudOp.sets as setField>
+        <#if setField.ifNull>
         if(entity.get${setField.field.name?cap_first}() == null)
         {
             entity.set${setField.field.name?cap_first}(${setField.value});
         }
+        <#else>
+        entity.set${setField.field.name?cap_first}(${setField.value});
+        </#if>
         </#list>
         if(entity.get${entity.keyField.name?cap_first}() == null)
         {

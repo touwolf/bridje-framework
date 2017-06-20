@@ -303,7 +303,7 @@ public class EntityInfBase
         return result;
     }
 
-    private Collection<? extends OperationInfBase> cloneOperations(List<OperationInfBase> operations)
+    private List<OperationInfBase> cloneOperations(List<OperationInfBase> operations)
     {
         List<OperationInfBase> result = new ArrayList<>();
         operations.forEach(op -> result.add(op.clone(this)));

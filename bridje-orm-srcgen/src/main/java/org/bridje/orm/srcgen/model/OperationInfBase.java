@@ -36,6 +36,9 @@ public abstract class OperationInfBase
     @XmlAttribute
     private String description;
 
+    @XmlAttribute
+    private OperationModifier modifier;
+
     @XmlTransient
     private EntityInfBase entity;
     
@@ -106,7 +109,7 @@ public abstract class OperationInfBase
      * @return The kind of operation this object represents.
      */
     public abstract OperationType getOperationType();
-    
+
     /**
      * Clone this object to the given entity.
      * 
@@ -114,6 +117,24 @@ public abstract class OperationInfBase
      * @return The new cloned object.
      */
     public abstract OperationInfBase clone(EntityInfBase entity);
+
+    /**
+     * 
+     * @return 
+     */
+    public OperationModifier getModifier()
+    {
+        return modifier;
+    }
+
+    /**
+     * 
+     * @param modifier 
+     */
+    public void setModifier(OperationModifier modifier)
+    {
+        this.modifier = modifier;
+    }
     
     /**
      * Convinient clone method for the classes that extends from this one.
@@ -126,6 +147,7 @@ public abstract class OperationInfBase
         result.entity = entity;
         result.name = name;
         result.description = description;
+        result.modifier = modifier;
     }
 
     @Override

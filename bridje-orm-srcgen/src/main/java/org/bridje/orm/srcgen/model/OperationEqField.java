@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * This object represents a set field value for an operation.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OperationSetField
+public class OperationEqField
 {
     @XmlAttribute(name = "field")
     private String fieldName;
@@ -34,9 +34,6 @@ public class OperationSetField
     @XmlAttribute(name = "value")
     private String value;
 
-    @XmlAttribute(name = "ifNull")
-    private Boolean ifNull;
-    
     @XmlTransient
     private FieldInfBase field;
 
@@ -104,17 +101,6 @@ public class OperationSetField
         this.value = value;
     }
 
-    public Boolean getIfNull()
-    {
-        if(ifNull == null) return false;
-        return ifNull;
-    }
-
-    public void setIfNull(Boolean ifNull)
-    {
-        this.ifNull = ifNull;
-    }
-    
     /**
      * Called by JAXB after unmarshal.
      * 
@@ -125,10 +111,19 @@ public class OperationSetField
     {
         operation = (OperationInfBase)parent;
     }
-
-    public OperationSetField clone(OperationInfBase operation)
+    
+    /**
+     * 
+     * @return 
+     */
+    public String getOperator()
     {
-        OperationSetField res = new OperationSetField();
+        return "eq";
+    }
+
+    public OperationEqField clone(OperationInfBase operation)
+    {
+        OperationEqField res = new OperationEqField();
         res.operation = this.operation;
         res.fieldName = this.fieldName;
         res.value = this.value;

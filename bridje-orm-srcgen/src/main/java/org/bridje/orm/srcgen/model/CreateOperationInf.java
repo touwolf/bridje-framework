@@ -62,7 +62,15 @@ public class CreateOperationInf extends ParametizedOperationInf
     {
         CreateOperationInf result = new CreateOperationInf();
         clone(result, entity);
-        result.sets = this.sets;
+        result.sets = cloneSets(this.sets);
         return result;
     }
+
+    private List<OperationSetField> cloneSets(List<OperationSetField> conditions)
+    {
+        List<OperationSetField> result = new ArrayList<>();
+        conditions.forEach(op -> result.add(op.clone(this)));
+        return result;
+    }
+    
 }

@@ -16,8 +16,12 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
  * This class represents a detele operation for an Entity, The delete operation
@@ -26,6 +30,27 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DeleteOperationInf extends ParametizedOperationInf
 {
+    @XmlElements(
+    {
+        @XmlElement(name = "eq", type = OperationEqField.class)
+    })
+    private List<OperationEqField> conditions;
+
+    /**
+     * The list of fields and the values that will be set to does fields in the
+     * create operation.
+     * 
+     * @return A list of fields to set and their values.
+     */
+    public List<OperationEqField> getConditions()
+    {
+        if (conditions == null)
+        {
+            conditions = new ArrayList<>();
+        }
+        return conditions;
+    }
+
     @Override
     public OperationType getOperationType()
     {
@@ -37,6 +62,15 @@ public class DeleteOperationInf extends ParametizedOperationInf
     {
         DeleteOperationInf result = new DeleteOperationInf();
         clone(result, entity);
+        result.conditions = cloneConditions(this.conditions);
         return result;
     }
+
+    private List<OperationEqField> cloneConditions(List<OperationEqField> conditions)
+    {
+        List<OperationEqField> result = new ArrayList<>();
+        conditions.forEach(op -> result.add(op.clone(this)));
+        return result;
+    }
+
 }

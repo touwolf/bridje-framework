@@ -21,6 +21,8 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -41,6 +43,27 @@ public class ReadOperationInf extends ParametizedOperationInf
 
     @XmlTransient
     private List<OrderByInf> orderBysFields;
+
+    @XmlElements(
+    {
+        @XmlElement(name = "eq", type = OperationEqField.class)
+    })
+    private List<OperationEqField> conditions;
+
+    /**
+     * The list of fields and the values that will be set to does fields in the
+     * create operation.
+     * 
+     * @return A list of fields to set and their values.
+     */
+    public List<OperationEqField> getConditions()
+    {
+        if (conditions == null)
+        {
+            conditions = new ArrayList<>();
+        }
+        return conditions;
+    }
 
     /**
      * The result type for the read operation.
@@ -110,9 +133,17 @@ public class ReadOperationInf extends ParametizedOperationInf
         res.orderBysFields = this.orderBysFields;
         res.resultType = this.resultType;
         res.result = this.result;
+        res.conditions = cloneConditions(this.conditions);
         return res;
     }
 
+    private List<OperationEqField> cloneConditions(List<OperationEqField> conditions)
+    {
+        List<OperationEqField> result = new ArrayList<>();
+        conditions.forEach(op -> result.add(op.clone(this)));
+        return result;
+    }
+    
     /**
      * The list of order by fields that this operation have.
      * 
