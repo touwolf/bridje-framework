@@ -124,6 +124,7 @@ public abstract class OperationInfBase
      */
     public OperationModifier getModifier()
     {
+        if(modifier == null) return OperationModifier.PUBLIC;
         return modifier;
     }
 

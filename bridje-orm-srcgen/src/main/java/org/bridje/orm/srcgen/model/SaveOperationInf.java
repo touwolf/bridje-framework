@@ -62,7 +62,7 @@ public class SaveOperationInf extends OperationInfBase
     {
         SaveOperationInf result = new SaveOperationInf();
         clone(result, entity);
-        result.sets = cloneSets(this.sets);
+        result.sets = cloneSets(this.getSets());
         return result;
     }
 

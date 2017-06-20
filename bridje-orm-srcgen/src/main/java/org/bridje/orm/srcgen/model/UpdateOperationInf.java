@@ -62,7 +62,7 @@ public class UpdateOperationInf extends ParametizedOperationInf
     {
         UpdateOperationInf result = new UpdateOperationInf();
         clone(result, entity);
-        result.sets = cloneSets(this.sets);
+        result.sets = cloneSets(this.getSets());
         return result;
     }
 

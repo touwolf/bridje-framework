@@ -62,7 +62,7 @@ public class CreateOperationInf extends ParametizedOperationInf
     {
         CreateOperationInf result = new CreateOperationInf();
         clone(result, entity);
-        result.sets = cloneSets(this.sets);
+        result.sets = cloneSets(this.getSets());
         return result;
     }
 
