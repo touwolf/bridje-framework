@@ -275,7 +275,7 @@ public class ${model.name}
     ${crudOp.modifier?lower_case} List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
-                        <#if crudOp.params?? && crudOp.params?has_content>
+                        <#if (crudOp.params?? && crudOp.params?has_content) || (crudOp.conditions?? && crudOp.conditions?has_content)>
                         .where(
                             <#assign first = true />
                             <#list crudOp.params as param>
@@ -314,7 +314,7 @@ public class ${model.name}
     ${crudOp.modifier?lower_case} <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
         return context.query(${entity.name}.TABLE)
-                        <#if crudOp.params?? && crudOp.params?has_content>
+                        <#if (crudOp.params?? && crudOp.params?has_content) || (crudOp.conditions?? && crudOp.conditions?has_content)>
                         .where(
                             <#assign first = true />
                             <#list crudOp.params as param>

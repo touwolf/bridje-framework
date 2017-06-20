@@ -64,7 +64,7 @@ class SrcGenServicesImpl implements SrcGenService
         ftlCfg = new Configuration(Configuration.VERSION_2_3_23);
         ftlCfg.setTemplateLoader(srcGenTpl);
         ftlCfg.setDefaultEncoding("UTF-8");
-        ftlCfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+        ftlCfg.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
         ftlCfg.setLogTemplateExceptions(false);
     }
 

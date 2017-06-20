@@ -44,8 +44,8 @@ public class SrcGenInfTest
         Assert.assertEquals("integerField", intField1.getName());
         Assert.assertEquals(IntegerFieldSQLType.INTEGER, intField1.getSqlType());
         Assert.assertEquals(10, intField1.getLength().intValue());
-        Assert.assertFalse(intField1.isRequired());
-        Assert.assertTrue(intField1.isIndexed());
+        Assert.assertFalse(intField1.getRequired());
+        Assert.assertTrue(intField1.getIndexed());
         Assert.assertFalse(intField1.getKey());
         Assert.assertEquals("Some int field", intField1.getDescription());
 
@@ -53,8 +53,8 @@ public class SrcGenInfTest
         Assert.assertEquals("someString", stringField1.getName());
         Assert.assertEquals(StringFieldSQLType.VARCHAR, stringField1.getSqlType());
         Assert.assertEquals(100, stringField1.getLength().intValue());
-        Assert.assertTrue(stringField1.isRequired());
-        Assert.assertTrue(stringField1.isIndexed());
+        Assert.assertTrue(stringField1.getRequired());
+        Assert.assertTrue(stringField1.getIndexed());
         Assert.assertFalse(stringField1.getKey());
         Assert.assertEquals("Some string field", stringField1.getDescription());
 
@@ -64,8 +64,8 @@ public class SrcGenInfTest
         Assert.assertEquals(DecimalFieldSQLType.DOUBLE, doubleField1.getSqlType());
         Assert.assertEquals(10, doubleField1.getLength().intValue());
         Assert.assertEquals(5, doubleField1.getPrecision().intValue());
-        Assert.assertFalse(doubleField1.isRequired());
-        Assert.assertTrue(doubleField1.isIndexed());
+        Assert.assertFalse(doubleField1.getRequired());
+        Assert.assertTrue(doubleField1.getIndexed());
         Assert.assertFalse(doubleField1.getKey());
         Assert.assertEquals("Some double field", doubleField1.getDescription());
 
@@ -73,16 +73,16 @@ public class SrcGenInfTest
         Assert.assertEquals(DateTimeFieldType.LOCALDATETIME, dateTimeField1.getType());
         Assert.assertEquals("datetimeField", dateTimeField1.getName());
         Assert.assertEquals(DateTimeFieldSQLType.DATE, dateTimeField1.getSqlType());
-        Assert.assertFalse(dateTimeField1.isRequired());
-        Assert.assertTrue(dateTimeField1.isIndexed());
+        Assert.assertFalse(dateTimeField1.getRequired());
+        Assert.assertTrue(dateTimeField1.getIndexed());
         Assert.assertFalse(dateTimeField1.getKey());
         Assert.assertEquals("Some datetime field", dateTimeField1.getDescription());
 
         RelationFieldInf relationField1 = (RelationFieldInf)entity1.getFields().get(5);
         Assert.assertEquals("relationField", relationField1.getName());
         Assert.assertEquals("SomeEntity1", relationField1.getType().getName());
-        Assert.assertFalse(relationField1.isRequired());
-        Assert.assertTrue(relationField1.isIndexed());
+        Assert.assertFalse(relationField1.getRequired());
+        Assert.assertTrue(relationField1.getIndexed());
         Assert.assertFalse(relationField1.getKey());
         Assert.assertEquals("Some relation", relationField1.getDescription());
 
@@ -90,8 +90,8 @@ public class SrcGenInfTest
         Assert.assertEquals("someEnum", enumField1.getName());
         Assert.assertEquals("SomeEnum", enumField1.getType().getName());
         Assert.assertEquals(EnumFieldSQLType.TINYINT, enumField1.getSqlType());
-        Assert.assertFalse(enumField1.isRequired());
-        Assert.assertTrue(enumField1.isIndexed());
+        Assert.assertFalse(enumField1.getRequired());
+        Assert.assertTrue(enumField1.getIndexed());
         Assert.assertFalse(enumField1.getKey());
         Assert.assertEquals("Some enums", enumField1.getDescription());
 
@@ -99,8 +99,8 @@ public class SrcGenInfTest
         Assert.assertEquals("someCustom", customField1.getName());
         Assert.assertEquals("SomeType", customField1.getType());
         Assert.assertFalse(customField1.getAutoIncrement());
-        Assert.assertFalse(customField1.isRequired());
-        Assert.assertTrue(customField1.isIndexed());
+        Assert.assertFalse(customField1.getRequired());
+        Assert.assertTrue(customField1.getIndexed());
         Assert.assertFalse(customField1.getKey());
         Assert.assertEquals("Some custom field", customField1.getDescription());
 

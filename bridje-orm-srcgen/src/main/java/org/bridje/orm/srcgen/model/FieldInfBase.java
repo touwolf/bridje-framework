@@ -122,8 +122,9 @@ public abstract class FieldInfBase
      *
      * @return If the field must have a value.
      */
-    public Boolean isRequired()
+    public boolean getRequired()
     {
+        if(required == null) return false;
         return required;
     }
 
@@ -142,8 +143,9 @@ public abstract class FieldInfBase
      *
      * @return If the column for this field must be indexed or not.
      */
-    public Boolean isIndexed()
+    public boolean getIndexed()
     {
+        if(indexed == null) return false;
         return indexed;
     }
 
