@@ -85,14 +85,18 @@ public class CustomFieldInf extends FieldInfBase
     public String getJavaType()
     {
         CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
-        return prov.getJavaType(getType());
+        String result = prov.getJavaType(getType());
+        if(result == null) return "InvalidType";
+        return result;
     }
 
     @Override
     public String getTableColumn()
     {
         CustomTypesProvider prov = Ioc.context().find(CustomTypesProvider.class);
-        return prov.getColumnClass(getType());
+        String result = prov.getColumnClass(getType());
+        if(result == null) return "InvalidColumn";
+        return result;
     }
 
     @Override
