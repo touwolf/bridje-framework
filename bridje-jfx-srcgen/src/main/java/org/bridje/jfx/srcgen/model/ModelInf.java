@@ -1,6 +1,7 @@
 
 package org.bridje.jfx.srcgen.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -163,6 +164,7 @@ public class ModelInf
      */
     public List<IconDef> getIcons()
     {
+        if(icons == null) icons = new ArrayList<>();
         return icons;
     }
 
