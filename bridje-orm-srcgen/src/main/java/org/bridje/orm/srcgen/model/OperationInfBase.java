@@ -16,7 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import java.util.Objects;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,7 +41,7 @@ public abstract class OperationInfBase
 
     @XmlTransient
     private EntityInfBase entity;
-    
+
     /**
      * The name of the operation.
      * 
@@ -50,7 +49,8 @@ public abstract class OperationInfBase
      */
     public String getName()
     {
-        return name;
+        String result = name.replace("${entity.name}", entity.getName());
+        return result;
     }
 
     /**
