@@ -25,7 +25,7 @@
 </#macro>
 
 [/#list]
-[#list uisuite.macros as m]
+[#list uisuite.macros![] as m]
 <#macro ${m.name} ${m.parameters}>
     [@compress single_line=true][#compress]${w.content}[/#compress][/@compress]
 </#macro>
@@ -33,7 +33,7 @@
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name} control>
-    [@compress single_line=true][#compress]${w.render}[/#compress][/@compress]
+    [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
 </#macro>
 
 [/#list]
@@ -46,7 +46,7 @@
                 <#break>
             [/#list]
             <#default>
-                Control ${control.class.simpleName} Not Found
+                Control Not Found
         </#switch>
     </#if>
 </#macro>
