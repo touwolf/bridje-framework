@@ -72,6 +72,7 @@ public class ReadOperationInf extends ParametizedOperationInf
      */
     public ReadOperationResultType getResultType()
     {
+        if(resultType == null) resultType = ReadOperationResultType.ALL;
         return resultType;
     }
 
