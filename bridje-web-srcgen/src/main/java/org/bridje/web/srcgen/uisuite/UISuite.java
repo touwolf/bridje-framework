@@ -230,6 +230,7 @@ public class UISuite
      */
     public List<Resource> getResources()
     {
+        if(resources == null) resources = new ArrayList<>();
         return resources;
     }
 

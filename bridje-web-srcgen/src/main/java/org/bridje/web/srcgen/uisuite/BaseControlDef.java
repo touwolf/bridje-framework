@@ -198,10 +198,10 @@ public class BaseControlDef
     {
         if(allFields == null)
         {
-            TemplateControlDef tmpl = findBaseTemplate();
             allFields = new ArrayList<>();
+            TemplateControlDef tmpl = findBaseTemplate();
             if(tmpl != null) allFields.addAll(tmpl.getFields());
-            allFields.addAll(fields);
+            if(fields != null) allFields.addAll(fields);
         }
         return allFields;
     }
@@ -215,13 +215,10 @@ public class BaseControlDef
     {
         if(allResources == null)
         {
-            TemplateControlDef tmpl = findBaseTemplate();
             allResources = new ArrayList<>();
+            TemplateControlDef tmpl = findBaseTemplate();
             if(tmpl != null) allResources.addAll(tmpl.getResources());
-            if(resources != null)
-            {
-                allResources.addAll(resources);
-            }
+            if(resources != null) allResources.addAll(resources);
         }
         return allResources;
     }
