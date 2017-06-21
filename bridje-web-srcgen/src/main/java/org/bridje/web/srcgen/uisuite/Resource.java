@@ -97,13 +97,16 @@ public class Resource
         if (scriptList == null)
         {
             scriptList = new LinkedList<>();
-            content.forEach(field ->
+            if(content != null)
             {
-                if (Script.class.isAssignableFrom(field.getClass()))
+                content.forEach(field ->
                 {
-                    scriptList.add((Script) field);
-                }
-            });
+                    if (Script.class.isAssignableFrom(field.getClass()))
+                    {
+                        scriptList.add((Script) field);
+                    }
+                });
+            }
         }
         return scriptList;
     }
@@ -118,13 +121,16 @@ public class Resource
         if (styleList == null)
         {
             styleList = new LinkedList<>();
-            content.forEach(field ->
+            if(content != null)
             {
-                if (Style.class.isAssignableFrom(field.getClass()))
+                content.forEach(field ->
                 {
-                    styleList.add((Style) field);
-                }
-            });
+                    if (Style.class.isAssignableFrom(field.getClass()))
+                    {
+                        styleList.add((Style) field);
+                    }
+                });
+            }
         }
         return styleList;
     }
@@ -139,13 +145,16 @@ public class Resource
         if (linkList == null)
         {
             linkList = new LinkedList<>();
-            content.forEach(field ->
+            if(content != null)
             {
-                if (Link.class.isAssignableFrom(field.getClass()))
+                content.forEach(field ->
                 {
-                    linkList.add((Link) field);
-                }
-            });
+                    if (Link.class.isAssignableFrom(field.getClass()))
+                    {
+                        linkList.add((Link) field);
+                    }
+                });
+            }
         }
         return linkList;
     }
