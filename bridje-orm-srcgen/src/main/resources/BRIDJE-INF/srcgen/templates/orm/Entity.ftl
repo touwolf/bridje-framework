@@ -61,13 +61,13 @@ public class ${entity.name}
     public void set${field.name?cap_first}(${field.javaType} ${field.name})
     {
         <#if field.javaType == "String">
-        <#if field.blankToNull>
+        <#if field.blankToNull?? && field.blankToNull>
         if(${field.name} != null && ${field.name}.trim().isEmpty())
         {
             this.${field.name} = null;
             return;
         }
-        <#elseif field.emptyToNull>
+        <#elseif field.emptyToNull?? && field.emptyToNull>
         if(${field.name} != null && ${field.name}.isEmpty())
         {
             this.${field.name} = null;
