@@ -19,7 +19,15 @@ package org.bridje.web.i18n;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * A provider for i18n resources.
+ */
 public interface WebI18nProvider
 {
+    /**
+     * Finds all the resources for this provider.
+     * 
+     * @return Finds all the resources for this provider.
+     */
     Map<String, ResourceBundle> findResourceBundles();
 }

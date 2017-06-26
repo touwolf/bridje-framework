@@ -24,6 +24,9 @@ import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 
+/**
+ * This service allows to gets an inject i1n resources for the web views.
+ */
 @Component
 public class WebI18nServices
 {
@@ -33,7 +36,7 @@ public class WebI18nServices
     private WebI18nProvider[] webI18nProv;
 
     @PostConstruct
-    public void init()
+    private void init()
     {
         initI18nMap();
     }
@@ -49,6 +52,11 @@ public class WebI18nServices
         i18nMap = Collections.unmodifiableMap(i18nMap);
     }
 
+    /**
+     * All the i18n resources.
+     * 
+     * @return All the i18n resources.
+     */
     public Map<String, ResourceBundle> getI18nMap()
     {
         return i18nMap;

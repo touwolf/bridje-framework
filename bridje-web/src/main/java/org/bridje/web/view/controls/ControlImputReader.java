@@ -27,7 +27,7 @@ import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
 
 /**
- * 
+ * Utility object that allows to read the input values from the HTTP request.
  */
 public class ControlImputReader
 {
@@ -35,6 +35,11 @@ public class ControlImputReader
 
     private final Map<String,List<HttpReqParam>> parametersMap;
 
+    /**
+     * Default constructor.
+     * 
+     * @param req The HTTP request.
+     */
     public ControlImputReader(HttpBridletRequest req)
     {
         filesMap = new LinkedHashMap<>();
@@ -63,6 +68,12 @@ public class ControlImputReader
         }
     }
     
+    /**
+     * Gets the given uploaded file.
+     * 
+     * @param parameter The name of the uploaded file.
+     * @return The uploaded file or null if it does not exists.
+     */
     public UploadedFile getUploadedFile(String parameter)
     {
         List<UploadedFile> result = filesMap.get(parameter);
@@ -70,6 +81,12 @@ public class ControlImputReader
         return null;
     }
 
+    /**
+     * Reads and remove an uploaded file parameter.
+     * 
+     * @param parameter The name of the uploaded file.
+     * @return The uploaded file or null if it does not exists.
+     */
     public UploadedFile popUploadedFile(String parameter)
     {
         List<UploadedFile> result = filesMap.get(parameter);
@@ -83,6 +100,12 @@ public class ControlImputReader
         return null;
     }
 
+    /**
+     * Reads the given parameter from the request.
+     * 
+     * @param parameter The name of the parameter.
+     * @return The readed parameter.
+     */
     public HttpReqParam getParameter(String parameter)
     {
         List<HttpReqParam> result = parametersMap.get(parameter);
@@ -90,6 +113,12 @@ public class ControlImputReader
         return null;
     }
 
+    /**
+     * Reads and remove the given parameter from the request.
+     * 
+     * @param parameter The name of the parameter.
+     * @return The readed parameter.
+     */
     public HttpReqParam popParameter(String parameter)
     {
         List<HttpReqParam> result = parametersMap.get(parameter);
