@@ -27,8 +27,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum ReadOperationResultType
 {
+    /**
+     * The read operation returns only one element.
+     */
     @XmlEnumValue("one")
     ONE,
+    /**
+     * The read operation returns a list of element.
+     */
     @XmlEnumValue("all")
     ALL;
 }

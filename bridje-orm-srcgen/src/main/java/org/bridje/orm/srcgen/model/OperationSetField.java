@@ -58,8 +58,9 @@ public class OperationSetField
     }
 
     /**
+     * The name of the field.
      * 
-     * @return 
+     * @return The name of the field.
      */
     public String getFieldName()
     {
@@ -67,8 +68,9 @@ public class OperationSetField
     }
 
     /**
+     * The name of the field.
      * 
-     * @param fieldName 
+     * @param fieldName The name of the field.
      */
     public void setFieldName(String fieldName)
     {
@@ -76,8 +78,9 @@ public class OperationSetField
     }
 
     /**
+     * The operation for this object.
      * 
-     * @return 
+     * @return The operation for this object.
      */
     public OperationInfBase getOperation()
     {
@@ -104,12 +107,22 @@ public class OperationSetField
         this.value = value;
     }
 
+    /**
+     * This value will be set only if the value of the field is null.
+     * 
+     * @return true the object will be set only if is null false otherwise.
+     */
     public Boolean getIfNull()
     {
         if(ifNull == null) return false;
         return ifNull;
     }
 
+    /**
+     * This value will be set only if the value of the field is null.
+     * 
+     * @param ifNull true the object will be set only if is null false otherwise.
+     */
     public void setIfNull(Boolean ifNull)
     {
         this.ifNull = ifNull;
@@ -126,6 +139,12 @@ public class OperationSetField
         operation = (OperationInfBase)parent;
     }
 
+    /**
+     * Clones this object into a new OperationSetField.
+     * 
+     * @param operation The base operation for the new object.
+     * @return The cloned object.
+     */
     public OperationSetField clone(OperationInfBase operation)
     {
         OperationSetField res = new OperationSetField();

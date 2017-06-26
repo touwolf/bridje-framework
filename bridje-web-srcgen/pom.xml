@@ -17,27 +17,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.bridje</groupId>
-                <artifactId>bridje-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <goals>
-                            <goal>generate-sources</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.bridje</groupId>
-                        <artifactId>bridje-jfx-srcgen</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>2.2</version>

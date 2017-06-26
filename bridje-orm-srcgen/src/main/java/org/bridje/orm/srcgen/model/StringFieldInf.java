@@ -38,41 +38,81 @@ public class StringFieldInf extends FieldInfBase
     @XmlAttribute
     private Boolean blankToNull;
 
+    /**
+     * The length of the column.
+     * 
+     * @return The length of the column.
+     */
     public Integer getLength()
     {
         return length;
     }
 
+    /**
+     * The length of the column.
+     * 
+     * @param length The length of the column.
+     */
     public void setLength(Integer length)
     {
         this.length = length;
     }
 
+    /**
+     * The SQL type for this string field.
+     * 
+     * @return The SQL type for this string field.
+     */
     public StringFieldSQLType getSqlType()
     {
         return sqlType;
     }
 
+    /**
+     * The SQL type for this string field.
+     * 
+     * @param sqlType The SQL type for this string field.
+     */
     public void setSqlType(StringFieldSQLType sqlType)
     {
         this.sqlType = sqlType;
     }
 
+    /**
+     * If the field is empty it must be converted to null.
+     * 
+     * @return If the field is empty it must be converted to null.
+     */
     public Boolean getEmptyToNull()
     {
         return emptyToNull;
     }
 
+    /**
+     * If the field is empty it must be converted to null.
+     * 
+     * @param emptyToNull If the field is empty it must be converted to null.
+     */
     public void setEmptyToNull(Boolean emptyToNull)
     {
         this.emptyToNull = emptyToNull;
     }
 
+    /**
+     * If the field is blank it must be converted to null.
+     * 
+     * @return If the field is blank it must be converted to null.
+     */
     public Boolean getBlankToNull()
     {
         return blankToNull;
     }
 
+    /**
+     * If the field is blank it must be converted to null.
+     * 
+     * @param blankToNull If the field is blank it must be converted to null.
+     */
     public void setBlankToNull(Boolean blankToNull)
     {
         this.blankToNull = blankToNull;

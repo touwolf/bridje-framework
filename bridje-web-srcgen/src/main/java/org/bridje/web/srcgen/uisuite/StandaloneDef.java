@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- * A UI suite control definition.
+ * A UI suite standalone specification.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StandaloneDef
@@ -34,11 +34,21 @@ public class StandaloneDef
     })
     private List<ChildField> content;
 
+    /**
+     * The content for this standalone declaration.
+     * 
+     * @return The content for this standalone declaration.
+     */
     public List<ChildField> getContent()
     {
         return content;
     }
 
+    /**
+     * The content for this standalone declaration
+     * 
+     * @param content The content for this standalone declaration
+     */
     public void setContent(List<ChildField> content)
     {
         this.content = content;

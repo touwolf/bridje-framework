@@ -158,5 +158,10 @@ public abstract class OperationInfBase
         return name;
     }
 
+    /**
+     * Gets the signature of the operation.
+     * 
+     * @return The signature of the operation.
+     */
     public abstract String getSignature();
 }

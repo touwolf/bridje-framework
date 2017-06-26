@@ -344,26 +344,46 @@ public class UISuite
         this.includes = includes;
     }
 
+    /**
+     * The definition of the standalone children.
+     * 
+     * @return The definition of the standalone children.
+     */
     public StandaloneDef getStandalone()
     {
         return standalone;
     }
 
+    /**
+     * The definition of the standalone children.
+     * 
+     * @param standalone The definition of the standalone children.
+     */
     public void setStandalone(StandaloneDef standalone)
     {
         this.standalone = standalone;
     }
 
+    /**
+     * The defines for this UI suite.
+     * 
+     * @return The defines for this UI suite.
+     */
     public StandaloneDef getDefines()
     {
         return defines;
     }
 
+    /**
+     * The defines for this UI suite.
+     * 
+     * @param defines The defines for this UI suite.
+     */
     public void setDefines(StandaloneDef defines)
     {
         this.defines = defines;
     }
-    
+
     @Override
     public String toString()
     {

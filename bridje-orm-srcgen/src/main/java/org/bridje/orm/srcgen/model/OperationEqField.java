@@ -121,6 +121,12 @@ public class OperationEqField
         return "eq";
     }
 
+    /**
+     * Clones this condition.
+     * 
+     * @param operation The parent operation.
+     * @return The cloned object.
+     */
     public OperationEqField clone(OperationInfBase operation)
     {
         OperationEqField res = new OperationEqField();

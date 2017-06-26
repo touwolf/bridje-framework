@@ -27,6 +27,11 @@ public class ControlDef extends BaseControlDef
 {
     private ReadInputWorkFlow readInputFlow;
 
+    /**
+     * The flow for reading the input of the control.
+     * 
+     * @return The read input flow for this control.
+     */
     public ReadInputWorkFlow getReadInputFlow()
     {
         return readInputFlow;

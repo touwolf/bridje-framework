@@ -309,6 +309,11 @@ public final class AceEditor extends VBox
         return line.substring(0, startIndex) + replacement + line.substring(endIndex);
     }
 
+    /**
+     * Return the replace handler.
+     * 
+     * @return The replace handler.
+     */
     public AceReplaceHandler getReplaceHandler()
     {
         return replaceHandler;

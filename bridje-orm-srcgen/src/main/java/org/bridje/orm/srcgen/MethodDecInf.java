@@ -19,23 +19,42 @@ package org.bridje.orm.srcgen;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
+/**
+ * Information for method declaration.
+ */
 public class MethodDecInf
 {
     private final ClassOrInterfaceDeclaration classDec;
     
     private final MethodDeclaration method;
 
+    /**
+     * Default constructor.
+     * 
+     * @param classDec The class of the method.
+     * @param method The method.
+     */
     public MethodDecInf(ClassOrInterfaceDeclaration classDec, MethodDeclaration method)
     {
         this.classDec = classDec;
         this.method = method;
     }
     
+    /**
+     * Gets the class this method belongs to.
+     * 
+     * @return The class this method belongs to.
+     */
     public ClassOrInterfaceDeclaration getClassDec()
     {
         return classDec;
     }
 
+    /**
+     * Gets the method declaration.
+     * 
+     * @return The method declaration.
+     */
     public MethodDeclaration getMethod()
     {
         return method;

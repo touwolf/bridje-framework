@@ -31,11 +31,21 @@ public class RelationFieldInf extends FieldInfBase
     @XmlAttribute
     private EntityInf type;
 
+    /**
+     * The entity for the relation.
+     * 
+     * @return The entity for the relation.
+     */
     public EntityInf getType()
     {
         return type;
     }
 
+    /**
+     * The entity for the relation.
+     * 
+     * @param type The entity for the relation.
+     */
     public void setType(EntityInf type)
     {
         this.type = type;

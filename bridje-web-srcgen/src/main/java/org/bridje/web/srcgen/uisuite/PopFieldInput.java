@@ -20,17 +20,30 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Pops the value of the given field out of the request.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PopFieldInput implements ReadInputAction
 {
     @XmlAttribute
     private String fieldName;
 
+    /**
+     * The name of the field to pop the value.
+     * 
+     * @return The name of the field to pop the value.
+     */
     public String getFieldName()
     {
         return fieldName;
     }
 
+    /**
+     * The name of the field to pop the value.
+     * 
+     * @param fieldName The name of the field to pop the value.
+     */
     public void setFieldName(String fieldName)
     {
         this.fieldName = fieldName;

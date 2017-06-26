@@ -48,6 +48,9 @@ import org.bridje.vfs.VFile;
 @Component
 public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomTypesProvider
 {
+    /**
+     * Data files for generated custom data types.
+     */
     public static final String CUSTOM_DATATYPE_FILE = "BRIDJE-INF/orm/generated-custom-datatypes.properties";
 
     private static final Logger LOG = Logger.getLogger(OrmSourceGenerator.class.getName());

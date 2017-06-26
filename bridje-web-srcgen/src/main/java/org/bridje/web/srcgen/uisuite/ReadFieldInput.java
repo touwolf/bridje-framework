@@ -20,17 +20,30 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Read the value of the given field from the request.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadFieldInput implements ReadInputAction
 {
     @XmlAttribute
     private String fieldName;
 
+    /**
+     * Read the value of the given field from the request.
+     * 
+     * @return Read the value of the given field from the request.
+     */
     public String getFieldName()
     {
         return fieldName;
     }
 
+    /**
+     * Read the value of the given field from the request.
+     * 
+     * @param fieldName Read the value of the given field from the request.
+     */
     public void setFieldName(String fieldName)
     {
         this.fieldName = fieldName;

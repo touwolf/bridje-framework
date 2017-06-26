@@ -339,6 +339,12 @@ public class BaseControlDef
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
     }
     
+    /**
+     * Finds the field with the given name.
+     * 
+     * @param fieldName The name of the field.
+     * @return Returns the field finded or null is it does not exists.
+     */
     public FieldDef findField(String fieldName)
     {
         return getFields().stream().filter(f -> f.getName().equals(fieldName)).findFirst().orElse(null);

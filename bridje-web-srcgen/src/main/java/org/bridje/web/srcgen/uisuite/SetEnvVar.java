@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Sets the given var to the given value in the el environment.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SetEnvVar implements ReadInputAction
 {
@@ -29,21 +32,41 @@ public class SetEnvVar implements ReadInputAction
     @XmlAttribute
     private String value;
 
+    /**
+     * The name of var to set.
+     * 
+     * @return The name of var to set.
+     */
     public String getVar()
     {
         return var;
     }
 
+    /**
+     * The name of var to set.
+     * 
+     * @param var The name of var to set.
+     */
     public void setVar(String var)
     {
         this.var = var;
     }
 
+    /**
+     * The value of the var.
+     * 
+     * @return The value of the var.
+     */
     public String getValue()
     {
         return value;
     }
 
+    /**
+     * The value of the var.
+     * 
+     * @param value The value of the var.
+     */
     public void setValue(String value)
     {
         this.value = value;

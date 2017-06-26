@@ -19,6 +19,9 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * Pops all values of all inputs out of the request.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PopAllFieldInputs implements ReadInputAction
 {

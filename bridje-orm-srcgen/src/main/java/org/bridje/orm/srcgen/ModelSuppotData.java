@@ -28,24 +28,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.bridje.orm.srcgen.model.ModelInf;
 
+/**
+ * The data for model support class.
+ */
 public class ModelSuppotData
 {
     private final ModelInf ormModel;
 
     private final List<CompilationUnit> compilationUnits;
-    
+
     private List<String> allImports;
-    
+
     private List<MethodDecInf> allMethods;
-    
+
     private List<ClassOrInterfaceDeclaration> allClasses;
 
+    /**
+     * Default constructor.
+     * 
+     * @param ormModel The current procesing ORM model.
+     * @param compilationUnits The list of parsed classes for the current project.
+     */
     public ModelSuppotData(ModelInf ormModel, List<CompilationUnit> compilationUnits)
     {
         this.compilationUnits = compilationUnits;
         this.ormModel = ormModel;
     }
 
+    /**
+     * Get all the current classes.
+     * 
+     * @return The list of all classes in the current project.
+     */
     public List<ClassOrInterfaceDeclaration> getAllClasses()
     {
         if(allClasses == null)
@@ -55,7 +69,12 @@ public class ModelSuppotData
         }
         return allClasses;
     }
-    
+
+    /**
+     * Get all support methods of all the support classes.
+     * 
+     * @return The list with all the support methods.
+     */
     public List<MethodDecInf> getAllMethods()
     {
         if(allMethods == null)
@@ -66,6 +85,11 @@ public class ModelSuppotData
         return allMethods;
     }
 
+    /**
+     * Gets all the imports, used in the support classes.
+     * 
+     * @return The list of imports.
+     */
     public List<String> getAllImports()
     {
         if(allImports == null)

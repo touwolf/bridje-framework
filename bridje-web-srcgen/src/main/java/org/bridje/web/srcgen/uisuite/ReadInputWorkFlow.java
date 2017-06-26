@@ -42,6 +42,11 @@ public class ReadInputWorkFlow
     })
     private List<ReadInputAction> actions;
 
+    /**
+     * The list of actions for this flow.
+     * 
+     * @return The list of actions for this flow.
+     */
     public List<ReadInputAction> getActions()
     {
         return actions;

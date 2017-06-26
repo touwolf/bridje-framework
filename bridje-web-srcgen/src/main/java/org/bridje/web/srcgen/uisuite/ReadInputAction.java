@@ -16,6 +16,10 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+/**
+ * Base class for all read input actions.
+ * 
+ */
 public interface ReadInputAction
 {
     

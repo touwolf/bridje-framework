@@ -14,6 +14,12 @@ public final class AceJsGate
 
     private final JSObject js;
 
+    /**
+     * Default constructor.
+     * 
+     * @param editor The editor.
+     * @param js The javascript script.
+     */
     @SuppressWarnings("LeakingThisInConstructor")
     public AceJsGate(AceEditor editor, JSObject js)
     {

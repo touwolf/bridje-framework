@@ -20,17 +20,30 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * Reads the input for the given child or children field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadChildren implements ReadInputAction
 {
     @XmlAttribute
     private String fieldName;
 
+    /**
+     * The child or children field name to read the input.
+     * 
+     * @return The child or children field name to read the input.
+     */
     public String getFieldName()
     {
         return fieldName;
     }
 
+    /**
+     * The child or children field name to read the input.
+     * 
+     * @param fieldName The child or children field name to read the input.
+     */
     public void setFieldName(String fieldName)
     {
         this.fieldName = fieldName;
