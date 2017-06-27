@@ -32,7 +32,7 @@ import org.bridje.ioc.Priority;
 import org.bridje.web.WebScope;
 
 @Component
-@Priority(20)
+@Priority(200)
 class WebSessionBridlet implements HttpBridlet
 {
     @InjectNext
