@@ -120,11 +120,11 @@ public class GlobExpr
         // replace .
         regex = regex.replaceAll("\\.", "\\\\.");
         // replace **
-        regex = regex.replaceAll("\\*\\*", "(\\\\w|-|\\\\.|/)+");
+        regex = regex.replaceAll("\\*\\*", "(\\\\s|\\\\w|-|\\\\.|/)+");
         // replace *
-        regex = regex.replaceAll("\\*", "(\\\\w|-|\\\\.)*");
+        regex = regex.replaceAll("\\*", "(\\\\s|\\\\w|-|\\\\.)*");
         // replace ?
-        regex = regex.replaceAll("\\?", "(\\\\w|-|\\\\.)");
+        regex = regex.replaceAll("\\?", "(\\\\s|\\\\w|-|\\\\.)");
         // replace {}
         regex = replaceGlobBoundaries(regex, "{", "}", false);
         // replace /
