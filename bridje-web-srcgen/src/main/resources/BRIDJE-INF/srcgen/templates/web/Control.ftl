@@ -79,7 +79,7 @@ public class ${control.name} extends ${control.base}
         </#if>
     })
     </#if>
-    private ${f.javaType} ${f.name};
+    private ${f.javaType!} ${f.name};
 
     </#list>
     <#list control.fields as f>

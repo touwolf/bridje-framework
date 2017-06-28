@@ -65,6 +65,7 @@ public abstract class BaseDataFlield implements FieldDef
      */
     public String getType()
     {
+        if(type == null || type.isEmpty()) return "String";
         return type;
     }
 
