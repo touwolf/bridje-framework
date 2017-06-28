@@ -264,7 +264,7 @@ public class ${control.name} extends ${control.base}
         </#list>
     }
 
-    <#if control.readInputFlow??>
+    <#if control.input??>
     <#macro printReadInputActions actions ident>
         <#list actions as ria>
         <#switch ria.class.simpleName>
@@ -319,7 +319,7 @@ public class ${control.name} extends ${control.base}
     @Override
     public void readInput(ControlImputReader req, ElEnvironment env)
     {
-        <@printReadInputActions control.readInputFlow.actions "" />
+        <@printReadInputActions control.input.actions "" />
     }
 
     </#if>

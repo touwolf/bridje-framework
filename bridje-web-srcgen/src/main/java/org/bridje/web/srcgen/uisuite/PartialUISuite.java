@@ -39,6 +39,20 @@ import org.bridje.vfs.VFileInputStream;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PartialUISuite
 {
+    @XmlElementWrapper(name = "ftlMacros")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlMacro", type = FtlMacro.class)
+    })
+    private List<FtlMacro> ftlMacros;
+
+    @XmlElementWrapper(name = "ftlFunctions")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlFunction", type = FtlFunction.class)
+    })
+    private List<FtlFunction> ftlFunctions;
+
     @XmlElementWrapper(name = "ftlIncludes")
     @XmlElements(
     {
@@ -147,6 +161,46 @@ public class PartialUISuite
         this.ftlIncludes = ftlIncludes;
     }
 
+    /**
+     * The freemarker macros to includes for this suite.
+     * 
+     * @return The freemarker macros to includes for this suite.
+     */
+    public List<FtlMacro> getFtlMacros()
+    {
+        return ftlMacros;
+    }
+
+    /**
+     * The freemarker macros to includes for this suite.
+     * 
+     * @param ftlMacros The freemarker macros to includes for this suite.
+     */
+    public void setFtlMacros(List<FtlMacro> ftlMacros)
+    {
+        this.ftlMacros = ftlMacros;
+    }
+
+    /**
+     * The freemarker functions to includes for this suite.
+     * 
+     * @return The freemarker functions to includes for this suite.
+     */
+    public List<FtlFunction> getFtlFunctions()
+    {
+        return ftlFunctions;
+    }
+
+    /**
+     * The freemarker functions to includes for this suite.
+     * 
+     * @param ftlFunctions The freemarker functions to includes for this suite.
+     */
+    public void setFtlFunctions(List<FtlFunction> ftlFunctions)
+    {
+        this.ftlFunctions = ftlFunctions;
+    }
+    
     /**
      * Loads a PartialUISuite from a file.
      * 

@@ -13,27 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bridje.web.srcgen.uisuite;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 
-/**
- * A UI suite control definition.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ControlDef extends BaseControlDef
+public class FtlMacro
 {
-    private ReadInputWorkFlow input;
+    @XmlAttribute
+    private String name;
 
-    /**
-     * The flow for reading the input of the control.
-     * 
-     * @return The read input flow for this control.
-     */
-    public ReadInputWorkFlow getInput()
+    @XmlAttribute
+    public String params;
+    
+    @XmlValue
+    private String content;
+
+    public String getName()
     {
-        return input;
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getParams()
+    {
+        return params;
+    }
+
+    public void setParams(String params)
+    {
+        this.params = params;
+    }
+
+    public String getContent()
+    {
+        return content;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
     }
 }

@@ -5,6 +5,18 @@
 <#include "${ftlInc}" >
 [/#list]
 
+[#list uisuite.ftlMacros![] as ftlMac]
+<#macro ${ftlMac.name} ${ftlMac.params!} >
+    [@compress single_line=true][#compress]${ftlMac.content}[/#compress][/@compress]
+</#macro>
+[/#list]
+
+[#list uisuite.ftlFunctions![] as ftlFunc]
+<#function ${ftlFunc.name} ${ftlFunc.params!} >
+    [@compress single_line=true][#compress]${ftlFunc.content}[/#compress][/@compress]
+</#function>
+[/#list]
+
 [#list uisuite.resources as r]
 <#macro render${r.name?cap_first}Scripts themeName insideView>
 [#list r.scripts as s]
