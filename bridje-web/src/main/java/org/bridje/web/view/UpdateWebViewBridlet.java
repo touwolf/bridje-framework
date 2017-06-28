@@ -27,7 +27,7 @@ import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 
 @Component
-@Priority(200)
+@Priority(300)
 @XmlTransient
 class UpdateWebViewBridlet implements HttpBridlet
 {
