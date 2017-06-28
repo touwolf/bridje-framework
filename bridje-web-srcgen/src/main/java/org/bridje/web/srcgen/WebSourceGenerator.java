@@ -85,7 +85,10 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
                 data.put("control", controlDef);
                 srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
             }
-            
+        }
+
+        if(uiSuite.getEnums() != null)
+        {
             for(ControlEnum en : uiSuite.getEnums())
             {
                 data = new HashMap<>();
