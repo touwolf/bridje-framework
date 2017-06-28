@@ -120,6 +120,22 @@ public class BaseControlDef
     }
 
     /**
+     * 
+     * @return 
+     */
+    public List<ControlDef> getAllBase()
+    {
+        List<ControlDef> result = new ArrayList<>();
+        ControlDef currBase = findBase();
+        while(currBase != null)
+        {
+            result.add(currBase);
+            currBase = ((BaseControlDef)currBase).findBase();
+        }
+        return result;
+    }
+
+    /**
      * The parent for this control, by default it is "Control".
      * 
      * @param base The name of the parent control.
@@ -337,6 +353,16 @@ public class BaseControlDef
     {
         if(baseTemplate == null) return null;
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    private ControlDef findBase()
+    {
+        if(base == null || base.equals("Control")) return null;
+        return uiSuite.getControls().stream().filter(p -> p.getName().equalsIgnoreCase(base)).findFirst().orElse(null);
     }
     
     /**

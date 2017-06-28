@@ -45,7 +45,13 @@
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name} control>
+    [#list w.allBase as b]
+    <@render${b.name} control >
+    [/#list]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
+    [#list w.allBase?reverse as b]
+    </@render${b.name}>
+    [/#list]
 </#macro>
 
 [/#list]
@@ -124,9 +130,9 @@
 </#macro>
 [/#if]
 
-[#if uisuite.renderViewContainer?? && uisuite.renderViewContainer?has_content]
+[#if uisuite.renderView?? && uisuite.renderView?has_content]
 <#macro renderViewContainer>
-    [@compress single_line=true][#compress]${uisuite.renderViewContainer!}[/#compress][/@compress]
+    [@compress single_line=true][#compress]${uisuite.renderView!}[/#compress][/@compress]
 </#macro>
 [/#if]
 

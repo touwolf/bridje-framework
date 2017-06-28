@@ -56,7 +56,7 @@ public class UISuite
     @XmlAttribute
     private String namespace;
 
-    private String renderViewContainer;
+    private String renderView;
 
     private String renderBody;
 
@@ -189,19 +189,19 @@ public class UISuite
      * 
      * @return The HTML to render for the view container.
      */
-    public String getRenderViewContainer()
+    public String getRenderView()
     {
-        return renderViewContainer;
+        return renderView;
     }
 
     /**
      * The HTML to render for the view container.
      * 
-     * @param renderViewContainer The HTML to render for the view container.
+     * @param renderView The HTML to render for the view container.
      */
-    public void setRenderViewContainer(String renderViewContainer)
+    public void setRenderView(String renderView)
     {
-        this.renderViewContainer = renderViewContainer;
+        this.renderView = renderView;
     }
 
     /**
@@ -584,4 +584,6 @@ public class UISuite
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(object, os);
     }
+    
+    
 }
