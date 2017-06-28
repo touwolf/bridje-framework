@@ -117,6 +117,13 @@ public class UISuite
     })
     private List<TemplateControlDef> controlsTemplates;
 
+    @XmlElementWrapper(name = "enums")
+    @XmlElements(
+    {
+        @XmlElement(name = "enum", type = ControlEnum.class)
+    })
+    private List<ControlEnum> enums;
+    
     /**
      * The name of the suite.
      * 
@@ -319,6 +326,26 @@ public class UISuite
     }
 
     /**
+     * The list of enums for this suite.
+     * 
+     * @return The list of enums for this suite.
+     */
+    public List<ControlEnum> getEnums()
+    {
+        return enums;
+    }
+
+    /**
+     * The list of enums for this suite.
+     * 
+     * @param enums The list of enums for this suite.
+     */
+    public void setEnums(List<ControlEnum> enums)
+    {
+        this.enums = enums;
+    }
+   
+    /**
      * The freemarker templates to includes for this suite.
      * 
      * @return The freemarker templates to includes for this suite.
@@ -327,7 +354,7 @@ public class UISuite
     {
         return ftlIncludes;
     }
-    
+
     /**
      * The freemarker templates to includes for this suite.
      * 
@@ -474,6 +501,12 @@ public class UISuite
                                 if(controlsTemplates == null) controlsTemplates = new ArrayList<>();
                                 partial.getControlsTemplates().stream().forEach(c -> c.setUiSuite(this));
                                 controlsTemplates.addAll(partial.getControlsTemplates());
+                            }
+                            if(partial.getEnums() != null)
+                            {
+                                if(enums == null) enums = new ArrayList<>();
+                                partial.getEnums().stream().forEach(c -> c.setUiSuite(this));
+                                enums.addAll(partial.getEnums());
                             }
                             if(partial.getResources() != null)
                             {

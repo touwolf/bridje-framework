@@ -27,6 +27,7 @@ import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
 import org.bridje.web.srcgen.uisuite.ControlDef;
+import org.bridje.web.srcgen.uisuite.ControlEnum;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
@@ -83,6 +84,14 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
                 data.put("uisuite", uiSuite);
                 data.put("control", controlDef);
                 srcGen.createClass(controlDef.getFullName(), "web/Control.ftl", data);
+            }
+            
+            for(ControlEnum en : uiSuite.getEnums())
+            {
+                data = new HashMap<>();
+                data.put("uisuite", uiSuite);
+                data.put("enum", en);
+                srcGen.createClass(en.getFullName(), "web/Enum.ftl", data);
             }
         }
     }

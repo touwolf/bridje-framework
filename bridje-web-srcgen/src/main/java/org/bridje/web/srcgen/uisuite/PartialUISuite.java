@@ -81,6 +81,13 @@ public class PartialUISuite
     })
     private List<TemplateControlDef> controlsTemplates;
 
+    @XmlElementWrapper(name = "enums")
+    @XmlElements(
+    {
+        @XmlElement(name = "enum", type = ControlEnum.class)
+    })
+    private List<ControlEnum> enums;
+
     /**
      * The resources for this partial UI suite declaration.
      * 
@@ -201,6 +208,27 @@ public class PartialUISuite
         this.ftlFunctions = ftlFunctions;
     }
     
+
+    /**
+     * The list of enums for this suite.
+     * 
+     * @return The list of enums for this suite.
+     */
+    public List<ControlEnum> getEnums()
+    {
+        return enums;
+    }
+
+    /**
+     * The list of enums for this suite.
+     * 
+     * @param enums The list of enums for this suite.
+     */
+    public void setEnums(List<ControlEnum> enums)
+    {
+        this.enums = enums;
+    }
+
     /**
      * Loads a PartialUISuite from a file.
      * 
