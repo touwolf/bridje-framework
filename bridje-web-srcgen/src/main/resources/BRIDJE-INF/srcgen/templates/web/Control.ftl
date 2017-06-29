@@ -229,6 +229,7 @@ public class ${control.name} extends ${control.baseName}
         if(resources == null)
         {
             resources = new ArrayList<>();
+            resources.addAll(super.resources());
             <#list control.resources as r>
             resources.add("${r.name}");
             </#list>

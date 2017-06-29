@@ -16,7 +16,7 @@
 -->
 
 <#macro renderStyle theme style>
-    <#if style?starts_with("http://") || style?starts_with("https://")>
+    <#if style?starts_with("http://") || style?starts_with("https://") || style?starts_with("/")>
         <link rel="stylesheet" href="${style}" />
     <#else>
         <link rel="stylesheet" href="/__themes/${theme}/${style}" />
@@ -24,7 +24,7 @@
 </#macro>
 
 <#macro renderLink theme rel href sizes>
-    <#if href?starts_with("http://") || href?starts_with("https://")>
+    <#if href?starts_with("http://") || href?starts_with("https://") || href?starts_with("/")>
         <link rel="${rel!}" href="${href}" <#if sizes != "">sizes="${sizes!}"</#if> />
     <#else>
         <link rel="${rel!}" href="/__themes/${theme}/${href}" <#if sizes != "">sizes="${sizes!}"</#if> />
@@ -32,7 +32,7 @@
 </#macro>
 
 <#macro renderScript theme script async=false defer=false>
-    <#if script?starts_with("http://") || script?starts_with("https://")>
+    <#if script?starts_with("http://") || script?starts_with("https://") || script?starts_with("/")>
         <script src="${script}" type="text/javascript"<#if async> async</#if><#if defer> defer</#if>></script>
     <#else>
         <script src="/__themes/${theme}/${script}" type="text/javascript"<#if async> async</#if><#if defer> defer</#if>></script>

@@ -272,6 +272,7 @@ public class UISuite
      */
     public Resource getDefaultResources()
     {
+        if(defaultResources == null) defaultResources = new Resource();
         return defaultResources;
     }
 
@@ -482,7 +483,15 @@ public class UISuite
         {
             for (String include : includes)
             {
-                VFile includeFile = new VFile(currentDir.getPath().join(new Path(include)));
+                VFile includeFile;
+                if(include.startsWith("/"))
+                {
+                    includeFile = new VFile(include);
+                }
+                else
+                {
+                    includeFile = new VFile(currentDir.getPath().join(new Path(include)));
+                }
                 if(includeFile.exists())
                 {
                     try

@@ -30,6 +30,7 @@ import org.apache.maven.project.MavenProject;
 import org.bridje.ioc.Ioc;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.CpSource;
 import org.bridje.vfs.FileSource;
 import org.bridje.vfs.VFile;
 
@@ -66,6 +67,7 @@ public class GenerateMojo extends AbstractMojo
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(dataFolder));
+            new VFile(SrcGenService.SUPL_PATH).mount(new CpSource("/BRIDJE-INF/srcgen/data"));
             if(sourcesFolder.exists()) new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
