@@ -49,13 +49,13 @@
     [#if w.baseControlDef.render??]
     <@render${w.baseControlDef.name} control >
     [/#if]
-    [/#list]
+    [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
     [#if w.baseControlDef??]
     [#if w.baseControlDef.render??]
     </@render${w.baseControlDef.name}>
     [/#if]
-    [/#list]
+    [/#if]
 </#macro>
 
 [/#list]
