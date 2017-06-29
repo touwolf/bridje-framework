@@ -7,5 +7,7 @@
     "license": "Apache-2.0",
     "url": "http://www.bridje.org",
     "contributors": [{"name": "Gilberto Vento", "email": "gilberto.vento@gmail.com"}],
-    "dependencies": {}
+    "dependencies": {},
+    "repository" :
+    { "type" : "git", "url" : "https://github.com/bridje/bridje-framework.git"}
 }
