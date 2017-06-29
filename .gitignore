@@ -60,3 +60,4 @@ junit*.properties
 nbproject
 /bridje-ajax/npm-debug.log
 /bridje-ajax/node_modules
+/bridje-ajax/dist
