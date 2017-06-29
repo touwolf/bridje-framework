@@ -46,11 +46,15 @@
 [#list uisuite.controls as w]
 <#macro render${w.name} control>
     [#list w.allBase as b]
+    [#if b.render??]
     <@render${b.name} control >
+    [/#if]
     [/#list]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
     [#list w.allBase?reverse as b]
+    [#if b.render??]
     </@render${b.name}>
+    [/#if]
     [/#list]
 </#macro>
 
