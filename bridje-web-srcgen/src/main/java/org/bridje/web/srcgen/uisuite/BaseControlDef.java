@@ -118,7 +118,7 @@ public class BaseControlDef
         }
         return base;
     }
-
+    
     /**
      * 
      * @return 
@@ -126,11 +126,11 @@ public class BaseControlDef
     public List<ControlDef> getAllBase()
     {
         List<ControlDef> result = new ArrayList<>();
-        ControlDef currBase = findBase();
+        ControlDef currBase = getBaseControlDef();
         while(currBase != null)
         {
             result.add(currBase);
-            currBase = ((BaseControlDef)currBase).findBase();
+            currBase = ((BaseControlDef)currBase).getBaseControlDef();
         }
         return result;
     }
@@ -215,7 +215,7 @@ public class BaseControlDef
         if(allFields == null)
         {
             allFields = new ArrayList<>();
-            TemplateControlDef tmpl = findBaseTemplate();
+            TemplateControlDef tmpl = getBaseTemplateDef();
             if(tmpl != null) allFields.addAll(tmpl.getFields());
             if(fields != null) allFields.addAll(fields);
         }
@@ -232,7 +232,7 @@ public class BaseControlDef
         if(allResources == null)
         {
             allResources = new ArrayList<>();
-            TemplateControlDef tmpl = findBaseTemplate();
+            TemplateControlDef tmpl = getBaseTemplateDef();
             if(tmpl != null) allResources.addAll(tmpl.getResources());
             if(resources != null) allResources.addAll(resources);
         }
@@ -349,7 +349,7 @@ public class BaseControlDef
      * 
      * @return The base template for this control.
      */
-    private TemplateControlDef findBaseTemplate()
+    public TemplateControlDef getBaseTemplateDef()
     {
         if(baseTemplate == null) return null;
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
@@ -359,7 +359,7 @@ public class BaseControlDef
      * 
      * @return 
      */
-    private ControlDef findBase()
+    public ControlDef getBaseControlDef()
     {
         if(base == null || base.equals("Control")) return null;
         return uiSuite.getControls().stream().filter(p -> p.getName().equalsIgnoreCase(base)).findFirst().orElse(null);

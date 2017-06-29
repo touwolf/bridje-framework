@@ -45,15 +45,15 @@
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name} control>
-    [#list w.allBase as b]
-    [#if b.render??]
-    <@render${b.name} control >
+    [#if w.baseControlDef??]
+    [#if w.baseControlDef.render??]
+    <@render${w.baseControlDef.name} control >
     [/#if]
     [/#list]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#list w.allBase?reverse as b]
-    [#if b.render??]
-    </@render${b.name}>
+    [#if w.baseControlDef??]
+    [#if w.baseControlDef.render??]
+    </@render${w.baseControlDef.name}>
     [/#if]
     [/#list]
 </#macro>
