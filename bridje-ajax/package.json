@@ -1,13 +1,24 @@
 {
-    "name": "@bridje/bridje-ajax",
-    "version": "0.0.1",
-    "description": "Bridje's API for ajax comunication with the server.",
-    "keywords": ["ajax", "client", "browser", "bridje"],
-    "author": "gilbe",
-    "license": "Apache-2.0",
-    "url": "http://www.bridje.org",
-    "contributors": [{"name": "Gilberto Vento", "email": "gilberto.vento@gmail.com"}],
-    "dependencies": {},
-    "repository" :
-    { "type" : "git", "url" : "https://github.com/bridje/bridje-framework.git"}
+  "name": "@bridje/bridje-ajax",
+  "version": "0.0.1",
+  "description": "Bridje's API for ajax comunication with the server.",
+  "keywords": [
+    "ajax",
+    "client",
+    "browser",
+    "bridje"
+  ],
+  "author": "gilbe",
+  "license": "Apache-2.0",
+  "url": "http://www.bridje.org",
+  "contributors": [
+    {
+      "name": "Gilberto Vento",
+      "email": "gilberto.vento@gmail.com"
+    }
+  ],
+  "dependencies": {},
+  "scripts": {
+    "build": "uglifyjs ./bridje-ajax.js -c -m -o ./dst/bridje-ajax.min.js --source-map ./dst/bridje-ajax.min.js.map"
+  }
 }
