@@ -38,9 +38,8 @@ function bridjeExecuteAction(event)
         xhr = new XMLHttpRequest();
         xhr.open(form.getAttribute("method"), url, 1);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.setRequestHeader('Content-type', enctype);
-        xhr.setRequestHeader('Bridje-View', view);
-        xhr.setRequestHeader('Bridje-Event', event);
+        xhr.setRequestHeader('Bridje-View', encodeURI(view));
+        xhr.setRequestHeader('Bridje-Event', encodeURI(event));
         xhr.onload = function()
         {
             if (xhr.status === 200)
