@@ -11,6 +11,9 @@
   "author": "gilbe",
   "license": "Apache-2.0",
   "url": "http://www.bridje.org",
+  "repository": {
+    "private": true
+  },
   "contributors": [
     {
       "name": "Gilberto Vento",
@@ -18,7 +21,13 @@
     }
   ],
   "dependencies": {},
+  "devDependencies": {
+    "uglify-js": "latest",
+    "browserify": "latest"
+  },
   "scripts": {
-    "build": "uglifyjs ./bridje-ajax.js -c -m -o ./dst/bridje-ajax.min.js --source-map ./dst/bridje-ajax.min.js.map"
+    "build-debug": "browserify index.js -d --s bridje-ajax -o dist/bridje-ajax.js",
+    "build-min": "browserify index.js --s bridje-ajax | uglifyjs -c -o dist/bridje-ajax.min.js --source-map -o dist/bridje-ajax.min.js",
+    "build": "npm run build-debug && npm run build-min"
   }
 }
