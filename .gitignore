@@ -55,5 +55,6 @@ junit*.properties
 .classpath
 /bridje-el/nbproject/
 /bridje-web/nbproject/
-/bridje-el (copy)/nbproject/
 /bridje-srcgen/nbproject/
+/bridje-ajax/nbproject/private/
+nbproject
