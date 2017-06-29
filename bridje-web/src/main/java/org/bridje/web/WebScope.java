@@ -202,6 +202,16 @@ public final class WebScope implements Scope
     {
         return req.isPatch();
     }
+    
+    /**
+     * 
+     * @param header
+     * @return 
+     */
+    public String getHeader(String header)
+    {
+        return req.getHeader(header);
+    }
 
     /**
      * Gets a unmodificable map to the post parameters sent by the client. If

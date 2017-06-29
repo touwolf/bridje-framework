@@ -65,9 +65,9 @@
 </#macro>
 
 <#macro renderViewContainer>
-    <div id="bridje-view-container" >
+    <form data-bridje-view="${view.name}" id="bridje-view-container" enctype="multipart/form-data" method="post"  >
         <#nested />
-    </div>
+    </form>
 </#macro>
 
 <#macro renderBody>
@@ -89,6 +89,7 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
+            <@renderScript "bridje" "bridje-ajax.js" />
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </@renderHead>
@@ -105,8 +106,6 @@
 </#macro>
 
 <#macro renderPartialView currentControl themeName>
-    <input type="hidden" name="__view" value="${view.name}" />
-    <input type="hidden" name="__action" value="" />
     <@renderState />
     <@renderControl currentControl />
     <@renderViewScripts themeName />

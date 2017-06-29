@@ -118,16 +118,16 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the view to be updated by the __view param name sended to the
+     * Finds the view to be updated by the Bridje-View header sended to the
      * server.
      *
      * @param context The current HTTP bridlet context to extract the path of
      *                the view.
      *
-     * @return The web view if the parameter __view was send to the server, null
+     * @return The web view if the header Bridje-View was send to the server, null
      *         otherwise.
      *
-     * @throws org.bridje.http.HttpException If the __view parameter was send
+     * @throws org.bridje.http.HttpException If the Bridje-View parameter was send
      *                                       but the view referenced by it does
      *                                       not exists.
      */
@@ -147,7 +147,7 @@ public class WebViewsManager
     }
 
     /**
-     * Finds if there is a view to be updated by the __view param name sended to
+     * Finds if there is a view to be updated by the  Bridje-View header name sended to
      * the server.
      *
      * @param context The current HTTP bridlet context to extract the path of
@@ -171,22 +171,22 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the name of the view to be updated by the __view param name sended
+     * Finds the name of the view to be updated by the Bridje-View header name sended
      * to the server.
      *
      * @param context The current HTTP bridlet context to extract the path of
      *                the view.
      *
-     * @return The name of the web view if the parameter __view was send to the
+     * @return The name of the web view if the header Bridje-View was send to the
      *         server, null otherwise.
      */
     public String findUpdateViewName(HttpBridletContext context)
     {
         HttpBridletRequest req = context.getRequest();
-        HttpReqParam viewUpdate = req.getPostParameter("__view");
+        String viewUpdate = req.getHeader("Bridje-View");
         if (viewUpdate != null && !viewUpdate.isEmpty())
         {
-            return viewUpdate.getValue();
+            return viewUpdate;
         }
         return null;
     }
@@ -390,10 +390,10 @@ public class WebViewsManager
      */
     public UIEvent findEvent(HttpBridletRequest req, WebView view)
     {
-        HttpReqParam action = req.getPostParameter("__action");
+        String action = req.getHeader("Bridje-Event");
         if (action != null)
         {
-            UIEvent event = view.findEvent(action.getValue());
+            UIEvent event = view.findEvent(action);
             return event;
         }
         return null;

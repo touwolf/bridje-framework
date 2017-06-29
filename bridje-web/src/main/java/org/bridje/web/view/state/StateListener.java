@@ -19,7 +19,6 @@ package org.bridje.web.view.state;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import org.bridje.http.HttpReqParam;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;
@@ -47,7 +46,7 @@ class StateListener implements ContextListener<Object>
     {
         if(scope.isPost())
         {
-            HttpReqParam view = scope.getPostParameter("__view");
+            String view = scope.getHeader("Bridje-View");
             isViewUpdate = view != null && !view.isEmpty();
         }
     }

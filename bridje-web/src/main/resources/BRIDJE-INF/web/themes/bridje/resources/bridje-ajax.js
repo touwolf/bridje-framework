@@ -21,17 +21,17 @@
  */
 function bridjeExecuteAction(event)
 {
-    var form = document.getElementsByClassName("bridje-view-container")[0];
+    var form = document.getElementById("bridje-view-container");
     var data = new FormData(form);
     var enctype = form.getAttribute("enctype");
-    var view = form.getAttribute("id");
+    var view = form.getAttribute("data-bridje-view");
     var url = window.location;
 
     window.console && console.log('executing bridje action: ');
-    window.console && console.log('view: ' + view);
-    window.console && console.log('enctype: ' + enctype);
-    window.console && console.log('event: ' + event);
-    window.console && console.log('data: ' + data);
+    window.console && console.log('      view: ' + view);
+    window.console && console.log('      enctype: ' + enctype);
+    window.console && console.log('      event: ' + event);
+    window.console && console.log('      data: ' + data);
 
     try
     {

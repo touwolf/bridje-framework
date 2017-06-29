@@ -43,7 +43,7 @@
 </#macro>
 
 [/#list]
-[#list uisuite.controlsTemplates as w]
+[#list uisuite.controlsTemplates![] as w]
 <#macro render${w.name} control>
     [#if w.baseTemplate??]
     [#if w.baseTemplate.render??]
