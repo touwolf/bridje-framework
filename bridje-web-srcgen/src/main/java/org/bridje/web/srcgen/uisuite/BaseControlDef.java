@@ -110,7 +110,7 @@ public class BaseControlDef
      * 
      * @return The name of the parent control.
      */
-    public String getBase()
+    public String getBaseName()
     {
         if (base == null)
         {
@@ -126,11 +126,11 @@ public class BaseControlDef
     public List<ControlDef> getAllBase()
     {
         List<ControlDef> result = new ArrayList<>();
-        ControlDef currBase = getBaseControlDef();
+        ControlDef currBase = getBase();
         while(currBase != null)
         {
             result.add(currBase);
-            currBase = ((BaseControlDef)currBase).getBaseControlDef();
+            currBase = ((BaseControlDef)currBase).getBase();
         }
         return result;
     }
@@ -140,7 +140,7 @@ public class BaseControlDef
      * 
      * @param base The name of the parent control.
      */
-    public void setBase(String base)
+    public void setBaseName(String base)
     {
         this.base = base;
     }
@@ -150,7 +150,7 @@ public class BaseControlDef
      * 
      * @return The template to be use by this control.
      */
-    public String getBaseTemplate()
+    public String getBaseTemplateName()
     {
         return baseTemplate;
     }
@@ -160,7 +160,7 @@ public class BaseControlDef
      * 
      * @param baseTemplate The template to be use by this control.
      */
-    public void setBaseTemplate(String baseTemplate)
+    public void setBaseTemplateName(String baseTemplate)
     {
         this.baseTemplate = baseTemplate;
     }
@@ -215,7 +215,7 @@ public class BaseControlDef
         if(allFields == null)
         {
             allFields = new ArrayList<>();
-            TemplateControlDef tmpl = getBaseTemplateDef();
+            TemplateControlDef tmpl = getBaseTemplate();
             if(tmpl != null) allFields.addAll(tmpl.getFields());
             if(fields != null) allFields.addAll(fields);
         }
@@ -232,7 +232,7 @@ public class BaseControlDef
         if(allResources == null)
         {
             allResources = new ArrayList<>();
-            TemplateControlDef tmpl = getBaseTemplateDef();
+            TemplateControlDef tmpl = getBaseTemplate();
             if(tmpl != null) allResources.addAll(tmpl.getResources());
             if(resources != null) allResources.addAll(resources);
         }
@@ -349,7 +349,7 @@ public class BaseControlDef
      * 
      * @return The base template for this control.
      */
-    public TemplateControlDef getBaseTemplateDef()
+    public TemplateControlDef getBaseTemplate()
     {
         if(baseTemplate == null) return null;
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
@@ -359,7 +359,7 @@ public class BaseControlDef
      * 
      * @return 
      */
-    public ControlDef getBaseControlDef()
+    public ControlDef getBase()
     {
         if(base == null || base.equals("Control")) return null;
         return uiSuite.getControls().stream().filter(p -> p.getName().equalsIgnoreCase(base)).findFirst().orElse(null);

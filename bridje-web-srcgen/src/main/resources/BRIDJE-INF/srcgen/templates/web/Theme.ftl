@@ -43,17 +43,43 @@
 </#macro>
 
 [/#list]
-[#list uisuite.controls as w]
+[#list uisuite.controlsTemplates as w]
 <#macro render${w.name} control>
-    [#if w.baseControlDef??]
-    [#if w.baseControlDef.render??]
-    <@render${w.baseControlDef.name} control >
+    [#if w.baseTemplate??]
+    [#if w.baseTemplate.render??]
+    <@render${w.baseTemplate.name} control >
     [/#if]
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.baseControlDef??]
-    [#if w.baseControlDef.render??]
-    </@render${w.baseControlDef.name}>
+    [#if w.baseTemplate??]
+    [#if w.baseTemplate.render??]
+    </@render${w.baseTemplate.name}>
+    [/#if]
+    [/#if]
+</#macro>
+
+[/#list]
+[#list uisuite.controls as w]
+<#macro render${w.name} control>
+    [#if w.base??]
+    [#if w.base.render??]
+    <@render${w.base.name} control >
+    [/#if]
+    [/#if]
+    [#if w.baseTemplate??]
+    [#if w.baseTemplate.render??]
+    <@render${w.baseTemplate.name} control >
+    [/#if]
+    [/#if]
+    [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
+    [#if w.baseTemplate??]
+    [#if w.baseTemplate.render??]
+    </@render${w.baseTemplate.name}>
+    [/#if]
+    [/#if]
+    [#if w.base??]
+    [#if w.base.render??]
+    </@render${w.base.name}>
     [/#if]
     [/#if]
 </#macro>
