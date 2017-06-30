@@ -41,6 +41,7 @@ import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
+import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.controls.ControlImputReader;
@@ -263,13 +264,18 @@ public class WebViewsManager
     {
         IocContext<WebScope> wrsCtx = context.get(IocContext.class);
         HttpBridletRequest req = context.getRequest();
-        try
+        ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+        Thls.doAs(() ->
         {
-            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
-            Thls.doAsEx(() ->
+            view.getRoot().readInput(new ControlImputReader(req), elEnv);
+            EventResult result = invokeEvent(req, view);
+            if(result.getData() != null && result.getData() instanceof RedirectTo)
             {
-                view.getRoot().readInput(new ControlImputReader(req), elEnv);
-                EventResult result = invokeEvent(req, view);
+                RedirectTo redirectTo = (RedirectTo)result.getData();
+                context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
+            }
+            else
+            {
                 elEnv.setVar("view", view);
                 elEnv.setVar("i18n", webI18nServ.getI18nMap());
                 elEnv.setVar("eventResult", result);
@@ -279,13 +285,13 @@ public class WebViewsManager
                     themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
                     os.flush();
                 }
-                return null;
-            }, ElEnvironment.class, elEnv);
-        }
-        catch (Exception ex)
-        {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
+                catch (IOException ex)
+                {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+            return null;
+        }, ElEnvironment.class, elEnv);
     }
     
     /**

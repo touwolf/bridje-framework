@@ -119,22 +119,11 @@
 </#macro>
 
 <#macro renderMain themeName >
-    <#if eventResult??
-         && eventResult.data??
-         && eventResult.data?is_hash
-         && eventResult.data.class.simpleName == "RedirectTo"
-         && eventResult.data.status??
-         && eventResult.data.resource??>
-        <script>
-            window.location = '${eventResult.data.resource}';
-        </script>
+    <#if control??>
+        <#assign renderType = "partial" />
+        <@renderPartialView control themeName />
     <#else>
-        <#if control??>
-            <#assign renderType = "partial" />
-            <@renderPartialView control themeName />
-        <#else>
-            <#assign renderType = "full" />
-            <@renderFullView themeName />
-        </#if>
+        <#assign renderType = "full" />
+        <@renderFullView themeName />
     </#if>
 </#macro>
