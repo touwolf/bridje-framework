@@ -45,9 +45,15 @@ function bridjeExecuteAction(event)
             if (xhr.status === 200)
             {
                 var location = xhr.getResponseHeader("Bridje-Location");
-                console.log(location);
-                form.innerHTML = xhr.responseText;
-                window.bridjeActionExecutionComplete && window.bridjeActionExecutionComplete();
+                if(typeof location === "string")
+                {
+                    window.location = location;
+                }
+                else
+                {
+                    form.innerHTML = xhr.responseText;
+                    window.bridjeActionExecutionComplete && window.bridjeActionExecutionComplete();
+                }
             }
             else if (xhr.status !== 200)
             {
