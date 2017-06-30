@@ -18,15 +18,9 @@
 [/#list]
 
 [#list uisuite.resources as r]
-<#macro render${r.name?cap_first}Scripts themeName insideView>
+<#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
-    [#if s.inview?? && s.inview]
-    <#if insideView>
-    [#else]
-    <#if !insideView>
-    [/#if]
-        <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
-    </#if>
+    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
 [/#list]
 </#macro>
 
@@ -46,85 +40,52 @@
 [#list uisuite.controlsTemplates![] as w]
 <#macro render${w.name} control>
     [#if w.baseTemplate??]
-    [#if w.baseTemplate.render??]
-    <@render${w.baseTemplate.name} control >
-    [/#if]
+    <@render${w.baseTemplate.name}Control control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
     [#if w.baseTemplate??]
-    [#if w.baseTemplate.render??]
-    </@render${w.baseTemplate.name}>
-    [/#if]
+    </@render${w.baseTemplate.name}Control>
     [/#if]
 </#macro>
 
 [/#list]
 [#list uisuite.controls as w]
-<#macro render${w.name} control>
+<#macro render${w.name}Control control>
     [#if w.base??]
-    [#if w.base.render??]
-    <@render${w.base.name} control >
-    [/#if]
+    <@render${w.base.name}Control control >
     [/#if]
     [#if w.baseTemplate??]
-    [#if w.baseTemplate.render??]
-    <@render${w.baseTemplate.name} control >
-    [/#if]
+    <@render${w.baseTemplate.name}Control control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
     [#if w.baseTemplate??]
-    [#if w.baseTemplate.render??]
-    </@render${w.baseTemplate.name}>
-    [/#if]
+    </@render${w.baseTemplate.name}Control>
     [/#if]
     [#if w.base??]
-    [#if w.base.render??]
-    </@render${w.base.name}>
-    [/#if]
+    </@render${w.base.name}Control>
     [/#if]
 </#macro>
 
 [/#list]
 <#macro renderControl control>
     <#if control.class.package.name == "${uisuite.package}">
-        <#switch control.class.simpleName>
-            [#list uisuite.controls as w]
-            <#case "${w.name}">
-                <@render${w.name} control />
-                <#break>
-            [/#list]
-            <#default>
-                Control Not Found
-        </#switch>
-    </#if>
-</#macro>
-
-<#macro renderViewScripts themeName>
-    [#list uisuite.defaultResources.scripts as s]
-    [#if s.inview?? && s.inview]
-    <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
-    [/#if]
-    [/#list]
-    <#list view.resources as res>
-        <#assign macroName = "render" + res?cap_first + "Scripts" />
+        <#assign macroName = "render" + control.class.simpleName?cap_first + "Control" />
         <#if .vars[macroName]?? >
-            <@.vars[macroName] themeName true />
+            <@.vars[macroName] control />
         <#else>
-            <!-- ERROR Invalid resource ${r"${res}"} -->
+            <!-- ERROR Control ${r"${control.class.simpleName}"} Not Found -->
         </#if>
-    </#list>
+    </#if>
 </#macro>
 
 <#macro renderThemeScripts themeName>
     [#list uisuite.defaultResources.scripts as s]
-    [#if !(s.inview?? && s.inview)]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />
-    [/#if]
     [/#list]
     <#list view.resources as res>
         <#assign macroName = "render" + res?cap_first + "Scripts" />
         <#if .vars[macroName]?? >
-            <@.vars[macroName] themeName false />
+            <@.vars[macroName] themeName />
         <#else>
             <!-- ERROR Invalid resource ${r"${res}"} -->
         </#if>

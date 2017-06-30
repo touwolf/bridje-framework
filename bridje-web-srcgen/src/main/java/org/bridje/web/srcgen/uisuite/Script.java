@@ -32,9 +32,6 @@ public class Script extends AssetBase
 
     @XmlAttribute
     private Boolean defer;
-    
-    @XmlAttribute
-    private Boolean inview;
 
     /**
      * If this asset must be declared as async.
@@ -82,25 +79,5 @@ public class Script extends AssetBase
     public void setDefer(Boolean defer)
     {
         this.defer = defer;
-    }
-
-    /**
-     * If the script need to be declared inside the view.
-     * 
-     * @return If the script need to be declared inside the view.
-     */
-    public Boolean getInview()
-    {
-        return inview;
-    }
-
-    /**
-     * If the script need to be declared inside the view.
-     * 
-     * @param inview If the script need to be declared inside the view.
-     */
-    public void setInview(Boolean inview)
-    {
-        this.inview = inview;
     }
 }

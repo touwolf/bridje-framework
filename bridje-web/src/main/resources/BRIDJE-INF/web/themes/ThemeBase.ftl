@@ -39,9 +39,6 @@
     </#if>
 </#macro>
 
-<#macro renderViewScripts themeName>
-</#macro>
-
 <#macro renderThemeScripts themeName>
 </#macro>
 
@@ -108,7 +105,6 @@
 <#macro renderPartialView currentControl themeName>
     <@renderState />
     <@renderControl currentControl />
-    <@renderViewScripts themeName />
 </#macro>
 
 <#macro renderState>
