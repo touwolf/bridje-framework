@@ -7,10 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import org.bridje.ioc.Ioc;
-import org.bridje.ioc.thls.Thls;
-import org.bridje.ioc.thls.ThlsAction;
-import org.bridje.ioc.thls.ThlsActionException;
-import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.orm.*;
 import javax.annotation.Generated;
 <#list support.allImports as imp>${imp}</#list>
@@ -29,6 +25,8 @@ import javax.annotation.Generated;
 public class ${model.name} implements OrmModel
 {
     private static Set<Class<?>> TABLE_SET;
+
+    private static OrmService ormServ;
 
     private final EntityContext context;
 
@@ -63,7 +61,8 @@ public class ${model.name} implements OrmModel
      */
     public static ${model.name} get()
     {
-        return Thls.get(${model.name}.class);
+        if(ormServ == null) ormServ = Ioc.context().find(OrmService.class);
+        return ormServ.getModel(${model.name}.class);
     }
 
     @Override

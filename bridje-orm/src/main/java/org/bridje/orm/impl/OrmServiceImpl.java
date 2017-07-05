@@ -224,7 +224,7 @@ class OrmServiceImpl implements OrmService
         }
         return prop;
     }
-    
+
     private void createTable(Object objClsName, Object objTableName)
     {
         try
