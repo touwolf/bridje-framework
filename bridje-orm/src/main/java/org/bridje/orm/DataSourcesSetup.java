@@ -19,6 +19,8 @@ package org.bridje.orm;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.bridje.ioc.Ioc;
+import org.bridje.jdbc.JdbcService;
 
 public class DataSourcesSetup
 {
@@ -31,6 +33,12 @@ public class DataSourcesSetup
     
     public void setDataSource(Class<? extends OrmModel> modelClass, DataSource ds)
     {
+        dataSources.put(modelClass, ds);
+    }
+
+    public void setDataSource(Class<? extends OrmModel> modelClass, String dsName)
+    {
+        DataSource ds = Ioc.context().find(JdbcService.class).getDataSource(dsName);
         dataSources.put(modelClass, ds);
     }
 
