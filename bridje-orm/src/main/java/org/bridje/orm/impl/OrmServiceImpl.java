@@ -126,7 +126,7 @@ class OrmServiceImpl implements OrmService
     @Override    
     public boolean isEntityClass(Class<?> cls)
     {
-        return findTable(cls) != null;
+        return this.tablesMap.containsKey(cls);
     }
     
     @Override
