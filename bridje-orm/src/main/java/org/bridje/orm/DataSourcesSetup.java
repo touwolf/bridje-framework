@@ -33,12 +33,14 @@ public class DataSourcesSetup
     
     public void setDataSource(Class<? extends OrmModel> modelClass, DataSource ds)
     {
+        if(ds == null) throw new IllegalArgumentException("The datasource must not be null.");
         dataSources.put(modelClass, ds);
     }
 
     public void setDataSource(Class<? extends OrmModel> modelClass, String dsName)
     {
         DataSource ds = Ioc.context().find(JdbcService.class).getDataSource(dsName);
+        if(ds == null) throw new IllegalArgumentException("The " + dsName + " DataSource was not found.");
         dataSources.put(modelClass, ds);
     }
 
