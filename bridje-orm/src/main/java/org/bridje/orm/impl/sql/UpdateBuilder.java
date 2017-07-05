@@ -16,6 +16,8 @@
 
 package org.bridje.orm.impl.sql;
 
+import org.bridje.orm.SQLDialect;
+
 /**
  * A helper class for building UPDATE statements more easy.
  */
@@ -24,13 +26,17 @@ public class UpdateBuilder
     private final StringBuilder sb;
     
     private boolean isFirst = true;
+    
+    private final SQLDialect dialect;
 
     /**
      * Default constructor
+     * @param dialect
      */
-    public UpdateBuilder()
+    public UpdateBuilder(SQLDialect dialect)
     {
         sb = new StringBuilder();
+        this.dialect = dialect;
     }
 
     /**
@@ -104,6 +110,33 @@ public class UpdateBuilder
     {
         sb.append(" WHERE ");
         sb.append(condition);
+        return this;
+    }
+
+    /**
+     * Adds a new limit statement to this builder.
+     * 
+     * @param index The index for the limit.
+     * @param size The size of the limit.
+     * @return this builder.
+     */
+    public UpdateBuilder limit(int index, int size)
+    {
+        if(index >= 0 && size >= 0)
+        {
+            if(dialect == null)
+            {
+                sb.append(" LIMIT ");
+                sb.append(index);
+                sb.append(", ");
+                sb.append(size);
+            }
+            else
+            {
+                sb.append(' ');
+                sb.append(dialect.limit(index, size));
+            }
+        }
         return this;
     }
     

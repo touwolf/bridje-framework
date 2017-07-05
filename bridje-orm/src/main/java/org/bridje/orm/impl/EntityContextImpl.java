@@ -130,7 +130,7 @@ class EntityContextImpl implements EntityContext
         if (table.getKey().isAutoIncrement())
         {
             doUpdate(ib.toString(),
-                    (rs) -> table.updateKeyField(entity, rs, this),
+                    rs -> table.updateKeyField(entity, rs, this),
                     table.buildInsertParameters(entity));
         }
         else
@@ -151,7 +151,7 @@ class EntityContextImpl implements EntityContext
     public <T> T update(T entity, Object id) throws SQLException
     {
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
-        UpdateBuilder ub = new UpdateBuilder();
+        UpdateBuilder ub = new UpdateBuilder(dialect);
         ub.update(dialect.identifier(table.getName()));
         table.nonAiFieldsStream(dialect.identifier(table.getName()) + ".", this).forEach(ub::set);
         ub.where(table.buildIdCondition(this));

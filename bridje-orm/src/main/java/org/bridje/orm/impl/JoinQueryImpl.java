@@ -17,6 +17,7 @@
 package org.bridje.orm.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
+import org.bridje.orm.impl.sql.UpdateBuilder;
 
 /**
  *
@@ -123,7 +125,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
         {
             qb.orderBy(Arrays
                     .asList(getOrderBy()).stream()
-                    .map((ob) -> getTable().buildOrderBy(ob, parameters, getCtx()))
+                    .map(ob -> getTable().buildOrderBy(ob, parameters, getCtx()))
                     .collect(Collectors.joining(", ")));
         }
         return qb;
@@ -182,6 +184,13 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     {
         throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
     }
+
+    @Override
+    public R updateOne() throws SQLException
+    {
+        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
+    }
+
 
     @Override
     public int insert() throws SQLException

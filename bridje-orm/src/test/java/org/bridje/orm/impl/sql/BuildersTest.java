@@ -92,7 +92,7 @@ public class BuildersTest
     @Test
     public void testUpdateTuples()
     {
-        UpdateBuilder u = new UpdateBuilder();
+        UpdateBuilder u = new UpdateBuilder(null);
         String query = u.update("my_table")
                 .set("my_field='new value'")
                 .where("my_field <> 'new value'")

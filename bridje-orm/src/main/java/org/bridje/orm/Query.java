@@ -109,6 +109,15 @@ public interface Query<T>
     <C> C fetchOne(Column<C> column) throws SQLException;
 
     /**
+     * Executes the update query on the first record available and fetch it.
+     *
+     * @return The update entity.
+     *
+     * @throws SQLException If any SQLException occurs during the close process.
+     */
+    T updateOne() throws SQLException;
+
+    /**
      * Executes a delete query in the database with the current where condition.
      *
      * @return The number of records that were deleted in the database.

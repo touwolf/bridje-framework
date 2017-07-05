@@ -31,7 +31,6 @@ import org.bridje.orm.impl.sql.SelectBuilder;
 
 abstract class AbstractQuery<T> implements Query<T>
 {
-
     @Override
     public List<T> fetchAll() throws SQLException
     {
@@ -83,7 +82,7 @@ abstract class AbstractQuery<T> implements Query<T>
                     (rs) -> table.parse(rs, ctx), 
                     parameters.toArray());
     }
-
+    
     @Override
     public <C> C fetchOne(Column<C> column) throws SQLException
     {
@@ -94,7 +93,7 @@ abstract class AbstractQuery<T> implements Query<T>
         SelectBuilder qb = createQuery(column.writeSQL(parameters, ctx), parameters);
         qb.limit(0, 1);
         return columnImpl.unserialize(ctx.doQuery(qb.toString(), 
-                                (rs) -> table.parse(1, column, rs, ctx), 
+                                rs -> table.parse(1, column, rs, ctx), 
                                 parameters.toArray()));
     }
     
@@ -112,7 +111,7 @@ abstract class AbstractQuery<T> implements Query<T>
             qb.limit(index, getPageSize());
         }
         return ctx.doQuery(qb.toString(), 
-                        (rs) -> tableImpl.parseAll(rs, ctx), 
+                        rs -> tableImpl.parseAll(rs, ctx), 
                         params.toArray());
     }
 
@@ -127,8 +126,8 @@ abstract class AbstractQuery<T> implements Query<T>
                         parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
-                    (rs) -> tableImpl.parse(rs, ctx), 
-                    parameters.toArray());
+                        rs -> tableImpl.parse(rs, ctx), 
+                        parameters.toArray());
     }
 
     @Override
@@ -138,7 +137,9 @@ abstract class AbstractQuery<T> implements Query<T>
         TableImpl<T> table = getTable();
         EntityContextImpl ctx = getCtx();
         SelectBuilder qb = createQuery("COUNT(*)", parameters);
-        return ctx.doQuery(qb.toString(), (rs) -> table.parseCount(rs), parameters.toArray());
+        return ctx.doQuery(qb.toString(), 
+                        rs -> table.parseCount(rs), 
+                        parameters.toArray());
     }
 
     @Override
