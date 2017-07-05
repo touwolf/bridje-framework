@@ -92,18 +92,9 @@ public class ${entity.name}
     @Override
     public boolean equals(Object obj)
     {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         final ${entity.name} other = (${entity.name}) obj;
         return Objects.equals(this.get${entity.keyField.name?cap_first}(), other.get${entity.keyField.name?cap_first}());
     }

@@ -24,7 +24,7 @@ import org.bridje.orm.Table;
 import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.TableStringColumn;
 
-@Entity(table = "group")
+@Entity(table = "group", model = TestOrmModel.class)
 public class Group
 {
     @DbObject

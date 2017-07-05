@@ -29,7 +29,7 @@ import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.TableRelationColumn;
 import org.bridje.orm.TableStringColumn;
 
-@Entity(table = "users")
+@Entity(table = "users", model = TestOrmModel.class)
 public class User
 {
     @DbObject

@@ -18,11 +18,14 @@ package org.bridje.orm.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +33,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.impl.ClassUtils;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.jdbc.JdbcService;
+import org.bridje.orm.DataSourcesSetup;
 import org.bridje.orm.DbObject;
+import org.bridje.orm.Entity;
 import org.bridje.orm.EntityContext;
+import org.bridje.orm.OrmModel;
 import org.bridje.orm.OrmService;
 import org.bridje.orm.SQLDialect;
 import org.bridje.orm.Table;
@@ -52,6 +63,10 @@ class OrmServiceImpl implements OrmService
 
     private Map<Class<?>, TableImpl<?>> tablesMap;
 
+    private Map<Class<?>, List<Class<?>>> modelsEntitysMap;
+
+    private Map<Class<?>, List<TableImpl<?>>> modelsTablesMap;
+
     @Inject
     private JdbcService jdbcServ;
     
@@ -65,6 +80,7 @@ class OrmServiceImpl implements OrmService
         try
         {
             createTables();
+            createModelsEntitys();
         }
         catch (IOException e)
         {
@@ -73,13 +89,25 @@ class OrmServiceImpl implements OrmService
     }
 
     @Override
-    public EntityContext createContext(String dsName)
+    public <T extends OrmModel> T createModel(String dsName, Class<T> modelCls)
+    {
+        EntityContext ctx = createContext(dsName);
+        return instantiateModel(ctx, modelCls);
+    }
+
+    @Override
+    public <T extends OrmModel> T createModel(DataSource ds, Class<T> modelCls)
+    {
+        EntityContext ctx = createContext(ds);
+        return instantiateModel(ctx, modelCls);
+    }
+
+    private EntityContext createContext(String dsName)
     {
         return createContext(jdbcServ.getDataSource(dsName));
     }
 
-    @Override
-    public EntityContext createContext(DataSource ds)
+    private EntityContext createContext(DataSource ds)
     {
         if(ds == null)
         {
@@ -105,7 +133,62 @@ class OrmServiceImpl implements OrmService
         }
         return result;
     }
+
+    @Override
+    public <T> Class<? extends OrmModel> findModelClass(Class<T> entity)
+    {
+        Entity annotation = entity.getAnnotation(Entity.class);
+        if(annotation == null)
+        {
+            throw new IllegalArgumentException(entity.getName() + " is not an entity class.");
+        }
+        return annotation.model();
+    }
+
+    @Override
+    public <T extends OrmModel> List<Class<?>> findEntitys(Class<T> modelClass)
+    {
+        return Collections.unmodifiableList(modelsEntitysMap.get(modelClass));
+    }
+
+    @Override
+    public <T extends OrmModel> List<Table<?>> findTables(Class<T> modelClass)
+    {
+        return Collections.unmodifiableList(modelsTablesMap.get(modelClass).stream().map(t -> (TableImpl<?>)t).collect(Collectors.toList()));
+    }
+
+    private void createModelsEntitys() throws IOException
+    {
+        modelsEntitysMap = new HashMap<>();
+        tablesMap.forEach((e, t) -> addEntityToModel(e));
+        modelsTablesMap = new HashMap<>();
+        tablesMap.forEach((e, t) -> addTableToModel(e, t));
+    }
     
+    private void addEntityToModel(Class<?> entityClass)
+    {
+        Entity annotation = entityClass.getAnnotation(Entity.class);
+        List<Class<?>> lst = modelsEntitysMap.get(annotation.model());
+        if(lst == null)
+        {
+            lst = new ArrayList<>();
+            modelsEntitysMap.put(annotation.model(), lst);
+        }
+        lst.add(entityClass);
+    }
+    
+    private void addTableToModel(Class<?> entityClass, TableImpl<?> table)
+    {
+        Entity annotation = entityClass.getAnnotation(Entity.class);
+        List<TableImpl<?>> lst = modelsTablesMap.get(annotation.model());
+        if(lst == null)
+        {
+            lst = new ArrayList<>();
+            modelsTablesMap.put(annotation.model(), lst);
+        }
+        lst.add(table);
+    }
+
     private void createTables() throws IOException
     {
         List<URL> files = findModelsFiles();
@@ -209,5 +292,49 @@ class OrmServiceImpl implements OrmService
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    private <T extends OrmModel> T instantiateModel(EntityContext ctx, Class<T> modelCls)
+    {
+        try
+        {
+            Constructor<T> constructor = modelCls.getDeclaredConstructor(EntityContext.class);
+            if(constructor != null)
+            {
+                constructor.setAccessible(true);
+                return constructor.newInstance(ctx);
+            }
+        }
+        catch (NoSuchMethodException | SecurityException 
+                | IllegalAccessException | IllegalArgumentException 
+                | InvocationTargetException | InstantiationException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T doWithModels(ThlsAction<T> action, DataSourcesSetup setup)
+    {
+        return Thls.doAs(action, ModelsThlsProvider.class, new ModelsThlsProvider(setup, this));
+    }
+
+    @Override
+    public <T, E extends Throwable> T doWithModelsEx(ThlsActionException<T, E> action, DataSourcesSetup setup) throws E
+    {
+        return Thls.doAsEx(action, ModelsThlsProvider.class, new ModelsThlsProvider(setup, this));
+    }
+
+    @Override
+    public <T, E extends Throwable, E2 extends Throwable> T doWithModelsEx2(ThlsActionException2<T, E, E2> action, DataSourcesSetup setup) throws E, E2
+    {
+        return Thls.doAsEx2(action, ModelsThlsProvider.class, new ModelsThlsProvider(setup, this));
+    }
+
+    @Override
+    public <T extends OrmModel> T getModel(Class<T> modelClass)
+    {
+        return Thls.get(ModelsThlsProvider.class).getModel(modelClass);
     }
 }

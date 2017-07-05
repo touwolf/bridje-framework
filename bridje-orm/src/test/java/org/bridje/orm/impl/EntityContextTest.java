@@ -54,7 +54,7 @@ public class EntityContextTest
         config.setName("H2TestDB");
         config.setPassword("");
         DataSource ds = jdbc.createDataSource(config);
-        ctx = Ioc.context().find(OrmService.class).createContext(ds);
+        ctx = Ioc.context().find(OrmService.class).createModel(ds, TestOrmModel.class).getContext();
     }
 
     @Test

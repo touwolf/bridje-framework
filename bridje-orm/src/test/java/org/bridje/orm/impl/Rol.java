@@ -24,7 +24,7 @@ import org.bridje.orm.Table;
 import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.TableStringColumn;
 
-@Entity(table = "roles")
+@Entity(table = "roles", model = TestOrmModel.class)
 public class Rol
 {
     @DbObject

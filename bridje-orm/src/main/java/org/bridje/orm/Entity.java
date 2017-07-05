@@ -35,4 +35,11 @@ public @interface Entity
      * @return The name of the table.
      */
     String table();
+
+    /**
+     * The model for this entity.
+     * 
+     * @return The model for this entity.
+     */
+    Class<? extends OrmModel> model();
 }

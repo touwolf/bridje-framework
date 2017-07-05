@@ -17,7 +17,6 @@
 package org.bridje.orm.impl;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,6 @@ import org.bridje.orm.OrderBy;
 import org.bridje.orm.Query;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
-import org.bridje.orm.impl.sql.UpdateBuilder;
 
 /**
  *
