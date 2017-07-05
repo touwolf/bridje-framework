@@ -215,7 +215,7 @@ class VfsFolderNode extends VfsNode
     {
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());
-        return child != null && child.createNewFile(path.getNext());
+        return child != null && child.delete(path.getNext());
     }
 
     @Override
