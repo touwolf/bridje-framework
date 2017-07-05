@@ -123,6 +123,12 @@ class OrmServiceImpl implements OrmService
         throw new IllegalArgumentException("Can´t find a valid dialect for this DataSource");
     }
     
+    @Override    
+    public boolean isEntityClass(Class<?> cls)
+    {
+        return findTable(cls) != null;
+    }
+    
     @Override
     public <T> TableImpl<T> findTable(Class<T> entity)
     {
@@ -336,5 +342,12 @@ class OrmServiceImpl implements OrmService
     public <T extends OrmModel> T getModel(Class<T> modelClass)
     {
         return Thls.get(ModelsThlsProvider.class).getModel(modelClass);
+    }
+
+    @Override
+    public OrmModel getModelForEntity(Class<?> entityClass)
+    {
+        Class<? extends OrmModel> modelCls = findModelClass(entityClass);
+        return getModel(modelCls);
     }
 }

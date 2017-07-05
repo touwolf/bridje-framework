@@ -52,6 +52,13 @@ public interface OrmService
     <T extends OrmModel> T createModel(DataSource ds, Class<T> modelCls);
 
     /**
+     * 
+     * @param cls
+     * @return 
+     */
+    boolean isEntityClass(Class<?> cls);
+    
+    /**
      * Finds the table for the given entity.
      *
      * @param <T> The type of the entity.
@@ -124,4 +131,11 @@ public interface OrmService
      * @return 
      */
     <T extends OrmModel> T getModel(Class<T> modelClass);
+
+    /**
+     * 
+     * @param modelClass
+     * @return 
+     */
+    OrmModel getModelForEntity(Class<?> entityClass);
 }
