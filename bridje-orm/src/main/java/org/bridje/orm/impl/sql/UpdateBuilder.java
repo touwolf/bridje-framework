@@ -29,6 +29,8 @@ public class UpdateBuilder
     
     private final SQLDialect dialect;
 
+    private boolean orderByAdded;
+    
     /**
      * Default constructor
      * @param dialect
@@ -112,29 +114,41 @@ public class UpdateBuilder
         sb.append(condition);
         return this;
     }
+    
+    /**
+     * Adds a new ORDER BY clause to this statement. It can be used multiple 
+     * times.
+     * 
+     * @param orderBy The ORDER BY statement to add.
+     * @return this builder.
+     */
+    public UpdateBuilder orderBy(String orderBy)
+    {
+        sb.append(!orderByAdded ? " ORDER BY " : ", ");
+        sb.append(orderBy);
+        orderByAdded = true;
+        return this;
+    }
 
     /**
      * Adds a new limit statement to this builder.
      * 
-     * @param index The index for the limit.
-     * @param size The size of the limit.
+     * @param rowCount The index for the limit.
      * @return this builder.
      */
-    public UpdateBuilder limit(int index, int size)
+    public UpdateBuilder limit(int rowCount)
     {
-        if(index >= 0 && size >= 0)
+        if(rowCount >= 0)
         {
             if(dialect == null)
             {
                 sb.append(" LIMIT ");
-                sb.append(index);
-                sb.append(", ");
-                sb.append(size);
+                sb.append(rowCount);
             }
             else
             {
                 sb.append(' ');
-                sb.append(dialect.limit(index, size));
+                sb.append(dialect.limit(rowCount));
             }
         }
         return this;

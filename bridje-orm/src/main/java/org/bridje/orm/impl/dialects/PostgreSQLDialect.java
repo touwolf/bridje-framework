@@ -146,4 +146,15 @@ class PostgreSQLDialect implements SQLDialect
     {
         return sqlValue;
     }
+
+    @Override
+    public String limit(int rowCount)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(0);
+        sb.append(", ");
+        sb.append(rowCount);
+        return sb.toString();
+    }
 }

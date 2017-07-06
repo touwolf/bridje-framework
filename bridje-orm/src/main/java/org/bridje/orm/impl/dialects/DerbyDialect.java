@@ -157,5 +157,17 @@ class DerbyDialect implements SQLDialect
     {
         return sqlValue;
     }
+
+    @Override
+    public String limit(int rowCount)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" OFFSET ");
+        sb.append(0);
+        sb.append(" ROWS FETCH NEXT ");
+        sb.append(rowCount);
+        sb.append(" ROWS ONLY");
+        return sb.toString();
+    }
 }
 

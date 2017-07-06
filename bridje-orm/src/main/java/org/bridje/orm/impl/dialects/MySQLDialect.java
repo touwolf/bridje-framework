@@ -53,7 +53,7 @@ class MySQLDialect implements SQLDialect
         DDLBuilder b = createDDLBuilder();
         b.createTable(identifier(table.getName()));
         table.getColumns().stream()
-                .map((f) -> buildColumnStmt(f, b))
+                .map(f -> buildColumnStmt(f, b))
                 .forEach(b::column);
         b.primaryKey(identifier(table.getKey().getName()));
         return b.toString();
@@ -65,7 +65,6 @@ class MySQLDialect implements SQLDialect
         DDLBuilder b = createDDLBuilder();
         b.alterTable(identifier(column.getTable().getName()))
                 .addColumn(buildColumnStmt(column, b));
-        
         return b.toString();
     }
 
@@ -156,6 +155,15 @@ class MySQLDialect implements SQLDialect
     public Object parseSQLValue(Object sqlValue)
     {
         return sqlValue;
+    }
+
+    @Override
+    public String limit(int rowCount)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(rowCount);
+        return sb.toString();
     }
 }
 

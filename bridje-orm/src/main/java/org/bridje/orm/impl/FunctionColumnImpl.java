@@ -140,7 +140,7 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
     }
 
     @Override
-    public NumberColumn<T> puls(T value)
+    public NumberColumn<T> plus(T value)
     {
         FunctionColumnImpl result = new FunctionColumnImpl<>(this, getType(), "%s + ?");
         result.addParameter(value);

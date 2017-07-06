@@ -217,9 +217,9 @@ public class EntityContextTest
         assertEquals(6, ctx.query(User.TABLE).fetchOne(User.COUNTS.sum()).byteValue());
         assertEquals(37.5F, ctx.query(User.TABLE).fetchOne(User.CREDIT.sum()), 0.01F);
         assertEquals(7, ctx.query(User.TABLE).where(User.NAME.eq("Admin 3")).fetchOne(User.NAME.length()).intValue());
-        assertEquals(9, ctx.query(User.TABLE).where(User.NAME.eq("Admin 3")).fetchOne(User.NAME.length().puls(2)).intValue());
+        assertEquals(9, ctx.query(User.TABLE).where(User.NAME.eq("Admin 3")).fetchOne(User.NAME.length().plus(2)).intValue());
         assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.length().eq(7)).fetchOne(User.NAME));
-        assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.length().puls(1).eq(8)).fetchOne(User.NAME));
+        assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.length().plus(1).eq(8)).fetchOne(User.NAME));
         assertEquals("Admin 3", ctx.query(User.TABLE).where(User.NAME.in("Admin 3", "Admin 49")).fetchOne(User.NAME));
         assertEquals("Admin 3", ctx.query(User.TABLE).where(User.MONEY.in(100D, 150.40D)).fetchOne(User.NAME));
     }

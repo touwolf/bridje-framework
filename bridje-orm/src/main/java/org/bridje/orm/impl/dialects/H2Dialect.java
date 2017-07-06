@@ -158,4 +158,13 @@ class H2Dialect implements SQLDialect
         }
         return sqlValue;
     }
+
+    @Override
+    public String limit(int rowCount)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" LIMIT ");
+        sb.append(rowCount);
+        return sb.toString();
+    }
 }

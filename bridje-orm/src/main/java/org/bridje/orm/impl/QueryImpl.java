@@ -171,6 +171,14 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
             }
         });
         if(condition != null) qb.where(condition.writeSQL(parameters, ctx));
+        if(orderBy != null)
+        {
+            qb.orderBy(Arrays
+                .stream(orderBy)
+                .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
+                .collect(Collectors.joining(", ")));
+        }
+        qb.limit(1);
         return ctx.doUpdate(
                         qb.toString(),
                         rs -> table.parse(rs, ctx), 
@@ -233,17 +241,14 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     @Override
     protected Map<TableColumn<?, ?>, Object> getSets()
     {
-        if(sets == null)
-        {
-            sets = new HashMap<>();
-        }
+        if(sets == null) sets = new HashMap<>();
         return this.sets;
     }
 
     @Override
     public <D> Query<T> set(TableColumn<T, D> column, D value)
     {
-        getSets().put(column, value);
+        getSets().put(column, ((TableColumnImpl)column).serialize(value));
         return this;
     }
 

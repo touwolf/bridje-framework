@@ -40,7 +40,7 @@ public interface NumberColumn<T> extends ComparableColumn<T>
      * @param value The value to add to the column.
      * @return The new created column.
      */
-    NumberColumn<T> puls(T value);
+    NumberColumn<T> plus(T value);
 
     /**
      * Creates a new column that will return the the current column values minus
