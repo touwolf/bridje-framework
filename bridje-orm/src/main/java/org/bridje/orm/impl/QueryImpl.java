@@ -145,10 +145,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         List<Object> parameters = new ArrayList<>();
         DeleteBuilder qb = new DeleteBuilder();
         qb.delete(ctx.getDialect().identifier(table.getName()));
-        if(condition != null)
-        {
-            qb.where(condition.writeSQL(parameters, ctx));
-        }
+        if(condition != null) qb.where(condition.writeSQL(parameters, ctx));
         return ctx.doUpdate(qb.toString(), parameters.toArray());
     }
 
