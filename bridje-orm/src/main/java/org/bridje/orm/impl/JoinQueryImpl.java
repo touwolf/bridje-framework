@@ -28,9 +28,6 @@ import org.bridje.orm.Query;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.SelectBuilder;
 
-/**
- *
- */
 class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
 {
     private TableRelationColumnImpl<T, R> relation;
@@ -182,13 +179,6 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
     {
         throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
     }
-
-    @Override
-    public R updateOne() throws SQLException
-    {
-        throw new UnsupportedOperationException("INSERT or UPDATE is not supported yet.");
-    }
-
 
     @Override
     public int insert() throws SQLException

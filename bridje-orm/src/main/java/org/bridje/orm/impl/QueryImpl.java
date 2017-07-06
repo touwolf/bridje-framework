@@ -150,39 +150,6 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
     }
 
     @Override
-    public T updateOne() throws SQLException
-    {
-        List<Object> parameters = new ArrayList<>();
-        UpdateBuilder qb = new UpdateBuilder(ctx.getDialect());
-        qb.update(ctx.getDialect().identifier(table.getName()));
-        getSets().forEach((column, value) ->
-        {
-            if(value instanceof Column)
-            {
-                qb.set(column.writeSQL(parameters, ctx),((Column)value).writeSQL(parameters, ctx));
-            }
-            else
-            {
-                qb.set(column.writeSQL(parameters, ctx));
-                parameters.add(value);
-            }
-        });
-        if(condition != null) qb.where(condition.writeSQL(parameters, ctx));
-        if(orderBy != null)
-        {
-            qb.orderBy(Arrays
-                .stream(orderBy)
-                .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
-                .collect(Collectors.joining(", ")));
-        }
-        qb.limit(1);
-        return ctx.doUpdate(
-                        qb.toString(),
-                        rs -> table.parse(rs, ctx), 
-                        parameters.toArray());
-    }
-
-    @Override
     public int update() throws SQLException
     {
         List<Object> parameters = new ArrayList<>();

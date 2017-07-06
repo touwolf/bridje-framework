@@ -109,22 +109,13 @@ public interface Query<T>
     <C> C fetchOne(Column<C> column) throws SQLException;
 
     /**
-     * Executes the update query on the first record available and fetch it.
-     *
-     * @return The update entity.
-     *
-     * @throws SQLException If any SQLException occurs during the close process.
-     */
-    T updateOne() throws SQLException;
-
-    /**
      * Executes a delete query in the database with the current where condition.
      *
      * @return The number of records that were deleted in the database.
      *
      * @throws java.sql.SQLException If the query execution fails.
      */
-    public int delete() throws SQLException;
+    int delete() throws SQLException;
 
     /**
      * Executes a update query in the database with the current where condition.
@@ -133,7 +124,7 @@ public interface Query<T>
      *
      * @throws java.sql.SQLException If the query execution fails.
      */
-    public int update() throws SQLException;
+    int update() throws SQLException;
 
     /**
      * Executes an insert query in the database with the current where condition.
@@ -142,7 +133,7 @@ public interface Query<T>
      *
      * @throws java.sql.SQLException If the query execution fails.
      */
-    public int insert() throws SQLException;
+    int insert() throws SQLException;
 
     /**
      * Executes a select count in the database and gets the number of records
