@@ -18,6 +18,9 @@ package org.bridje.web.impl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URLDecoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bridje.el.ElService;
@@ -25,6 +28,8 @@ import org.bridje.ioc.Ioc;
 
 class WebMethodData
 {
+    private static final Logger LOG = Logger.getLogger(WebMethodData.class.getName());
+
     private final String expression;
 
     private final Class<?> component;
@@ -78,7 +83,7 @@ class WebMethodData
                 Object[] result = new Object[matcher.groupCount()];
                 for(int i = 0; i < matcher.groupCount(); i++)
                 {
-                    String value = matcher.group(i+1);
+                    String value = urlDecode(matcher.group(i+1));
                     if(params[i] != null)
                     {
                         result[i] = doCast(value, params[i].getType());
@@ -107,5 +112,18 @@ class WebMethodData
     private Object doCast(String value, Class<?> type)
     {
         return elServ.convert(value, type);
+    }
+
+    private String urlDecode(String group)
+    {
+        try
+        {
+            return URLDecoder.decode(group, "UTF-8");
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return group;
     }
 }

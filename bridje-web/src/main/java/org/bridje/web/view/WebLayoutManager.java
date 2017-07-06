@@ -50,7 +50,15 @@ public class WebLayoutManager
     public WebLayout loadLayout(AbstractView currentView, String name)
     {
         if (name == null || name.isEmpty()) return null;
-        VFile file = new VFile(currentView.getFile().getParent().getPath().join(name + ".layout.xml"));
+        VFile file;
+        if(name.startsWith("/"))
+        {
+            file = new VFile(new Path("/web").join(name + ".layout.xml"));
+        }
+        else
+        {
+            file = new VFile(currentView.getFile().getParent().getPath().join(name + ".layout.xml"));
+        }
         if(!file.isFile())
         {
             LOG.log(Level.WARNING, "Could not load parent layout {0}", name);

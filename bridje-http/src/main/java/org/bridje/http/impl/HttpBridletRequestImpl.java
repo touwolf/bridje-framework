@@ -38,9 +38,6 @@ import org.bridje.http.HttpCookie;
 import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
 
-/**
- *
- */
 class HttpBridletRequestImpl implements HttpBridletRequest
 {
     private ByteBuf buffer;

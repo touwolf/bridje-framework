@@ -340,11 +340,9 @@ public class WebViewsManager
     public EventResult invokeEvent(HttpBridletRequest req, WebView view)
     {
         UIEvent event = findEvent(req, view);
-        if (event != null)
-        {
-            return invokeEvent(event);
-        }
-        return null;
+        if (event != null) return invokeEvent(event);
+        String action = req.getHeader("Bridje-Event");
+        return EventResult.error("Invalid action: " + action);
     }
 
     /**
