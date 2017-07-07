@@ -120,8 +120,9 @@ public class BaseControlDef
     }
     
     /**
+     * Gets all the parents control of this control.
      * 
-     * @return 
+     * @return The list with the parents control of this control.
      */
     public List<ControlDef> getAllBase()
     {
@@ -357,8 +358,9 @@ public class BaseControlDef
     }
     
     /**
+     * The base control for this control.
      * 
-     * @return 
+     * @return The Control that is the parent of this control.
      */
     public ControlDef getBase()
     {

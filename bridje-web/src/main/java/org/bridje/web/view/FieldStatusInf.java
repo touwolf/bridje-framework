@@ -22,9 +22,9 @@ package org.bridje.web.view;
 public class FieldStatusInf
 {
     private final String fieldName;
-    
+
     private final EventResultType status;
-    
+
     private final String message;
 
     private FieldStatusInf(String fieldName, EventResultType status, String message)
@@ -107,12 +107,12 @@ public class FieldStatusInf
     {
         return custom(fieldName, EventResultType.INFO, null);
     }
-    
+
     /**
      * Creates a field status information object with error status.
      * 
      * @param fieldName The name of the field.
-     * @param message
+     * @param message The message for the field.
      * @return The new FieldStatusInf object.
      */
     public static FieldStatusInf error(String fieldName, String message)
@@ -124,7 +124,7 @@ public class FieldStatusInf
      * Creates a field status information object with warn status.
      * 
      * @param fieldName The name of the field.
-     * @param message
+     * @param message The message for the field.
      * @return The new FieldStatusInf object.
      */
     public static FieldStatusInf warn(String fieldName, String message)
@@ -136,7 +136,7 @@ public class FieldStatusInf
      * Creates a field status information object with success status.
      * 
      * @param fieldName The name of the field.
-     * @param message
+     * @param message The message for the field.
      * @return The new FieldStatusInf object.
      */
     public static FieldStatusInf success(String fieldName, String message)

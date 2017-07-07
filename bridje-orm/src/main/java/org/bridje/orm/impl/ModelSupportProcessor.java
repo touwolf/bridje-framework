@@ -24,14 +24,14 @@ import javax.lang.model.element.Element;
 import org.bridje.ioc.ClassListPropertyFile;
 
 /**
- * Annotations processor for the {@link WebComponent} annotation.
+ * Annotations processor for the {@link org.bridje.orm.ModelSupport} annotation.
  */
 @SupportedAnnotationTypes("org.bridje.orm.ModelSupport")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class ModelSupportProcessor extends ClassListPropertyFile
 {
     /**
-     * The web components resource file.
+     * The orm components resource file.
      */
     public static final String ORM_COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/orm/ioc-components.properties";
 

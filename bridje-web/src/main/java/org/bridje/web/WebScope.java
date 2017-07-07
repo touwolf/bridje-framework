@@ -204,9 +204,10 @@ public final class WebScope implements Scope
     }
     
     /**
+     * Gets the value of the given header.
      * 
-     * @param header
-     * @return 
+     * @param header The header's name.
+     * @return The value of the header.
      */
     public String getHeader(String header)
     {
@@ -293,7 +294,7 @@ public final class WebScope implements Scope
     /**
      * Gets the specified HTTP cookie.
      *
-     * @param name The name of the HTTP cookie.
+     * @param name The name of the HTTP Cookie.
      * @return the HttpCookie object representing the cookie or null if it does
      * not exists.
      */

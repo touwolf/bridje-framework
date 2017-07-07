@@ -160,9 +160,10 @@ public abstract class Control
 
     /**
      * Reads the input recursively for this and all the child controls sent in
-     * the given http request.
+     * the given HTTP request.
      *
      * @param req The HTTP request to read the input from.
+     * @param env The EL environment to write the data to.
      */
     public void readInput(ControlImputReader req, ElEnvironment env)
     {

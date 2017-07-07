@@ -65,26 +65,30 @@ public interface SrcGenService
     Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
     /**
+     * Finds a java class by its full name and parsed it, from the sources folder.
      * 
-     * @param name
-     * @return 
+     * @param name The name of the java class.
+     * @return The compilation unit object with the sources of the given class 
+     * if found or null if not.
      */
     CompilationUnit findJavaClass(String name);
 
     /**
+     * Finds all clases by the given predicate.
      * 
-     * @param predicate
-     * @return 
+     * @param predicate The predicate to test the clases.
+     * @return The result list of classes.
      */
     List<CompilationUnit> findJavaClasses(Predicate<CompilationUnit> predicate);
 
     /**
+     * Parses the java code from the given file.
      * 
-     * @param clsFile
-     * @return 
+     * @param clsFile The file to parse.
+     * @return The compilation unit with the java code loaded.
      */
     CompilationUnit parseJavaClass(VFile clsFile);
-    
+
     /**
      * Finds the data by the given class, this method will read the data from
      * the default virtual path in the VFS tree and parse all the files that
@@ -121,7 +125,7 @@ public interface SrcGenService
      * @param clsFullName The full name of the class to create.
      * @param tplPath The path of the template to use to create the class.
      * @param data The data to use by the template to create the class.
-     *
+     * 
      * @throws IOException If any IO exception occurs.
      */
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
@@ -132,7 +136,7 @@ public interface SrcGenService
      * @param resourcePath The path and name of the resource file to create.
      * @param tplPath The path of the template to use to create the class.
      * @param data The data to use by the template to create the class.
-     *
+     * 
      * @throws IOException If any IO exception occurs.
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;

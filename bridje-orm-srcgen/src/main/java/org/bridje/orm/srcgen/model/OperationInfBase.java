@@ -120,8 +120,9 @@ public abstract class OperationInfBase
     public abstract OperationInfBase clone(EntityInfBase entity);
 
     /**
+     * The modifier for this method. It can be either public or protected.
      * 
-     * @return 
+     * @return The modifier for this method.
      */
     public OperationModifier getModifier()
     {
@@ -130,14 +131,15 @@ public abstract class OperationInfBase
     }
 
     /**
+     * The modifier for this method. It can be either public or protected.
      * 
-     * @param modifier 
+     * @param modifier The modifier for this method.
      */
     public void setModifier(OperationModifier modifier)
     {
         this.modifier = modifier;
     }
-    
+
     /**
      * Convinient clone method for the classes that extends from this one.
      * 

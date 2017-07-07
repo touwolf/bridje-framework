@@ -73,8 +73,9 @@ public interface WebView extends AbstractView
     public Set<Class<?>> getControls();
 
     /**
+     * Determines if this view has any file input field.
      * 
-     * @return 
+     * @return true this view has any file input field, false this view has none.
      */
     public boolean hasFileInput();
     

@@ -32,8 +32,9 @@ public class UpdateBuilder
     private boolean orderByAdded;
     
     /**
-     * Default constructor
-     * @param dialect
+     * Default constructor.
+     * 
+     * @param dialect The dialect to use.
      */
     public UpdateBuilder(SQLDialect dialect)
     {

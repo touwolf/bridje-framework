@@ -55,8 +55,9 @@ public class OperationEqField
     }
 
     /**
+     * Gets the name of the field for this condition.
      * 
-     * @return 
+     * @return The name of the field for this condition.
      */
     public String getFieldName()
     {
@@ -64,8 +65,9 @@ public class OperationEqField
     }
 
     /**
+     * Sets the name of the field for this condition.
      * 
-     * @param fieldName 
+     * @param fieldName The name of the field for this condition.
      */
     public void setFieldName(String fieldName)
     {
@@ -73,8 +75,9 @@ public class OperationEqField
     }
 
     /**
+     * The operation of this condition.
      * 
-     * @return 
+     * @return The operation of this condition.
      */
     public OperationInfBase getOperation()
     {
@@ -111,10 +114,11 @@ public class OperationEqField
     {
         operation = (OperationInfBase)parent;
     }
-    
+
     /**
+     * The operator for this condition.
      * 
-     * @return 
+     * @return The operator for this condition.
      */
     public String getOperator()
     {
@@ -133,7 +137,7 @@ public class OperationEqField
         res.operation = this.operation;
         res.fieldName = this.fieldName;
         res.value = this.value;
-        
+
         return res;
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright 2016 Bridje Framework.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,8 +71,10 @@ public interface HttpReqParam
     boolean isEmpty();
 
     /**
+     * This method will separate this object into several parameters one for each 
+     * value this parameter holds.
      * 
-     * @return 
+     * @return The array of the separated parameters.
      */
     HttpReqParam[] separate();
 }

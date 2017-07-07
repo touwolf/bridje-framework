@@ -25,7 +25,7 @@ public interface ElEnvironment
     /**
      * Evaluates the given expression and cast the result of it to the given
      * result class.
-     *
+     * 
      * @param <T> The type of the result of the expression.
      * @param expression The expression.
      * @param resultCls The result class for the expression.
@@ -60,11 +60,12 @@ public interface ElEnvironment
      * @param value The value of the variable.
      */
     <T> void setVar(String name, T value);
-    
+
     /**
+     * Gets the var as the string.
      * 
-     * @param name
-     * @return 
+     * @param name The name of the var.
+     * @return The string value for this var.
      */
     String getVarAsString(String name);
 }
