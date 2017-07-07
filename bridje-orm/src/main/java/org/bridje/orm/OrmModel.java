@@ -80,7 +80,7 @@ public abstract class OrmModel
      */
     public void fixAllTables() throws SQLException
     {
-        Table<?>[] tables = getTables().toArray(new Table<?>[0]);
+        Table<?>[] tables = getTables().toArray(new Table<?>[getTables().size()]);
         context.fixTable(tables);
     }
 

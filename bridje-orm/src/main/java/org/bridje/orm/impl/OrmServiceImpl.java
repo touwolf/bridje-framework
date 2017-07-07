@@ -308,7 +308,7 @@ class OrmServiceImpl implements OrmService
             if(constructor != null)
             {
                 constructor.setAccessible(true);
-                return constructor.newInstance(ctx, findTables(modelCls), findEntitys(modelCls));
+                return constructor.newInstance(ctx, findEntitys(modelCls), findTables(modelCls));
             }
         }
         catch (NoSuchMethodException | SecurityException 
