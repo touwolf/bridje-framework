@@ -304,11 +304,11 @@ class OrmServiceImpl implements OrmService
     {
         try
         {
-            Constructor<T> constructor = modelCls.getDeclaredConstructor(EntityContext.class);
+            Constructor<T> constructor = modelCls.getDeclaredConstructor(EntityContext.class, List.class, List.class);
             if(constructor != null)
             {
                 constructor.setAccessible(true);
-                return constructor.newInstance(ctx);
+                return constructor.newInstance(ctx, findTables(modelCls), findEntitys(modelCls));
             }
         }
         catch (NoSuchMethodException | SecurityException 

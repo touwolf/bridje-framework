@@ -16,41 +16,15 @@
 
 package org.bridje.orm.impl;
 
-import java.sql.SQLException;
+import java.util.List;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrmModel;
 import org.bridje.orm.Table;
 
-public class TestOrmModel implements OrmModel
+public class TestOrmModel extends OrmModel
 {
-    private final EntityContext ctx;
-
-    private TestOrmModel(EntityContext ctx)
+    private TestOrmModel(EntityContext context, List<Class<?>> entities, List<Table<?>> tables)
     {
-        this.ctx = ctx;
-    }
-    
-    @Override
-    public EntityContext getContext()
-    {
-        return ctx;
-    }
-
-    @Override
-    public Table<?>[] tables()
-    {
-        return new Table<?>[] {Group.TABLE, Rol.TABLE, User.TABLE};
-    }
-
-    @Override
-    public void fixAllTables() throws SQLException
-    {
-        ctx.fixTable(tables());
-    }
-
-    @Override
-    public <T> boolean haveEntity(Class<T> entity)
-    {
-        return true;
+        super(context, entities, tables);
     }
 }
