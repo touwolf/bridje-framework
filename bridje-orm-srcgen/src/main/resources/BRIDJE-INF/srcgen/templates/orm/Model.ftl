@@ -80,7 +80,7 @@ public class ${model.name} extends OrmModel
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
         </#list>
-        context.insert(entity);
+        getContext().insert(entity);
         return entity;
     }
 
@@ -95,7 +95,7 @@ public class ${model.name} extends OrmModel
      */
     ${crudOp.modifier?lower_case} List<<#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if>> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
-        return context.query(${entity.name}.TABLE)
+        return getContext().query(${entity.name}.TABLE)
                         <#if (crudOp.params?? && crudOp.params?has_content) || (crudOp.conditions?? && crudOp.conditions?has_content)>
                         .where(
                             <#assign first = true />
@@ -134,7 +134,7 @@ public class ${model.name} extends OrmModel
      */
     ${crudOp.modifier?lower_case} <#if crudOp.resultField??>${crudOp.resultField.javaType}<#else>${entity.name}</#if> ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
-        return context.query(${entity.name}.TABLE)
+        return getContext().query(${entity.name}.TABLE)
                         <#if (crudOp.params?? && crudOp.params?has_content) || (crudOp.conditions?? && crudOp.conditions?has_content)>
                         .where(
                             <#assign first = true />
@@ -186,7 +186,7 @@ public class ${model.name} extends OrmModel
         <#list crudOp.params as param>
         entity.set${param.name?cap_first}(${param.name});
         </#list>
-        context.update(entity);
+        getContext().update(entity);
     }
 
     <#elseif crudOp.operationType == "DELETE_ENTITY" >
@@ -197,7 +197,7 @@ public class ${model.name} extends OrmModel
      */
     ${crudOp.modifier?lower_case} void ${crudOp.name}(${entity.name} entity) throws SQLException
     {
-        context.delete(entity);
+        getContext().delete(entity);
     }
 
     <#elseif crudOp.operationType == "DELETE">
@@ -211,7 +211,7 @@ public class ${model.name} extends OrmModel
      */
     ${crudOp.modifier?lower_case} int ${crudOp.name}(<#list crudOp.params as param>${param.javaType} ${param.name}<#if param_has_next>, </#if></#list>) throws SQLException
     {
-        return context.query(${entity.name}.TABLE)
+        return getContext().query(${entity.name}.TABLE)
                         <#if crudOp.params?? && crudOp.params?has_content>
                         .where(
                             <#assign first = true />
@@ -256,11 +256,11 @@ public class ${model.name} extends OrmModel
         </#list>
         if(entity.get${entity.keyField.name?cap_first}() == null)
         {
-            context.insert(entity);
+            getContext().insert(entity);
         }
         else
         {
-            context.update(entity);
+            getContext().update(entity);
         }
     }
 
