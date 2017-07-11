@@ -317,6 +317,8 @@ public class Path implements Iterable<Path>
             throw new IllegalArgumentException("The specified path is not valid.");
         }
 
+        if(path.equals("/")) return null;
+        
         String normPath = normalize(path);
         String[] arr = normPath.split("/");
 

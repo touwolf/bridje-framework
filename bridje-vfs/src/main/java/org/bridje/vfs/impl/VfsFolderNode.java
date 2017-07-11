@@ -159,7 +159,7 @@ class VfsFolderNode extends VfsNode
     @Override
     public String[] list(Path path)
     {
-        if(path == null)
+        if(path == null || path.isRoot())
         {
             String[] result = new String[childs.size()];
             childs.stream().map(VfsNode::getName).collect(Collectors.toList()).toArray(result);
