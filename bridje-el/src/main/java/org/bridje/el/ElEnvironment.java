@@ -62,6 +62,13 @@ public interface ElEnvironment
     <T> void setVar(String name, T value);
 
     /**
+     * Remove the given variable from this environment.
+     * 
+     * @param name The name of the variable.
+     */
+    void removeVar(String name);
+    
+    /**
      * Gets the var as the string.
      * 
      * @param name The name of the var.

@@ -78,6 +78,12 @@ class IocEnviromentImpl implements ElEnvironment
     }
 
     @Override
+    public void removeVar(String name)
+    {
+        context.setVariable(name, null);
+    }
+
+    @Override
     public <T> T getVar(String name, Class<T> resultCls)
     {
         return get("${" + name + "}", resultCls);
