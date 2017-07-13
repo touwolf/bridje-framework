@@ -12,7 +12,7 @@ import org.bridje.sip.SipResponse;
 class SipResponseEncoder extends MessageToMessageEncoder<SipResponse>
 {
     @Override
-    protected void encode(ChannelHandlerContext ctx, SipResponse msg, List<Object> out) throws Exception
+    protected void encode(ChannelHandlerContext ctx, SipResponse msg, List<Object> out)
     {
         ByteBuf buff = ctx.alloc().buffer();
         buff.writeBytes(msg.getVersion().toString().getBytes(CharsetUtil.UTF_8));

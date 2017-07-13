@@ -78,14 +78,6 @@ public class UIExpression
      */
     public String getAsString()
     {
-        try
-        {
-            return Thls.get(ElEnvironment.class).get(expression, String.class);
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.WARNING, "The expression {0} is not valid: {1}", new Object[]{expression, e.getMessage()});
-        }
-        return null;
+        return get(String.class);
     }
 }

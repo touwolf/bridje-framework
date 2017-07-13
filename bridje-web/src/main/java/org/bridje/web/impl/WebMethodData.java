@@ -16,6 +16,7 @@
 
 package org.bridje.web.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.net.URLDecoder;
@@ -120,7 +121,7 @@ class WebMethodData
         {
             return URLDecoder.decode(group, "UTF-8");
         }
-        catch (Exception e)
+        catch (UnsupportedEncodingException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }

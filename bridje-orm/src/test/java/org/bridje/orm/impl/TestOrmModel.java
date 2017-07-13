@@ -17,8 +17,11 @@
 package org.bridje.orm.impl;
 
 import java.util.List;
+import javax.sql.DataSource;
+import org.bridje.ioc.Ioc;
 import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrmModel;
+import org.bridje.orm.OrmService;
 import org.bridje.orm.Table;
 
 public class TestOrmModel extends OrmModel
@@ -26,5 +29,15 @@ public class TestOrmModel extends OrmModel
     private TestOrmModel(EntityContext context, List<Class<?>> entities, List<Table<?>> tables)
     {
         super(context, entities, tables);
+    }
+    
+    public static TestOrmModel create(DataSource ds)
+    {
+        return Ioc.context().find(OrmService.class).createModel(ds, TestOrmModel.class);
+    }
+
+    public static TestOrmModel create(String ds)
+    {
+        return Ioc.context().find(OrmService.class).createModel(ds, TestOrmModel.class);
     }
 }

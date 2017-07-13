@@ -31,7 +31,7 @@ class ExContentBinding
         {
             throw new NullPointerException("Both parameters must be specified.");
         }
-        if (property1 == property2)
+        if (property1.equals(property2))
         {
             throw new IllegalArgumentException("Cannot bind object to itself");
         }

@@ -187,15 +187,15 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
         if(clsDec.isInterface()) return false;
         if(clsDec.getAnnotations().stream()
                 .map(a -> a.getName().getName())
-                .anyMatch(a -> a.equals("ModelSupport")))
+                .anyMatch(a -> "ModelSupport".equals(a)))
         {
             return cu.getImports().stream()
                             .map(i -> i.getName().toString())
-                            .anyMatch(i -> i.equals("org.bridje.orm.ModelSupport") 
-                                            || i.equals("org.bridje.orm.*"));
+                            .anyMatch(i -> "org.bridje.orm.ModelSupport".equals(i) 
+                                            || "org.bridje.orm.*".equals(i));
         }
         return clsDec.getAnnotations().stream()
                             .map(a -> a.getName().getName())
-                            .anyMatch(a -> a.equals("org.bridje.orm.ModelSupport"));
+                            .anyMatch(a -> "org.bridje.orm.ModelSupport".equals(a));
     }
 }

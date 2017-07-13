@@ -34,7 +34,7 @@ class SipRequestDecoder extends MessageToMessageDecoder<DatagramPacket>
     private int bodyCount = 0;
     
     @Override
-    protected void decode(ChannelHandlerContext ctx, DatagramPacket dgp, List<Object> out) throws Exception
+    protected void decode(ChannelHandlerContext ctx, DatagramPacket dgp, List<Object> out)
     {
         ByteBuf in = dgp.content();
         currentMessage.setSender(dgp.sender());

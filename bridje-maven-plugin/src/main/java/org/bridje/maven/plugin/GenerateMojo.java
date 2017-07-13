@@ -18,6 +18,7 @@ package org.bridje.maven.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.maven.model.Resource;
@@ -93,7 +94,7 @@ public class GenerateMojo extends AbstractMojo
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);
         }
-        catch (Exception e)
+        catch (URISyntaxException e)
         {
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);

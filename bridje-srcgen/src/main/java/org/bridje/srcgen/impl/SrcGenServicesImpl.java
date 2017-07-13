@@ -139,15 +139,8 @@ class SrcGenServicesImpl implements SrcGenService
 
     private String toClassPath(String clsFullName)
     {
-        try
-        {
-            return clsFullName.replaceAll("[\\.]", "\\\\") + ".java";
-        }
-        catch (Exception e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-        return null;
+        if(clsFullName == null) return null;
+        return clsFullName.replaceAll("[\\.]", "\\\\") + ".java";
     }
 
     public void render(OutputStream os, String template, Object data)

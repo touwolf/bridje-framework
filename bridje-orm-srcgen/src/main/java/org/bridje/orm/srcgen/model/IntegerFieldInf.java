@@ -142,8 +142,9 @@ public class IntegerFieldInf extends FieldInfBase
                 return "Long";
             case SHORT:
                 return "Short";
+            default:
+                return "Integer";
         }
-        return "Integer";
     }
 
     @Override

@@ -242,15 +242,16 @@ public final class AceEditor extends VBox
         gate.exec("editorContent", realText);
     }
     
-    void setTextFromJs(String text)
+    protected void setTextFromJs(String text)
     {
         textProperty().removeListener(listener);
         setText(text);
         textProperty().addListener(listener);
     }
 
-    private void loadContent(WebView editor, AceMode mode)
+    private void loadContent(WebView editor, AceMode aceMode)
     {
+        AceMode mode = aceMode;
         WebEngine engine = editor.getEngine();
         if (mode == null) mode = AceMode.JAVA;
         String strMode = "var mode = 'VALUE';\n{{mode-VALUE.js}}"

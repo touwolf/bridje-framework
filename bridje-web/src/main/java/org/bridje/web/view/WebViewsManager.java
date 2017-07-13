@@ -38,6 +38,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
@@ -354,32 +355,36 @@ public class WebViewsManager
      */
     public EventResult invokeEvent(UIEvent event)
     {
-        return Thls.doAs(() ->
+        return Thls.doAs(new ThlsAction<EventResult>()
         {
-            try
+            @Override
+            public EventResult execute()
             {
-                Object res = event.invoke();
-                if (res instanceof EventResult)
+                try
                 {
-                    return (EventResult) res;
+                    Object res = event.invoke();
+                    if (res instanceof EventResult)
+                    {
+                        return (EventResult) res;
+                    }
+                    return EventResult.of(null, null, res, null);
                 }
-                return EventResult.of(null, null, res, null);
-            }
-            catch (ELException e)
-            {
-                if (e.getCause() != null && e.getCause() instanceof Exception)
+                catch (ELException e)
                 {
-                    Exception real = (Exception) e.getCause();
-                    LOG.log(Level.SEVERE, real.getMessage(), real);
-                    return EventResult.error(real.getMessage(), real);
+                    if (e.getCause() != null && e.getCause() instanceof Exception)
+                    {
+                        Exception real = (Exception) e.getCause();
+                        LOG.log(Level.SEVERE, real.getMessage(), real);
+                        return EventResult.error(real.getMessage(), real);
+                    }
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    return EventResult.error(e.getMessage(), e);
                 }
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-                return EventResult.error(e.getMessage(), e);
-            }
-            catch (Exception e)
-            {
-                LOG.log(Level.SEVERE, e.getMessage(), e);
-                return EventResult.error(e.getMessage(), e);
+                catch (Exception e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    return EventResult.error(e.getMessage(), e);
+                }
             }
         }, UIEvent.class, event);
     }

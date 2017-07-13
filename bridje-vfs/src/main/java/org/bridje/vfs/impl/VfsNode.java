@@ -54,27 +54,27 @@ abstract class VfsNode
         return getParent().getPath();
     }
     
-    abstract VFile[] search(GlobExpr globExpr, Path path);
+    protected abstract VFile[] search(GlobExpr globExpr, Path path);
 
-    abstract boolean isDirectory(Path path);
+    protected abstract boolean isDirectory(Path path);
 
-    abstract boolean isFile(Path path);
+    protected abstract boolean isFile(Path path);
 
-    abstract boolean exists(Path path);
+    protected abstract boolean exists(Path path);
 
-    abstract boolean canWrite(Path path);
+    protected abstract boolean canWrite(Path path);
 
-    abstract boolean canRead(Path path);
+    protected abstract boolean canRead(Path path);
     
-    abstract String[] list(Path path);
+    protected abstract String[] list(Path path);
 
-    abstract InputStream openForRead(Path path);
+    protected abstract InputStream openForRead(Path path);
 
-    abstract OutputStream openForWrite(Path path);
+    protected abstract OutputStream openForWrite(Path path);
 
-    abstract boolean createNewFile(Path path);
+    protected abstract boolean createNewFile(Path path);
     
-    abstract boolean delete(Path path);
+    protected abstract boolean delete(Path path);
 
-    abstract boolean mkdir(Path path);
+    protected abstract boolean mkdir(Path path);
 }

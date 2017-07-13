@@ -55,13 +55,13 @@ class VfsServiceImpl implements VfsService
                         VFile folder = new VFile((String)entry.getKey());
                         folder.mount(new CpSource((String)entry.getValue()));
                     }
-                    catch (Exception e)
+                    catch (IOException | URISyntaxException e)
                     {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (IOException ex)
             {
                 LOG.log(Level.SEVERE, "Reading " + source.getName() + ": " + ex.getMessage(), ex);
             }

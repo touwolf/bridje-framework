@@ -133,8 +133,9 @@ public class DecimalFieldInf extends FieldInfBase
                 return "Double";
             case FLOAT:
                 return "Float";
+            default:
+                return "Double";
         }
-        return "Double";
     }
 
     @Override

@@ -14,6 +14,8 @@ public class VFile
 {
     private static VfsService VFS;
 
+    private final Path path;
+
     /**
      * Return VfsService component, after we can call of this component to all
      * the methods.
@@ -25,8 +27,6 @@ public class VFile
         if (VFS == null) VFS = Ioc.context().find(VfsService.class);
         return VFS;
     }
-
-    private final Path path;
 
     /**
      * Constructor of this class.

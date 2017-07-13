@@ -63,27 +63,26 @@ public class DateTimeFieldInf extends FieldInfBase
      */
     public DateTimeFieldSQLType getSqlType()
     {
-        if (sqlType == null)
+        if (sqlType != null) return sqlType;
+        switch (getType())
         {
-            switch (getType())
-            {
-                case DATE:
-                    return DateTimeFieldSQLType.DATE;
-                case LOCALDATE:
-                    return DateTimeFieldSQLType.DATE;
-                case LOCALTIME:
-                    return DateTimeFieldSQLType.TIME;
-                case LOCALDATETIME:
-                    return DateTimeFieldSQLType.DATE;
-                case SQLDATE:
-                    return DateTimeFieldSQLType.DATE;
-                case SQLTIME:
-                    return DateTimeFieldSQLType.TIME;
-                case TIMESTAMP:
-                    return DateTimeFieldSQLType.TIMESTAMP;
-            }
+            case DATE:
+                return DateTimeFieldSQLType.DATE;
+            case LOCALDATE:
+                return DateTimeFieldSQLType.DATE;
+            case LOCALTIME:
+                return DateTimeFieldSQLType.TIME;
+            case LOCALDATETIME:
+                return DateTimeFieldSQLType.DATE;
+            case SQLDATE:
+                return DateTimeFieldSQLType.DATE;
+            case SQLTIME:
+                return DateTimeFieldSQLType.TIME;
+            case TIMESTAMP:
+                return DateTimeFieldSQLType.TIMESTAMP;
+            default:
+                return DateTimeFieldSQLType.DATE;
         }
-        return sqlType;
     }
 
     /**
@@ -115,8 +114,9 @@ public class DateTimeFieldInf extends FieldInfBase
                 return "java.sql.Time";
             case TIMESTAMP:
                 return "java.sql.Timestamp";
+            default:
+                return "java.time.LocalDateTime";
         }
-        return "LocalDateTime";
     }
 
     @Override
