@@ -94,6 +94,13 @@ public class UISuite
     })
     private List<String> ftlIncludes;
 
+    @XmlElementWrapper(name = "ftlImports")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlImport", type = String.class)
+    })
+    private List<FtlImport> ftlImports;
+    
     @XmlElementWrapper(name = "resources")
     @XmlElements(
     {
@@ -364,6 +371,26 @@ public class UISuite
     public void setFtlIncludes(List<String> ftlIncludes)
     {
         this.ftlIncludes = ftlIncludes;
+    }
+
+    /**
+     * The freemarker templates to import for this suite.
+     * 
+     * @result The freemarker templates to import for this suite.
+     */
+    public List<FtlImport> getFtlImports()
+    {
+        return ftlImports;
+    }
+
+    /**
+     * The freemarker templates to import for this suite.
+     * 
+     * @param ftlImports The freemarker templates to import for this suite.
+     */
+    public void setFtlImports(List<FtlImport> ftlImports)
+    {
+        this.ftlImports = ftlImports;
     }
 
     /**

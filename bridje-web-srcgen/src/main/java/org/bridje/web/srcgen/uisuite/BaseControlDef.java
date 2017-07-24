@@ -32,14 +32,12 @@ import javax.xml.bind.annotation.XmlTransient;
  * Base class for the control definitions and control templates.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlTransient
 public class BaseControlDef
 {
     @XmlID
     @XmlAttribute
     private String name;
-
-    @XmlAttribute
-    private String base;
 
     @XmlAttribute
     private String baseTemplate;
@@ -103,47 +101,6 @@ public class BaseControlDef
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    /**
-     * The parent for this control, by default it is "Control".
-     * 
-     * @return The name of the parent control.
-     */
-    public String getBaseName()
-    {
-        if (base == null)
-        {
-            base = "Control";
-        }
-        return base;
-    }
-    
-    /**
-     * Gets all the parents control of this control.
-     * 
-     * @return The list with the parents control of this control.
-     */
-    public List<ControlDef> getAllBase()
-    {
-        List<ControlDef> result = new ArrayList<>();
-        ControlDef currBase = getBase();
-        while(currBase != null)
-        {
-            result.add(currBase);
-            currBase = ((BaseControlDef)currBase).getBase();
-        }
-        return result;
-    }
-
-    /**
-     * The parent for this control, by default it is "Control".
-     * 
-     * @param base The name of the parent control.
-     */
-    public void setBaseName(String base)
-    {
-        this.base = base;
     }
 
     /**
@@ -294,7 +251,7 @@ public class BaseControlDef
     {
         return uiSuite.getPackage();
     }
-    
+
     /**
      * If this control has any children.
      * 
@@ -355,18 +312,7 @@ public class BaseControlDef
         if(baseTemplate == null) return null;
         return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
     }
-    
-    /**
-     * The base control for this control.
-     * 
-     * @return The Control that is the parent of this control.
-     */
-    public ControlDef getBase()
-    {
-        if(base == null || base.equals("Control")) return null;
-        return uiSuite.getControls().stream().filter(p -> p.getName().equalsIgnoreCase(base)).findFirst().orElse(null);
-    }
-    
+
     /**
      * Finds the field with the given name.
      * 

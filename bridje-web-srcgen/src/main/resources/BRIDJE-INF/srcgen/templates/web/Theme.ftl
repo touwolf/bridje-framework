@@ -4,6 +4,9 @@
 [#list uisuite.ftlIncludes![] as ftlInc]
 <#include "${ftlInc}" >
 [/#list]
+[#list uisuite.ftlImports![] as ftlImp]
+<#import "${ftlImp.file}" as  $(ftlImp.name) >
+[/#list]
 
 [#list uisuite.ftlMacros![] as ftlMac]
 <#macro ${ftlMac.name} ${ftlMac.params!} >
