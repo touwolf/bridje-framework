@@ -9,14 +9,14 @@
 <#macro ${ftlMac.name} ${ftlMac.params!} >
     [@compress single_line=true][#compress]${ftlMac.content}[/#compress][/@compress]
 </#macro>
-[/#list]
 
+[/#list]
 [#list uisuite.ftlFunctions![] as ftlFunc]
 <#function ${ftlFunc.name} ${ftlFunc.params!} >
     [@compress single_line=true][#compress]${ftlFunc.content}[/#compress][/@compress]
 </#function>
-[/#list]
 
+[/#list]
 [#list uisuite.resources as r]
 <#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
@@ -38,30 +38,30 @@
 
 [/#list]
 [#list uisuite.controlsTemplates![] as w]
-<#macro render${w.name} control>
-    [#if w.baseTemplate??]
-    <@render${w.baseTemplate.name}Control control >
+<#macro render${w.name}Template control>
+    [#if w.baseTemplate?? && w.baseTemplate.render??]
+    <@render${w.baseTemplate.name}Template control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.baseTemplate??]
-    </@render${w.baseTemplate.name}Control>
+    [#if w.baseTemplate?? && w.baseTemplate.render??]
+    </@render${w.baseTemplate.name}Template>
     [/#if]
 </#macro>
 
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name}Control control>
-    [#if w.base??]
+    [#if w.base?? && w.base.render??]
     <@render${w.base.name}Control control >
     [/#if]
-    [#if w.baseTemplate??]
-    <@render${w.baseTemplate.name}Control control >
+    [#if w.baseTemplate?? && w.baseTemplate.render??]
+    <@render${w.baseTemplate.name}Template control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.baseTemplate??]
-    </@render${w.baseTemplate.name}Control>
+    [#if w.baseTemplate?? && w.baseTemplate.render??]
+    </@render${w.baseTemplate.name}Template>
     [/#if]
-    [#if w.base??]
+    [#if w.base?? && w.base.render??]
     </@render${w.base.name}Control>
     [/#if]
 </#macro>

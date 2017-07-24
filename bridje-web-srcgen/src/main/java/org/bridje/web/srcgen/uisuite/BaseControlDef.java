@@ -173,7 +173,6 @@ public class BaseControlDef
      */
     public String getRender()
     {
-        if(render == null || render.trim().isEmpty()) return "<#nested />";
         return render;
     }
 
