@@ -28,24 +28,67 @@ public class ControlEnumConstant
 
     @XmlAttribute
     private String value;
+    
+    @XmlAttribute
+    private String description;
 
+    /**
+     * Name of this constant.
+     * 
+     * @return Name of this constant.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Name of this constant.
+     * 
+     * @param name Name of this constant.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Value of this constant.
+     * 
+     * @return Value of this constant.
+     */
     public String getValue()
     {
         return value;
     }
 
+    /**
+     * Value of this constant.
+     * 
+     * @param value Value of this constant.
+     */
     public void setValue(String value)
     {
         this.value = value;
+    }
+
+    /**
+     * Description for this constant.
+     * 
+     * @return Description for this constant.
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * Description for this constant.
+     * 
+     * @param description Description for this constant.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

@@ -65,10 +65,6 @@ class HttpReqParamConverter implements ElAdvanceConverter
 
     private Object doConvert(String value, Class<?> resClass)
     {
-        if(Enum.class.isAssignableFrom(resClass))
-        {
-            return Enum.valueOf((Class<Enum>)resClass, value);
-        }
         if(Boolean.class.isAssignableFrom(resClass) 
                 || boolean.class.isAssignableFrom(resClass))
         {

@@ -34,6 +34,9 @@ public class ControlEnum
     @XmlTransient
     private UISuite uiSuite;
 
+    @XmlAttribute
+    private String description;
+    
     @XmlElements(
     {
         @XmlElement(name = "constant", type = ControlEnumConstant.class)
@@ -93,6 +96,26 @@ public class ControlEnum
         {
             uiSuite = (UISuite) parent;
         }
+    }
+
+    /**
+     * Description for this enum.
+     * 
+     * @return Description for this enum.
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * Description for this enum.
+     * 
+     * @param description Description for this enum.
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     /**
