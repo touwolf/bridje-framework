@@ -19,7 +19,6 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 
 /**
  * This enumerator represents the modifiers of operations that this model have.

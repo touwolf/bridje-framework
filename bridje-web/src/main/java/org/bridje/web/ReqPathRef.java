@@ -17,7 +17,6 @@
 package org.bridje.web;
 
 import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletRequest;
 
 /**
  * This object represents a reference to the path to be handle by the current
