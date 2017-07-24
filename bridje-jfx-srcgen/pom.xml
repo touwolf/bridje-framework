@@ -50,7 +50,7 @@
                                 <artifact>
                                     <file>target/generated-resources/schemagen/schema1.xsd</file>
                                     <type>xsd</type>
-                                    <classifier>uisuite</classifier>
+                                    <classifier>model</classifier>
                                 </artifact>
                             </artifacts>
                         </configuration>
