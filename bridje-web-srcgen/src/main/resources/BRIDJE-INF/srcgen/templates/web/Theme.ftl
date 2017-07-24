@@ -38,6 +38,7 @@
 
 [/#list]
 [#list uisuite.controlsTemplates![] as w]
+[#if w.render??]
 <#macro render${w.name}Template control>
     [#if w.baseTemplate?? && w.baseTemplate.render??]
     <@render${w.baseTemplate.name}Template control >
@@ -48,6 +49,7 @@
     [/#if]
 </#macro>
 
+[/#if]
 [/#list]
 [#list uisuite.controls as w]
 <#macro render${w.name}Control control>
