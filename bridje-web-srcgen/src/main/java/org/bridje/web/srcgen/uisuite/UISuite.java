@@ -376,7 +376,7 @@ public class UISuite
     /**
      * The freemarker templates to import for this suite.
      * 
-     * @result The freemarker templates to import for this suite.
+     * @return The freemarker templates to import for this suite.
      */
     public List<FtlImport> getFtlImports()
     {
