@@ -47,60 +47,96 @@ Installation and Usage
 
 Bridje libraries are available on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
+```xml
+    <properties>
+        ....
+        <bridje.version>0.4.1</bridje.version>
+    </properties>
+
     <dependencies>
-		....
+	....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-vfs</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-web</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-el</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
-		....
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-jfx</artifactId>
+            <version>${bridje.version}</version>
+        </dependency>
+	....
     </dependencies>
 
     <build>
         <plugins>
-            ...
+            ....
             <plugin>
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
-                <version>0.3.0</version>
-                <configuration>
-			....
-                </configuration>
+                <version>${bridje.version}</version>
+		<executions>
+			<execution>
+			    <id>generate-bridje-sources</id>
+			    <goals>
+				<goal>generate-sources</goal>
+			    </goals>
+			    <phase>generate-sources</phase>
+			</execution>
+		</executions>
+		<dependencies>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-web-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-orm-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-jfx-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+		</dependencies>
             <plugin>
-             ...
+            ....
         <plugins>
      </build>
+```
+
 Dependencies
 ============
 
@@ -117,6 +153,7 @@ Your application will include the framework's librarys as well as this dependenc
 Your application does not need to depend on this libraries unless you specifically include then
 
  * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in the bridje-maven-plugin for generating code.
+ * [JavaParser 2.5.1](https://github.com/javaparser/javaparser) For java source code parsing in the source generation API.
 
 ## Framework Build Dependencies
 
