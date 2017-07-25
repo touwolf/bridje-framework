@@ -48,8 +48,13 @@ Installation and Usage
 Bridje libraries are available on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
 ```xml
+    <properties>
+        ....
+        <bridje.version>0.4.1</bridje.version>
+    </properties>
+
     <dependencies>
-		....
+	....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
@@ -90,12 +95,12 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
             <artifactId>bridje-jfx</artifactId>
             <version>${bridje.version}</version>
         </dependency>
-		....
+	....
     </dependencies>
 
     <build>
         <plugins>
-            ...
+            ....
             <plugin>
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
@@ -127,7 +132,7 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
 			</dependency>
 		</dependencies>
             <plugin>
-             ...
+            ....
         <plugins>
      </build>
 ```
