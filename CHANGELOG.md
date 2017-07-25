@@ -8,7 +8,7 @@
  - Fixes to the UISuite enumerators generation.
  - Adding freemarker imports to the UISuite.
 
-## [v0.4.0](https://github.com/bridje/bridje-framework/tree/v0.4.0) (2016-06-01)
+## [v0.4.0](https://github.com/bridje/bridje-framework/tree/v0.4.0) (2017-07-13)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.3.0...v0.4.0)
 
  - A brand new VFS API.
