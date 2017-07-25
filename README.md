@@ -47,42 +47,48 @@ Installation and Usage
 
 Bridje libraries are available on the [Maven Central Repository](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 
+```xml
     <dependencies>
 		....
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-ioc</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-vfs</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-http</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-web</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-el</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-jdbc</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
         </dependency>
         <dependency>
             <groupId>org.bridje</groupId>
             <artifactId>bridje-orm</artifactId>
-            <version>0.3.0</version>
+            <version>${bridje.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bridje</groupId>
+            <artifactId>bridje-jfx</artifactId>
+            <version>${bridje.version}</version>
         </dependency>
 		....
     </dependencies>
@@ -93,14 +99,39 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
             <plugin>
                 <groupId>org.bridje</groupId>
                 <artifactId>bridje-maven-plugin</artifactId>
-                <version>0.3.0</version>
-                <configuration>
-			....
-                </configuration>
+                <version>${bridje.version}</version>
+		<executions>
+			<execution>
+			    <id>generate-bridje-sources</id>
+			    <goals>
+				<goal>generate-sources</goal>
+			    </goals>
+			    <phase>generate-sources</phase>
+			</execution>
+		</executions>
+		<dependencies>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-web-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-orm-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.bridje</groupId>
+			    <artifactId>bridje-jfx-srcgen</artifactId>
+			    <version>${bridje.version}</version>
+			</dependency>
+		</dependencies>
             <plugin>
              ...
         <plugins>
      </build>
+```
+
 Dependencies
 ============
 
