@@ -40,7 +40,7 @@ public class Path implements Iterable<Path>
      */
     private Path(String[] pathElements)
     {
-        if(pathElements.length > 0)
+        if(pathElements != null && pathElements.length > 0)
         {
             this.pathElements = pathElements;
         }
@@ -147,7 +147,7 @@ public class Path implements Iterable<Path>
      */
     public boolean isRoot()
     {
-        return pathElements == null;
+        return pathElements == null || pathElements.length == 0;
     }
 
     /**
