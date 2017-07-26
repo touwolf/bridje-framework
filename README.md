@@ -50,7 +50,7 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
 ```xml
     <properties>
         ....
-        <bridje.version>0.4.1</bridje.version>
+        <bridje.version>0.4.2</bridje.version>
     </properties>
 
     <dependencies>
