@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,7 +98,7 @@ public class UISuite
     @XmlElementWrapper(name = "ftlImports")
     @XmlElements(
     {
-        @XmlElement(name = "ftlImport", type = String.class)
+        @XmlElement(name = "ftlImport", type = FtlImport.class)
     })
     private List<FtlImport> ftlImports;
     
@@ -117,13 +118,13 @@ public class UISuite
     })
     private List<ControlDef> controls;
 
-    @XmlElementWrapper(name = "controlsTemplates")
+    @XmlElementWrapper(name = "templates")
     @XmlElements(
     {
-        @XmlElement(name = "controlTemplate", type = TemplateControlDef.class)
+        @XmlElement(name = "template", type = TemplateControlDef.class)
     })
-    private List<TemplateControlDef> controlsTemplates;
-
+    private List<TemplateControlDef> templates;
+    
     @XmlElementWrapper(name = "enums")
     @XmlElements(
     {
@@ -318,19 +319,19 @@ public class UISuite
      * 
      * @return The list of controls templates for this suite.
      */
-    public List<TemplateControlDef> getControlsTemplates()
+    public List<TemplateControlDef> getTemplates()
     {
-        return controlsTemplates;
+        return templates;
     }
 
     /**
      * The list of controls templates for this suite.
      * 
-     * @param controlsTemplates The list of controls templates for this suite.
+     * @param templates The list of controls templates for this suite.
      */
-    public void setControlsTemplates(List<TemplateControlDef> controlsTemplates)
+    public void setTemplates(List<TemplateControlDef> templates)
     {
-        this.controlsTemplates = controlsTemplates;
+        this.templates = templates;
     }
 
     /**
@@ -499,6 +500,20 @@ public class UISuite
         return getName();
     }
     
+    private VFile findIncludeFile(String include, VFile currentDir)
+    {
+        VFile includeFile;
+        if(include.startsWith("/"))
+        {
+            includeFile = new VFile(include);
+        }
+        else
+        {
+            includeFile = new VFile(currentDir.getPath().join(new Path(include)));
+        }
+        return includeFile;
+    }
+
     /**
      * Proccess the partial UI suites includes for this object.
      * 
@@ -508,17 +523,11 @@ public class UISuite
     {
         if(includes != null)
         {
+            List<String> reverseIncludes = includes;
+            Collections.reverse(reverseIncludes);
             for (String include : includes)
             {
-                VFile includeFile;
-                if(include.startsWith("/"))
-                {
-                    includeFile = new VFile(include);
-                }
-                else
-                {
-                    includeFile = new VFile(currentDir.getPath().join(new Path(include)));
-                }
+                VFile includeFile = findIncludeFile(include, currentDir);
                 if(includeFile.exists())
                 {
                     try
@@ -530,39 +539,60 @@ public class UISuite
                             {
                                 if(controls == null) controls = new ArrayList<>();
                                 partial.getControls().stream().forEach(c -> c.setUiSuite(this));
-                                controls.addAll(partial.getControls());
+                                partial.getControls().stream()
+                                        .filter(t -> !hasControl(t.getName()))
+                                        .forEach(t -> controls.add(t));
                             }
-                            if(partial.getControlsTemplates() != null)
+                            if(partial.getTemplates() != null)
                             {
-                                if(controlsTemplates == null) controlsTemplates = new ArrayList<>();
-                                partial.getControlsTemplates().stream().forEach(c -> c.setUiSuite(this));
-                                controlsTemplates.addAll(partial.getControlsTemplates());
+                                if(templates == null) templates = new ArrayList<>();
+                                partial.getTemplates().stream().forEach(c -> c.setUiSuite(this));
+                                partial.getTemplates().stream()
+                                        .filter(t -> !hasTemplate(t.getName()))
+                                        .forEach(t -> templates.add(t));
                             }
                             if(partial.getEnums() != null)
                             {
                                 if(enums == null) enums = new ArrayList<>();
                                 partial.getEnums().stream().forEach(c -> c.setUiSuite(this));
-                                enums.addAll(partial.getEnums());
+                                partial.getEnums().stream()
+                                        .filter(t -> !hasEnum(t.getName()))
+                                        .forEach(t -> enums.add(t));
                             }
                             if(partial.getResources() != null)
                             {
                                 if(resources == null) resources = new ArrayList<>();
-                                resources.addAll(partial.getResources());
+                                partial.getResources().stream()
+                                        .filter(t -> !hasResource(t.getName()))
+                                        .forEach(t -> resources.add(t));
                             }
                             if(partial.getFtlIncludes() != null)
                             {
                                 if(ftlIncludes == null) ftlIncludes = new ArrayList<>();
-                                ftlIncludes.addAll(partial.getFtlIncludes());
+                                partial.getFtlIncludes().stream()
+                                        .filter(t -> !ftlIncludes.contains(t))
+                                        .forEach(t -> ftlIncludes.add(t));
                             }
                             if(partial.getFtlMacros() != null)
                             {
                                 if(ftlMacros == null) ftlMacros = new ArrayList<>();
-                                ftlMacros.addAll(partial.getFtlMacros());
+                                partial.getFtlMacros().stream()
+                                        .filter(t -> !hasFtlMacro(t.getName()))
+                                        .forEach(t -> ftlMacros.add(t));
                             }
                             if(partial.getFtlFunctions()!= null)
                             {
                                 if(ftlFunctions == null) ftlFunctions = new ArrayList<>();
-                                ftlFunctions.addAll(partial.getFtlFunctions());
+                                partial.getFtlFunctions().stream()
+                                        .filter(t -> !hasFtlFunction(t.getName()))
+                                        .forEach(t -> ftlFunctions.add(t));
+                            }
+                            if(partial.getFtlImports()!= null)
+                            {
+                                if(ftlImports == null) ftlImports = new ArrayList<>();
+                                partial.getFtlImports().stream()
+                                        .filter(t -> !hasFtlImport(t.getName()))
+                                        .forEach(t -> ftlImports.add(t));
                             }
                         }
                     }
@@ -620,6 +650,39 @@ public class UISuite
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(object, os);
     }
-    
-    
+
+    public boolean hasTemplate(String name)
+    {
+        return templates.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasEnum(String name)
+    {
+        return enums.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasControl(String name)
+    {
+        return controls.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasResource(String name)
+    {
+        return resources.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasFtlImport(String name)
+    {
+        return ftlImports.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasFtlMacro(String name)
+    {
+        return ftlMacros.stream().anyMatch(t -> t.getName().equals(name));
+    }
+
+    private boolean hasFtlFunction(String name)
+    {
+        return ftlFunctions.stream().anyMatch(t -> t.getName().equals(name));
+    }
 }

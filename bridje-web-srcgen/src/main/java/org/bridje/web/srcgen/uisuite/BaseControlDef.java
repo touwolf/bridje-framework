@@ -40,7 +40,7 @@ public class BaseControlDef
     private String name;
 
     @XmlAttribute
-    private String baseTemplate;
+    private String template;
 
     private String render;
 
@@ -108,19 +108,19 @@ public class BaseControlDef
      * 
      * @return The template to be use by this control.
      */
-    public String getBaseTemplateName()
+    public String getTemplateName()
     {
-        return baseTemplate;
+        return template;
     }
 
     /**
      * The base template for this control.
      * 
-     * @param baseTemplate The template to be use by this control.
+     * @param template The template to be use by this control.
      */
-    public void setBaseTemplateName(String baseTemplate)
+    public void setTemplateName(String template)
     {
-        this.baseTemplate = baseTemplate;
+        this.template = template;
     }
 
     /**
@@ -173,13 +173,36 @@ public class BaseControlDef
         if(allFields == null)
         {
             allFields = new ArrayList<>();
-            TemplateControlDef tmpl = getBaseTemplate();
+            TemplateControlDef tmpl = getTemplate();
             if(tmpl != null) allFields.addAll(tmpl.getFields());
-            if(fields != null) allFields.addAll(fields);
+            if(fields != null) 
+            {
+                fields.forEach(this::overrideField);
+                
+            }
         }
         return allFields;
     }
 
+    private void overrideField(FieldDef field)
+    {
+        FieldDef baseField = allFields.stream()
+                                    .filter(f -> f.getName().equals(field.getName()))
+                                    .findFirst()
+                                    .orElse(null);
+        FieldDef fieldToAdd = field;
+        if(baseField != null)
+        {
+            allFields.remove(baseField);
+            if(field instanceof ChildrenFlield 
+                    && baseField instanceof ChildrenFlield)
+            {
+                fieldToAdd = ((ChildrenFlield)field).merge((ChildrenFlield)baseField);
+            }
+        }
+        allFields.add(fieldToAdd);
+    }
+    
     /**
      * The resources this control needs.
      * 
@@ -190,7 +213,7 @@ public class BaseControlDef
         if(allResources == null)
         {
             allResources = new ArrayList<>();
-            TemplateControlDef tmpl = getBaseTemplate();
+            TemplateControlDef tmpl = getTemplate();
             if(tmpl != null) allResources.addAll(tmpl.getResources());
             if(resources != null) allResources.addAll(resources);
         }
@@ -307,10 +330,14 @@ public class BaseControlDef
      * 
      * @return The base template for this control.
      */
-    public TemplateControlDef getBaseTemplate()
+    public TemplateControlDef getTemplate()
     {
-        if(baseTemplate == null) return null;
-        return uiSuite.getControlsTemplates().stream().filter(p -> p.getName().equalsIgnoreCase(baseTemplate)).findFirst().orElse(null);
+        if(template == null) return null;
+        return uiSuite.getTemplates()
+                    .stream()
+                    .filter(p -> p.getName().equalsIgnoreCase(template))
+                    .findFirst()
+                    .orElse(null);
     }
 
     /**

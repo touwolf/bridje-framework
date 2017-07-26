@@ -16,6 +16,7 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -41,7 +42,7 @@ public class ChildrenFlield implements FieldDef
 
     @XmlAttribute
     private Boolean single;
-                
+
     @XmlElements(
     {
         @XmlElement(name = "child", type = ChildField.class)
@@ -197,5 +198,30 @@ public class ChildrenFlield implements FieldDef
     public boolean getIsInputFile()
     {
         return false;
+    }
+    
+    public ChildrenFlield merge(ChildrenFlield base)
+    {
+        ChildrenFlield result = new ChildrenFlield();
+        result.name = base.name;
+        result.allowPlaceHolder = base.allowPlaceHolder;
+        if(allowPlaceHolder != null) result.allowPlaceHolder = allowPlaceHolder;
+        result.single = base.single;
+        if(single != null) result.single = single;
+        result.wrapper = base.wrapper;
+        if(wrapper != null) result.wrapper = wrapper;
+        result.content = new ArrayList<>();
+        if(base.content != null) result.content.addAll(base.content);
+        if(content != null)
+        {
+            result.content.removeIf(e -> hasChild(e.getName()));
+            result.content.addAll(content);
+        }
+        return result;
+    }
+    
+    private boolean hasChild(String childName)
+    {
+        return content.stream().anyMatch(c -> c.getName().equals(childName));
     }
 }

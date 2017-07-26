@@ -40,15 +40,15 @@
 </#macro>
 
 [/#list]
-[#list uisuite.controlsTemplates![] as w]
+[#list uisuite.templates![] as w]
 [#if w.render??]
 <#macro render${w.name}Template control>
-    [#if w.baseTemplate?? && w.baseTemplate.render??]
-    <@render${w.baseTemplate.name}Template control >
+    [#if w.template?? && w.template.render??]
+    <@render${w.template.name}Template control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.baseTemplate?? && w.baseTemplate.render??]
-    </@render${w.baseTemplate.name}Template>
+    [#if w.template?? && w.template.render??]
+    </@render${w.template.name}Template>
     [/#if]
 </#macro>
 
@@ -59,12 +59,12 @@
     [#if w.base?? && w.base.render??]
     <@render${w.base.name}Control control >
     [/#if]
-    [#if w.baseTemplate?? && w.baseTemplate.render??]
-    <@render${w.baseTemplate.name}Template control >
+    [#if w.template?? && w.template.render??]
+    <@render${w.template.name}Template control >
     [/#if]
     [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.baseTemplate?? && w.baseTemplate.render??]
-    </@render${w.baseTemplate.name}Template>
+    [#if w.template?? && w.template.render??]
+    </@render${w.template.name}Template>
     [/#if]
     [#if w.base?? && w.base.render??]
     </@render${w.base.name}Control>

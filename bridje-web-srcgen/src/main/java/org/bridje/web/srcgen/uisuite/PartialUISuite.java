@@ -74,12 +74,12 @@ public class PartialUISuite
     })
     private List<ControlDef> controls;
 
-    @XmlElementWrapper(name = "controlsTemplates")
+    @XmlElementWrapper(name = "templates")
     @XmlElements(
     {
-        @XmlElement(name = "controlTemplate", type = TemplateControlDef.class)
+        @XmlElement(name = "template", type = TemplateControlDef.class)
     })
-    private List<TemplateControlDef> controlsTemplates;
+    private List<TemplateControlDef> templates;
 
     @XmlElementWrapper(name = "enums")
     @XmlElements(
@@ -87,6 +87,13 @@ public class PartialUISuite
         @XmlElement(name = "enum", type = ControlEnum.class)
     })
     private List<ControlEnum> enums;
+
+    @XmlElementWrapper(name = "ftlImports")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlImport", type = FtlImport.class)
+    })
+    private List<FtlImport> ftlImports;
 
     /**
      * The resources for this partial UI suite declaration.
@@ -133,19 +140,19 @@ public class PartialUISuite
      * 
      * @return The list of controls templates for this partial declaration.
      */
-    public List<TemplateControlDef> getControlsTemplates()
+    public List<TemplateControlDef> getTemplates()
     {
-        return controlsTemplates;
+        return templates;
     }
 
     /**
      * The list of controls templates for this partial declaration.
      * 
-     * @param controlsTemplates The list of controls templates for this partial declaration.
+     * @param templates The list of controls templates for this partial declaration.
      */
-    public void setControlsTemplates(List<TemplateControlDef> controlsTemplates)
+    public void setTemplates(List<TemplateControlDef> templates)
     {
-        this.controlsTemplates = controlsTemplates;
+        this.templates = templates;
     }
 
     /**
@@ -207,7 +214,26 @@ public class PartialUISuite
     {
         this.ftlFunctions = ftlFunctions;
     }
-    
+
+    /**
+     * The freemarker templates to import for this suite.
+     * 
+     * @return The freemarker templates to import for this suite.
+     */
+    public List<FtlImport> getFtlImports()
+    {
+        return ftlImports;
+    }
+
+    /**
+     * The freemarker templates to import for this suite.
+     * 
+     * @param ftlImports The freemarker templates to import for this suite.
+     */
+    public void setFtlImports(List<FtlImport> ftlImports)
+    {
+        this.ftlImports = ftlImports;
+    }
 
     /**
      * The list of enums for this suite.
