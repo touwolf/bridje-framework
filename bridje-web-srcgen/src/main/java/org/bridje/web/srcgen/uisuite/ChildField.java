@@ -33,6 +33,7 @@ public class ChildField implements FieldDef
     @XmlAttribute
     private String type;
 
+    @XmlAttribute
     private Boolean allowPlaceHolder;
     
     /**
