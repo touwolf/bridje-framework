@@ -1,5 +1,14 @@
 # Change Log
 
+## [v0.4.2](https://github.com/bridje/bridje-framework/tree/v0.4.2) (2017-07-26)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.1...v0.4.2)
+
+ - Implementing UISuite templates hierarchy with the children fields.
+ - Adding a new feature to the VFS that allow to mount sources into child folders on top of a mount point.
+ - RenderFileBridlet must gets the path from the WebScope.
+ - Adding autoIncrement to the integer ORM model field.
+ - Fixing errors in ORM source generation Entity template.
+
 ## [v0.4.1](https://github.com/bridje/bridje-framework/tree/v0.4.1) (2017-07-24)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.0...v0.4.1)
 
