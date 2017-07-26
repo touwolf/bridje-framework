@@ -33,6 +33,7 @@ public class ControlDef extends BaseControlDef
     @XmlAttribute
     private String base;
 
+    @XmlAttribute
     private boolean isTransient;
 
     public boolean getIsTransient()
