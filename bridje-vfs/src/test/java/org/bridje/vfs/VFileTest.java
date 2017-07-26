@@ -79,6 +79,34 @@ public class VFileTest
         Assert.assertEquals("folder2", readFirstLine(search[0]));
     }
 
+    @Test
+    public void test4MountMerged() throws IOException
+    {
+        new VFile("/merged1").mount(new FileSource(new File("./target/test-classes/merged1")));
+        new VFile("/merged1/vfs/other/folder1").mount(new FileSource(new File("./target/test-classes/merged/folder1")));
+        new VFile("/merged1/vfs/other/folder2").mount(new FileSource(new File("./target/test-classes/merged/folder2")));
+
+        Assert.assertArrayEquals(new String[]{"vfs", "merged.txt"}, new VFile("/merged1").list());
+        Assert.assertArrayEquals(new String[]{"other"}, new VFile("/merged1/vfs").list());
+        Assert.assertArrayEquals(new String[]{"folder2", "folder1", "other-common.txt"}, new VFile("/merged1/vfs/other").list());
+        Assert.assertArrayEquals(new String[]{"common.txt", "document1.txt"}, new VFile("/merged1/vfs/other/folder1").list());
+    }
+
+    @Test
+    public void test5MountMerged() throws IOException
+    {
+        new VFile("/merged2").mount(new FileSource(new File("./target/test-classes/merged1")));
+        new VFile("/merged2/somefolder/other/folder1").mount(new FileSource(new File("./target/test-classes/merged/folder1")));
+        new VFile("/merged2/somefolder/other/folder2").mount(new FileSource(new File("./target/test-classes/merged/folder2")));
+        new VFile("/merged2/somefolder/other/merged1").mount(new FileSource(new File("./target/test-classes/merged1")));
+
+        Assert.assertArrayEquals(new String[]{"somefolder", "merged.txt", "vfs"}, new VFile("/merged2").list());
+        Assert.assertArrayEquals(new String[]{"other"}, new VFile("/merged2/vfs").list());
+        Assert.assertArrayEquals(new String[]{"merged1", "folder2", "folder1"}, new VFile("/merged2/somefolder/other").list());
+        Assert.assertArrayEquals(new String[]{"common.txt", "document1.txt"}, new VFile("/merged2/somefolder/other/folder1").list());
+        Assert.assertArrayEquals(new String[]{"other-common.txt"}, new VFile("/merged2/somefolder/other/merged1/vfs/other").list());
+    }
+
     private String readFirstLine(VFile file) throws IOException
     {
         try (InputStream is = file.openForRead())

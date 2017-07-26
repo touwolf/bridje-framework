@@ -30,6 +30,7 @@ import org.bridje.ioc.Priority;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
+import org.bridje.web.WebScope;
 
 @Component
 @Priority(700)
@@ -46,8 +47,7 @@ class RenderFileBridlet implements HttpBridlet
         VFile file = context.get(VFile.class);
         if(file == null)
         {
-            HttpBridletRequest req = context.getRequest();
-            String pathStr = req.getPath();
+            String pathStr = context.get(WebScope.class).getPath();
             if(pathStr != null && 
                     !(pathStr.endsWith(".view.xml") || pathStr.endsWith(".layout.xml")))
             {

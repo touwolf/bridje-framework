@@ -135,6 +135,7 @@ public class ModelInf
      */
     public String getTablePrefix()
     {
+        if(tablePrefix == null) return Utils.toSQLName(this.getName());
         return tablePrefix;
     }
 

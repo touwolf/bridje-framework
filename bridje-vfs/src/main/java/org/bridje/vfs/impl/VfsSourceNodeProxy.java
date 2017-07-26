@@ -107,11 +107,14 @@ class VfsSourceNodeProxy extends VfsNode
         reverseNodes.forEach(node ->
         {
             String[] nodeList = node.list(path);
-            for (String name : nodeList)
+            if(nodeList != null)
             {
-                if (!list.contains(name))
+                for (String name : nodeList)
                 {
-                    list.add(name);
+                    if (!list.contains(name))
+                    {
+                        list.add(name);
+                    }
                 }
             }
         });

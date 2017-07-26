@@ -40,7 +40,14 @@ public class Path implements Iterable<Path>
      */
     private Path(String[] pathElements)
     {
-        this.pathElements = pathElements;
+        if(pathElements.length > 0)
+        {
+            this.pathElements = pathElements;
+        }
+        else
+        {
+            this.pathElements = null;
+        }
     }
 
     /**
@@ -250,6 +257,7 @@ public class Path implements Iterable<Path>
      */
     public Path join(Path path)
     {
+        if(path.isRoot()) return new Path(pathElements);
         if(isRoot()) return new Path(path.pathElements);
         String[] newElements = new String[pathElements.length + path.pathElements.length];
         System.arraycopy(pathElements, 0, newElements, 0, pathElements.length);
@@ -359,5 +367,47 @@ public class Path implements Iterable<Path>
         }
         final Path other = (Path) obj;
         return toString().equals(other.toString());
+    }
+
+    /**
+     * Determines when ever this path starts with the given path.
+     * 
+     * @param path The prefix path.
+     * @return true if this path starts with the given path.
+     */
+    public boolean startsWith(Path path)
+    {
+        if(path.pathElements == null || path.pathElements.length == 0) return true;
+        if(this.pathElements == null || this.pathElements.length == 0) return true;
+        if(path.pathElements.length > this.pathElements.length) return false;
+        for(int i = 0; i < path.pathElements.length; i++)
+        {
+            if(!this.pathElements[i].equals(path.pathElements[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Remove the given path from the current path if the given path is a prefix of this path.
+     * 
+     * @param path The prefix path.
+     * @return the new trimed path, or null if the given path is not a prefix for this path.
+     */
+    public Path leftTrim(Path path)
+    {
+        if(path == null || path.pathElements == null || path.pathElements.length == 0) return new Path(this.pathElements);
+        if(this.pathElements == null || this.pathElements.length == 0) return new Path();
+        if(path.pathElements.length > this.pathElements.length) return null;
+        for(int i = 0; i < path.pathElements.length; i++)
+        {
+            if(!this.pathElements[i].equals(path.pathElements[i]))
+            {
+                return null;
+            }
+        }
+        return new Path(Arrays.copyOfRange(pathElements, path.pathElements.length, this.pathElements.length));
     }
 }

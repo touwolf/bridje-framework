@@ -35,6 +35,7 @@ public class IntegerFieldInf extends FieldInfBase
     @XmlAttribute
     private Integer length;
 
+    @XmlAttribute
     private Boolean autoIncrement;
 
     /**

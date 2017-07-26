@@ -105,6 +105,10 @@ class VfsFolderNode extends VfsNode
             {
                 ((VfsFolderNode)child).mount(path.getNext(), source);
             }
+            else if(child instanceof VfsSourceNodeProxy)
+            {
+                ((VfsSourceNodeProxy) child).add(new VfsSourceWrapper(path.getNext(), source));
+            }
             else
             {
                 throw new FileNotFoundException("Could not find the folder.");
