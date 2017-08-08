@@ -53,20 +53,20 @@ public interface ElEnvironment
     <T> T getVar(String name, Class<T> resultCls);
 
     /**
-     * Sets the value of the specified variable.
+     * Push the value into the stack of the specified variable.
      * 
      * @param <T> The type of the variable.
      * @param name The name of the variable.
      * @param value The value of the variable.
      */
-    <T> void setVar(String name, T value);
+    <T> void pushVar(String name, T value);
 
     /**
-     * Remove the given variable from this environment.
+     * Pops the value out of the stack of the given variable.
      * 
      * @param name The name of the variable.
      */
-    void removeVar(String name);
+    void popVar(String name);
     
     /**
      * Gets the var as the string.

@@ -66,11 +66,33 @@ public class ElServiceTest
     {
         ElService elServ = Ioc.context().find(ElService.class);
         ElEnvironment elEnv = elServ.createElEnvironment(Ioc.context());
-        elEnv.setVar("myVar", "Hello");
+
+        elEnv.pushVar("myVar", "Hello");
         String result = elEnv.get("${myVar}", String.class);
         assertNotNull(result);
         assertEquals("Hello", result);
-        elEnv.setVar("myList", new ArrayList<>());
+
+        elEnv.pushVar("myVar", "Hello 1");
+        result = elEnv.get("${myVar}", String.class);
+        assertNotNull(result);
+        assertEquals("Hello 1", result);
+
+        elEnv.pushVar("myVar", "Hello 2");
+        result = elEnv.get("${myVar}", String.class);
+        assertNotNull(result);
+        assertEquals("Hello 2", result);
+
+        elEnv.popVar("myVar");
+        result = elEnv.get("${myVar}", String.class);
+        assertNotNull(result);
+        assertEquals("Hello 1", result);
+
+        elEnv.popVar("myVar");
+        result = elEnv.get("${myVar}", String.class);
+        assertNotNull(result);
+        assertEquals("Hello", result);
+
+        elEnv.pushVar("myList", new ArrayList<>());
         List lst = elEnv.get("${myList}", List.class);
         assertNotNull(lst);
         assertEquals(0, lst.size());

@@ -16,6 +16,9 @@
 
 package org.bridje.el.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ExpressionFactory;
@@ -31,11 +34,14 @@ class IocEnviromentImpl implements ElEnvironment
     private final IocElContext context;
 
     private final ExpressionFactory factory;
+    
+    private final Map<String, Stack<ValueExpression>> varsStack;
 
     public IocEnviromentImpl(IocContext context)
     {
         this.factory = Ioc.context().find(ExpressionFactoryImpl.class);
         this.context = new IocElContext(context, factory);
+        this.varsStack = new HashMap<>();
     }
 
     @Override
@@ -65,22 +71,31 @@ class IocEnviromentImpl implements ElEnvironment
     }
 
     @Override
-    public <T> void setVar(String name, T value)
+    public <T> void pushVar(String name, T value)
     {
-        if(value == null)
+        Stack<ValueExpression> stack = varsStack.get(name);
+        if(stack == null)
         {
-            context.setVariable(name, null);
+            stack = new Stack<>();
+            varsStack.put(name, stack);
         }
-        else
-        {
-            context.setVariable(name, factory.createValueExpression(value, value.getClass()));
-        }
+        ValueExpression exp = null;
+        if(value != null) exp = factory.createValueExpression(value, value.getClass());
+        stack.push(exp);
+        context.setVariable(name, exp);
     }
 
     @Override
-    public void removeVar(String name)
+    public void popVar(String name)
     {
-        context.setVariable(name, null);
+        Stack<ValueExpression> stack = varsStack.get(name);
+        ValueExpression exp = null;
+        if(stack != null)
+        {
+            if( !stack.empty() ) stack.pop();
+            if( !stack.empty() ) exp = stack.peek();
+        }
+        context.setVariable(name, exp);
     }
 
     @Override
