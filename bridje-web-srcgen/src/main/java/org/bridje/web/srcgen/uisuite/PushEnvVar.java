@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * Sets the given var to the given value in the el environment.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SetEnvVar implements ReadInputAction
+public class PushEnvVar implements ReadInputAction
 {
     @XmlAttribute
     private String var;

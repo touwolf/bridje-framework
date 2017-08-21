@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlElements;
  * several controls as children of the parent control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChildrenFlield implements FieldDef
+public class ChildrenField implements FieldDef
 {
     @XmlAttribute
     private String name;
@@ -200,9 +200,9 @@ public class ChildrenFlield implements FieldDef
         return false;
     }
     
-    public ChildrenFlield merge(ChildrenFlield base)
+    public ChildrenField merge(ChildrenField base)
     {
-        ChildrenFlield result = new ChildrenFlield();
+        ChildrenField result = new ChildrenField();
         result.name = base.name;
         result.allowPlaceHolder = base.allowPlaceHolder;
         if(allowPlaceHolder != null) result.allowPlaceHolder = allowPlaceHolder;

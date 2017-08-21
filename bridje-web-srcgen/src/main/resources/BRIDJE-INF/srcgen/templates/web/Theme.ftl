@@ -40,32 +40,18 @@
 </#macro>
 
 [/#list]
-[#list uisuite.templates![] as w]
-[#if w.render??]
-<#macro render${w.name}Template control>
-    [#if w.template?? && w.template.render??]
-    <@render${w.template.name}Template control >
-    [/#if]
-    [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.template?? && w.template.render??]
-    </@render${w.template.name}Template>
-    [/#if]
+[#list uisuite.controls as w]
+[#list w.ftlMacros![] as ftlMac]
+<#macro render${w.name}${ftlMac.name?cap_first} control >
+    [@compress single_line=true][#compress]${w.replaceMacros(ftlMac.content)}[/#compress][/@compress]
 </#macro>
 
-[/#if]
 [/#list]
-[#list uisuite.controls as w]
 <#macro render${w.name}Control control>
     [#if w.base?? && w.base.render??]
     <@render${w.base.name}Control control >
     [/#if]
-    [#if w.template?? && w.template.render??]
-    <@render${w.template.name}Template control >
-    [/#if]
-    [@compress single_line=true][#compress]${w.render!}[/#compress][/@compress]
-    [#if w.template?? && w.template.render??]
-    </@render${w.template.name}Template>
-    [/#if]
+    [@compress single_line=true][#compress]${w.replaceMacros(w.render)}[/#compress][/@compress]
     [#if w.base?? && w.base.render??]
     </@render${w.base.name}Control>
     [/#if]

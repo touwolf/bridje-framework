@@ -38,7 +38,8 @@ public class ForEachData implements ReadInputAction
     @XmlElements(
     {
         @XmlElement(name = "for", type = ForEachData.class),
-        @XmlElement(name = "setVar", type = SetEnvVar.class),
+        @XmlElement(name = "pushVar", type = PushEnvVar.class),
+        @XmlElement(name = "popVar", type = PopEnvVar.class),
         @XmlElement(name = "pop", type = PopFieldInput.class),
         @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
         @XmlElement(name = "get", type = ReadFieldInput.class),

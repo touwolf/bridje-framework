@@ -110,7 +110,7 @@
 <#macro renderState>
     <#assign currState = stateProvider.currentState />
     <#list currState?keys as k>
-        <input type="hidden" name="__state.${k}" value="${currState[k]}" />
+        <input type="hidden" name="__state.${k}" value="${currState[k]?xhtml}" />
     </#list>
 </#macro>
 

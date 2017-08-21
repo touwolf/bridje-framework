@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * A UI suite control definition.
@@ -35,6 +36,8 @@ public class ControlDef extends BaseControlDef
 
     @XmlAttribute
     private boolean isTransient;
+
+    private String render;
 
     public boolean getIsTransient()
     {
@@ -53,10 +56,7 @@ public class ControlDef extends BaseControlDef
      */
     public String getBaseName()
     {
-        if (base == null)
-        {
-            base = "Control";
-        }
+        if (base == null) base = "Control";
         return base;
     }
 
@@ -107,4 +107,35 @@ public class ControlDef extends BaseControlDef
         if(base == null || base.equals("Control")) return null;
         return getUISuite().getControls().stream().filter(p -> p.getName().equalsIgnoreCase(base)).findFirst().orElse(null);
     }
+
+    /**
+     * Defines the render freemarker script to be use by this control.
+     * 
+     * @return The text of the render script.
+     */
+    public String getRender()
+    {
+        return render;
+    }
+
+    /**
+     * Changes the names of the macros called in this ftl segment so they fit 
+     * the real names print in the Theme template.
+     * 
+     * @param render The freemarker segmente to replace the macros in.
+     * @return The same freemarker code by with the macros name replaced.
+     */
+    public String replaceMacros(String render)
+    {
+        if(render == null) return "";
+        String replaced = render;
+        for(ControlFtlMacro m : getFtlMacros())
+        {
+            replaced = replaced.replaceAll("<@" + m.getName(), "<@" + m.findRealName(this));
+            replaced = replaced.replaceAll("</@" + m.getName(), "</@" + m.findRealName(this));
+        }
+        return replaced;
+    }
+    
+    
 }

@@ -123,10 +123,7 @@ public class ${control.name} extends ${control.baseName}
     public ${f.javaType} get${f.name?cap_first}()
     {
         <#if f.defaultValue??>
-        if(${f.name} == null)
-        {
-            ${f.name} = ${f.defaultValue};
-        }
+        if(${f.name} == null) ${f.name} = ${f.defaultValue};
         </#if>
         return ${f.name};
     }
@@ -152,10 +149,7 @@ public class ${control.name} extends ${control.baseName}
             }
             </#if>
             <#if f.fieldType == "child">
-            if(${f.name} != null)
-            {
-                childs.add(${f.name});
-            }
+            if(${f.name} != null) childs.add(${f.name});
             </#if>
             </#list>
         }
@@ -172,10 +166,7 @@ public class ${control.name} extends ${control.baseName}
             inputs = new ArrayList<>();
             <#list control.fields as f>
             <#if f.isInput>
-            if(${f.name} != null && ${f.name}.isValid())
-            {
-                inputs.add(${f.name});
-            }
+            if(${f.name} != null && ${f.name}.isValid()) inputs.add(${f.name});
             </#if>
             </#list>
         }
@@ -192,10 +183,7 @@ public class ${control.name} extends ${control.baseName}
             inputFiles = new ArrayList<>();
             <#list control.fields as f>
             <#if f.isInputFile>
-            if(${f.name} != null && ${f.name}.isValid())
-            {
-                inputFiles.add(${f.name});
-            }
+            if(${f.name} != null && ${f.name}.isValid()) inputFiles.add(${f.name});
             </#if>
             </#list>
         }
@@ -212,10 +200,7 @@ public class ${control.name} extends ${control.baseName}
             events = new ArrayList<>();
             <#list control.fields as f>
             <#if f.isEvent>
-            if(${f.name} != null)
-            {
-                events.add(${f.name});
-            }
+            if(${f.name} != null) events.add(${f.name});
             </#if>
             </#list>
         }
@@ -257,10 +242,7 @@ public class ${control.name} extends ${control.baseName}
         </#if>
         <#if f.fieldType == "child">
         <#if f.allowPlaceHolder>
-        if(${f.name} != null)
-        {
-            ${f.name} = (${f.javaType})Control.doOverride(${f.name}, definesMap);
-        }
+        if(${f.name} != null) ${f.name} = (${f.javaType})Control.doOverride(${f.name}, definesMap);
         </#if>
         </#if>
         </#list>
@@ -270,8 +252,11 @@ public class ${control.name} extends ${control.baseName}
     <#macro printReadInputActions actions ident>
         <#list actions as ria>
         <#switch ria.class.simpleName>
-            <#case "SetEnvVar">
-        ${ident}env.setVar(${ria.var}, ${ria.value});
+            <#case "PushEnvVar">
+        ${ident}env.pushVar(${ria.var}, ${ria.value!});
+                <#break>
+            <#case "PopEnvVar">
+        ${ident}env.popVar(${ria.var});
                 <#break>
             <#case "ForEachData">
                 <@printForActions ria ident />

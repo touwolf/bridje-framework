@@ -42,8 +42,6 @@ public class BaseControlDef
     @XmlAttribute
     private String template;
 
-    private String render;
-
     @XmlElementWrapper(name = "fields")
     @XmlElements(
     {
@@ -63,7 +61,7 @@ public class BaseControlDef
         @XmlElement(name = "eventValue", type = EventValueFlield.class),
         @XmlElement(name = "value", type = ValueFlield.class),
         @XmlElement(name = "child", type = ChildField.class),
-        @XmlElement(name = "children", type = ChildrenFlield.class)
+        @XmlElement(name = "children", type = ChildrenField.class)
     })
     private List<FieldDef> fields;
 
@@ -74,11 +72,21 @@ public class BaseControlDef
     })
     private List<ResourceRef> resources;
 
+    @XmlElementWrapper(name = "ftlMacros")
+    @XmlElements(
+    {
+        @XmlElement(name = "ftlMacro", type = ControlFtlMacro.class)
+    })
+    private List<ControlFtlMacro> ftlMacros;
+    
     @XmlTransient
     private List<FieldDef> allFields;
     
     @XmlTransient
     private List<ResourceRef> allResources;
+
+    @XmlTransient
+    private List<ControlFtlMacro> allMacros;
     
     @XmlTransient
     private UISuite uiSuite;
@@ -124,26 +132,6 @@ public class BaseControlDef
     }
 
     /**
-     * Defines the render freemarker script to be use by this control.
-     * 
-     * @return The text of the render script.
-     */
-    public String getRender()
-    {
-        return render;
-    }
-
-    /**
-     * Defines the render freemarker script to be use by this control.
-     * 
-     * @param render The text of the render script.
-     */
-    public void setRender(String render)
-    {
-        this.render = render;
-    }
-
-    /**
      * Gets the list of declared resources for this control. (only the declared ones).
      * 
      * @return The list of declard resources for this control.
@@ -175,18 +163,57 @@ public class BaseControlDef
             allFields = new ArrayList<>();
             TemplateControlDef tmpl = getTemplate();
             if(tmpl != null) allFields.addAll(tmpl.getFields());
-            if(fields != null) 
-            {
-                fields.forEach(this::overrideField);
-                
-            }
+            if(fields != null) fields.forEach(this::overrideField);
         }
         return allFields;
     }
 
+    /**
+     * Gets the macros asociated with this control.
+     * 
+     * @return The list of macros asociated with this control.
+     */
+    public List<ControlFtlMacro> getFtlMacros()
+    {
+        if(allMacros == null)
+        {
+            allMacros = new ArrayList<>();
+            if(ftlMacros != null) allMacros.addAll(ftlMacros);
+            TemplateControlDef tmpl = getTemplate();
+            if(tmpl != null)
+            {
+                tmpl.getFtlMacros()
+                        .stream()
+                        .filter(this::hasMacro)
+                        .forEach(m -> allMacros.add(m));
+            }
+        }
+        return allMacros;
+    }
+
+    public boolean hasMacro(ControlFtlMacro macro)
+    {
+        return getFtlMacros().stream()
+                        .anyMatch(m -> m.getName().equalsIgnoreCase(macro.getName()));
+    }
+    
+    /**
+     * Overrides some of the data of this control with the data of the given control.
+     * 
+     * @param control The control to override this control with.
+     */
+    public void override(BaseControlDef control)
+    {
+        control.getFields().forEach(this::overrideField);
+        control.getFtlMacros()
+                        .stream()
+                        .filter(this::hasMacro)
+                        .forEach(m -> allMacros.add(m));
+    }
+
     private void overrideField(FieldDef field)
     {
-        FieldDef baseField = allFields.stream()
+        FieldDef baseField = getFields().stream()
                                     .filter(f -> f.getName().equals(field.getName()))
                                     .findFirst()
                                     .orElse(null);
@@ -194,10 +221,10 @@ public class BaseControlDef
         if(baseField != null)
         {
             allFields.remove(baseField);
-            if(field instanceof ChildrenFlield 
-                    && baseField instanceof ChildrenFlield)
+            if(field instanceof ChildrenField 
+                    && baseField instanceof ChildrenField)
             {
-                fieldToAdd = ((ChildrenFlield)field).merge((ChildrenFlield)baseField);
+                fieldToAdd = ((ChildrenField)field).merge((ChildrenField)baseField);
             }
         }
         allFields.add(fieldToAdd);
