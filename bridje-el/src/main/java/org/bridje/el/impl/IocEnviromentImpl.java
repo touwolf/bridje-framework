@@ -94,6 +94,7 @@ class IocEnviromentImpl implements ElEnvironment
         {
             if( !stack.empty() ) stack.pop();
             if( !stack.empty() ) exp = stack.peek();
+            if( stack.empty() ) varsStack.remove(name);
         }
         context.setVariable(name, exp);
     }
@@ -101,12 +102,20 @@ class IocEnviromentImpl implements ElEnvironment
     @Override
     public <T> T getVar(String name, Class<T> resultCls)
     {
+        if(!varExists(name)) return null;
         return get("${" + name + "}", resultCls);
     }
 
     @Override
     public String getVarAsString(String name)
     {
+        if(!varExists(name)) return "";
         return get("${" + name + "}", String.class);
+    }
+
+    @Override
+    public boolean varExists(String name)
+    {
+        return varsStack.containsKey(name);
     }
 }

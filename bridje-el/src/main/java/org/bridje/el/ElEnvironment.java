@@ -75,4 +75,12 @@ public interface ElEnvironment
      * @return The string value for this var.
      */
     String getVarAsString(String name);
+
+    /**
+     * Determines if the given var exists in the enviroment.
+     * 
+     * @param name The name of the var to test.
+     * @return true if the var exists in the enviroment, false otherwise.
+     */
+    boolean varExists(String name);
 }

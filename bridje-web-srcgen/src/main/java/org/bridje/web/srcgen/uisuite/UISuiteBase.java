@@ -18,6 +18,7 @@ package org.bridje.web.srcgen.uisuite;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -277,7 +278,7 @@ public class UISuiteBase
     public void processIncludes(VFile currentDir)
     {
         List<PartialUISuite> partialSuites = findIncludes(currentDir);
-        includes.clear();
+        if(includes != null) includes.clear();
 
         partialSuites.forEach(this::importEnums);
         partialSuites.forEach(this::importResources);
@@ -488,9 +489,8 @@ public class UISuiteBase
         this.templates.add(result);
     }
 
-    private List<PartialUISuite> findIncludes(VFile currentDir)
+    void findIncludes(VFile currentDir, Map<VFile,PartialUISuite> resultMap)
     {
-        List<PartialUISuite> result = new ArrayList<>();
         if(includes != null)
         {
             for (String include : includes)
@@ -501,8 +501,14 @@ public class UISuiteBase
                     try
                     {
                         PartialUISuite partial = PartialUISuite.load(includeFile);
-                        partial.processIncludes(currentDir);
-                        if(partial != null) result.add(partial);
+                        if(partial != null)
+                        {
+                            if(!resultMap.containsKey(includeFile))
+                            {
+                                partial.findIncludes(includeFile.getParent(), resultMap);
+                                resultMap.put(includeFile, partial);
+                            }
+                        }
                     }
                     catch (IOException | JAXBException e)
                     {
@@ -511,6 +517,14 @@ public class UISuiteBase
                 }
             }
         }
+    }
+
+    private List<PartialUISuite> findIncludes(VFile currentDir)
+    {
+        Map<VFile,PartialUISuite> resultMap = new LinkedHashMap<>();
+        findIncludes(currentDir, resultMap);
+        List<PartialUISuite> result = new ArrayList<>();
+        resultMap.forEach((f, p) -> result.add(p));
         return result;
     }
 }
