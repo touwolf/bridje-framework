@@ -89,7 +89,7 @@ public class BaseControlDef
     private List<ControlFtlMacro> allMacros;
     
     @XmlTransient
-    private UISuite uiSuite;
+    private UISuiteBase uiSuite;
 
     /**
      * The name of this definition.
@@ -276,7 +276,7 @@ public class BaseControlDef
      * 
      * @return The parent UISuite object.
      */
-    public UISuite getUISuite()
+    public UISuiteBase getUISuite()
     {
         return uiSuite;
     }
@@ -286,7 +286,7 @@ public class BaseControlDef
      * 
      * @param uiSuite The parent UISuite object.
      */
-    void setUiSuite(UISuite uiSuite)
+    void setUiSuite(UISuiteBase uiSuite)
     {
         if(resources != null) resources.stream().forEach(r -> r.setUiSuite(uiSuite));
         this.uiSuite = uiSuite;
@@ -299,7 +299,8 @@ public class BaseControlDef
      */
     public String getPackage()
     {
-        return uiSuite.getPackage();
+        if(uiSuite instanceof UISuite) return ((UISuite)uiSuite).getPackage();
+        return null;
     }
 
     /**

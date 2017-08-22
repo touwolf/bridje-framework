@@ -36,7 +36,7 @@ public class ResourceRef
     private Resource resource;
 
     @XmlTransient
-    private UISuite uiSuite;
+    private UISuiteBase uiSuite;
 
     /**
      * Gets the name of the referenced resource.
@@ -78,7 +78,7 @@ public class ResourceRef
      * 
      * @return The parent UISuite for this resource.
      */
-    public UISuite getUiSuite()
+    public UISuiteBase getUiSuite()
     {
         return uiSuite;
     }
@@ -88,7 +88,7 @@ public class ResourceRef
      * 
      * @param uiSuite The parent UISuite for this resource.
      */
-    void setUiSuite(UISuite uiSuite)
+    void setUiSuite(UISuiteBase uiSuite)
     {
         this.uiSuite = uiSuite;
     }

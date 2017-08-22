@@ -32,7 +32,7 @@ public class ControlEnum
     private String name;
     
     @XmlTransient
-    private UISuite uiSuite;
+    private UISuiteBase uiSuite;
 
     @XmlAttribute
     private String description;
@@ -70,7 +70,8 @@ public class ControlEnum
      */
     public String getPackage()
     {
-        return uiSuite.getPackage();
+        if(uiSuite instanceof UISuite) return ((UISuite)uiSuite).getPackage();
+        return null;
     }
 
     /**
@@ -123,7 +124,7 @@ public class ControlEnum
      * 
      * @return The parent UISuite object.
      */
-    public UISuite getUISuite()
+    public UISuiteBase getUISuite()
     {
         return uiSuite;
     }
@@ -133,7 +134,7 @@ public class ControlEnum
      * 
      * @param uiSuite The parent UISuite object.
      */
-    void setUiSuite(UISuite uiSuite)
+    void setUiSuite(UISuiteBase uiSuite)
     {
         this.uiSuite = uiSuite;
     }
