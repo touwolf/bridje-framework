@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.4.3](https://github.com/bridje/bridje-framework/tree/v0.4.3) (2017-08-22)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.2...v0.4.3)
+
+ - Adding varExists method in the ELEnvironment.
+ - Implementing recursive PartialUISuite includes.
+ - Adding Push and Pop actions to the input in the UISuite controls.
+ - Adding ftlMacros in the UISuite controls.
+ - Adding templates and controls override.
+ - Changing ElEnvironment setVar and removeVar for pushVar and popVar.
+
 ## [v0.4.2](https://github.com/bridje/bridje-framework/tree/v0.4.2) (2017-07-26)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.1...v0.4.2)
 
