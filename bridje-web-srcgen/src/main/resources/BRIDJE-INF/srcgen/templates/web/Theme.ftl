@@ -9,9 +9,11 @@
 [/#list]
 
 [#list uisuite.ftlMacros![] as ftlMac]
+[@compress single_line=true][#compress]
 <#macro ${ftlMac.name} ${ftlMac.params!} >
-    [@compress single_line=true][#compress]${ftlMac.content}[/#compress][/@compress]
+    ${ftlMac.content}
 </#macro>
+[/#compress][/@compress]
 
 [/#list]
 [#list uisuite.ftlFunctions![] as ftlFunc]
@@ -35,27 +37,33 @@
 
 [/#list]
 [#list uisuite.macros![] as m]
+[@compress single_line=true][#compress]
 <#macro ${m.name} ${m.parameters}>
-    [@compress single_line=true][#compress]${w.content}[/#compress][/@compress]
+    ${w.content}
 </#macro>
+[/#compress][/@compress]
 
 [/#list]
 [#list uisuite.controls as w]
 [#list w.ftlMacros![] as ftlMac]
+[@compress single_line=true][#compress]
 <#macro render${w.name}${ftlMac.name?cap_first} control >
-    [@compress single_line=true][#compress]${w.replaceMacros(ftlMac.content)}[/#compress][/@compress]
+    ${w.replaceMacros(ftlMac.content)}
 </#macro>
+[/#compress][/@compress]
 
 [/#list]
+[@compress single_line=true][#compress]
 <#macro render${w.name}Control control>
     [#if w.base?? && w.base.render??]
     <@render${w.base.name}Control control >
     [/#if]
-    [@compress single_line=true][#compress]${w.replaceMacros(w.render)}[/#compress][/@compress]
+    ${w.replaceMacros(w.render)}
     [#if w.base?? && w.base.render??]
     </@render${w.base.name}Control>
     [/#if]
 </#macro>
+[/#compress][/@compress]
 
 [/#list]
 <#macro renderControl control>
@@ -101,21 +109,27 @@
 </#macro>
 
 [#if uisuite.renderBody?? && uisuite.renderBody?has_content]
+[@compress single_line=true][#compress]
 <#macro renderBody>
-    [@compress single_line=true][#compress]${uisuite.renderBody!}[/#compress][/@compress]
+    ${uisuite.renderBody!}
 </#macro>
-[/#if]
+[/#compress][/@compress]
 
+[/#if]
 [#if uisuite.renderHead?? && uisuite.renderHead?has_content]
+[@compress single_line=true][#compress]
 <#macro renderHead>
-    [@compress single_line=true][#compress]${uisuite.renderHead!}[/#compress][/@compress]
+    ${uisuite.renderHead!}
 </#macro>
-[/#if]
+[/#compress][/@compress]
 
+[/#if]
 [#if uisuite.renderView?? && uisuite.renderView?has_content]
+[@compress single_line=true][#compress]
 <#macro renderViewContainer>
-    [@compress single_line=true][#compress]${uisuite.renderView!}[/#compress][/@compress]
+    ${uisuite.renderView!}
 </#macro>
-[/#if]
+[/#compress][/@compress]
 
+[/#if]
 <@renderMain "${uisuite.name?lower_case}" />

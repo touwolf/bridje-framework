@@ -75,6 +75,7 @@ limitations under the License.
     <ftlMacros>
         <ftlMacro name="textElementClasses" params='control'>
             <![CDATA[
+                <#compress>
                 <#if control.color??>
                     text-${control.color}
                 </#if>
@@ -99,15 +100,15 @@ limitations under the License.
                 <#if control.highligth?? && control.highligth>
                     mark
                 </#if>
+                </#compress>
             ]]>
         </ftlMacro>
     </ftlMacros>
-    
+
     <templates>
-        <template name="CommonTextElementTemplate" >
+        <template name="CommonTextElement" >
             <fields>
                 <outAttr name="color" type="TextColor" />
-                <outAttr name="heading" type="TextHeading" />
                 <outAttr name="textcase" type="TextCase" />
                 <outAttr name="nowrap" type="Boolean" />
                 <outAttr name="capitalize" type="Boolean" />
@@ -115,15 +116,71 @@ limitations under the License.
             </fields>
         </template>
 
-        <template name="PlainTextElementTemplate" template="CommonTextElementTemplate" >
+        <template name="SizedTextElement" templates="CommonTextElement" >
+            <fields>
+                <outAttr name="highligth" type="Boolean" />
+            </fields>
+        </template>
+
+        <template name="SizedTextElement" templates="CommonTextElement" >
+            <fields>
+                <outAttr name="highligth" type="Boolean" />
+            </fields>
+        </template>
+
+        <template name="HighligthedTextElement" templates="CommonTextElement" >
             <fields>
                 <outAttr name="size" type="TextSize" />
+                <outAttr name="heading" type="TextHeading" />
+            </fields>
+        </template>
+
+        <template name="FullTextElement" templates="CommonTextElement" >
+            <fields>
+                <outAttr name="size" type="TextSize" />
+                <outAttr name="heading" type="TextHeading" />
                 <outAttr name="highligth" type="Boolean" />
+            </fields>
+        </template>
+
+        <template name="TextFlowContainer" >
+            <fields>
+                <children name="content" >
+                    <child name="br" type="LineBreak" />
+                    <child name="text" type="PlainText" />
+                    <child name="a" type="Anchor" />
+                    <child name="img" type="Image" />
+                    <child name="small" type="SmallText" />
+                    <child name="mark" type="HighlightedText" />
+                    <child name="del" type="DeletedText" />
+                    <child name="s" type="NoRelevantText" />
+                    <child name="ins" type="InsertedText" />
+                    <child name="u" type="UnderlinedText" />
+                    <child name="strong" type="StrongText" />
+                    <child name="em" type="ItalicText" />
+                    <child name="abbr" type="AbbreviationText" />
+                </children>
+            </fields>
+        </template>
+
+        <template name="TextBlocksContainer" >
+            <fields>
+                <children name="content" >
+                    <child name="hr" type="ThematicBreak" />
+                    <child name="address" type="AddressText" />
+                    <child name="h1" type="Heading1Text" />
+                    <child name="h2" type="Heading2Text" />
+                    <child name="h3" type="Heading3Text" />
+                    <child name="h4" type="Heading4Text" />
+                    <child name="h5" type="Heading5Text" />
+                    <child name="h6" type="Heading6Text" />
+                </children>
             </fields>
         </template>
     </templates>
 
     <controls>
+        <!--Flow Elements-->
         <control name="Image" base="BaseControl" >
             <fields>
                 <outAttr name="style" type="ImageStyle" />
@@ -136,6 +193,7 @@ limitations under the License.
             <ftlMacros>
                 <ftlMacro name="classes">
                     <![CDATA[
+                        <#compress>
                         <#local clases = "" />
                         <#if control.style??>
                             img-${control.style}
@@ -143,16 +201,19 @@ limitations under the License.
                         <#if control.responsive??>
                             img-responsive
                         </#if>
+                        </#compress>
                     ]]>
                 </ftlMacro>
                 <ftlMacro name="size">
                     <![CDATA[
+                        <#compress>
                         <#if control.width??>
                             width="${control.width}"
                         </#if>
                         <#if control.height??>
                             height="${control.height}"
                         </#if>
+                        </#compress>
                     ]]>
                 </ftlMacro>
             </ftlMacros>
@@ -171,7 +232,7 @@ limitations under the License.
             </render>
         </control>
 
-        <control name="PlainText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="PlainText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <span class="<@textElementClasses control />" >
@@ -180,11 +241,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Anchor" template="PlainTextElementTemplate" base="BaseControl" >
-            <fields>
-                <eventAttr name="action" />
-                <outAttr name="href" type="String" def='"#"' />
-            </fields>
+        <control name="Anchor" templates="FullTextElement ActionControlTemplate" base="BaseControl" >
             <render>
                 <![CDATA[
                     <a <@actionOrLinkExpresion control /> class="<@actionClass control /> <@textElementClasses control />" >
@@ -193,10 +250,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="SmallText" template="CommonTextElementTemplate" base="BaseControl" >
-            <fields>
-                <outAttr name="highligth" type="Boolean" />
-            </fields>
+        <control name="SmallText" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <small class="<@textElementClasses control />" >
@@ -205,10 +259,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="HighlightedText" template="CommonTextElementTemplate" base="BaseControl" >
-            <fields>
-                <outAttr name="size" type="TextSize" />
-            </fields>
+        <control name="HighlightedText" templates="HighligthedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <mark class="<@textElementClasses control />" >
@@ -217,7 +268,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="DeletedText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="DeletedText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <del class="<@textElementClasses control />">
@@ -226,7 +277,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="NoRelevantText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="NoRelevantText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <s class="<@textElementClasses control />">
@@ -235,7 +286,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="InsertedText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="InsertedText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <ins class="<@textElementClasses control />">
@@ -244,7 +295,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="UnderlinedText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="UnderlinedText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <u class="<@textElementClasses control />">
@@ -253,7 +304,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="StrongText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="StrongText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <strong class="<@textElementClasses control />">
@@ -262,7 +313,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="ItalicText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="ItalicText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <em class="<@textElementClasses control />">
@@ -271,7 +322,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="AbbreviationText" template="PlainTextElementTemplate" base="BaseControl" >
+        <control name="AbbreviationText" templates="FullTextElement" base="BaseControl" >
             <fields>
                 <outAttr name="initialism" type="Boolean" />
             </fields>
@@ -281,13 +332,22 @@ limitations under the License.
                     <#if control.initialism?? && control.initialism>
                         <#local clases = "initialism" />
                     </#if>
-                    <abbr class="${textElementClasses(control)} ${clases}" >
+                    <abbr class="<@textElementClasses control /> ${clases}" >
                         ${control.text!}
                     </abbr>
                 ]]>
             </render>
         </control>
-        <control name="AddressText" template="PlainTextElementTemplate" base="BaseControl" >
+
+        <!--Block Elements-->
+        <control name="ThematicBreak" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <hr />
+                ]]>
+            </render>
+        </control>
+        <control name="AddressText" templates="FullTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <address class="<@textElementClasses control />" >
@@ -296,7 +356,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading1Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading1Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h1 class="<@textElementClasses control />" >
@@ -305,7 +365,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading2Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading2Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h2 class="<@textElementClasses control />" >
@@ -314,7 +374,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading3Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading3Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h3 class="<@textElementClasses control />" >
@@ -323,7 +383,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading4Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading4Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h4 class="<@textElementClasses control />" >
@@ -332,7 +392,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading5Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading5Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h5 class="<@textElementClasses control />" >
@@ -341,7 +401,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading6Text" template="CommonTextElementTemplate" base="BaseControl" >
+        <control name="Heading6Text" templates="SizedTextElement" base="BaseControl" >
             <render>
                 <![CDATA[
                     <h6 class="<@textElementClasses control />" >
@@ -350,5 +410,8 @@ limitations under the License.
                 ]]>
             </render>
         </control>
+        
+        <!--Block Containers-->
+        
     </controls>
 </partialuisuite>

@@ -17,7 +17,12 @@
 package org.bridje.web.srcgen.uisuite;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -40,7 +45,7 @@ public class BaseControlDef
     private String name;
 
     @XmlAttribute
-    private String template;
+    private String templates;
 
     @XmlElementWrapper(name = "fields")
     @XmlElements(
@@ -116,19 +121,10 @@ public class BaseControlDef
      * 
      * @return The template to be use by this control.
      */
-    public String getTemplateName()
+    public List<String> getTemplatesNames()
     {
-        return template;
-    }
-
-    /**
-     * The base template for this control.
-     * 
-     * @param template The template to be use by this control.
-     */
-    public void setTemplateName(String template)
-    {
-        this.template = template;
+        if(templates == null || templates.trim().isEmpty()) return Collections.EMPTY_LIST; 
+        return Arrays.asList(templates.trim().split(" "));
     }
 
     /**
@@ -161,8 +157,8 @@ public class BaseControlDef
         if(allFields == null)
         {
             allFields = new ArrayList<>();
-            TemplateControlDef tmpl = getTemplate();
-            if(tmpl != null) allFields.addAll(tmpl.getFields());
+            List<TemplateControlDef> tmpls = getTemplates();
+            tmpls.forEach(t -> t.getFields().forEach(this::overrideField));
             if(fields != null) fields.forEach(this::overrideField);
         }
         return allFields;
@@ -177,26 +173,16 @@ public class BaseControlDef
     {
         if(allMacros == null)
         {
+            Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
+            List<TemplateControlDef> tmpls = getTemplates();
+            tmpls.stream().forEach(t -> t.getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r)));
+            if(ftlMacros != null) ftlMacros.forEach(r -> macrosMap.put(r.getName(), r));
             allMacros = new ArrayList<>();
-            if(ftlMacros != null) allMacros.addAll(ftlMacros);
-            TemplateControlDef tmpl = getTemplate();
-            if(tmpl != null)
-            {
-                tmpl.getFtlMacros()
-                        .stream()
-                        .filter(this::hasMacro)
-                        .forEach(m -> allMacros.add(m));
-            }
+            macrosMap.forEach((k, v) -> allMacros.add(v));
         }
         return allMacros;
     }
 
-    public boolean hasMacro(ControlFtlMacro macro)
-    {
-        return getFtlMacros().stream()
-                        .anyMatch(m -> m.getName().equalsIgnoreCase(macro.getName()));
-    }
-    
     /**
      * Overrides some of the data of this control with the data of the given control.
      * 
@@ -205,10 +191,19 @@ public class BaseControlDef
     public void override(BaseControlDef control)
     {
         control.getFields().forEach(this::overrideField);
-        control.getFtlMacros()
-                        .stream()
-                        .filter(this::hasMacro)
-                        .forEach(m -> allMacros.add(m));
+
+        Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
+        control.getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r));
+        getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r));
+        allMacros = new ArrayList<>();
+        macrosMap.forEach((k, v) -> allMacros.add(v));
+
+        Map<String,ResourceRef> resourcesMap = new LinkedHashMap<>();
+        control.getResources().forEach(r -> resourcesMap.put(r.getName(), r));
+        getResources().forEach(r -> resourcesMap.put(r.getName(), r));
+        allResources = new ArrayList<>();
+        resourcesMap.forEach((k, v) -> allResources.add(v));
+        allResources.forEach(r -> r.setUiSuite(uiSuite));
     }
 
     private void overrideField(FieldDef field)
@@ -239,10 +234,13 @@ public class BaseControlDef
     {
         if(allResources == null)
         {
+            Map<String,ResourceRef> resourcesMap = new LinkedHashMap<>();
+            List<TemplateControlDef> tmpls = getTemplates();
+            tmpls.stream().forEach(t -> t.getResources().forEach(r -> resourcesMap.put(r.getName(), r)));
+            if(resources != null) resources.forEach(r -> resourcesMap.put(r.getName(), r));
             allResources = new ArrayList<>();
-            TemplateControlDef tmpl = getTemplate();
-            if(tmpl != null) allResources.addAll(tmpl.getResources());
-            if(resources != null) allResources.addAll(resources);
+            resourcesMap.forEach((k, v) -> allResources.add(v));
+            allResources.forEach(r -> r.setUiSuite(uiSuite));
         }
         return allResources;
     }
@@ -358,14 +356,13 @@ public class BaseControlDef
      * 
      * @return The base template for this control.
      */
-    public TemplateControlDef getTemplate()
+    public List<TemplateControlDef> getTemplates()
     {
-        if(template == null) return null;
+        List<String> names = getTemplatesNames();
         return uiSuite.getTemplates()
                     .stream()
-                    .filter(p -> p.getName().equalsIgnoreCase(template))
-                    .findFirst()
-                    .orElse(null);
+                    .filter(p -> names.contains(p.getName()))
+                    .collect(Collectors.toList());
     }
 
     /**
