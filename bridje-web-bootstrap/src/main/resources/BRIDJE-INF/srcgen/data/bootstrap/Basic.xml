@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 Bridje Framework.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<partialuisuite
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/uisuite'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
+    
+    <!--
+    This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
+    -->
+    
+    <includes>
+        <include>Core.xml</include>
+    </includes>
+    
+    <enums>
+        <enum name="BackgroundColor" description="Backgroud colors." >
+            <constant name="INFO" value="info" />
+            <constant name="PRIMARY" value="primary" />
+            <constant name="SUCCESS" value="success" />
+            <constant name="WARNING" value="warning" />
+            <constant name="DANGER" value="danger" />
+        </enum>
+        <enum name="TextColor" description="Text colors." >
+            <constant name="INFO" value="info" />
+            <constant name="PRIMARY" value="primary" />
+            <constant name="MUTED" value="muted" />
+            <constant name="SUCCESS" value="success" />
+            <constant name="WARNING" value="warning" />
+            <constant name="DANGER" value="danger" />
+        </enum>
+        <enum name="TextCase" description="The letter case for simple text blocks." >
+            <constant name="LOWERCASE" value="lowercase" />
+            <constant name="UPPERCASE" value="uppercase" />
+        </enum>
+        <enum name="TextAlign" description="Text block alignements types." >
+            <constant name="JUSTIFY" value="justify" />
+            <constant name="LEFT" value="left" />
+            <constant name="CENTER" value="center" />
+            <constant name="RIGHT" value="right" />
+        </enum>
+        <enum name="TextSize" description="Sizes for plain text blocks." >
+            <constant name="SMALL" value="small" />
+            <constant name="LEAD" value="lead" />
+        </enum>
+        <enum name="TextHeading" description="Type of heading for a plain text block" >
+            <constant name="H1" value="h1" />
+            <constant name="H2" value="h2" />
+            <constant name="H3" value="h3" />
+            <constant name="H4" value="h4" />
+            <constant name="H5" value="h5" />
+            <constant name="H6" value="h6" />
+        </enum>
+        <enum name="ImageStyle" description="Styles for the image base controls.">
+            <constant name="ROUNDED" value="rounded" />
+            <constant name="CIRCLE" value="circle" />
+            <constant name="THUMBNAIL" value="thumbnail" />
+        </enum>
+    </enums>
+    
+    <ftlMacros>
+        <ftlMacro name="textElementClasses" params='control'>
+            <![CDATA[
+                <#if control.color??>
+                    text-${control.color}
+                </#if>
+                <#if control.heading??>
+                    ${control.heading}
+                </#if>
+                <#if control.align??>
+                    text-${control.align}
+                </#if>
+                <#if control.textcase??>
+                    text-${control.textcase}
+                </#if>
+                <#if control.nowrap?? && control.nowrap>
+                    text-nowrap
+                </#if>
+                <#if control.capitalize?? && control.capitalize>
+                    text-capitalize
+                </#if>
+                <#if control.size??>
+                    ${control.size}
+                </#if>
+                <#if control.highligth?? && control.highligth>
+                    mark
+                </#if>
+            ]]>
+        </ftlMacro>
+    </ftlMacros>
+    
+    <templates>
+        <template name="CommonTextElementTemplate" >
+            <fields>
+                <outAttr name="color" type="TextColor" />
+                <outAttr name="heading" type="TextHeading" />
+                <outAttr name="textcase" type="TextCase" />
+                <outAttr name="nowrap" type="Boolean" />
+                <outAttr name="capitalize" type="Boolean" />
+                <outValue name="text" type="String" />
+            </fields>
+        </template>
+
+        <template name="PlainTextElementTemplate" template="CommonTextElementTemplate" >
+            <fields>
+                <outAttr name="size" type="TextSize" />
+                <outAttr name="highligth" type="Boolean" />
+            </fields>
+        </template>
+    </templates>
+
+    <controls>
+        <control name="Image" base="BaseControl" >
+            <fields>
+                <outAttr name="style" type="ImageStyle" />
+                <outAttr name="responsive" type="Boolean" />
+                <outAttr name="width" type="Integer" />
+                <outAttr name="height" type="Integer" />
+                <outAttr name="src" type="String" def='"#"' />
+                <outAttr name="alt" type="String" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes">
+                    <![CDATA[
+                        <#local clases = "" />
+                        <#if control.style??>
+                            img-${control.style}
+                        </#if>
+                        <#if control.responsive??>
+                            img-responsive
+                        </#if>
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="size">
+                    <![CDATA[
+                        <#if control.width??>
+                            width="${control.width}"
+                        </#if>
+                        <#if control.height??>
+                            height="${control.height}"
+                        </#if>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <img src="${control.src!}" class="<@classes control />" alt="${control.alt!}" <@size control /> />
+                ]]>
+            </render>
+        </control>
+
+        <control name="LineBreak" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <br />
+                ]]>
+            </render>
+        </control>
+
+        <control name="PlainText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <span class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </span>
+                ]]>
+            </render>
+        </control>
+        <control name="Anchor" template="PlainTextElementTemplate" base="BaseControl" >
+            <fields>
+                <eventAttr name="action" />
+                <outAttr name="href" type="String" def='"#"' />
+            </fields>
+            <render>
+                <![CDATA[
+                    <a <@actionOrLinkExpresion control /> class="<@actionClass control /> <@textElementClasses control />" >
+                        ${control.text!}
+                    </a>
+                ]]>
+            </render>
+        </control>
+        <control name="SmallText" template="CommonTextElementTemplate" base="BaseControl" >
+            <fields>
+                <outAttr name="highligth" type="Boolean" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <small class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </small>
+                ]]>
+            </render>
+        </control>
+        <control name="HighlightedText" template="CommonTextElementTemplate" base="BaseControl" >
+            <fields>
+                <outAttr name="size" type="TextSize" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <mark class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </mark>
+                ]]>
+            </render>
+        </control>
+        <control name="DeletedText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <del class="<@textElementClasses control />">
+                        ${control.text!}
+                    </del>
+                ]]>
+            </render>
+        </control>
+        <control name="NoRelevantText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <s class="<@textElementClasses control />">
+                        ${control.text!}
+                    </s>
+                ]]>
+            </render>
+        </control>
+        <control name="InsertedText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <ins class="<@textElementClasses control />">
+                        ${control.text!}
+                    </ins>
+                ]]>
+            </render>
+        </control>
+        <control name="UnderlinedText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <u class="<@textElementClasses control />">
+                        ${control.text!}
+                    </u>
+                ]]>
+            </render>
+        </control>
+        <control name="StrongText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <strong class="<@textElementClasses control />">
+                        ${control.text!}
+                    </strong>
+                ]]>
+            </render>
+        </control>
+        <control name="ItalicText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <em class="<@textElementClasses control />">
+                        ${control.text!}
+                    </em>
+                ]]>
+            </render>
+        </control>
+        <control name="AbbreviationText" template="PlainTextElementTemplate" base="BaseControl" >
+            <fields>
+                <outAttr name="initialism" type="Boolean" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <#local clases = "" />
+                    <#if control.initialism?? && control.initialism>
+                        <#local clases = "initialism" />
+                    </#if>
+                    <abbr class="${textElementClasses(control)} ${clases}" >
+                        ${control.text!}
+                    </abbr>
+                ]]>
+            </render>
+        </control>
+        <control name="AddressText" template="PlainTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <address class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </address>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading1Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h1 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h1>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading2Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h2 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h2>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading3Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h3 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h3>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading4Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h4 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h4>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading5Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h5 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h5>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading6Text" template="CommonTextElementTemplate" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h6 class="<@textElementClasses control />" >
+                        ${control.text!}
+                    </h6>
+                ]]>
+            </render>
+        </control>
+    </controls>
+</partialuisuite>

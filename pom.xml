@@ -32,6 +32,7 @@
         <module>bridje-orm-srcgen</module>
         <module>bridje-web</module>
         <module>bridje-web-srcgen</module>
+        <module>bridje-web-bootstrap</module>
         <module>bridje-el</module>
         <module>bridje-maven-plugin</module>
         <module>bridje-srcgen</module>
