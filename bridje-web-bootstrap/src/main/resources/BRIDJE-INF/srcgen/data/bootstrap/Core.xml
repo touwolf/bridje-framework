@@ -114,39 +114,6 @@ limitations under the License.
         </ftlFunction>
 
     </ftlFunctions>
-    
-    <ftlMacros>
-        <ftlMacro name="actionClass" params="control">
-            <![CDATA[
-                <#if hasAction(control)>
-                    bridje-action
-                </#if>
-            ]]>
-        </ftlMacro>
-        <ftlMacro name="actionExpresion" params='control'>
-            <![CDATA[
-                <#if control.action?? && control.action.expression??>
-                    data-action="${control.action.expression}"
-                    <#if selectFieldId?? 
-                            && selectFieldId != "" 
-                            && selectFieldValue?? 
-                            && selectFieldValue != "">
-                        data-selectid="${selectFieldId}"
-                        data-selectvalue="${selectFieldValue?xhtml}"
-                    </#if>
-                </#if>
-            ]]>
-        </ftlMacro>
-        <ftlMacro name="actionOrLinkExpresion" params='control'>
-            <![CDATA[
-                <#if hasAction(control)>
-                    <@actionExpresion control />
-                <#elseif hasLink(control)>
-                    href="${control.href}"
-                </#if>
-            ]]>
-        </ftlMacro>
-    </ftlMacros>
 
     <templates>
         <template name="PageControlTemplate">

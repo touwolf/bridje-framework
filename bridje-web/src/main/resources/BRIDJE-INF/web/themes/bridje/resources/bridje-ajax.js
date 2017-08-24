@@ -19,9 +19,12 @@
  * 
  * @param string event The event to invoke on the server.
  */
-function bridjeExecuteAction(event)
+function bridjeExecuteAction(id)
 {
     var form = document.getElementById("bridje-view-container");
+    var eventEl = document.getElementById(id);
+    var event = eventEl.getAttribute("name");
+    eventEl.setAttribute("value", "t");
     var data = new FormData(form);
     var enctype = form.getAttribute("enctype");
     var view = form.getAttribute("data-bridje-view");
@@ -53,7 +56,6 @@ function bridjeExecuteAction(event)
         xhr.setRequestHeader('Content-type', enctype);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Bridje-View', encodeURI(view));
-        xhr.setRequestHeader('Bridje-Event', encodeURI(event));
         xhr.onload = function()
         {
             if (xhr.status === 200)
