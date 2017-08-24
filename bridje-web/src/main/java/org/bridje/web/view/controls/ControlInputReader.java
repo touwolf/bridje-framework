@@ -29,7 +29,7 @@ import org.bridje.http.UploadedFile;
 /**
  * Utility object that allows to read the input values from the HTTP request.
  */
-public class ControlImputReader
+public class ControlInputReader
 {
     private final Map<String,List<UploadedFile>> filesMap;
 
@@ -40,7 +40,7 @@ public class ControlImputReader
      * 
      * @param req The HTTP request.
      */
-    public ControlImputReader(HttpBridletRequest req)
+    public ControlInputReader(HttpBridletRequest req)
     {
         filesMap = new LinkedHashMap<>();
         parametersMap = new LinkedHashMap<>();

@@ -21,7 +21,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * A UI suite control definition.
@@ -30,6 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ControlDef extends BaseControlDef
 {
     private ReadInputWorkFlow input;
+    
+    private ExecuteEventWorkFlow execute;
 
     @XmlAttribute
     private String base;
@@ -96,6 +97,11 @@ public class ControlDef extends BaseControlDef
     {
         return input;
     }
+
+    public ExecuteEventWorkFlow getExecute()
+    {
+        return execute;
+    }   
 
     /**
      * The base control for this control.

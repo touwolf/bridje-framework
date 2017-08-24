@@ -16,13 +16,36 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
- * Pops all values of all inputs out of the request.
+ * 
+ * @author gilbe
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PopAllFieldInputs implements ControlFlowAction
+public class ExecuteEventWorkFlow
 {
+    @XmlElements(
+    {
+        @XmlElement(name = "for", type = ForEachData.class),
+        @XmlElement(name = "pushVar", type = PushEnvVar.class),
+        @XmlElement(name = "popVar", type = PopEnvVar.class),
+        @XmlElement(name = "execute", type = ExecuteAllEvents.class),
+        @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
+    })
+    private List<ControlFlowAction> actions;
+
+    /**
+     * The list of actions for this flow.
+     * 
+     * @return The list of actions for this flow.
+     */
+    public List<ControlFlowAction> getActions()
+    {
+        return actions;
+    }
 }

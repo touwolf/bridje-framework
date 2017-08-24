@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import org.bridje.web.view.EventResult;
 import org.bridje.web.view.Defines;
 import org.bridje.web.view.controls.*;
 import org.bridje.http.UploadedFile;
@@ -269,8 +270,8 @@ public class ${control.name} extends ${control.baseName}
                 </#if>
                 <#break>
             <#case "PopAllFieldInputs">
-        ${ident}inputFiles().stream().forEach(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
-        ${ident}inputs().stream().forEach(input -> set(input, req.popParameter(input.getParameter())));
+        ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
+        ${ident}inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
                 <#break>
             <#case "ReadFieldInput">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
@@ -280,12 +281,12 @@ public class ${control.name} extends ${control.baseName}
                 </#if>
                 <#break>
             <#case "ReadAllFieldInputs">
-        ${ident}inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
-        ${ident}inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
+        ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
+        ${ident}inputs().stream().forEachOrdered(input -> set(input, req.getParameter(input.getParameter())));
                 <#break>
             <#case "ReadChildren">
                 <#if control.findField(ria.fieldName).javaType.startsWith("List")>
-        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEach(control -> control.readInput(req, env));
+        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEachOrdered(control -> control.readInput(req, env));
                 <#else>
         ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.readInput(req, env);
                 </#if>
@@ -304,9 +305,49 @@ public class ${control.name} extends ${control.baseName}
         ${ident}}
     </#macro>
     @Override
-    public void readInput(ControlImputReader req, ElEnvironment env)
+    public void readInput(ControlInputReader req, ElEnvironment env)
     {
         <@printReadInputActions control.input.actions "" />
+    }
+
+    </#if>
+    <#if control.execute??>
+    <#macro printExecuteEventActions actions ident>
+        <#list actions as ria>
+        <#switch ria.class.simpleName>
+            <#case "PushEnvVar">
+        ${ident}env.pushVar(${ria.var}, ${ria.value!});
+                <#break>
+            <#case "PopEnvVar">
+        ${ident}env.popVar(${ria.var});
+                <#break>
+            <#case "ExecuteForEachData">
+                <@printExecForActions ria ident />
+                <#break>
+            <#case "ExecuteAllEvents">
+        ${ident}for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
+                <#break>
+            <#case "ReadAllChildren">
+        ${ident}for (Control control : childs())
+        ${ident}{
+        ${ident}    EventResult result = control.executeEvent(req, env);
+        ${ident}    if(result != null) return result;
+        ${ident}}
+                <#break>
+        </#switch>
+        </#list>
+    </#macro>
+    <#macro printExecForActions forStmt ident>
+        ${ident}for(Object ${forStmt.var} : get${forStmt.in?cap_first}())
+        ${ident}{
+            <#assign newIdent = ident + "    " />
+            <@printExecuteEventActions forStmt.actions newIdent />
+        ${ident}}
+    </#macro>
+    @Override
+    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    {
+        <@printExecuteEventActions control.execute.actions "" />
     }
 
     </#if>

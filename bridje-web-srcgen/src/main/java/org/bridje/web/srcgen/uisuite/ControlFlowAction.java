@@ -16,11 +16,14 @@
 
 package org.bridje.web.srcgen.uisuite;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
- * Base class for all read input actions.
+ * Base class for all control flows actions.
  * 
  */
-public interface ReadInputAction
+@XmlTransient
+public interface ControlFlowAction
 {
     
 }

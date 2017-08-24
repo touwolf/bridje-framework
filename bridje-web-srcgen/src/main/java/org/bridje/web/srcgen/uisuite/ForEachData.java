@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlElements;
  * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ForEachData implements ReadInputAction
+public class ForEachData implements ControlFlowAction
 {
     @XmlAttribute
     private String var;
@@ -47,7 +47,7 @@ public class ForEachData implements ReadInputAction
         @XmlElement(name = "children", type = ReadChildren.class),
         @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
     })
-    private List<ReadInputAction> actions;
+    private List<ControlFlowAction> actions;
 
     /**
      * The var name.
@@ -94,7 +94,7 @@ public class ForEachData implements ReadInputAction
      * 
      * @return The list of actions.
      */
-    public List<ReadInputAction> getActions()
+    public List<ControlFlowAction> getActions()
     {
         return actions;
     }

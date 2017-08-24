@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * Read the value of the given field from the request.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadFieldInput implements ReadInputAction
+public class ReadFieldInput implements ControlFlowAction
 {
     @XmlAttribute
     private String fieldName;

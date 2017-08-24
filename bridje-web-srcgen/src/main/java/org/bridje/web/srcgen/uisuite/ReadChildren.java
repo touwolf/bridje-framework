@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * Reads the input for the given child or children field.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadChildren implements ReadInputAction
+public class ReadChildren implements ControlFlowAction
 {
     @XmlAttribute
     private String fieldName;

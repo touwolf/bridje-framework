@@ -44,7 +44,7 @@ import org.bridje.vfs.VFile;
 import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
-import org.bridje.web.view.controls.ControlImputReader;
+import org.bridje.web.view.controls.ControlInputReader;
 import org.bridje.web.view.controls.ControlManager;
 import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.state.StateManager;
@@ -267,8 +267,8 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            view.getRoot().readInput(new ControlImputReader(req), elEnv);
-            EventResult result = invokeEvent(req, view);
+            view.getRoot().readInput(new ControlInputReader(req), elEnv);
+            EventResult result = view.getRoot().executeEvent(new ControlInputReader(req), elEnv);
             if(result.getData() != null && result.getData() instanceof RedirectTo)
             {
                 RedirectTo redirectTo = (RedirectTo)result.getData();
@@ -327,84 +327,6 @@ public class WebViewsManager
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    /**
-     * Invokes the event expression sent to the server.
-     *
-     * @param req  The HTTP request to look for the event expression.
-     * @param view The view that declares the event.
-     *
-     * @return The result of the invocation of the event.
-     */
-    public EventResult invokeEvent(HttpBridletRequest req, WebView view)
-    {
-        UIEvent event = findEvent(req, view);
-        if (event != null) return invokeEvent(event);
-        String action = req.getHeader("Bridje-Event");
-        return EventResult.error("Invalid action: " + action);
-    }
-
-    /**
-     * Invokes the given event.
-     *
-     * @param event The event to be invoked.
-     *
-     * @return The result of the event invocation.
-     */
-    public EventResult invokeEvent(UIEvent event)
-    {
-        return Thls.doAs(new ThlsAction<EventResult>()
-        {
-            @Override
-            public EventResult execute()
-            {
-                try
-                {
-                    Object res = event.invoke();
-                    if (res instanceof EventResult)
-                    {
-                        return (EventResult) res;
-                    }
-                    return EventResult.of(null, null, res, null);
-                }
-                catch (ELException e)
-                {
-                    if (e.getCause() != null && e.getCause() instanceof Exception)
-                    {
-                        Exception real = (Exception) e.getCause();
-                        LOG.log(Level.SEVERE, real.getMessage(), real);
-                        return EventResult.error(real.getMessage(), real);
-                    }
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                    return EventResult.error(e.getMessage(), e);
-                }
-                catch (Exception e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                    return EventResult.error(e.getMessage(), e);
-                }
-            }
-        }, UIEvent.class, event);
-    }
-
-    /**
-     * Finds the event sent to the server in the __action parameter.
-     *
-     * @param req  The request to look for the event.
-     * @param view The view to look for the event.
-     *
-     * @return The event.
-     */
-    public UIEvent findEvent(HttpBridletRequest req, WebView view)
-    {
-        String action = req.getHeader("Bridje-Event");
-        if (action != null)
-        {
-            UIEvent event = view.findEvent(action);
-            return event;
-        }
-        return null;
     }
 
     /**

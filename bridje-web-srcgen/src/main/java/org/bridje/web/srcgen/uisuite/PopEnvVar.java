@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * Pops the given var out of the el environment.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PopEnvVar implements ReadInputAction
+public class PopEnvVar implements ControlFlowAction
 {
     @XmlAttribute
     private String var;

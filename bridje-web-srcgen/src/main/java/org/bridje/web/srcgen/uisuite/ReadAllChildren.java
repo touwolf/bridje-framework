@@ -23,6 +23,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * Reads the input for all childrens.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadAllChildren implements ReadInputAction
+public class ReadAllChildren implements ControlFlowAction
 {
 }

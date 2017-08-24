@@ -20,13 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.ELException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.web.view.Defines;
+import org.bridje.web.view.EventResult;
 
 /**
  * Base class for all the controls.
@@ -35,6 +41,8 @@ import org.bridje.web.view.Defines;
 @XmlTransient
 public abstract class Control
 {
+    private static final Logger LOG = Logger.getLogger(Control.class.getName());
+
     /**
      * Evaluates the given expression in the current ElEnvironment.
      *
@@ -165,11 +173,85 @@ public abstract class Control
      * @param req The HTTP request to read the input from.
      * @param env The EL environment to write the data to.
      */
-    public void readInput(ControlImputReader req, ElEnvironment env)
+    public void readInput(ControlInputReader req, ElEnvironment env)
     {
-        inputFiles().stream().forEach(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
-        inputs().stream().forEach(input -> set(input, req.getParameter(input.getParameter())));
+        inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
+        inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
         childs().forEach(control -> control.readInput(req, env));
+    }
+
+    /**
+     * 
+     * 
+     * @param req
+     * @param env
+     * @return 
+     */
+    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    {
+        for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
+        for (Control control : childs())
+        {
+            EventResult result = control.executeEvent(req, env);
+            if(result != null) return result;
+        }
+        return null;
+    }
+
+    /**
+     * Invokes the given event.
+     *
+     * @param event The event to be invoked.
+     *
+     * @return The result of the event invocation.
+     */
+    public EventResult invokeEvent(UIEvent event)
+    {
+        return Thls.doAs(new ThlsAction<EventResult>()
+        {
+            @Override
+            public EventResult execute()
+            {
+                try
+                {
+                    Object res = event.invoke();
+                    if (res instanceof EventResult)
+                    {
+                        return (EventResult) res;
+                    }
+                    return EventResult.of(null, null, res, null);
+                }
+                catch (ELException e)
+                {
+                    if (e.getCause() != null && e.getCause() instanceof Exception)
+                    {
+                        Exception real = (Exception) e.getCause();
+                        LOG.log(Level.SEVERE, real.getMessage(), real);
+                        return EventResult.error(real.getMessage(), real);
+                    }
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    return EventResult.error(e.getMessage(), e);
+                }
+                catch (Exception e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                    return EventResult.error(e.getMessage(), e);
+                }
+            }
+        }, UIEvent.class, event);
+    }
+    
+    /**
+     * 
+     * @param req
+     * @param event
+     * @return 
+     */
+    public boolean eventTriggered(ControlInputReader req, UIEvent event)
+    {
+        HttpReqParam param = req.popParameter(event.getParameter());
+        if(param != null) return "t".equals(param.getValue());
+        return false;
     }
 
     /**

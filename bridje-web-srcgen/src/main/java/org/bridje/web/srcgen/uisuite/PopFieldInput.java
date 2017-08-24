@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * Pops the value of the given field out of the request.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PopFieldInput implements ReadInputAction
+public class PopFieldInput implements ControlFlowAction
 {
     @XmlAttribute
     private String fieldName;
