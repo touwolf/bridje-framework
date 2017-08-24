@@ -59,7 +59,7 @@ public class UIInputExpression extends UIExpression
     {
         if (parameter == null && isValid())
         {
-            parameter = getExpression().substring(2, getExpression().length() - 1);
+            parameter = simplifyParam(getExpression().substring(2, getExpression().length() - 1));
         }
         return parameter;
     }
@@ -73,5 +73,43 @@ public class UIInputExpression extends UIExpression
     public boolean isValid()
     {
         return getExpression().startsWith("${") && getExpression().endsWith("}");
+    }
+
+    private static String simplifyParam(String name)
+    {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = name.toCharArray();
+        boolean addNext = true;
+        boolean canAdd = true;
+        for (char ch : chars)
+        {
+            if(Character.isAlphabetic((int)ch) || Character.isDigit(ch) || ch == '.')
+            {
+                if(addNext)
+                {
+                    sb.append(ch);
+                    canAdd = false;
+                    addNext = false;
+                }
+
+                if(ch == '.')
+                {
+                    addNext = true;
+                }
+                else if(Character.isUpperCase(ch) || Character.isDigit(ch))
+                {
+                    if(canAdd)
+                    {
+                        sb.append(ch);
+                        canAdd = false;
+                    }
+                }
+                else
+                {
+                    canAdd = true;
+                }
+            }
+        }
+        return sb.toString();
     }
 }
