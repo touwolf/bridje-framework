@@ -28,6 +28,7 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.web.WebScope;
+import org.bridje.web.view.ViewUtils;
 
 /**
  * The manager for the states of the web views, this component can create the
@@ -55,41 +56,31 @@ public class StateManager
      */
     public Map<String, String> createViewState(IocContext<WebScope> ctx)
     {
-        if (stateFields == null)
-        {
-            initStateFields(ctx);
-        }
+        if (stateFields == null) initStateFields(ctx);
         Map<Class<?>, Object> comps = ctx.find(StateListener.class).getStateComps();
         Map<String, String> result = new LinkedHashMap<>();
-
-        if (comps != null)
-        {
-            comps.forEach((c, i) ->
-            {
-                Map<Field, String> map = stateFields.get(c);
-                if (map != null)
-                {
-                    map.forEach((field, state) ->
-                    {
-                        try
-                        {
-                            Object val = field.get(i);
-                            String cv = elServ.convert(val, String.class);
-                            if (cv != null)
-                            {
-                                result.put(state, cv);
-                            }
-                        }
-                        catch (IllegalArgumentException | IllegalAccessException e)
-                        {
-                            LOG.log(Level.SEVERE, e.getMessage(), e);
-                        }
-                    });
-                }
-            });
-        }
-
+        if (comps != null) comps.forEach((c, i) -> fillStateValues(c, i, result));
         return result;
+    }
+    
+    private void fillStateValues(Class<?> comp, Object inst, Map<String, String> stateValues)
+    {
+        Map<Field, String> map = stateFields.get(comp);
+        if (map != null) map.forEach((f, s) -> fillStateValues(inst, f, s, stateValues));
+    }
+    
+    private void fillStateValues(Object inst, Field field, String state, Map<String, String> stateValues)
+    {
+        try
+        {
+            Object val = field.get(inst);
+            String cv = elServ.convert(val, String.class);
+            if (cv != null) stateValues.put(state, cv);
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     /**
@@ -98,43 +89,36 @@ public class StateManager
      *
      * @param ctx      The IocContext for the web request.
      * @param clazz    The component class.
-     * @param instance The component instance.
+     * @param inst     The component instance.
      * @param req      The web request scope.
      */
-    protected void injectState(IocContext<WebScope> ctx, Class<Object> clazz, Object instance, WebScope req)
+    protected void injectState(IocContext<WebScope> ctx, Class<Object> clazz, Object inst, WebScope req)
     {
-        if (stateFields == null)
-        {
-            initStateFields(ctx);
-        }
+        if (stateFields == null) initStateFields(ctx);
         Map<Field, String> lst = stateFields.get(clazz);
-        if (lst != null)
+        if (lst != null) lst.forEach((field, stateName) -> injectState(inst, field, stateName, req));
+    }
+
+    private void injectState(Object inst, Field field, String stateName, WebScope req)
+    {
+        try
         {
-            lst.forEach((field, stateName) ->
+            HttpReqParam value = req.getPostParameter("__st." + stateName);
+            if (value != null)
             {
-                try
-                {
-                    HttpReqParam value = req.getPostParameter("__state." + stateName);
-                    if (value != null)
-                    {
-                        Object cv = elServ.convert(value, field.getType());
-                        if (cv != null)
-                        {
-                            field.set(instance, cv);
-                        }
-                    }
-                }
-                catch (IllegalArgumentException | IllegalAccessException e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
-            });
+                Object cv = elServ.convert(value, field.getType());
+                if (cv != null) field.set(inst, cv);
+            }
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     private String findStateFieldName(Class<Object> clazz, Field field)
     {
-        return clazz.getName().replaceAll("\\.", "_") + field.getName();
+        return ViewUtils.simplifyParam(clazz.getName() + "." + field.getName());
     }
 
     private synchronized void initStateFields(IocContext<WebScope> ctx)
@@ -142,7 +126,7 @@ public class StateManager
         if (stateFields == null)
         {
             Map<Class<?>, Map<Field, String>> result = new HashMap<>();
-            ctx.getClassRepository().forEachField(StateField.class, (field, component, annot) ->
+            ctx.getClassRepository().forEachField(StateField.class, (Field field, Class component, StateField annot) ->
             {
                 Map<Field, String> lst = result.get(component);
                 if (lst == null)
@@ -152,6 +136,7 @@ public class StateManager
                 }
                 field.setAccessible(true);
                 String name = findStateFieldName(component, field);
+                while(lst.containsValue(name)) name += "_";
                 lst.put(field, name);
             });
             stateFields = result;

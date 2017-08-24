@@ -62,7 +62,7 @@
 </#macro>
 
 <#macro renderViewContainer>
-    <form data-bridje-view="${view.name}" id="bridje-view-container" enctype="multipart/form-data" method="post"  >
+    <form data-bridje-view="${view.name}" id="bridje-view-container" enctype="<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>" method="post"  >
         <#nested />
     </form>
 </#macro>
@@ -103,14 +103,14 @@
 </#macro>
 
 <#macro renderPartialView currentControl themeName>
-    <@renderState />
     <@renderControl currentControl />
+    <@renderState />
 </#macro>
 
 <#macro renderState>
-    <#assign currState = stateProvider.currentState />
+    <#local currState = stateProvider.currentState />
     <#list currState?keys as k>
-        <input type="hidden" name="__state.${k}" value="${currState[k]?xhtml}" />
+        <input type="hidden" name="__st.${k}" value="${currState[k]?xhtml}" />
     </#list>
 </#macro>
 

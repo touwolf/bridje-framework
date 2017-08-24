@@ -33,10 +33,24 @@ function bridjeExecuteAction(event)
     window.console && console.log('      event: ' + event);
     window.console && console.log('      data: ' + data);
 
+    if(enctype === "application/x-www-form-urlencoded")
+    {
+        var params = new URLSearchParams();
+        for(var pair of data.entries())
+        {
+            if(typeof pair[1] === 'string')
+            {
+                params.append(pair[0], pair[1]);
+            }
+        }
+        data = params.toString();
+    }
+
     try
     {
         xhr = new XMLHttpRequest();
         xhr.open(form.getAttribute("method"), url, 1);
+        xhr.setRequestHeader('Content-type', enctype);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Bridje-View', encodeURI(view));
         xhr.setRequestHeader('Bridje-Event', encodeURI(event));
@@ -57,7 +71,7 @@ function bridjeExecuteAction(event)
             }
             else if (xhr.status !== 200)
             {
-                window.console && console.log('Request failed.  Returned status of ' + xhr.status);
+                window.console && console.log('Request failed. Returned status of ' + xhr.status);
             }
         };
         xhr.send(data);
