@@ -39,28 +39,19 @@ limitations under the License.
     </enums>
 
     <ftlMacros>
-        <ftlMacro name="tableClasses" params="control">
+        <ftlMacro name="renderTableHeadCell" params="control column" >
             <![CDATA[
-                <#compress>
-                <#if control.striped?? && control.striped>
-                    table-striped
+                <#if column.visible?? && column.visible>
+                    <th <#if column.width??>width="${column.width}"</#if> class="${column.align!}" >
+                        ${column.header!}
+                    </th>
                 </#if>
-                <#if control.bordered?? && control.bordered>
-                    table-bordered
-                </#if>
-                <#if control.hover?? && control.hover>
-                    table-hover
-                </#if>
-                <#if control.condensed?? && control.condensed>
-                    table-condensed
-                </#if>
-                </#compress>
             ]]>
         </ftlMacro>
     </ftlMacros>
 
     <controls>
-        <control name="TableColumn" template="TextFlowContainer" base="BaseControl" >
+        <control name="TableColumn" templates="TextFlowContainer" base="BaseControl" >
             <fields>
                 <outAttr name="width" type="Integer" />
                 <outAttr name="header" type="String" />
@@ -84,7 +75,7 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Table" base="BaseControl" template="TableTemplate" >
+        <control name="Table" base="BaseControl" >
             <ftlMacros>
                 <ftlMacro name="classes">
                     <![CDATA[
@@ -120,6 +111,24 @@ limitations under the License.
                 </for>                
             </execute>
             <ftlMacros>
+                <ftlMacro name="classes">
+                    <![CDATA[
+                        <#compress>
+                        <#if control.striped?? && control.striped>
+                            table-striped
+                        </#if>
+                        <#if control.bordered?? && control.bordered>
+                            table-bordered
+                        </#if>
+                        <#if control.hover?? && control.hover>
+                            table-hover
+                        </#if>
+                        <#if control.condensed?? && control.condensed>
+                            table-condensed
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="body" >
                     <![CDATA[
                         <tbody>
@@ -140,11 +149,12 @@ limitations under the License.
                 </ftlMacro>
                 <ftlMacro name="element" >
                     <![CDATA[
-                        <#assign tableId = tools.bootstrap.randomId />
-                        <table id="${tableId}" class="table <#classes control />" <#if control.cellspacing??>cellspacing="${control.cellspacing}"</#if> >
+                        <table class="table <#classes control />" 
+                               <#if control.cellspacing??>
+                               cellspacing="${control.cellspacing}"
+                               </#if> >
                             <#nested />
                         </table>
-                        <#assign tableId = "" />
                     ]]>
                 </ftlMacro>
                 <ftlMacro name="container" >
@@ -158,7 +168,7 @@ limitations under the License.
                         </#if>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="head" params="control" >
+                <ftlMacro name="head" >
                     <![CDATA[
                         <thead>
                             <tr>
