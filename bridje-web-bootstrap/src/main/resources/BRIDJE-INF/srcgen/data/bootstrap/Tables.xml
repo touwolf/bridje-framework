@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 Bridje Framework.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<partialuisuite
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/uisuite'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
+    
+    <!--
+    This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
+    -->
+    
+    <includes>
+        <include>Core.xml</include>
+        <include>Basic.xml</include>
+    </includes>
+    
+    <enums>
+        <enum name="RowStyle">
+            <constant name="ACTIVE" value="active" />
+            <constant name="SUCCESS" value="success" />
+            <constant name="INFO" value="info" />
+            <constant name="WARNING" value="warning" />
+            <constant name="DANGER" value="danger" />
+        </enum>
+    </enums>
+
+    <ftlMacros>
+        <ftlMacro name="tableClasses" params="control">
+            <![CDATA[
+                <#compress>
+                <#if control.striped?? && control.striped>
+                    table-striped
+                </#if>
+                <#if control.bordered?? && control.bordered>
+                    table-bordered
+                </#if>
+                <#if control.hover?? && control.hover>
+                    table-hover
+                </#if>
+                <#if control.condensed?? && control.condensed>
+                    table-condensed
+                </#if>
+                </#compress>
+            ]]>
+        </ftlMacro>
+    </ftlMacros>
+
+    <controls>
+        <control name="TableColumn" template="TextFlowContainer" base="BaseControl" >
+            <fields>
+                <outAttr name="width" type="Integer" />
+                <outAttr name="header" type="String" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="cell">
+                    <![CDATA[
+                        <#compress>
+                        <td class="<@textBlockClasses control />">
+                            <#nested />
+                        </td>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <@cell control>
+                        <@renderAllControls control.content![] />
+                    </@cell>
+                ]]>
+            </render>
+        </control>
+        <control name="Table" base="BaseControl" template="TableTemplate" >
+            <ftlMacros>
+                <ftlMacro name="classes">
+                    <![CDATA[
+                        <#compress>
+                        <#if control.striped?? && control.striped>
+                            table-striped
+                        </#if>
+                        <#if control.bordered?? && control.bordered>
+                            table-bordered
+                        </#if>
+                        <#if control.hover?? && control.hover>
+                            table-hover
+                        </#if>
+                        <#if control.condensed?? && control.condensed>
+                            table-condensed
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <input>
+                <for var="rowItem" in="data">
+                    <pushVar var='var' value="rowItem" />
+                    <childrenAll />
+                    <popVar var='var' />
+                </for>
+            </input>
+            <execute>
+                <for var="rowItem" in="data">
+                    <pushVar var='var' value="rowItem" />
+                    <childrenAll />
+                    <popVar var='var' />
+                </for>                
+            </execute>
+            <ftlMacros>
+                <ftlMacro name="body" >
+                    <![CDATA[
+                        <tbody>
+                            <@doWithData control.data![] control.var >
+                                <@row control />
+                            </@doWithData>
+                        </tbody>
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="row" >
+                    <![CDATA[
+                        <#assign selectFieldValue = env.getVarAsString(control.var) />
+                        <tr class="${control.rowStyle!}" >
+                            <@renderAllControls control.columns![] />
+                        </tr>
+                        <#assign selectFieldValue = "" />
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="element" >
+                    <![CDATA[
+                        <#assign tableId = tools.bootstrap.randomId />
+                        <table id="${tableId}" class="table <#classes control />" <#if control.cellspacing??>cellspacing="${control.cellspacing}"</#if> >
+                            <#nested />
+                        </table>
+                        <#assign tableId = "" />
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="container" >
+                    <![CDATA[
+                        <#if control.responsive?? && control.responsive>
+                            <div class="table-responsive">
+                                <#nested />
+                            </div>
+                        <#else>
+                            <#nested />
+                        </#if>
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="head" params="control" >
+                    <![CDATA[
+                        <thead>
+                            <tr>
+                                <#list control.columns![] as column>
+                                    <@renderTableHeadCell control column />
+                                </#list>
+                            </tr>
+                        </thead>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <@container control >
+                        <@element control>
+                            <@head control />
+                            <@body control />
+                        </@element>
+                    </@container>
+                ]]>
+            </render>
+        </control>
+    </controls>
+</partialuisuite>

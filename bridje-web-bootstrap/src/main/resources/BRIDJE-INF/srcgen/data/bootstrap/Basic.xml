@@ -103,6 +103,18 @@ limitations under the License.
                 </#compress>
             ]]>
         </ftlMacro>
+        <ftlMacro name="textBlockClasses" params='control'>
+            <![CDATA[
+                <#compress>
+                <#if control.align??>
+                    text-${control.align}
+                </#if>
+                <#if control.bgcolor??>
+                    bg-${control.bgcolor}
+                </#if>
+                </#compress>
+            ]]>
+        </ftlMacro>
     </ftlMacros>
 
     <templates>
@@ -145,6 +157,8 @@ limitations under the License.
 
         <template name="TextFlowContainer" >
             <fields>
+                <outAttr name="bgcolor" type="BackgroundColor" />
+                <outAttr name="align" type="TextAlign" />
                 <children name="content" >
                     <child name="br" type="LineBreak" />
                     <child name="text" type="PlainText" />
@@ -168,12 +182,15 @@ limitations under the License.
                 <children name="content" >
                     <child name="hr" type="ThematicBreak" />
                     <child name="address" type="AddressText" />
-                    <child name="h1" type="Heading1Text" />
-                    <child name="h2" type="Heading2Text" />
-                    <child name="h3" type="Heading3Text" />
-                    <child name="h4" type="Heading4Text" />
-                    <child name="h5" type="Heading5Text" />
-                    <child name="h6" type="Heading6Text" />
+                    <child name="h1" type="Heading1Block" />
+                    <child name="h2" type="Heading2Block" />
+                    <child name="h3" type="Heading3Block" />
+                    <child name="h4" type="Heading4Block" />
+                    <child name="h5" type="Heading5Block" />
+                    <child name="h6" type="Heading6Block" />
+                    <child name="img" type="Image" />
+                    <child name="blockquote" type="BlockquoteBlock"/>
+                    <child name="p" type="ParagraphBlock"/>
                 </children>
             </fields>
         </template>
@@ -244,9 +261,15 @@ limitations under the License.
         <control name="Anchor" templates="FullTextElement ActionControlTemplate" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <a <@actionOrLinkExpresion control /> class="<@actionClass control /> <@textElementClasses control />" >
-                        ${control.text!}
-                    </a>
+                    <#if hasAction(control)>
+                        <#local eventId = tools.boostrap.randomId />
+                        <input id="${eventId}" type="hidden" name="${control.action.parameter}" value="f" />
+                        <a href="#" class="bridje-action" data-eventid="${eventId}">${control.text!}</a>
+                    <#elseif hasLink(control)>
+                        <a href="${control.href!}" class="bridje-action">${control.text!}</a>
+                    <#else>
+                        <a href="#">${control.text!}</a>
+                    </#if>
                 ]]>
             </render>
         </control>
@@ -356,62 +379,86 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="Heading1Text" templates="SizedTextElement" base="BaseControl" >
+
+        <!--Flow Containers-->
+        <control name="BlockquoteBlock" templates="TextFlowContainer" base="BaseControl" >
+            <fields>
+                <outAttr name="reverse" type="Boolean" />
+            </fields>
             <render>
                 <![CDATA[
-                    <h1 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <#local clases = "" />
+                    <#if control.reverse?? && control.reverse>
+                        <#local clases = "blockquote-reverse" />
+                    </#if>
+                    <blockquote class="<@textBlockClasses control />">
+                        <@renderAllControls control.content![] />
+                    </blockquote>
+                ]]>
+            </render>
+        </control>
+        <control name="ParagraphBlock" templates="TextFlowContainer" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <p class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
+                    </p>
+                ]]>
+            </render>
+        </control>
+        <control name="Heading1Block" templates="TextFlowContainer" base="BaseControl" >
+            <render>
+                <![CDATA[
+                    <h1 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h1>
                 ]]>
             </render>
         </control>
-        <control name="Heading2Text" templates="SizedTextElement" base="BaseControl" >
+        <control name="Heading2Block" templates="TextFlowContainer" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <h2 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <h2 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h2>
                 ]]>
             </render>
         </control>
-        <control name="Heading3Text" templates="SizedTextElement" base="BaseControl" >
+        <control name="Heading3Block" templates="TextFlowContainer" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <h3 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <h3 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h3>
                 ]]>
             </render>
         </control>
-        <control name="Heading4Text" templates="SizedTextElement" base="BaseControl" >
+        <control name="Heading4Block" templates="TextFlowContainer" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <h4 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <h4 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h4>
                 ]]>
             </render>
         </control>
-        <control name="Heading5Text" templates="SizedTextElement" base="BaseControl" >
+        <control name="Heading5Block" templates="TextFlowContainer" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <h5 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <h5 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h5>
                 ]]>
             </render>
         </control>
-        <control name="Heading6Text" templates="SizedTextElement" base="BaseControl" >
+        <control name="Heading6Block" templates="TextFlowContainer" base="BaseControl" >
             <render>
                 <![CDATA[
-                    <h6 class="<@textElementClasses control />" >
-                        ${control.text!}
+                    <h6 class="<@textBlockClasses control />" >
+                        <@renderAllControls control.content![] />
                     </h6>
                 ]]>
             </render>
         </control>
-        
-        <!--Block Containers-->
-        
     </controls>
 </partialuisuite>

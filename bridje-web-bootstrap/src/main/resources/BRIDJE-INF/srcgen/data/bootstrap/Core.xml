@@ -31,7 +31,7 @@ limitations under the License.
             <script href="/__themes/bootstrap/js/bootstrap-base-ajax.js" />
         </resource>
     </resources>
-    
+
     <ftlMacros>
         <ftlMacro name="doWithVar" params="name value" >
             <![CDATA[
@@ -71,7 +71,7 @@ limitations under the License.
             ]]>
         </ftlMacro>
     </ftlMacros>
-    
+
     <ftlFunctions>
         <ftlFunction name="valueInAttrName" params="control">
             <![CDATA[
@@ -128,7 +128,7 @@ limitations under the License.
             </fields>
         </template>
     </templates>
-    
+
     <controls>
         <control name="BaseControl" isTransient="true" >
             <fields>
