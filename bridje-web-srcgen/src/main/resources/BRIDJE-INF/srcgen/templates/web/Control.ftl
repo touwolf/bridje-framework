@@ -298,10 +298,14 @@ public class ${control.name} extends ${control.baseName}
         </#list>
     </#macro>
     <#macro printForActions forStmt ident>
-        ${ident}for(Object ${forStmt.var} : get${forStmt.in?cap_first}())
+        ${ident}List data = get${forStmt.in?cap_first}();
+        ${ident}if(data != null)
         ${ident}{
-            <#assign newIdent = ident + "    " />
-            <@printReadInputActions forStmt.actions newIdent />
+        ${ident}    for(Object ${forStmt.var} : data)
+        ${ident}    {
+        <#assign newIdent = ident + "    " />
+        <@printReadInputActions forStmt.actions newIdent />
+        ${ident}    }
         ${ident}}
     </#macro>
     @Override
@@ -338,16 +342,21 @@ public class ${control.name} extends ${control.baseName}
         </#list>
     </#macro>
     <#macro printExecForActions forStmt ident>
-        ${ident}for(Object ${forStmt.var} : get${forStmt.in?cap_first}())
+        ${ident}List data = get${forStmt.in?cap_first}();
+        ${ident}if(data != null)
         ${ident}{
-            <#assign newIdent = ident + "    " />
-            <@printExecuteEventActions forStmt.actions newIdent />
+        ${ident}    for(Object ${forStmt.var} : data)
+        ${ident}    {
+        <#assign newIdent = ident + "        " />
+        <@printExecuteEventActions forStmt.actions newIdent />
+        ${ident}    }
         ${ident}}
     </#macro>
     @Override
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
         <@printExecuteEventActions control.execute.actions "" />
+        return null;
     }
 
     </#if>

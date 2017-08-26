@@ -22,7 +22,7 @@
 </#function>
 
 [/#list]
-[#list uisuite.resources as r]
+[#list uisuite.resources![] as r]
 <#macro render${r.name?cap_first}Scripts themeName>
 [#list r.scripts as s]
     <@renderScript theme=themeName script="${s.href}" async=${s.async?c} defer=${s.defer?c} />

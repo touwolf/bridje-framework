@@ -22,12 +22,12 @@ limitations under the License.
     <!--
     This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
     -->
-    
+
     <includes>
         <include>Core.xml</include>
         <include>Basic.xml</include>
     </includes>
-    
+
     <enums>
         <enum name="RowStyle">
             <constant name="ACTIVE" value="active" />
@@ -76,6 +76,21 @@ limitations under the License.
             </render>
         </control>
         <control name="Table" base="BaseControl" >
+            <fields>
+                <outAttr name="striped" type="Boolean" def="false" />
+                <outAttr name="bordered" type="Boolean" def="false" />
+                <outAttr name="hover" type="Boolean" def="false" />
+                <outAttr name="condensed" type="Boolean" def="false" />
+                <outAttr name="responsive" type="Boolean" def="true" />
+                <outAttr name="data" type="List" />
+                <attr name="var" type="String" def='"row"' />
+                <outAttr name="rowStyle" type="RowStyle" />
+                <inAttr name="value" type="Object" />
+                <outAttr name="cellspacing" type="Integer" />
+                <children name="columns">
+                    <child name="column" type="TableColumn" />
+                </children>
+            </fields>
             <ftlMacros>
                 <ftlMacro name="classes">
                     <![CDATA[
