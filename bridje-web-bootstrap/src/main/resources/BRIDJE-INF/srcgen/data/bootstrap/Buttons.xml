@@ -18,9 +18,9 @@ limitations under the License.
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.bridje.org/schemas/web/uisuite'
     xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
-    
+
     <!--
-    This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
+    This UISuite partial definition file contains the basic building block for the buttons controls.
     -->
 
     <includes>
@@ -56,45 +56,20 @@ limitations under the License.
             <constant name="DISABLED" value="disabled" />
         </enum>
     </enums>
-    
-    
-    <ftlMacros>
-        <ftlMacro name="buttonClasses" params='control'>
-            <![CDATA[
-                <#compress>
-                btn
-                <#if control.size??>
-                    btn-${control.size}
-                </#if>
-                <#if control.color??>
-                    btn-${control.color}
-                </#if>
-                <#if control.block?? && control.block>
-                    btn-block
-                </#if>
-                <#if control.status??>
-                    ${control.status}
-                </#if>
-                </#compress>
-            ]]>
-        </ftlMacro>
-        <ftlMacro name="buttonGroupClases" params='control'>
-            <![CDATA[
-                <#compress>
-                btn-group
-                <#if control.layout??>
-                    btn-group-${control.layout}
-                </#if>
-                <#if control.size??>
-                    btn-group-${control.size}
-                </#if>
-                </#compress>
-            ]]>
-        </ftlMacro>
-    </ftlMacros>
+
+    <templates>
+        <template name="ButtonContainer">
+            <fields>
+                <children name="content">
+                    <child name="group" type="ButtonGroup" />
+                    <child name="button" type="Button" />
+                </children>
+            </fields>
+        </template>
+    </templates>
 
     <controls>
-        <control name="Button"  base="BaseControl" >
+        <control name="Button" base="BaseControl" >
             <fields>
                 <outAttr name="caption" type="String" />
                 <outAttr name="block" type="Boolean" />
@@ -105,6 +80,25 @@ limitations under the License.
                 <eventAttr name="action" />
             </fields>
             <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        btn
+                        <#if control.size??>
+                            btn-${control.size}
+                        </#if>
+                        <#if control.color??>
+                            btn-${control.color}
+                        </#if>
+                        <#if control.block?? && control.block>
+                            btn-block
+                        </#if>
+                        <#if control.status??>
+                            ${control.status}
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="groupIfNeeded" params='control'>
                     <![CDATA[
                         <#if needButtonGroup?? && needButtonGroup >
@@ -121,7 +115,7 @@ limitations under the License.
                         <@groupIfNeeded control>
                             <#local eventId = tools.bootstrap.randomId />
                             <input id="${eventId}" type="hidden" name="${control.action.parameter}" value="f" />
-                            <button type="button" class="bridje-action <@buttonClasses control />" data-eventid="${eventId}">
+                            <button type="button" class="bridje-action <@classes control />" data-eventid="${eventId}">
                                 ${control.caption!}
                             </button>
                         </@groupIfNeeded>
@@ -130,7 +124,7 @@ limitations under the License.
                 <ftlMacro name="static" params='control'>
                     <![CDATA[
                         <@groupIfNeeded control>
-                            <button type="button" class="<@buttonClasses control />">
+                            <button type="button" class="<@classes control />">
                                 ${control.caption!}
                             </button>
                         </@groupIfNeeded>
@@ -138,7 +132,7 @@ limitations under the License.
                 </ftlMacro>
                 <ftlMacro name="link" params='control'>
                     <![CDATA[
-                        <a href="${control.href!}" class="<@buttonClasses control />" >${control.caption!}</a>
+                        <a href="${control.href!}" class="<@classes control />" >${control.caption!}</a>
                     ]]>
                 </ftlMacro>
             </ftlMacros>
@@ -160,10 +154,22 @@ limitations under the License.
                 <outAttr name="size" type="ButtonGroupSize" />
                 <children name="content">
                     <child name="button" type="Button" />
-                    <child name="group" type="ButtonGroup" />
                 </children>
             </fields>
             <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        btn-group
+                        <#if control.layout??>
+                            btn-group-${control.layout}
+                        </#if>
+                        <#if control.size??>
+                            btn-group-${control.size}
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="justified" params="control" >
                     <![CDATA[
                         <#if control.layout?? && control.layout == "justified" >
@@ -177,7 +183,7 @@ limitations under the License.
                 </ftlMacro>
                 <ftlMacro name="container" params='control'>
                     <![CDATA[
-                        <div class="<@buttonGroupClases control />" >
+                        <div class="<@classes control />" >
                             <#nested />
                         </div>
                     ]]>
@@ -185,6 +191,7 @@ limitations under the License.
             </ftlMacros>
             <render>
                 <![CDATA[
+                    <!-- button group -->
                     <@container control>
                         <@justified control>
                             <@renderAllControls control.content![] />

@@ -20,7 +20,7 @@ limitations under the License.
     xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
     
     <!--
-    This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
+    This UISuite partial definition file contains the basic building block for all bootstrap base UISuites.
     -->
     
     <includes>

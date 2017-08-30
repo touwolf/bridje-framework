@@ -20,12 +20,13 @@ limitations under the License.
     xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
     
     <!--
-    This UISuite partial definition file contains de basic building block for all bootstrap base UISuites.
+    This UISuite partial definition file contains the basic building block for all bootstrap base UISuites.
     -->
 
     <includes>
         <include>Core.xml</include>
         <include>Basic.xml</include>
+        <include>Buttons.xml</include>
     </includes>
 
     <enums>
@@ -39,7 +40,7 @@ limitations under the License.
     </enums>
 
     <controls>
-        <control name="TableColumn" templates="TextFlowContainer" base="BaseControl" >
+        <control name="TableColumn" templates="TextFlowContainer ButtonContainer" base="BaseControl" >
             <fields>
                 <outAttr name="width" type="Integer" />
                 <outAttr name="header" type="String" />
