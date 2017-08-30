@@ -25,6 +25,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * An enumerator for a control attribute.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlEnum
 {

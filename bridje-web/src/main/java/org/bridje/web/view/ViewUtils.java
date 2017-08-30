@@ -16,13 +16,18 @@
 
 package org.bridje.web.view;
 
+/**
+ * Web view utilities.
+ */
 public class ViewUtils
 {
     /**
-     * 
-     * 
+     * Simplifies the name of the param so it can be sended to/from the client
+     * in a more compact way.
+     *
      * @param name
-     * @return 
+     *
+     * @return
      */
     public static String simplifyParam(String name)
     {
@@ -32,22 +37,22 @@ public class ViewUtils
         boolean canAdd = true;
         for (char ch : chars)
         {
-            if(Character.isAlphabetic((int)ch) || Character.isDigit(ch) || ch == '.')
+            if (Character.isAlphabetic((int) ch) || Character.isDigit(ch) || ch == '.')
             {
-                if(addNext)
+                if (addNext)
                 {
                     sb.append(ch);
                     canAdd = false;
                     addNext = false;
                 }
 
-                if(ch == '.')
+                if (ch == '.')
                 {
                     addNext = true;
                 }
-                else if(Character.isUpperCase(ch) || Character.isDigit(ch))
+                else if (Character.isUpperCase(ch) || Character.isDigit(ch))
                 {
-                    if(canAdd)
+                    if (canAdd)
                     {
                         sb.append(ch);
                         canAdd = false;
@@ -61,4 +66,5 @@ public class ViewUtils
         }
         return sb.toString().toLowerCase();
     }
+
 }

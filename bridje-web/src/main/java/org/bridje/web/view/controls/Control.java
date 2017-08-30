@@ -181,15 +181,21 @@ public abstract class Control
     }
 
     /**
+     * Executes any event sended from the client to the server.
      * 
-     * 
-     * @param req
-     * @param env
-     * @return 
+     * @param req The HTTP request.
+     * @param env The EL environment.
+     * @return The event result.
      */
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
-        for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
+        for (UIEvent event : events())
+        {
+            if(eventTriggered(req, event))
+            {
+                return invokeEvent(event);
+            }
+        }
         for (Control control : childs())
         {
             EventResult result = control.executeEvent(req, env);

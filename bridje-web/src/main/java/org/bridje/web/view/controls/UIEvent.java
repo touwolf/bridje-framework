@@ -49,8 +49,9 @@ public class UIEvent
     }
 
     /**
+     * The parameter for the event.
      * 
-     * @return 
+     * @return The parameter for the event.
      */
     public String getParameter()
     {

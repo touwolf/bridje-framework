@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+/**
+ * A constant for a control enumerator.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlEnumConstant
 {

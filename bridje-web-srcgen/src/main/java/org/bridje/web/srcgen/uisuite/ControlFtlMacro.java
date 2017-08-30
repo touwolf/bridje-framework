@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
+/**
+ * A macro that belongs to a control.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlFtlMacro
 {
