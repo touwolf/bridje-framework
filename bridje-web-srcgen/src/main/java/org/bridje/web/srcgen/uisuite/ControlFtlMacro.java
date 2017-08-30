@@ -26,6 +26,9 @@ public class ControlFtlMacro
     @XmlAttribute
     private String name;
 
+    @XmlAttribute
+    public String params;
+    
     @XmlValue
     private String content;
 
@@ -37,6 +40,16 @@ public class ControlFtlMacro
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getParams()
+    {
+        return params;
+    }
+
+    public void setParams(String params)
+    {
+        this.params = params;
     }
 
     public String getContent()

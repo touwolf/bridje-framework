@@ -135,7 +135,7 @@ public class ControlDef extends BaseControlDef
     {
         if(render == null) return "";
         String replaced = render;
-        for(ControlFtlMacro m : getFtlMacros())
+        for(ControlFtlMacro m : getMacros())
         {
             replaced = replaced.replaceAll("<@" + m.getName(), "<@" + m.findRealName(this));
             replaced = replaced.replaceAll("</@" + m.getName(), "</@" + m.findRealName(this));

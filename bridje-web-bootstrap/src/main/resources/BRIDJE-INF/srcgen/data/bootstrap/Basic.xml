@@ -208,7 +208,7 @@ limitations under the License.
                 <outAttr name="alt" type="String" />
             </fields>
             <ftlMacros>
-                <ftlMacro name="classes">
+                <ftlMacro name="classes" params='control'>
                     <![CDATA[
                         <#compress>
                         <#local clases = "" />
@@ -221,7 +221,7 @@ limitations under the License.
                         </#compress>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="size">
+                <ftlMacro name="size" params='control'>
                     <![CDATA[
                         <#compress>
                         <#if control.width??>
@@ -262,11 +262,11 @@ limitations under the License.
             <render>
                 <![CDATA[
                     <#if hasAction(control)>
-                        <#local eventId = tools.boostrap.randomId />
+                        <#local eventId = tools.bootstrap.randomId />
                         <input id="${eventId}" type="hidden" name="${control.action.parameter}" value="f" />
                         <a href="#" class="bridje-action" data-eventid="${eventId}">${control.text!}</a>
                     <#elseif hasLink(control)>
-                        <a href="${control.href!}" class="bridje-action">${control.text!}</a>
+                        <a href="${control.href!}">${control.text!}</a>
                     <#else>
                         <a href="#">${control.text!}</a>
                     </#if>

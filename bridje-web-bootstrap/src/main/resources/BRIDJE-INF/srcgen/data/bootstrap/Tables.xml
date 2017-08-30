@@ -38,18 +38,6 @@ limitations under the License.
         </enum>
     </enums>
 
-    <ftlMacros>
-        <ftlMacro name="renderTableHeadCell" params="control column" >
-            <![CDATA[
-                <#if column.visible?? && column.visible>
-                    <th <#if column.width??>width="${column.width}"</#if> class="${column.align!}" >
-                        ${column.header!}
-                    </th>
-                </#if>
-            ]]>
-        </ftlMacro>
-    </ftlMacros>
-
     <controls>
         <control name="TableColumn" templates="TextFlowContainer" base="BaseControl" >
             <fields>
@@ -57,7 +45,7 @@ limitations under the License.
                 <outAttr name="header" type="String" />
             </fields>
             <ftlMacros>
-                <ftlMacro name="cell">
+                <ftlMacro name="cell" params='control'>
                     <![CDATA[
                         <#compress>
                         <td class="<@textBlockClasses control />">
@@ -92,7 +80,16 @@ limitations under the License.
                 </children>
             </fields>
             <ftlMacros>
-                <ftlMacro name="classes">
+                <ftlMacro name="headCell" params="control column" >
+                    <![CDATA[
+                        <#if column.visible?? && column.visible>
+                            <th <#if column.width??>width="${column.width}"</#if> class="${column.align!}" >
+                                ${column.header!}
+                            </th>
+                        </#if>
+                    ]]>
+                </ftlMacro>
+                <ftlMacro name="classes" params='control'>
                     <![CDATA[
                         <#compress>
                         <#if control.striped?? && control.striped>
@@ -126,7 +123,7 @@ limitations under the License.
                 </for>                
             </execute>
             <ftlMacros>
-                <ftlMacro name="classes">
+                <ftlMacro name="classes" params='control'>
                     <![CDATA[
                         <#compress>
                         <#if control.striped?? && control.striped>
@@ -144,7 +141,7 @@ limitations under the License.
                         </#compress>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="body" >
+                <ftlMacro name="body" params='control'>
                     <![CDATA[
                         <tbody>
                             <@doWithData control.data![] control.var >
@@ -153,7 +150,7 @@ limitations under the License.
                         </tbody>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="row" >
+                <ftlMacro name="row" params='control'>
                     <![CDATA[
                         <#assign selectFieldValue = env.getVarAsString(control.var) />
                         <tr class="${control.rowStyle!}" >
@@ -162,9 +159,9 @@ limitations under the License.
                         <#assign selectFieldValue = "" />
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="element" >
+                <ftlMacro name="element" params='control'>
                     <![CDATA[
-                        <table class="table <#classes control />" 
+                        <table class="table <@classes control />" 
                                <#if control.cellspacing??>
                                cellspacing="${control.cellspacing}"
                                </#if> >
@@ -172,7 +169,7 @@ limitations under the License.
                         </table>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="container" >
+                <ftlMacro name="container" params='control'>
                     <![CDATA[
                         <#if control.responsive?? && control.responsive>
                             <div class="table-responsive">
@@ -183,12 +180,12 @@ limitations under the License.
                         </#if>
                     ]]>
                 </ftlMacro>
-                <ftlMacro name="head" >
+                <ftlMacro name="head" params='control'>
                     <![CDATA[
                         <thead>
                             <tr>
                                 <#list control.columns![] as column>
-                                    <@renderTableHeadCell control column />
+                                    <@headCell control column />
                                 </#list>
                             </tr>
                         </thead>

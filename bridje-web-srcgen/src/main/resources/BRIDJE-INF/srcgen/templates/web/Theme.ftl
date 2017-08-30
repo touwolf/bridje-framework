@@ -38,17 +38,17 @@
 [/#list]
 [#list uisuite.macros![] as m]
 [@compress single_line=true][#compress]
-<#macro ${m.name} ${m.parameters}>
+<#macro ${m.name} ${m.params}>
     ${w.content}
 </#macro>
 [/#compress][/@compress]
 
 [/#list]
 [#list uisuite.controls as w]
-[#list w.ftlMacros![] as ftlMac]
+[#list w.macros![] as m]
 [@compress single_line=true][#compress]
-<#macro render${w.name}${ftlMac.name?cap_first} control >
-    ${w.replaceMacros(ftlMac.content)}
+<#macro render${w.name}${m.name?cap_first} ${m.params}>
+    ${w.replaceMacros(m.content)}
 </#macro>
 [/#compress][/@compress]
 

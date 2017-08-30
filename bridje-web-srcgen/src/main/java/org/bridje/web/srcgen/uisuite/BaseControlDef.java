@@ -82,7 +82,7 @@ public class BaseControlDef
     {
         @XmlElement(name = "ftlMacro", type = ControlFtlMacro.class)
     })
-    private List<ControlFtlMacro> ftlMacros;
+    private List<ControlFtlMacro> macros;
     
     @XmlTransient
     private List<FieldDef> allFields;
@@ -169,14 +169,14 @@ public class BaseControlDef
      * 
      * @return The list of macros asociated with this control.
      */
-    public List<ControlFtlMacro> getFtlMacros()
+    public List<ControlFtlMacro> getMacros()
     {
         if(allMacros == null)
         {
             Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
             List<TemplateControlDef> tmpls = getTemplates();
-            tmpls.stream().forEach(t -> t.getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r)));
-            if(ftlMacros != null) ftlMacros.forEach(r -> macrosMap.put(r.getName(), r));
+            tmpls.stream().forEach(t -> t.getMacros().forEach(r -> macrosMap.put(r.getName(), r)));
+            if(macros != null) macros.forEach(r -> macrosMap.put(r.getName(), r));
             allMacros = new ArrayList<>();
             macrosMap.forEach((k, v) -> allMacros.add(v));
         }
@@ -193,8 +193,8 @@ public class BaseControlDef
         control.getFields().forEach(this::overrideField);
 
         Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
-        control.getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r));
-        getFtlMacros().forEach(r -> macrosMap.put(r.getName(), r));
+        control.getMacros().forEach(r -> macrosMap.put(r.getName(), r));
+        getMacros().forEach(r -> macrosMap.put(r.getName(), r));
         allMacros = new ArrayList<>();
         macrosMap.forEach((k, v) -> allMacros.add(v));
 
