@@ -25,9 +25,9 @@ public class ViewUtils
      * Simplifies the name of the param so it can be sended to/from the client
      * in a more compact way.
      *
-     * @param name
+     * @param name The name to simplify.
      *
-     * @return
+     * @return The simplified name.
      */
     public static String simplifyParam(String name)
     {

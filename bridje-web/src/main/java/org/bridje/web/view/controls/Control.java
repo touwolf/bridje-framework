@@ -46,10 +46,11 @@ public abstract class Control
     /**
      * Evaluates the given expression in the current ElEnvironment.
      *
-     * @param <T> The type for the result.
-     * @param expression The expression to evaluate.
+     * @param <T>         The type for the result.
+     * @param expression  The expression to evaluate.
      * @param resultClass The class for the result.
-     * @param def The default value.
+     * @param def         The default value.
+     *
      * @return The result of the evaluation.
      */
     public static <T> T get(UIExpression expression, Class<T> resultClass, T def)
@@ -64,11 +65,12 @@ public abstract class Control
         }
         return def;
     }
-    
+
     /**
      * Evaluates the given expression in the current ElEnvironment.
      *
      * @param expression The expression to evaluate.
+     *
      * @return The result of the evaluation.
      */
     public static UploadedFile get(UIFileExpression expression)
@@ -85,7 +87,7 @@ public abstract class Control
      * can receive the value.
      *
      * @param expression The expression object.
-     * @param param The parameter received for the input expression.
+     * @param param      The parameter received for the input expression.
      */
     public static void set(UIInputExpression expression, HttpReqParam param)
     {
@@ -97,13 +99,14 @@ public abstract class Control
             }
         }
     }
-    
+
     /**
      * Sets the value of the given UIInputExpression so that the web component
      * can receive the value.
      *
      * @param expression The expression object.
-     * @param file The uploaded file received in the request for this expression.
+     * @param file       The uploaded file received in the request for this
+     *                   expression.
      */
     public static void set(UIFileExpression expression, UploadedFile file)
     {
@@ -129,7 +132,8 @@ public abstract class Control
     /**
      * Gets all the UIInputExpressions for uploaded files in this control.
      *
-     * @return A list of the UIInputExpressions for uploaded files available in this control.
+     * @return A list of the UIInputExpressions for uploaded files available in
+     *         this control.
      */
     public List<UIFileExpression> inputFiles()
     {
@@ -182,16 +186,17 @@ public abstract class Control
 
     /**
      * Executes any event sended from the client to the server.
-     * 
+     *
      * @param req The HTTP request.
      * @param env The EL environment.
+     *
      * @return The event result.
      */
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
         for (UIEvent event : events())
         {
-            if(eventTriggered(req, event))
+            if (eventTriggered(req, event))
             {
                 return invokeEvent(event);
             }
@@ -199,7 +204,10 @@ public abstract class Control
         for (Control control : childs())
         {
             EventResult result = control.executeEvent(req, env);
-            if(result != null) return result;
+            if (result != null)
+            {
+                return result;
+            }
         }
         return null;
     }
@@ -244,19 +252,22 @@ public abstract class Control
                     return EventResult.error(e.getMessage(), e);
                 }
             }
+
         }, UIEvent.class, event);
     }
-    
+
     /**
+     * Determines if the given event was triggered .
      * 
-     * @param req
-     * @param event
-     * @return 
+     * @param req   The request.
+     * @param event The event to be invoked.
+     * 
+     * @return true if the given event was triggered, false otherwise.
      */
     public boolean eventTriggered(ControlInputReader req, UIEvent event)
     {
         HttpReqParam param = req.popParameter(event.getParameter());
-        if(param != null) return "t".equals(param.getValue());
+        if (param != null) return "t".equals(param.getValue());
         return false;
     }
 
@@ -265,7 +276,7 @@ public abstract class Control
      * the given definesMap.
      *
      * @param definesMap The map of defines objects for the place holder
-     * replacement.
+     *                   replacement.
      */
     public void override(Map<String, Defines> definesMap)
     {
@@ -274,10 +285,12 @@ public abstract class Control
     }
 
     /**
-     * Utility method to override all placeholders in the given list of controls.
+     * Utility method to override all placeholders in the given list of
+     * controls.
      *
-     * @param children The children that may contain the placeholder object.
+     * @param children   The children that may contain the placeholder object.
      * @param definesMap The map with the source objects.
+     *
      * @return The resulting list.
      */
     public static List<Control> doOverride(List<Control> children, Map<String, Defines> definesMap)
@@ -305,10 +318,12 @@ public abstract class Control
     }
 
     /**
-     * Utility method to override all placeholders in the given list of controls.
+     * Utility method to override all placeholders in the given list of
+     * controls.
      *
-     * @param child The control to evaluate if it can be replace.
+     * @param child      The control to evaluate if it can be replace.
      * @param definesMap The map with the source objects.
+     *
      * @return The resulting control.
      */
     public static Control doOverride(Control child, Map<String, Defines> definesMap)
@@ -339,4 +354,5 @@ public abstract class Control
      * @param definesMap The source map for the placeholders.
      */
     public abstract void doOverride(Map<String, Defines> definesMap);
+
 }
