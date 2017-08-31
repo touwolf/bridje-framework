@@ -114,7 +114,7 @@ limitations under the License.
                     <![CDATA[
                         <@groupIfNeeded control>
                             <#local eventId = tools.bootstrap.randomId />
-                            <input id="${eventId}" type="hidden" name="${control.action.parameter}" value="f" />
+                            <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
                             <button type="button" class="bridje-action <@classes control />" data-eventid="${eventId}">
                                 ${control.caption!}
                             </button>

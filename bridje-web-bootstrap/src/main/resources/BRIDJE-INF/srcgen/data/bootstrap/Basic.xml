@@ -263,7 +263,7 @@ limitations under the License.
                 <![CDATA[
                     <#if hasAction(control)>
                         <#local eventId = tools.bootstrap.randomId />
-                        <input id="${eventId}" type="hidden" name="${control.action.parameter}" value="f" />
+                        <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
                         <a href="#" class="bridje-action" data-eventid="${eventId}">${control.text!}</a>
                     <#elseif hasLink(control)>
                         <a href="${control.href!}">${control.text!}</a>
