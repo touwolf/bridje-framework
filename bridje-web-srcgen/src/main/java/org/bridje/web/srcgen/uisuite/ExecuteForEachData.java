@@ -37,7 +37,7 @@ public class ExecuteForEachData implements ControlFlowAction
 
     @XmlElements(
     {
-        @XmlElement(name = "for", type = ForEachData.class),
+        @XmlElement(name = "for", type = ExecuteForEachData.class),
         @XmlElement(name = "pushVar", type = PushEnvVar.class),
         @XmlElement(name = "popVar", type = PopEnvVar.class),
         @XmlElement(name = "execute", type = ExecuteAllEvents.class),

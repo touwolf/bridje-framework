@@ -29,9 +29,6 @@ public class PopEnvVar implements ControlFlowAction
     @XmlAttribute
     private String var;
 
-    @XmlAttribute
-    private String value;
-
     /**
      * The name of var to set.
      * 

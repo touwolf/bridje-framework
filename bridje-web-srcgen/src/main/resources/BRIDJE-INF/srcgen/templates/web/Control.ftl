@@ -298,19 +298,20 @@ public class ${control.name} extends ${control.baseName}
         </#list>
     </#macro>
     <#macro printForActions forStmt ident>
-        ${ident}List data = get${forStmt.in?cap_first}();
+        ${ident}data = get${forStmt.in?cap_first}();
         ${ident}if(data != null)
         ${ident}{
-        ${ident}    for(Object ${forStmt.var} : data)
-        ${ident}    {
-        <#assign newIdent = ident + "    " />
+        ${ident}${"    "}for(Object ${forStmt.var} : data)
+        ${ident}${"    "}{
+        <#assign newIdent = ident + "        " />
         <@printReadInputActions forStmt.actions newIdent />
-        ${ident}    }
+        ${ident}${"    "}}
         ${ident}}
     </#macro>
     @Override
     public void readInput(ControlInputReader req, ElEnvironment env)
     {
+        List data;
         <@printReadInputActions control.input.actions "" />
     }
 
@@ -334,27 +335,28 @@ public class ${control.name} extends ${control.baseName}
             <#case "ReadAllChildren">
         ${ident}for (Control control : childs())
         ${ident}{
-        ${ident}    EventResult result = control.executeEvent(req, env);
-        ${ident}    if(result != null) return result;
+        ${ident}${"    "}EventResult result = control.executeEvent(req, env);
+        ${ident}${"    "}if(result != null) return result;
         ${ident}}
                 <#break>
         </#switch>
         </#list>
     </#macro>
     <#macro printExecForActions forStmt ident>
-        ${ident}List data = get${forStmt.in?cap_first}();
+        ${ident}data = get${forStmt.in?cap_first}();
         ${ident}if(data != null)
         ${ident}{
-        ${ident}    for(Object ${forStmt.var} : data)
-        ${ident}    {
+        ${ident}${"    "}for(Object ${forStmt.var} : data)
+        ${ident}${"    "}{
         <#assign newIdent = ident + "        " />
         <@printExecuteEventActions forStmt.actions newIdent />
-        ${ident}    }
+        ${ident}${"    "}}
         ${ident}}
     </#macro>
     @Override
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
+        List data;
         <@printExecuteEventActions control.execute.actions "" />
         return null;
     }
