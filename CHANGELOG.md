@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.4.4](https://github.com/bridje/bridje-framework/tree/v0.4.4) (2017-08-30)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.3...v0.4.4)
+
+ - Adding multi templates to the web controls.
+ - Simplifiying parameters in the input expressions.
+ - Implementing new events execution flow.
+ - Implementing bootstrap base UISuite.
+
 ## [v0.4.3](https://github.com/bridje/bridje-framework/tree/v0.4.3) (2017-08-22)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.2...v0.4.3)
 
