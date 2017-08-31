@@ -25,7 +25,7 @@ function bridjeExecuteAction(id)
     var eventEl = document.getElementById(id);
     var event = eventEl.getAttribute("name");
     eventEl.setAttribute("value", "t");
-    var data = new FormData(form);
+    var multiPartData = new FormData(form);
     var enctype = form.getAttribute("enctype");
     var view = form.getAttribute("data-bridje-view");
     var url = window.location;
@@ -34,26 +34,27 @@ function bridjeExecuteAction(id)
     window.console && console.log('      view: ' + view);
     window.console && console.log('      enctype: ' + enctype);
     window.console && console.log('      event: ' + event);
-    window.console && console.log('      data: ' + data);
+    window.console && console.log('      data: ' + multiPartData);
 
-    if(enctype === "application/x-www-form-urlencoded")
+    var isUrlEncoded = enctype === "application/x-www-form-urlencoded";
+    if(isUrlEncoded)
     {
         var params = new URLSearchParams();
-        for(var pair of data.entries())
+        for(var pair of multiPartData.entries())
         {
             if(typeof pair[1] === 'string')
             {
                 params.append(pair[0], pair[1]);
             }
         }
-        data = params.toString();
+        encodedData = params.toString();
     }
 
     try
     {
         xhr = new XMLHttpRequest();
         xhr.open(form.getAttribute("method"), url, 1);
-        xhr.setRequestHeader('Content-type', enctype);
+        if(isUrlEncoded) xhr.setRequestHeader('Content-type', enctype);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.setRequestHeader('Bridje-View', encodeURI(view));
         xhr.onload = function()
@@ -76,7 +77,15 @@ function bridjeExecuteAction(id)
                 window.console && console.log('Request failed. Returned status of ' + xhr.status);
             }
         };
-        xhr.send(data);
+        if(isUrlEncoded)
+        {
+            xhr.send(encodedData);
+        }
+        else
+        {
+            xhr.send(multiPartData);
+        }
+        
     }
     catch (e)
     {

@@ -269,6 +269,7 @@ public class WebViewsManager
         {
             view.getRoot().readInput(new ControlInputReader(req), elEnv);
             EventResult result = view.getRoot().executeEvent(new ControlInputReader(req), elEnv);
+            if(result == null) result = EventResult.none();
             if(result.getData() != null && result.getData() instanceof RedirectTo)
             {
                 RedirectTo redirectTo = (RedirectTo)result.getData();
