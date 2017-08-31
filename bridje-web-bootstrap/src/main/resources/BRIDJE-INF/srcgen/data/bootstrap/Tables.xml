@@ -80,35 +80,6 @@ limitations under the License.
                     <child name="column" type="TableColumn" />
                 </children>
             </fields>
-            <ftlMacros>
-                <ftlMacro name="headCell" params="control column" >
-                    <![CDATA[
-                        <#if column.visible?? && column.visible>
-                            <th <#if column.width??>width="${column.width}"</#if> class="${column.align!}" >
-                                ${column.header!}
-                            </th>
-                        </#if>
-                    ]]>
-                </ftlMacro>
-                <ftlMacro name="classes" params='control'>
-                    <![CDATA[
-                        <#compress>
-                        <#if control.striped?? && control.striped>
-                            table-striped
-                        </#if>
-                        <#if control.bordered?? && control.bordered>
-                            table-bordered
-                        </#if>
-                        <#if control.hover?? && control.hover>
-                            table-hover
-                        </#if>
-                        <#if control.condensed?? && control.condensed>
-                            table-condensed
-                        </#if>
-                        </#compress>
-                    ]]>
-                </ftlMacro>
-            </ftlMacros>
             <input>
                 <for var="rowItem" in="data">
                     <pushVar var='var' value="rowItem" />
@@ -121,9 +92,18 @@ limitations under the License.
                     <pushVar var='var' value="rowItem" />
                     <childrenAll />
                     <popVar var='var' />
-                </for>                
+                </for>
             </execute>
             <ftlMacros>
+                <ftlMacro name="headCell" params="control column" >
+                    <![CDATA[
+                        <#if column.visible?? && column.visible>
+                            <th <#if column.width??>width="${column.width}"</#if> class="${column.align!}" >
+                                ${column.header!}
+                            </th>
+                        </#if>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="classes" params='control'>
                     <![CDATA[
                         <#compress>
