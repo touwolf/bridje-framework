@@ -38,7 +38,7 @@
 [/#list]
 [#list uisuite.macros![] as m]
 [@compress single_line=true][#compress]
-<#macro ${m.name} ${m.params}>
+<#macro ${m.name} ${m.params!}>
     ${w.content}
 </#macro>
 [/#compress][/@compress]
@@ -47,7 +47,7 @@
 [#list uisuite.controls as w]
 [#list w.macros![] as m]
 [@compress single_line=true][#compress]
-<#macro render${w.name}${m.name?cap_first} ${m.params}>
+<#macro render${w.name}${m.name?cap_first} ${m.params!}>
     ${w.replaceMacros(m.content)}
 </#macro>
 [/#compress][/@compress]
