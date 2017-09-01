@@ -17,13 +17,14 @@
 package org.bridje.orm.srcgen;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.ModifierSet;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bridje.orm.srcgen.model.ModelInf;
@@ -109,7 +110,7 @@ public class ModelSuppotData
         TypeDeclaration type = cu.getTypes().get(0);
         if(type instanceof ClassOrInterfaceDeclaration)
         {
-            allImports.add("import " + cu.getPackage().getPackageName() + "." + ((ClassOrInterfaceDeclaration)type).getName() + ";\n");
+            allImports.add("import " + cu.getPackageDeclaration().get().getName() + "." + ((ClassOrInterfaceDeclaration)type).getName() + ";\n");
         }
     }
 
@@ -136,7 +137,7 @@ public class ModelSuppotData
         clsDec.getMembers().stream()
                         .filter(f -> f instanceof MethodDeclaration)
                         .map(f -> (MethodDeclaration)f)
-                        .filter(m -> ModifierSet.isPublic(m.getModifiers()) && !ModifierSet.isStatic(m.getModifiers()))
+                        .filter(m -> isPublic(m.getModifiers()) && !isStatic(m.getModifiers()))
                         .filter(m -> !m.getParameters().isEmpty())
                         .filter(m -> firstParamIsModelClass(m))
                         .map(m -> new MethodDecInf(clsDec, m))
@@ -147,24 +148,34 @@ public class ModelSuppotData
     {
         Parameter param = m.getParameters().get(0);
         String type = param.getType().toString();
-        String name = param.getName();
+        String name = param.getName().asString();
         if(type.equals(ormModel.getName()) || type.equals(ormModel.getFullName()))
         {
             m.getParameters().remove(0);
-            if(m.getJavaDoc() != null && m.getJavaDoc().getContent() != null)
+            if(m.getJavadocComment().isPresent() && m.getJavadocComment().get().getContent() != null)
             {
-                String[] lines = m.getJavaDoc().getContent().split("\\n");
+                String[] lines = m.getJavadocComment().get().getContent().split("\\n");
                 if(lines != null && lines.length > 0)
                 {
-                    String comment = Arrays.asList(lines).stream()
-                                            .map(s -> s.toString())
+                    String comment = Arrays.asList(lines)
+                                            .stream()
                                             .filter(s -> !s.contains("* @param " + name))
                                             .collect(Collectors.joining("\n"));
-                    m.getJavaDoc().setContent(comment);
+                    m.setJavadocComment(comment);
                 }
             }
             return true;
         }
         return false;
+    }
+
+    private boolean isPublic(EnumSet<Modifier> modifiers)
+    {
+       return modifiers.contains(Modifier.PUBLIC);
+    }
+
+    private boolean isStatic(EnumSet<Modifier> modifiers)
+    {
+        return modifiers.contains(Modifier.STATIC);
     }
 }

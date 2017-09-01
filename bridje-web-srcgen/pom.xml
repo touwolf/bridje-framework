@@ -37,7 +37,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.10</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
-            <version>2.5.1</version>
+            <version>3.3.2</version>
         </dependency>
     </dependencies>
 </project>

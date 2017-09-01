@@ -171,7 +171,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
 
     private boolean hasModelSupportAnnotation(ModelInf modelInf, CompilationUnit cu)
     {
-        if(cu.getPackage().getPackageName().equals(modelInf.getPackage()))
+        if(cu.getPackageDeclaration().get().getName().equals(modelInf.getPackage()))
         {
             TypeDeclaration typeDec = cu.getTypes().get(0);
             if(typeDec instanceof ClassOrInterfaceDeclaration)
@@ -186,7 +186,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     {
         if(clsDec.isInterface()) return false;
         if(clsDec.getAnnotations().stream()
-                .map(a -> a.getName().getName())
+                .map(a -> a.getNameAsString())
                 .anyMatch(a -> "ModelSupport".equals(a)))
         {
             return cu.getImports().stream()
@@ -195,7 +195,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
                                             || "org.bridje.orm.*".equals(i));
         }
         return clsDec.getAnnotations().stream()
-                            .map(a -> a.getName().getName())
+                            .map(a -> a.getNameAsString())
                             .anyMatch(a -> "org.bridje.orm.ModelSupport".equals(a));
     }
 }

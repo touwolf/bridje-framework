@@ -188,7 +188,7 @@ class SrcGenServicesImpl implements SrcGenService
         {
             return JavaParser.parse(is);
         }
-        catch (ParseException | IOException e)
+        catch (IOException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
