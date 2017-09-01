@@ -171,7 +171,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
 
     private boolean hasModelSupportAnnotation(ModelInf modelInf, CompilationUnit cu)
     {
-        if(cu.getPackageDeclaration().get().getName().equals(modelInf.getPackage()))
+        if(cu.getPackageDeclaration().get().getNameAsString().equals(modelInf.getPackage()))
         {
             TypeDeclaration typeDec = cu.getTypes().get(0);
             if(typeDec instanceof ClassOrInterfaceDeclaration)
