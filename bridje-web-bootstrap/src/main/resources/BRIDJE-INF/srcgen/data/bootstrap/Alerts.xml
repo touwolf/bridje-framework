@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 Bridje Framework.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<partialuisuite
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/uisuite'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite http://repo1.maven.org/maven2/org/bridje/bridje-web-srcgen/0.4.4/bridje-web-srcgen-0.4.4-uisuite.xsd'>
+
+    <includes>
+        <include>Basic.xml</include>
+    </includes>
+
+    <ftlFunctions>
+        <ftlFunction name="findAlertType">
+            <![CDATA[
+                <#assign alertType = "info" />
+                <#if eventResult.type == "SUCCESS">
+                    <#assign alertType = "success" />
+                <#elseif eventResult.type == "WARNING">
+                    <#assign alertType = "warning" />
+                <#elseif eventResult.type == "ERROR">
+                    <#assign alertType = "danger" />
+                </#if>
+                <#return alertType />
+            ]]>
+        </ftlFunction>
+        <ftlFunction name="findAlertEventMatch" params="filters">
+            <![CDATA[
+                <#assign eventMatch = true />
+                <#if filters?? && filters?has_content>
+                    <#assign eventMatch = false />
+                    <#list filters as filter>
+                        <#if filter.event == eventResult.event.expression >
+                            <#assign eventMatch = true />
+                        </#if>
+                    </#list>
+                </#if>
+                <#return eventMatch />
+            ]]>
+        </ftlFunction>
+        <ftlFunction name="findHasAlert">
+            <![CDATA[
+                <#assign hasAlert = eventResult?? && eventResult.type?? 
+                                            && eventResult.type != "" && eventResult.type != "NONE" 
+                                            && eventResult.message?? && eventResult.message != "" />
+                <#return hasAlert />
+            ]]>
+        </ftlFunction>
+    </ftlFunctions>
+
+    <enums>
+        <enum name="AlertColor">
+            <constant name="INFO" value="info" />
+            <constant name="SUCCESS" value="success" />
+            <constant name="WARNING" value="warning" />
+            <constant name="DANGER" value="danger" />
+        </enum>
+    </enums>
+
+    <templates>
+        <template name="AlertContainer">
+            <fields>
+                <children name="content">
+                    <child name="alert" type="Alert" />
+                    <child name="message" type="Message" />
+                </children>
+            </fields>
+        </template>
+    </templates>
+
+    <controls>
+        <control name="AlertFilter" base="BaseControl">
+            <fields>
+                <attr name="event" type="String" />
+            </fields>
+        </control>
+        <control name="Alert" base="BaseControl">
+            <fields>
+                <children name="filters" >
+                    <child name="filter" type="AlertFilter" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <#if findHasAlert()>
+                        <#if findAlertEventMatch(control.filters)>
+                            <div class="alert alert-${findAlertType()} <#if control.dismissable?? && control.dismissable>alert-dismissable</#if>">
+                                <#if control.dismissable?? && control.dismissable>
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                                </#if>
+                                ${eventResult.message!} 
+                            </div>
+                        </#if>
+                    </#if>
+                ]]>
+            </render>
+        </control>
+        <control name="Message" base="BaseControl" templates="TextFlowContainer" >
+            <fields>
+                <outAttr name="type" type="AlertColor" />
+                <outAttr name="dismissable" type="Boolean" def="false" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <div class="alert alert-${control.type!} <#if control.dismissable?? && control.dismissable>alert-dismissable</#if>">
+                        <#if control.dismissable?? && control.dismissable>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        </#if>
+                        <@renderAllControls control.content![] />
+                    </div>
+                ]]>
+            </render>
+        </control>
+    </controls>
+
+</partialuisuite>

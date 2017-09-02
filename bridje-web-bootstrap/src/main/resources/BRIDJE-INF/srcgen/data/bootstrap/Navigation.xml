@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 Bridje Framework.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<partialuisuite
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.org/schemas/web/uisuite'
+    xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite http://repo1.maven.org/maven2/org/bridje/bridje-web-srcgen/0.4.4/bridje-web-srcgen-0.4.4-uisuite.xsd'>
+
+    <!--
+    This UISuite partial definition file contains the containers elements for all bootstrap base UISuites.
+    -->
+    
+    <includes>
+        <include>Alerts.xml</include>
+        <include>Tables.xml</include>
+        <include>Forms.xml</include>
+    </includes>
+
+    <enums>
+        <enum name="NavBarStyle">
+            <constant name="DEFAULT" value="default" />
+            <constant name="INVERSE" value="inverse" />
+        </enum>
+        <enum name="MenuItemStatus">
+            <constant name="ACTIVE" value="active" />
+            <constant name="DISABLED" value="disabled" />
+        </enum>
+        <enum name="TabsStyle">
+            <constant name="TABS" value="tabs" />
+            <constant name="PILLS" value="pills" />
+        </enum>
+    </enums>
+    
+    <templates>
+        <template name="NavContainer">
+            <fields>
+                <children name="content">
+                    <child name="navbar" type="NavBar" />
+                    <child name="pills" type="Pills" />
+                    <child name="menu" type="Menu" />
+                </children>
+            </fields>
+        </template>
+    </templates>
+
+    <controls>
+        <control name="DropdownItem" base="BaseControl" >
+            <fields>
+                <outAttr name="title" type="String" />
+                <outAttr name="data" type="List" />
+                <children name="menu">
+                    <child name="item" type="MenuItem" />
+                    <child name="sep" type="Separator" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            ${control.title!}<span class="caret"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <@doStaticOrWithData control "item">
+                                    <@renderAllControls control.menu![] />
+                                </@doStaticOrWithData>
+                            </ul>
+                        </a>
+                    </li>
+                ]]>
+            </render>
+        </control>
+        <control name="Separator" >
+            <fields>
+            </fields>
+            <render>
+                <![CDATA[
+                    <li role="separator" class="divider"></li>
+                ]]>
+            </render>
+        </control>
+        <control name="MenuItem" templates="ActionControlTemplate" >
+            <fields>
+                <outAttr name="title" type="String" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if control.status?? >
+                            control.status
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <li class="<@classes control />">
+                        <#if hasAction(control)>
+                            <#local eventId = tools.bootstrap.randomId />
+                            <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
+                            <a href="#" class="bridje-action" data-eventid="${eventId}">${control.title!}</a>
+                        <#elseif hasLink(control)>
+                            <a href="${control.href!}">${control.title!}</a>
+                        <#else>
+                            <a href="#">${control.title!}</a>
+                        </#if>
+                    </li>
+                ]]>
+            </render>
+        </control>
+        <control name="NavBarHeader" templates="ActionControlTemplate"  >
+            <fields>
+                <outAttr name="title" type="String" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <div class="navbar-header">
+                        <#if hasAction(control)>
+                            <#local eventId = tools.bootstrap.randomId />
+                            <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
+                            <a href="#" class="bridje-action navbar-brand" data-eventid="${eventId}">${control.title!}</a>
+                        <#elseif hasLink(control)>
+                            <a href="${control.href!}" class="navbar-brand">${control.title!}</a>
+                        <#else>
+                            <a href="#" class="navbar-brand">${control.title!}</a>
+                        </#if>
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="NavBarSection" base="BaseControl" >
+            <fields>
+                <children name="content" >
+                    <child name="item" type="MenuItem" />
+                    <child name="dropdown" type="DropdownItem" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <@renderAllControls control.content![] />
+                ]]>
+            </render>
+        </control>
+        <control name="NavBar" base="BaseControl" >
+            <fields>
+                <outAttr name="style" type="NavBarStyle" />
+                <child name="header" type="NavBarHeader" />
+                <child name="left" type="NavBarSection" />
+                <child name="right" type="NavBarSection" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        navbar navbar-${control.style!"default"}
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <nav class="<@classes control />">
+                        <div class="container-fluid">
+                            <#if control.header??>
+                                <@renderControl control.header />
+                            </#if>
+                            <#if control.left??>
+                                <ul class="nav navbar-nav">
+                                    <@renderControl control.left />
+                                </ul>
+                            </#if>
+                            <#if control.right??>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <@renderControl control.right />
+                                </ul>
+                            </#if>
+                        </div>
+                    </nav>
+                ]]>
+            </render>
+        </control>
+        <control name="Menu" base="BaseControl" >
+            <fields>
+                <outAttr name="vertical" type="Boolean" def="false" />
+                <children name="content" >
+                    <child name="item" type="MenuItem" />
+                </children>
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if !(control.vertical?? && control.vertical) >
+                            list-inline
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <ul class="<@classes control />">
+                        <@renderAllControls control.content![] />
+                    </ul>
+                ]]>
+            </render>
+        </control>
+        <control name="Pills" >
+            <fields>
+                <outAttr name="vertical" type="Boolean" def="false" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if control.justified?? && control.justified>
+                            nav-justified
+                        </#if>
+                        <#if control.vertical?? && control.vertical >
+                            nav-stacked
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <ul class="nav nav-pills <@classes control />">
+                        <@renderAllControls control.content![] />
+                    </ul>
+                ]]>
+            </render>
+        </control>
+    </controls>
+    
+</partialuisuite>

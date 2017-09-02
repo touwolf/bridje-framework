@@ -39,6 +39,16 @@ limitations under the License.
         </enum>
     </enums>
 
+    <templates>
+        <template name="TableContainer">
+            <fields>
+                <children name="content">
+                    <child name="table" type="Table" />
+                </children>
+            </fields>
+        </template>
+    </templates>
+
     <controls>
         <control name="TableColumn" templates="TextFlowContainer ButtonContainer" base="BaseControl" >
             <fields>
