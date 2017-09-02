@@ -164,6 +164,7 @@ limitations under the License.
                     <child name="text" type="PlainText" />
                     <child name="a" type="Anchor" />
                     <child name="img" type="Image" />
+                    <child name="icon" type="Glyphicon" />
                     <child name="small" type="SmallText" />
                     <child name="mark" type="HighlightedText" />
                     <child name="del" type="DeletedText" />
@@ -189,6 +190,7 @@ limitations under the License.
                     <child name="h5" type="Heading5Block" />
                     <child name="h6" type="Heading6Block" />
                     <child name="img" type="Image" />
+                    <child name="icon" type="Glyphicon" />
                     <child name="blockquote" type="BlockquoteBlock"/>
                     <child name="p" type="ParagraphBlock"/>
                 </children>
@@ -197,6 +199,29 @@ limitations under the License.
     </templates>
 
     <controls>
+        <control name="Glyphicon" base="BaseControl" >
+            <fields>
+                <outAttr name="name" type="String" />
+            </fields>
+            <ftlMacros>
+                <ftlMacro name="classes" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        glyphicon
+                        <#if control.name??>
+                            glyphicon-${control.name}
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
+            <render>
+                <![CDATA[
+                    <span class="<@classes control />"></span>
+                ]]>
+            </render>
+        </control>
+
         <!--Flow Elements-->
         <control name="Image" base="BaseControl" >
             <fields>
@@ -211,7 +236,6 @@ limitations under the License.
                 <ftlMacro name="classes" params='control'>
                     <![CDATA[
                         <#compress>
-                        <#local clases = "" />
                         <#if control.style??>
                             img-${control.style}
                         </#if>

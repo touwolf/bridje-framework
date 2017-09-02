@@ -73,6 +73,7 @@ limitations under the License.
             <fields>
                 <outAttr name="caption" type="String" />
                 <outAttr name="block" type="Boolean" />
+                <outAttr name="icon" type="String" />
                 <outAttr name="color" type="ButtonColor" />
                 <outAttr name="size" type="ButtonSize" />
                 <outAttr name="status" type="ButtonStatus" />
@@ -110,13 +111,23 @@ limitations under the License.
                         </#if>
                     ]]>
                 </ftlMacro>
+                <ftlMacro name="content" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if control.icon??>
+                            <span class="glyphicon glyphicon-${control.icon}"></span>
+                        </#if>
+                        ${control.caption!}
+                        </#compress>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="default" params='control'>
                     <![CDATA[
                         <@groupIfNeeded control>
                             <#local eventId = tools.bootstrap.randomId />
                             <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
                             <button type="button" class="bridje-action <@classes control />" data-eventid="${eventId}">
-                                ${control.caption!}
+                                <@content control />
                             </button>
                         </@groupIfNeeded>
                     ]]>
@@ -125,14 +136,16 @@ limitations under the License.
                     <![CDATA[
                         <@groupIfNeeded control>
                             <button type="button" class="<@classes control />">
-                                ${control.caption!}
+                                <@content control />
                             </button>
                         </@groupIfNeeded>
                     ]]>
                 </ftlMacro>
                 <ftlMacro name="link" params='control'>
                     <![CDATA[
-                        <a href="${control.href!}" class="<@classes control />" >${control.caption!}</a>
+                        <a href="${control.href!}" class="<@classes control />" >
+                            <@content control />
+                        </a>
                     ]]>
                 </ftlMacro>
             </ftlMacros>

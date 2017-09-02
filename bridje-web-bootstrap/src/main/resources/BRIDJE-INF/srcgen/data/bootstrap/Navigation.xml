@@ -22,11 +22,10 @@ limitations under the License.
     <!--
     This UISuite partial definition file contains the containers elements for all bootstrap base UISuites.
     -->
-    
+
     <includes>
         <include>Alerts.xml</include>
-        <include>Tables.xml</include>
-        <include>Forms.xml</include>
+        <include>Buttons.xml</include>
     </includes>
 
     <enums>
@@ -42,8 +41,12 @@ limitations under the License.
             <constant name="TABS" value="tabs" />
             <constant name="PILLS" value="pills" />
         </enum>
+        <enum name="NavBarBlockPosition">
+            <constant name="LEFT" value="left" />
+            <constant name="RIGHT" value="right" />
+        </enum>
     </enums>
-    
+
     <templates>
         <template name="NavContainer">
             <fields>
@@ -59,6 +62,7 @@ limitations under the License.
     <controls>
         <control name="DropdownItem" base="BaseControl" >
             <fields>
+                <outAttr name="icon" type="String" />
                 <outAttr name="title" type="String" />
                 <outAttr name="data" type="List" />
                 <children name="menu">
@@ -70,6 +74,9 @@ limitations under the License.
                 <![CDATA[
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <#if control.icon??>
+                                <span class="glyphicon glyphicon-${control.icon}"></span>
+                            </#if>
                             ${control.title!}<span class="caret"></span>
                             <ul class="dropdown-menu" role="menu">
                                 <@doStaticOrWithData control "item">
@@ -92,6 +99,7 @@ limitations under the License.
         </control>
         <control name="MenuItem" templates="ActionControlTemplate" >
             <fields>
+                <outAttr name="icon" type="String" />
                 <outAttr name="title" type="String" />
             </fields>
             <ftlMacros>
@@ -104,6 +112,16 @@ limitations under the License.
                         </#compress>
                     ]]>
                 </ftlMacro>
+                <ftlMacro name="content" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if control.icon??>
+                            <span class="glyphicon glyphicon-${control.icon}"></span>
+                        </#if>
+                        ${control.title!}
+                        </#compress>
+                    ]]>
+                </ftlMacro>
             </ftlMacros>
             <render>
                 <![CDATA[
@@ -111,11 +129,17 @@ limitations under the License.
                         <#if hasAction(control)>
                             <#local eventId = tools.bootstrap.randomId />
                             <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
-                            <a href="#" class="bridje-action" data-eventid="${eventId}">${control.title!}</a>
+                            <a href="#" class="bridje-action" data-eventid="${eventId}">
+                                <@content control />
+                            </a>
                         <#elseif hasLink(control)>
-                            <a href="${control.href!}">${control.title!}</a>
+                            <a href="${control.href!}">
+                                <@content control />
+                            </a>
                         <#else>
-                            <a href="#">${control.title!}</a>
+                            <a href="#">
+                                <@content control />
+                            </a>
                         </#if>
                     </li>
                 ]]>
@@ -124,25 +148,62 @@ limitations under the License.
         <control name="NavBarHeader" templates="ActionControlTemplate"  >
             <fields>
                 <outAttr name="title" type="String" />
+                <outAttr name="icon" type="String" />
             </fields>
+            <ftlMacros>
+                <ftlMacro name="content" params='control'>
+                    <![CDATA[
+                        <#compress>
+                        <#if control.icon??>
+                            <span class="glyphicon glyphicon-${control.icon}"></span>
+                        </#if>
+                        ${control.title!}
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
             <render>
                 <![CDATA[
                     <div class="navbar-header">
                         <#if hasAction(control)>
                             <#local eventId = tools.bootstrap.randomId />
                             <input id="${eventId}" type="hidden" name="${(control.action.parameter)!}" value="f" />
-                            <a href="#" class="bridje-action navbar-brand" data-eventid="${eventId}">${control.title!}</a>
+                            <a href="#" class="bridje-action navbar-brand" data-eventid="${eventId}">
+                                <@content control />
+                            </a>
                         <#elseif hasLink(control)>
-                            <a href="${control.href!}" class="navbar-brand">${control.title!}</a>
+                            <a href="${control.href!}" class="navbar-brand">
+                                <@content control />
+                            </a>
                         <#else>
-                            <a href="#" class="navbar-brand">${control.title!}</a>
+                            <a href="#" class="navbar-brand">
+                                <@content control />
+                            </a>
                         </#if>
                     </div>
                 ]]>
             </render>
         </control>
-        <control name="NavBarSection" base="BaseControl" >
+        <control name="NavBarForm" base="BaseControl" >
             <fields>
+                <outAttr name="position" type="NavBarBlockPosition" def="NavBarBlockPosition.LEFT" />
+                <children name="content" >
+                    <child name="field" type="InlineFormField" />
+                    <child name="checkbox" type="CheckBox" />
+                    <child name="button" type="Button" />
+                </children>
+            </fields>
+            <render>
+                <![CDATA[
+                    <div class="navbar-form navbar-${control.position!"left"}">
+                        <@renderAllControls control.content![] />
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="NavBarBlock" base="BaseControl" >
+            <fields>
+                <outAttr name="position" type="NavBarBlockPosition" def="NavBarBlockPosition.LEFT" />
                 <children name="content" >
                     <child name="item" type="MenuItem" />
                     <child name="dropdown" type="DropdownItem" />
@@ -150,7 +211,9 @@ limitations under the License.
             </fields>
             <render>
                 <![CDATA[
-                    <@renderAllControls control.content![] />
+                    <ul class="nav navbar-nav<#if control.position! == "right"> navbar-right</#if>">
+                        <@renderAllControls control.content![] />
+                    </ul>
                 ]]>
             </render>
         </control>
@@ -158,8 +221,10 @@ limitations under the License.
             <fields>
                 <outAttr name="style" type="NavBarStyle" />
                 <child name="header" type="NavBarHeader" />
-                <child name="left" type="NavBarSection" />
-                <child name="right" type="NavBarSection" />
+                <children name="content">
+                    <child name="block" type="NavBarBlock" />
+                    <child name="form" type="NavBarForm" />
+                </children>
             </fields>
             <ftlMacros>
                 <ftlMacro name="classes" params='control'>
@@ -177,16 +242,7 @@ limitations under the License.
                             <#if control.header??>
                                 <@renderControl control.header />
                             </#if>
-                            <#if control.left??>
-                                <ul class="nav navbar-nav">
-                                    <@renderControl control.left />
-                                </ul>
-                            </#if>
-                            <#if control.right??>
-                                <ul class="nav navbar-nav navbar-right">
-                                    <@renderControl control.right />
-                                </ul>
-                            </#if>
+                            <@renderAllControls control.content![] />
                         </div>
                     </nav>
                 ]]>

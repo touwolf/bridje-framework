@@ -50,6 +50,17 @@ limitations under the License.
         </template>
     </templates>
 
+    <enums>
+        <enum name="PanelColor">
+            <constant name="DEFAULT" value="default" />
+            <constant name="PRIMARY" value="primary" />
+            <constant name="INFO" value="info" />
+            <constant name="SUCCESS" value="success" />
+            <constant name="WARNING" value="warning" />
+            <constant name="DANGER" value="danger" />
+        </enum>
+    </enums>
+
     <controls>
         <control name="Jumbotron" base="BaseControl" templates="TextBlocksContainer" >
             <fields>
@@ -146,13 +157,70 @@ limitations under the License.
                 ]]>
             </render>
         </control>
-        <control name="TabPanel" templates="TopContainer" >
+        <control name="PanelHeading" base="BaseControl" templates="TextFlowContainer" >
+            <render>
+                <![CDATA[
+                    <div class="panel-heading">
+                        <@renderAllControls control.content![] />
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="PanelBody" base="BaseControl" templates="TopContainer" >
+            <render>
+                <![CDATA[
+                    <div class="panel-body">
+                        <@renderAllControls control.content![] />
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="PanelFooter" base="BaseControl" templates="TextFlowContainer" >
+            <render>
+                <![CDATA[
+                    <div class="panel-footer">
+                        <@renderAllControls control.content![] />
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="Panel" base="BaseControl" >
             <fields>
-                <outAttr name="title" type="String" />
+                <outAttr name="color" type="PanelColor" />
+                <child name="heading" type="PanelHeading" />
+                <child name="body" type="PanelBody" />
+                <child name="footer" type="PanelFooter" />
             </fields>
             <render>
                 <![CDATA[
-                    <@renderAllControls control.content![] />
+                    <div class="panel panel-${control.color!'default'}">
+                        <#if control.heading??>
+                            <@renderControl control.heading />
+                        </#if>
+                        <#if control.body??>
+                            <@renderControl control.body />
+                        </#if>
+                        <#if control.footer??>
+                            <@renderControl control.footer />
+                        </#if>
+                    </div>
+                ]]>
+            </render>
+        </control>
+        <control name="TabPanel" templates="TopContainer" >
+            <fields>
+                <outAttr name="title" type="String" />
+                <outAttr name="paddings" type="Boolean" />
+            </fields>
+            <render>
+                <![CDATA[
+                    <#if control.paddings?? && control.paddings>
+                        <div class="panel-body">
+                            <@renderAllControls control.content![] />
+                        </div>
+                    <#else>
+                        <@renderAllControls control.content![] />
+                    </#if>
                 ]]>
             </render>
         </control>
@@ -204,5 +272,4 @@ limitations under the License.
             </render>
         </control>
     </controls>
-
 </partialuisuite>

@@ -341,8 +341,7 @@ limitations under the License.
                 <![CDATA[
                     <textarea id="${controlId!}" class="form-control" rows="${control.rows}"
                                ${valueInAttrName(control)}
-                               placeholder="${control.placeholder!}" 
-                               class="form-control">${control.value!}</textarea>
+                               placeholder="${control.placeholder!}" >${control.value!}</textarea>
                 ]]>
             </render>
         </control>
@@ -393,8 +392,7 @@ limitations under the License.
                 <![CDATA[
                     <textarea id="${controlId!}" class="form-control" rows="${control.rows}"
                                ${valueInAttrName(control)}
-                               placeholder="${control.placeholder!}" 
-                               class="form-control">${control.value?xhtml}</textarea>
+                               placeholder="${control.placeholder!}" >${control.value?xhtml}</textarea>
                 ]]>
             </render>
         </control>
