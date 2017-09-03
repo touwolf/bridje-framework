@@ -12,7 +12,7 @@ public class BootstrapTools
 {
     public String getRandomId()
     {
-        return Utils.randomId();
+        return Thls.get(RandomIdGenerator.class).randomId();
     }
 
     public String getPath()

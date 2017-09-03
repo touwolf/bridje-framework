@@ -8,7 +8,30 @@
 function postBridjeView(event)
 {
     event.preventDefault();
+    bootstrapUpdateCheckboxes();
     bridjeExecuteAction($(event.target).data('eventid'));
+}
+
+/**
+ * Updates all the checkboxes so it´s hidden fields are send with the correct values.
+ */
+function bootstrapUpdateCheckboxes()
+{
+    $('input[type=checkbox]').each(function(index, el)
+    {
+        var cbId = $(el).data("checkboxid");
+        if (typeof cbId != 'undefined' && cbId)
+        {
+            if($(el).is(":checked"))
+            {
+                $('#' + cbId).val('on');
+            }
+            else
+            {
+                $('#' + cbId).val('off');
+            }
+        }
+    });
 }
 
 /**

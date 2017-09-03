@@ -27,17 +27,6 @@ limitations under the License.
         <include>Buttons.xml</include>
     </includes>
 
-    <ftlFunctions>
-        <ftlFunction name="bsChecked" params="control">
-            <![CDATA[
-                <#if control.value?? && control.value>
-                    <#return "checked='checked'" />
-                </#if>
-                <#return "" />
-            ]]>
-        </ftlFunction>
-    </ftlFunctions>
-
     <templates>
         <template name="FormContainer" templates="ButtonContainer">
             <fields>
@@ -128,9 +117,22 @@ limitations under the License.
                 <outAttr name="label" type="String" />
                 <inAttr name="value" type="Boolean" def='false' />
             </fields>
+            <ftlMacros>
+                <ftlMacro name="checked" params="control">
+                    <![CDATA[
+                        <#compress>
+                        <#if control.value?? && control.value>
+                            checked='checked'
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
+            </ftlMacros>
             <render>
                 <![CDATA[
-                    <input type="checkbox" ${valueInAttrName(control)} ${bsChecked(control)} />
+                    <#local checkboxId = tools.bootstrap.randomId />
+                    <input id="${checkboxId}" type="hidden" ${valueInAttrName(control)} value="off" />
+                    <input type="checkbox" <@checked control /> data-checkboxid="${checkboxId}" />
                     ${control.label!}
                 ]]>
             </render>
@@ -142,6 +144,15 @@ limitations under the License.
                 <inAttr name="inline" type="Boolean" def='false'  />
             </fields>
             <ftlMacros>
+                <ftlMacro name="checked" params="control">
+                    <![CDATA[
+                        <#compress>
+                        <#if control.value?? && control.value>
+                            checked='checked'
+                        </#if>
+                        </#compress>
+                    ]]>
+                </ftlMacro>
                 <ftlMacro name="container" params="control" >
                     <![CDATA[
                         <#if currFormType?? && currFormType == "horizontal">
@@ -173,7 +184,9 @@ limitations under the License.
                 <![CDATA[
                     <@container control>
                         <@label control>
-                            <input type="checkbox" ${valueInAttrName(control)} ${bsChecked(control)} />
+                            <#local checkboxId = tools.bootstrap.randomId />
+                            <input id="${checkboxId}" type="hidden" ${valueInAttrName(control)} value="off" />
+                            <input type="checkbox" <@checked control /> data-checkboxid="${checkboxId}" />
                             ${control.label!}
                         </@label>
                     </@container>
