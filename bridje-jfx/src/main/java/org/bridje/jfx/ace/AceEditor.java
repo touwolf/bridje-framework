@@ -266,6 +266,8 @@ public final class AceEditor extends VBox
                     gate = new AceJsGate(AceEditor.this, js);
                     if (readyListener != null) readyListener.ready();
                     break;
+                default:
+                    break;
             }
         });
     }

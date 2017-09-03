@@ -41,6 +41,16 @@ class ClassSetLoader
 
     private static ClassSetLoader INSTANCE;
 
+    /**
+     * All ClassSets available by scope.
+     */
+    private final Map<Class<?>, ClassSet> clsCache = new ConcurrentHashMap<>();
+
+    /**
+     * Al the components declared in the components.properties files.
+     */
+    private Map<String, String> propFilesCache;
+
     public static ClassSetLoader instance()
     {
         if (INSTANCE == null)
@@ -53,16 +63,6 @@ class ClassSetLoader
     private ClassSetLoader()
     {
     }
-
-    /**
-     * All ClassSets available by scope.
-     */
-    private final Map<Class<?>, ClassSet> clsCache = new ConcurrentHashMap<>();
-
-    /**
-     * Al the components declared in the components.properties files.
-     */
-    private Map<String, String> propFilesCache;
 
     /**
      * Finds a ClassSet that contains all the classes in the specified scope.
