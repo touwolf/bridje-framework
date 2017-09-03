@@ -28,7 +28,7 @@ import org.bridje.ioc.thls.Thls;
 import org.bridje.ioc.thls.ThlsActionException2;
 
 @Component
-@Priority(290)
+@Priority(110)
 @XmlTransient
 class BootstrapBridlet implements HttpBridlet
 {
