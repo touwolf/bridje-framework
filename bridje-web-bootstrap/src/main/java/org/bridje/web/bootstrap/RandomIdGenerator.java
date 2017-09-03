@@ -35,7 +35,7 @@ public class RandomIdGenerator
 
     public String randomId()
     {
-        String str = randomString(10);
+        String str = randomString(RND.nextInt(15));
         while(prev.contains(str))
         {
             str = randomString(RND.nextInt(15));
