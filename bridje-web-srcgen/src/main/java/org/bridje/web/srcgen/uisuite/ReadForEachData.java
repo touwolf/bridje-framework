@@ -19,15 +19,22 @@ package org.bridje.web.srcgen.uisuite;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- * 
+ * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadInputWorkFlow
+public class ReadForEachData implements ControlFlowAction
 {
+    @XmlAttribute
+    private String var;
+
+    @XmlAttribute
+    private String in;
+
     @XmlElements(
     {
         @XmlElement(name = "if", type = ReadIfData.class),
@@ -45,9 +52,49 @@ public class ReadInputWorkFlow
     private List<ControlFlowAction> actions;
 
     /**
-     * The list of actions for this flow.
+     * The var name.
      * 
-     * @return The list of actions for this flow.
+     * @return The var name.
+     */
+    public String getVar()
+    {
+        return var;
+    }
+
+    /**
+     * The var name.
+     * 
+     * @param var The var name.
+     */
+    public void setVar(String var)
+    {
+        this.var = var;
+    }
+
+    /**
+     * The collection field to iterate.
+     * 
+     * @return The collection field to iterate.
+     */
+    public String getIn()
+    {
+        return in;
+    }
+
+    /**
+     * The collection field to iterate.
+     * 
+     * @param in The collection field to iterate.
+     */
+    public void setIn(String in)
+    {
+        this.in = in;
+    }
+    
+    /**
+     * The list of actions.
+     * 
+     * @return The list of actions.
      */
     public List<ControlFlowAction> getActions()
     {

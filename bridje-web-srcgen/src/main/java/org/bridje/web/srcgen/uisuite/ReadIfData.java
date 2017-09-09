@@ -19,32 +19,48 @@ package org.bridje.web.srcgen.uisuite;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- * 
- * @author gilbe
+ * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExecuteEventWorkFlow
+public class ReadIfData implements ControlFlowAction
 {
+    @XmlAttribute
+    private String condition;
+
     @XmlElements(
     {
-        @XmlElement(name = "if", type = ExecuteIfData.class),
-        @XmlElement(name = "else", type = ExecuteElseData.class),
-        @XmlElement(name = "for", type = ExecuteForEachData.class),
+        @XmlElement(name = "if", type = ReadIfData.class),
+        @XmlElement(name = "else", type = ReadElseData.class),
+        @XmlElement(name = "for", type = ReadForEachData.class),
         @XmlElement(name = "pushVar", type = PushEnvVar.class),
         @XmlElement(name = "popVar", type = PopEnvVar.class),
-        @XmlElement(name = "execute", type = ExecuteAllEvents.class),
+        @XmlElement(name = "pop", type = PopFieldInput.class),
+        @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
+        @XmlElement(name = "get", type = ReadFieldInput.class),
+        @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
+        @XmlElement(name = "children", type = ReadChildren.class),
         @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
     })
     private List<ControlFlowAction> actions;
 
     /**
-     * The list of actions for this flow.
      * 
-     * @return The list of actions for this flow.
+     * @return 
+     */
+    public String getCondition()
+    {
+        return condition;
+    }
+    
+    /**
+     * The list of actions.
+     * 
+     * @return The list of actions.
      */
     public List<ControlFlowAction> getActions()
     {

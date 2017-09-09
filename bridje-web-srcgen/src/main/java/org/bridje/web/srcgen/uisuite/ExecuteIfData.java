@@ -19,16 +19,19 @@ package org.bridje.web.srcgen.uisuite;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- * 
- * @author gilbe
+ * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExecuteEventWorkFlow
+public class ExecuteIfData implements ControlFlowAction
 {
+    @XmlAttribute
+    private String condition;
+
     @XmlElements(
     {
         @XmlElement(name = "if", type = ExecuteIfData.class),
@@ -42,9 +45,18 @@ public class ExecuteEventWorkFlow
     private List<ControlFlowAction> actions;
 
     /**
-     * The list of actions for this flow.
      * 
-     * @return The list of actions for this flow.
+     * @return 
+     */
+    public String getCondition()
+    {
+        return condition;
+    }
+    
+    /**
+     * The list of actions.
+     * 
+     * @return The list of actions.
      */
     public List<ControlFlowAction> getActions()
     {

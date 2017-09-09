@@ -259,8 +259,14 @@ public class ${control.name} extends ${control.baseName}
             <#case "PopEnvVar">
         ${ident}env.popVar(${ria.var});
                 <#break>
-            <#case "ForEachData">
+            <#case "ReadForEachData">
                 <@printForActions ria ident />
+                <#break>
+            <#case "ReadIfData">
+                <@printIfActions ria ident />
+                <#break>
+            <#case "ReadElseData">
+                <@printElseActions ria ident />
                 <#break>
             <#case "PopFieldInput">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
@@ -298,20 +304,29 @@ public class ${control.name} extends ${control.baseName}
         </#list>
     </#macro>
     <#macro printForActions forStmt ident>
-        ${ident}data = get${forStmt.in?cap_first}();
-        ${ident}if(data != null)
+        ${ident}for(Object ${forStmt.var} : ${forStmt.in})
         ${ident}{
-        ${ident}${"    "}for(Object ${forStmt.var} : data)
-        ${ident}${"    "}{
-        <#assign newIdent = ident + "        " />
+        <#assign newIdent = ident + "    " />
         <@printReadInputActions forStmt.actions newIdent />
-        ${ident}${"    "}}
+        ${ident}}
+    </#macro>
+    <#macro printIfActions ifStmt ident>
+        ${ident}if(${ifStmt.condition})
+        ${ident}{
+        <#assign newIdent = ident + "    " />
+        <@printReadInputActions ifStmt.actions newIdent />
+        ${ident}}
+    </#macro>
+    <#macro printElseActions ifStmt ident>
+        ${ident}else
+        ${ident}{
+        <#assign newIdent = ident + "    " />
+        <@printReadInputActions ifStmt.actions newIdent />
         ${ident}}
     </#macro>
     @Override
     public void readInput(ControlInputReader req, ElEnvironment env)
     {
-        List data;
         <@printReadInputActions control.input.actions "" />
     }
 
@@ -329,6 +344,12 @@ public class ${control.name} extends ${control.baseName}
             <#case "ExecuteForEachData">
                 <@printExecForActions ria ident />
                 <#break>
+            <#case "ExecuteIfData">
+                <@printExecIfActions ria ident />
+                <#break>
+            <#case "ExecuteElseData">
+                <@printExecElseActions ria ident />
+                <#break>
             <#case "ExecuteAllEvents">
         ${ident}for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
                 <#break>
@@ -343,20 +364,29 @@ public class ${control.name} extends ${control.baseName}
         </#list>
     </#macro>
     <#macro printExecForActions forStmt ident>
-        ${ident}data = get${forStmt.in?cap_first}();
-        ${ident}if(data != null)
+        ${ident}for(Object ${forStmt.var} : ${forStmt.in})
         ${ident}{
-        ${ident}${"    "}for(Object ${forStmt.var} : data)
-        ${ident}${"    "}{
-        <#assign newIdent = ident + "        " />
+        <#assign newIdent = ident + "    " />
         <@printExecuteEventActions forStmt.actions newIdent />
-        ${ident}${"    "}}
+        ${ident}}
+    </#macro>
+    <#macro printExecIfActions ifStmt ident>
+        ${ident}if(${ifStmt.condition})
+        ${ident}{
+        <#assign newIdent = ident + "    " />
+        <@printExecuteEventActions ifStmt.actions newIdent />
+        ${ident}}
+    </#macro>
+    <#macro printExecElseActions ifStmt ident>
+        ${ident}else
+        ${ident}{
+        <#assign newIdent = ident + "    " />
+        <@printExecuteEventActions ifStmt.actions newIdent />
         ${ident}}
     </#macro>
     @Override
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
-        List data;
         <@printExecuteEventActions control.execute.actions "" />
         return null;
     }

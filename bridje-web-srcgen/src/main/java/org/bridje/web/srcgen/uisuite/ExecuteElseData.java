@@ -19,7 +19,6 @@ package org.bridje.web.srcgen.uisuite;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
@@ -27,73 +26,20 @@ import javax.xml.bind.annotation.XmlElements;
  * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ForEachData implements ControlFlowAction
+public class ExecuteElseData implements ControlFlowAction
 {
-    @XmlAttribute
-    private String var;
-
-    @XmlAttribute
-    private String in;
-
     @XmlElements(
     {
-        @XmlElement(name = "for", type = ForEachData.class),
+        @XmlElement(name = "if", type = ExecuteIfData.class),
+        @XmlElement(name = "else", type = ExecuteElseData.class),
+        @XmlElement(name = "for", type = ExecuteForEachData.class),
         @XmlElement(name = "pushVar", type = PushEnvVar.class),
         @XmlElement(name = "popVar", type = PopEnvVar.class),
-        @XmlElement(name = "pop", type = PopFieldInput.class),
-        @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
-        @XmlElement(name = "get", type = ReadFieldInput.class),
-        @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
-        @XmlElement(name = "children", type = ReadChildren.class),
+        @XmlElement(name = "execute", type = ExecuteAllEvents.class),
         @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
     })
     private List<ControlFlowAction> actions;
 
-    /**
-     * The var name.
-     * 
-     * @return The var name.
-     */
-    public String getVar()
-    {
-        return var;
-    }
-
-    /**
-     * The var name.
-     * 
-     * @param var The var name.
-     */
-    public void setVar(String var)
-    {
-        this.var = var;
-    }
-
-    /**
-     * The collection field to iterate.
-     * 
-     * @return The collection field to iterate.
-     */
-    public String getIn()
-    {
-        return in;
-    }
-
-    /**
-     * The collection field to iterate.
-     * 
-     * @param in The collection field to iterate.
-     */
-    public void setIn(String in)
-    {
-        this.in = in;
-    }
-    
-    /**
-     * The list of actions.
-     * 
-     * @return The list of actions.
-     */
     public List<ControlFlowAction> getActions()
     {
         return actions;

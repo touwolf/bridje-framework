@@ -18,7 +18,7 @@ limitations under the License.
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.bridje.org/schemas/web/uisuite'
     xsi:schemaLocation='http://www.bridje.org/schemas/web/uisuite ../../../../../../../../bridje-web-srcgen/target/generated-resources/schemagen/schema1.xsd'>
-    
+
     <!--
     This UISuite partial definition file contains the core elements, resources and macros for all bootstrap base UISuites.
     -->
@@ -112,7 +112,6 @@ limitations under the License.
                 <#return false />
             ]]>
         </ftlFunction>
-
     </ftlFunctions>
 
     <templates>
@@ -135,9 +134,17 @@ limitations under the License.
                 <outAttr name="visible" type="Boolean" def="true" />
             </fields>
             <input>
-                <popAll />
-                <childrenAll />
+                <if condition="getVisible()">
+                    <popAll />
+                    <childrenAll />
+                </if>
             </input>
+            <execute>
+                <if condition="getVisible()">
+                    <execute />
+                    <childrenAll />
+                </if>                
+            </execute>
             <render>
                 <![CDATA[
                     <#if control.visible?? && control.visible>
@@ -147,5 +154,5 @@ limitations under the License.
             </render>
         </control>
     </controls>
-    
+
 </partialuisuite>

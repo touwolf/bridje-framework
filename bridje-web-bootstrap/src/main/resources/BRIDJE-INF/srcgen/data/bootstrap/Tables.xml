@@ -48,7 +48,7 @@ limitations under the License.
             </fields>
         </template>
     </templates>
-
+    
     <controls>
         <control name="TableColumn" templates="TextFlowContainer ButtonContainer" base="BaseControl" >
             <fields>
@@ -91,18 +91,22 @@ limitations under the License.
                 </children>
             </fields>
             <input>
-                <for var="rowItem" in="data">
-                    <pushVar var='var' value="rowItem" />
-                    <childrenAll />
-                    <popVar var='var' />
-                </for>
+                <if condition="getData() != null">
+                    <for var="rowItem" in="getData()">
+                        <pushVar var='var' value="rowItem" />
+                        <childrenAll />
+                        <popVar var='var' />
+                    </for>
+                </if>
             </input>
             <execute>
-                <for var="rowItem" in="data">
-                    <pushVar var='var' value="rowItem" />
-                    <childrenAll />
-                    <popVar var='var' />
-                </for>
+                <if condition="getData() != null">
+                    <for var="rowItem" in="getData()">
+                        <pushVar var='var' value="rowItem" />
+                        <childrenAll />
+                        <popVar var='var' />
+                    </for>
+                </if>
             </execute>
             <ftlMacros>
                 <ftlMacro name="headCell" params="control column" >
