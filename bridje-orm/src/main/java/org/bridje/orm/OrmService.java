@@ -53,14 +53,15 @@ public interface OrmService
      * @return The new created model of the given class.
      */
     <T extends OrmModel> T createModel(DataSource ds, Class<T> modelCls);
-    
+
     /**
+     * Creates a new ORM model of the given class from the actual datasource that must be use to
+     * access the database.
      * 
-     * 
-     * @param <T>
-     * @param ctx
-     * @param modelCls
-     * @return 
+     * @param <T> The type of the ORM model.
+     * @param ctx The current entity context.
+     * @param modelCls The model class.
+     * @return The new created model of the given class.
      */
     <T extends OrmModel> T createModel(EntityContext ctx, Class<T> modelCls);
 
@@ -71,7 +72,7 @@ public interface OrmService
      * @return true the class is an entity, false otherwise.
      */
     boolean isEntityClass(Class<?> cls);
-    
+
     /**
      * Finds the table for the given entity.
      * 
@@ -80,7 +81,7 @@ public interface OrmService
      * @return The table object for the given entity.
      */
     <T> Table<T> findTable(Class<T> entity);
-    
+
     /**
      * Finds the class for the model of the given entity.
      * 
