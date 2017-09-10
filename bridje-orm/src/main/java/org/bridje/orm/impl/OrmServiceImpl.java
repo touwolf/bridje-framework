@@ -102,6 +102,12 @@ class OrmServiceImpl implements OrmService
         return instantiateModel(ctx, modelCls);
     }
 
+    @Override
+    public <T extends OrmModel> T createModel(EntityContext ctx, Class<T> modelCls)
+    {
+        return instantiateModel(ctx, modelCls);
+    }
+
     private EntityContext createContext(String dsName)
     {
         return createContext(jdbcServ.getDataSource(dsName));
@@ -238,7 +244,7 @@ class OrmServiceImpl implements OrmService
             String clsName = (String)objClsName;
             String tableName = (String)objTableName;
             Class cls = Class.forName(clsName);
-            findOrTableEntity(cls, tableName);
+            findOrAddTableEntity(cls, tableName);
         }
         catch (ClassNotFoundException e)
         {
@@ -246,7 +252,7 @@ class OrmServiceImpl implements OrmService
         }
     }
 
-    private <T> TableImpl<T> findOrTableEntity(Class<T> entityClass, String tableName)
+    private <T> TableImpl<T> findOrAddTableEntity(Class<T> entityClass, String tableName)
     {
         if(!tablesMap.containsKey(entityClass))
         {

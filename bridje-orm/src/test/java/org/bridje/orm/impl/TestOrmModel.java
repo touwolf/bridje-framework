@@ -16,6 +16,7 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
@@ -30,7 +31,7 @@ public class TestOrmModel extends OrmModel
     {
         super(context, entities, tables);
     }
-    
+
     public static TestOrmModel create(DataSource ds)
     {
         return Ioc.context().find(OrmService.class).createModel(ds, TestOrmModel.class);
@@ -39,5 +40,50 @@ public class TestOrmModel extends OrmModel
     public static TestOrmModel create(String ds)
     {
         return Ioc.context().find(OrmService.class).createModel(ds, TestOrmModel.class);
+    }
+
+    public User insert(User user) throws SQLException
+    {
+        return getContext().insert(user);
+    }
+
+    public User update(User user) throws SQLException
+    {
+        return getContext().update(user);
+    }
+
+    public User delete(User user) throws SQLException
+    {
+        return getContext().delete(user);
+    }
+
+    public Group insert(Group user) throws SQLException
+    {
+        return getContext().insert(user);
+    }
+
+    public Group update(Group user) throws SQLException
+    {
+        return getContext().update(user);
+    }
+
+    public Group delete(Group user) throws SQLException
+    {
+        return getContext().delete(user);
+    }
+
+    public Rol insert(Rol user) throws SQLException
+    {
+        return getContext().insert(user);
+    }
+
+    public Rol update(Rol user) throws SQLException
+    {
+        return getContext().update(user);
+    }
+
+    public Rol delete(Rol user) throws SQLException
+    {
+        return getContext().delete(user);
     }
 }

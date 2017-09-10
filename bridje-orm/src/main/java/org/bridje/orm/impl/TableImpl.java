@@ -27,11 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.bridje.ioc.Ioc;
 import org.bridje.orm.Column;
 import org.bridje.orm.Entity;
-import org.bridje.orm.EntityContext;
 import org.bridje.orm.OrderBy;
 import org.bridje.orm.OrderByType;
+import org.bridje.orm.OrmModel;
 import org.bridje.orm.OrmService;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
@@ -53,6 +54,8 @@ class TableImpl<T> implements Table<T>
     private final Map<String, TableColumn<T, ?>> columnsMap;
     
     private final Map<String, TableColumn<T, ?>> columnsByNameMap;
+
+    private OrmService ormServ;
     
     public TableImpl(Class<T> entity, String name)
     {
@@ -136,56 +139,62 @@ class TableImpl<T> implements Table<T>
         return keyInf;
     }
 
-    public Stream<String> allFieldsStream(String prefix, EntityContext ctx)
+    public Stream<String> allFieldsStream(String prefix)
     {
+        EntityContextImpl ctx = findContext();
         return columns.stream().map((field) -> prefix + ctx.getDialect().identifier(field.getName()));
     }
 
-    public Stream<String> nonAiFieldsStream(String prefix, EntityContext ctx)
+    public Stream<String> nonAiFieldsStream(String prefix)
     {
+        EntityContextImpl ctx = findContext();
         return nonAiColumns.stream()
                         .map((field) -> prefix + ctx.getDialect()
                         .identifier(field.getName()));
     }
     
-    public String allFieldsCommaSep(EntityContext ctx)
+    public String allFieldsCommaSep()
     {
+        EntityContextImpl ctx = findContext();
         return columns.stream()
                 .map((column) -> column.writeSQL(null, ctx))
                 .collect(Collectors.joining(", "));
     }
 
-    public String nonAiFieldsCommaSep(EntityContext ctx)
+    public String nonAiFieldsCommaSep()
     {
+        EntityContextImpl ctx = findContext();
         return nonAiColumns.stream()
                 .filter((column) -> !column.isAutoIncrement())
                 .map((column) -> column.writeSQL(null, ctx))
                 .collect(Collectors.joining(", "));
     }
 
-    public String allFieldsCommaSepNoTable(EntityContext ctx)
+    public String allFieldsCommaSepNoTable()
     {
+        EntityContextImpl ctx = findContext();
         return columns.stream()
                 .map((column) -> ctx.getDialect().identifier(column.getName()))
                 .collect(Collectors.joining(", "));
     }
 
-    public String nonAiFieldsCommaSepNoTable(EntityContext ctx)
+    public String nonAiFieldsCommaSepNoTable()
     {
+        EntityContextImpl ctx = findContext();
         return nonAiColumns.stream()
-                .filter((column) -> !column.isAutoIncrement())
-                .map((column) -> ctx.getDialect().identifier(column.getName()))
+                .filter(c -> !c.isAutoIncrement())
+                .map(c -> ctx.getDialect().identifier(c.getName()))
                 .collect(Collectors.joining(", "));
     }
 
-    public List<T> parseAll(ResultSet rs, EntityContextImpl ctx)
+    public List<T> parseAll(ResultSet rs)
     {
         List<T> result = new ArrayList<>();
         try
         {
             while(rs.next())
             {
-                T record = parseNew(rs, ctx);
+                T record = parseNew(rs);
                 if(record != null)
                 {
                     result.add(record);
@@ -199,26 +208,28 @@ class TableImpl<T> implements Table<T>
         return result;
     }
 
-    public T parse(ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public T parse(ResultSet rs) throws SQLException
     {
-        if(rs.next()) return parseNew(rs, ctx);
+        if(rs.next()) return parseNew(rs);
         return null;
     }
 
-    public T parse(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public T parse(T entity, ResultSet rs) throws SQLException
     {
         if(rs.next())
         {
-            fillKey(entity, rs, ctx);
+            EntityContextImpl ctx = findContext();
+            fillKey(entity, rs);
             ctx.getEnittysCache().put(entity, findKeyValue(entity));
-            fill(entity, rs, ctx);
+            fill(entity, rs);
             return entity;
         }
         return null;
     }
 
-    public <C> List<C> parseAll(int index, Column<C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public <C> List<C> parseAll(int index, Column<C> column, ResultSet rs) throws SQLException
     {
+        EntityContextImpl ctx = findContext();
         if(column instanceof AbstractColumn)
         {
             AbstractColumn<C> absColumn = (AbstractColumn)column;
@@ -232,12 +243,13 @@ class TableImpl<T> implements Table<T>
         }
         else
         {
-            return parseAll(index, column.getType(), rs, ctx);
+            return parseAll(index, column.getType(), rs);
         }
     }
 
-    public <C> List<C> parseAll(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public <C> List<C> parseAll(int index, Class<C> type, ResultSet rs) throws SQLException
     {
+        EntityContextImpl ctx = findContext();
         List<C> result = new ArrayList<>();
         while(rs.next())
         {
@@ -247,8 +259,9 @@ class TableImpl<T> implements Table<T>
         return result;
     }
 
-    public <C> C parse(int index, Column<C> column, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public <C> C parse(int index, Column<C> column, ResultSet rs) throws SQLException
     {
+        EntityContextImpl ctx = findContext();
         if(column instanceof AbstractColumn)
         {
             if(rs.next())
@@ -260,14 +273,15 @@ class TableImpl<T> implements Table<T>
         }
         else
         {
-            return parse(index, column.getType(), rs, ctx);
+            return parse(index, column.getType(), rs);
         }
     }
 
-    public <C> C parse(int index, Class<C> type, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    public <C> C parse(int index, Class<C> type, ResultSet rs) throws SQLException
     {
         if(rs.next())
         {
+            EntityContextImpl ctx = findContext();
             Object value = CastUtils.castValue(type, rs.getObject(index), ctx);
             if(value != null) return (C)value;
         }
@@ -280,12 +294,13 @@ class TableImpl<T> implements Table<T>
         return -1;
     }
 
-    private T parseNew(ResultSet rs, EntityContextImpl ctx) throws SQLException
+    private T parseNew(ResultSet rs) throws SQLException
     {
+        EntityContextImpl ctx = findContext();
         T entity = buildEntityObject();
-        fillKey(entity, rs, ctx);
+        fillKey(entity, rs);
         ctx.getEnittysCache().put(entity, findKeyValue(entity));
-        fill(entity, rs, ctx);
+        fill(entity, rs);
         return entity;
     }
 
@@ -301,19 +316,21 @@ class TableImpl<T> implements Table<T>
         }
     }
 
-    private void fillKey(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    private void fillKey(T entity, ResultSet rs) throws SQLException
     {
+        EntityContextImpl ctx = findContext();
         TableColumnImpl keyImpl = ((TableColumnImpl)key);
         Object value = keyImpl.readValue(rs, ctx);
         keyImpl.setValue(entity, value);
     }
     
-    private void fill(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    private void fill(T entity, ResultSet rs) throws SQLException
     {
         for (TableColumn column : columns)
         {
             if(!column.isKey())
             {
+                EntityContextImpl ctx = findContext();
                 TableColumnImpl columnImpl = ((TableColumnImpl)column);
                 Object value = columnImpl.readValue(rs, ctx);
                 columnImpl.setValue(entity, value);
@@ -346,21 +363,23 @@ class TableImpl<T> implements Table<T>
         return ((TableColumnImpl)key).getValue(entity);
     }
     
-    public String buildIdCondition(EntityContext ctx)
+    public String buildIdCondition()
     {
+        EntityContextImpl ctx = findContext();
         return ctx.getDialect().identifier(getName()) 
                 + "." 
                 + ctx.getDialect().identifier(key.getName()) + " = ?";
     }
     
-    public String buildOrderBy(OrderBy orderBy, List<Object> parameters, EntityContextImpl ctx)
+    public String buildOrderBy(OrderBy orderBy, List<Object> parameters)
     {
+        EntityContextImpl ctx = findContext();
         return orderBy.getColumn().writeSQL(parameters, ctx) + " " + (orderBy.getType() == OrderByType.ASC ? "ASC" : "DESC");
     }
 
-    public <T> T updateKeyField(T entity, ResultSet rs, EntityContextImpl entityContext) throws SQLException
+    public <T> T updateKeyField(T entity, ResultSet rs) throws SQLException
     {
-        ((TableColumnImpl)key).setValue(entity, parse(1, key.getType(), rs, entityContext));
+        ((TableColumnImpl)key).setValue(entity, parse(1, key.getType(), rs));
         return entity;
     }
 
@@ -371,7 +390,7 @@ class TableImpl<T> implements Table<T>
                 .map((column) -> (TableRelationColumnImpl)column)
                 .forEach((relColumn) -> relColumn.initRelation(ormServ) );
     }
-    
+
     private TableColumnImpl createColumn(Field declaredField)
     {
         if(declaredField.getType().getAnnotation(Entity.class) != null)
@@ -383,5 +402,13 @@ class TableImpl<T> implements Table<T>
             return new TableStringColumnImpl(this, declaredField);
         }
         return new TableColumnImpl(this, declaredField, declaredField.getType());
+    }
+
+    private EntityContextImpl findContext()
+    {
+        if(ormServ == null) ormServ = Ioc.context().find(OrmService.class);
+        OrmModel model = ormServ.getModelForEntity(entity);
+        if(model != null) return (EntityContextImpl)model.getContext();
+        return null;
     }
 }

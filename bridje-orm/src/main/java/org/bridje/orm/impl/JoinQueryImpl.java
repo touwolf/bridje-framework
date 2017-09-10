@@ -120,7 +120,7 @@ class JoinQueryImpl<T, R> extends AbstractQuery<R> implements Query<R>
         {
             qb.orderBy(Arrays
                     .asList(getOrderBy()).stream()
-                    .map(ob -> getTable().buildOrderBy(ob, parameters, getCtx()))
+                    .map(ob -> getTable().buildOrderBy(ob, parameters))
                     .collect(Collectors.joining(", ")));
         }
         return qb;

@@ -157,10 +157,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     public String getDefaultValue()
     {
         String def = null;
-        if(!isKey())
-        {
-            def = "NULL";
-        }
+        if(!isKey()) def = "NULL";
         return def;
     }
 
@@ -186,10 +183,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     {
         try
         {
-            if(entity == null)
-            {
-                return null;
-            }
+            if(entity == null) return null;
             return (T)this.field.get(entity);
         }
         catch (IllegalArgumentException | IllegalAccessException e)
@@ -201,10 +195,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     
     protected Object getQueryParameter(E entity)
     {
-        if(entity == null)
-        {
-            return null;
-        }
+        if(entity == null) return null;
         return serialize(getValue(entity));
     }
 
@@ -379,36 +370,18 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     @Override
     public Object serialize(T value)
     {
-        if(value == null)
-        {
-            return null;
-        }
-        if(!type.isAssignableFrom(value.getClass()))
-        {
-            return value;
-        }
-        if(adapter != null)
-        {
-            return adapter.serialize(value, this);
-        }
+        if(value == null) return null;
+        if(!type.isAssignableFrom(value.getClass())) return value;
+        if(adapter != null) return adapter.serialize(value, this);
         return value;
     }
 
     @Override
     public T unserialize(Object value)
     {
-        if(value == null)
-        {
-            return null;
-        }
-        if(type.isAssignableFrom(value.getClass()))
-        {
-            return (T)value;
-        }
-        if(adapter != null)
-        {
-            return adapter.unserialize(value, this);
-        }
+        if(value == null) return null;
+        if(type.isAssignableFrom(value.getClass())) return (T)value;
+        if(adapter != null) return adapter.unserialize(value, this);
         return (T)value;
     }
 
@@ -445,10 +418,7 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     private SQLAdapter findAdapterOrCreate(Class<? extends SQLAdapter> adapterCls)
     {
         SQLAdapter sqlAdapter = Ioc.context().find(adapterCls);
-        if(sqlAdapter == null)
-        {
-            sqlAdapter = instantiate(adapterCls);
-        }
+        if(sqlAdapter == null) sqlAdapter = instantiate(adapterCls);
         return sqlAdapter;        
     }
 

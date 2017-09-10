@@ -91,7 +91,7 @@ class QueryImpl<T> extends AbstractQuery<T> implements Query<T>
         {
             qb.orderBy(Arrays
                 .stream(orderBy)
-                .map((ob) -> table.buildOrderBy(ob, parameters, ctx) )
+                .map((ob) -> table.buildOrderBy(ob, parameters) )
                 .collect(Collectors.joining(", ")));
         }
         return qb;

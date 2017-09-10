@@ -38,7 +38,7 @@ abstract class AbstractQuery<T> implements Query<T>
         TableImpl<T> table = getTable();
         
         EntityContextImpl ctx = getCtx();
-        String columns = table.allFieldsCommaSep(ctx);
+        String columns = table.allFieldsCommaSep();
         SelectBuilder qb = createQuery(columns, params);
         if(getPage() > 0)
         {
@@ -46,7 +46,7 @@ abstract class AbstractQuery<T> implements Query<T>
             qb.limit(index, getPageSize());
         }
         return ctx.doQuery(qb.toString(), 
-                        (rs) -> table.parseAll(rs, ctx), 
+                        (rs) -> table.parseAll(rs), 
                         params.toArray());
     }
 
@@ -64,7 +64,7 @@ abstract class AbstractQuery<T> implements Query<T>
             qb.limit(index, getPageSize());
         }
         return ctx.doQuery(qb.toString(), 
-                (rs) -> (List<C>)columnImpl.unserialize(table.parseAll(1, column, rs, ctx)), 
+                (rs) -> (List<C>)columnImpl.unserialize(table.parseAll(1, column, rs)), 
                 params.toArray());
     }
 
@@ -75,11 +75,11 @@ abstract class AbstractQuery<T> implements Query<T>
         TableImpl<T> table = getTable();
         EntityContextImpl ctx = getCtx();
         SelectBuilder qb = createQuery(
-                        table.allFieldsCommaSep(ctx), 
+                        table.allFieldsCommaSep(), 
                         parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
-                    (rs) -> table.parse(rs, ctx), 
+                    (rs) -> table.parse(rs), 
                     parameters.toArray());
     }
     
@@ -93,7 +93,7 @@ abstract class AbstractQuery<T> implements Query<T>
         SelectBuilder qb = createQuery(column.writeSQL(parameters, ctx), parameters);
         qb.limit(0, 1);
         return columnImpl.unserialize(ctx.doQuery(qb.toString(), 
-                                rs -> table.parse(1, column, rs, ctx), 
+                                rs -> table.parse(1, column, rs), 
                                 parameters.toArray()));
     }
     
@@ -103,7 +103,7 @@ abstract class AbstractQuery<T> implements Query<T>
         TableImpl<R> tableImpl = (TableImpl<R>)table;
         List<Object> params = new ArrayList<>();
         EntityContextImpl ctx = getCtx();
-        String columns = tableImpl.allFieldsCommaSep(ctx);
+        String columns = tableImpl.allFieldsCommaSep();
         SelectBuilder qb = createQuery(columns, params);
         if(getPage() > 0)
         {
@@ -111,7 +111,7 @@ abstract class AbstractQuery<T> implements Query<T>
             qb.limit(index, getPageSize());
         }
         return ctx.doQuery(qb.toString(), 
-                        rs -> tableImpl.parseAll(rs, ctx), 
+                        rs -> tableImpl.parseAll(rs), 
                         params.toArray());
     }
 
@@ -122,11 +122,11 @@ abstract class AbstractQuery<T> implements Query<T>
         List<Object> parameters = new ArrayList<>();
         EntityContextImpl ctx = getCtx();
         SelectBuilder qb = createQuery(
-                        tableImpl.allFieldsCommaSep(ctx), 
+                        tableImpl.allFieldsCommaSep(), 
                         parameters);
         qb.limit(0, 1);
         return ctx.doQuery(qb.toString(), 
-                        rs -> tableImpl.parse(rs, ctx), 
+                        rs -> tableImpl.parse(rs), 
                         parameters.toArray());
     }
 

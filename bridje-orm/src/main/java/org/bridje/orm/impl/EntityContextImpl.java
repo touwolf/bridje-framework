@@ -85,24 +85,18 @@ class EntityContextImpl implements EntityContext
     @Override
     public <T> T find(Table<T> table, Object id) throws SQLException
     {
-        if(id == null)
-        {
-            return null;
-        }
+        if(id == null) return null;
         TableImpl<T> tableImpl = (TableImpl<T>) table;
         T cachedEntity = cache.get(tableImpl.getEntity(), id);
-        if (cachedEntity != null)
-        {
-            return cachedEntity;
-        }
+        if (cachedEntity != null) return cachedEntity;
         SelectBuilder qb = new SelectBuilder(dialect);
-        qb.select(tableImpl.allFieldsCommaSep(this))
+        qb.select(tableImpl.allFieldsCommaSep())
                 .from(dialect.identifier(tableImpl.getName()))
-                .where(tableImpl.buildIdCondition(this))
+                .where(tableImpl.buildIdCondition())
                 .limit(0, 1);
 
         Object serializedId = ((TableColumnImpl) table.getKey()).serialize(id);
-        return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs, this), serializedId);
+        return doQuery(qb.toString(), (rs) -> tableImpl.parse(rs), serializedId);
     }
 
     @Override
@@ -110,12 +104,12 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = (TableImpl<T>) orm.findTable(entity.getClass());
         SelectBuilder qb = new SelectBuilder(dialect);
-        qb.select(table.allFieldsCommaSep(this))
+        qb.select(table.allFieldsCommaSep())
                 .from(dialect.identifier(table.getName()))
-                .where(table.buildIdCondition(this))
+                .where(table.buildIdCondition())
                 .limit(0, 1);
         Object id = ((TableColumnImpl) table.getKey()).getQueryParameter(entity);
-        return doQuery(qb.toString(), (rs) -> table.parse(entity, rs, this), id);
+        return doQuery(qb.toString(), (rs) -> table.parse(entity, rs), id);
     }
 
     @Override
@@ -124,13 +118,13 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         InsertBuilder ib = new InsertBuilder();
         ib.insertInto(dialect.identifier(table.getName()))
-                .fields(table.nonAiFieldsCommaSepNoTable(this))
+                .fields(table.nonAiFieldsCommaSepNoTable())
                 .valuesParams(table.getNonAiColumns().size());
 
         if (table.getKey().isAutoIncrement())
         {
             doUpdate(ib.toString(),
-                    rs -> table.updateKeyField(entity, rs, this),
+                    rs -> table.updateKeyField(entity, rs),
                     table.buildInsertParameters(entity));
         }
         else
@@ -153,14 +147,10 @@ class EntityContextImpl implements EntityContext
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         UpdateBuilder ub = new UpdateBuilder(dialect);
         ub.update(dialect.identifier(table.getName()));
-        table.nonAiFieldsStream(dialect.identifier(table.getName()) + ".", this).forEach(ub::set);
-        ub.where(table.buildIdCondition(this));
-
+        table.nonAiFieldsStream(dialect.identifier(table.getName()) + ".").forEach(ub::set);
+        ub.where(table.buildIdCondition());
         Object updateId = id;
-        if (updateId == null)
-        {
-            updateId = table.findKeyValue(entity);
-        }
+        if (updateId == null) updateId = table.findKeyValue(entity);
         Object serializedId = ((TableColumnImpl) table.getKey()).serialize(updateId);
         doUpdate(ub.toString(), table.buildUpdateParameters(entity, serializedId));
         cache.remove(entity.getClass(), updateId);
@@ -173,10 +163,7 @@ class EntityContextImpl implements EntityContext
     {
         TableImpl<T> table = orm.findTable((Class<T>) entity.getClass());
         DeleteBuilder db = new DeleteBuilder();
-
-        db.delete(dialect.identifier(table.getName()))
-                .where(table.buildIdCondition(this));
-
+        db.delete(dialect.identifier(table.getName())).where(table.buildIdCondition());
         Object updateId = table.findKeyValue(entity);
         if (updateId != null)
         {
@@ -192,10 +179,7 @@ class EntityContextImpl implements EntityContext
         T result;
         try (Connection conn = ds.getConnection())
         {
-            if(conn == null)
-            {
-                throw new SQLException("Could not create a new connection with the database.");
-            }
+            if(conn == null) throw new SQLException("Could not create a new connection with the database.");
             try(PreparedStatement stmt = conn.prepareStatement(query))
             {
                 for (int i = 0; i < parameters.length; i++)
@@ -265,10 +249,7 @@ class EntityContextImpl implements EntityContext
             DatabaseMetaData metaData = conn.getMetaData();
             try (ResultSet resultSet = metaData.getTables(null, null, table.getName(), null))
             {
-                if (resultSet.next())
-                {
-                    return true;
-                }
+                if (resultSet.next()) return true;
             }
         }
         return false;
@@ -328,10 +309,7 @@ class EntityContextImpl implements EntityContext
             DatabaseMetaData metaData = conn.getMetaData();
             try (ResultSet resultSet = metaData.getColumns(null, null, tableName, columnName))
             {
-                if (resultSet.next())
-                {
-                    return true;
-                }
+                if (resultSet.next()) return true;
             }
         }
         return false;
@@ -422,5 +400,4 @@ class EntityContextImpl implements EntityContext
     {
         return orm.findTable(entity);
     }
-
 }

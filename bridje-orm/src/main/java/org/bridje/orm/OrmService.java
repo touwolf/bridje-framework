@@ -53,6 +53,16 @@ public interface OrmService
      * @return The new created model of the given class.
      */
     <T extends OrmModel> T createModel(DataSource ds, Class<T> modelCls);
+    
+    /**
+     * 
+     * 
+     * @param <T>
+     * @param ctx
+     * @param modelCls
+     * @return 
+     */
+    <T extends OrmModel> T createModel(EntityContext ctx, Class<T> modelCls);
 
     /**
      * Determines if the given class is an entity class.
@@ -64,7 +74,7 @@ public interface OrmService
     
     /**
      * Finds the table for the given entity.
-     *
+     * 
      * @param <T> The type of the entity.
      * @param entity The class of the entity.
      * @return The table object for the given entity.
