@@ -59,6 +59,7 @@ public class EntityInfBase
         @XmlElement(name = "decimal", type = DecimalFieldInf.class),
         @XmlElement(name = "enum", type = EnumFieldInf.class),
         @XmlElement(name = "relation", type = RelationFieldInf.class),
+        @XmlElement(name = "external", type = ExternalRelationFieldInf.class),
         @XmlElement(name = "datetime", type = DateTimeFieldInf.class),
         @XmlElement(name = "custom", type = CustomFieldInf.class),
         @XmlElement(name = "boolean", type = BooleanFieldInf.class)
