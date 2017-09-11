@@ -8,12 +8,15 @@
 ## [v0.4.6](https://github.com/bridje/bridje-framework/tree/v0.4.6) (2017-08-30)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.5...v0.4.6)
 
- -
+ - 
 
-## [v0.4.5](https://github.com/bridje/bridje-framework/tree/v0.4.5) (2017-08-30)
+## [v0.4.5](https://github.com/bridje/bridje-framework/tree/v0.4.5) (2017-08-31)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.4...v0.4.5)
 
- -
+ - Fix in the bootstrap tables.
+ - Fixing null pointer in event result, and a bug in ajax post.
+ - Fixing read input and execute events generation.
+ -	Upgrading dependencies versions.
 
 ## [v0.4.4](https://github.com/bridje/bridje-framework/tree/v0.4.4) (2017-08-30)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.3...v0.4.4)
