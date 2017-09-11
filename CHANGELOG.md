@@ -1,9 +1,10 @@
 # Change Log
 
-## [v0.4.7](https://github.com/bridje/bridje-framework/tree/v0.4.7) (2017-08-30)
+## [v0.4.7](https://github.com/bridje/bridje-framework/tree/v0.4.7) (2017-09-10)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.6...v0.4.7)
 
- -
+ - 	Implementing external relation in ORM.
+ - 	Implementing If statement in input, and execute.
 
 ## [v0.4.6](https://github.com/bridje/bridje-framework/tree/v0.4.6) (2017-09-03)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.5...v0.4.6)
