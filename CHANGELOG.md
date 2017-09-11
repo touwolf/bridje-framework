@@ -5,10 +5,10 @@
 
  -
 
-## [v0.4.6](https://github.com/bridje/bridje-framework/tree/v0.4.6) (2017-08-30)
+## [v0.4.6](https://github.com/bridje/bridje-framework/tree/v0.4.6) (2017-09-03)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.5...v0.4.6)
 
- - 
+ - 	Implementing bootstrap UISiote.
 
 ## [v0.4.5](https://github.com/bridje/bridje-framework/tree/v0.4.5) (2017-08-31)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.4...v0.4.5)
