@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.4.7](https://github.com/bridje/bridje-framework/tree/v0.4.7) (2017-08-30)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.6...v0.4.7)
+
+ -
+
+## [v0.4.6](https://github.com/bridje/bridje-framework/tree/v0.4.6) (2017-08-30)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.5...v0.4.6)
+
+ -
+
+## [v0.4.5](https://github.com/bridje/bridje-framework/tree/v0.4.5) (2017-08-30)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.4...v0.4.5)
+
+ -
+
 ## [v0.4.4](https://github.com/bridje/bridje-framework/tree/v0.4.4) (2017-08-30)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.4.3...v0.4.4)
 
