@@ -153,7 +153,7 @@ Your application will include the framework's librarys as well as this dependenc
 Your application does not need to depend on this libraries unless you specifically include then
 
  * [Freemarker 2.0.23](http://freemarker.org/) The template engine used in the bridje-maven-plugin for generating code.
- * [JavaParser 2.5.1](https://github.com/javaparser/javaparser) For java source code parsing in the source generation API.
+ * [JavaParser 3.2.2](http://javaparser.org/) For java source code parsing in the source generation API.
 
 ## Framework Build Dependencies
 
