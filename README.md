@@ -18,9 +18,9 @@ This package contains the Bridje Java Applications Framework. A project that pro
 - Low Memory: By reducing the amount of classes and code, and by enforcing good architectural patterns in your app the memory consumption can decrease a lot. 
 - Productivity: We try to reduce to the minimum possible the code that it´s not part of your applications domain logic, without taking away from you the control that you need as a software developer over your code. 
 - Robust: We try to enforce encapsulation, static typing and all the nice features that Java as a language has to offer. So not your code, nor the framework itself it´s easily broken. 
-- Scalable: We try to enforce practices and patterns that cost you the same amount of hardware resources (more or less) no matter the amount of users your will handle in production.
+- Scalable: We try to enforce practices and patterns that cost you the same amount of hardware resources (more or less) no matter the amount of users you will handle in production.
  
-All of these goals a really ambitious, and many time one or more of then need to be sacrifice in favor of others, but we think that is a matter of balance and priorities. So the framework will orbit around these principles.
+All of these goals are really ambitious, and at many times one or more of them need to be sacrificed in favor of the others, but we think that is a matter of balance and priorities. So the framework will orbit around these principles.
 
 See [Changelog](https://github.com/bridje/bridje-framework/blob/master/CHANGELOG.md)
 See [The Framework´s Wiki](https://github.com/bridje/bridje-framework/wiki)
