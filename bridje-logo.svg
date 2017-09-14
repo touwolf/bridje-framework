@@ -14,7 +14,7 @@
    viewBox="0 0 550.00001 247.5"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
    sodipodi:docname="bridje-logo.svg"
    inkscape:export-xdpi="54"
    inkscape:export-ydpi="54"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,89 +61,90 @@
      id="layer1"
      transform="translate(0,-804.8622)">
     <rect
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#bdbdbd;stroke-width:0.90936571;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#bdbdbd;stroke-width:0.30888486;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4393"
-       width="163.48178"
-       height="38.819778"
-       x="105.90559"
-       y="816.94763"
+       width="55.529964"
+       height="13.18594"
+       x="232.90718"
+       y="881.11731"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.91341555;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 106.15011,967.5518 67.56274,0 0,35.1702 -29.15866,32.1238 -38.40408,0 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.31026044;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 232.99024,932.27309 h 22.94908 v 11.94629 l -9.90434,10.91151 h -13.04474 z"
        id="path4411"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.9118464;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 211.59275,1013.2593 -17.59663,21.6261 75.68666,0 -0.21199,-67.37317 -57.87804,0 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.30972746;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 268.80601,947.79859 -5.97706,7.34575 h 25.70854 l -0.072,-22.88469 h -19.65947 z"
        id="path4413"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <rect
-       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#bdbdbd;stroke-width:0.91870064;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#bdbdbd;stroke-width:0.31205565;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4421"
-       width="68.305534"
-       height="57.669781"
-       x="105.91162"
-       y="907.4389"
+       width="23.201385"
+       height="19.588732"
+       x="232.90923"
+       y="911.85449"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.91884232;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 211.43572,908.25166 0,56.86432 57.95273,0 0,-40.57793 -22.45017,-16.28639 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.31210378;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 268.75267,912.13058 v 19.31514 h 19.68484 v -13.78314 l -7.62566,-5.532 z"
        id="path4425"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.91598862px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 105.9104,858.50446 0,45.87027 68.30798,-7.51711 0,-38.35316 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.31113446px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 232.90882,895.23291 v 15.58079 l 23.20221,-2.55335 v -13.02744 z"
        id="path4433"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.9299317;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 211.43753,858.50005 0,34.25657 57.94912,-6.482 0,-27.77457 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.31587049;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 268.75329,895.23141 v 11.63595 l 19.68361,-2.20174 v -9.43421 z"
        id="path4435"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.89792424px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 53.860056,907.15499 0,104.65331 -40.730444,7.3927 0,15.3537 90.920858,0 0,-127.39971 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.30499852px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 215.22884,911.75807 v 35.54766 l -13.83493,2.51108 v 5.2152 h 30.88314 v -43.27394 z"
        id="path3358"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <path
-       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.89723539;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 103.78499,904.1584 0,-87.48869 -90.655719,0 0,16.76208 40.611668,7.40288 0,63.32373 z"
+       style="fill:#000000;fill-rule:evenodd;stroke:#bdbdbd;stroke-width:0.30476454;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 232.18688,910.74021 v -29.71734 h -30.79309 v 5.69359 l 13.79459,2.51454 v 21.50921 z"
        id="path4160"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:36.31628418px;line-height:125%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="300.94937"
        y="896.70734"
        id="text4162"
-       sodipodi:linespacing="125%"
        inkscape:export-xdpi="160.24603"
        inkscape:export-ydpi="160.24603"
        transform="scale(0.98610031,1.0140956)"><tspan
          sodipodi:role="line"
          id="tspan4164"
          x="300.94937"
-         y="896.70734">Bridje</tspan><tspan
+         y="896.70734"
+         style="font-size:36.31628418px;line-height:1.25">Bridje</tspan><tspan
          sodipodi:role="line"
          x="300.94937"
          y="942.10266"
-         id="tspan4166">Framework</tspan></text>
+         id="tspan4166"
+         style="font-size:36.31628418px;line-height:1.25">Framework</tspan></text>
   </g>
 </svg>
