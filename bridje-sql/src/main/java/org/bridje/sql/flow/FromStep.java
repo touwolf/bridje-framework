@@ -19,7 +19,7 @@ package org.bridje.sql.flow;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.TableExpr;
 
-public interface FromStep extends WhereStep
+public interface FromStep extends SelectWhereStep
 {
     FromStep innerJoin(TableExpr table, BooleanExpr<?> on);
 
@@ -27,5 +27,5 @@ public interface FromStep extends WhereStep
 
     FromStep rightJoin(TableExpr table, BooleanExpr<?> on);
 
-    WhereStep where(BooleanExpr<?> condition);
+    SelectWhereStep where(BooleanExpr<?> condition);
 }

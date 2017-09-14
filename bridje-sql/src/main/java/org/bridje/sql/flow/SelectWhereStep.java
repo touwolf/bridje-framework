@@ -16,9 +16,9 @@
 
 package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.OrderExpr;
 
-public interface GroupByStep extends SelectLimitStep
+public interface SelectWhereStep extends OrderByStep
 {
-    SelectLimitStep having(BooleanExpr<?> condition);
+    OrderByStep orderBy(OrderExpr... orderBys);
 }

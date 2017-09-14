@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.BooleanExpr;
-
-public interface GroupByStep extends SelectLimitStep
+public interface SelectLimitStep extends SelectFinalStep
 {
-    SelectLimitStep having(BooleanExpr<?> condition);
+    SelectFinalStep limit(int offset);
+
+    SelectFinalStep limit(int offset, int count);
 }

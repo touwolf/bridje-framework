@@ -16,9 +16,15 @@
 
 package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.OrderExpr;
+import org.bridje.sql.Column;
+import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.Expression;
 
-public interface WhereStep extends OrderByStep
+public interface SetsStep extends UpdateWhereStep
 {
-    OrderByStep orderBy(OrderExpr... orderBys);
+    <T> SetsStep set(Column<T> column, T value);
+
+    <T> SetsStep set(Column<T> column, Expression<T> value);
+
+    UpdateWhereStep where(BooleanExpr<?> condition);
 }

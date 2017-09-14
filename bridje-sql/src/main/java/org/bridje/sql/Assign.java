@@ -14,11 +14,28 @@
  * limitations under the License.
  */
 
-package org.bridje.sql.flow;
+package org.bridje.sql;
 
-import org.bridje.sql.expr.SelectExpr;
+import org.bridje.sql.expr.Expression;
+import org.bridje.sql.expr.SQLWritable;
 
-public interface FinalSelectStep extends FinalStep
+class Assign<T> implements SQLWritable
 {
-    SelectExpr asTable();
+    private final Column<?> column;
+
+    private final Expression<?> value;
+
+    public Assign(Column<T> column, Expression<T> value)
+    {
+        this.column = column;
+        this.value = value;
+    }
+    
+    @Override
+    public void writeSQL(SQLBuilder builder)
+    {
+        builder.append(column);
+        builder.append(" = ");
+        builder.append(value);
+    }
 }

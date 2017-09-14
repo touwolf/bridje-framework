@@ -16,9 +16,9 @@
 
 package org.bridje.sql.flow;
 
-public interface LimitStep extends FinalSelectStep
+public interface UpdateLimitStep extends FinalStep
 {
-    FinalSelectStep limit(int offset);
+    FinalStep limit(int offset);
 
-    FinalSelectStep limit(int offset, int count);
+    FinalStep limit(int offset, int count);
 }

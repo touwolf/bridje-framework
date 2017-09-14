@@ -28,13 +28,13 @@ import org.bridje.sql.expr.SelectExpr;
 import org.bridje.sql.expr.TableExpr;
 import org.bridje.sql.flow.FromStep;
 import org.bridje.sql.flow.GroupByStep;
-import org.bridje.sql.flow.LimitStep;
-import org.bridje.sql.flow.OrderByStep;
 import org.bridje.sql.flow.SelectStep;
-import org.bridje.sql.flow.WhereStep;
-import org.bridje.sql.flow.FinalSelectStep;
+import org.bridje.sql.flow.SelectWhereStep;
+import org.bridje.sql.flow.OrderByStep;
+import org.bridje.sql.flow.SelectLimitStep;
+import org.bridje.sql.flow.SelectFinalStep;
 
-class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, GroupByStep, LimitStep
+class SelectBuilder implements SelectStep, FromStep, SelectWhereStep, OrderByStep, GroupByStep, SelectLimitStep
 {
     private final Expression<?>[] select;
 
@@ -92,7 +92,7 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
     }
 
     @Override
-    public WhereStep where(BooleanExpr<?> condition)
+    public SelectWhereStep where(BooleanExpr<?> condition)
     {
         this.where = condition;
         return this;
@@ -113,7 +113,7 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
     }
 
     @Override
-    public LimitStep having(BooleanExpr<?> condition)
+    public SelectLimitStep having(BooleanExpr<?> condition)
     {
         this.having = condition;
         return this;
@@ -126,14 +126,14 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
     }
 
     @Override
-    public FinalSelectStep limit(int offset)
+    public SelectFinalStep limit(int offset)
     {
         this.limit = new Limit(offset);
         return this;
     }
 
     @Override
-    public FinalSelectStep limit(int offset, int count)
+    public SelectFinalStep limit(int offset, int count)
     {
         this.limit = new Limit(offset, count);
         return this;

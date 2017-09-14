@@ -35,6 +35,11 @@ public class SQL
         return new InsertBuilder(table);
     }
 
+    public static final UpdateBuilder update(Table table)
+    {
+        return new UpdateBuilder(table);
+    }
+
     public static final ArithmeticExpr<Number> val(Number value)
     {
         return new Literal(value);

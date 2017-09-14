@@ -100,19 +100,22 @@ public class SQLBuilder
         return this;
     }
 
-    public void appendObjectName(String name)
+    public SQLBuilder appendObjectName(String name)
     {
         dialect.writeObjectName(builder, name);
+        return this;
     }
     
-    public void appendLimit(int offset, int count)
+    public SQLBuilder appendLimit(int offset, int count)
     {
         dialect.writeLimit(builder, offset, count);
+        return this;
     }
     
-    public void append(SQLWritable expression)
+    public SQLBuilder append(SQLWritable expression)
     {
         expression.writeSQL(this);
+        return this;
     }
 
     public void appendAll(SQLWritable[] expressions, String sep)
