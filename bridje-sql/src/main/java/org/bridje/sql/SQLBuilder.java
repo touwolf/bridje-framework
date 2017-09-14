@@ -28,7 +28,7 @@ public class SQLBuilder
     private final List<Object> parameters;
 
     private final SQLDialect dialect;
-    
+
     private boolean simpleColumnNames;
 
     public SQLBuilder(SQLDialect dialect)
@@ -47,7 +47,7 @@ public class SQLBuilder
     {
         this.simpleColumnNames = simpleColumnNames;
     }
-    
+
     public SQLDialect getDialect()
     {
         return dialect;
@@ -105,13 +105,13 @@ public class SQLBuilder
         dialect.writeObjectName(builder, name);
         return this;
     }
-    
+
     public SQLBuilder appendLimit(int offset, int count)
     {
         dialect.writeLimit(builder, offset, count);
         return this;
     }
-    
+
     public SQLBuilder append(SQLWritable expression)
     {
         expression.writeSQL(this);

@@ -28,14 +28,14 @@ enum Operators
     AND("AND"),
     OR("OR"),
     NOT("NOT");
-    
-    private String sql;
+
+    private final String sql;
 
     private Operators(String sql)
     {
         this.sql = sql;
     }
-    
+
     public String toSQL()
     {
         return sql;

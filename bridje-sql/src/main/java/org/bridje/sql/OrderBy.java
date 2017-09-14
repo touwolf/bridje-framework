@@ -17,7 +17,6 @@
 package org.bridje.sql;
 
 import org.bridje.sql.expr.SortType;
-import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.OrderExpr;
 
