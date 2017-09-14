@@ -16,9 +16,9 @@
 
 package org.bridje.sql.expr;
 
-import org.bridje.sql.dialect.SQLDialect;
+import org.bridje.sql.SQLBuilder;
 
 public interface SQLWritable
 {
-    void writeSQL(StringBuilder builder, SQLDialect dialect);
+    void writeSQL(SQLBuilder builder);
 }

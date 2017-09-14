@@ -18,7 +18,7 @@ package org.bridje.sql.flow;
 
 import org.bridje.sql.expr.OrderExpr;
 
-public interface OrderByStep extends FetchStep
+public interface OrderByStep extends LimitStep
 {
     GroupByStep groupBy(OrderExpr... columns);
 }

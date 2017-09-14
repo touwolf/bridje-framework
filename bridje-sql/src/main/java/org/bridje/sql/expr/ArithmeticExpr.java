@@ -27,4 +27,14 @@ public interface ArithmeticExpr<T> extends Expression<T>
     ArithmeticExpr<T> div(ArithmeticExpr<T> operand);
     
     ArithmeticExpr<T> mod(ArithmeticExpr<T> operand);
+    
+    ArithmeticExpr<T> plus(T operand);
+
+    ArithmeticExpr<T> minus(T operand);
+
+    ArithmeticExpr<T> mul(T operand);
+    
+    ArithmeticExpr<T> div(T operand);
+    
+    ArithmeticExpr<T> mod(T operand);
 }

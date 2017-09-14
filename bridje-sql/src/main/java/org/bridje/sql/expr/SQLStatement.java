@@ -14,14 +14,33 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.expr;
 
-import org.bridje.sql.expr.SQLWritable;
-
-public class SQLUtils
+public class SQLStatement
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
+    private final String query;
 
+    private final Object[] parameters;
+
+    public SQLStatement(String query, Object[] parameters)
+    {
+        this.query = query;
+        this.parameters = parameters;
+    }
+
+    public String getQuery()
+    {
+        return query;
+    }
+
+    public Object[] getParameters()
+    {
+        return parameters;
+    }
+
+    @Override
+    public String toString()
+    {
+        return query;
     }
 }

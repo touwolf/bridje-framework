@@ -46,9 +46,9 @@ public class OrderBy implements OrderExpr
     }
 
     @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
+    public void writeSQL(SQLBuilder builder)
     {
-        column.writeSQL(builder, dialect);
+        column.writeSQL(builder);
         if(type != null)
         {
             builder.append(' ');

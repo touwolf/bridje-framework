@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.expr;
 
-import org.bridje.sql.expr.SQLWritable;
-
-public class SQLUtils
+public interface LimitExpr extends SQLWritable
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
+    int getOffset();
 
-    }
+    int getCount();
 }

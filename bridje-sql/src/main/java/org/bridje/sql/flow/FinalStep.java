@@ -16,21 +16,10 @@
 
 package org.bridje.sql.flow;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.sql.DataSource;
-import org.bridje.sql.SelectQuery;
+import org.bridje.sql.dialect.SQLDialect;
+import org.bridje.sql.expr.SQLStatement;
 
-public interface FetchStep
+public interface FinalStep
 {
-    SelectQuery toQuery();
-
-    ResultSet fetchAll(DataSource ds) throws SQLException;
-
-    ResultSet fetchOne(DataSource ds) throws SQLException;
-
-    ResultSet fetchAll(Connection ds) throws SQLException;
-
-    ResultSet fetchOne(Connection ds) throws SQLException;
+    SQLStatement toSQL(SQLDialect dialect);
 }

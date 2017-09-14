@@ -52,12 +52,12 @@ public class Join implements SQLWritable
     }
 
     @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
+    public void writeSQL(SQLBuilder builder)
     {
         builder.append(type.name());
         builder.append(" JOIN ");
-        table.writeSQL(builder, dialect);
+        table.writeSQL(builder);
         builder.append(" ON ");
-        on.writeSQL(builder, dialect);
+        on.writeSQL(builder);
     }
 }

@@ -16,14 +16,56 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
 import org.bridje.sql.expr.ArithmeticExpr;
+import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.Expression;
+import org.bridje.sql.expr.OrderExpr;
+import org.bridje.sql.expr.SortType;
+import org.bridje.sql.expr.StringExpr;
 
-public class NumberColumn<T> extends Column<T> implements ArithmeticExpr<T>
+abstract class ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
-    public NumberColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType)
+
+    @Override
+    public BooleanExpr<T> and(BooleanExpr<T> operand)
     {
-        super(table, name, allowNull, jdbcType, javaType);
+        return new BinaryExpr<>(this, Operators.AND, operand);
+    }
+
+    @Override
+    public BooleanExpr<T> or(BooleanExpr<T> operand)
+    {
+        return new BinaryExpr<>(this, Operators.OR, operand);
+    }
+
+    @Override
+    public BooleanExpr<T> not()
+    {
+        return new UnaryExpr<>(Operators.NOT, this);
+    }
+
+    @Override
+    public BooleanExpr<Boolean> eq(Expression<T> operand)
+    {
+        return new BinaryExpr<>(this, Operators.EQ, operand);
+    }
+
+    @Override
+    public BooleanExpr<Boolean> ne(Expression<T> operand)
+    {
+        return new BinaryExpr<>(this, Operators.NE, operand);
+    }
+
+    @Override
+    public StringExpr<T> trim()
+    {
+        return new FunctionExpr("trim", this);
+    }
+
+    @Override
+    public ArithmeticExpr<Integer> length()
+    {
+        return new FunctionExpr("length", this);
     }
 
     @Override
@@ -84,5 +126,17 @@ public class NumberColumn<T> extends Column<T> implements ArithmeticExpr<T>
     public ArithmeticExpr<T> mod(T operand)
     {
         return new BinaryExpr<>(this, Operators.MOD, new Literal<>(operand));
+    }
+    
+    @Override
+    public OrderExpr asc()
+    {
+        return new OrderBy(SortType.ASC, this);
+    }
+
+    @Override
+    public OrderExpr desc()
+    {
+        return new OrderBy(SortType.DESC, this);
     }
 }

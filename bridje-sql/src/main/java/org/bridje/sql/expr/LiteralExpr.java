@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.expr;
 
-import org.bridje.sql.expr.SQLWritable;
-
-public class SQLUtils
+public interface LiteralExpr<T> extends Expression<T>
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
-
-    }
+    T getValue();
 }

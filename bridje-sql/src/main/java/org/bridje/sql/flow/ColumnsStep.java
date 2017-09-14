@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.SQLWritable;
+import org.bridje.sql.expr.SelectExpr;
 
-public class SQLUtils
+public interface ColumnsStep extends ValuesStep
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
-
-    }
+    FinalStep select(SelectExpr table);
 }

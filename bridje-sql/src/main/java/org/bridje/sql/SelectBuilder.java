@@ -16,24 +16,25 @@
 
 package org.bridje.sql;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sql.DataSource;
+import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.Expression;
+import org.bridje.sql.expr.LimitExpr;
 import org.bridje.sql.expr.OrderExpr;
+import org.bridje.sql.expr.SQLStatement;
+import org.bridje.sql.expr.SelectExpr;
 import org.bridje.sql.expr.TableExpr;
-import org.bridje.sql.flow.FetchStep;
 import org.bridje.sql.flow.FromStep;
 import org.bridje.sql.flow.GroupByStep;
+import org.bridje.sql.flow.LimitStep;
 import org.bridje.sql.flow.OrderByStep;
 import org.bridje.sql.flow.SelectStep;
 import org.bridje.sql.flow.WhereStep;
+import org.bridje.sql.flow.FinalSelectStep;
 
-class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, GroupByStep
+class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, GroupByStep, LimitStep
 {
     private final Expression<?>[] select;
 
@@ -48,6 +49,8 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
     private OrderExpr[] groupBys;
 
     private BooleanExpr<?> having;
+
+    private LimitExpr limit;
 
     public SelectBuilder(Expression<?>[] select)
     {
@@ -110,38 +113,42 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
     }
 
     @Override
-    public FetchStep having(BooleanExpr<?> condition)
+    public LimitStep having(BooleanExpr<?> condition)
     {
         this.having = condition;
         return this;
     }
 
     @Override
-    public ResultSet fetchAll(DataSource ds) throws SQLException
+    public SelectExpr asTable()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return toSelectQuery();
     }
 
     @Override
-    public ResultSet fetchOne(DataSource ds) throws SQLException
+    public FinalSelectStep limit(int offset)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.limit = new Limit(offset);
+        return this;
     }
 
     @Override
-    public ResultSet fetchAll(Connection ds) throws SQLException
+    public FinalSelectStep limit(int offset, int count)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.limit = new Limit(offset, count);
+        return this;
     }
 
     @Override
-    public ResultSet fetchOne(Connection ds) throws SQLException
+    public SQLStatement toSQL(SQLDialect dialect)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SQLBuilder builder = new SQLBuilder(dialect);
+        toSelectQuery().writeSQL(builder);
+        String query = builder.toString();
+        return new SQLStatement(query, builder.getParameters().toArray());
     }
 
-    @Override
-    public SelectQuery toQuery()
+    private SelectQuery toSelectQuery()
     {
         Join[] joins = null;
         if(joinsLst != null)
@@ -149,6 +156,6 @@ class SelectBuilder implements SelectStep, FromStep, WhereStep, OrderByStep, Gro
             joins = new Join[joinsLst.size()];
             joinsLst.toArray(joins);
         }
-        return new SelectQuery(select, from, joins, where, orderBys, groupBys, having);
+        return new SelectQuery(select, from, joins, where, orderBys, groupBys, having, limit);
     }
 }

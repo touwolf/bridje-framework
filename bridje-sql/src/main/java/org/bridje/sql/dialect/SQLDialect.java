@@ -18,5 +18,7 @@ package org.bridje.sql.dialect;
 
 public interface SQLDialect
 {
-    void renderObjectName(StringBuilder builder, String name);
+    void writeObjectName(StringBuilder builder, String name);
+
+    void writeLimit(StringBuilder builder, int offset, int count);
 }

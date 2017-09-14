@@ -19,17 +19,14 @@ package org.bridje.sql;
 import org.bridje.sql.expr.ArithmeticExpr;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.Expression;
-import org.bridje.sql.dialect.SQLDialect;
-import org.bridje.sql.expr.OrderExpr;
-import org.bridje.sql.expr.SortType;
 import org.bridje.sql.expr.StringExpr;
 
-class BinaryExpr<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
+class BinaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
     private final Expression<?> operand1;
-    
+
     private final Operators operator;
-    
+
     private final Expression<?> operand2;
 
     public BinaryExpr(Expression<?> operand1, Operators operator, Expression<?> operand2)
@@ -55,96 +52,14 @@ class BinaryExpr<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
     }
 
     @Override
-    public BooleanExpr<T> and(BooleanExpr<T> operand)
+    public void writeSQL(SQLBuilder builder)
     {
-        return new BinaryExpr<>(this, Operators.AND, operand);
-    }
-
-    @Override
-    public BooleanExpr<T> or(BooleanExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.OR, operand);
-    }
-
-    @Override
-    public BooleanExpr<T> not()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public BooleanExpr<Boolean> eq(Expression<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.EQ, operand);
-    }
-
-    @Override
-    public BooleanExpr<Boolean> ne(Expression<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.NE, operand);
-    }
-
-    @Override
-    public StringExpr<T> trim()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArithmeticExpr<Integer> length()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArithmeticExpr<T> plus(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.PLUS, operand);
-    }
-
-    @Override
-    public ArithmeticExpr<T> minus(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MINUS, operand);
-    }
-
-    @Override
-    public ArithmeticExpr<T> mul(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MULT, operand);
-    }
-
-    @Override
-    public ArithmeticExpr<T> div(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.DIV, operand);
-    }
-
-    @Override
-    public ArithmeticExpr<T> mod(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MOD, operand);
-    }
-
-    @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
-    {
-        operand1.writeSQL(builder, dialect);
-        builder.append(" ");
+        builder.append('(');
+        builder.append(operand1);
+        builder.append(' ');
         builder.append(operator.toSQL());
-        builder.append(" ");
-        operand1.writeSQL(builder, dialect);
-    }
-
-    @Override
-    public OrderExpr asc()
-    {
-        return new OrderBy(SortType.ASC, this);
-    }
-
-    @Override
-    public OrderExpr desc()
-    {
-        return new OrderBy(SortType.DESC, this);
+        builder.append(' ');
+        builder.append(operand1);
+        builder.append(')');
     }
 }

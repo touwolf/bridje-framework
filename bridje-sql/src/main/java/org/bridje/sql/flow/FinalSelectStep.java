@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.SQLWritable;
+import org.bridje.sql.expr.SelectExpr;
 
-public class SQLUtils
+public interface FinalSelectStep extends FinalStep
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
-
-    }
+    SelectExpr asTable();
 }

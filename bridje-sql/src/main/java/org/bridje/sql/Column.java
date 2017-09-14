@@ -20,7 +20,6 @@ import java.sql.JDBCType;
 import java.util.Objects;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.Expression;
-import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.OrderExpr;
 import org.bridje.sql.expr.SortType;
 
@@ -119,11 +118,14 @@ public class Column<T> implements Expression<T>
     }
 
     @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
+    public void writeSQL(SQLBuilder builder)
     {
-        table.writeSQL(builder, dialect);
-        builder.append('.');
-        dialect.renderObjectName(builder, name);
+        if(!builder.isSimpleColumnNames())
+        {
+            table.writeSQL(builder);
+            builder.append('.');
+        }
+        builder.appendObjectName(name);
     }
 
     @Override

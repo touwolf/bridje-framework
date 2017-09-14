@@ -19,10 +19,22 @@ package org.bridje.sql.dialect;
 public class MySQLDialect implements SQLDialect
 {
     @Override
-    public void renderObjectName(StringBuilder builder, String name)
+    public void writeObjectName(StringBuilder builder, String name)
     {
         builder.append('`');
         builder.append(name);
         builder.append('`');
+    }
+
+    @Override
+    public void writeLimit(StringBuilder builder, int offset, int count)
+    {
+        builder.append(" LIMIT ");
+        builder.append(offset);
+        if(count > 0)
+        {
+            builder.append(", ");
+            builder.append(count);
+        }
     }
 }

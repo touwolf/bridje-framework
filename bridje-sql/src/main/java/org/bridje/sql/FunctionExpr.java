@@ -16,26 +16,29 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
 import org.bridje.sql.expr.ArithmeticExpr;
+import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.StringExpr;
 
-public class StringColumn<T> extends Column<T> implements StringExpr<T>
+class FunctionExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
-    public StringColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType)
+    private final String name;
+
+    private final Expression<?>[] params;
+
+    public FunctionExpr(String name, Expression<?>... params)
     {
-        super(table, name, allowNull, jdbcType, javaType);
+        this.name = name;
+        this.params = params;
     }
 
     @Override
-    public StringExpr<T> trim()
+    public void writeSQL(SQLBuilder builder)
     {
-        return new FunctionExpr("trim", this);
-    }
-
-    @Override
-    public ArithmeticExpr<Integer> length()
-    {
-        return new FunctionExpr("length", this);
+        builder.append(name);
+        builder.append('(');
+        builder.appendAll(params, ", ");
+        builder.append(')');
     }
 }

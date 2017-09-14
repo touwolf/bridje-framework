@@ -18,7 +18,7 @@ package org.bridje.sql.flow;
 
 import org.bridje.sql.expr.BooleanExpr;
 
-public interface GroupByStep extends FetchStep
+public interface GroupByStep extends LimitStep
 {
-    FetchStep having(BooleanExpr<?> condition);
+    LimitStep having(BooleanExpr<?> condition);
 }

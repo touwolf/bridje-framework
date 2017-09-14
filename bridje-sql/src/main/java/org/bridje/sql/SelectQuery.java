@@ -19,10 +19,12 @@ package org.bridje.sql;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.dialect.SQLDialect;
+import org.bridje.sql.expr.LimitExpr;
 import org.bridje.sql.expr.OrderExpr;
+import org.bridje.sql.expr.SelectExpr;
 import org.bridje.sql.expr.TableExpr;
 
-public class SelectQuery implements TableExpr
+public class SelectQuery implements SelectExpr
 {
     private final Expression<?>[] columns;
 
@@ -37,8 +39,10 @@ public class SelectQuery implements TableExpr
     private final OrderExpr[] groupBys;
 
     private final BooleanExpr<?> having;
+    
+    private final LimitExpr limit;
 
-    public SelectQuery(Expression<?>[] columns, TableExpr from, Join[] joins, BooleanExpr<?> where, OrderExpr[] orderBys, OrderExpr[] groupBys, BooleanExpr<?> having)
+    SelectQuery(Expression<?>[] columns, TableExpr from, Join[] joins, BooleanExpr<?> where, OrderExpr[] orderBys, OrderExpr[] groupBys, BooleanExpr<?> having, LimitExpr limit)
     {
         this.columns = columns;
         this.from = from;
@@ -47,6 +51,7 @@ public class SelectQuery implements TableExpr
         this.orderBys = orderBys;
         this.groupBys = groupBys;
         this.having = having;
+        this.limit = limit;
     }
 
     public Expression<?>[] getColumns()
@@ -84,50 +89,56 @@ public class SelectQuery implements TableExpr
         return having;
     }
 
+    public LimitExpr getLimit()
+    {
+        return limit;
+    }
+
     public String toSQL(SQLDialect dialect)
     {
-        StringBuilder sb = new StringBuilder();
-        writeSQL(sb, dialect);
-        return sb.toString();
+        SQLBuilder builder = new SQLBuilder(dialect);
+        builder.append(this);
+        return builder.toString();
     }
 
     @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
+    public void writeSQL(SQLBuilder builder)
     {
         builder.append("SELECT ");
-        SQLUtils.printCommaSep(builder, dialect, columns);
+        builder.appendAll(columns, ", ");
         if(from != null)
         {
             builder.append(" FROM ");
-            from.writeSQL(builder, dialect);
+            builder.append(from);
         }
         if(joins != null)
         {
-            for (Join join : joins)
-            {
-                builder.append(' ');
-                join.writeSQL(builder, dialect);
-            }
+            builder.append(' ');
+            builder.appendAll(joins, " ");
         }
         if(where != null)
         {
             builder.append(" WHERE ");
-            where.writeSQL(builder, dialect);
+            builder.append(where);
         }
         if(orderBys != null)
         {
             builder.append(" ORDER BY ");
-            SQLUtils.printCommaSep(builder, dialect, orderBys);
+            builder.appendAll(orderBys, ", ");
         }
         if(groupBys != null)
         {
             builder.append(" GROUP BY ");
-            SQLUtils.printCommaSep(builder, dialect, groupBys);
+            builder.appendAll(groupBys, ", ");
         }
         if(having != null)
         {
             builder.append(" HAVING ");
-            having.writeSQL(builder, dialect);
+            builder.append(having);
+        }
+        if(limit != null)
+        {
+            builder.append(limit);
         }
     }
 }

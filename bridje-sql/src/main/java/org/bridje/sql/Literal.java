@@ -16,12 +16,30 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.SQLWritable;
+import org.bridje.sql.expr.ArithmeticExpr;
+import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.LiteralExpr;
+import org.bridje.sql.expr.StringExpr;
 
-public class SQLUtils
+class Literal<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>, LiteralExpr<T>
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
+    private final T value;
 
+    public Literal(T value)
+    {
+        this.value = value;
+    }
+
+    @Override
+    public T getValue()
+    {
+        return value;
+    }
+
+    @Override
+    public void writeSQL(SQLBuilder builder)
+    {
+        builder.getParameters().add(value);
+        builder.append('?');
     }
 }

@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.flow;
 
-import org.bridje.sql.expr.SQLWritable;
-
-public class SQLUtils
+public interface LimitStep extends FinalSelectStep
 {
-    public static void printCommaSep(SQLBuilder builder, SQLWritable[] expressions)
-    {
+    FinalSelectStep limit(int offset);
 
-    }
+    FinalSelectStep limit(int offset, int count);
 }

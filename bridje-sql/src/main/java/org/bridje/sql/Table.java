@@ -17,7 +17,6 @@
 package org.bridje.sql;
 
 import java.util.Objects;
-import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.TableExpr;
 
 public class Table implements TableExpr
@@ -72,8 +71,8 @@ public class Table implements TableExpr
     }
 
     @Override
-    public void writeSQL(StringBuilder builder, SQLDialect dialect)
+    public void writeSQL(SQLBuilder builder)
     {
-        dialect.renderObjectName(builder, name);
+        builder.appendObjectName(name);
     }
 }

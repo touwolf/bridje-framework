@@ -18,6 +18,7 @@ package org.bridje.sql;
 
 import java.sql.JDBCType;
 import org.bridje.sql.dialect.MySQLDialect;
+import org.bridje.sql.expr.SQLStatement;
 
 public class Test
 {
@@ -28,14 +29,19 @@ public class Test
         StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class);
         BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class);
         MySQLDialect mysql = new MySQLDialect();
-        String sql = SQL.select(email, password, active)
+        SQLStatement sql = SQL.select(email, password, active)
                             .from(users)
                             .innerJoin(users, email.eq(password))
                             .where(email.ne(password).and(active))
                             .orderBy(email.asc(), password.desc())
                             .groupBy(active.asc())
-                            .toQuery()
+                            .limit(0, 10)
                             .toSQL(mysql);
         System.out.println(sql);
+        SQLStatement sql1 = SQL.insertInto(users)
+                .columns(email, password, active)
+                .values("gilberto.vento@hotmail.com", "xtjjc531", true)
+                .toSQL(mysql);
+        System.out.println(sql1);
     }
 }
