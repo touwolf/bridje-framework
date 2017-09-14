@@ -40,7 +40,7 @@ public class Test
         System.out.println(sql);
         SQLStatement sql1 = SQL.insertInto(users)
                             .columns(email, password, active)
-                            .values("gilberto.vento@hotmail.com", "xtjjc531", true)
+                            .values("gilberto.vento@hotmail.com", "somepass", true)
                             .toSQL(mysql);
         System.out.println(sql1);
     }
