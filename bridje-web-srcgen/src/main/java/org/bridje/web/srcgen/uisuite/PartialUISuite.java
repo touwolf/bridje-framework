@@ -25,14 +25,38 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
+import org.w3c.dom.Document;
 
 /**
  * A partial UI suite definition.
  */
 @XmlRootElement(name = "partialuisuite")
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder={
+    "includes",
+    "standalone",
+    "defines",
+    "resources",
+    "ftlImports",
+    "ftlMacros",
+    "ftlFunctions",
+    "ftlIncludes",
+    "templates",
+    "controls",
+    "enums"
+})
 public class PartialUISuite extends UISuiteBase
 {
     /**
@@ -71,12 +95,24 @@ public class PartialUISuite extends UISuiteBase
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.
+     * @throws javax.xml.parsers.ParserConfigurationException
+     * @throws javax.xml.transform.TransformerConfigurationException
      */
-    public static void save(OutputStream os, PartialUISuite object) throws JAXBException
+    public static void save(OutputStream os, PartialUISuite object) throws JAXBException, ParserConfigurationException, TransformerConfigurationException, TransformerException
     {
         JAXBContext ctx = JAXBContext.newInstance(PartialUISuite.class);
         Marshaller marshaller = ctx.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(object, os);
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        Document document = docBuilderFactory.newDocumentBuilder().newDocument();
+        marshaller.marshal(object, document);
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer nullTransformer = transformerFactory.newTransformer();
+        nullTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        nullTransformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC,"yes");
+        nullTransformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        nullTransformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, "render renderHead renderBody renderView");
+        nullTransformer.transform(new DOMSource(document), new StreamResult(os));
     }
 }
