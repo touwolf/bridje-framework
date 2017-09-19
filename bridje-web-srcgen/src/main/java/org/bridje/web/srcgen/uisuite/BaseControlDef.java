@@ -164,6 +164,17 @@ public class BaseControlDef
         return allFields;
     }
 
+    public List<ControlFtlMacro> getDeclaredMacros()
+    {
+        return macros;
+    }
+
+    public void setDeclaredMacros(List<ControlFtlMacro> macros)
+    {
+        this.macros = macros;
+        allMacros = null;
+    }
+    
     /**
      * Gets the macros asociated with this control.
      * 
@@ -363,6 +374,21 @@ public class BaseControlDef
                     .stream()
                     .filter(p -> names.contains(p.getName()))
                     .collect(Collectors.toList());
+    }
+    
+    /**
+     * 
+     * @param templates 
+     */
+    public void setTemplates(List<TemplateControlDef> templates)
+    {
+        StringBuilder strBuilder = new StringBuilder();
+        for (TemplateControlDef template : templates)
+        {
+            strBuilder.append(template.getName());
+            strBuilder.append(" ");
+        }
+        this.templates = strBuilder.toString();
     }
 
     /**

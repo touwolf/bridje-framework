@@ -125,6 +125,15 @@ public class ControlDef extends BaseControlDef
     }
 
     /**
+     * 
+     * @param render 
+     */
+    public void setRender(String render)
+    {
+        this.render = render;
+    }
+
+    /**
      * Changes the names of the macros called in this ftl segment so they fit 
      * the real names print in the Theme template.
      * 

@@ -91,44 +91,115 @@
             </mappings>
         </object>
         <object name="FtlMacroModel">
+            <properties>
+                <property type="String" name="name" />
+                <property type="String" name="params" />
+                <property type="String" name="content" />
+            </properties>
             <mappings>
                 <mapping target="FtlMacro">
+                    <property target="name" />
+                    <property target="params" />
+                    <property target="content" />
                 </mapping>
             </mappings>
         </object>
         <object name="FtlFunctionModel">
+            <properties>
+                <property type="String" name="name" />
+                <property type="String" name="params" />
+                <property type="String" name="content" />
+            </properties>
             <mappings>
                 <mapping target="FtlFunction">
+                    <property target="name" />
+                    <property target="params" />
+                    <property target="content" />
                 </mapping>
             </mappings>
         </object>
         <object name="FtlImportModel">
+            <properties>
+                <property type="String" name="file" />
+                <property type="String" name="name" />
+            </properties>
             <mappings>
                 <mapping target="FtlImport">
+                    <property target="file" />
+                    <property target="name" />
                 </mapping>
             </mappings>
         </object>
         <object name="ResourceModel">
+            <properties>
+                <property type="String" name="name" />
+            </properties>
             <mappings>
                 <mapping target="Resource">
+                    <property target="name" />
                 </mapping>
             </mappings>
         </object>
-        <object name="ControlDefModel">
+        <object name="ControlFtlMacroModel">
+            <properties>
+                <property type="String" name="name" />
+                <property type="String" name="params" />
+                <property type="String" name="content" />
+            </properties>
             <mappings>
-                <mapping target="ControlDef">
+                <mapping target="ControlFtlMacro">
+                    <property target="name" />
+                    <property target="params" />
+                    <property target="content" />
                 </mapping>
             </mappings>
         </object>
-        <object name="TemplateControlDefModel">
+        <object name="BaseControlDefModel">
+            <properties>
+                <property type="String" name="name" />
+                <observableList type="TemplateControlDefModel" name="templates" />
+                <observableList type="ControlFtlMacroModel" name="macros" />
+                <observableList type="ResourceModel" name="resources" />
+            </properties>
             <mappings>
-                <mapping target="TemplateControlDef">
+                <mapping target="BaseControlDef">
+                    <property target="name" />
+                    <property target="templates" type="TemplateControlDef" />
+                    <property target="declaredMacros" source="macros" type="ControlFtlMacro" />
+                </mapping>
+            </mappings>
+        </object>
+        <object name="ControlDefModel" base="BaseControlDefModel">
+            <properties>
+                <property type="String" name="base" />
+                <property type="Boolean" name="isTransient" />
+                <property type="String" name="render" />
+            </properties>
+            <mappings>
+                <mapping target="ControlDef" base="BaseControlDef">
+                    <property target="baseName" source="base" />
+                    <property target="isTransient" />
+                    <property target="render" />
+                </mapping>
+            </mappings>
+        </object>
+        <object name="TemplateControlDefModel" base="BaseControlDefModel">
+            <properties>
+            </properties>
+            <mappings>
+                <mapping target="TemplateControlDef" base="BaseControlDef">
                 </mapping>
             </mappings>
         </object>
         <object name="ControlEnumModel">
+            <properties>
+                <property type="String" name="name" />
+                <property type="String" name="description" />
+            </properties>
             <mappings>
                 <mapping target="ControlEnum">
+                    <property target="name" />
+                    <property target="description" />
                 </mapping>
             </mappings>
         </object>
