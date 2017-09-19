@@ -21,10 +21,13 @@
         <icon name="save" file="save.png" />
         <icon name="uisuite" file="uisuite.png" />
         <icon name="field" file="field.png" />
+        <icon name="partialUISuite" file="partial-uisuite.png" />
+        <icon name="include" file="include.png" />
+        <icon name="ftlMacro" file="ftl-macro.png" />
+        <icon name="ftlFunction" file="ftl-function.png" />
     </icons>
 
     <properties>
-        <observableList type="UISuiteModel" name="suites" />
     </properties>
 
     <objects>
@@ -35,8 +38,8 @@
             <properties>
                 <property type="VFile" name="file" />
                 <observableList type="String" name="includes" />
-                <observableList type="FtlMacroModel" name="ftlMacros" />
-                <observableList type="FtlFunctionModel" name="ftlFunctions" />
+                <observableList type="FtlElementModel" name="ftlMacros" />
+                <observableList type="FtlElementModel" name="ftlFunctions" />
                 <observableList type="FtlImportModel" name="ftlImports" />
                 <observableList type="String" name="ftlIncludes" />
                 <observableList type="ResourceModel" name="resources" />
@@ -90,7 +93,7 @@
                 </mapping>
             </mappings>
         </object>
-        <object name="FtlMacroModel">
+        <object name="FtlElementModel">
             <properties>
                 <property type="String" name="name" />
                 <property type="String" name="params" />
@@ -102,15 +105,6 @@
                     <property target="params" />
                     <property target="content" />
                 </mapping>
-            </mappings>
-        </object>
-        <object name="FtlFunctionModel">
-            <properties>
-                <property type="String" name="name" />
-                <property type="String" name="params" />
-                <property type="String" name="content" />
-            </properties>
-            <mappings>
                 <mapping target="FtlFunction">
                     <property target="name" />
                     <property target="params" />

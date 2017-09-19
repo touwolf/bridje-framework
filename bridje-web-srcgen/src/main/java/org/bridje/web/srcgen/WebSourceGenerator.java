@@ -28,8 +28,8 @@ import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
 import org.bridje.web.srcgen.editor.ModelUtils;
-import org.bridje.web.srcgen.editor.PartialUISuiteTreeItem;
-import org.bridje.web.srcgen.editor.UISuiteTreeItem;
+import org.bridje.web.srcgen.editor.UISuiteBaseTreeItem;
+import org.bridje.web.srcgen.editor.UISuitesModel;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.ControlEnum;
 import org.bridje.web.srcgen.uisuite.PartialUISuite;
@@ -123,18 +123,18 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     {
         try
         {
+            UISuiteBaseTreeItem result = null;
             UISuite suite = srcGen.readFile(file, UISuite.class);
             if(suite != null)
             {
-                UISuiteTreeItem result = new UISuiteTreeItem(ModelUtils.toModel(suite, file));
-                return result;
+                result = new UISuiteBaseTreeItem(ModelUtils.toModel(suite, file), UISuitesModel.uisuite(16));
             }
             PartialUISuite partialSuite = srcGen.readFile(file, PartialUISuite.class);
             if(partialSuite != null)
             {
-                PartialUISuiteTreeItem result = new PartialUISuiteTreeItem(ModelUtils.toModel(partialSuite, file));
-                return result;
+                result = new UISuiteBaseTreeItem(ModelUtils.toModel(partialSuite, file), UISuitesModel.partialUISuite(16));
             }
+            return result;
         }
         catch (IOException e)
         {

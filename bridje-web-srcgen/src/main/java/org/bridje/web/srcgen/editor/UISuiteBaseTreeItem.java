@@ -20,19 +20,25 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
+import org.bridje.ioc.Ioc;
 import org.bridje.jfx.utils.JfxUtils;
 import org.bridje.srcgen.editor.EditorTreeItem;
 
-public final class UISuiteTreeItem extends EditorTreeItem
+public final class UISuiteBaseTreeItem extends EditorTreeItem
 {
-    private final UISuiteModel suite;
+    private final UISuiteBaseModel suite;
 
-    public UISuiteTreeItem(UISuiteModel suite)
+    public UISuiteBaseTreeItem(UISuiteBaseModel suite, ImageView img)
     {
-        super(suite.getFile().getName(), UISuitesModel.uisuite(16));
+        super(suite.getFile().getName(), img);
         this.suite = suite;
         setContextMenu(createContextMenu());
         setToolBar(createToolBar());
+        getChildren().addAll(
+                new IncludesTreeItem(suite),
+                new FtlElementsTreeItem("Macros", suite.getFtlMacros(), UISuitesModel.ftlMacro(16)),
+                new FtlElementsTreeItem("Functions", suite.getFtlFunctions(), UISuitesModel.ftlFunction(16)));
     }
 
     private ContextMenu createContextMenu()
@@ -51,12 +57,20 @@ public final class UISuiteTreeItem extends EditorTreeItem
 
     public void saveModel(ActionEvent event)
     {
-        ModelUtils.save(suite);
+        if(suite instanceof UISuiteModel)
+        {
+            ModelUtils.save((UISuiteModel)suite);
+        }
+
+        if(suite instanceof PartialUISuiteModel)
+        {
+            ModelUtils.save((PartialUISuiteModel)suite);
+        }
     }
 
     @Override
     public Node edit()
     {
-        return null;
+        return Ioc.context().find(UISuiteEditor.class);
     }
 }

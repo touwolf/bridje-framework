@@ -74,4 +74,17 @@ public class JfxUtils
         mi.setOnAction(handler);
         return mi;
     }
+
+    /**
+     * 
+     * @param icon
+     * @return 
+     */
+    public static ImageView copyImageView(ImageView icon)
+    {
+        ImageView img = new ImageView(icon.getImage());
+        img.setFitWidth(icon.getFitWidth());
+        img.setFitHeight(icon.getFitHeight());
+        return img;
+    }
 }
