@@ -164,7 +164,6 @@
             <mappings>
                 <mapping target="BaseControlDef">
                     <property target="name" />
-                    <property target="templates" type="TemplateControlDef" />
                     <property target="declaredMacros" source="macros" type="ControlFtlMacro" />
                 </mapping>
             </mappings>

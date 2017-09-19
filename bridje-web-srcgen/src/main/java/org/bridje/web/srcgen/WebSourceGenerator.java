@@ -132,7 +132,7 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
             PartialUISuite partialSuite = srcGen.readFile(file, PartialUISuite.class);
             if(partialSuite != null)
             {
-                PartialUISuiteTreeItem result = new PartialUISuiteTreeItem(ModelUtils.toPartialModel(partialSuite, file));
+                PartialUISuiteTreeItem result = new PartialUISuiteTreeItem(ModelUtils.toModel(partialSuite, file));
                 return result;
             }
         }

@@ -51,7 +51,7 @@ public final class PartialUISuiteTreeItem extends EditorTreeItem
 
     public void saveModel(ActionEvent event)
     {
-        //ModelUtils.saveUISuite(suite);
+        ModelUtils.save(suite);
     }
 
     @Override

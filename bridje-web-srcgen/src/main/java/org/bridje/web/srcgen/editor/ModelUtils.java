@@ -23,12 +23,9 @@ import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.srcgen.uisuite.PartialUISuite;
-import org.bridje.web.srcgen.uisuite.Resource;
-import org.bridje.web.srcgen.uisuite.StandaloneDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
@@ -43,16 +40,11 @@ public class ModelUtils
      * 
      * @param uiSuite The model to save.
      */
-    public static void saveUISuite(UISuiteModel uiSuite)
+    public static void save(UISuiteModel uiSuite)
     {
         if(uiSuite == null) return;
         if(uiSuite.getName() != null)
         {
-            if(uiSuite.getFile() == null)
-            {
-                uiSuite.setFile(new VFile(SrcGenService.DATA_PATH.join(uiSuite.getName() + ".xml")));
-                uiSuite.getFile().createNewFile();
-            }
             UISuite data = ModelUtils.fromModel(uiSuite);
             try(OutputStream os = new VFileOutputStream(uiSuite.getFile()))
             {
@@ -62,6 +54,25 @@ public class ModelUtils
             {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
+        }
+    }
+    
+    /**
+     * Converts the given model to its raw form and save it to its file.
+     * 
+     * @param uiSuite The model to save.
+     */
+    public static void save(PartialUISuiteModel uiSuite)
+    {
+        if(uiSuite == null) return;
+        PartialUISuite data = ModelUtils.fromModel(uiSuite);
+        try(OutputStream os = new VFileOutputStream(uiSuite.getFile()))
+        {
+            PartialUISuite.save(os, data);
+        }
+        catch(ParserConfigurationException | TransformerException | JAXBException | IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -74,14 +85,8 @@ public class ModelUtils
      */
     public static UISuiteModel toModel(UISuite suite, VFile file)
     {
-        UISuiteModel result = new UISuiteModel();
+        UISuiteModel result = UISuiteModel.fromUISuite(suite);
         result.setFile(file);
-        result.setName(suite.getName());
-        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
-        result.setDefines(standaloneToModel(suite.getDefines()));
-        result.setStandalone(standaloneToModel(suite.getStandalone()));
-        
-        
         return result;
     }
 
@@ -92,9 +97,9 @@ public class ModelUtils
      * @param file The file that the model was readed from.
      * @return The new UISuiteModel object.
      */
-    public static PartialUISuiteModel toPartialModel(PartialUISuite partialSuite, VFile file)
+    public static PartialUISuiteModel toModel(PartialUISuite partialSuite, VFile file)
     {
-        PartialUISuiteModel result = new PartialUISuiteModel();
+        PartialUISuiteModel result = PartialUISuiteModel.fromPartialUISuite(partialSuite);
         result.setFile(file);
         
         return result;
@@ -108,22 +113,21 @@ public class ModelUtils
      */
     public static UISuite fromModel(UISuiteModel suiteModel)
     {
-        UISuite result = new UISuite();
+        UISuite result = UISuiteModel.toUISuite(suiteModel);
 
         return result;
     }
 
-    private static ResourceModel resourceToModel(Resource res)
+    /**
+     * Writes the given model to an UISuite object.
+     * 
+     * @param suiteModel The model to write the UISuite object.
+     * @return The new UISuite object.
+     */
+    public static PartialUISuite fromModel(PartialUISuiteModel suiteModel)
     {
-        ResourceModel resModel = new ResourceModel();
-        
-        return resModel;
-    }
+        PartialUISuite result = PartialUISuiteModel.toPartialUISuite(suiteModel);
 
-    private static StandaloneDefModel standaloneToModel(StandaloneDef defines)
-    {
-        StandaloneDefModel result = new StandaloneDefModel();
-        
         return result;
     }
 }

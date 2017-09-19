@@ -86,9 +86,10 @@ public class ${object.name}<#if object.base??> extends ${object.base}</#if>
         <#if object.isList(prop.source)>
         <#if object.isObject(prop.source)>
         <#assign srcObject = object.findObject(prop.source) />
-        result.set${prop.source?cap_first}(${srcObject.name}.from${prop.type!}List((object.get${prop.target?cap_first}())));
+        result.set${prop.source?cap_first}(${srcObject.name}.from${prop.type!}List(object.get${prop.target?cap_first}()));
         <#else>
-        result.set${prop.source?cap_first}(FXCollections.observableList((object.get${prop.target?cap_first}())));
+        result.set${prop.source?cap_first}(FXCollections.observableList(new ArrayList<>()));
+        if(object.get${prop.target?cap_first}() != null) result.get${prop.source?cap_first}().addAll(object.get${prop.target?cap_first}());
         </#if>
         <#else>
         <#if object.isObject(prop.source)>
@@ -112,7 +113,8 @@ public class ${object.name}<#if object.base??> extends ${object.base}</#if>
         <#assign srcObject = object.findObject(prop.source) />
         result.set${prop.target?cap_first}(${srcObject.name}.to${prop.type!}List((object.get${prop.source?cap_first}())));
         <#else>
-        result.set${prop.source?cap_first}(FXCollections.observableList((object.get${prop.source?cap_first}())));
+        result.set${prop.source?cap_first}(new ArrayList<>());
+        if(object.get${prop.source?cap_first}() != null) result.get${prop.source?cap_first}().addAll(object.get${prop.source?cap_first}());
         </#if>
         <#else>
         <#if object.isObject(prop.source)>
@@ -128,9 +130,12 @@ public class ${object.name}<#if object.base??> extends ${object.base}</#if>
     public static ObservableList<${object.name}> from${mapping.target}List(List<${mapping.target}> objects)
     {
         ObservableList<${object.name}> result = FXCollections.observableList(new ArrayList<>());
-        for(${mapping.target} item : objects)
+        if(objects != null)
         {
-            result.add(from${mapping.target}(item));
+            for(${mapping.target} item : objects)
+            {
+                result.add(from${mapping.target}(item));
+            }
         }
         return result;
     }
@@ -138,9 +143,12 @@ public class ${object.name}<#if object.base??> extends ${object.base}</#if>
     public static List<${mapping.target}> to${mapping.target}List(ObservableList<${object.name}> objects)
     {
         List<${mapping.target}> result = new ArrayList<>();
-        for(${object.name} item : objects)
+        if(objects != null)
         {
-            result.add(to${mapping.target}(item));
+            for(${object.name} item : objects)
+            {
+                result.add(to${mapping.target}(item));
+            }
         }
         return result;
     }
