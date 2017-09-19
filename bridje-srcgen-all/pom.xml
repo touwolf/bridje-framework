@@ -39,7 +39,7 @@
                             <goal>generate-sources</goal>
                         </goals>
                         <configuration>
-                            <sourceFolder>../bridje-web-srcgen/src/main/resources/BRIDJE-INF/srcgen/data</sourceFolder>
+                            <dataFolder>../bridje-web-srcgen/src/main/resources/BRIDJE-INF/srcgen/data</dataFolder>
                         </configuration>
                         <phase>generate-sources</phase>
                     </execution>

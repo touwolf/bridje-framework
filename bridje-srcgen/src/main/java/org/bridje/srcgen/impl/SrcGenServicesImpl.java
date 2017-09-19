@@ -17,7 +17,6 @@
 package org.bridje.srcgen.impl;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -36,12 +35,14 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.srcgen.editor.EditorApplication;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
@@ -209,5 +210,11 @@ class SrcGenServicesImpl implements SrcGenService
             }
         }
         return result;
+    }
+
+    @Override
+    public void launchEditor(String[] args)
+    {
+        Application.launch(EditorApplication.class, args);
     }
 }

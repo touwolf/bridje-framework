@@ -18,6 +18,7 @@ package org.bridje.srcgen;
 
 import java.io.IOException;
 import java.util.Map;
+import javafx.scene.control.TreeItem;
 import org.bridje.vfs.VFile;
 
 /**
@@ -44,4 +45,15 @@ public interface SourceGenerator<T>
      * @throws IOException If any io exception occurs.
      */
     void generateSources(T data, VFile file) throws IOException;
+
+    /**
+     * Creates a TreeItem node for the source generator, the node 
+     * will be put in the souce generation data editor. 
+     * If this source generator does not support edition of it´s data this 
+     * method should return null.
+     * 
+     * @return The TreeItem for this source generator, or null if this generator
+     * does not support edition.
+     */
+    TreeItem<Object> createEditorTreeItem();
 }

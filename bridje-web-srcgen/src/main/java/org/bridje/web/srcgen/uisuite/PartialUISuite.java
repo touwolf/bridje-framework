@@ -46,8 +46,6 @@ import org.w3c.dom.Document;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder={
     "includes",
-    "standalone",
-    "defines",
     "resources",
     "ftlImports",
     "ftlMacros",
