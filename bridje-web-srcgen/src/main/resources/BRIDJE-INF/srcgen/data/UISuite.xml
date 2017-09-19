@@ -25,6 +25,8 @@
         <icon name="include" file="include.png" />
         <icon name="ftlMacro" file="ftl-macro.png" />
         <icon name="ftlFunction" file="ftl-function.png" />
+        <icon name="ftlImport" file="ftl-import.png" />
+        <icon name="ftlInclude" file="ftl-include.png" />
     </icons>
 
     <properties>

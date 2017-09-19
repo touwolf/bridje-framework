@@ -38,7 +38,9 @@ public final class UISuiteBaseTreeItem extends EditorTreeItem
         getChildren().addAll(
                 new IncludesTreeItem(suite),
                 new FtlElementsTreeItem("Macros", suite.getFtlMacros(), UISuitesModel.ftlMacro(16)),
-                new FtlElementsTreeItem("Functions", suite.getFtlFunctions(), UISuitesModel.ftlFunction(16)));
+                new FtlElementsTreeItem("Functions", suite.getFtlFunctions(), UISuitesModel.ftlFunction(16)),
+                new FtlImportsTreeItem(suite.getFtlImports()),
+                new FtlIncludesTreeItem(suite.getFtlIncludes()));
     }
 
     private ContextMenu createContextMenu()
