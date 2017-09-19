@@ -25,16 +25,16 @@ public class ObjectInf
 
     private String description;
 
-    @XmlElements(
-    {
-        @XmlElement(name = "key", type = PropertyInf.class)
-    })
+    @XmlAttribute
+    private String key;
+    
+    @XmlAttribute
+    private String toString;
+    
+    @XmlTransient
     private PropertyInf keyProperty;
 
-    @XmlElements(
-    {
-        @XmlElement(name = "toString", type = PropertyInf.class)
-    })
+    @XmlTransient
     private PropertyInf toStringProperty;
 
     @XmlElementWrapper(name = "properties")
@@ -66,9 +66,15 @@ public class ObjectInf
     })
     private List<JFxComponent> components;
 
-    @XmlID
     @XmlAttribute
     private String base;
+
+    @XmlElementWrapper(name = "mappings")
+    @XmlElements(
+    {
+        @XmlElement(name = "mapping", type = ObjectInfMapping.class)
+    })
+    private List<ObjectInfMapping> mappings;
 
     /**
      * The java class name of the object.
@@ -117,6 +123,10 @@ public class ObjectInf
      */
     public List<PropertyInf> getProperties()
     {
+        if(properties == null)
+        {
+            properties = new ArrayList<>();
+        }
         return properties;
     }
 
@@ -188,6 +198,10 @@ public class ObjectInf
      */
     public void setKeyProperty(PropertyInf keyProperty)
     {
+        if(keyProperty == null && key != null)
+        {
+            keyProperty = findProperty(key);
+        }
         this.keyProperty = keyProperty;
     }
 
@@ -218,7 +232,14 @@ public class ObjectInf
      */
     public PropertyInf getToStringProperty()
     {
-        if(toStringProperty == null) return keyProperty;
+        if(toString == null && key != null)
+        {
+            toString = key;
+        }
+        if(toStringProperty == null && toString != null) 
+        {
+            toStringProperty = findProperty(toString);
+        }
         return toStringProperty;
     }
 
@@ -253,23 +274,6 @@ public class ObjectInf
     }
 
     /**
-     * All properties for this object including the key and the toString properties.
-     * 
-     * @return All properties for this object including the key and the toString properties.
-     */
-    public List<PropertyInf> getAllProperties()
-    {
-        if(allProperties == null)
-        {
-            allProperties = new ArrayList<>();
-            if(keyProperty != null) allProperties.add(keyProperty);
-            if(properties != null) allProperties.addAll(properties);
-            if(toStringProperty != null) allProperties.add(toStringProperty);
-        }
-        return allProperties;
-    }
-
-    /**
      * The base object.
      * 
      * @return The base object.
@@ -287,5 +291,78 @@ public class ObjectInf
     public void setBase(String base)
     {
         this.base = base;
+    }
+
+    /**
+     * The list of mappings for this object.
+     * 
+     * @return The list of mappings for this object.
+     */
+    public List<ObjectInfMapping> getMappings()
+    {
+        return mappings;
+    }
+
+    /**
+     * The list of mappings for this object.
+     * 
+     * @param mappings The list of mappings for this object.
+     */
+    public void setMappings(List<ObjectInfMapping> mappings)
+    {
+        this.mappings = mappings;
+    }
+    
+    /**
+     * 
+     * @param propName
+     * @return 
+     */
+    public PropertyInf findProperty(String propName)
+    {
+        for (PropertyInf property : getProperties())
+        {
+            if(property.getName().equals(propName))
+            {
+                return property;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param propName
+     * @return 
+     */
+    public boolean isList(String propName)
+    {
+        PropertyInf prop = findProperty(propName);
+        if(prop != null) return prop.getIsList();
+        return false;
+    }
+
+    /**
+     * 
+     * @param propName
+     * @return 
+     */
+    public boolean isObject(String propName)
+    {
+        PropertyInf prop = findProperty(propName);
+        if(prop != null) return model.isObject(prop.getType());
+        return false;
+    }
+
+    /**
+     * 
+     * @param propName
+     * @return 
+     */
+    public ObjectInf findObject(String propName)
+    {
+        PropertyInf prop = findProperty(propName);
+        if(prop != null) return model.findObject(prop.getType());
+        return null;
     }
 }

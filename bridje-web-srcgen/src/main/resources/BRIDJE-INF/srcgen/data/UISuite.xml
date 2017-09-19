@@ -7,6 +7,7 @@
     package="org.bridje.web.srcgen.editor">
 
     <includes>
+        <include fullName="org.bridje.web.srcgen.uisuite.*" />
     </includes>
 
     <icons>
@@ -27,12 +28,12 @@
     </properties>
 
     <objects>
-        <object name="UISuiteBaseModel">
+        <object name="UISuiteBaseModel" key="file">
             <includes>
                 <include fullName="org.bridje.vfs.VFile" />
             </includes>
-            <key type="VFile" name="file" />
             <properties>
+                <property type="VFile" name="file" />
                 <observableList type="String" name="includes" />
                 <observableList type="FtlMacroModel" name="ftlMacros" />
                 <observableList type="FtlFunctionModel" name="ftlFunctions" />
@@ -43,6 +44,19 @@
                 <observableList type="TemplateControlDefModel" name="templates" />
                 <observableList type="ControlEnumModel" name="enums" />
             </properties>
+            <mappings>
+                <mapping target="UISuiteBase">
+                    <property target="includes" />
+                    <property target="ftlMacros" type="FtlMacro" />
+                    <property target="ftlFunctions" type="FtlFunction" />
+                    <property target="ftlImports" type="FtlImport" />
+                    <property target="ftlIncludes" />
+                    <property target="resources" type="Resource" />
+                    <property target="controls" type="ControlDef" />
+                    <property target="templates" type="TemplateControlDef" />
+                    <property target="enums" type="ControlEnum" />
+                </mapping>
+            </mappings>
         </object>
         <object name="UISuiteModel" base="UISuiteBaseModel">
             <properties>
@@ -56,24 +70,73 @@
                 <property type="StandaloneDefModel" name="standalone" />
                 <property type="StandaloneDefModel" name="defines" />
             </properties>
+            <mappings>
+                <mapping target="UISuite" base="UISuiteBase" >
+                    <property target="name" />
+                    <property target="package" source="packageName" />
+                    <property target="namespace" />
+                    <property target="renderHead" />
+                    <property target="renderBody" />
+                    <property target="renderView" />
+                    <property target="defaultResources" type="Resource"  />
+                    <property target="standalone" type="StandaloneDef"  />
+                    <property target="defines" type="StandaloneDef"  />
+                </mapping>
+            </mappings>
         </object>
         <object name="PartialUISuiteModel" base="UISuiteBaseModel">
+            <mappings>
+                <mapping target="PartialUISuite" base="UISuiteBase" >
+                </mapping>
+            </mappings>
         </object>
         <object name="FtlMacroModel">
+            <mappings>
+                <mapping target="FtlMacro">
+                </mapping>
+            </mappings>
         </object>
         <object name="FtlFunctionModel">
+            <mappings>
+                <mapping target="FtlFunction">
+                </mapping>
+            </mappings>
         </object>
         <object name="FtlImportModel">
+            <mappings>
+                <mapping target="FtlImport">
+                </mapping>
+            </mappings>
         </object>
         <object name="ResourceModel">
+            <mappings>
+                <mapping target="Resource">
+                </mapping>
+            </mappings>
         </object>
         <object name="ControlDefModel">
+            <mappings>
+                <mapping target="ControlDef">
+                </mapping>
+            </mappings>
         </object>
         <object name="TemplateControlDefModel">
+            <mappings>
+                <mapping target="TemplateControlDef">
+                </mapping>
+            </mappings>
         </object>
         <object name="ControlEnumModel">
+            <mappings>
+                <mapping target="ControlEnum">
+                </mapping>
+            </mappings>
         </object>
         <object name="StandaloneDefModel">
+            <mappings>
+                <mapping target="StandaloneDef">
+                </mapping>
+            </mappings>
         </object>
     </objects>
 </model>

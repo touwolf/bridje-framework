@@ -20,4 +20,10 @@ public class ObListPropertyInf extends PropertyInf
     {
         return "ObservableList<" + getType() + ">";
     }
+
+    @Override
+    public boolean getIsList()
+    {
+        return true;
+    }
 }

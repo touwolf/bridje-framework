@@ -270,6 +270,26 @@ public class UISuiteBase
     }
 
     /**
+     * 
+     * 
+     * @return 
+     */
+    public List<String> getIncludes()
+    {
+        return includes;
+    }
+
+    /**
+     * 
+     * 
+     * @param includes 
+     */
+    public void setIncludes(List<String> includes)
+    {
+        this.includes = includes;
+    }
+
+    /**
      * Proccess the partial UI suites includes for this object.
      * 
      * @param currentDir The current dir for the includes.

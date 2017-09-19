@@ -27,6 +27,8 @@ import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileOutputStream;
 import org.bridje.web.srcgen.uisuite.PartialUISuite;
+import org.bridje.web.srcgen.uisuite.Resource;
+import org.bridje.web.srcgen.uisuite.StandaloneDef;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
@@ -75,6 +77,10 @@ public class ModelUtils
         UISuiteModel result = new UISuiteModel();
         result.setFile(file);
         result.setName(suite.getName());
+        result.setDefaultResources(resourceToModel(suite.getDefaultResources()));
+        result.setDefines(standaloneToModel(suite.getDefines()));
+        result.setStandalone(standaloneToModel(suite.getStandalone()));
+        
         
         return result;
     }
@@ -104,6 +110,20 @@ public class ModelUtils
     {
         UISuite result = new UISuite();
 
+        return result;
+    }
+
+    private static ResourceModel resourceToModel(Resource res)
+    {
+        ResourceModel resModel = new ResourceModel();
+        
+        return resModel;
+    }
+
+    private static StandaloneDefModel standaloneToModel(StandaloneDef defines)
+    {
+        StandaloneDefModel result = new StandaloneDefModel();
+        
         return result;
     }
 }

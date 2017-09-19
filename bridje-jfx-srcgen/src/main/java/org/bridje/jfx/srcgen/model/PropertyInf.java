@@ -175,4 +175,9 @@ public class PropertyInf
         }
         return false;
     }
+
+    public boolean getIsList()
+    {
+        return false;
+    }
 }

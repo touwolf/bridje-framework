@@ -197,4 +197,21 @@ public class ModelInf
     {
         this.description = description;
     }
+
+    public ObjectInf findObject(String name)
+    {
+        for (ObjectInf obj : getObjects())
+        {
+            if(obj.getName().equals(name))
+            {
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    public boolean isObject(String name)
+    {
+        return findObject(name) != null;
+    }
 }
