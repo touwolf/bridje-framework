@@ -2,7 +2,7 @@
 <model
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.bridje.com/schemas/jfxmodel'
-    xsi:schemaLocation='http://www.bridje.com/schemas/jfxmodel ../../../../../../../bridje-jfx/target/generated-resources/schemagen/schema1.xsd'
+    xsi:schemaLocation='http://www.bridje.com/schemas/jfxmodel ../../../../../../../bridje-jfx-srcgen/target/generated-resources/schemagen/schema1.xsd'
     name="UISuitesModel" 
     package="org.bridje.web.srcgen.editor">
 
@@ -27,103 +27,53 @@
     </properties>
 
     <objects>
-        <object name="PartialUISuiteModel">
+        <object name="UISuiteBaseModel">
             <includes>
                 <include fullName="org.bridje.vfs.VFile" />
             </includes>
-            <key type="String" name="name" />
+            <key type="VFile" name="file" />
             <properties>
-                <property type="VFile" name="file" />
-                <property type="UISuiteModel" name="parent" />
+                <observableList type="String" name="includes" />
+                <observableList type="FtlMacroModel" name="ftlMacros" />
+                <observableList type="FtlFunctionModel" name="ftlFunctions" />
+                <observableList type="FtlImportModel" name="ftlImports" />
                 <observableList type="String" name="ftlIncludes" />
                 <observableList type="ResourceModel" name="resources" />
                 <observableList type="ControlDefModel" name="controls" />
-                <observableList type="ControlDefModel" name="controlsTemplates" />
+                <observableList type="TemplateControlDefModel" name="templates" />
+                <observableList type="ControlEnumModel" name="enums" />
             </properties>
         </object>
-        <object name="UISuiteModel">
-            <includes>
-                <include fullName="org.bridje.vfs.VFile" />
-            </includes>
-            <key type="String" name="name" />
+        <object name="UISuiteModel" base="UISuiteBaseModel">
             <properties>
-                <property type="VFile" name="file" />
+                <property type="String" name="name" />
                 <property type="String" name="packageName" />
                 <property type="String" name="namespace" />
-                <property type="String" name="renderViewContainer" />
-                <property type="String" name="renderBody" />
                 <property type="String" name="renderHead" />
+                <property type="String" name="renderBody" />
+                <property type="String" name="renderView" />
+                <property type="ResourceModel" name="defaultResources" />
                 <property type="StandaloneDefModel" name="standalone" />
                 <property type="StandaloneDefModel" name="defines" />
-                <property type="ResourceModel" name="defaultResources" />
-                <observableList type="PartialUISuiteModel" name="includes" />
-                <observableList type="String" name="ftlIncludes" />
-                <observableList type="ResourceModel" name="resources" />
-                <observableList type="ControlDefModel" name="controls" />
-                <observableList type="ControlDefModel" name="controlsTemplates" />
             </properties>
         </object>
-        <object name="StandaloneDefModel">
-            <key type="String" name="name" />
-            <properties>
-                <property type="UISuiteModel" name="parent" />
-                <observableList type="FieldDefModel" name="content" />
-            </properties>
+        <object name="PartialUISuiteModel" base="UISuiteBaseModel">
+        </object>
+        <object name="FtlMacroModel">
+        </object>
+        <object name="FtlFunctionModel">
+        </object>
+        <object name="FtlImportModel">
         </object>
         <object name="ResourceModel">
-            <key type="String" name="name" />
-            <properties>
-                <property type="UISuiteModel" name="parent" />
-                <property type="PartialUISuiteModel" name="partialSuite" />
-                <observableList type="AssetModel" name="content" />
-            </properties>
         </object>
         <object name="ControlDefModel">
-            <key type="String" name="name" />
-            <properties>
-                <property type="UISuiteModel" name="parent" />
-                <property type="PartialUISuiteModel" name="partialSuite" />
-                <property type="String" name="base" />
-                <observableList type="ResourceRefModel" name="resources" />
-                <observableList type="FieldDefModel" name="fields" />
-                <property type="String" name="baseTemplate" />
-                <property type="String" name="render" />
-            </properties>
         </object>
-        <object name="AssetModel">
-            <key type="String" name="href" />
-            <properties>
-                <property type="ResourceModel" name="parent" />
-                <property type="String" name="type" />
-                <property type="String" name="rel" />
-                <property type="String" name="sizes" />
-            </properties>
-            <components>
-                <table />
-            </components>
+        <object name="TemplateControlDefModel">
         </object>
-        <object name="FieldDefModel">
-            <key type="String" name="name" />
-            <properties>
-                <property type="ControlDefModel" name="parent" />
-                <property type="String" name="field" />
-                <property type="String" name="type" />
-                <property type="String" name="defaultValue" />
-                <property type="Boolean" name="allowPlaceHolder" />
-                <property type="String" name="wrapper" />
-                <property type="Boolean" name="single" />
-                <observableList type="FieldDefModel" name="childs" />
-            </properties>
-            <components>
-                <treeTable />
-            </components>
+        <object name="ControlEnumModel">
         </object>
-        <object name="ResourceRefModel">
-            <key type="ResourceModel" name="resource" />
-            <properties>
-                <property type="Boolean" name="selected" />
-            </properties>
+        <object name="StandaloneDefModel">
         </object>
     </objects>
-
 </model>

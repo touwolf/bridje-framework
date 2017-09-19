@@ -20,15 +20,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * An input expression value field for a control.
+ * A literal value field for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InValueFlield extends BaseDataFlield
+public class ValueField extends BaseDataField
 {
     @Override
     public String getJavaType()
     {
-        return "UIInputExpression";
+        return getType();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class InValueFlield extends BaseDataFlield
     @Override
     public boolean getIsInput()
     {
-        return true;
+        return false;
     }
 
     @Override

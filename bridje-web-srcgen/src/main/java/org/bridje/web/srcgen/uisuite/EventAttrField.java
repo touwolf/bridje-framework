@@ -20,32 +20,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * A literal value field for a control.
+ * An event attribute field for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ValueFlield extends BaseDataFlield
+public class EventAttrField extends BaseEventField
 {
-    @Override
-    public String getJavaType()
-    {
-        return getType();
-    }
-
     @Override
     public String getFieldType()
     {
-        return "value";
-    }
-
-    @Override
-    public boolean getIsInput()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean getIsInputFile()
-    {
-        return false;
+        return "attribute";
     }
 }

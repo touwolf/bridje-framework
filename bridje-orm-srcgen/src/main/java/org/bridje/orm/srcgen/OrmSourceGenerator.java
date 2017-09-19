@@ -201,7 +201,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
     }
 
     @Override
-    public TreeItem<Object> createEditorTreeItem()
+    public TreeItem<Object> createTreeItem(VFile file)
     {
         return null;
     }

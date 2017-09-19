@@ -70,7 +70,7 @@ class JFxSourceGenerator implements SourceGenerator<ModelInf>
     }
 
     @Override
-    public TreeItem<Object> createEditorTreeItem()
+    public TreeItem<Object> createTreeItem(VFile file)
     {
         return null;
     }

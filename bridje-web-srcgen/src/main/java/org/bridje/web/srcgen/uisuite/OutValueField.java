@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * An output expression value field for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OutValueField extends BaseDataFlield
+public class OutValueField extends BaseDataField
 {
     @Override
     public String getJavaType()

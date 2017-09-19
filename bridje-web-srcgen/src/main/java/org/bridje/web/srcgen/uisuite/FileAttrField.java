@@ -21,10 +21,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * An input expression element attribute for a control.
+ * An input expression attribute field for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FileElementFlield implements FieldDef
+public class FileAttrField implements FieldDef
 {
     @XmlAttribute
     private String name;
@@ -71,7 +71,7 @@ public class FileElementFlield implements FieldDef
     @Override
     public String getFieldType()
     {
-        return "element";
+        return "attribute";
     }
 
     @Override

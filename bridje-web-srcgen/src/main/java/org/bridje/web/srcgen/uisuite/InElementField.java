@@ -20,15 +20,32 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * An event element field for a control.
+ * An input expression element attribute for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EventElementFlield extends BaseEventFlield
+public class InElementField extends BaseDataField
 {
+    @Override
+    public String getJavaType()
+    {
+        return "UIInputExpression";
+    }
+
     @Override
     public String getFieldType()
     {
         return "element";
     }
 
+    @Override
+    public boolean getIsInput()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean getIsInputFile()
+    {
+        return false;
+    }
 }

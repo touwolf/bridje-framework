@@ -18,17 +18,54 @@ package org.bridje.web.srcgen.uisuite;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * An output expression element field for a control.
+ * An input expression element attribute for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OutElementField extends BaseDataField
+public class FileElementField implements FieldDef
 {
+    @XmlAttribute
+    private String name;
+    
+    /**
+     * The name of the field.
+     * 
+     * @return The name of the field.
+     */
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+
+    /**
+     * The name of the field.
+     * 
+     * @param name The name of the field.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    @Override
+    public boolean getIsChild()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean getIsEvent()
+    {
+        return false;
+    }
+
     @Override
     public String getJavaType()
     {
-        return "UIExpression";
+        return "UIFileExpression";
     }
 
     @Override
@@ -36,7 +73,7 @@ public class OutElementField extends BaseDataField
     {
         return "element";
     }
-    
+
     @Override
     public boolean getIsInput()
     {
@@ -46,6 +83,6 @@ public class OutElementField extends BaseDataField
     @Override
     public boolean getIsInputFile()
     {
-        return false;
+        return true;
     }
 }

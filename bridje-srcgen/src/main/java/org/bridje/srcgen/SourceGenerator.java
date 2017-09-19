@@ -52,8 +52,9 @@ public interface SourceGenerator<T>
      * If this source generator does not support edition of it´s data this 
      * method should return null.
      * 
+     * @param file The source file.
      * @return The TreeItem for this source generator, or null if this generator
      * does not support edition.
      */
-    TreeItem<Object> createEditorTreeItem();
+    TreeItem<Object> createTreeItem(VFile file);
 }

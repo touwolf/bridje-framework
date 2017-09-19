@@ -66,6 +66,10 @@ public class ObjectInf
     })
     private List<JFxComponent> components;
 
+    @XmlID
+    @XmlAttribute
+    private String base;
+
     /**
      * The java class name of the object.
      * 
@@ -259,9 +263,29 @@ public class ObjectInf
         {
             allProperties = new ArrayList<>();
             if(keyProperty != null) allProperties.add(keyProperty);
-            allProperties.addAll(properties);
+            if(properties != null) allProperties.addAll(properties);
             if(toStringProperty != null) allProperties.add(toStringProperty);
         }
         return allProperties;
+    }
+
+    /**
+     * The base object.
+     * 
+     * @return The base object.
+     */
+    public String getBase()
+    {
+        return base;
+    }
+
+    /**
+     * The base object.
+     * 
+     * @param base The base object.
+     */
+    public void setBase(String base)
+    {
+        this.base = base;
     }
 }

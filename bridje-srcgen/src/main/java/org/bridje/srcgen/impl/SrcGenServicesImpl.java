@@ -119,6 +119,23 @@ class SrcGenServicesImpl implements SrcGenService
     }
 
     @Override
+    public <T> T readFile(VFile file, Class<T> cls) throws IOException
+    {
+        try
+        {
+            JAXBContext ctx = JAXBContext.newInstance(cls);
+            try(InputStream is = new VFileInputStream(file))
+            {
+                return cls.cast(ctx.createUnmarshaller().unmarshal(is));
+            }
+        }
+        catch (JAXBException | ClassCastException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
     public <T> List<T> findSuplData(Class<T> cls) throws IOException
     {
         List<T> result = new ArrayList<>();
@@ -155,22 +172,6 @@ class SrcGenServicesImpl implements SrcGenService
         catch (TemplateException | IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    private <T> T readFile(VFile file, Class<T> cls) throws IOException
-    {
-        try
-        {
-            JAXBContext ctx = JAXBContext.newInstance(cls);
-            try(InputStream is = new VFileInputStream(file))
-            {
-                return cls.cast(ctx.createUnmarshaller().unmarshal(is));
-            }
-        }
-        catch (JAXBException | ClassCastException e)
-        {
-            return null;
         }
     }
 

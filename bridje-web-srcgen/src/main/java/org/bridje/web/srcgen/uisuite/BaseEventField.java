@@ -19,16 +19,18 @@ package org.bridje.web.srcgen.uisuite;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * An input expression attribute field for a control.
+ * The base class for all the event type fields that can be use in the controls.
  */
+@XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FileAttrFlield implements FieldDef
+public abstract class BaseEventField implements FieldDef
 {
     @XmlAttribute
     private String name;
-    
+
     /**
      * The name of the field.
      * 
@@ -51,6 +53,12 @@ public class FileAttrFlield implements FieldDef
     }
 
     @Override
+    public String getJavaType()
+    {
+        return "UIEvent";
+    }
+        
+    @Override
     public boolean getIsChild()
     {
         return false;
@@ -59,19 +67,7 @@ public class FileAttrFlield implements FieldDef
     @Override
     public boolean getIsEvent()
     {
-        return false;
-    }
-
-    @Override
-    public String getJavaType()
-    {
-        return "UIFileExpression";
-    }
-
-    @Override
-    public String getFieldType()
-    {
-        return "attribute";
+        return true;
     }
 
     @Override
@@ -83,6 +79,6 @@ public class FileAttrFlield implements FieldDef
     @Override
     public boolean getIsInputFile()
     {
-        return true;
-    }
+        return false;
+    }    
 }

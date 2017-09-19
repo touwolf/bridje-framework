@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * This class defines an attribute field of a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AttrFlield extends BaseDataFlield
+public class AttrField extends BaseDataField
 {
     @Override
     public String getJavaType()

@@ -22,14 +22,20 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The base class for all the event type fields that can be use in the controls.
+ * A base class for all the data fields that can be defined in the controls.
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class BaseEventFlield implements FieldDef
+public abstract class BaseDataField implements FieldDef
 {
     @XmlAttribute
     private String name;
+
+    @XmlAttribute
+    private String type;
+
+    @XmlAttribute(name = "def")
+    private String defaultValue;
 
     /**
      * The name of the field.
@@ -52,12 +58,51 @@ public abstract class BaseEventFlield implements FieldDef
         this.name = name;
     }
 
-    @Override
-    public String getJavaType()
+    /**
+     * The java type for this field.
+     * 
+     * @return The java type for this field.
+     */
+    public String getType()
     {
-        return "UIEvent";
+        if(type == null || type.isEmpty()) return "String";
+        return type;
     }
-        
+
+    /**
+     * The java type for this field.
+     * 
+     * @param type The java type for this field.
+     */
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    /**
+     * The default value to be use when the expression evaluates to null.
+     * 
+     * @return The default value to be use when the expression evaluates to null.
+     */
+    public String getDefaultValue()
+    {
+        if (defaultValue == null || defaultValue.trim().isEmpty())
+        {
+            return "null";
+        }
+        return defaultValue;
+    }
+
+    /**
+     * The default value to be use when the expression evaluates to null.
+     * 
+     * @param defaultValue The default value to be use when the expression evaluates to null.
+     */
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
+    }
+
     @Override
     public boolean getIsChild()
     {
@@ -67,18 +112,6 @@ public abstract class BaseEventFlield implements FieldDef
     @Override
     public boolean getIsEvent()
     {
-        return true;
-    }
-
-    @Override
-    public boolean getIsInput()
-    {
         return false;
     }
-
-    @Override
-    public boolean getIsInputFile()
-    {
-        return false;
-    }    
 }

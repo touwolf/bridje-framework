@@ -48,8 +48,7 @@ public interface SrcGenService
     Path RESOURCE_PATH = new Path("/srcgen/resources");
 
     /**
-     * The virtual path for the the java sources in the code generation
-     * process.
+     * The virtual path for the the java sources in the code generation process.
      */
     Path SOURCES_PATH = new Path("/srcgen/sources");
 
@@ -65,26 +64,30 @@ public interface SrcGenService
     Path TEMPLATES_PATH = new Path("/srcgen/templates");
 
     /**
-     * Finds a java class by its full name and parsed it, from the sources folder.
-     * 
+     * Finds a java class by its full name and parsed it, from the sources
+     * folder.
+     *
      * @param name The name of the java class.
-     * @return The compilation unit object with the sources of the given class 
-     * if found or null if not.
+     *
+     * @return The compilation unit object with the sources of the given class
+     *         if found or null if not.
      */
     CompilationUnit findJavaClass(String name);
 
     /**
      * Finds all clases by the given predicate.
-     * 
+     *
      * @param predicate The predicate to test the clases.
+     *
      * @return The result list of classes.
      */
     List<CompilationUnit> findJavaClasses(Predicate<CompilationUnit> predicate);
 
     /**
      * Parses the java code from the given file.
-     * 
+     *
      * @param clsFile The file to parse.
+     *
      * @return The compilation unit with the java code loaded.
      */
     CompilationUnit parseJavaClass(VFile clsFile);
@@ -105,6 +108,19 @@ public interface SrcGenService
     <T> Map<T, VFile> findData(Class<T> cls) throws IOException;
 
     /**
+     * Reads the given xml file.
+     * 
+     * @param <T> The type of the data to read.
+     * @param file The file to read.
+     * @param cls The class of the data to read.
+     *
+     * @return The readed object or null if the file is not that object.
+     *
+     * @throws IOException If any IO exception occurs.
+     */
+    <T> T readFile(VFile file, Class<T> cls) throws IOException;
+
+    /**
      * Finds the suplementary data by the given class, this method will read the
      * data from the default virtual path in the VFS tree and parse all the
      * files that have the content of the given class.
@@ -121,30 +137,31 @@ public interface SrcGenService
 
     /**
      * Create a class with the given data and the given template.
-     * 
+     *
      * @param clsFullName The full name of the class to create.
-     * @param tplPath The path of the template to use to create the class.
-     * @param data The data to use by the template to create the class.
-     * 
+     * @param tplPath     The path of the template to use to create the class.
+     * @param data        The data to use by the template to create the class.
+     *
      * @throws IOException If any IO exception occurs.
      */
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
 
     /**
      * Creates a new resource with the given data and the given template.
-     * 
+     *
      * @param resourcePath The path and name of the resource file to create.
-     * @param tplPath The path of the template to use to create the class.
-     * @param data The data to use by the template to create the class.
-     * 
+     * @param tplPath      The path of the template to use to create the class.
+     * @param data         The data to use by the template to create the class.
+     *
      * @throws IOException If any IO exception occurs.
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;
 
     /**
      * Launch the source generation data editor.
-     * 
+     *
      * @param args Arguments for the javafx launcher.
      */
     void launchEditor(String[] args);
+
 }

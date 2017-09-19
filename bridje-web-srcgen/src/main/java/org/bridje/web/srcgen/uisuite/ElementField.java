@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * rather than as an attribute.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ElementField extends BaseDataFlield
+public class ElementField extends BaseDataField
 {
     @Override
     public String getJavaType()

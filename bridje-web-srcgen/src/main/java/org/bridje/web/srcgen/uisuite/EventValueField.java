@@ -20,14 +20,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * An event attribute field for a control.
+ * An event value field for a control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EventAttrFlield extends BaseEventFlield
+public class EventValueField extends BaseEventField
 {
     @Override
     public String getFieldType()
     {
-        return "attribute";
+        return "value";
     }
 }

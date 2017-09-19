@@ -27,9 +27,12 @@ import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
-import org.bridje.web.srcgen.editor.UISuitesTreeItem;
+import org.bridje.web.srcgen.editor.ModelUtils;
+import org.bridje.web.srcgen.editor.PartialUISuiteTreeItem;
+import org.bridje.web.srcgen.editor.UISuiteTreeItem;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.ControlEnum;
+import org.bridje.web.srcgen.uisuite.PartialUISuite;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
@@ -116,10 +119,27 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     }
 
     @Override
-    public TreeItem<Object> createEditorTreeItem()
+    public TreeItem<Object> createTreeItem(VFile file)
     {
-        UISuitesTreeItem result = new UISuitesTreeItem();
-        //result.setSuites(createRootModel());
-        return result;
+        try
+        {
+            UISuite suite = srcGen.readFile(file, UISuite.class);
+            if(suite != null)
+            {
+                UISuiteTreeItem result = new UISuiteTreeItem(ModelUtils.toModel(suite, file));
+                return result;
+            }
+            PartialUISuite partialSuite = srcGen.readFile(file, PartialUISuite.class);
+            if(partialSuite != null)
+            {
+                PartialUISuiteTreeItem result = new PartialUISuiteTreeItem(ModelUtils.toPartialModel(partialSuite, file));
+                return result;
+            }
+        }
+        catch (IOException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
     }
 }
