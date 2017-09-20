@@ -1,4 +1,5 @@
 <#ftl encoding="UTF-8">
+<#ftl output_format="HTML">
 <#-- 
  # Copyright 2016 Bridje Framework.
  #
