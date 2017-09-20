@@ -20,7 +20,7 @@ import org.bridje.sql.expr.SortType;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.OrderExpr;
 
-public class OrderBy implements OrderExpr
+class OrderBy implements OrderExpr
 {
     private final SortType type;
 

@@ -16,41 +16,27 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.LimitExpr;
+import java.util.List;
 
-class Limit implements LimitExpr
+class AlterColumn 
 {
-    private final int offset;
+    private AlterColumnType type;
+    
+    private Column<?> column;
 
-    private final int count;
-
-    public Limit(int offset)
+    public AlterColumn(AlterColumnType type, Column<?> column)
     {
-        this.offset = offset;
-        this.count = -1;
-    }
-
-    public Limit(int offset, int count)
-    {
-        this.offset = offset;
-        this.count = count;
+        this.type = type;
+        this.column = column;
     }
     
-    @Override
-    public int getOffset()
+    public AlterColumnType getType()
     {
-        return offset;
+        return type;
     }
 
-    @Override
-    public int getCount()
+    public Column<?> getColumn()
     {
-        return count;
-    }
-
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        builder.appendLimit(offset, count);
+        return column;
     }
 }

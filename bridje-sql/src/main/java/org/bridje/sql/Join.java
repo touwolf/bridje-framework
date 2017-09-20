@@ -16,7 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.SQLWritable;
 import org.bridje.sql.expr.TableExpr;

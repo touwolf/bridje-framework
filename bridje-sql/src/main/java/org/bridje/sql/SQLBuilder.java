@@ -134,4 +134,46 @@ public class SQLBuilder
     {
         return builder.toString();
     }
+
+    public SQLBuilder appendCreateTable(Table table)
+    {
+        dialect.createTable(builder, table);
+        return this;
+    }
+
+    public SQLBuilder appendCreateColumn(Column<?> column, boolean isKey)
+    {
+        dialect.createColumn(builder, column, isKey);
+        return this;
+    }
+
+    public SQLBuilder appendPrimaryKey(Column<?> column)
+    {
+        dialect.primaryKey(builder, column);
+        return this;
+    }
+
+    public SQLBuilder appendAlterTable(Table table)
+    {
+        dialect.alterTable(builder, table);
+        return this;
+    }
+
+    public SQLBuilder appendAddColumn(Column<?> column)
+    {
+        dialect.addColumn(builder, column);
+        return this;
+    }
+
+    public SQLBuilder appendDropColumn(Column<?> column)
+    {
+        dialect.dropColumn(builder, column);
+        return this;
+    }
+
+    public SQLBuilder appendAlterColumn(Column<?> column)
+    {
+        dialect.alterColumn(builder, column);
+        return this;
+    }
 }

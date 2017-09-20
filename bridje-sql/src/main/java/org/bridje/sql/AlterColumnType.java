@@ -16,41 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.LimitExpr;
-
-class Limit implements LimitExpr
+enum AlterColumnType
 {
-    private final int offset;
-
-    private final int count;
-
-    public Limit(int offset)
-    {
-        this.offset = offset;
-        this.count = -1;
-    }
-
-    public Limit(int offset, int count)
-    {
-        this.offset = offset;
-        this.count = count;
-    }
-    
-    @Override
-    public int getOffset()
-    {
-        return offset;
-    }
-
-    @Override
-    public int getCount()
-    {
-        return count;
-    }
-
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        builder.appendLimit(offset, count);
-    }
+    ADD,
+    DROP,
+    ALTER;
 }

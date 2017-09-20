@@ -20,24 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.BooleanExpr;
-import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.LimitExpr;
 import org.bridje.sql.expr.OrderExpr;
 import org.bridje.sql.expr.SQLStatement;
 import org.bridje.sql.expr.TableExpr;
+import org.bridje.sql.flow.DeleteLimitStep;
 import org.bridje.sql.flow.FinalStep;
-import org.bridje.sql.flow.SetsStep;
-import org.bridje.sql.flow.UpdateLimitStep;
-import org.bridje.sql.flow.UpdateStep;
-import org.bridje.sql.flow.UpdateWhereStep;
+import org.bridje.sql.flow.DeleteStep;
+import org.bridje.sql.flow.DeleteWhereStep;
 
-class UpdateBuilder implements UpdateStep
+public class DeleteBuilder implements DeleteStep
 {
     private final Table table;
 
     private List<Join> joinsLst;
-
-    private List<Assign<?>> setsLst;
 
     private BooleanExpr<?> where;
 
@@ -45,13 +41,13 @@ class UpdateBuilder implements UpdateStep
 
     private LimitExpr limit;
 
-    public UpdateBuilder(Table table)
+    public DeleteBuilder(Table table)
     {
         this.table = table;
     }
 
     @Override
-    public UpdateStep innerJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteStep innerJoin(TableExpr table, BooleanExpr<?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.INNER, on));
@@ -59,7 +55,7 @@ class UpdateBuilder implements UpdateStep
     }
 
     @Override
-    public UpdateStep leftJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteStep leftJoin(TableExpr table, BooleanExpr<?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.LEFT, on));
@@ -67,7 +63,7 @@ class UpdateBuilder implements UpdateStep
     }
 
     @Override
-    public UpdateStep rightJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteStep rightJoin(TableExpr table, BooleanExpr<?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.RIGHT, on));
@@ -75,30 +71,14 @@ class UpdateBuilder implements UpdateStep
     }
 
     @Override
-    public <T> SetsStep set(Column<T> column, T value)
-    {
-        if(setsLst == null) setsLst = new ArrayList<>();
-        setsLst.add(new Assign<>(column, new Literal<>(value)));
-        return this;
-    }
-
-    @Override
-    public <T> SetsStep set(Column<T> column, Expression<T> value)
-    {
-        if(setsLst == null) setsLst = new ArrayList<>();
-        setsLst.add(new Assign<>(column, value));
-        return this;
-    }
-
-    @Override
-    public UpdateWhereStep where(BooleanExpr<?> condition)
+    public DeleteWhereStep where(BooleanExpr<?> condition)
     {
         this.where = condition;
         return this;
     }
 
     @Override
-    public UpdateLimitStep orderBy(OrderExpr... orderBys)
+    public DeleteLimitStep orderBy(OrderExpr... orderBys)
     {
         this.orderBys = orderBys;
         return this;
@@ -128,7 +108,7 @@ class UpdateBuilder implements UpdateStep
 
     public SQLStatement toSQL(SQLBuilder builder)
     {
-        builder.append("UPDATE ");
+        builder.append("DELTE ");
         builder.append(table);
         if(joinsLst != null)
         {
@@ -136,13 +116,6 @@ class UpdateBuilder implements UpdateStep
             joinsLst.toArray(joins);
             builder.append(' ');
             builder.appendAll(joins, " ");
-        }
-        if(setsLst != null)
-        {
-            Assign<?>[] sets = new Assign<?>[setsLst.size()];
-            setsLst.toArray(sets);
-            builder.append(" SET ");
-            builder.appendAll(sets, " ,");
         }
         if(where != null)
         {

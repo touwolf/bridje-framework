@@ -16,9 +16,26 @@
 
 package org.bridje.sql.dialect;
 
+import org.bridje.sql.Column;
+import org.bridje.sql.Table;
+
 public interface SQLDialect
 {
     void writeObjectName(StringBuilder builder, String name);
 
     void writeLimit(StringBuilder builder, int offset, int count);
+
+    void addColumn(StringBuilder builder, Column<?> column);
+
+    void createTable(StringBuilder builder, Table table);
+    
+    void createColumn(StringBuilder builder, Column<?> column, boolean isKey);
+    
+    void primaryKey(StringBuilder builder, Column<?> column);
+
+    void alterTable(StringBuilder builder, Table table);
+
+    void dropColumn(StringBuilder builder, Column<?> column);
+
+    void alterColumn(StringBuilder builder, Column<?> column);
 }

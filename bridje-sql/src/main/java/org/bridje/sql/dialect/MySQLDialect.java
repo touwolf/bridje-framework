@@ -16,6 +16,9 @@
 
 package org.bridje.sql.dialect;
 
+import org.bridje.sql.Column;
+import org.bridje.sql.Table;
+
 public class MySQLDialect implements SQLDialect
 {
     @Override
@@ -36,5 +39,78 @@ public class MySQLDialect implements SQLDialect
             builder.append(", ");
             builder.append(count);
         }
+    }
+
+    @Override
+    public void createTable(StringBuilder builder, Table table)
+    {
+        builder.append("CREATE TABLE ");
+        writeObjectName(builder, table.getName());
+        builder.append("\n");
+    }
+
+    @Override
+    public void createColumn(StringBuilder builder, Column<?> column, boolean isKey)
+    {
+        builder.append(" ");
+        writeObjectName(builder, column.getName());
+        builder.append(" ");
+        writeObjectName(builder, createType(column));
+        writeObjectName(builder, createIsNull(column));
+        writeObjectName(builder, createDefault(column));
+        writeObjectName(builder, createAutoIncrement(column));
+        builder.append("\n");
+    }
+
+    @Override
+    public void primaryKey(StringBuilder builder, Column<?> column)
+    {
+        builder.append(" PRIMARY KEY (");
+        writeObjectName(builder, column.getName());
+        builder.append(")\n");
+    }
+
+    @Override
+    public void alterTable(StringBuilder builder, Table table)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addColumn(StringBuilder builder, Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void dropColumn(StringBuilder builder, Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void alterColumn(StringBuilder builder, Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String createType(Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String createIsNull(Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String createDefault(Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String createAutoIncrement(Column<?> column)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

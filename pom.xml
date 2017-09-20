@@ -28,8 +28,8 @@
         <module>bridje-vfs</module>
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
-        <module>bridje-orm</module>
         <module>bridje-sql</module>
+        <module>bridje-orm</module>
         <module>bridje-orm-srcgen</module>
         <module>bridje-web</module>
         <module>bridje-web-srcgen</module>

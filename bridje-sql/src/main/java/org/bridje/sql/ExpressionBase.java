@@ -25,7 +25,6 @@ import org.bridje.sql.expr.StringExpr;
 
 abstract class ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
-
     @Override
     public BooleanExpr<T> and(BooleanExpr<T> operand)
     {

@@ -21,7 +21,11 @@ import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.flow.SelectStep;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.StringExpr;
+import org.bridje.sql.flow.AlterTableStep;
+import org.bridje.sql.flow.CreateTableStep;
+import org.bridje.sql.flow.DeleteStep;
 import org.bridje.sql.flow.InsertIntoStep;
+import org.bridje.sql.flow.UpdateStep;
 
 public class SQL
 {
@@ -35,9 +39,24 @@ public class SQL
         return new InsertBuilder(table);
     }
 
-    public static final UpdateBuilder update(Table table)
+    public static final UpdateStep update(Table table)
     {
         return new UpdateBuilder(table);
+    }
+
+    public static final DeleteStep delete(Table table)
+    {
+        return new DeleteBuilder(table);
+    }
+
+    public static final CreateTableStep createTable(Table table)
+    {
+        return new CreateTableBuilder(table);
+    }
+
+    public static final AlterTableStep alterTable(Table table)
+    {
+        return new AlterTableBuilder(table);
     }
 
     public static final ArithmeticExpr<Number> val(Number value)

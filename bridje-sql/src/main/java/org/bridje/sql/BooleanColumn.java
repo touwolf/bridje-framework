@@ -41,6 +41,6 @@ public class BooleanColumn<T> extends Column<T> implements BooleanExpr<T>
     @Override
     public BooleanExpr<T> not()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new UnaryExpr<>(Operators.NOT, this);
     }
 }

@@ -39,9 +39,14 @@ public class Test
                             .toSQL(mysql);
         System.out.println(sql);
         SQLStatement sql1 = SQL.insertInto(users)
-                            .columns(email, password, active)
-                            .values("gilberto.vento@hotmail.com", "somepass", true)
-                            .toSQL(mysql);
+                                .columns(email, password, active)
+                                .values("gilberto.vento@hotmail.com", "somepass", true)
+                                .toSQL(mysql);
         System.out.println(sql1);
+        SQLStatement sql2 = SQL.delete(users)
+                                .where(active)
+                                .orderBy(email.asc())
+                                .toSQL(mysql);
+        System.out.println(sql2);
     }
 }

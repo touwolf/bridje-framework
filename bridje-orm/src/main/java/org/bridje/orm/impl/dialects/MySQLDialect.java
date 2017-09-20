@@ -46,7 +46,6 @@ class MySQLDialect implements SQLDialect
         return false;
     }
 
-
     @Override
     public String createTable(Table<?> table)
     {
