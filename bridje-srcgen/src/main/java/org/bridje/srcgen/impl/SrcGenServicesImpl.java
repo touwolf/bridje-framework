@@ -42,7 +42,6 @@ import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SrcGenService;
-import org.bridje.srcgen.editor.EditorApplication;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
@@ -211,11 +210,5 @@ class SrcGenServicesImpl implements SrcGenService
             }
         }
         return result;
-    }
-
-    @Override
-    public void launchEditor(String[] args)
-    {
-        Application.launch(EditorApplication.class, args);
     }
 }

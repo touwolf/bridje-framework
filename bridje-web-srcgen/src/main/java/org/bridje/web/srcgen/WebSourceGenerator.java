@@ -21,18 +21,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.VFile;
-import org.bridje.web.srcgen.editor.ModelUtils;
-import org.bridje.web.srcgen.editor.UISuiteBaseTreeItem;
-import org.bridje.web.srcgen.editor.UISuitesModel;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.ControlEnum;
-import org.bridje.web.srcgen.uisuite.PartialUISuite;
 import org.bridje.web.srcgen.uisuite.UISuite;
 
 /**
@@ -114,31 +109,6 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
         catch (IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return null;
-    }
-
-    @Override
-    public TreeItem<Object> createTreeItem(VFile file)
-    {
-        try
-        {
-            UISuiteBaseTreeItem result = null;
-            UISuite suite = srcGen.readFile(file, UISuite.class);
-            if(suite != null)
-            {
-                result = new UISuiteBaseTreeItem(ModelUtils.toModel(suite, file), UISuitesModel.uisuite(16));
-            }
-            PartialUISuite partialSuite = srcGen.readFile(file, PartialUISuite.class);
-            if(partialSuite != null)
-            {
-                result = new UISuiteBaseTreeItem(ModelUtils.toModel(partialSuite, file), UISuitesModel.partialUISuite(16));
-            }
-            return result;
-        }
-        catch (IOException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
     }

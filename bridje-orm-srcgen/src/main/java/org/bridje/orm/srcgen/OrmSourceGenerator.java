@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.srcgen.model.CustomTypesProvider;
@@ -198,11 +197,5 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>, CustomType
         return clsDec.getAnnotations().stream()
                             .map(a -> a.getNameAsString())
                             .anyMatch(a -> "org.bridje.orm.ModelSupport".equals(a));
-    }
-
-    @Override
-    public TreeItem<Object> createTreeItem(VFile file)
-    {
-        return null;
     }
 }

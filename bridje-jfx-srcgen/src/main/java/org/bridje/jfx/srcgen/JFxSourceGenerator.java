@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TreeItem;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.jfx.srcgen.model.JFxComponent;
@@ -67,11 +66,5 @@ class JFxSourceGenerator implements SourceGenerator<ModelInf>
                 }
             }
         }
-    }
-
-    @Override
-    public TreeItem<Object> createTreeItem(VFile file)
-    {
-        return null;
     }
 }

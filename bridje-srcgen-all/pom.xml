@@ -29,30 +29,6 @@
         
         <plugins>
             <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>bridje-maven-plugin</artifactId>
-                <version>${project.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <goals>
-                            <goal>generate-sources</goal>
-                        </goals>
-                        <configuration>
-                            <dataFolder>../bridje-web-srcgen/src/main/resources/BRIDJE-INF/srcgen/data</dataFolder>
-                        </configuration>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.bridje</groupId>
-                        <artifactId>bridje-jfx-srcgen</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.0.0</version>
@@ -117,11 +93,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>bridje-jfx</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.10.3</version>
         </dependency>
     </dependencies>
 </project>
