@@ -16,6 +16,7 @@
 
 package org.bridje.sql.dialect;
 
+import java.util.List;
 import org.bridje.sql.Column;
 import org.bridje.sql.Table;
 
@@ -29,7 +30,7 @@ public interface SQLDialect
 
     void createTable(StringBuilder builder, Table table);
 
-    void createColumn(StringBuilder builder, Column<?> column, boolean isKey);
+    void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey);
     
     void primaryKey(StringBuilder builder, Column<?> column);
 

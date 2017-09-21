@@ -41,7 +41,9 @@ public class Column<T> implements Expression<T>
 
     private final boolean autoIncrement;
 
-    public Column(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement)
+    private final T defValue;
+
+    public Column(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement, T defValue)
     {
         this.table = table;
         this.name = name;
@@ -51,6 +53,7 @@ public class Column<T> implements Expression<T>
         this.length = length;
         this.presicion = presicion;
         this.autoIncrement = autoIncrement;
+        this.defValue = defValue;
     }
 
     public Table getTable()
@@ -86,6 +89,11 @@ public class Column<T> implements Expression<T>
     public int getPresicion()
     {
         return presicion;
+    }
+
+    public T getDefValue()
+    {
+        return defValue;
     }
 
     public boolean isAutoIncrement()

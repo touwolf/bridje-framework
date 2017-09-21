@@ -17,6 +17,7 @@
 package org.bridje.sql.dialect;
 
 import java.sql.JDBCType;
+import java.util.List;
 import org.bridje.sql.Column;
 import org.bridje.sql.Table;
 
@@ -51,14 +52,14 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public void createColumn(StringBuilder builder, Column<?> column, boolean isKey)
+    public void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey)
     {
         builder.append(" ");
         writeObjectName(builder, column.getName());
         builder.append(" ");
         builder.append(createType(column));
         builder.append(createIsNull(column, isKey));
-        builder.append(createDefault(column, isKey));
+        builder.append(createDefault(column, isKey, params));
         builder.append(createAutoIncrement(column));
         builder.append(",\n");
     }
@@ -158,8 +159,13 @@ public class MySQLDialect implements SQLDialect
         return " NOT NULL";
     }
 
-    private String createDefault(Column<?> column, boolean isKey)
+    private String createDefault(Column<?> column, boolean isKey, List<Object> params)
     {
+        if(column.getDefValue() != null)
+        {
+            params.add(isKey);
+            return "DEFAULT ?";
+        }
         if(isKey) return "";
         String def;
         if(column.getJdbcType()== JDBCType.TIMESTAMP

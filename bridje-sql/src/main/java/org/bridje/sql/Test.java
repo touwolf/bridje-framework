@@ -25,10 +25,10 @@ public class Test
     public static void main(String[] args)
     {
         Table users = new Table("users");
-        NumberColumn<Long> id = new NumberColumn<>(users, "id", true, JDBCType.BIGINT, Long.class, 0, 0, true);
-        StringColumn<String> email = new StringColumn<>(users, "email", true, JDBCType.VARCHAR, String.class, 150, 0, false);
-        StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class, 512, 0, false);
-        BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class, 0, 0, false);
+        NumberColumn<Long> id = new NumberColumn<>(users, "id", true, JDBCType.BIGINT, Long.class, 0, 0, true, null);
+        StringColumn<String> email = new StringColumn<>(users, "email", true, JDBCType.VARCHAR, String.class, 150, 0, false, null);
+        StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class, 512, 0, false, null);
+        BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class, 0, 0, false, null);
         MySQLDialect mysql = new MySQLDialect();
         SQLStatement stmt = SQL.createTable(users)
                                     .column(id)

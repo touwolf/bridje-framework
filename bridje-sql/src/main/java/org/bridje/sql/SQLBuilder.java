@@ -143,7 +143,7 @@ public class SQLBuilder
 
     public SQLBuilder appendCreateColumn(Column<?> column, boolean isKey)
     {
-        dialect.createColumn(builder, column, isKey);
+        dialect.createColumn(builder, parameters, column, isKey);
         return this;
     }
 

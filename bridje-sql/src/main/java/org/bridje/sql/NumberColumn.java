@@ -21,9 +21,9 @@ import org.bridje.sql.expr.ArithmeticExpr;
 
 public class NumberColumn<T> extends Column<T> implements ArithmeticExpr<T>
 {
-    public NumberColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement)
+    public NumberColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement, T defValue)
     {
-        super(table, name, allowNull, jdbcType, javaType, length, presicion, autoIncrement);
+        super(table, name, allowNull, jdbcType, javaType, length, presicion, autoIncrement, defValue);
     }
 
     @Override
