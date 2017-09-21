@@ -19,7 +19,6 @@ package org.bridje.sql;
 import java.sql.JDBCType;
 import org.bridje.sql.dialect.MySQLDialect;
 import org.bridje.sql.expr.SQLStatement;
-import org.bridje.sql.flow.AlterTableStep;
 
 public class Test
 {
