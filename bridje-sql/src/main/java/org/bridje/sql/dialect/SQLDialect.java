@@ -28,7 +28,7 @@ public interface SQLDialect
     void addColumn(StringBuilder builder, Column<?> column);
 
     void createTable(StringBuilder builder, Table table);
-    
+
     void createColumn(StringBuilder builder, Column<?> column, boolean isKey);
     
     void primaryKey(StringBuilder builder, Column<?> column);

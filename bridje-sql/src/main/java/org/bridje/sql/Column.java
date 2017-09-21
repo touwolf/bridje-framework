@@ -34,14 +34,23 @@ public class Column<T> implements Expression<T>
     private final JDBCType jdbcType;
 
     private final Class<T> javaType;
+    
+    private final int length;
+    
+    private final int presicion;
 
-    public Column(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType)
+    private final boolean autoIncrement;
+
+    public Column(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement)
     {
         this.table = table;
         this.name = name;
         this.allowNull = allowNull;
         this.jdbcType = jdbcType;
         this.javaType = javaType;
+        this.length = length;
+        this.presicion = presicion;
+        this.autoIncrement = autoIncrement;
     }
 
     public Table getTable()
@@ -67,6 +76,21 @@ public class Column<T> implements Expression<T>
     public Class<T> getJavaType()
     {
         return javaType;
+    }
+
+    public int getLength()
+    {
+        return length;
+    }
+
+    public int getPresicion()
+    {
+        return presicion;
+    }
+
+    public boolean isAutoIncrement()
+    {
+        return autoIncrement;
     }
 
     @Override

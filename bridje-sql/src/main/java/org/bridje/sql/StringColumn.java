@@ -22,9 +22,9 @@ import org.bridje.sql.expr.StringExpr;
 
 public class StringColumn<T> extends Column<T> implements StringExpr<T>
 {
-    public StringColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType)
+    public StringColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement)
     {
-        super(table, name, allowNull, jdbcType, javaType);
+        super(table, name, allowNull, jdbcType, javaType, length, presicion, autoIncrement);
     }
 
     @Override

@@ -16,6 +16,7 @@
 
 package org.bridje.sql.dialect;
 
+import java.sql.JDBCType;
 import org.bridje.sql.Column;
 import org.bridje.sql.Table;
 
@@ -46,7 +47,7 @@ public class MySQLDialect implements SQLDialect
     {
         builder.append("CREATE TABLE ");
         writeObjectName(builder, table.getName());
-        builder.append("\n");
+        builder.append(" (\n");
     }
 
     @Override
@@ -55,11 +56,11 @@ public class MySQLDialect implements SQLDialect
         builder.append(" ");
         writeObjectName(builder, column.getName());
         builder.append(" ");
-        writeObjectName(builder, createType(column));
-        writeObjectName(builder, createIsNull(column));
-        writeObjectName(builder, createDefault(column));
-        writeObjectName(builder, createAutoIncrement(column));
-        builder.append("\n");
+        builder.append(createType(column));
+        builder.append(createIsNull(column, isKey));
+        builder.append(createDefault(column, isKey));
+        builder.append(createAutoIncrement(column));
+        builder.append(",\n");
     }
 
     @Override
@@ -67,7 +68,7 @@ public class MySQLDialect implements SQLDialect
     {
         builder.append(" PRIMARY KEY (");
         writeObjectName(builder, column.getName());
-        builder.append(")\n");
+        builder.append(")\n)");
     }
 
     @Override
@@ -96,21 +97,86 @@ public class MySQLDialect implements SQLDialect
 
     private String createType(Column<?> column)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch(column.getJdbcType())
+        {
+            case BIT:
+            case TINYINT:
+            case SMALLINT:
+            case INTEGER:
+            case BIGINT:
+                if(column.getLength() > 0)
+                {
+                    return column.getJdbcType().getName() + "(" + column.getLength() + ")";
+                }
+                break;
+            case FLOAT:
+            case DOUBLE:
+            case DECIMAL:
+                if(column.getLength() > 0 && column.getPresicion() > 0)
+                {
+                    return column.getJdbcType().getName() + "(" + column.getLength() + ", " + column.getPresicion() + ")";
+                }
+                break;
+            case VARCHAR:
+            case NVARCHAR:
+                if(column.getLength() > 21844)
+                {
+                    return "TEXT";
+                }
+                if(column.getLength() > 65535)
+                {
+                    return "MEDIUMTEXT";
+                }
+                if(column.getLength() > 16777215)
+                {
+                    return "LONGTEXT";
+                }
+                if(column.getLength() > 0)
+                {
+                    return "VARCHAR(" + column.getLength() + ")";
+                }
+                return "VARCHAR";
+            case CHAR:
+            case NCHAR:
+                if(column.getLength() > 0)
+                {
+                    return "CHAR(" + column.getLength() + ")";
+                }
+                return "CHAR";
+            case LONGNVARCHAR:
+            case LONGVARCHAR:
+                return "LONGTEXT";
+            default:
+                break;
+        }
+        return column.getJdbcType().getName();
     }
 
-    private String createIsNull(Column<?> column)
+    private String createIsNull(Column<?> column, boolean isKey)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(column.isAllowNull() && !isKey) return " NULL";
+        return " NOT NULL";
     }
 
-    private String createDefault(Column<?> column)
+    private String createDefault(Column<?> column, boolean isKey)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(isKey) return "";
+        String def;
+        if(column.getJdbcType()== JDBCType.TIMESTAMP
+                || column.getJdbcType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
+        {
+            def = "'0000-00-00 00:00:00'";
+        }
+        else
+        {
+            def = "NULL";
+        }
+        return " DEFAULT " + def;
     }
 
     private String createAutoIncrement(Column<?> column)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(column.isAutoIncrement()) return " AUTO_INCREMENT";
+        return "";
     }
 }

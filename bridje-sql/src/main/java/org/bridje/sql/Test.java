@@ -25,28 +25,18 @@ public class Test
     public static void main(String[] args)
     {
         Table users = new Table("users");
-        StringColumn<String> email = new StringColumn<>(users, "email", true, JDBCType.VARCHAR, String.class);
-        StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class);
-        BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class);
+        NumberColumn<Long> id = new NumberColumn<>(users, "id", true, JDBCType.BIGINT, Long.class, 0, 0, true);
+        StringColumn<String> email = new StringColumn<>(users, "email", true, JDBCType.VARCHAR, String.class, 150, 0, false);
+        StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class, 512, 0, false);
+        BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class, 0, 0, false);
         MySQLDialect mysql = new MySQLDialect();
-        SQLStatement sql = SQL.select(email, password, active)
-                            .from(users)
-                            .innerJoin(users, email.eq(password))
-                            .where(email.ne(password).and(active))
-                            .orderBy(email.asc(), password.desc())
-                            .groupBy(active.asc())
-                            .limit(0, 10)
-                            .toSQL(mysql);
-        System.out.println(sql);
-        SQLStatement sql1 = SQL.insertInto(users)
-                                .columns(email, password, active)
-                                .values("gilberto.vento@hotmail.com", "somepass", true)
-                                .toSQL(mysql);
-        System.out.println(sql1);
-        SQLStatement sql2 = SQL.delete(users)
-                                .where(active)
-                                .orderBy(email.asc())
-                                .toSQL(mysql);
-        System.out.println(sql2);
+        SQLStatement stmt = SQL.createTable(users)
+                                    .column(id)
+                                    .column(email)
+                                    .column(password)
+                                    .column(active)
+                                    .primaryKey(id)
+                                    .toSQL(mysql);
+        System.out.println(stmt);
     }
 }
