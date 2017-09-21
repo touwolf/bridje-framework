@@ -26,8 +26,6 @@ public interface SQLDialect
 
     void writeLimit(StringBuilder builder, int offset, int count);
 
-    void addColumn(StringBuilder builder, Column<?> column);
-
     void createTable(StringBuilder builder, Table table);
 
     void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey);
@@ -36,7 +34,9 @@ public interface SQLDialect
 
     void alterTable(StringBuilder builder, Table table);
 
-    void dropColumn(StringBuilder builder, Column<?> column);
+    void addColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isLast);
 
-    void alterColumn(StringBuilder builder, Column<?> column);
+    void dropColumn(StringBuilder builder, Column<?> column, boolean isLast);
+
+    void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast);
 }

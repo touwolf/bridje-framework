@@ -20,5 +20,5 @@ enum AlterColumnType
 {
     ADD,
     DROP,
-    ALTER;
+    CHANGE;
 }

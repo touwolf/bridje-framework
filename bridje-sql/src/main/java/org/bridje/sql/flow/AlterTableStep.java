@@ -24,5 +24,5 @@ public interface AlterTableStep extends FinalStep
 
     AlterTableStep dropColumn(Column<?> column);
 
-    AlterTableStep alterColumn(Column<?> column);
+    AlterTableStep changeColumn(Column<?> column, String oldColumn);
 }

@@ -159,21 +159,21 @@ public class SQLBuilder
         return this;
     }
 
-    public SQLBuilder appendAddColumn(Column<?> column)
+    public SQLBuilder appendAddColumn(Column<?> column, boolean isLast)
     {
-        dialect.addColumn(builder, column);
+        dialect.addColumn(builder, parameters, column, isLast);
         return this;
     }
 
-    public SQLBuilder appendDropColumn(Column<?> column)
+    public SQLBuilder appendDropColumn(Column<?> column, boolean isLast)
     {
-        dialect.dropColumn(builder, column);
+        dialect.dropColumn(builder, column, isLast);
         return this;
     }
 
-    public SQLBuilder appendAlterColumn(Column<?> column)
+    public SQLBuilder appendChangeColumn(Column<?> column, String oldColumn, boolean isLast)
     {
-        dialect.alterColumn(builder, column);
+        dialect.changeColumn(builder, parameters, column, oldColumn, isLast);
         return this;
     }
 }

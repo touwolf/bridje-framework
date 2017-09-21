@@ -19,6 +19,7 @@ package org.bridje.sql;
 import java.sql.JDBCType;
 import org.bridje.sql.dialect.MySQLDialect;
 import org.bridje.sql.expr.SQLStatement;
+import org.bridje.sql.flow.AlterTableStep;
 
 public class Test
 {
@@ -30,13 +31,19 @@ public class Test
         StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class, 512, 0, false, null);
         BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class, 0, 0, false, null);
         MySQLDialect mysql = new MySQLDialect();
-        SQLStatement stmt = SQL.createTable(users)
+        SQLStatement stmtCreate = SQL.createTable(users)
                                     .column(id)
                                     .column(email)
                                     .column(password)
                                     .column(active)
                                     .primaryKey(id)
                                     .toSQL(mysql);
-        System.out.println(stmt);
+        System.out.println(stmtCreate);
+        SQLStatement stmtALter = SQL.alterTable(users)
+                                    .changeColumn(email, "email")
+                                    .changeColumn(password, "password")
+                                    .changeColumn(active, "active")
+                                    .toSQL(mysql);
+        System.out.println(stmtALter);
     }
 }

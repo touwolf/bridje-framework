@@ -75,25 +75,48 @@ public class MySQLDialect implements SQLDialect
     @Override
     public void alterTable(StringBuilder builder, Table table)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        builder.append("ALTER TABLE ");
+        writeObjectName(builder, table.getName());
+        builder.append(" \n");
     }
 
     @Override
-    public void addColumn(StringBuilder builder, Column<?> column)
+    public void addColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isLast)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        builder.append(" ADD COLUMN ");
+        writeObjectName(builder, column.getName());
+        builder.append(" ");
+        builder.append(createType(column));
+        builder.append(createIsNull(column, false));
+        builder.append(createDefault(column, false, params));
+        builder.append(createAutoIncrement(column));
+        if(!isLast) builder.append(",");
+        builder.append("\n");
     }
 
     @Override
-    public void dropColumn(StringBuilder builder, Column<?> column)
+    public void dropColumn(StringBuilder builder, Column<?> column, boolean isLast)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        builder.append(" DROP COLUMN ");
+        writeObjectName(builder, column.getName());
+        if(!isLast) builder.append(",");
+        builder.append("\n");
     }
 
     @Override
-    public void alterColumn(StringBuilder builder, Column<?> column)
+    public void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        builder.append(" CHANGE COLUMN ");
+        writeObjectName(builder, oldColumn);
+        builder.append(" ");
+        writeObjectName(builder, column.getName());
+        builder.append(" ");
+        builder.append(createType(column));
+        builder.append(createIsNull(column, false));
+        builder.append(createDefault(column, false, params));
+        builder.append(createAutoIncrement(column));
+        if(!isLast) builder.append(",");
+        builder.append("\n");
     }
 
     private String createType(Column<?> column)

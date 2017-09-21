@@ -16,20 +16,32 @@
 
 package org.bridje.sql;
 
-import java.util.List;
-
 class AlterColumn 
 {
     private AlterColumnType type;
-    
+
     private Column<?> column;
+
+    private String oldColumn;
 
     public AlterColumn(AlterColumnType type, Column<?> column)
     {
         this.type = type;
         this.column = column;
     }
-    
+
+    public AlterColumn(AlterColumnType type, Column<?> column, String oldColumn)
+    {
+        this.type = type;
+        this.column = column;
+        this.oldColumn = oldColumn;
+    }
+
+    public String getOldColumn()
+    {
+        return oldColumn;
+    }
+
     public AlterColumnType getType()
     {
         return type;

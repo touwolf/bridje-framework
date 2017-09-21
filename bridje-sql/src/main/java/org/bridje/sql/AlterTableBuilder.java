@@ -50,10 +50,10 @@ class AlterTableBuilder implements AlterTableStep
     }
 
     @Override
-    public AlterTableStep alterColumn(Column<?> column)
+    public AlterTableStep changeColumn(Column<?> column, String oldColumn)
     {
         if(columns == null) columns = new ArrayList<>();
-        columns.add(new AlterColumn(AlterColumnType.ALTER, column));
+        columns.add(new AlterColumn(AlterColumnType.CHANGE, column, oldColumn));
         return this;
     }
 
@@ -70,16 +70,17 @@ class AlterTableBuilder implements AlterTableStep
         builder.appendAlterTable(table);
         for (AlterColumn alterCol : columns)
         {
+            boolean isLast = columns.indexOf(alterCol) == (columns.size() - 1);
             switch(alterCol.getType())
             {
                 case ADD:
-                    builder.appendAddColumn(alterCol.getColumn());
+                    builder.appendAddColumn(alterCol.getColumn(), isLast);
                     break;
                 case DROP:
-                    builder.appendDropColumn(alterCol.getColumn());
+                    builder.appendDropColumn(alterCol.getColumn(), isLast);
                     break;
-                case ALTER:
-                    builder.appendAlterColumn(alterCol.getColumn());
+                case CHANGE:
+                    builder.appendChangeColumn(alterCol.getColumn(), alterCol.getOldColumn(), isLast);
                     break;
             }
         }
