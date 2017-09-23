@@ -16,6 +16,8 @@
 
 package org.bridje.sql;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.bridje.sql.expr.TableExpr;
 
@@ -23,9 +25,23 @@ public class Table implements TableExpr
 {
     private final String name;
 
-    public Table(String name)
+    private Column<?>[] columns;
+    
+    private Map<String, Column<?>> columnsMap;
+    
+    Table(String name)
     {
         this.name = name;
+    }
+    
+    void setColumns(Column<?>[] columns)
+    {
+        this.columns = columns;
+        this.columnsMap = new HashMap<>();
+        for (Column<?> column : columns)
+        {
+            this.columnsMap.put(column.getName(), column);
+        }
     }
 
     public String getName()
@@ -33,6 +49,16 @@ public class Table implements TableExpr
         return name;
     }
 
+    public Column<?>[] getColumns()
+    {
+        return columns;
+    }
+    
+    public Column<?> getColumn(String name)
+    {
+        return columnsMap.get(name);
+    }
+    
     @Override
     public int hashCode()
     {

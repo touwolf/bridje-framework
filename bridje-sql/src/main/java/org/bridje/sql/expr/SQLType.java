@@ -16,15 +16,15 @@
 
 package org.bridje.sql.expr;
 
-public interface Expression<T> extends SQLWritable
+import java.sql.JDBCType;
+
+public interface SQLType<T>
 {
-    Class<T> getType();
+    Class<T> getJavaType();
 
-    BooleanExpr<Boolean> eq(Expression<T> operand);
+    JDBCType getJDBCType();
 
-    BooleanExpr<Boolean> ne(Expression<T> operand);
+    int getLength();
 
-    OrderExpr asc();
-
-    OrderExpr desc();
+    int getPrecision();
 }

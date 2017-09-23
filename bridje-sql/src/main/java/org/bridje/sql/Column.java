@@ -16,11 +16,11 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
 import java.util.Objects;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.OrderExpr;
+import org.bridje.sql.expr.SQLType;
 import org.bridje.sql.expr.SortType;
 
 public class Column<T> implements Expression<T>
@@ -31,29 +31,20 @@ public class Column<T> implements Expression<T>
 
     private final boolean allowNull;
 
-    private final JDBCType jdbcType;
-
-    private final Class<T> javaType;
-    
-    private final int length;
-    
-    private final int presicion;
+    private final SQLType<T> type;
 
     private final boolean autoIncrement;
-
+    
     private final T defValue;
 
-    public Column(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement, T defValue)
+    public Column(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
     {
         this.table = table;
         this.name = name;
         this.allowNull = allowNull;
-        this.jdbcType = jdbcType;
-        this.javaType = javaType;
-        this.length = length;
-        this.presicion = presicion;
-        this.autoIncrement = autoIncrement;
+        this.type = type;
         this.defValue = defValue;
+        this.autoIncrement = autoIncrement;
     }
 
     public Table getTable()
@@ -71,46 +62,37 @@ public class Column<T> implements Expression<T>
         return allowNull;
     }
 
-    public JDBCType getJdbcType()
+    public SQLType<T> getSQLType()
     {
-        return jdbcType;
+        return type;
     }
-
-    public Class<T> getJavaType()
+    
+    @Override
+    public Class<T> getType()
     {
-        return javaType;
-    }
-
-    public int getLength()
-    {
-        return length;
-    }
-
-    public int getPresicion()
-    {
-        return presicion;
-    }
-
-    public T getDefValue()
-    {
-        return defValue;
+        return type.getJavaType();
     }
 
     public boolean isAutoIncrement()
     {
         return autoIncrement;
     }
+    
+    public T getDefValue()
+    {
+        return defValue;
+    }
 
     @Override
     public BooleanExpr<Boolean> eq(Expression<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.EQ, operand);
+        return new BinaryExpr<>(this, Operators.EQ, operand, Boolean.class);
     }
 
     @Override
     public BooleanExpr<Boolean> ne(Expression<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.NE, operand);
+        return new BinaryExpr<>(this, Operators.NE, operand, Boolean.class);
     }
 
     @Override

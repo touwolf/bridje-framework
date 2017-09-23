@@ -24,9 +24,10 @@ import org.bridje.sql.expr.StringExpr;
 class Literal<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>, LiteralExpr<T>
 {
     private final T value;
-
+    
     public Literal(T value)
     {
+        super((Class<T>)value.getClass());
         this.value = value;
     }
 

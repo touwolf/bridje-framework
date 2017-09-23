@@ -121,50 +121,50 @@ public class MySQLDialect implements SQLDialect
 
     private String createType(Column<?> column)
     {
-        switch(column.getJdbcType())
+        switch(column.getSQLType().getJDBCType())
         {
             case BIT:
             case TINYINT:
             case SMALLINT:
             case INTEGER:
             case BIGINT:
-                if(column.getLength() > 0)
+                if(column.getSQLType().getLength() > 0)
                 {
-                    return column.getJdbcType().getName() + "(" + column.getLength() + ")";
+                    return column.getSQLType().getJDBCType().getName() + "(" + column.getSQLType().getLength() + ")";
                 }
                 break;
             case FLOAT:
             case DOUBLE:
             case DECIMAL:
-                if(column.getLength() > 0 && column.getPresicion() > 0)
+                if(column.getSQLType().getLength() > 0 && column.getSQLType().getPrecision() > 0)
                 {
-                    return column.getJdbcType().getName() + "(" + column.getLength() + ", " + column.getPresicion() + ")";
+                    return column.getSQLType().getJDBCType().getName() + "(" + column.getSQLType().getLength() + ", " + column.getSQLType().getPrecision() + ")";
                 }
                 break;
             case VARCHAR:
             case NVARCHAR:
-                if(column.getLength() > 21844)
+                if(column.getSQLType().getLength() > 21844)
                 {
                     return "TEXT";
                 }
-                if(column.getLength() > 65535)
+                if(column.getSQLType().getLength() > 65535)
                 {
                     return "MEDIUMTEXT";
                 }
-                if(column.getLength() > 16777215)
+                if(column.getSQLType().getLength() > 16777215)
                 {
                     return "LONGTEXT";
                 }
-                if(column.getLength() > 0)
+                if(column.getSQLType().getLength() > 0)
                 {
-                    return "VARCHAR(" + column.getLength() + ")";
+                    return "VARCHAR(" + column.getSQLType().getLength() + ")";
                 }
                 return "VARCHAR";
             case CHAR:
             case NCHAR:
-                if(column.getLength() > 0)
+                if(column.getSQLType().getLength() > 0)
                 {
-                    return "CHAR(" + column.getLength() + ")";
+                    return "CHAR(" + column.getSQLType().getLength() + ")";
                 }
                 return "CHAR";
             case LONGNVARCHAR:
@@ -173,7 +173,7 @@ public class MySQLDialect implements SQLDialect
             default:
                 break;
         }
-        return column.getJdbcType().getName();
+        return column.getSQLType().getJDBCType().getName();
     }
 
     private String createIsNull(Column<?> column, boolean isKey)
@@ -190,17 +190,12 @@ public class MySQLDialect implements SQLDialect
             return "DEFAULT ?";
         }
         if(isKey) return "";
-        String def;
-        if(column.getJdbcType()== JDBCType.TIMESTAMP
-                || column.getJdbcType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
+        if(column.getSQLType().getJDBCType()== JDBCType.TIMESTAMP
+                || column.getSQLType().getJDBCType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
         {
-            def = "'0000-00-00 00:00:00'";
+            return " DEFAULT '0000-00-00 00:00:00'";
         }
-        else
-        {
-            def = "NULL";
-        }
-        return " DEFAULT " + def;
+        return "";
     }
 
     private String createAutoIncrement(Column<?> column)

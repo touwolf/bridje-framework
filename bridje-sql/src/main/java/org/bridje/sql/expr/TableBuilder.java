@@ -16,15 +16,15 @@
 
 package org.bridje.sql.expr;
 
-public interface Expression<T> extends SQLWritable
+import org.bridje.sql.Table;
+
+public interface TableBuilder
 {
-    Class<T> getType();
+    <T> TableBuilder number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue);
 
-    BooleanExpr<Boolean> eq(Expression<T> operand);
+    <T> TableBuilder string(String name, SQLType<T> type, boolean allowNull, T defValue);
 
-    BooleanExpr<Boolean> ne(Expression<T> operand);
+    <T> TableBuilder bool(String name, SQLType<T> type, boolean allowNull, T defValue);
 
-    OrderExpr asc();
-
-    OrderExpr desc();
+    Table build();
 }

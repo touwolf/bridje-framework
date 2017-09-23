@@ -25,106 +25,119 @@ import org.bridje.sql.expr.StringExpr;
 
 abstract class ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
+    private final Class<T> type;
+
+    public ExpressionBase(Class<T> type)
+    {
+        this.type = type;
+    }
+    
+    @Override
+    public Class<T> getType()
+    {
+        return type;
+    }
+
     @Override
     public BooleanExpr<T> and(BooleanExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.AND, operand);
+        return new BinaryExpr<>(this, Operators.AND, operand, getType());
     }
 
     @Override
     public BooleanExpr<T> or(BooleanExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.OR, operand);
+        return new BinaryExpr<>(this, Operators.OR, operand, getType());
     }
 
     @Override
     public BooleanExpr<T> not()
     {
-        return new UnaryExpr<>(Operators.NOT, this);
+        return new UnaryExpr<>(Operators.NOT, this, getType());
     }
 
     @Override
     public BooleanExpr<Boolean> eq(Expression<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.EQ, operand);
+        return new BinaryExpr<>(this, Operators.EQ, operand, Boolean.class);
     }
 
     @Override
     public BooleanExpr<Boolean> ne(Expression<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.NE, operand);
+        return new BinaryExpr<>(this, Operators.NE, operand, Boolean.class);
     }
 
     @Override
     public StringExpr<T> trim()
     {
-        return new FunctionExpr("trim", this);
+        return new FunctionExpr("trim", getType(), this);
     }
 
     @Override
     public ArithmeticExpr<Integer> length()
     {
-        return new FunctionExpr("length", this);
+        return new FunctionExpr("length", Integer.class, this);
     }
 
     @Override
     public ArithmeticExpr<T> plus(ArithmeticExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.PLUS, operand);
+        return new BinaryExpr<>(this, Operators.PLUS, operand, getType());
     }
 
     @Override
     public ArithmeticExpr<T> minus(ArithmeticExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.MINUS, operand);
+        return new BinaryExpr<>(this, Operators.MINUS, operand, getType());
     }
 
     @Override
     public ArithmeticExpr<T> mul(ArithmeticExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.MULT, operand);
+        return new BinaryExpr<>(this, Operators.MULT, operand, getType());
     }
 
     @Override
     public ArithmeticExpr<T> div(ArithmeticExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.DIV, operand);
+        return new BinaryExpr<>(this, Operators.DIV, operand, getType());
     }
 
     @Override
     public ArithmeticExpr<T> mod(ArithmeticExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.MOD, operand);
+        return new BinaryExpr<>(this, Operators.MOD, operand, getType());
     }
 
     @Override
     public ArithmeticExpr<T> plus(T operand)
     {
-        return new BinaryExpr<>(this, Operators.PLUS, new Literal<>(operand));
+        return new BinaryExpr<>(this, Operators.PLUS, new Literal<>(operand), getType());
     }
 
     @Override
     public ArithmeticExpr<T> minus(T operand)
     {
-        return new BinaryExpr<>(this, Operators.MINUS, new Literal<>(operand));
+        return new BinaryExpr<>(this, Operators.MINUS, new Literal<>(operand), getType());
     }
 
     @Override
     public ArithmeticExpr<T> mul(T operand)
     {
-        return new BinaryExpr<>(this, Operators.MULT, new Literal<>(operand));
+        return new BinaryExpr<>(this, Operators.MULT, new Literal<>(operand), getType());
     }
 
     @Override
     public ArithmeticExpr<T> div(T operand)
     {
-        return new BinaryExpr<>(this, Operators.DIV, new Literal<>(operand));
+        return new BinaryExpr<>(this, Operators.DIV, new Literal<>(operand), getType());
     }
 
     @Override
     public ArithmeticExpr<T> mod(T operand)
     {
-        return new BinaryExpr<>(this, Operators.MOD, new Literal<>(operand));
+        return new BinaryExpr<>(this, Operators.MOD, new Literal<>(operand), getType());
     }
     
     @Override

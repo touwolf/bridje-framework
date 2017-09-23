@@ -27,8 +27,9 @@ class FunctionExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, Strin
 
     private final Expression<?>[] params;
 
-    public FunctionExpr(String name, Expression<?>... params)
+    public FunctionExpr(String name, Class<T> type, Expression<?>... params)
     {
+        super(type);
         this.name = name;
         this.params = params;
     }

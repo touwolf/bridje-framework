@@ -16,31 +16,31 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
 import org.bridje.sql.expr.BooleanExpr;
+import org.bridje.sql.expr.SQLType;
 
 public class BooleanColumn<T> extends Column<T> implements BooleanExpr<T>
 {
-    public BooleanColumn(Table table, String name, boolean allowNull, JDBCType jdbcType, Class<T> javaType, int length, int presicion, boolean autoIncrement, T defValue)
+    public BooleanColumn(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
     {
-        super(table, name, allowNull, jdbcType, javaType, length, presicion, autoIncrement, defValue);
+        super(table, name, type, allowNull, autoIncrement, defValue);
     }
 
     @Override
     public BooleanExpr<T> and(BooleanExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.AND, operand);
+        return new BinaryExpr<>(this, Operators.AND, operand, getType());
     }
 
     @Override
     public BooleanExpr<T> or(BooleanExpr<T> operand)
     {
-        return new BinaryExpr<>(this, Operators.OR, operand);
+        return new BinaryExpr<>(this, Operators.OR, operand, getType());
     }
 
     @Override
     public BooleanExpr<T> not()
     {
-        return new UnaryExpr<>(Operators.NOT, this);
+        return new UnaryExpr<>(Operators.NOT, this, getType());
     }
 }

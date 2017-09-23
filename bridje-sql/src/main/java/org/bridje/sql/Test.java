@@ -24,11 +24,16 @@ public class Test
 {
     public static void main(String[] args)
     {
-        Table users = new Table("users");
-        NumberColumn<Long> id = new NumberColumn<>(users, "id", true, JDBCType.BIGINT, Long.class, 0, 0, true, null);
-        StringColumn<String> email = new StringColumn<>(users, "email", true, JDBCType.VARCHAR, String.class, 150, 0, false, null);
-        StringColumn<String> password = new StringColumn<>(users, "password", true, JDBCType.VARCHAR, String.class, 512, 0, false, null);
-        BooleanColumn<Boolean> active = new BooleanColumn<>(users, "active", true, JDBCType.BIT, Boolean.class, 0, 0, false, null);
+        Table users = SQL.buildTable("users")
+                            .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), false, true, null)
+                            .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), true, null)
+                            .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), true, null)
+                            .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), true, null)
+                            .build();
+        NumberColumn<Long> id = (NumberColumn<Long>)users.getColumn("id");
+        StringColumn<String> email = (StringColumn<String>)users.getColumn("email");
+        StringColumn<String> password = (StringColumn<String>)users.getColumn("password");
+        BooleanColumn<Boolean> active = (BooleanColumn<Boolean>)users.getColumn("active");
         MySQLDialect mysql = new MySQLDialect();
         SQLStatement stmtCreate = SQL.createTable(users)
                                     .column(id)

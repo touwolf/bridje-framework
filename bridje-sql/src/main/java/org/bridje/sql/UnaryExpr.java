@@ -26,9 +26,10 @@ class UnaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringEx
     private final Expression<?> operand;
     
     private final Operators operator;
-
-    public UnaryExpr(Operators operator, Expression<?> operand)
+    
+    public UnaryExpr(Operators operator, Expression<?> operand, Class<T> type)
     {
+        super(type);
         this.operand = operand;
         this.operator = operator;
     }
@@ -42,7 +43,7 @@ class UnaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringEx
     {
         return operator;
     }
-
+    
     @Override
     public void writeSQL(SQLBuilder builder)
     {

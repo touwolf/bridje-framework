@@ -16,26 +16,48 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.ArithmeticExpr;
+import java.sql.JDBCType;
 import org.bridje.sql.expr.SQLType;
-import org.bridje.sql.expr.StringExpr;
 
-public class StringColumn<T> extends Column<T> implements StringExpr<T>
+class SQLTypeImpl<T> implements SQLType<T>
 {
-    public StringColumn(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
+    private final Class<T> javaType;
+
+    private final JDBCType jdbcType;
+
+    private final int length;
+
+    private final int precision;
+
+    SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
-        super(table, name, type, allowNull, autoIncrement, defValue);
+        this.javaType = javaType;
+        this.jdbcType = jdbcType;
+        this.length = length;
+        this.precision = precision;
     }
 
     @Override
-    public StringExpr<T> trim()
+    public Class<T> getJavaType()
     {
-        return new FunctionExpr("trim", getType(), this);
+        return javaType;
     }
 
     @Override
-    public ArithmeticExpr<Integer> length()
+    public JDBCType getJDBCType()
     {
-        return new FunctionExpr("length", Integer.class, this);
+        return jdbcType;
+    }
+
+    @Override
+    public int getLength()
+    {
+        return length;
+    }
+
+    @Override
+    public int getPrecision()
+    {
+        return precision;
     }
 }

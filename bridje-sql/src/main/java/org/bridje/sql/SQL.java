@@ -16,11 +16,14 @@
 
 package org.bridje.sql;
 
+import java.sql.JDBCType;
 import org.bridje.sql.expr.ArithmeticExpr;
 import org.bridje.sql.expr.BooleanExpr;
 import org.bridje.sql.flow.SelectStep;
 import org.bridje.sql.expr.Expression;
+import org.bridje.sql.expr.SQLType;
 import org.bridje.sql.expr.StringExpr;
+import org.bridje.sql.expr.TableBuilder;
 import org.bridje.sql.flow.AlterTableStep;
 import org.bridje.sql.flow.CreateTableStep;
 import org.bridje.sql.flow.DeleteStep;
@@ -29,6 +32,26 @@ import org.bridje.sql.flow.UpdateStep;
 
 public class SQL
 {
+    public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    {
+        return new SQLTypeImpl<>(javaType, jdbcType, length, precision);
+    }
+    
+    public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
+    {
+        return new SQLTypeImpl<>(javaType, jdbcType, length, 0);
+    }
+
+    public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType)
+    {
+        return new SQLTypeImpl<>(javaType, jdbcType, 0, 0);
+    }
+
+    public static final TableBuilder buildTable(String name)
+    {
+        return new TableBuilderImpl(name);
+    }
+
     public static final SelectStep select(Expression<?>... columns)
     {
         return new SelectBuilder(columns);
@@ -88,7 +111,7 @@ public class SQL
     {
         return new Literal(value);
     }
-    
+
     public static final ArithmeticExpr<Integer> val(Integer value)
     {
         return new Literal(value);

@@ -29,8 +29,9 @@ class BinaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringE
 
     private final Expression<?> operand2;
 
-    public BinaryExpr(Expression<?> operand1, Operators operator, Expression<?> operand2)
+    public BinaryExpr(Expression<?> operand1, Operators operator, Expression<?> operand2, Class<T> type)
     {
+        super(type);
         this.operand1 = operand1;
         this.operator = operator;
         this.operand2 = operand2;
