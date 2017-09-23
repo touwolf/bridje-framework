@@ -23,12 +23,14 @@ import org.bridje.sql.flow.SelectStep;
 import org.bridje.sql.expr.Expression;
 import org.bridje.sql.expr.SQLType;
 import org.bridje.sql.expr.StringExpr;
-import org.bridje.sql.expr.TableBuilder;
 import org.bridje.sql.flow.AlterTableStep;
 import org.bridje.sql.flow.CreateTableStep;
 import org.bridje.sql.flow.DeleteStep;
 import org.bridje.sql.flow.InsertIntoStep;
 import org.bridje.sql.flow.UpdateStep;
+import org.bridje.sql.flow.BuildTableStep;
+import org.bridje.sql.flow.CreateIndexStep;
+import org.bridje.sql.flow.FinalStep;
 
 public class SQL
 {
@@ -47,9 +49,9 @@ public class SQL
         return new SQLTypeImpl<>(javaType, jdbcType, 0, 0);
     }
 
-    public static final TableBuilder buildTable(String name)
+    public static final BuildTableStep buildTable(String name)
     {
-        return new TableBuilderImpl(name);
+        return new TableBuilder(name);
     }
 
     public static final SelectStep select(Expression<?>... columns)
@@ -82,6 +84,21 @@ public class SQL
         return new AlterTableBuilder(table);
     }
 
+    public static final CreateIndexStep createIndex(String name, Table on)
+    {
+        return new CreateIndexBuilder(name, on, false);
+    }
+
+    public static final CreateIndexStep createUniqueIndex(String name, Table on)
+    {
+        return new CreateIndexBuilder(name, on, true);
+    }
+
+    public static final FinalStep dropIndex(String name, Table on)
+    {
+        return new DropIndexBuilder(name, on);
+    }
+    
     public static final ArithmeticExpr<Number> val(Number value)
     {
         return new Literal(value);

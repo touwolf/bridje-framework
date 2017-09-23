@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.sql.expr;
+package org.bridje.sql.flow;
 
+import org.bridje.sql.Column;
 import org.bridje.sql.Table;
 
-public interface TableBuilder
+public interface ForeignKeyStep
 {
-    <T> TableBuilder number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue);
-
-    <T> TableBuilder string(String name, SQLType<T> type, boolean allowNull, T defValue);
-
-    <T> TableBuilder bool(String name, SQLType<T> type, boolean allowNull, T defValue);
-
-    Table build();
+    ForeignKeysStep references(Table otherTable, Column<?>... column);
 }

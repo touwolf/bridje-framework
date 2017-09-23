@@ -20,40 +20,31 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.dialect.SQLDialect;
 import org.bridje.sql.expr.SQLStatement;
-import org.bridje.sql.flow.CreateTableStep;
+import org.bridje.sql.flow.CreateIndexStep;
 import org.bridje.sql.flow.FinalStep;
-import org.bridje.sql.flow.ForeignKeyStep;
-import org.bridje.sql.flow.ForeignKeysStep;
 
-class CreateTableBuilder implements CreateTableStep, ForeignKeysStep, ForeignKeyStep, FinalStep
+class CreateIndexBuilder implements CreateIndexStep, FinalStep
 {
+    private final String name;
+    
+    private final boolean unique;
+    
     private final Table table;
 
-    private Column<?> primaryKey;
-    
     private List<Column<?>> columns;
-    
-    private List<ForeignKey> foreignKeys;
-    
-    private ForeignKey foreignKey;
 
-    public CreateTableBuilder(Table table)
+    public CreateIndexBuilder(String name, Table table, boolean unique)
     {
+        this.unique = unique;
+        this.name = name;
         this.table = table;
     }
 
     @Override
-    public CreateTableStep column(Column<?> column)
+    public CreateIndexStep column(Column<?> column)
     {
         if(columns == null) columns = new ArrayList<>();
         this.columns.add(column);
-        return this;
-    }
-
-    @Override
-    public ForeignKeysStep primaryKey(Column<?> column)
-    {
-        this.primaryKey = column;
         return this;
     }
 
@@ -67,29 +58,16 @@ class CreateTableBuilder implements CreateTableStep, ForeignKeysStep, ForeignKey
 
     public SQLStatement toSQL(SQLBuilder builder)
     {
-        builder.appendCreateTable(table);
-        for (Column<?> column : columns)
+        Column<?>[] columnsArr = new Column<?>[columns.size()];
+        columns.toArray(columnsArr);
+        if(unique)
         {
-            builder.appendCreateColumn(column, column.equals(primaryKey));
+            builder.appendCreateUniqueIndex(name, table, columnsArr);
         }
-        builder.appendPrimaryKey(primaryKey);
+        else
+        {
+            builder.appendCreateIndex(name, table, columnsArr);
+        }
         return new SQLStatement(builder.toString(), builder.getParameters().toArray());
-    }
-
-    @Override
-    public ForeignKeysStep foreignKey(String name, Column<?>... column)
-    {
-        foreignKey = new ForeignKey(name, table, column);
-        return this;
-    }
-
-    @Override
-    public ForeignKeysStep references(Table otherTable, Column<?>... column)
-    {
-        foreignKey.references(otherTable, column);
-        if(foreignKeys == null) foreignKeys = new ArrayList<>();
-        foreignKeys.add(foreignKey);
-        foreignKey = null;
-        return this;
     }
 }

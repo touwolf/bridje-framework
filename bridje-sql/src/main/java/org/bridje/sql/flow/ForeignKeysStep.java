@@ -18,9 +18,7 @@ package org.bridje.sql.flow;
 
 import org.bridje.sql.Column;
 
-public interface CreateTableStep
+public interface ForeignKeysStep extends FinalStep
 {
-    CreateTableStep column(Column<?> column);
-
-    ForeignKeysStep primaryKey(Column<?> column);
+    ForeignKeysStep foreignKey(String name, Column<?>... column);
 }

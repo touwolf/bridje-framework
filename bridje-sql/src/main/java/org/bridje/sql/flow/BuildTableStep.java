@@ -16,11 +16,16 @@
 
 package org.bridje.sql.flow;
 
-import org.bridje.sql.Column;
+import org.bridje.sql.Table;
+import org.bridje.sql.expr.SQLType;
 
-public interface CreateTableStep
+public interface BuildTableStep
 {
-    CreateTableStep column(Column<?> column);
+    <T> BuildTableStep number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue);
 
-    ForeignKeysStep primaryKey(Column<?> column);
+    <T> BuildTableStep string(String name, SQLType<T> type, boolean allowNull, T defValue);
+
+    <T> BuildTableStep bool(String name, SQLType<T> type, boolean allowNull, T defValue);
+
+    Table build();
 }

@@ -39,4 +39,10 @@ public interface SQLDialect
     void dropColumn(StringBuilder builder, Column<?> column, boolean isLast);
 
     void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast);
+
+    void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns);
+    
+    void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns);
+    
+    void dropIndex(StringBuilder builder, String name, Table table);
 }

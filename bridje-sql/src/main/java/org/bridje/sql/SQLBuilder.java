@@ -176,4 +176,22 @@ public class SQLBuilder
         dialect.changeColumn(builder, parameters, column, oldColumn, isLast);
         return this;
     }
+
+    public SQLBuilder appendCreateIndex(String name, Table table, Column<?>[] columns)
+    {
+        dialect.createIndex(builder, name, table, columns);
+        return this;
+    }
+
+    public SQLBuilder appendCreateUniqueIndex(String name, Table table, Column<?>[] columns)
+    {
+        dialect.createUniqueIndex(builder, name, table, columns);
+        return this;
+    }
+
+    public SQLBuilder appendDropIndex(String name, Table table)
+    {
+        dialect.dropIndex(builder, name, table);
+        return this;
+    }
 }

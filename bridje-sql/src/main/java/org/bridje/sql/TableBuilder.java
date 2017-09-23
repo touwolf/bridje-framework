@@ -19,36 +19,36 @@ package org.bridje.sql;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.expr.SQLType;
-import org.bridje.sql.expr.TableBuilder;
+import org.bridje.sql.flow.BuildTableStep;
 
-class TableBuilderImpl implements TableBuilder
+class TableBuilder implements BuildTableStep
 {
     private Table table;
 
     private List<Column<?>> columns;
 
-    public TableBuilderImpl(String name)
+    public TableBuilder(String name)
     {
         this.table = new Table(name);
         columns = new ArrayList<>();
     }
     
     @Override
-    public <T> TableBuilder number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
+    public <T> BuildTableStep number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
     {
         columns.add(new NumberColumn(table, name, type, allowNull, autoIncrement, defValue));
         return this;
     }
 
     @Override
-    public <T> TableBuilder string(String name, SQLType<T> type, boolean allowNull, T defValue)
+    public <T> BuildTableStep string(String name, SQLType<T> type, boolean allowNull, T defValue)
     {
         columns.add(new StringColumn(table, name, type, allowNull, false, defValue));
         return this;
     }
 
     @Override
-    public <T> TableBuilder bool(String name, SQLType<T> type, boolean allowNull, T defValue)
+    public <T> BuildTableStep bool(String name, SQLType<T> type, boolean allowNull, T defValue)
     {
         columns.add(new BooleanColumn(table, name, type, allowNull, false, defValue));
         return this;

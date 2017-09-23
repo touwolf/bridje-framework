@@ -65,6 +65,40 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
+    public void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns)
+    {
+        builder.append("CREATE INDEX ");
+        writeObjectName(builder, name);
+        builder.append(" ON ");
+        writeObjectName(builder, table.getName());
+        builder.append(" ( ");
+        boolean isFirst = true;
+        for (Column<?> column : columns)
+        {
+            if(!isFirst) builder.append(", ");
+            writeObjectName(builder, column.getName());
+        }
+        builder.append(" ) ");
+    }
+
+    @Override
+    public void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns)
+    {
+        builder.append("CREATE UNIQUE INDEX ");
+        writeObjectName(builder, name);
+        builder.append(" ON ");
+        writeObjectName(builder, table.getName());
+        builder.append(" ( ");
+        boolean isFirst = true;
+        for (Column<?> column : columns)
+        {
+            if(!isFirst) builder.append(", ");
+            writeObjectName(builder, column.getName());
+        }
+        builder.append(" ) ");
+    }
+    
+    @Override
     public void primaryKey(StringBuilder builder, Column<?> column)
     {
         builder.append(" PRIMARY KEY (");
@@ -117,6 +151,15 @@ public class MySQLDialect implements SQLDialect
         builder.append(createAutoIncrement(column));
         if(!isLast) builder.append(",");
         builder.append("\n");
+    }
+
+    @Override
+    public void dropIndex(StringBuilder builder, String name, Table table)
+    {
+        builder.append(" ALTER TABLE ");
+        writeObjectName(builder, table.getName());
+        builder.append(" DROP INDEX ");
+        writeObjectName(builder, name);
     }
 
     private String createType(Column<?> column)
