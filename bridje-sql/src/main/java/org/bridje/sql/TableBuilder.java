@@ -60,8 +60,6 @@ class TableBuilder implements BuildTableStep
         Column<?>[] cols = new Column<?>[columns.size()];
         columns.toArray(cols);
         table.setColumns(cols);
-        table = null;
-        columns = null;
         return table;
     }
 }

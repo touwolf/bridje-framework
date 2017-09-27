@@ -20,18 +20,26 @@ import java.sql.JDBCType;
 
 public class User
 {
-    public static final Table TABLE = SQL.buildTable("users")
-                                            .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), false, true, null)
-                                            .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), true, null)
-                                            .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), true, null)
-                                            .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), true, null)
-                                            .build();
+    public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID = (NumberColumn<Long>)TABLE.getColumn("id");
+    public static final NumberColumn<Long> ID;
 
-    public static final StringColumn<String> EMAIL = (StringColumn<String>)TABLE.getColumn("email");
+    public static final StringColumn<String> EMAIL;
 
-    public static final StringColumn<String> PASSWORD = (StringColumn<String>)TABLE.getColumn("password");
+    public static final StringColumn<String> PASSWORD;
 
-    public static final BooleanColumn<Boolean> ACTIVE = (BooleanColumn<Boolean>)TABLE.getColumn("active");
+    public static final BooleanColumn<Boolean> ACTIVE;
+    
+    static {
+        TABLE = SQL.buildTable("users")
+                    .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), false, true, null)
+                    .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), true, null)
+                    .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), true, null)
+                    .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), true, null)
+                    .build();
+        ID = (NumberColumn<Long>)TABLE.getColumn("id");
+        EMAIL = (StringColumn<String>)TABLE.getColumn("email");
+        PASSWORD = (StringColumn<String>)TABLE.getColumn("password");
+        ACTIVE = (BooleanColumn<Boolean>)TABLE.getColumn("active");
+    }
 }
