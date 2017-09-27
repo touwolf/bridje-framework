@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
-
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface TableExpr extends SQLWritable
 {
 }

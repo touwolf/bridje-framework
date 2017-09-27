@@ -16,182 +16,57 @@
 
 package org.bridje.sql;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.dialect.SQLDialect;
-import org.bridje.sql.expr.SQLWritable;
 
-public class SQLBuilder
+public interface SQLBuilder
 {
-    private final StringBuilder builder;
+    boolean isSimpleColumnNames();
 
-    private final List<Object> parameters;
+    void setSimpleColumnNames(boolean simpleColumnNames);
 
-    private final SQLDialect dialect;
+    SQLDialect getDialect();
 
-    private boolean simpleColumnNames;
+    List<Object> getParameters();
 
-    public SQLBuilder(SQLDialect dialect)
-    {
-        this.builder = new StringBuilder();
-        this.parameters = new ArrayList<>();
-        this.dialect = dialect;
-    }
+    SQLBuilder append(String str);
 
-    public boolean isSimpleColumnNames()
-    {
-        return simpleColumnNames;
-    }
+    SQLBuilder append(CharSequence s);
 
-    public void setSimpleColumnNames(boolean simpleColumnNames)
-    {
-        this.simpleColumnNames = simpleColumnNames;
-    }
+    SQLBuilder append(char c);
 
-    public SQLDialect getDialect()
-    {
-        return dialect;
-    }
+    SQLBuilder append(int i);
 
-    public List<Object> getParameters()
-    {
-        return parameters;
-    }
+    SQLBuilder append(long lng);
 
-    public SQLBuilder append(String str)
-    {
-        builder.append(str);
-        return this;
-    }
+    SQLBuilder append(float f);
 
-    public SQLBuilder append(CharSequence s)
-    {
-        builder.append(s);
-        return this;
-    }
+    SQLBuilder append(double d);
 
-    public SQLBuilder append(char c)
-    {
-        builder.append(c);
-        return this;
-    }
+    SQLBuilder appendObjectName(String name);
 
-    public SQLBuilder append(int i)
-    {
-        builder.append(i);
-        return this;
-    }
+    SQLBuilder appendLimit(int offset, int count);
 
-    public SQLBuilder append(long lng)
-    {
-        builder.append(lng);
-        return this;
-    }
+    SQLBuilder append(SQLWritable expression);
 
-    public SQLBuilder append(float f)
-    {
-        builder.append(f);
-        return this;
-    }
+    void appendAll(SQLWritable[] expressions, String sep);
 
-    public SQLBuilder append(double d)
-    {
-        builder.append(d);
-        return this;
-    }
+    SQLBuilder appendCreateTable(Table table);
 
-    public SQLBuilder appendObjectName(String name)
-    {
-        dialect.writeObjectName(builder, name);
-        return this;
-    }
+    SQLBuilder appendCreateColumn(Column<?> column, boolean isKey);
 
-    public SQLBuilder appendLimit(int offset, int count)
-    {
-        dialect.writeLimit(builder, offset, count);
-        return this;
-    }
+    SQLBuilder appendPrimaryKey(Column<?> column);
 
-    public SQLBuilder append(SQLWritable expression)
-    {
-        expression.writeSQL(this);
-        return this;
-    }
+    SQLBuilder appendAlterTable(Table table);
 
-    public void appendAll(SQLWritable[] expressions, String sep)
-    {
-        boolean first = true;
-        for (SQLWritable expression : expressions)
-        {
-            if(!first) builder.append(sep);
-            expression.writeSQL(this);
-            first = false;
-        }
-    }
+    SQLBuilder appendAddColumn(Column<?> column, boolean isLast);
 
-    @Override
-    public String toString()
-    {
-        return builder.toString();
-    }
+    SQLBuilder appendDropColumn(Column<?> column, boolean isLast);
 
-    public SQLBuilder appendCreateTable(Table table)
-    {
-        dialect.createTable(builder, table);
-        return this;
-    }
+    SQLBuilder appendChangeColumn(Column<?> column, String oldColumn, boolean isLast);
 
-    public SQLBuilder appendCreateColumn(Column<?> column, boolean isKey)
-    {
-        dialect.createColumn(builder, parameters, column, isKey);
-        return this;
-    }
+    SQLBuilder appendCreateIndex(String name, Table table, Column<?>[] columns);
 
-    public SQLBuilder appendPrimaryKey(Column<?> column)
-    {
-        dialect.primaryKey(builder, column);
-        return this;
-    }
+    SQLBuilder appendCreateUniqueIndex(String name, Table table, Column<?>[] columns);
 
-    public SQLBuilder appendAlterTable(Table table)
-    {
-        dialect.alterTable(builder, table);
-        return this;
-    }
-
-    public SQLBuilder appendAddColumn(Column<?> column, boolean isLast)
-    {
-        dialect.addColumn(builder, parameters, column, isLast);
-        return this;
-    }
-
-    public SQLBuilder appendDropColumn(Column<?> column, boolean isLast)
-    {
-        dialect.dropColumn(builder, column, isLast);
-        return this;
-    }
-
-    public SQLBuilder appendChangeColumn(Column<?> column, String oldColumn, boolean isLast)
-    {
-        dialect.changeColumn(builder, parameters, column, oldColumn, isLast);
-        return this;
-    }
-
-    public SQLBuilder appendCreateIndex(String name, Table table, Column<?>[] columns)
-    {
-        dialect.createIndex(builder, name, table, columns);
-        return this;
-    }
-
-    public SQLBuilder appendCreateUniqueIndex(String name, Table table, Column<?>[] columns)
-    {
-        dialect.createUniqueIndex(builder, name, table, columns);
-        return this;
-    }
-
-    public SQLBuilder appendDropIndex(String name, Table table)
-    {
-        dialect.dropIndex(builder, name, table);
-        return this;
-    }
+    SQLBuilder appendDropIndex(String name, Table table);
 }

@@ -16,8 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
-
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface OrderExpr extends SQLWritable
 {
+    SortType getType();
+
+    Expression<?> getColumn();
 }

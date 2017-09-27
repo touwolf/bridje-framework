@@ -16,8 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.SelectExpr;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SelectFinalStep extends FinalStep
 {
+    SelectExpr asTable();
 }

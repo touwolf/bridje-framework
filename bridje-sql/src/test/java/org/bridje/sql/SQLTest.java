@@ -16,17 +16,11 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.dialect.MySQLDialect;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
-/**
- *
- * @author gilbe
- */
 public class SQLTest
 {
     
@@ -54,16 +48,16 @@ public class SQLTest
     {
     }
 
-    @Test
+    //@Test
     public void test1CreateTables()
     {
-        SQL.createTable(User.TABLE)
-                .column(User.ID)
-                .column(User.EMAIL)
-                .column(User.PASSWORD)
-                .column(User.ACTIVE)
-                .primaryKey(User.ID)
-                .toSQL(new MySQLDialect());
+        SQLQuery query = SQL.createTable(User.TABLE)
+                            .column(User.ID)
+                            .column(User.EMAIL)
+                            .column(User.PASSWORD)
+                            .column(User.ACTIVE)
+                            .primaryKey(User.ID)
+                            .toQuery();
     }
     
 }

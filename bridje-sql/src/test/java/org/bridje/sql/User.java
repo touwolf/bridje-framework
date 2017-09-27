@@ -29,7 +29,7 @@ public class User
     public static final StringColumn<String> PASSWORD;
 
     public static final BooleanColumn<Boolean> ACTIVE;
-    
+
     static {
         TABLE = SQL.buildTable("users")
                     .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), false, true, null)

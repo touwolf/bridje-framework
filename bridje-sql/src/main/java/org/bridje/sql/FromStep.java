@@ -16,8 +16,16 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.TableExpr;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface FromStep extends SelectWhereStep
 {
+    FromStep innerJoin(TableExpr table, BooleanExpr<?> on);
+
+    FromStep leftJoin(TableExpr table, BooleanExpr<?> on);
+
+    FromStep rightJoin(TableExpr table, BooleanExpr<?> on);
+
+    SelectWhereStep where(BooleanExpr<?> condition);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.SelectExpr;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface ColumnsStep extends ValuesStep
 {
+    FinalStep select(SelectExpr table);
 }

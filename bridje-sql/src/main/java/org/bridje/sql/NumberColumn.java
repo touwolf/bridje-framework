@@ -16,73 +16,8 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.ArithmeticExpr;
-import org.bridje.sql.expr.SQLType;
+import org.bridje.sql.ArithmeticExpr;
 
-public class NumberColumn<T> extends Column<T> implements ArithmeticExpr<T>
+public interface NumberColumn<T> extends Column<T>, ArithmeticExpr<T>
 {
-    NumberColumn(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
-    {
-        super(table, name, type, allowNull, autoIncrement, defValue);
-    }
-
-    @Override
-    public ArithmeticExpr<T> plus(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.PLUS, operand, getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> minus(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MINUS, operand, getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> mul(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MULT, operand, getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> div(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.DIV, operand, getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> mod(ArithmeticExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.MOD, operand, getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> plus(T operand)
-    {
-        return new BinaryExpr<>(this, Operators.PLUS, new Literal<>(operand), getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> minus(T operand)
-    {
-        return new BinaryExpr<>(this, Operators.MINUS, new Literal<>(operand), getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> mul(T operand)
-    {
-        return new BinaryExpr<>(this, Operators.MULT, new Literal<>(operand), getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> div(T operand)
-    {
-        return new BinaryExpr<>(this, Operators.DIV, new Literal<>(operand), getType());
-    }
-
-    @Override
-    public ArithmeticExpr<T> mod(T operand)
-    {
-        return new BinaryExpr<>(this, Operators.MOD, new Literal<>(operand), getType());
-    }
 }

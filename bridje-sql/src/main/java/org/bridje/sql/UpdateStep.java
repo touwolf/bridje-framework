@@ -16,8 +16,14 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.TableExpr;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface UpdateStep extends SetsStep
 {
+    UpdateStep innerJoin(TableExpr table, BooleanExpr<?> on);
+
+    UpdateStep leftJoin(TableExpr table, BooleanExpr<?> on);
+
+    UpdateStep rightJoin(TableExpr table, BooleanExpr<?> on);
 }

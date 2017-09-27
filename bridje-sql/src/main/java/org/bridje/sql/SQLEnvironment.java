@@ -16,8 +16,21 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import javax.management.Query;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SQLEnvironment
 {
+    int executeUpdate(Query query, Object... parameters);
+
+    SQLResultSet execute(Query query, Object... parameters);
+
+    int executeUpdate(SQLStatement stmt);
+
+    SQLResultSet execute(SQLStatement stmt);
+
+    void begin();
+
+    void commit();
+
+    void rollback();
 }

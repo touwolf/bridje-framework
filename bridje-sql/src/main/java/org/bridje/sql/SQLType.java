@@ -16,8 +16,15 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import java.sql.JDBCType;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SQLType<T>
 {
+    Class<T> getJavaType();
+
+    JDBCType getJDBCType();
+
+    int getLength();
+
+    int getPrecision();
 }

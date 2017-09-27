@@ -16,8 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.Column;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface CreateIndexStep extends FinalStep
 {
+    CreateIndexStep column(Column<?> column);
 }

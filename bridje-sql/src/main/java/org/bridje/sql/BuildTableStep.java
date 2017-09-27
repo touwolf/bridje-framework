@@ -16,8 +16,16 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.Table;
+import org.bridje.sql.SQLType;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface BuildTableStep
 {
+    <T> BuildTableStep number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue);
+
+    <T> BuildTableStep string(String name, SQLType<T> type, boolean allowNull, T defValue);
+
+    <T> BuildTableStep bool(String name, SQLType<T> type, boolean allowNull, T defValue);
+
+    Table build();
 }

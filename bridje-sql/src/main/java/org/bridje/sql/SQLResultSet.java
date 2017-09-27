@@ -16,8 +16,11 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
-
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SQLResultSet
 {
+    boolean next();
+
+    <T> T get(Expression<T> expr);
+
+    <T> T get(int column, Class<T> expr);
 }

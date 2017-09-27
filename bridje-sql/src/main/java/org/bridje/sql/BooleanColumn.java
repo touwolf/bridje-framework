@@ -16,31 +16,8 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.expr.BooleanExpr;
-import org.bridje.sql.expr.SQLType;
+import org.bridje.sql.BooleanExpr;
 
-public class BooleanColumn<T> extends Column<T> implements BooleanExpr<T>
+public interface BooleanColumn<T> extends Column<T>, BooleanExpr<T>
 {
-    public BooleanColumn(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
-    {
-        super(table, name, type, allowNull, autoIncrement, defValue);
-    }
-
-    @Override
-    public BooleanExpr<T> and(BooleanExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.AND, operand, getType());
-    }
-
-    @Override
-    public BooleanExpr<T> or(BooleanExpr<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.OR, operand, getType());
-    }
-
-    @Override
-    public BooleanExpr<T> not()
-    {
-        return new UnaryExpr<>(Operators.NOT, this, getType());
-    }
 }

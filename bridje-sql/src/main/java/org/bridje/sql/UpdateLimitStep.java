@@ -16,8 +16,9 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
-
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface UpdateLimitStep extends FinalStep
 {
+    FinalStep limit(int offset);
+
+    FinalStep limit(int offset, int count);
 }

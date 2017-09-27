@@ -16,89 +16,11 @@
 
 package org.bridje.sql;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import org.bridje.sql.expr.TableExpr;
-
-public class Table implements TableExpr
+public interface Table extends TableExpr
 {
-    private final String name;
+    String getName();
 
-    private Column<?>[] columns;
-    
-    private Map<String, Column<?>> columnsMap;
-    
-    Table(String name)
-    {
-        this.name = name;
-    }
-    
-    void setColumns(Column<?>[] columns)
-    {
-        this.columns = columns;
-        this.columnsMap = new HashMap<>();
-        for (Column<?> column : columns)
-        {
-            this.columnsMap.put(column.getName(), column);
-        }
-    }
+    Column<?>[] getColumns();
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public Column<?>[] getColumns()
-    {
-        return columns;
-    }
-    
-    public Column<?> getColumn(String name)
-    {
-        return columnsMap.get(name);
-    }
-    
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Table other = (Table) obj;
-        if (!Objects.equals(this.name, other.name))
-        {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString()
-    {
-        return name;
-    }
-
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        builder.appendObjectName(name);
-    }
+    Column<?> getColumn(String name);
 }

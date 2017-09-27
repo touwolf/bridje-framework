@@ -16,141 +16,20 @@
 
 package org.bridje.sql;
 
-import java.util.Objects;
-import org.bridje.sql.expr.BooleanExpr;
-import org.bridje.sql.expr.Expression;
-import org.bridje.sql.expr.OrderExpr;
-import org.bridje.sql.expr.SQLType;
-import org.bridje.sql.expr.SortType;
+import org.bridje.sql.Expression;
+import org.bridje.sql.SQLType;
 
-public class Column<T> implements Expression<T>
+public interface Column<T> extends Expression<T>
 {
-    private final Table table;
+    Table getTable();
 
-    private final String name;
+    String getName();
 
-    private final boolean allowNull;
+    boolean isAllowNull();
 
-    private final SQLType<T> type;
+    SQLType<T> getSQLType();
 
-    private final boolean autoIncrement;
-    
-    private final T defValue;
+    boolean isAutoIncrement();
 
-    public Column(Table table, String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue)
-    {
-        this.table = table;
-        this.name = name;
-        this.allowNull = allowNull;
-        this.type = type;
-        this.defValue = defValue;
-        this.autoIncrement = autoIncrement;
-    }
-
-    public Table getTable()
-    {
-        return table;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public boolean isAllowNull()
-    {
-        return allowNull;
-    }
-
-    public SQLType<T> getSQLType()
-    {
-        return type;
-    }
-    
-    @Override
-    public Class<T> getType()
-    {
-        return type.getJavaType();
-    }
-
-    public boolean isAutoIncrement()
-    {
-        return autoIncrement;
-    }
-    
-    public T getDefValue()
-    {
-        return defValue;
-    }
-
-    @Override
-    public BooleanExpr<Boolean> eq(Expression<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.EQ, operand, Boolean.class);
-    }
-
-    @Override
-    public BooleanExpr<Boolean> ne(Expression<T> operand)
-    {
-        return new BinaryExpr<>(this, Operators.NE, operand, Boolean.class);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        hash = 11 * hash + Objects.hashCode(this.table);
-        hash = 11 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Column<?> other = (Column<?>) obj;
-        if (!Objects.equals(this.name, other.name))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.table, other.table))
-        {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        if(!builder.isSimpleColumnNames())
-        {
-            table.writeSQL(builder);
-            builder.append('.');
-        }
-        builder.appendObjectName(name);
-    }
-
-    @Override
-    public OrderExpr asc()
-    {
-        return new OrderBy(SortType.ASC, this);
-    }
-
-    @Override
-    public OrderExpr desc()
-    {
-        return new OrderBy(SortType.DESC, this);
-    }
+    T getDefValue();
 }

@@ -16,8 +16,13 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.Column;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface AlterTableStep extends FinalStep
 {
+    AlterTableStep addColumn(Column<?> column);
+
+    AlterTableStep dropColumn(Column<?> column);
+
+    AlterTableStep changeColumn(Column<?> column, String oldColumn);
 }

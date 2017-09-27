@@ -16,8 +16,16 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.TableExpr;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface DeleteStep extends DeleteWhereStep
 {
+    DeleteStep innerJoin(TableExpr table, BooleanExpr<?> on);
+
+    DeleteStep leftJoin(TableExpr table, BooleanExpr<?> on);
+
+    DeleteStep rightJoin(TableExpr table, BooleanExpr<?> on);
+
+    DeleteWhereStep where(BooleanExpr<?> condition);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Bridje Framework.
+ * Copyright 2016 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,15 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.Column;
+import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.Expression;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SetsStep extends UpdateWhereStep
 {
+    <T> SetsStep set(Column<T> column, T value);
+
+    <T> SetsStep set(Column<T> column, Expression<T> value);
+
+    UpdateWhereStep where(BooleanExpr<?> condition);
 }

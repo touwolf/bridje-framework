@@ -16,8 +16,12 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
+import java.sql.Connection;
+import javax.activation.DataSource;
 
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface SQLService
 {
+    SQLEnvironment createEnvironment(DataSource dataSource);
+
+    SQLEnvironment createEnvironment(Connection connection);
 }

@@ -16,8 +16,11 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.StringExpr;
-
-public interface StringColumn<T> extends Column<T>, StringExpr<T>
+public interface BooleanExpr<T> extends Expression<T>
 {
+    BooleanExpr<T> and(BooleanExpr<T> operand);
+
+    BooleanExpr<T> or(BooleanExpr<T> operand);
+
+    BooleanExpr<T> not();
 }
