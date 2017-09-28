@@ -32,7 +32,7 @@ import org.bridje.sql.Table;
 
 abstract class EnvironmentBase implements SQLEnvironment
 {
-    private SQLDialect dialect;
+    private final SQLDialect dialect;
 
     public EnvironmentBase(SQLDialect dialect)
     {

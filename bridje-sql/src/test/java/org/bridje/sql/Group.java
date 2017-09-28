@@ -21,8 +21,8 @@ import java.sql.JDBCType;
 public class Group
 {
     public static final Table TABLE = SQL.buildTable("groups")
-                                            .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), false, true, null)
-                                            .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), true, null)
+                                            .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false, true, true, null)
+                                            .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, true, null)
                                             .build();
 
     public static final NumberColumn<Long> ID = TABLE.getNumberColumn("id", Long.class);

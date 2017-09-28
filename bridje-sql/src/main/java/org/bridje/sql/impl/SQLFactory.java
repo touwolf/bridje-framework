@@ -48,32 +48,32 @@ public class SQLFactory
 
     public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
-        return null;
+        return new SQLTypeImpl(javaType, jdbcType, length, precision);
     }
     
     public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
     {
-        return null;
+        return new SQLTypeImpl(javaType, jdbcType, length, 0);
     }
 
     public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType)
     {
-        return null;
+        return new SQLTypeImpl(javaType, jdbcType, 0, 0);
     }
 
     public BuildTableStep buildTable(String name)
     {
-        return null;
+        return new TableBuilder(name);
     }
 
     public SelectStep select(Expression<?>... columns)
     {
-        return null;
+        return new SelectBuilder(columns);
     }
 
     public InsertIntoStep insertInto(Table table)
     {
-        return null;
+        return new InsertBuilder(table);
     }
 
     public UpdateStep update(Table table)
@@ -88,116 +88,116 @@ public class SQLFactory
     
     public ArithmeticExpr<Number> val(Number value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Byte> val(byte value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Byte> val(Byte value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Short> val(short value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Short> val(Short value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Integer> val(int value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Integer> val(Integer value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Long> val(long value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Long> val(Long value)
     {
-        return null;
+        return new Literal<>(value);
     }
     
     public ArithmeticExpr<Float> val(float value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Float> val(Float value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Double> val(double value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public ArithmeticExpr<Double> val(Double value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public StringExpr<String> val(String value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public BooleanExpr<Boolean> val(Boolean value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public BooleanExpr<Boolean> val(boolean value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public Expression<Character> val(char value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public Expression<Character> val(Character value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public <T> ArithmeticExpr<T> number(T value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public <T> BooleanExpr<T> bool(T value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public <T> StringExpr<T> str(T value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public <T> Expression<T> custom(T value)
     {
-        return null;
+        return new Literal<>(value);
     }
 
     public final <T> Expression<T> param(Class<T> cls)
     {
-        return null;
+        return new Param<>(cls);
     }
 }

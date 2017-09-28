@@ -21,7 +21,7 @@ import org.bridje.sql.SQLBuilder;
 
 class Param<T> extends ExpressionBase<T> implements Expression<T>
 {
-    private Param(Class<T> type)
+    protected Param(Class<T> type)
     {
         super(type);
     }
