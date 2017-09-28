@@ -20,6 +20,8 @@ public interface Table extends TableExpr
 {
     String getName();
 
+    Column<?>[] getKeys();
+
     Column<?>[] getColumns();
 
     <T> NumberColumn<T> getNumberColumn(String name, Class<T> type);

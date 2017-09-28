@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.impl;
 
-public interface SQLQuery
+enum JoinType
 {
-    Expression<?>[] getResultFields();
-
-    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+    INNER,
+    RIGHT,
+    LEFT;
 }

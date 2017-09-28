@@ -17,13 +17,14 @@
 package org.bridje.sql;
 
 import java.sql.Connection;
-import javax.activation.DataSource;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 
 public interface SQLService
 {
-    SQLEnvironment createEnvironment(DataSource dataSource);
+    SQLEnvironment createEnvironment(DataSource dataSource) throws SQLException;
 
-    SQLEnvironment createEnvironment(Connection connection);
+    SQLEnvironment createEnvironment(Connection connection) throws SQLException;
     
-    SQLEnvironment createEnvironment(String dataSourceName);
+    SQLEnvironment createEnvironment(String dataSourceName) throws SQLException;
 }

@@ -16,7 +16,7 @@
 
 package org.bridje.sql;
 
-public interface SQLResultSet
+public interface SQLResultSet extends AutoCloseable
 {
     boolean next();
 

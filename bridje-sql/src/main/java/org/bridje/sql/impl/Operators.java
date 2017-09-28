@@ -14,11 +14,30 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.impl;
 
-public interface SQLQuery
+enum Operators
 {
-    Expression<?>[] getResultFields();
+    EQ("="),
+    NE("<>"),
+    PLUS("+"),
+    MINUS("-"),
+    MULT("*"),
+    DIV("/"),
+    MOD("%"),
+    AND("AND"),
+    OR("OR"),
+    NOT("NOT");
 
-    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+    private final String sql;
+
+    private Operators(String sql)
+    {
+        this.sql = sql;
+    }
+
+    public String toSQL()
+    {
+        return sql;
+    }
 }

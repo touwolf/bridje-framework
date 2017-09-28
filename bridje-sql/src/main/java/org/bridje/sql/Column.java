@@ -22,7 +22,11 @@ public interface Column<T> extends Expression<T>
 
     String getName();
 
+    boolean isKey();
+
     boolean isAllowNull();
+    
+    boolean isIndexed();
 
     SQLType<T> getSQLType();
 

@@ -17,161 +17,164 @@
 package org.bridje.sql;
 
 import java.sql.JDBCType;
+import org.bridje.sql.impl.SQLFactory;
 
 public class SQL
 {
+    private static final SQLFactory FACT = SQLFactory.getInstance();
+    
     public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
-        return null;
+        return FACT.buildType(javaType, jdbcType, length, precision);
     }
     
     public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
     {
-        return null;
+        return FACT.buildType(javaType, jdbcType, length);
     }
 
     public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType)
     {
-        return null;
+        return FACT.buildType(javaType, jdbcType);
     }
 
     public static final BuildTableStep buildTable(String name)
     {
-        return null;
+        return FACT.buildTable(name);
     }
 
     public static final SelectStep select(Expression<?>... columns)
     {
-        return null;
+        return FACT.select(columns);
     }
 
     public static final InsertIntoStep insertInto(Table table)
     {
-        return null;
+        return FACT.insertInto(table);
     }
 
     public static final UpdateStep update(Table table)
     {
-        return null;
+        return FACT.update(table);
     }
 
     public static final DeleteStep delete(Table table)
     {
-        return null;
+        return FACT.delete(table);
     }
     
     public static final ArithmeticExpr<Number> val(Number value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Byte> val(byte value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Byte> val(Byte value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Short> val(short value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Short> val(Short value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Integer> val(int value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Integer> val(Integer value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Long> val(long value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Long> val(Long value)
     {
-        return null;
+        return FACT.val(value);
     }
     
     public static final ArithmeticExpr<Float> val(float value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Float> val(Float value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Double> val(double value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final ArithmeticExpr<Double> val(Double value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final StringExpr<String> val(String value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final BooleanExpr<Boolean> val(Boolean value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final BooleanExpr<Boolean> val(boolean value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final Expression<Character> val(char value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final Expression<Character> val(Character value)
     {
-        return null;
+        return FACT.val(value);
     }
 
     public static final <T> ArithmeticExpr<T> number(T value)
     {
-        return null;
+        return FACT.number(value);
     }
 
     public static final <T> BooleanExpr<T> bool(T value)
     {
-        return null;
+        return FACT.bool(value);
     }
 
     public static final <T> StringExpr<T> str(T value)
     {
-        return null;
+        return FACT.str(value);
     }
 
     public static final <T> Expression<T> custom(T value)
     {
-        return null;
+        return FACT.custom(value);
     }
 
-    public static final <T> Expression<T> param()
+    public static final <T> Expression<T> param(Class<T> cls)
     {
-        return null;
+        return FACT.param(cls);
     }
 }

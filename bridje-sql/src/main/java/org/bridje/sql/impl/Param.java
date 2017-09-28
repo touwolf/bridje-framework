@@ -14,11 +14,28 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.impl;
 
-public interface SQLQuery
+import org.bridje.sql.Expression;
+import org.bridje.sql.SQLBuilder;
+
+class Param<T> extends ExpressionBase<T> implements Expression<T>
 {
-    Expression<?>[] getResultFields();
+    private Param(Class<T> type)
+    {
+        super(type);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "?";
+    }
 
-    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+    @Override
+    public void writeSQL(SQLBuilder builder)
+    {
+        builder.append('?');
+        builder.getParameters().add(this);
+    }
 }

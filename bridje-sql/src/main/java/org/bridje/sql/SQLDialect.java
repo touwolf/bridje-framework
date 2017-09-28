@@ -16,10 +16,13 @@
 
 package org.bridje.sql;
 
+import java.sql.Connection;
 import java.util.List;
 
 public interface SQLDialect
 {
+    boolean canHandle(Connection connection);
+
     void writeObjectName(StringBuilder builder, String name);
 
     void writeLimit(StringBuilder builder, int offset, int count);
@@ -27,8 +30,8 @@ public interface SQLDialect
     void createTable(StringBuilder builder, Table table);
 
     void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey);
-    
-    void primaryKey(StringBuilder builder, Column<?> column);
+
+    void primaryKey(StringBuilder builder, Column<?>... column);
 
     void alterTable(StringBuilder builder, Table table);
 

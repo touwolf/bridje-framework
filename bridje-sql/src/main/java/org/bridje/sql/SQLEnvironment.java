@@ -18,8 +18,10 @@ package org.bridje.sql;
 
 import java.sql.SQLException;
 
-public interface SQLEnvironment
+public interface SQLEnvironment extends AutoCloseable
 {
+    SQLDialect getDialect();
+    
     void fixTable(Table... table) throws SQLException;
 
     int executeUpdate(SQLQuery query, Object... parameters) throws SQLException;
