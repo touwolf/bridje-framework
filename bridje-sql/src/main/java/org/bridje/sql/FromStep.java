@@ -16,9 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.TableExpr;
-
 public interface FromStep extends SelectWhereStep
 {
     FromStep innerJoin(TableExpr table, BooleanExpr<?> on);

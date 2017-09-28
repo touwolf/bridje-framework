@@ -16,10 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.Column;
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.Expression;
-
 public interface SetsStep extends UpdateWhereStep
 {
     <T> SetsStep set(Column<T> column, T value);

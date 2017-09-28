@@ -24,4 +24,6 @@ public interface SQLService
     SQLEnvironment createEnvironment(DataSource dataSource);
 
     SQLEnvironment createEnvironment(Connection connection);
+    
+    SQLEnvironment createEnvironment(String dataSourceName);
 }

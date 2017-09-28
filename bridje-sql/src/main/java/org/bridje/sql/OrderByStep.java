@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.OrderExpr;
-
 public interface OrderByStep extends SelectLimitStep
 {
     GroupByStep groupBy(OrderExpr... columns);

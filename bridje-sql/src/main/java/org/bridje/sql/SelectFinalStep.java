@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.SelectExpr;
-
 public interface SelectFinalStep extends FinalStep
 {
     SelectExpr asTable();

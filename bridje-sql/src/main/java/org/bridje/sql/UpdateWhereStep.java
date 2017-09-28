@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.OrderExpr;
-
 public interface UpdateWhereStep extends UpdateLimitStep
 {
     UpdateLimitStep orderBy(OrderExpr... orderBys);

@@ -22,5 +22,9 @@ public interface BooleanExpr<T> extends Expression<T>
 
     BooleanExpr<T> or(BooleanExpr<T> operand);
 
+    BooleanExpr<T> and(T operand);
+
+    BooleanExpr<T> or(T operand);
+
     BooleanExpr<T> not();
 }

@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.BooleanExpr;
-
 public interface BooleanColumn<T> extends Column<T>, BooleanExpr<T>
 {
 }

@@ -59,31 +59,6 @@ public class SQL
     {
         return null;
     }
-
-    public static final CreateTableStep createTable(Table table)
-    {
-        return null;
-    }
-
-    public static final AlterTableStep alterTable(Table table)
-    {
-        return null;
-    }
-
-    public static final CreateIndexStep createIndex(String name, Table on)
-    {
-        return null;
-    }
-
-    public static final CreateIndexStep createUniqueIndex(String name, Table on)
-    {
-        return null;
-    }
-
-    public static final FinalStep dropIndex(String name, Table on)
-    {
-        return null;
-    }
     
     public static final ArithmeticExpr<Number> val(Number value)
     {

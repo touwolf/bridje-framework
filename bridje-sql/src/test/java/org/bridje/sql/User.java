@@ -37,9 +37,9 @@ public class User
                     .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), true, null)
                     .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), true, null)
                     .build();
-        ID = (NumberColumn<Long>)TABLE.getColumn("id");
-        EMAIL = (StringColumn<String>)TABLE.getColumn("email");
-        PASSWORD = (StringColumn<String>)TABLE.getColumn("password");
-        ACTIVE = (BooleanColumn<Boolean>)TABLE.getColumn("active");
+        ID = TABLE.getNumberColumn("id", Long.class);
+        EMAIL = TABLE.getStringColumn("email", String.class);
+        PASSWORD = TABLE.getStringColumn("password", String.class);
+        ACTIVE = TABLE.getBooleanColumn("active", Boolean.class);
     }
 }

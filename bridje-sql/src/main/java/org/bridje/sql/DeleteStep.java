@@ -16,9 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.TableExpr;
-
 public interface DeleteStep extends DeleteWhereStep
 {
     DeleteStep innerJoin(TableExpr table, BooleanExpr<?> on);

@@ -24,6 +24,10 @@ public interface Expression<T> extends SQLWritable
 
     BooleanExpr<Boolean> ne(Expression<T> operand);
 
+    BooleanExpr<Boolean> eq(T operand);
+
+    BooleanExpr<Boolean> ne(T operand);
+
     OrderExpr asc();
 
     OrderExpr desc();

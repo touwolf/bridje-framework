@@ -25,7 +25,7 @@ public class Group
                                             .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), true, null)
                                             .build();
 
-    public static final NumberColumn<Long> ID = (NumberColumn<Long>)TABLE.getColumn("id");
+    public static final NumberColumn<Long> ID = TABLE.getNumberColumn("id", Long.class);
 
-    public static final StringColumn<String> TITLE = (StringColumn<String>)TABLE.getColumn("title");
+    public static final StringColumn<String> TITLE = TABLE.getStringColumn("title", String.class);
 }

@@ -16,9 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.Expression;
-import org.bridje.sql.SQLType;
-
 public interface Column<T> extends Expression<T>
 {
     Table getTable();

@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.OrderExpr;
-
 public interface SelectWhereStep extends OrderByStep
 {
     OrderByStep orderBy(OrderExpr... orderBys);

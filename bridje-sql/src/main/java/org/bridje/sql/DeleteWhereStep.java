@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.OrderExpr;
-
 public interface DeleteWhereStep extends DeleteLimitStep
 {
     DeleteLimitStep orderBy(OrderExpr... orderBys);

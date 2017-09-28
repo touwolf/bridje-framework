@@ -16,9 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.Table;
-import org.bridje.sql.SQLType;
-
 public interface BuildTableStep
 {
     <T> BuildTableStep number(String name, SQLType<T> type, boolean allowNull, boolean autoIncrement, T defValue);

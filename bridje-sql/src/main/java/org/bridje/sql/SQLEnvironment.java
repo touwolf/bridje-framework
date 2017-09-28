@@ -16,21 +16,23 @@
 
 package org.bridje.sql;
 
-import javax.management.Query;
+import java.sql.SQLException;
 
 public interface SQLEnvironment
 {
-    int executeUpdate(Query query, Object... parameters);
+    void fixTable(Table... table) throws SQLException;
 
-    SQLResultSet execute(Query query, Object... parameters);
+    int executeUpdate(SQLQuery query, Object... parameters) throws SQLException;
 
-    int executeUpdate(SQLStatement stmt);
+    SQLResultSet execute(SQLQuery query, Object... parameters) throws SQLException;
 
-    SQLResultSet execute(SQLStatement stmt);
+    int executeUpdate(SQLStatement stmt) throws SQLException;
 
-    void begin();
+    SQLResultSet execute(SQLStatement stmt) throws SQLException;
 
-    void commit();
+    void begin() throws SQLException;
 
-    void rollback();
+    void commit() throws SQLException;
+
+    void rollback() throws SQLException;
 }

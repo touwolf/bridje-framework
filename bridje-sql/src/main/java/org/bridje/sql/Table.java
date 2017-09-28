@@ -22,5 +22,11 @@ public interface Table extends TableExpr
 
     Column<?>[] getColumns();
 
-    Column<?> getColumn(String name);
+    <T> NumberColumn<T> getNumberColumn(String name, Class<T> type);
+
+    <T> StringColumn<T> getStringColumn(String name, Class<T> type);
+
+    <T> BooleanColumn<T> getBooleanColumn(String name, Class<T> type);
+
+    <T> Column<T> getColumn(String name, Class<T> type);
 }

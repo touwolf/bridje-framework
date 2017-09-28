@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import org.bridje.sql.Column;
-
 public interface InsertIntoStep 
 {
     ColumnsStep columns(Column<?>... column);
