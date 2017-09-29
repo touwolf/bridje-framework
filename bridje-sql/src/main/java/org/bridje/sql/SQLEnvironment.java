@@ -17,20 +17,25 @@
 package org.bridje.sql;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface SQLEnvironment extends AutoCloseable
 {
     SQLDialect getDialect();
-    
+
     void fixTable(Table... table) throws SQLException;
 
-    int executeUpdate(SQLQuery query, Object... parameters) throws SQLException;
+    int update(SQLQuery query, Object... parameters) throws SQLException;
 
-    SQLResultSet execute(SQLQuery query, Object... parameters) throws SQLException;
+    <T> List<T> fetchAll(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
 
-    int executeUpdate(SQLStatement stmt) throws SQLException;
+    <T> T fetchOne(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
 
-    SQLResultSet execute(SQLStatement stmt) throws SQLException;
+    int update(SQLStatement stmt) throws SQLException;
+
+    <T> List<T> fetchAll(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException;
+
+    <T> T fetchOne(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException;
 
     void begin() throws SQLException;
 

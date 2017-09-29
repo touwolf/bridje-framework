@@ -18,10 +18,11 @@ package org.bridje.sql.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
-import org.bridje.sql.SQLResultSet;
+import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 
@@ -57,38 +58,6 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
     }
 
     @Override
-    public int executeUpdate(SQLStatement stmt) throws SQLException
-    {
-        if(connEnv != null)
-        {
-            return connEnv.executeUpdate(stmt);
-        }
-        else
-        {
-            try(Connection connection = dataSource.getConnection())
-            {
-                return executeUpdate(connection, stmt.getSQL(), stmt.getParameters());
-            }
-        }
-    }
-
-    @Override
-    public SQLResultSet execute(SQLStatement stmt) throws SQLException
-    {
-        if(connEnv != null)
-        {
-            return connEnv.execute(stmt);
-        }
-        else
-        {
-            try(Connection connection = dataSource.getConnection())
-            {
-                return execute(connection, stmt.getSQL(), stmt.getParameters());
-            }
-        }
-    }
-
-    @Override
     public void begin() throws SQLException
     {
         if(connEnv == null) connEnv = new EnvironmentConn(dataSource.getConnection(), getDialect());
@@ -110,5 +79,53 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
     public void close() throws Exception
     {
         if(connEnv != null) connEnv.close();
+    }
+
+    @Override
+    public int update(SQLStatement stmt) throws SQLException
+    {
+        if(connEnv != null)
+        {
+            return connEnv.update(stmt);
+        }
+        else
+        {
+            try(Connection connection = dataSource.getConnection())
+            {
+                return update(connection, stmt);
+            }
+        }
+    }
+
+    @Override
+    public <T> List<T> fetchAll(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException
+    {
+        if(connEnv != null)
+        {
+            return connEnv.fetchAll(stmt, parser);
+        }
+        else
+        {
+            try(Connection connection = dataSource.getConnection())
+            {
+                return fetchAll(connection, stmt, parser);
+            }
+        }
+    }
+
+    @Override
+    public <T> T fetchOne(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException
+    {
+        if(connEnv != null)
+        {
+            return connEnv.fetchOne(stmt, parser);
+        }
+        else
+        {
+            try(Connection connection = dataSource.getConnection())
+            {
+                return fetchOne(connection, stmt, parser);
+            }
+        }
     }
 }

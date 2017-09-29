@@ -16,11 +16,10 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+import java.sql.SQLException;
+
+@FunctionalInterface
+public interface SQLResultParser<T>
 {
-    Expression<?>[] getResultFields();
-
-    boolean isWithGeneratedKeys();
-
-    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+    T parse(SQLResultSet rs) throws SQLException;
 }

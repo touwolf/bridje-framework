@@ -33,7 +33,7 @@ import org.bridje.sql.SelectExpr;
 import org.bridje.sql.Table;
 import org.bridje.sql.ValuesStep;
 
-class InsertBuilder implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, SQLQuery
+class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, SQLQuery
 {
     private final Table table;
 
@@ -56,9 +56,9 @@ class InsertBuilder implements InsertIntoStep, ColumnsStep, ValuesStep, FinalSte
     }
 
     @Override
-    public FinalStep select(SelectExpr table)
+    public FinalStep select(SelectExpr select)
     {
-        this.select = table;
+        this.select = select;
         return this;
     }
 
@@ -76,21 +76,8 @@ class InsertBuilder implements InsertIntoStep, ColumnsStep, ValuesStep, FinalSte
         SQLBuilder builder = new SQLBuilderImpl(dialect);
         writeSQL(builder);
         String sql = builder.toString();
-        List<Object> finalParams = new ArrayList<>();
-        int i = 0;
-        for (Object parameter : builder.getParameters())
-        {
-            if(parameter instanceof Param)
-            {
-                finalParams.add(parameters[i]);
-                i++;
-            }
-            else
-            {
-                finalParams.add(parameter);
-            }
-        }
-        return new SQLStatementImpl(null, sql, finalParams.toArray());
+        return new SQLStatementImpl(table.getAutoIncrementColumns(), 
+                            sql, createParams(builder, parameters), true);
     }
 
     @Override
@@ -102,7 +89,7 @@ class InsertBuilder implements InsertIntoStep, ColumnsStep, ValuesStep, FinalSte
     @Override
     public Expression<?>[] getResultFields()
     {
-        return null;
+        return table.getAutoIncrementColumns();
     }
 
     public void writeSQL(SQLBuilder builder)
@@ -160,5 +147,11 @@ class InsertBuilder implements InsertIntoStep, ColumnsStep, ValuesStep, FinalSte
             }
         }
         return result;
+    }
+
+    @Override
+    public boolean isWithGeneratedKeys()
+    {
+        return true;
     }
 }

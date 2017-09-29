@@ -22,10 +22,11 @@ limitations under the License.
     <datasources>
         <datasource>
             <name>TestDB</name>
-            <driver>org.apache.derby.jdbc.EmbeddedDriver</driver>
-            <url>jdbc:derby:.\target\testdb;create=true</url>
-            <user>APP</user>
-            <password></password>
+            <driver>com.mysql.jdbc.Driver</driver>
+            <url>jdbc:mysql://localhost:3306/bridjesql?zeroDateTimeBehavior=convertToNull</url>
+            <user>root</user>
+            <password>root</password>
+            <reconnectTime>10</reconnectTime>
         </datasource>
     </datasources>
         

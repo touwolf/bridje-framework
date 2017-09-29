@@ -18,9 +18,10 @@ package org.bridje.sql.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
-import org.bridje.sql.SQLResultSet;
+import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 
@@ -41,18 +42,6 @@ class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
         {
             fixTable(connection, table);
         }
-    }
-
-    @Override
-    public int executeUpdate(SQLStatement stmt) throws SQLException
-    {
-        return executeUpdate(connection, stmt.getSQL(), stmt.getParameters());
-    }
-
-    @Override
-    public SQLResultSet execute(SQLStatement stmt) throws SQLException
-    {
-        return execute(connection, stmt.getSQL(), stmt.getParameters());
     }
 
     @Override
@@ -77,5 +66,23 @@ class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
     public void close() throws Exception
     {
         connection.close();
+    }
+
+    @Override
+    public int update(SQLStatement stmt) throws SQLException
+    {
+        return update(connection, stmt);
+    }
+
+    @Override
+    public <T> List<T> fetchAll(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException
+    {
+        return fetchAll(connection, stmt, parser);
+    }
+
+    @Override
+    public <T> T fetchOne(SQLStatement stmt, SQLResultParser<T> parser) throws SQLException
+    {
+        return fetchOne(connection, stmt, parser);
     }
 }

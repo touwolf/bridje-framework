@@ -16,11 +16,13 @@
 
 package org.bridje.sql;
 
+import java.sql.SQLException;
+
 public interface SQLResultSet extends AutoCloseable
 {
-    boolean next();
+    boolean next() throws SQLException;
 
-    <T> T get(Expression<T> expr);
+    <T> T get(Expression<T> expr) throws SQLException;
 
-    <T> T get(int column, Class<T> expr);
+    <T> T get(int column, Class<T> expr) throws SQLException;
 }

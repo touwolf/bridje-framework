@@ -26,12 +26,15 @@ class SQLStatementImpl implements SQLStatement
     private final String sql;
 
     private final Object[] parameters;
+    
+    private final boolean generatedKeys;
 
-    public SQLStatementImpl(Expression<?>[] resultFields, String sql, Object[] parameters)
+    public SQLStatementImpl(Expression<?>[] resultFields, String sql, Object[] parameters, boolean generatedKeys)
     {
         this.resultFields = resultFields;
         this.sql = sql;
         this.parameters = parameters;
+        this.generatedKeys = generatedKeys;
     }
 
     @Override
@@ -50,5 +53,11 @@ class SQLStatementImpl implements SQLStatement
     public Object[] getParameters()
     {
         return parameters;
+    }
+
+    @Override
+    public boolean isWithGeneratedKeys()
+    {
+        return generatedKeys;
     }
 }

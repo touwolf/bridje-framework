@@ -16,12 +16,15 @@
 
 package org.bridje.sql.impl;
 
+import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.Column;
+import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
+import org.bridje.sql.StringColumn;
 import org.bridje.sql.Table;
 
-class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>
+class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn<T>, StringColumn<T>, BooleanColumn<T>
 {
     private final Table table;
 

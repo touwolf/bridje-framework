@@ -21,6 +21,8 @@ public interface Table extends TableExpr
     String getName();
 
     Column<?>[] getKeys();
+    
+    Column<?>[] getAutoIncrementColumns();
 
     Column<?>[] getColumns();
 

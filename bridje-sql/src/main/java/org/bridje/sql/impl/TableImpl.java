@@ -32,6 +32,8 @@ class TableImpl implements Table
     private final String name;
 
     private Column<?>[] keys;
+    
+    private Column<?>[] aiColumns;
 
     private Column<?>[] columns;
 
@@ -46,14 +48,18 @@ class TableImpl implements Table
     void setColumns(Column<?>[] columns)
     {
         List<Column<?>> keysList = new ArrayList<>();
+        List<Column<?>> aiColumnsList = new ArrayList<>();
         this.columns = columns;
         for (Column<?> column : columns)
         {
             if(column.isKey()) keysList.add(column);
+            if(column.isAutoIncrement()) aiColumnsList.add(column);
             columnsMap.put(column.getName(), column);
         }
-        this.keys = new Column[columns.length];
+        this.keys = new Column[keysList.size()];
         keysList.toArray(keys);
+        this.aiColumns = new Column[aiColumnsList.size()];
+        keysList.toArray(aiColumns);
     }
     
     @Override
@@ -66,6 +72,12 @@ class TableImpl implements Table
     public Column<?>[] getKeys()
     {
         return keys;
+    }
+    
+    @Override
+    public Column<?>[] getAutoIncrementColumns()
+    {
+        return aiColumns;
     }
 
     @Override

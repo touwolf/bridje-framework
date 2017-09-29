@@ -16,12 +16,17 @@
 
 package org.bridje.sql;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import org.bridje.ioc.Ioc;
+import org.bridje.vfs.CpSource;
+import org.bridje.vfs.VFile;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class SQLTest
 {
@@ -40,8 +45,10 @@ public class SQLTest
     }
 
     @Before
-    public void setUp()
+    public void setUp() throws IOException, URISyntaxException
     {
+        VFile etc = new VFile("/etc");
+        etc.mount(new CpSource("BRIDJE-INF/etc"));
     }
 
     @After
@@ -49,7 +56,7 @@ public class SQLTest
     {
     }
 
-    //@Test
+    @Test
     public void test1CreateTables() throws SQLException
     {
         SQLQuery selectQuery = SQL.select(User.ID)
@@ -63,20 +70,14 @@ public class SQLTest
                                     .toQuery();
 
         SQLService sqlServ = Ioc.context().find(SQLService.class);
-        SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDS");
+        SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDB");
         sqlEnv.fixTable(User.TABLE, Group.TABLE);
-        SQLResultSet insRs = sqlEnv.execute(insertQuery);
-        while (insRs.next())
-        {
-            Long id = insRs.get(User.ID);
-            System.out.println(id);
-        }
-        SQLResultSet selRs = sqlEnv.execute(selectQuery);
-        while (selRs.next())
-        {
-            Long id = selRs.get(User.ID);
-            System.out.println(id);
-        }
+
+        Long id = sqlEnv.fetchOne(insertQuery, (rs) -> rs.get(User.ID));
+        System.out.println(id);
+
+        id = sqlEnv.fetchOne(selectQuery, (rs) -> rs.get(User.ID));
+        System.out.println(id);
     }
     
 }

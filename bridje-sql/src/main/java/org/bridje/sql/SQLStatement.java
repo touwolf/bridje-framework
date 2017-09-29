@@ -20,6 +20,8 @@ public interface SQLStatement
 {
     Expression<?>[] getResultFields();
 
+    boolean isWithGeneratedKeys();
+
     String getSQL();
 
     Object[] getParameters();

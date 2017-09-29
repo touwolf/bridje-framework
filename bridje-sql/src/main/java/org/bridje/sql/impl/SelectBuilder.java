@@ -36,7 +36,7 @@ import org.bridje.sql.SelectStep;
 import org.bridje.sql.SelectWhereStep;
 import org.bridje.sql.TableExpr;
 
-class SelectBuilder implements SelectStep, FromStep, SelectWhereStep, OrderByStep, GroupByStep, SelectLimitStep, SelectExpr, SQLQuery
+class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectWhereStep, OrderByStep, GroupByStep, SelectLimitStep, SelectExpr, SQLQuery
 {
     private final Expression<?>[] select;
 
@@ -159,21 +159,8 @@ class SelectBuilder implements SelectStep, FromStep, SelectWhereStep, OrderBySte
         SQLBuilder builder = new SQLBuilderImpl(dialect);
         writeSQL(builder);
         String sql = builder.toString();
-        List<Object> finalParams = new ArrayList<>();
-        int i = 0;
-        for (Object parameter : builder.getParameters())
-        {
-            if(parameter instanceof Param)
-            {
-                finalParams.add(parameters[i]);
-                i++;
-            }
-            else
-            {
-                finalParams.add(parameter);
-            }
-        }
-        return new SQLStatementImpl(select, sql, finalParams.toArray());
+        return new SQLStatementImpl(select, sql, 
+                        createParams(builder, parameters), false);
     }
 
     @Override
@@ -217,5 +204,11 @@ class SelectBuilder implements SelectStep, FromStep, SelectWhereStep, OrderBySte
         {
             builder.append(limit);
         }
+    }
+
+    @Override
+    public boolean isWithGeneratedKeys()
+    {
+        return false;
     }
 }

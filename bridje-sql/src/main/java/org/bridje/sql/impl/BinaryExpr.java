@@ -61,7 +61,7 @@ class BinaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringE
         builder.append(' ');
         builder.append(operator.toSQL());
         builder.append(' ');
-        builder.append(operand1);
+        builder.append(operand2);
         builder.append(')');
     }
 }

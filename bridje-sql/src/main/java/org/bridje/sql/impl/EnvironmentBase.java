@@ -21,17 +21,25 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.sql.Column;
+import org.bridje.sql.Expression;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLQuery;
+import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLResultSet;
+import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 
 abstract class EnvironmentBase implements SQLEnvironment
 {
+    private static final Logger LOG = Logger.getLogger(EnvironmentBase.class.getName());
+
     private final SQLDialect dialect;
 
     public EnvironmentBase(SQLDialect dialect)
@@ -44,41 +52,85 @@ abstract class EnvironmentBase implements SQLEnvironment
     {
         return dialect;
     }
-
+    
     @Override
-    public int executeUpdate(SQLQuery query, Object... parameters) throws SQLException
+    public int update(SQLQuery query, Object... parameters) throws SQLException
     {
-        return executeUpdate(query.toStatement(getDialect(), parameters));
+        return update(query.toStatement(getDialect(), parameters));
     }
 
     @Override
-    public SQLResultSet execute(SQLQuery query, Object... parameters) throws SQLException
+    public <T> List<T> fetchAll(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException
     {
-        return execute(query.toStatement(getDialect(), parameters));
+        return fetchAll(query.toStatement(getDialect(), parameters), parser);
+    }
+    
+    @Override
+    public <T> T fetchOne(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException
+    {
+        return fetchOne(query.toStatement(getDialect(), parameters), parser);
     }
 
-    protected int executeUpdate(Connection cnn, String sql, Object[] params) throws SQLException
+    protected int update(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
-        try(PreparedStatement stmt = prepareStatement(cnn, sql, params))
+        LOG.log(Level.INFO, sqlStmt.getSQL());
+        try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             return stmt.executeUpdate();
         }
     }
 
-    protected SQLResultSet execute(Connection cnn, String sql, Object[] params) throws SQLException
+    protected <T> List<T> fetchAll(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
-        try(PreparedStatement stmt = prepareStatement(cnn, sql, params))
+        LOG.log(Level.INFO, sqlStmt.getSQL());
+        try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
-            try(ResultSet rs = stmt.executeQuery())
+            SQLResultSet rs;
+            if(sqlStmt.isWithGeneratedKeys())
             {
-                return null;
+                int value = stmt.executeUpdate();
+                rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
             }
+            else
+            {
+                rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
+            }
+            return fetchAll(rs, parser);
         }
     }
 
-    protected PreparedStatement prepareStatement(Connection cnn, String sql, Object[] params) throws SQLException
+    protected <T> T fetchOne(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
-        PreparedStatement stmt = cnn.prepareStatement(sql);
+        LOG.log(Level.INFO, sqlStmt.getSQL());
+        try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
+        {
+            SQLResultSet rs;
+            if(sqlStmt.isWithGeneratedKeys())
+            {
+                int value = stmt.executeUpdate();
+                rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
+            }
+            else
+            {
+                rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
+            }
+            return fetchOne(rs, parser);
+        }
+    }
+    
+    protected PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException
+    {
+        PreparedStatement stmt;
+        if(sqlStmt.isWithGeneratedKeys())
+        {
+            stmt = cnn.prepareStatement(sqlStmt.getSQL(), Statement.RETURN_GENERATED_KEYS);
+        }
+        else
+        {
+            stmt = cnn.prepareStatement(sqlStmt.getSQL());
+        }
+
+        Object[] params = sqlStmt.getParameters();
         for (int i = 0; i < params.length; i++)
         {
             stmt.setObject(i+1, params[i]);
@@ -145,28 +197,29 @@ abstract class EnvironmentBase implements SQLEnvironment
         }
         dialect.primaryKey(sb, table.getKeys());
         String sql = sb.toString();
-        executeUpdate(connection, sql, params.toArray());
+        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+        update(connection, sqlStmt);
     }
 
     protected void fixIndexes(Connection connection, Table table) throws SQLException
     {
         DatabaseMetaData metadata = connection.getMetaData();
         Column<?>[] columns = table.getColumns();
-        StringBuilder sb = new StringBuilder();
-        dialect.alterTable(sb, table);
         for (Column<?> column : columns)
         {
             if(column.isIndexed())
             {
                 if(!indexExists(metadata, column))
                 {
+                    StringBuilder sb = new StringBuilder();
                     String idxName = "idx_" + column.getName();
                     dialect.createIndex(sb, idxName, column.getTable(), new Column<?>[]{column});
+                    String sql = sb.toString();
+                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
+                    update(connection, sqlStmt);
                 }
             }
         }
-        String sql = sb.toString();
-        executeUpdate(connection, sql, new Object[0]);
     }
 
     protected void fixColumns(Connection connection, Table table) throws SQLException
@@ -186,6 +239,26 @@ abstract class EnvironmentBase implements SQLEnvironment
             }
         }
         String sql = sb.toString();
-        executeUpdate(connection, sql, params.toArray());
+        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+        update(connection, sqlStmt);
+    }
+
+    private <T> T fetchOne(SQLResultSet rs, SQLResultParser<T> parser) throws SQLException
+    {
+        if(rs.next())
+        {
+            return parser.parse(rs);
+        }
+        return null;
+    }
+
+    private <T> List<T> fetchAll(SQLResultSet rs, SQLResultParser<T> parser) throws SQLException
+    {
+        List<T> result = new ArrayList<>();
+        while(rs.next())
+        {
+            result.add(parser.parse(rs));
+        }
+        return result;
     }
 }
