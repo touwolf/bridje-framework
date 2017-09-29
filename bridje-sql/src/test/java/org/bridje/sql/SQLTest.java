@@ -56,7 +56,7 @@ public class SQLTest
     {
     }
 
-    @Test
+    //@Test
     public void test1CreateTables() throws SQLException
     {
         SQLQuery selectQuery = SQL.select(User.ID)

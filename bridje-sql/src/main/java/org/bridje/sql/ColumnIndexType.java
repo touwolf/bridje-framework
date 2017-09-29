@@ -16,13 +16,9 @@
 
 package org.bridje.sql;
 
-public interface BuildTableStep
+public enum ColumnIndexType
 {
-    <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, boolean autoIncrement, T defValue);
-
-    <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue);
-
-    <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue);
-
-    Table build();
+    NONE,
+    INDEXED,
+    UNIQUE;
 }

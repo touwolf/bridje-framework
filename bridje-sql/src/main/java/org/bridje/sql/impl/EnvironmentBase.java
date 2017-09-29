@@ -23,11 +23,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.sql.Column;
-import org.bridje.sql.Expression;
+import org.bridje.sql.ColumnIndexType;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLQuery;
@@ -170,20 +173,34 @@ abstract class EnvironmentBase implements SQLEnvironment
         return false;
     }
 
-    protected boolean indexExists(DatabaseMetaData metadata, Column column) throws SQLException
+    protected boolean indexExists(DatabaseMetaData metadata, Table table, Column<?>... columns) throws SQLException
     {
-        try (ResultSet resultSet = metadata.getIndexInfo(null, null, column.getTable().getName(), false, true))
+        List<String> columnNames = new ArrayList<>();
+        for (Column<?> column : columns)
+        {
+            columnNames.add(column.getName());
+        }
+        Map<String, List<String>> idxMap = new HashMap<>();
+        try (ResultSet resultSet = metadata.getIndexInfo(null, null, table.getName(), false, true))
         {
             while (resultSet.next())
             {
-                String col = resultSet.getString("COLUMN_NAME");
-                if (col != null && col.equalsIgnoreCase(column.getName()))
+                String indexName = resultSet.getString("INDEX_NAME");
+                String colName = resultSet.getString("COLUMN_NAME");
+                List<String> lst = idxMap.get(indexName);
+                if(lst == null)
                 {
-                    return true;
+                    lst = new ArrayList<>();
+                    idxMap.put(indexName, lst);
                 }
+                lst.add(colName);
             }
         }
-        return false;
+        idxMap.forEach( (k, v) -> System.out.println(k + " " + Arrays.toString(v.toArray())));
+        return idxMap.values()
+                    .stream()
+                    .filter( v -> Arrays.equals(v.toArray(), columnNames.toArray()))
+                    .count() >= 1;
     }
 
     protected void createTable(Connection connection, Table table) throws SQLException
@@ -207,13 +224,13 @@ abstract class EnvironmentBase implements SQLEnvironment
         Column<?>[] columns = table.getColumns();
         for (Column<?> column : columns)
         {
-            if(column.isIndexed())
+            if(column.getIndex() != null && column.getIndex() != ColumnIndexType.NONE)
             {
-                if(!indexExists(metadata, column))
+                if(!indexExists(metadata, column.getTable(), column))
                 {
                     StringBuilder sb = new StringBuilder();
                     String idxName = "idx_" + column.getName();
-                    dialect.createIndex(sb, idxName, column.getTable(), new Column<?>[]{column});
+                    dialect.createIndex(sb, idxName, column.getTable(), new Column<?>[]{column}, column.getIndex() == ColumnIndexType.UNIQUE);
                     String sql = sb.toString();
                     SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
                     update(connection, sqlStmt);

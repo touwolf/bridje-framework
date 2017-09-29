@@ -49,24 +49,4 @@ public interface SQLBuilder
     SQLBuilder append(SQLWritable expression);
 
     void appendAll(SQLWritable[] expressions, String sep);
-
-    SQLBuilder appendCreateTable(Table table);
-
-    SQLBuilder appendCreateColumn(Column<?> column, boolean isKey);
-
-    SQLBuilder appendPrimaryKey(Column<?> column);
-
-    SQLBuilder appendAlterTable(Table table);
-
-    SQLBuilder appendAddColumn(Column<?> column, boolean isLast);
-
-    SQLBuilder appendDropColumn(Column<?> column, boolean isLast);
-
-    SQLBuilder appendChangeColumn(Column<?> column, String oldColumn, boolean isLast);
-
-    SQLBuilder appendCreateIndex(String name, Table table, Column<?>[] columns);
-
-    SQLBuilder appendCreateUniqueIndex(String name, Table table, Column<?>[] columns);
-
-    SQLBuilder appendDropIndex(String name, Table table);
 }

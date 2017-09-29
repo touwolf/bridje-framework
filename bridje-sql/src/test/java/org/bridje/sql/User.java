@@ -32,10 +32,10 @@ public class User
 
     static {
         TABLE = SQL.buildTable("users")
-                    .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false, true, true, null)
-                    .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, true, null)
-                    .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), false, true, true, null)
-                    .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), false, true, true, null)
+                    .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false, ColumnIndexType.INDEXED, true, null)
+                    .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, ColumnIndexType.INDEXED, null)
+                    .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), false, true, ColumnIndexType.INDEXED, null)
+                    .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), false, true, ColumnIndexType.INDEXED, null)
                     .build();
         ID = TABLE.getNumberColumn("id", Long.class);
         EMAIL = TABLE.getStringColumn("email", String.class);

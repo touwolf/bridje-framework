@@ -18,6 +18,7 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.Column;
+import org.bridje.sql.ColumnIndexType;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
@@ -34,7 +35,7 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final boolean allowNull;
 
-    private final boolean indexed;
+    private final ColumnIndexType index;
 
     private final SQLType<T> sqlType;
 
@@ -42,7 +43,7 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final T defValue;
 
-    public ColumnImpl(Table table, String name, SQLType<T> sqlType, boolean key, boolean allowNull, boolean indexed, boolean autoIncrement, T defValue)
+    public ColumnImpl(Table table, String name, SQLType<T> sqlType, boolean key, boolean allowNull, ColumnIndexType index, boolean autoIncrement, T defValue)
     {
         super(sqlType.getJavaType());
         this.table = table;
@@ -50,7 +51,7 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
         this.name = name;
         this.key = key;
         this.allowNull = allowNull;
-        this.indexed = indexed;
+        this.index = index;
         this.autoIncrement = autoIncrement;
         this.defValue = defValue;
     }
@@ -80,9 +81,9 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     }
 
     @Override
-    public boolean isIndexed()
+    public ColumnIndexType getIndex()
     {
-        return indexed;
+        return index;
     }
 
     @Override

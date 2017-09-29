@@ -41,7 +41,7 @@ public interface SQLDialect
 
     void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast);
 
-    void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns);
+    void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns, boolean unique);
     
     void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns);
     

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.BuildTableStep;
 import org.bridje.sql.Column;
+import org.bridje.sql.ColumnIndexType;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.Table;
 
@@ -36,23 +37,23 @@ class TableBuilder implements BuildTableStep
     }
     
     @Override
-    public <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, boolean indexed, boolean autoIncrement, T defValue)
+    public <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, boolean autoIncrement, T defValue)
     {
-        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, indexed, autoIncrement, defValue));
+        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, index, autoIncrement, defValue));
         return this;
     }
 
     @Override
-    public <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, boolean indexed, T defValue)
+    public <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue)
     {
-        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, indexed, false, defValue));
+        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, index, false, defValue));
         return this;
     }
 
     @Override
-    public <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, boolean indexed, T defValue)
+    public <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue)
     {
-        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, indexed, false, defValue));
+        columns.add(new ColumnImpl<>(table, name, type, key, allowNull, index, false, defValue));
         return this;
     }
 

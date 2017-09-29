@@ -88,9 +88,11 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns)
+    public void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns, boolean unique)
     {
-        builder.append("CREATE INDEX ");
+        builder.append("CREATE ");
+        if(unique) builder.append("UNIQUE ");
+        builder.append("INDEX ");
         writeObjectName(builder, name);
         builder.append(" ON ");
         writeObjectName(builder, table.getName());

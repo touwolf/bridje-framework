@@ -26,7 +26,7 @@ public interface Column<T> extends Expression<T>
 
     boolean isAllowNull();
     
-    boolean isIndexed();
+    ColumnIndexType getIndex();
 
     SQLType<T> getSQLType();
 
