@@ -20,6 +20,14 @@ import java.sql.JDBCType;
 
 public class User
 {
+    public static final SQLType<Long> LONGID_TYPE;
+    
+    public static final SQLType<String> EMAIL_TYPE;
+    
+    public static final SQLType<String> PASSWORD_TYPE;
+    
+    public static final SQLType<Boolean> ACTIVE_TYPE;
+    
     public static final Table TABLE;
 
     public static final NumberColumn<Long> ID;
@@ -31,15 +39,21 @@ public class User
     public static final BooleanColumn<Boolean> ACTIVE;
 
     static {
+        LONGID_TYPE = SQL.buildType(Long.class, JDBCType.BIGINT);
+        EMAIL_TYPE = SQL.buildType(String.class, JDBCType.VARCHAR, 150);
+        PASSWORD_TYPE = SQL.buildType(String.class, JDBCType.VARCHAR, 512);
+        ACTIVE_TYPE = SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0);
+
         TABLE = SQL.buildTable("users")
-                    .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false, ColumnIndexType.INDEXED, true, null)
-                    .string("email", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, ColumnIndexType.INDEXED, null)
-                    .string("password", SQL.buildType(String.class, JDBCType.VARCHAR, 512), false, true, ColumnIndexType.INDEXED, null)
-                    .bool("active", SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0), false, true, ColumnIndexType.INDEXED, null)
+                    .autoIncrement("id", LONGID_TYPE, true, false)
+                    .string("email", EMAIL_TYPE, false, true, null)
+                    .string("password", PASSWORD_TYPE, false, true, null)
+                    .bool("active", ACTIVE_TYPE, false, true, null)
                     .build();
-        ID = TABLE.getNumberColumn("id", Long.class);
-        EMAIL = TABLE.getStringColumn("email", String.class);
-        PASSWORD = TABLE.getStringColumn("password", String.class);
-        ACTIVE = TABLE.getBooleanColumn("active", Boolean.class);
+
+        ID = TABLE.getAsNumber("id", Long.class);
+        EMAIL = TABLE.getAsString("email", String.class);
+        PASSWORD = TABLE.getAsString("password", String.class);
+        ACTIVE = TABLE.getAsBoolean("active", Boolean.class);
     }
 }

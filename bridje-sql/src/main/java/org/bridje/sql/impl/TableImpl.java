@@ -69,13 +69,13 @@ class TableImpl implements Table
     }
 
     @Override
-    public Column<?>[] getKeys()
+    public Column<?>[] getPrimaryKey()
     {
         return keys;
     }
     
     @Override
-    public Column<?>[] getAutoIncrementColumns()
+    public Column<?>[] getAutoIncrement()
     {
         return aiColumns;
     }
@@ -87,19 +87,19 @@ class TableImpl implements Table
     }
 
     @Override
-    public <T> NumberColumn<T> getNumberColumn(String name, Class<T> type)
+    public <T> NumberColumn<T> getAsNumber(String name, Class<T> type)
     {
         return (NumberColumn<T>)columnsMap.get(name);
     }
 
     @Override
-    public <T> StringColumn<T> getStringColumn(String name, Class<T> type)
+    public <T> StringColumn<T> getAsString(String name, Class<T> type)
     {
         return (StringColumn<T>)columnsMap.get(name);
     }
 
     @Override
-    public <T> BooleanColumn<T> getBooleanColumn(String name, Class<T> type)
+    public <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type)
     {
         return (BooleanColumn<T>)columnsMap.get(name);
     }

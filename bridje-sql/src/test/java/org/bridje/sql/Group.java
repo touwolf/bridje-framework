@@ -21,11 +21,11 @@ import java.sql.JDBCType;
 public class Group
 {
     public static final Table TABLE = SQL.buildTable("groups")
-                                            .number("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false, ColumnIndexType.INDEXED, true, null)
-                                            .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, ColumnIndexType.INDEXED, null)
+                                            .autoIncrement("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false)
+                                            .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, null)
                                             .build();
 
-    public static final NumberColumn<Long> ID = TABLE.getNumberColumn("id", Long.class);
+    public static final NumberColumn<Long> ID = TABLE.getAsNumber("id", Long.class);
 
-    public static final StringColumn<String> TITLE = TABLE.getStringColumn("title", String.class);
+    public static final StringColumn<String> TITLE = TABLE.getAsString("title", String.class);
 }

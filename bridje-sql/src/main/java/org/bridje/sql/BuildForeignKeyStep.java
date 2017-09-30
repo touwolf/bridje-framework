@@ -16,9 +16,7 @@
 
 package org.bridje.sql;
 
-public enum ColumnIndexType
+public interface BuildForeignKeyStep
 {
-    NONE,
-    INDEXED,
-    UNIQUE;
+    <T> BuildFkReferencesStep references(Table table, Column<?>... columns);
 }

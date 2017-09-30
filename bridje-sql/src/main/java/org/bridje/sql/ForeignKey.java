@@ -16,21 +16,17 @@
 
 package org.bridje.sql;
 
-public interface Table extends TableExpr
+public interface ForeignKey
 {
     String getName();
 
-    Column<?>[] getPrimaryKey();
+    Column<?> getColumns();
 
-    Column<?>[] getAutoIncrement();
+    Column<?> getReferencesTable();
 
-    Column<?>[] getColumns();
+    Column<?> getReferencesColumns();
 
-    <T> NumberColumn<T> getAsNumber(String name, Class<T> type);
+    ForeignKeyStrategy getOnUpdate();
 
-    <T> StringColumn<T> getAsString(String name, Class<T> type);
-
-    <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type);
-
-    <T> Column<T> getColumn(String name, Class<T> type);
+    ForeignKeyStrategy getOnDelete();
 }

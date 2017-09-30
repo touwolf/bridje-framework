@@ -16,21 +16,11 @@
 
 package org.bridje.sql;
 
-public interface Table extends TableExpr
+public interface Query
 {
-    String getName();
+    Expression<?>[] getResultFields();
 
-    Column<?>[] getPrimaryKey();
+    boolean isWithGeneratedKeys();
 
-    Column<?>[] getAutoIncrement();
-
-    Column<?>[] getColumns();
-
-    <T> NumberColumn<T> getAsNumber(String name, Class<T> type);
-
-    <T> StringColumn<T> getAsString(String name, Class<T> type);
-
-    <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type);
-
-    <T> Column<T> getColumn(String name, Class<T> type);
+    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
 }

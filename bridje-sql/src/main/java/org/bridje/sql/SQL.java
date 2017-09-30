@@ -43,6 +43,16 @@ public class SQL
         return FACT.buildTable(name);
     }
 
+    public static final Index buildIndex(String name, Table table, Column<?>... columns)
+    {
+        return FACT.buildIndex(name, table, columns);
+    }
+
+    public static final BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?>... columns)
+    {
+        return FACT.buildForeignKey(name, table, columns);
+    }
+
     public static final SelectStep select(Expression<?>... columns)
     {
         return FACT.select(columns);

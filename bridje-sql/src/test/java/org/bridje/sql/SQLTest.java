@@ -59,12 +59,12 @@ public class SQLTest
     //@Test
     public void test1CreateTables() throws SQLException
     {
-        SQLQuery selectQuery = SQL.select(User.ID)
+        Query selectQuery = SQL.select(User.ID)
                                     .from(User.TABLE)
                                     .where(User.ACTIVE.eq(true))
                                     .toQuery();
 
-        SQLQuery insertQuery = SQL.insertInto(User.TABLE)
+        Query insertQuery = SQL.insertInto(User.TABLE)
                                     .columns(User.EMAIL, User.PASSWORD, User.ACTIVE)
                                     .values("email@somedomain.com", "mypass", true)
                                     .toQuery();

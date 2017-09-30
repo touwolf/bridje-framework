@@ -16,11 +16,7 @@
 
 package org.bridje.sql;
 
-public interface SQLQuery
+public interface BuildFkFinalStep
 {
-    Expression<?>[] getResultFields();
-
-    boolean isWithGeneratedKeys();
-
-    SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+    ForeignKey build();
 }

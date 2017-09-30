@@ -26,14 +26,14 @@ import org.bridje.sql.InsertIntoStep;
 import org.bridje.sql.LiteralExpr;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLQuery;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.SQLWritable;
 import org.bridje.sql.SelectExpr;
 import org.bridje.sql.Table;
 import org.bridje.sql.ValuesStep;
+import org.bridje.sql.Query;
 
-class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, SQLQuery
+class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, Query
 {
     private final Table table;
 
@@ -76,12 +76,12 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
         SQLBuilder builder = new SQLBuilderImpl(dialect);
         writeSQL(builder);
         String sql = builder.toString();
-        return new SQLStatementImpl(table.getAutoIncrementColumns(), 
+        return new SQLStatementImpl(table.getAutoIncrement(), 
                             sql, createParams(builder, parameters), true);
     }
 
     @Override
-    public SQLQuery toQuery()
+    public Query toQuery()
     {
         return this;
     }
@@ -89,7 +89,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
     @Override
     public Expression<?>[] getResultFields()
     {
-        return table.getAutoIncrementColumns();
+        return table.getAutoIncrement();
     }
 
     public void writeSQL(SQLBuilder builder)

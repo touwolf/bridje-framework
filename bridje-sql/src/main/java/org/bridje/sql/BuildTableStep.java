@@ -18,11 +18,13 @@ package org.bridje.sql;
 
 public interface BuildTableStep
 {
-    <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, boolean autoIncrement, T defValue);
+    <T> BuildTableStep autoIncrement(String name, SQLType<T> type, boolean key, boolean allowNull);
 
-    <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue);
+    <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
 
-    <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, ColumnIndexType index, T defValue);
+    <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
+
+    <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
 
     Table build();
 }

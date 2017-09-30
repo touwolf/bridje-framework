@@ -18,5 +18,5 @@ package org.bridje.sql;
 
 public interface FinalStep
 {
-    SQLQuery toQuery();
+    Query toQuery();
 }

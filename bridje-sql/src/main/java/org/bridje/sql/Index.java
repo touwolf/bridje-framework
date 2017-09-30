@@ -16,21 +16,11 @@
 
 package org.bridje.sql;
 
-public interface Table extends TableExpr
+public interface Index
 {
     String getName();
 
-    Column<?>[] getPrimaryKey();
-
-    Column<?>[] getAutoIncrement();
-
     Column<?>[] getColumns();
 
-    <T> NumberColumn<T> getAsNumber(String name, Class<T> type);
-
-    <T> StringColumn<T> getAsString(String name, Class<T> type);
-
-    <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type);
-
-    <T> Column<T> getColumn(String name, Class<T> type);
+    boolean isUnique();
 }

@@ -30,14 +30,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.sql.Column;
-import org.bridje.sql.ColumnIndexType;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
-import org.bridje.sql.SQLQuery;
 import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLResultSet;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
+import org.bridje.sql.Query;
 
 abstract class EnvironmentBase implements SQLEnvironment
 {
@@ -57,19 +56,19 @@ abstract class EnvironmentBase implements SQLEnvironment
     }
     
     @Override
-    public int update(SQLQuery query, Object... parameters) throws SQLException
+    public int update(Query query, Object... parameters) throws SQLException
     {
         return update(query.toStatement(getDialect(), parameters));
     }
 
     @Override
-    public <T> List<T> fetchAll(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException
+    public <T> List<T> fetchAll(Query query, SQLResultParser<T> parser, Object... parameters) throws SQLException
     {
         return fetchAll(query.toStatement(getDialect(), parameters), parser);
     }
     
     @Override
-    public <T> T fetchOne(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException
+    public <T> T fetchOne(Query query, SQLResultParser<T> parser, Object... parameters) throws SQLException
     {
         return fetchOne(query.toStatement(getDialect(), parameters), parser);
     }
@@ -212,7 +211,7 @@ abstract class EnvironmentBase implements SQLEnvironment
         {
             dialect.createColumn(sb, params, column, column.isKey());
         }
-        dialect.primaryKey(sb, table.getKeys());
+        dialect.primaryKey(sb, table.getPrimaryKey());
         String sql = sb.toString();
         SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
         update(connection, sqlStmt);
@@ -220,6 +219,7 @@ abstract class EnvironmentBase implements SQLEnvironment
 
     protected void fixIndexes(Connection connection, Table table) throws SQLException
     {
+        /*
         DatabaseMetaData metadata = connection.getMetaData();
         Column<?>[] columns = table.getColumns();
         for (Column<?> column : columns)
@@ -237,6 +237,7 @@ abstract class EnvironmentBase implements SQLEnvironment
                 }
             }
         }
+        */
     }
 
     protected void fixColumns(Connection connection, Table table) throws SQLException

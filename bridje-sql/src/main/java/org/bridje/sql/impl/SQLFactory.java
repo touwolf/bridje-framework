@@ -19,9 +19,12 @@ package org.bridje.sql.impl;
 import java.sql.JDBCType;
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.BuildForeignKeyStep;
 import org.bridje.sql.BuildTableStep;
+import org.bridje.sql.Column;
 import org.bridje.sql.DeleteStep;
 import org.bridje.sql.Expression;
+import org.bridje.sql.Index;
 import org.bridje.sql.InsertIntoStep;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.SelectStep;
@@ -64,6 +67,16 @@ public class SQLFactory
     public BuildTableStep buildTable(String name)
     {
         return new TableBuilder(name);
+    }
+
+    public Index buildIndex(String name, Table table, Column<?>[] columns)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?>[] columns)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public SelectStep select(Expression<?>... columns)

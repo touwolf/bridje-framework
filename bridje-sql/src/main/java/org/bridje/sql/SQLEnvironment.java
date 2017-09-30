@@ -25,11 +25,11 @@ public interface SQLEnvironment extends AutoCloseable
 
     void fixTable(Table... table) throws SQLException;
 
-    int update(SQLQuery query, Object... parameters) throws SQLException;
+    int update(Query query, Object... parameters) throws SQLException;
 
-    <T> List<T> fetchAll(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
+    <T> List<T> fetchAll(Query query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
 
-    <T> T fetchOne(SQLQuery query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
+    <T> T fetchOne(Query query, SQLResultParser<T> parser, Object... parameters) throws SQLException;
 
     int update(SQLStatement stmt) throws SQLException;
 
