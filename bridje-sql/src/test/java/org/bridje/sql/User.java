@@ -21,13 +21,13 @@ import java.sql.JDBCType;
 public class User
 {
     public static final SQLType<Long> LONGID_TYPE;
-    
+
     public static final SQLType<String> EMAIL_TYPE;
-    
+
     public static final SQLType<String> PASSWORD_TYPE;
-    
+
     public static final SQLType<Boolean> ACTIVE_TYPE;
-    
+
     public static final Table TABLE;
 
     public static final NumberColumn<Long> ID;
