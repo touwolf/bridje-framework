@@ -37,6 +37,7 @@ import org.bridje.sql.SQLResultSet;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 import org.bridje.sql.Query;
+import org.bridje.sql.Schema;
 
 abstract class EnvironmentBase implements SQLEnvironment
 {
@@ -140,6 +141,11 @@ abstract class EnvironmentBase implements SQLEnvironment
         return stmt;
     }
 
+    protected void fixSchema(Connection connection, Schema schema) throws SQLException
+    {
+        
+    }
+    
     protected void fixTable(Connection connection, Table table) throws SQLException
     {
         DatabaseMetaData metaData = connection.getMetaData();

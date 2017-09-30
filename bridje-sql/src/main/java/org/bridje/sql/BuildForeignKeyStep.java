@@ -18,5 +18,5 @@ package org.bridje.sql;
 
 public interface BuildForeignKeyStep
 {
-    <T> BuildFkReferencesStep references(Table table, Column<?>... columns);
+    BuildFkReferencesStep references(Table table, Column<?>... columns);
 }

@@ -24,7 +24,7 @@ import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Table;
+import org.bridje.sql.Schema;
 
 class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
 {
@@ -39,20 +39,17 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
     }
 
     @Override
-    public void fixTable(Table... tables) throws SQLException
+    public void fixSchema(Schema schema) throws SQLException
     {
         if(connEnv != null)
         {
-            connEnv.fixTable(tables);
+            connEnv.fixSchema(schema);
         }
         else
         {
             try(Connection connection = dataSource.getConnection())
             {
-                for (Table table : tables)
-                {
-                    fixTable(connection, table);
-                }
+                fixSchema(connection, schema);
             }
         }
     }

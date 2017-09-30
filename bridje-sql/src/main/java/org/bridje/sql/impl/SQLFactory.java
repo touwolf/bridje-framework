@@ -71,12 +71,32 @@ public class SQLFactory
 
     public Index buildIndex(String name, Table table, Column<?>[] columns)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new IndexImpl(null, table, columns, false);
+    }
+
+    public Index buildIndex(Table table, Column<?>... columns)
+    {
+        return new IndexImpl(null, table, columns, false);
+    }
+
+    public Index buildUnique(String name, Table table, Column<?>... columns)
+    {
+        return new IndexImpl(name, table, columns, true);
+    }
+
+    public Index buildUnique(Table table, Column<?>... columns)
+    {
+        return new IndexImpl(null, table, columns, true);
     }
 
     public BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?>[] columns)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new ForeignKeyBuilder(name, table, columns);
+    }
+    
+    public BuildForeignKeyStep buildForeignKey(Table table, Column<?>[] columns)
+    {
+        return new ForeignKeyBuilder(null, table, columns);
     }
 
     public SelectStep select(Expression<?>... columns)
@@ -209,7 +229,7 @@ public class SQLFactory
         return new Literal<>(value);
     }
 
-    public final <T> Expression<T> param(Class<T> cls)
+    public <T> Expression<T> param(Class<T> cls)
     {
         return new Param<>(cls);
     }

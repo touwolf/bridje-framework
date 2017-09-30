@@ -16,19 +16,15 @@
 
 package org.bridje.sql;
 
-public interface ForeignKey
+public class TestDB
 {
-    String getName();
-
-    Table getTable();
-
-    Column<?>[] getColumns();
-
-    Table getReferencesTable();
-
-    Column<?>[] getReferencesColumns();
-
-    ForeignKeyStrategy getOnUpdate();
-
-    ForeignKeyStrategy getOnDelete();
+    public static final Table[] TABLES;
+    
+    static {
+        TABLES = new Table[] {
+            User.TABLE,
+            Group.TABLE,
+            UserGroup.TABLE
+        };
+    }
 }

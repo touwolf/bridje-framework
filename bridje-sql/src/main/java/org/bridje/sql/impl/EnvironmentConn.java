@@ -23,7 +23,7 @@ import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Table;
+import org.bridje.sql.Schema;
 
 class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
 {
@@ -36,12 +36,9 @@ class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
     }
 
     @Override
-    public void fixTable(Table... tables) throws SQLException
+    public void fixSchema(Schema schema) throws SQLException
     {
-        for (Table table : tables)
-        {
-            fixTable(connection, table);
-        }
+        fixSchema(connection, schema);
     }
 
     @Override

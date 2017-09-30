@@ -16,16 +16,29 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
+import static org.bridje.sql.User.EMAIL;
 
 public class Group
 {
-    public static final Table TABLE = SQL.buildTable("groups")
-                                            .autoIncrement("id", SQL.buildType(Long.class, JDBCType.BIGINT), true, false)
-                                            .string("title", SQL.buildType(String.class, JDBCType.VARCHAR, 150), false, true, null)
-                                            .build();
+    public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID = TABLE.getAsNumber("id", Long.class);
+    public static final NumberColumn<Long> ID;
 
-    public static final StringColumn<String> TITLE = TABLE.getAsString("title", String.class);
+    public static final StringColumn<String> TITLE;
+
+    public static final Index[] INDEXES;
+
+    static {
+        TABLE = SQL.buildTable("groups")
+                    .autoIncrement("id", SQLTypes.LONGID, true, false)
+                    .string("title", SQLTypes.STRING150, false, true, null)
+                    .build();
+
+        ID = TABLE.getAsNumber("id", Long.class);
+        TITLE = TABLE.getAsString("title", String.class);
+
+        INDEXES = new Index[]{
+            SQL.buildIndex(TABLE, EMAIL)
+        };
+    }
 }

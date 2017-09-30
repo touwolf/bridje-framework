@@ -20,6 +20,8 @@ public interface Index
 {
     String getName();
 
+    Table getTable();
+
     Column<?>[] getColumns();
 
     boolean isUnique();

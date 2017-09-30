@@ -48,9 +48,29 @@ public class SQL
         return FACT.buildIndex(name, table, columns);
     }
 
+    public static final Index buildIndex(Table table, Column<?>... columns)
+    {
+        return FACT.buildIndex(table, columns);
+    }
+
+    public static final Index buildUnique(String name, Table table, Column<?>... columns)
+    {
+        return FACT.buildUnique(name, table, columns);
+    }
+
+    public static final Index buildUnique(Table table, Column<?>... columns)
+    {
+        return FACT.buildUnique(table, columns);
+    }
+
     public static final BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?>... columns)
     {
         return FACT.buildForeignKey(name, table, columns);
+    }
+
+    public static final BuildForeignKeyStep buildForeignKey(Table table, Column<?>... columns)
+    {
+        return FACT.buildForeignKey(table, columns);
     }
 
     public static final SelectStep select(Expression<?>... columns)

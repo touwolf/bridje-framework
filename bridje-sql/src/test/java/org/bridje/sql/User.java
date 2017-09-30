@@ -16,18 +16,8 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
-
 public class User
 {
-    public static final SQLType<Long> LONGID_TYPE;
-
-    public static final SQLType<String> EMAIL_TYPE;
-
-    public static final SQLType<String> PASSWORD_TYPE;
-
-    public static final SQLType<Boolean> ACTIVE_TYPE;
-
     public static final Table TABLE;
 
     public static final NumberColumn<Long> ID;
@@ -38,22 +28,27 @@ public class User
 
     public static final BooleanColumn<Boolean> ACTIVE;
 
-    static {
-        LONGID_TYPE = SQL.buildType(Long.class, JDBCType.BIGINT);
-        EMAIL_TYPE = SQL.buildType(String.class, JDBCType.VARCHAR, 150);
-        PASSWORD_TYPE = SQL.buildType(String.class, JDBCType.VARCHAR, 512);
-        ACTIVE_TYPE = SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0);
+    public static final Index[] INDEXES;
 
+    static {
         TABLE = SQL.buildTable("users")
-                    .autoIncrement("id", LONGID_TYPE, true, false)
-                    .string("email", EMAIL_TYPE, false, true, null)
-                    .string("password", PASSWORD_TYPE, false, true, null)
-                    .bool("active", ACTIVE_TYPE, false, true, null)
+                    .autoIncrement("id", SQLTypes.LONGID, true, false)
+                    .string("email", SQLTypes.STRING150, false, true, null)
+                    .string("password", SQLTypes.PASSWORD, false, true, null)
+                    .bool("active", SQLTypes.BOOLEAN, false, true, null)
                     .build();
 
         ID = TABLE.getAsNumber("id", Long.class);
         EMAIL = TABLE.getAsString("email", String.class);
         PASSWORD = TABLE.getAsString("password", String.class);
         ACTIVE = TABLE.getAsBoolean("active", Boolean.class);
+
+        INDEXES = new Index[]
+        {
+            SQL.buildIndex(TABLE, EMAIL),
+            SQL.buildIndex(TABLE, PASSWORD),
+            SQL.buildIndex(TABLE, ACTIVE),
+            SQL.buildIndex(TABLE, EMAIL, PASSWORD, ACTIVE)
+        };
     }
 }

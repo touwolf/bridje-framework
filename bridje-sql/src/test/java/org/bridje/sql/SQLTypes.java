@@ -16,19 +16,22 @@
 
 package org.bridje.sql;
 
-public interface ForeignKey
+import java.sql.JDBCType;
+
+public class SQLTypes
 {
-    String getName();
+    public static final SQLType<Long> LONGID;
 
-    Table getTable();
+    public static final SQLType<String> STRING150;
 
-    Column<?>[] getColumns();
+    public static final SQLType<String> PASSWORD;
 
-    Table getReferencesTable();
+    public static final SQLType<Boolean> BOOLEAN;
 
-    Column<?>[] getReferencesColumns();
-
-    ForeignKeyStrategy getOnUpdate();
-
-    ForeignKeyStrategy getOnDelete();
+    static {
+        LONGID = SQL.buildType(Long.class, JDBCType.BIGINT);
+        STRING150 = SQL.buildType(String.class, JDBCType.VARCHAR, 150);
+        PASSWORD = SQL.buildType(String.class, JDBCType.VARCHAR, 512);
+        BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0);
+    }
 }

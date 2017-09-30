@@ -23,7 +23,7 @@ public interface SQLEnvironment extends AutoCloseable
 {
     SQLDialect getDialect();
 
-    void fixTable(Table... table) throws SQLException;
+    void fixSchema(Schema schema) throws SQLException;
 
     int update(Query query, Object... parameters) throws SQLException;
 
