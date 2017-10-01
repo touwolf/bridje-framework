@@ -71,7 +71,7 @@ public class SQLTest
 
         SQLService sqlServ = Ioc.context().find(SQLService.class);
         SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDB");
-        sqlEnv.fixTable(User.TABLE, Group.TABLE);
+        //sqlEnv.fixSchema();
 
         Long id = sqlEnv.fetchOne(insertQuery, (rs) -> rs.get(User.ID));
         System.out.println(id);

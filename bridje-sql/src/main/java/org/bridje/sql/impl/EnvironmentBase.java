@@ -17,25 +17,18 @@
 package org.bridje.sql.impl;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.sql.Column;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultParser;
 import org.bridje.sql.SQLResultSet;
 import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Table;
 import org.bridje.sql.Query;
 import org.bridje.sql.Schema;
 
@@ -55,6 +48,11 @@ abstract class EnvironmentBase implements SQLEnvironment
     {
         return dialect;
     }
+
+    protected void fixSchema(Connection connection, Schema schema) throws SQLException
+    {
+        new SchemaFixer(connection, getDialect(), schema).doFix();
+    }
     
     @Override
     public int update(Query query, Object... parameters) throws SQLException
@@ -67,7 +65,7 @@ abstract class EnvironmentBase implements SQLEnvironment
     {
         return fetchAll(query.toStatement(getDialect(), parameters), parser);
     }
-    
+
     @Override
     public <T> T fetchOne(Query query, SQLResultParser<T> parser, Object... parameters) throws SQLException
     {
@@ -120,7 +118,7 @@ abstract class EnvironmentBase implements SQLEnvironment
             return fetchOne(rs, parser);
         }
     }
-    
+
     protected PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
         PreparedStatement stmt;
@@ -139,132 +137,6 @@ abstract class EnvironmentBase implements SQLEnvironment
             stmt.setObject(i+1, params[i]);
         }
         return stmt;
-    }
-
-    protected void fixSchema(Connection connection, Schema schema) throws SQLException
-    {
-        
-    }
-    
-    protected void fixTable(Connection connection, Table table) throws SQLException
-    {
-        DatabaseMetaData metaData = connection.getMetaData();
-        if(tableExists(metaData, table))
-        {
-            fixColumns(connection, table);
-        }
-        else
-        {
-            createTable(connection, table);
-        }
-        fixIndexes(connection, table);
-    }
-
-    protected boolean tableExists(DatabaseMetaData metadata, Table table) throws SQLException
-    {
-        try (ResultSet resultSet = metadata.getTables(null, null, table.getName(), null))
-        {
-            if (resultSet.next()) return true;
-        }
-        return false;
-    }
-
-    protected boolean columnExists(DatabaseMetaData metadata, Column<?> column) throws SQLException
-    {
-        try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
-        {
-            if (resultSet.next()) return true;
-        }
-        return false;
-    }
-
-    protected boolean indexExists(DatabaseMetaData metadata, Table table, Column<?>... columns) throws SQLException
-    {
-        List<String> columnNames = new ArrayList<>();
-        for (Column<?> column : columns)
-        {
-            columnNames.add(column.getName());
-        }
-        Map<String, List<String>> idxMap = new HashMap<>();
-        try (ResultSet resultSet = metadata.getIndexInfo(null, null, table.getName(), false, true))
-        {
-            while (resultSet.next())
-            {
-                String indexName = resultSet.getString("INDEX_NAME");
-                String colName = resultSet.getString("COLUMN_NAME");
-                List<String> lst = idxMap.get(indexName);
-                if(lst == null)
-                {
-                    lst = new ArrayList<>();
-                    idxMap.put(indexName, lst);
-                }
-                lst.add(colName);
-            }
-        }
-        idxMap.forEach( (k, v) -> System.out.println(k + " " + Arrays.toString(v.toArray())));
-        return idxMap.values()
-                    .stream()
-                    .filter( v -> Arrays.equals(v.toArray(), columnNames.toArray()))
-                    .count() >= 1;
-    }
-
-    protected void createTable(Connection connection, Table table) throws SQLException
-    {
-        List<Object> params = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        dialect.createTable(sb, table);
-        for (Column<?> column : table.getColumns())
-        {
-            dialect.createColumn(sb, params, column, column.isKey());
-        }
-        dialect.primaryKey(sb, table.getPrimaryKey());
-        String sql = sb.toString();
-        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-        update(connection, sqlStmt);
-    }
-
-    protected void fixIndexes(Connection connection, Table table) throws SQLException
-    {
-        /*
-        DatabaseMetaData metadata = connection.getMetaData();
-        Column<?>[] columns = table.getColumns();
-        for (Column<?> column : columns)
-        {
-            if(column.getIndex() != null && column.getIndex() != ColumnIndexType.NONE)
-            {
-                if(!indexExists(metadata, column.getTable(), column))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    String idxName = "idx_" + column.getName();
-                    dialect.createIndex(sb, idxName, column.getTable(), new Column<?>[]{column}, column.getIndex() == ColumnIndexType.UNIQUE);
-                    String sql = sb.toString();
-                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
-                    update(connection, sqlStmt);
-                }
-            }
-        }
-        */
-    }
-
-    protected void fixColumns(Connection connection, Table table) throws SQLException
-    {
-        DatabaseMetaData metadata = connection.getMetaData();
-        List<Object> params = new ArrayList<>();
-        Column<?>[] columns = table.getColumns();
-        StringBuilder sb = new StringBuilder();
-        dialect.alterTable(sb, table);
-        int index = 0;
-        for (Column<?> column : columns)
-        {
-            index++;
-            if(!columnExists(metadata, column))
-            {
-                dialect.addColumn(sb, params, column, index == columns.length );
-            }
-        }
-        String sql = sb.toString();
-        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-        update(connection, sqlStmt);
     }
 
     private <T> T fetchOne(SQLResultSet rs, SQLResultParser<T> parser) throws SQLException
