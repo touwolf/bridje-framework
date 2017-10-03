@@ -16,26 +16,31 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.Column;
+import org.bridje.sql.ForeignKey;
 import org.bridje.sql.Index;
+import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
-class IndexImpl implements Index
+public class SchemaImpl implements Schema
 {
     private final String name;
 
-    private Table table;
+    private final Table[] tables;
 
-    private final Column<?>[] columns;
+    private final Index[] indexes;
 
-    private final boolean unique;
+    private final ForeignKey[] foreignKeys;
 
-    public IndexImpl(String name, Table table, Column<?>[] columns, boolean unique)
+    public SchemaImpl(String name, Table[] tables, Index[] indexes, ForeignKey[] foreignKeys)
     {
         this.name = name;
-        this.table = table;
-        this.columns = columns;
-        this.unique = unique;
+        this.tables = tables;
+        this.indexes = indexes;
+        this.foreignKeys = foreignKeys;
+        for (Table table : tables)
+        {
+            ((TableImpl)table).setSchema(this);
+        }
     }
     
     @Override
@@ -45,25 +50,20 @@ class IndexImpl implements Index
     }
 
     @Override
-    public Table getTable()
+    public Table[] getTables()
     {
-        return table;
-    }
-
-    void setTable(Table table)
-    {
-        this.table = table;
+        return tables;
     }
 
     @Override
-    public Column<?>[] getColumns()
+    public Index[] getIndexes()
     {
-        return columns;
+        return indexes;
     }
 
     @Override
-    public boolean isUnique()
+    public ForeignKey[] getForeignKeys()
     {
-        return unique;
+        return foreignKeys;
     }
 }

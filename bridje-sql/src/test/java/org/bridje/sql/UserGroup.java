@@ -16,13 +16,10 @@
 
 package org.bridje.sql;
 
-import java.sql.JDBCType;
 import static org.bridje.sql.User.EMAIL;
 
 public class UserGroup
 {
-    public static final SQLType<Long> LONGID_TYPE;
-
     public static final Table TABLE;
 
     public static final NumberColumn<Long> ID;
@@ -31,36 +28,24 @@ public class UserGroup
 
     public static final NumberColumn<Long> USER_ID;
 
-    public static final Index[] INDEXES;
-
-    public static final ForeignKey[] FOREIGN_KEYS;
-
     static {
-        LONGID_TYPE = SQL.buildType(Long.class, JDBCType.BIGINT);
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
+        GROUP_ID = SQL.buildNumberColumn("groupId", SQLTypes.LONGID, false, true, null);
+        USER_ID = SQL.buildNumberColumn("userId", SQLTypes.LONGID, false, true, null);
 
         TABLE = SQL.buildTable("groups")
-                    .autoIncrement("id", LONGID_TYPE, true, false)
-                    .number("groupId", LONGID_TYPE, false, true, null)
-                    .number("userId", LONGID_TYPE, false, true, null)
+                        .key(ID)
+                        .column(GROUP_ID)
+                        .column(USER_ID)
+                    .index(SQL.buildUnique(EMAIL))
+                    .foreignKey(SQL.buildForeignKey(USER_ID)
+                        .references(User.TABLE, ID)
+                        .strategy(ForeignKeyStrategy.CASCADE)
+                        .build())
+                    .foreignKey(SQL.buildForeignKey(GROUP_ID)
+                        .references(Group.TABLE, ID)
+                        .strategy(ForeignKeyStrategy.CASCADE)
+                        .build())
                     .build();
-
-        ID = TABLE.getAsNumber("id", Long.class);
-        GROUP_ID = TABLE.getAsNumber("groupId", Long.class);
-        USER_ID = TABLE.getAsNumber("userId", Long.class);
-
-        INDEXES = new Index[]{
-            SQL.buildUnique(TABLE, EMAIL),
-        };
-
-        FOREIGN_KEYS = new ForeignKey[]{
-            SQL.buildForeignKey(TABLE, USER_ID)
-                        .references(User.TABLE, ID)
-                        .strategy(ForeignKeyStrategy.CASCADE)
-                        .build(),
-            SQL.buildForeignKey(TABLE, GROUP_ID)
-                        .references(User.TABLE, ID)
-                        .strategy(ForeignKeyStrategy.CASCADE)
-                        .build()
-        };
     }
 }

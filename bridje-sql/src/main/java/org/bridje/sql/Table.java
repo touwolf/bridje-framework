@@ -20,17 +20,17 @@ public interface Table extends TableExpr
 {
     String getName();
 
+    Schema getSchema();
+
     Column<?>[] getPrimaryKey();
 
     Column<?>[] getAutoIncrement();
 
     Column<?>[] getColumns();
 
-    <T> NumberColumn<T> getAsNumber(String name, Class<T> type);
+    Column<?> getColumn(String name);
 
-    <T> StringColumn<T> getAsString(String name, Class<T> type);
+    Index[] getIndexes();
 
-    <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type);
-
-    <T> Column<T> getColumn(String name, Class<T> type);
+    ForeignKey[] getForeignKeys();
 }

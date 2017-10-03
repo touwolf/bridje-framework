@@ -26,7 +26,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class SQLTest
 {
@@ -71,7 +70,7 @@ public class SQLTest
 
         SQLService sqlServ = Ioc.context().find(SQLService.class);
         SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDB");
-        //sqlEnv.fixSchema();
+        sqlEnv.fixSchema(TestDB.SCHEMA);
 
         Long id = sqlEnv.fetchOne(insertQuery, (rs) -> rs.get(User.ID));
         System.out.println(id);

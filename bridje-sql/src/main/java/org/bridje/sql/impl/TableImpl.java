@@ -20,38 +20,41 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.Column;
-import org.bridje.sql.NumberColumn;
+import org.bridje.sql.ForeignKey;
+import org.bridje.sql.Index;
 import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.StringColumn;
+import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
 class TableImpl implements Table
 {
     private final String name;
 
-    private Column<?>[] keys;
+    private Schema schema;
+
+    private final Column<?>[] keys;
+
+    private final Column<?>[] aiColumns;
+
+    private final Column<?>[] columns;
+
+    private final ForeignKey[] foreignKeys;
+
+    private final Index[] indexes;
     
-    private Column<?>[] aiColumns;
-
-    private Column<?>[] columns;
-
     private final Map<String, Column<?>> columnsMap;
 
-    public TableImpl(String name)
+    public TableImpl(String name, Column<?>[] columns, Index[] indexes, ForeignKey[] foreignKeys)
     {
         this.name = name;
         columnsMap = new HashMap<>();
-    }
-
-    void setColumns(Column<?>[] columns)
-    {
         List<Column<?>> keysList = new ArrayList<>();
         List<Column<?>> aiColumnsList = new ArrayList<>();
         this.columns = columns;
         for (Column<?> column : columns)
         {
+            ((ColumnImpl)column).setTable(this);
             if(column.isKey()) keysList.add(column);
             if(column.isAutoIncrement()) aiColumnsList.add(column);
             columnsMap.put(column.getName(), column);
@@ -60,12 +63,33 @@ class TableImpl implements Table
         keysList.toArray(keys);
         this.aiColumns = new Column[aiColumnsList.size()];
         keysList.toArray(aiColumns);
+        this.indexes = indexes;
+        for (Index index : indexes)
+        {
+            ((IndexImpl)index).setTable(this);
+        }
+        this.foreignKeys = foreignKeys;
+        for (ForeignKey fk : foreignKeys)
+        {
+            ((ForeignKeyImpl)fk).setTable(this);
+        }
     }
-    
+
     @Override
     public String getName()
     {
         return this.name;
+    }
+
+    @Override
+    public Schema getSchema()
+    {
+        return schema;
+    }
+
+    void setSchema(Schema schema)
+    {
+        this.schema = schema;
     }
 
     @Override
@@ -87,32 +111,26 @@ class TableImpl implements Table
     }
 
     @Override
-    public <T> NumberColumn<T> getAsNumber(String name, Class<T> type)
+    public Column<?> getColumn(String name)
     {
-        return (NumberColumn<T>)columnsMap.get(name);
-    }
-
-    @Override
-    public <T> StringColumn<T> getAsString(String name, Class<T> type)
-    {
-        return (StringColumn<T>)columnsMap.get(name);
-    }
-
-    @Override
-    public <T> BooleanColumn<T> getAsBoolean(String name, Class<T> type)
-    {
-        return (BooleanColumn<T>)columnsMap.get(name);
-    }
-
-    @Override
-    public <T> Column<T> getColumn(String name, Class<T> type)
-    {
-        return (Column<T>)columnsMap.get(name);
+        return columnsMap.get(name);
     }
 
     @Override
     public void writeSQL(SQLBuilder builder)
     {
         builder.appendObjectName(name);
+    }
+
+    @Override
+    public Index[] getIndexes()
+    {
+        return indexes;
+    }
+
+    @Override
+    public ForeignKey[] getForeignKeys()
+    {
+        return foreignKeys;
     }
 }

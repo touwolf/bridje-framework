@@ -26,19 +26,13 @@ public class Group
 
     public static final StringColumn<String> TITLE;
 
-    public static final Index[] INDEXES;
-
     static {
-        TABLE = SQL.buildTable("groups")
-                    .autoIncrement("id", SQLTypes.LONGID, true, false)
-                    .string("title", SQLTypes.STRING150, false, true, null)
-                    .build();
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
+        TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, false, true, null);
 
-        ID = TABLE.getAsNumber("id", Long.class);
-        TITLE = TABLE.getAsString("title", String.class);
-
-        INDEXES = new Index[]{
-            SQL.buildIndex(TABLE, EMAIL)
-        };
+        TABLE = SQL.buildTable("groups", ID)
+                        .column(TITLE)
+                        .index(SQL.buildIndex(EMAIL))
+                        .build();
     }
 }

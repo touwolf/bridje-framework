@@ -24,7 +24,7 @@ import org.bridje.sql.ForeignKey;
 import org.bridje.sql.ForeignKeyStrategy;
 import org.bridje.sql.Table;
 
-class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, BuildFkFinalStep, ForeignKey
+class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, BuildFkFinalStep
 {
     private final String name;
 
@@ -74,48 +74,6 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
     @Override
     public ForeignKey build()
     {
-        return this;
-    }
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    @Override
-    public Table getTable()
-    {
-        return table;
-    }
-
-    @Override
-    public Column<?>[] getColumns()
-    {
-        return columns;
-    }
-
-    @Override
-    public Table getReferencesTable()
-    {
-        return referencesTable;
-    }
-
-    @Override
-    public Column<?>[] getReferencesColumns()
-    {
-        return referencesColumns;
-    }
-
-    @Override
-    public ForeignKeyStrategy getOnUpdate()
-    {
-        return onUpdate;
-    }
-
-    @Override
-    public ForeignKeyStrategy getOnDelete()
-    {
-        return onDelete;
+        return new ForeignKeyImpl(name, table, columns, referencesTable, referencesColumns, onUpdate, onDelete);
     }
 }

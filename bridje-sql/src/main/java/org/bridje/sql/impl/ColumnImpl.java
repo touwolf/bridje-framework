@@ -26,11 +26,11 @@ import org.bridje.sql.Table;
 
 class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn<T>, StringColumn<T>, BooleanColumn<T>
 {
-    private final Table table;
+    private Table table;
 
     private final String name;
 
-    private final boolean key;
+    private boolean key;
 
     private final boolean allowNull;
 
@@ -40,10 +40,9 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final T defValue;
 
-    public ColumnImpl(Table table, String name, SQLType<T> sqlType, boolean key, boolean allowNull, boolean autoIncrement, T defValue)
+    public ColumnImpl(String name, SQLType<T> sqlType, boolean key, boolean allowNull, boolean autoIncrement, T defValue)
     {
         super(sqlType.getJavaType());
-        this.table = table;
         this.sqlType = sqlType;
         this.name = name;
         this.key = key;
@@ -58,6 +57,11 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
         return table;
     }
 
+    void setTable(Table table)
+    {
+        this.table = table;
+    }
+
     @Override
     public String getName()
     {
@@ -68,6 +72,11 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     public boolean isKey()
     {
         return key;
+    }
+
+    void setKey(boolean key)
+    {
+        this.key = key;
     }
 
     @Override

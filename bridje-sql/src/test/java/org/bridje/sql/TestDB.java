@@ -18,13 +18,13 @@ package org.bridje.sql;
 
 public class TestDB
 {
-    public static final Table[] TABLES;
-    
+    public static final Schema SCHEMA;
+
     static {
-        TABLES = new Table[] {
-            User.TABLE,
-            Group.TABLE,
-            UserGroup.TABLE
-        };
+        SCHEMA = SQL.buildSchema("testdb")
+                    .table(User.TABLE)
+                    .table(Group.TABLE)
+                    .table(UserGroup.TABLE)
+                    .build();
     }
 }

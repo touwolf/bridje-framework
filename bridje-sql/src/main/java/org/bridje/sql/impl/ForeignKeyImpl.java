@@ -17,10 +17,11 @@
 package org.bridje.sql.impl;
 
 import org.bridje.sql.Column;
-import org.bridje.sql.Index;
+import org.bridje.sql.ForeignKey;
+import org.bridje.sql.ForeignKeyStrategy;
 import org.bridje.sql.Table;
 
-class IndexImpl implements Index
+public class ForeignKeyImpl implements ForeignKey
 {
     private final String name;
 
@@ -28,14 +29,23 @@ class IndexImpl implements Index
 
     private final Column<?>[] columns;
 
-    private final boolean unique;
+    private final Table referencesTable;
 
-    public IndexImpl(String name, Table table, Column<?>[] columns, boolean unique)
+    private final Column<?>[] referencesColumns;
+
+    private final ForeignKeyStrategy onUpdate;
+
+    private final ForeignKeyStrategy onDelete;
+
+    public ForeignKeyImpl(String name, Table table, Column<?>[] columns, Table referencesTable, Column<?>[] referencesColumns, ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete)
     {
         this.name = name;
         this.table = table;
         this.columns = columns;
-        this.unique = unique;
+        this.referencesTable = referencesTable;
+        this.referencesColumns = referencesColumns;
+        this.onUpdate = onUpdate;
+        this.onDelete = onDelete;
     }
     
     @Override
@@ -62,8 +72,26 @@ class IndexImpl implements Index
     }
 
     @Override
-    public boolean isUnique()
+    public Table getReferencesTable()
     {
-        return unique;
+        return referencesTable;
+    }
+
+    @Override
+    public Column<?>[] getReferencesColumns()
+    {
+        return referencesColumns;
+    }
+
+    @Override
+    public ForeignKeyStrategy getOnUpdate()
+    {
+        return onUpdate;
+    }
+
+    @Override
+    public ForeignKeyStrategy getOnDelete()
+    {
+        return onDelete;
     }
 }

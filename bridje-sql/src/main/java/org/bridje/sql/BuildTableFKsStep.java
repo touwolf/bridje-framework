@@ -16,13 +16,9 @@
 
 package org.bridje.sql;
 
-public interface Schema
+public interface BuildTableFKsStep
 {
-    String getName();
+    BuildTableFKsStep foreignKey(ForeignKey foreignKey);
 
-    Table[] getTables();
-
-    Index[] getIndexes();
-
-    ForeignKey[] getForeignKeys();
+    Table build();
 }

@@ -16,13 +16,7 @@
 
 package org.bridje.sql;
 
-public interface Schema
+public interface BuildSchemaStep extends BuildSchemaIndexesStep
 {
-    String getName();
-
-    Table[] getTables();
-
-    Index[] getIndexes();
-
-    ForeignKey[] getForeignKeys();
+    BuildSchemaStep table(Table table);
 }

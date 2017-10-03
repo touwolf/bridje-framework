@@ -18,16 +18,21 @@ package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
 import org.bridje.sql.ArithmeticExpr;
+import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.BuildForeignKeyStep;
+import org.bridje.sql.BuildSchemaStep;
 import org.bridje.sql.BuildTableStep;
 import org.bridje.sql.Column;
 import org.bridje.sql.DeleteStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.Index;
 import org.bridje.sql.InsertIntoStep;
+import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLType;
+import org.bridje.sql.Schema;
 import org.bridje.sql.SelectStep;
+import org.bridje.sql.StringColumn;
 import org.bridje.sql.StringExpr;
 import org.bridje.sql.Table;
 import org.bridje.sql.UpdateStep;
@@ -64,14 +69,44 @@ public class SQLFactory
         return new SQLTypeImpl(javaType, jdbcType, 0, 0);
     }
 
+    public BuildSchemaStep buildSchema(String name)
+    {
+        return new SchemaBuilder(name);
+    }
+    
     public BuildTableStep buildTable(String name)
     {
         return new TableBuilder(name);
     }
+    
+    public <T> Column<T> buildColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return new ColumnImpl<>(name, type, key, allowNull, true, null);
+    }
+    
+    public <T> NumberColumn<T> buildAiColumn(String name, SQLType<T> type, boolean key, boolean allowNull)
+    {
+        return new ColumnImpl<>(name, type, key, allowNull, false, null);
+    }
+
+    public <T> NumberColumn<T> buildNumberColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+    }
+
+    public <T> StringColumn<T> buildStringColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+    }
+
+    public <T> BooleanColumn<T> buildBoolColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+    }
 
     public Index buildIndex(String name, Table table, Column<?>[] columns)
     {
-        return new IndexImpl(null, table, columns, false);
+        return new IndexImpl(name, table, columns, false);
     }
 
     public Index buildIndex(Table table, Column<?>... columns)
@@ -99,6 +134,36 @@ public class SQLFactory
         return new ForeignKeyBuilder(null, table, columns);
     }
 
+    public Index buildIndex(String name, Column<?>[] columns)
+    {
+        return new IndexImpl(name, null, columns, false);
+    }
+
+    public Index buildIndex(Column<?>... columns)
+    {
+        return new IndexImpl(null, null, columns, false);
+    }
+
+    public Index buildUnique(String name, Column<?>... columns)
+    {
+        return new IndexImpl(name, null, columns, true);
+    }
+
+    public Index buildUnique(Column<?>... columns)
+    {
+        return new IndexImpl(null, null, columns, true);
+    }
+
+    public BuildForeignKeyStep buildForeignKey(String name, Column<?>[] columns)
+    {
+        return new ForeignKeyBuilder(name, null, columns);
+    }
+    
+    public BuildForeignKeyStep buildForeignKey(Column<?>[] columns)
+    {
+        return new ForeignKeyBuilder(null, null, columns);
+    }
+    
     public SelectStep select(Expression<?>... columns)
     {
         return new SelectBuilder(columns);

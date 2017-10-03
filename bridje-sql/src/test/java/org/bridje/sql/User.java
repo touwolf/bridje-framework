@@ -28,27 +28,21 @@ public class User
 
     public static final BooleanColumn<Boolean> ACTIVE;
 
-    public static final Index[] INDEXES;
-
     static {
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
+        EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, false, true, null);
+        PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, false, true, null);
+        ACTIVE = SQL.buildBoolColumn("active", SQLTypes.BOOLEAN, false, true, null);
+
         TABLE = SQL.buildTable("users")
-                    .autoIncrement("id", SQLTypes.LONGID, true, false)
-                    .string("email", SQLTypes.STRING150, false, true, null)
-                    .string("password", SQLTypes.PASSWORD, false, true, null)
-                    .bool("active", SQLTypes.BOOLEAN, false, true, null)
-                    .build();
-
-        ID = TABLE.getAsNumber("id", Long.class);
-        EMAIL = TABLE.getAsString("email", String.class);
-        PASSWORD = TABLE.getAsString("password", String.class);
-        ACTIVE = TABLE.getAsBoolean("active", Boolean.class);
-
-        INDEXES = new Index[]
-        {
-            SQL.buildIndex(TABLE, EMAIL),
-            SQL.buildIndex(TABLE, PASSWORD),
-            SQL.buildIndex(TABLE, ACTIVE),
-            SQL.buildIndex(TABLE, EMAIL, PASSWORD, ACTIVE)
-        };
+                        .key(ID)
+                        .column(EMAIL)
+                        .column(PASSWORD)
+                        .column(ACTIVE)
+                        .index(SQL.buildIndex(EMAIL))
+                        .index(SQL.buildIndex(PASSWORD))
+                        .index(SQL.buildIndex(ACTIVE))
+                        .index(SQL.buildIndex(EMAIL, PASSWORD, ACTIVE))
+                        .build();
     }
 }

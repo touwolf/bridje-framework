@@ -16,15 +16,7 @@
 
 package org.bridje.sql;
 
-public interface BuildTableStep
+public interface BuildTableStep extends BuildTableColumnsStep
 {
-    <T> BuildTableStep autoIncrement(String name, SQLType<T> type, boolean key, boolean allowNull);
-
-    <T> BuildTableStep number(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
-
-    <T> BuildTableStep string(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
-
-    <T> BuildTableStep bool(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue);
-
-    Table build();
+    BuildTableStep key(Column<?> column);
 }

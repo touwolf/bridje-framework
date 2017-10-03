@@ -18,74 +18,64 @@ package org.bridje.sql.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.BuildTableColumnsStep;
-import org.bridje.sql.BuildTableFKsStep;
-import org.bridje.sql.BuildTableIndexesStep;
-import org.bridje.sql.BuildTableStep;
-import org.bridje.sql.Column;
+import org.bridje.sql.BuildSchemaFKsStep;
+import org.bridje.sql.BuildSchemaIndexesStep;
+import org.bridje.sql.BuildSchemaStep;
 import org.bridje.sql.ForeignKey;
 import org.bridje.sql.Index;
+import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
-public class TableBuilder implements BuildTableStep
+public class SchemaBuilder implements BuildSchemaStep
 {
     private final String name;
 
-    private final List<Column<?>> columns;
+    private final List<Table> tables;
     
     private final List<Index> indexes;
     
     private final List<ForeignKey> foreignKeys;
 
-    public TableBuilder(String name)
+    public SchemaBuilder(String name)
     {
         this.name = name;
-        this.columns = new ArrayList<>();
+        this.tables = new ArrayList<>();
         this.indexes = new ArrayList<>();
         this.foreignKeys = new ArrayList<>();
     }
     
     @Override
-    public BuildTableStep key(Column<?> column)
+    public BuildSchemaStep table(Table table)
     {
-        ((ColumnImpl)column).setKey(true);
-        columns.add(column);
+        tables.add(table);
         return this;
     }
 
     @Override
-    public BuildTableColumnsStep column(Column<?> column)
-    {
-        ((ColumnImpl)column).setKey(false);
-        columns.add(column);
-        return this;
-    }
-
-    @Override
-    public BuildTableIndexesStep index(Index index)
+    public BuildSchemaIndexesStep index(Index index)
     {
         indexes.add(index);
         return this;
     }
 
     @Override
-    public BuildTableFKsStep foreignKey(ForeignKey foreignKey)
+    public BuildSchemaFKsStep foreignKey(ForeignKey foreignKey)
     {
         foreignKeys.add(foreignKey);
         return this;
     }
 
     @Override
-    public Table build()
+    public Schema build()
     {
-        Column<?>[] columnsArr = new Column<?>[columns.size()];
-        columns.toArray(columnsArr);
+        Table[] tableArr = new Table[tables.size()];
+        tables.toArray(tableArr);
         Index[] indexesArr = new Index[indexes.size()];
         indexes.toArray(indexesArr);
         ForeignKey[] foreignKeysArr = new ForeignKey[foreignKeys.size()];
         foreignKeys.toArray(foreignKeysArr);
 
-        return new TableImpl(name, columnsArr, indexesArr, foreignKeysArr);
+        return new SchemaImpl(name, tableArr, indexesArr, foreignKeysArr);
     }
     
 }

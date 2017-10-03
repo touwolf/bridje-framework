@@ -38,9 +38,39 @@ public class SQL
         return FACT.buildType(javaType, jdbcType);
     }
 
-    public static final BuildTableStep buildTable(String name)
+    public static final BuildSchemaStep buildSchema(String name)
+    {
+        return FACT.buildSchema(name);
+    }
+    
+    public static final BuildTableStep buildTable(String name, Column<?>... columns)
     {
         return FACT.buildTable(name);
+    }
+
+    public static final <T> Column<T> buildColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return FACT.buildColumn(name, type, key, allowNull, defValue);
+    }
+    
+    public static final <T> NumberColumn<T> buildAiColumn(String name, SQLType<T> type, boolean key, boolean allowNull)
+    {
+        return FACT.buildAiColumn(name, type, key, allowNull);
+    }
+
+    public static final <T> NumberColumn<T> buildNumberColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return FACT.buildNumberColumn(name, type, key, allowNull, defValue);
+    }
+
+    public static final <T> StringColumn<T> buildStringColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return FACT.buildStringColumn(name, type, key, allowNull, defValue);
+    }
+
+    public static final <T> BooleanColumn<T> buildBoolColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    {
+        return FACT.buildBoolColumn(name, type, key, allowNull, defValue);
     }
 
     public static final Index buildIndex(String name, Table table, Column<?>... columns)
@@ -71,6 +101,36 @@ public class SQL
     public static final BuildForeignKeyStep buildForeignKey(Table table, Column<?>... columns)
     {
         return FACT.buildForeignKey(table, columns);
+    }
+    
+    public static final Index buildIndex(String name, Column<?>... columns)
+    {
+        return FACT.buildIndex(name, columns);
+    }
+
+    public static final Index buildIndex(Column<?>... columns)
+    {
+        return FACT.buildIndex(columns);
+    }
+
+    public static final Index buildUnique(String name, Column<?>... columns)
+    {
+        return FACT.buildUnique(name, columns);
+    }
+
+    public static final Index buildUnique(Column<?>... columns)
+    {
+        return FACT.buildUnique(columns);
+    }
+
+    public static final BuildForeignKeyStep buildForeignKey(String name, Column<?>... columns)
+    {
+        return FACT.buildForeignKey(name, columns);
+    }
+
+    public static final BuildForeignKeyStep buildForeignKey(Column<?>... columns)
+    {
+        return FACT.buildForeignKey(columns);
     }
 
     public static final SelectStep select(Expression<?>... columns)
