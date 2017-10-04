@@ -330,13 +330,18 @@ public class MySQLDialect implements SQLDialect
 
     private void addForeignKey(StringBuilder builder, ForeignKey fk)
     {
-        builder.append("ADD FOREIGN KEY (");
+        builder.append("ADD CONSTRAINT ");
+        writeObjectName(builder, fk.getName());
+        builder.append(" FOREIGN KEY (");
         writeColumnsNames(builder, fk.getColumns(), ", ");
         builder.append(") REFERENCES ");
-        writeObjectName(builder, fk.getReferencesTable().getName());
+        writeObjectName(builder, fk.getReferences().getName());
         builder.append(" (");
-        writeColumnsNames(builder, fk.getReferencesColumns(), ", ");
-        builder.append(")");
+        writeColumnsNames(builder, fk.getReferences().getPrimaryKey(), ", ");
+        builder.append(") ON DELETE ");
+        builder.append(fk.getOnDelete().name().replace("_", " "));
+        builder.append(" ON UPDATE ");
+        builder.append(fk.getOnUpdate().name().replace("_", " "));
     }
 
     private void writeColumnsNames(StringBuilder builder, Column<?>[] columns, String sep)

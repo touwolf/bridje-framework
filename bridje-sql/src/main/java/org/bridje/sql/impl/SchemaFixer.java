@@ -57,8 +57,8 @@ public class SchemaFixer
     public void doFix() throws SQLException
     {
         fixTables(connection, schema.getTables());
+        fixForeignKeys(connection, schema.getForeignKeys());
         fixIndexes(connection, schema.getIndexes());
-        fixForeignKeys(connection, schema.getForeignKeys());       
     }
 
     private void fixTables(Connection connection, Table[] tables) throws SQLException
@@ -96,8 +96,8 @@ public class SchemaFixer
         {
             createTable(connection, table);
         }
-        fixIndexes(connection, table.getIndexes());
         fixForeignKeys(connection, table.getForeignKeys());
+        fixIndexes(connection, table.getIndexes());
     }
 
     private boolean tableExists(DatabaseMetaData metadata, Table table) throws SQLException
@@ -176,7 +176,6 @@ public class SchemaFixer
                 lst.add(colName);
             }
         }
-        idxMap.forEach( (k, v) -> System.out.println(k + " " + Arrays.toString(v.toArray())));
         return idxMap.values()
                     .stream()
                     .filter( v -> Arrays.equals(v.toArray(), columnNames.toArray()))
@@ -197,16 +196,18 @@ public class SchemaFixer
 
     private boolean foreignKeyExists(DatabaseMetaData metadata, ForeignKey fk) throws SQLException
     {
-        try (ResultSet resultSet = metadata.getExportedKeys(null, null, fk.getTable().getName()))
+        try (ResultSet resultSet = metadata.getExportedKeys(null, null, fk.getReferences().getName()))
         {
             while (resultSet.next())
             {
                 String fkTableName = resultSet.getString("FKTABLE_NAME");
-                String fkColName = resultSet.getString("FKCOLUMN_NAME");
-                System.out.println("FK: " + fkTableName + " " + fkColName);
+                if(fk.getTable().getName().equals(fkTableName))
+                {
+                    return true;
+                }
             }
         }
-        return true;
+        return false;
     }
     
     private PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException

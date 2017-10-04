@@ -23,27 +23,24 @@ import org.bridje.sql.Table;
 
 public class ForeignKeyImpl implements ForeignKey
 {
-    private final String name;
+    private String name;
 
     private Table table;
 
     private final Column<?>[] columns;
 
-    private final Table referencesTable;
-
-    private final Column<?>[] referencesColumns;
+    private final Table references;
 
     private final ForeignKeyStrategy onUpdate;
 
     private final ForeignKeyStrategy onDelete;
 
-    public ForeignKeyImpl(String name, Table table, Column<?>[] columns, Table referencesTable, Column<?>[] referencesColumns, ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete)
+    public ForeignKeyImpl(String name, Table table, Column<?>[] columns, Table references, ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete)
     {
         this.name = name;
         this.table = table;
         this.columns = columns;
-        this.referencesTable = referencesTable;
-        this.referencesColumns = referencesColumns;
+        this.references = references;
         this.onUpdate = onUpdate;
         this.onDelete = onDelete;
     }
@@ -51,6 +48,7 @@ public class ForeignKeyImpl implements ForeignKey
     @Override
     public String getName()
     {
+        if(name == null) name = createName();
         return name;
     }
 
@@ -72,15 +70,9 @@ public class ForeignKeyImpl implements ForeignKey
     }
 
     @Override
-    public Table getReferencesTable()
+    public Table getReferences()
     {
-        return referencesTable;
-    }
-
-    @Override
-    public Column<?>[] getReferencesColumns()
-    {
-        return referencesColumns;
+        return references;
     }
 
     @Override
@@ -93,5 +85,19 @@ public class ForeignKeyImpl implements ForeignKey
     public ForeignKeyStrategy getOnDelete()
     {
         return onDelete;
+    }
+
+    private String createName()
+    {
+        if(table == null) return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("fk_");
+        sb.append(table.getName());
+        for (Column<?> column : columns)
+        {
+            sb.append("_");
+            sb.append(column.getName());
+        }
+        return sb.toString();
     }
 }

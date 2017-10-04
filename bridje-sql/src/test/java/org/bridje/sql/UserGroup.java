@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import static org.bridje.sql.User.EMAIL;
-
 public class UserGroup
 {
     public static final Table TABLE;
@@ -38,11 +36,11 @@ public class UserGroup
                         .column(GROUP_ID)
                         .column(USER_ID)
                     .foreignKey(SQL.buildForeignKey(USER_ID)
-                        .references(User.TABLE, ID)
+                        .references(User.TABLE)
                         .strategy(ForeignKeyStrategy.CASCADE)
                         .build())
                     .foreignKey(SQL.buildForeignKey(GROUP_ID)
-                        .references(Group.TABLE, ID)
+                        .references(Group.TABLE)
                         .strategy(ForeignKeyStrategy.CASCADE)
                         .build())
                     .build();

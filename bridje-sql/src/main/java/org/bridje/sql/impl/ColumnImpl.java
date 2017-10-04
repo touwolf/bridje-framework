@@ -36,19 +36,19 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final SQLType<T> sqlType;
 
-    private final boolean autoIncrement;
+    private boolean autoIncrement;
 
     private final T defValue;
 
-    public ColumnImpl(String name, SQLType<T> sqlType, boolean key, boolean allowNull, boolean autoIncrement, T defValue)
+    public ColumnImpl(String name, SQLType<T> sqlType, boolean key, boolean allowNull, T defValue)
     {
         super(sqlType.getJavaType());
         this.sqlType = sqlType;
         this.name = name;
         this.key = key;
         this.allowNull = allowNull;
-        this.autoIncrement = autoIncrement;
         this.defValue = defValue;
+        this.autoIncrement = false;
     }
 
     @Override
@@ -95,6 +95,11 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     public boolean isAutoIncrement()
     {
         return autoIncrement;
+    }
+
+    public void setAutoIncrement(boolean autoIncrement)
+    {
+        this.autoIncrement = autoIncrement;
     }
 
     @Override

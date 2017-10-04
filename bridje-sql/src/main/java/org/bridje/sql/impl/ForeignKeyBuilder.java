@@ -34,8 +34,6 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
 
     private Table referencesTable;
 
-    private Column<?>[] referencesColumns;
-
     private ForeignKeyStrategy onUpdate;
 
     private ForeignKeyStrategy onDelete;
@@ -48,10 +46,9 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
     }
 
     @Override
-    public BuildFkReferencesStep references(Table table, Column<?>... columns)
+    public BuildFkReferencesStep references(Table table)
     {
         this.referencesTable = table;
-        this.referencesColumns = columns;
         return this;
     }
 
@@ -74,6 +71,6 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
     @Override
     public ForeignKey build()
     {
-        return new ForeignKeyImpl(name, table, columns, referencesTable, referencesColumns, onUpdate, onDelete);
+        return new ForeignKeyImpl(name, table, columns, referencesTable, onUpdate, onDelete);
     }
 }

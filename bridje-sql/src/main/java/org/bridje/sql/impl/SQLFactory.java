@@ -30,7 +30,6 @@ import org.bridje.sql.Index;
 import org.bridje.sql.InsertIntoStep;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLType;
-import org.bridje.sql.Schema;
 import org.bridje.sql.SelectStep;
 import org.bridje.sql.StringColumn;
 import org.bridje.sql.StringExpr;
@@ -81,27 +80,29 @@ public class SQLFactory
     
     public <T> Column<T> buildColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, true, null);
+        return new ColumnImpl<>(name, type, key, allowNull, null);
     }
     
     public <T> NumberColumn<T> buildAiColumn(String name, SQLType<T> type, boolean key, boolean allowNull)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, false, null);
+        ColumnImpl result = new ColumnImpl<>(name, type, key, allowNull, null);
+        result.setAutoIncrement(true);
+        return result;
     }
 
     public <T> NumberColumn<T> buildNumberColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+        return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
     public <T> StringColumn<T> buildStringColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+        return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
     public <T> BooleanColumn<T> buildBoolColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, false, defValue);
+        return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
     public Index buildIndex(String name, Table table, Column<?>[] columns)

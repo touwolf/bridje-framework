@@ -24,9 +24,7 @@ public interface ForeignKey
 
     Column<?>[] getColumns();
 
-    Table getReferencesTable();
-
-    Column<?>[] getReferencesColumns();
+    Table getReferences();
 
     ForeignKeyStrategy getOnUpdate();
 
