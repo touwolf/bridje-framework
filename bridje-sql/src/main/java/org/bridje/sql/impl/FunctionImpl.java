@@ -16,19 +16,21 @@
 
 package org.bridje.sql.impl;
 
+import java.util.Arrays;
+import java.util.Objects;
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.StringExpr;
 
-class FunctionExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
+class FunctionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
     private final String name;
 
     private final Expression<?>[] params;
 
-    public FunctionExpr(String name, Class<T> type, Expression<?>... params)
+    public FunctionImpl(String name, Class<T> type, Expression<?>... params)
     {
         super(type);
         this.name = name;
@@ -42,5 +44,41 @@ class FunctionExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, Strin
         builder.append('(');
         builder.appendAll(params, ", ");
         builder.append(')');
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 3;
+        hash = 61 * hash + Objects.hashCode(this.name);
+        hash = 61 * hash + Arrays.deepHashCode(this.params);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final FunctionImpl<?> other = (FunctionImpl<?>) obj;
+        if (!Objects.equals(this.name, other.name))
+        {
+            return false;
+        }
+        if (!Arrays.deepEquals(this.params, other.params))
+        {
+            return false;
+        }
+        return true;
     }
 }

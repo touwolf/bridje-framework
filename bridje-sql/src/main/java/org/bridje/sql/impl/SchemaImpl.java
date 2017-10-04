@@ -21,7 +21,7 @@ import org.bridje.sql.Index;
 import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
-public class SchemaImpl implements Schema
+class SchemaImpl implements Schema
 {
     private final String name;
 

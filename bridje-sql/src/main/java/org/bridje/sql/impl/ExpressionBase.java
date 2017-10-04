@@ -95,13 +95,13 @@ abstract class ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, Arith
     @Override
     public StringExpr<T> trim()
     {
-        return new FunctionExpr("trim", getType(), this);
+        return new FunctionImpl("trim", getType(), this);
     }
 
     @Override
     public ArithmeticExpr<Integer> length()
     {
-        return new FunctionExpr("length", Integer.class, this);
+        return new FunctionImpl("length", Integer.class, this);
     }
 
     @Override

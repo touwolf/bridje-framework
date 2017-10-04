@@ -22,7 +22,7 @@ import org.bridje.sql.impl.SQLFactory;
 public class SQL
 {
     private static final SQLFactory FACT = SQLFactory.getInstance();
-    
+
     public static final <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
         return FACT.buildType(javaType, jdbcType, length, precision);
@@ -266,5 +266,10 @@ public class SQL
     public static final <T> Expression<T> param(Class<T> cls)
     {
         return FACT.param(cls);
+    }
+
+    public static final ArithmeticExpr<Long> count()
+    {
+        return FACT.count();
     }
 }

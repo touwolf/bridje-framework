@@ -27,7 +27,7 @@ import org.bridje.sql.ForeignKey;
 import org.bridje.sql.Index;
 import org.bridje.sql.Table;
 
-public class TableBuilder implements BuildTableStep
+class TableBuilder implements BuildTableStep
 {
     private final String name;
 

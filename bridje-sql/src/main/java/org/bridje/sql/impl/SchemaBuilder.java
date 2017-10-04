@@ -26,7 +26,7 @@ import org.bridje.sql.Index;
 import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
-public class SchemaBuilder implements BuildSchemaStep
+class SchemaBuilder implements BuildSchemaStep
 {
     private final String name;
 

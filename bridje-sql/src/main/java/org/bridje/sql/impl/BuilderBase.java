@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.SQLBuilder;
 
-public class BuilderBase
+class BuilderBase
 {
     public Object[] createParams(SQLBuilder builder, Object[] parameters)
     {

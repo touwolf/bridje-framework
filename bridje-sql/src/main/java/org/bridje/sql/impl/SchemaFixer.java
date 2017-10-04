@@ -37,7 +37,7 @@ import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
 
-public class SchemaFixer
+class SchemaFixer
 {
     private static final Logger LOG = Logger.getLogger(SchemaFixer.class.getName());
 

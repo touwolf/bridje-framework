@@ -299,4 +299,9 @@ public class SQLFactory
     {
         return new Param<>(cls);
     }
+
+    public ArithmeticExpr<Long> count()
+    {
+        return new SimpleExpressionImpl("count(*)", Long.class);
+    }
 }

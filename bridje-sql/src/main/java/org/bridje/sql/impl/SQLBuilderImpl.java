@@ -22,7 +22,7 @@ import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLWritable;
 
-public class SQLBuilderImpl implements SQLBuilder
+class SQLBuilderImpl implements SQLBuilder
 {
     private final StringBuilder builder;
 

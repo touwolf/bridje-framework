@@ -23,7 +23,7 @@ import java.util.Map;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLResultSet;
 
-public class SQLResultSetImpl implements SQLResultSet
+class SQLResultSetImpl implements SQLResultSet
 {
     private final ResultSet rs;
     

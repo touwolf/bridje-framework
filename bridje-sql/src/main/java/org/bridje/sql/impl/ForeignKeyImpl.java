@@ -21,7 +21,7 @@ import org.bridje.sql.ForeignKey;
 import org.bridje.sql.ForeignKeyStrategy;
 import org.bridje.sql.Table;
 
-public class ForeignKeyImpl implements ForeignKey
+class ForeignKeyImpl implements ForeignKey
 {
     private String name;
 

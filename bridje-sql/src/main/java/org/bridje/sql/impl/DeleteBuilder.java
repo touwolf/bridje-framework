@@ -34,7 +34,7 @@ import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 import org.bridje.sql.TableExpr;
 
-public class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Query
+class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Query
 {
     private final Table[] tables;
     
