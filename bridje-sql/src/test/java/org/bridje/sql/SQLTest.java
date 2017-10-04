@@ -59,27 +59,14 @@ public class SQLTest
     @Test
     public void test1CreateTables() throws SQLException
     {
-        Query selectQuery = SQL.select(User.ID)
-                                    .from(User.TABLE)
-                                    .where(User.ACTIVE.eq(true))
-                                    .toQuery();
-
-        Query insertQuery = SQL.insertInto(User.TABLE)
-                                    .columns(User.EMAIL, User.PASSWORD, User.ACTIVE)
-                                    .values("email@somedomain.com", "mypass", true)
-                                    .toQuery();
-
         SQLService sqlServ = Ioc.context().find(SQLService.class);
         SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDB");
         sqlEnv.fixSchema(TestDB.SCHEMA);
-
-        /*
-        Long id = sqlEnv.fetchOne(insertQuery, (rs) -> rs.get(User.ID));
-        System.out.println(id);
-
-        id = sqlEnv.fetchOne(selectQuery, (rs) -> rs.get(User.ID));
-        System.out.println(id);
-        */
+        
+        System.out.println(sqlEnv.update(SQL.update(User.TABLE)
+                            .set(User.EMAIL, "otheremail@domain.com")
+                            .where(User.ACTIVE.eq(true))
+                            .toQuery()));
     }
     
 }

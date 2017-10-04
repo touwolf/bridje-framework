@@ -16,7 +16,13 @@
 
 package org.bridje.sql;
 
-public interface DeleteStep
+public interface DeleteFromStep extends DeleteWhereStep
 {
-    DeleteFromStep from(TableExpr table);
+    DeleteFromStep innerJoin(TableExpr table, BooleanExpr<?> on);
+    
+    DeleteFromStep leftJoin(TableExpr table, BooleanExpr<?> on);
+
+    DeleteFromStep rightJoin(TableExpr table, BooleanExpr<?> on);
+
+    DeleteWhereStep where(BooleanExpr<?> condition);
 }

@@ -148,9 +148,9 @@ public class SQL
         return FACT.update(table);
     }
 
-    public static final DeleteStep delete(Table table)
+    public static final DeleteStep delete(Table... tables)
     {
-        return FACT.delete(table);
+        return FACT.delete(tables);
     }
 
     public static final ArithmeticExpr<Number> val(Number value)

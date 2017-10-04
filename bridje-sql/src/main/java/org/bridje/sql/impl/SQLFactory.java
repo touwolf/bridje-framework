@@ -177,14 +177,14 @@ public class SQLFactory
 
     public UpdateStep update(Table table)
     {
-        return null;
+        return new UpdateBuilder(table);
     }
 
-    public DeleteStep delete(Table table)
+    public DeleteStep delete(Table... tables)
     {
-        return null;
+        return new DeleteBuilder(tables);
     }
-    
+
     public ArithmeticExpr<Number> val(Number value)
     {
         return new Literal<>(value);

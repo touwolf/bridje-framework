@@ -14,9 +14,30 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.sql.impl;
 
-public interface DeleteStep
+import org.bridje.sql.Column;
+import org.bridje.sql.Expression;
+import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLWritable;
+
+class Assign<T> implements SQLWritable
 {
-    DeleteFromStep from(TableExpr table);
+    private final Column<?> column;
+
+    private final Expression<?> value;
+
+    public Assign(Column<T> column, Expression<T> value)
+    {
+        this.column = column;
+        this.value = value;
+    }
+    
+    @Override
+    public void writeSQL(SQLBuilder builder)
+    {
+        builder.append(column);
+        builder.append(" = ");
+        builder.append(value);
+    }
 }
