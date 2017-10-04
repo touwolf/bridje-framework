@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
 import org.bridje.sql.Column;
+import org.bridje.sql.ForeignKey;
+import org.bridje.sql.Index;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.Table;
 
@@ -67,6 +69,79 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
+    public String createTable(Table table, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        createTable(builder, table);
+        Column<?>[] columns = table.getColumns();
+        for (Column<?> column : columns)
+        {
+            createColumn(builder, params, column);
+        }
+        primaryKey(builder, table.getPrimaryKey());
+        return builder.toString();
+    }
+
+    @Override
+    public String addColumn(Column<?> column, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        alterTable(builder, column.getTable());
+        addColumn(builder, params, column, true);
+        return builder.toString();
+    }
+
+    @Override
+    public String dropColumn(Column<?> column, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        alterTable(builder, column.getTable());
+        dropColumn(builder, column, true);
+        return builder.toString();
+    }
+
+    @Override
+    public String changeColumn(String oldName, Column<?> column, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        alterTable(builder, column.getTable());
+        changeColumn(builder, params, column, oldName, true);
+        return builder.toString();
+    }
+
+    @Override
+    public String createIndex(Index index, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        createIndex(builder, index.getName(), index.getTable(), index.getColumns(), index.isUnique());
+        return builder.toString();
+    }
+
+    @Override
+    public String dropIndex(Index index, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        dropIndex(builder, index.getName(), index.getTable());
+        return builder.toString();
+    }
+
+    @Override
+    public String createForeignKey(ForeignKey fk, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        alterTable(builder, fk.getTable());
+        addForeignKey(builder, fk);
+        return builder.toString();
+    }
+
+    @Override
+    public String dropForeignKey(ForeignKey fk, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        
+        return builder.toString();
+    }
+
     public void createTable(StringBuilder builder, Table table)
     {
         builder.append("CREATE TABLE ");
@@ -74,20 +149,18 @@ public class MySQLDialect implements SQLDialect
         builder.append(" (\n");
     }
 
-    @Override
-    public void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey)
+    public void createColumn(StringBuilder builder, List<Object> params, Column<?> column)
     {
         builder.append(" ");
         writeObjectName(builder, column.getName());
         builder.append(" ");
         builder.append(createType(column));
-        builder.append(createIsNull(column, isKey));
-        builder.append(createDefault(column, isKey, params));
+        builder.append(createIsNull(column));
+        builder.append(createDefault(column, params));
         builder.append(createAutoIncrement(column));
         builder.append(",\n");
     }
 
-    @Override
     public void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns, boolean unique)
     {
         builder.append("CREATE ");
@@ -97,16 +170,10 @@ public class MySQLDialect implements SQLDialect
         builder.append(" ON ");
         writeObjectName(builder, table.getName());
         builder.append(" ( ");
-        boolean isFirst = true;
-        for (Column<?> column : columns)
-        {
-            if(!isFirst) builder.append(", ");
-            writeObjectName(builder, column.getName());
-        }
+        writeColumnsNames(builder, columns, ", ");
         builder.append(" ) ");
     }
 
-    @Override
     public void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns)
     {
         builder.append("CREATE UNIQUE INDEX ");
@@ -114,29 +181,17 @@ public class MySQLDialect implements SQLDialect
         builder.append(" ON ");
         writeObjectName(builder, table.getName());
         builder.append(" ( ");
-        boolean isFirst = true;
-        for (Column<?> column : columns)
-        {
-            if(!isFirst) builder.append(", ");
-            writeObjectName(builder, column.getName());
-        }
+        writeColumnsNames(builder, columns, ", ");
         builder.append(" ) ");
     }
-    
-    @Override
+
     public void primaryKey(StringBuilder builder, Column<?>[] columns)
     {
         builder.append(" PRIMARY KEY (");
-        boolean first = true;
-        for (Column<?> column : columns)
-        {
-            if(!first) builder.append(", ");
-            writeObjectName(builder, column.getName());
-        }
+        writeColumnsNames(builder, columns, ", ");
         builder.append(")\n)");
     }
 
-    @Override
     public void alterTable(StringBuilder builder, Table table)
     {
         builder.append("ALTER TABLE ");
@@ -144,21 +199,19 @@ public class MySQLDialect implements SQLDialect
         builder.append(" \n");
     }
 
-    @Override
     public void addColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isLast)
     {
         builder.append(" ADD COLUMN ");
         writeObjectName(builder, column.getName());
         builder.append(" ");
         builder.append(createType(column));
-        builder.append(createIsNull(column, false));
-        builder.append(createDefault(column, false, params));
+        builder.append(createIsNull(column));
+        builder.append(createDefault(column, params));
         builder.append(createAutoIncrement(column));
         if(!isLast) builder.append(",");
         builder.append("\n");
     }
 
-    @Override
     public void dropColumn(StringBuilder builder, Column<?> column, boolean isLast)
     {
         builder.append(" DROP COLUMN ");
@@ -167,7 +220,6 @@ public class MySQLDialect implements SQLDialect
         builder.append("\n");
     }
 
-    @Override
     public void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast)
     {
         builder.append(" CHANGE COLUMN ");
@@ -176,14 +228,13 @@ public class MySQLDialect implements SQLDialect
         writeObjectName(builder, column.getName());
         builder.append(" ");
         builder.append(createType(column));
-        builder.append(createIsNull(column, false));
-        builder.append(createDefault(column, false, params));
+        builder.append(createIsNull(column));
+        builder.append(createDefault(column, params));
         builder.append(createAutoIncrement(column));
         if(!isLast) builder.append(",");
         builder.append("\n");
     }
 
-    @Override
     public void dropIndex(StringBuilder builder, String name, Table table)
     {
         builder.append(" ALTER TABLE ");
@@ -249,20 +300,20 @@ public class MySQLDialect implements SQLDialect
         return column.getSQLType().getJDBCType().getName();
     }
 
-    private String createIsNull(Column<?> column, boolean isKey)
+    private String createIsNull(Column<?> column)
     {
-        if(column.isAllowNull() && !isKey) return " NULL";
+        if(column.isAllowNull() && !column.isKey()) return " NULL";
         return " NOT NULL";
     }
 
-    private String createDefault(Column<?> column, boolean isKey, List<Object> params)
+    private String createDefault(Column<?> column, List<Object> params)
     {
+        if(column.isAutoIncrement()) return "";
         if(column.getDefValue() != null)
         {
-            params.add(isKey);
+            params.add(column.getDefValue());
             return "DEFAULT ?";
         }
-        if(isKey) return "";
         if(column.getSQLType().getJDBCType()== JDBCType.TIMESTAMP
                 || column.getSQLType().getJDBCType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
         {
@@ -275,5 +326,27 @@ public class MySQLDialect implements SQLDialect
     {
         if(column.isAutoIncrement()) return " AUTO_INCREMENT";
         return "";
+    }
+
+    private void addForeignKey(StringBuilder builder, ForeignKey fk)
+    {
+        builder.append("ADD FOREIGN KEY (");
+        writeColumnsNames(builder, fk.getColumns(), ", ");
+        builder.append(") REFERENCES ");
+        writeObjectName(builder, fk.getReferencesTable().getName());
+        builder.append(" (");
+        writeColumnsNames(builder, fk.getReferencesColumns(), ", ");
+        builder.append(")");
+    }
+
+    private void writeColumnsNames(StringBuilder builder, Column<?>[] columns, String sep)
+    {
+        boolean isFirst = true;
+        for (Column<?> column : columns)
+        {
+            if(!isFirst) builder.append(sep);
+            writeObjectName(builder, column.getName());
+            isFirst = false;
+        }        
     }
 }

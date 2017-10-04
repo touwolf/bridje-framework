@@ -96,6 +96,8 @@ public class SchemaFixer
         {
             createTable(connection, table);
         }
+        fixIndexes(connection, table.getIndexes());
+        fixForeignKeys(connection, table.getForeignKeys());
     }
 
     private boolean tableExists(DatabaseMetaData metadata, Table table) throws SQLException
@@ -119,71 +121,47 @@ public class SchemaFixer
     private void fixColumns(Connection connection, Table table) throws SQLException
     {
         DatabaseMetaData metadata = connection.getMetaData();
-        List<Object> params = new ArrayList<>();
-        Column<?>[] columns = table.getColumns();
-        StringBuilder sb = new StringBuilder();
-        dialect.alterTable(sb, table);
-        int index = 0;
-        for (Column<?> column : columns)
+        for (Column<?> column : table.getColumns())
         {
-            index++;
             if(!columnExists(metadata, column))
             {
-                dialect.addColumn(sb, params, column, index == columns.length );
+                List<Object> params = new ArrayList<>();
+                String sql = dialect.addColumn(column, params);
+                SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+                executeStmt(connection, sqlStmt);
             }
         }
-        String sql = sb.toString();
-        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-        executeStmt(connection, sqlStmt);
     }
     
     private void createTable(Connection connection, Table table) throws SQLException
     {
         List<Object> params = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        dialect.createTable(sb, table);
-        for (Column<?> column : table.getColumns())
-        {
-            dialect.createColumn(sb, params, column, column.isKey());
-        }
-        dialect.primaryKey(sb, table.getPrimaryKey());
-        String sql = sb.toString();
+        String sql = dialect.createTable(table, params);
         SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
         executeStmt(connection, sqlStmt);
     }
 
-    private void fixIndex(Connection connection, Index table) throws SQLException
+    private void fixIndex(Connection connection, Index index) throws SQLException
     {
-        /*
         DatabaseMetaData metadata = connection.getMetaData();
-        Column<?>[] columns = table.getColumns();
-        for (Column<?> column : columns)
+        if(!indexExists(metadata, index))
         {
-            if(column.getIndex() != null && column.getIndex() != ColumnIndexType.NONE)
-            {
-                if(!indexExists(metadata, column.getTable(), column))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    String idxName = "idx_" + column.getName();
-                    dialect.createIndex(sb, idxName, column.getTable(), new Column<?>[]{column}, column.getIndex() == ColumnIndexType.UNIQUE);
-                    String sql = sb.toString();
-                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
-                    update(connection, sqlStmt);
-                }
-            }
+            List<Object> params = new ArrayList<>();
+            String sql = dialect.createIndex(index, params);
+            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
+            executeStmt(connection, sqlStmt);
         }
-        */
     }
 
-    private boolean indexExists(DatabaseMetaData metadata, Table table, Column<?>... columns) throws SQLException
+    private boolean indexExists(DatabaseMetaData metadata, Index index) throws SQLException
     {
         List<String> columnNames = new ArrayList<>();
-        for (Column<?> column : columns)
+        for (Column<?> column : index.getColumns())
         {
             columnNames.add(column.getName());
         }
         Map<String, List<String>> idxMap = new HashMap<>();
-        try (ResultSet resultSet = metadata.getIndexInfo(null, null, table.getName(), false, true))
+        try (ResultSet resultSet = metadata.getIndexInfo(null, null, index.getTable().getName(), false, true))
         {
             while (resultSet.next())
             {
@@ -205,6 +183,32 @@ public class SchemaFixer
                     .count() >= 1;
     }
 
+    private void fixForeignKey(Connection connection, ForeignKey fk) throws SQLException
+    {
+        DatabaseMetaData metadata = connection.getMetaData();
+        if(!foreignKeyExists(metadata, fk))
+        {
+            List<Object> params = new ArrayList<>();
+            String sql = dialect.createForeignKey(fk, params);
+            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
+            executeStmt(connection, sqlStmt);
+        }
+    }
+
+    private boolean foreignKeyExists(DatabaseMetaData metadata, ForeignKey fk) throws SQLException
+    {
+        try (ResultSet resultSet = metadata.getExportedKeys(null, null, fk.getTable().getName()))
+        {
+            while (resultSet.next())
+            {
+                String fkTableName = resultSet.getString("FKTABLE_NAME");
+                String fkColName = resultSet.getString("FKCOLUMN_NAME");
+                System.out.println("FK: " + fkTableName + " " + fkColName);
+            }
+        }
+        return true;
+    }
+    
     private PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
         PreparedStatement stmt;
@@ -232,10 +236,5 @@ public class SchemaFixer
         {
             return stmt.executeUpdate();
         }
-    }
-
-    private void fixForeignKey(Connection connection, ForeignKey fk)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

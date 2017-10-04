@@ -26,6 +26,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class SQLTest
 {
@@ -55,7 +56,7 @@ public class SQLTest
     {
     }
 
-    //@Test
+    @Test
     public void test1CreateTables() throws SQLException
     {
         Query selectQuery = SQL.select(User.ID)
@@ -72,11 +73,13 @@ public class SQLTest
         SQLEnvironment sqlEnv = sqlServ.createEnvironment("TestDB");
         sqlEnv.fixSchema(TestDB.SCHEMA);
 
+        /*
         Long id = sqlEnv.fetchOne(insertQuery, (rs) -> rs.get(User.ID));
         System.out.println(id);
 
         id = sqlEnv.fetchOne(selectQuery, (rs) -> rs.get(User.ID));
         System.out.println(id);
+        */
     }
     
 }

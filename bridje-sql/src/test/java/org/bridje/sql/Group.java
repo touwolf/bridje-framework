@@ -16,8 +16,6 @@
 
 package org.bridje.sql;
 
-import static org.bridje.sql.User.EMAIL;
-
 public class Group
 {
     public static final Table TABLE;
@@ -30,9 +28,10 @@ public class Group
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
         TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, false, true, null);
 
-        TABLE = SQL.buildTable("groups", ID)
+        TABLE = SQL.buildTable("groups")
+                        .key(ID)
                         .column(TITLE)
-                        .index(SQL.buildIndex(EMAIL))
+                        .index(SQL.buildIndex(TITLE))
                         .build();
     }
 }

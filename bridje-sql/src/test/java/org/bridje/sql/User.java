@@ -39,7 +39,7 @@ public class User
                         .column(EMAIL)
                         .column(PASSWORD)
                         .column(ACTIVE)
-                        .index(SQL.buildIndex(EMAIL))
+                        .index(SQL.buildUnique(EMAIL))
                         .index(SQL.buildIndex(PASSWORD))
                         .index(SQL.buildIndex(ACTIVE))
                         .index(SQL.buildIndex(EMAIL, PASSWORD, ACTIVE))

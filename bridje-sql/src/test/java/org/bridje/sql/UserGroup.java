@@ -33,11 +33,10 @@ public class UserGroup
         GROUP_ID = SQL.buildNumberColumn("groupId", SQLTypes.LONGID, false, true, null);
         USER_ID = SQL.buildNumberColumn("userId", SQLTypes.LONGID, false, true, null);
 
-        TABLE = SQL.buildTable("groups")
+        TABLE = SQL.buildTable("user_groups")
                         .key(ID)
                         .column(GROUP_ID)
                         .column(USER_ID)
-                    .index(SQL.buildUnique(EMAIL))
                     .foreignKey(SQL.buildForeignKey(USER_ID)
                         .references(User.TABLE, ID)
                         .strategy(ForeignKeyStrategy.CASCADE)

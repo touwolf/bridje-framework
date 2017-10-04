@@ -22,7 +22,7 @@ import org.bridje.sql.Table;
 
 class IndexImpl implements Index
 {
-    private final String name;
+    private String name;
 
     private Table table;
 
@@ -41,6 +41,7 @@ class IndexImpl implements Index
     @Override
     public String getName()
     {
+        if(name == null) name = createName();
         return name;
     }
 
@@ -65,5 +66,19 @@ class IndexImpl implements Index
     public boolean isUnique()
     {
         return unique;
+    }
+
+    private String createName()
+    {
+        if(table == null) return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("idx_");
+        sb.append(table.getName());
+        for (Column<?> column : columns)
+        {
+            sb.append("_");
+            sb.append(column.getName());
+        }
+        return sb.toString();
     }
 }

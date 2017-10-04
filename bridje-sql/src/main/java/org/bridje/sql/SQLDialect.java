@@ -27,23 +27,19 @@ public interface SQLDialect
 
     void writeLimit(StringBuilder builder, int offset, int count);
 
-    void createTable(StringBuilder builder, Table table);
+    String createTable(Table table, List<Object> params);
 
-    void createColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isKey);
+    String addColumn(Column<?> column, List<Object> params);
 
-    void primaryKey(StringBuilder builder, Column<?>... column);
+    String dropColumn(Column<?> column, List<Object> params);
 
-    void alterTable(StringBuilder builder, Table table);
+    String changeColumn(String oldName, Column<?> column, List<Object> params);
 
-    void addColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isLast);
+    String createIndex(Index index, List<Object> params);
 
-    void dropColumn(StringBuilder builder, Column<?> column, boolean isLast);
+    String dropIndex(Index index, List<Object> params);
 
-    void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast);
+    String createForeignKey(ForeignKey fk, List<Object> params);
 
-    void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns, boolean unique);
-    
-    void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns);
-    
-    void dropIndex(StringBuilder builder, String name, Table table);
+    String dropForeignKey(ForeignKey fk, List<Object> params);
 }

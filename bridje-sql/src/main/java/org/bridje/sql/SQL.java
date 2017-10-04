@@ -43,7 +43,7 @@ public class SQL
         return FACT.buildSchema(name);
     }
     
-    public static final BuildTableStep buildTable(String name, Column<?>... columns)
+    public static final BuildTableStep buildTable(String name)
     {
         return FACT.buildTable(name);
     }
@@ -152,7 +152,7 @@ public class SQL
     {
         return FACT.delete(table);
     }
-    
+
     public static final ArithmeticExpr<Number> val(Number value)
     {
         return FACT.val(value);
