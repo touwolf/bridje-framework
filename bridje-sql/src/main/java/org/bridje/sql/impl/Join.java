@@ -27,9 +27,9 @@ class Join implements SQLWritable
 
     private final JoinType type;
 
-    private final BooleanExpr<?> on;
+    private final BooleanExpr<?, ?> on;
 
-    Join(TableExpr table, JoinType type, BooleanExpr<?> on)
+    Join(TableExpr table, JoinType type, BooleanExpr<?, ?> on)
     {
         this.table = table;
         this.type = type;
@@ -46,7 +46,7 @@ class Join implements SQLWritable
         return type;
     }
 
-    public BooleanExpr<?> getOn()
+    public BooleanExpr<?, ?> getOn()
     {
         return on;
     }

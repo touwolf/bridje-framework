@@ -29,16 +29,16 @@ class SQLResultSetImpl implements SQLResultSet
 {
     private final ResultSet rs;
 
-    private final Map<Expression<?>, Integer> fieldsMap;
+    private final Map<Expression<?, ?>, Integer> fieldsMap;
 
-    public SQLResultSetImpl(ResultSet rs, Expression<?>[] fields)
+    public SQLResultSetImpl(ResultSet rs, Expression<?, ?>[] fields)
     {
         this.rs = rs;
         this.fieldsMap = new HashMap<>();
         if(fields != null)
         {
             int index = 0;
-            for (Expression<?> field : fields)
+            for (Expression<?, ?> field : fields)
             {
                 fieldsMap.put(field, index);
                 index++;
@@ -53,7 +53,7 @@ class SQLResultSetImpl implements SQLResultSet
     }
 
     @Override
-    public <T> T get(Expression<T> expr) throws SQLException
+    public <T, E> T get(Expression<T, E> expr) throws SQLException
     {
         Integer index = getIndex(expr);
         if(index != null)
@@ -67,7 +67,7 @@ class SQLResultSetImpl implements SQLResultSet
     }
 
     @Override
-    public <T> T get(int column, SQLType<T> sqlType) throws SQLException
+    public <T, E> T get(int column, SQLType<T, E> sqlType) throws SQLException
     {
         return sqlType.parse(rs.getObject(column));
     }
@@ -79,7 +79,7 @@ class SQLResultSetImpl implements SQLResultSet
     }
 
     @Override
-    public <T, E> T get(Expression<T> expr, SQLValueParser<T, E> parser) throws SQLException
+    public <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException
     {
         Integer index = getIndex(expr);
         if(index != null)
@@ -90,12 +90,18 @@ class SQLResultSetImpl implements SQLResultSet
     }
 
     @Override
-    public <T, E> T get(int column, SQLType<T> type, SQLValueParser<T, E> parser) throws SQLException
+    public <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException
     {
+        /*
+        if(value == null) return null;
+        Object val = CastUtils.castValue(type.getJavaType(), value);
+        if(adapter != null) return adapter.parse(val);
+        return (T)val;
+        */
         return parser.parse((E)rs.getObject(column));
     }
 
-    private <T> Integer getIndex(Expression<T> expr)
+    private <T, E> Integer getIndex(Expression<T, E> expr)
     {
         if(fieldsMap == null) return null;
         return fieldsMap.get(expr);

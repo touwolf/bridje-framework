@@ -23,9 +23,11 @@ import org.bridje.sql.SQL;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.SQLValueAdapter;
 
-class SQLTypeImpl<T> implements SQLType<T>
+class SQLTypeImpl<T, E> implements SQLType<T, E>
 {
     private final Class<T> javaType;
+
+    private final Class<E> javaReadType;
 
     private final JDBCType jdbcType;
 
@@ -35,20 +37,31 @@ class SQLTypeImpl<T> implements SQLType<T>
 
     private SQLValueAdapter<T, Object> adapter;
 
-    private Expression<T> param;
+    private Expression<T, E> param;
 
-    SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    SQLTypeImpl(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision)
     {
         this.javaType = javaType;
         this.jdbcType = jdbcType;
         this.length = length;
         this.precision = precision;
+        this.javaReadType = javaReadType;
+    }
+
+    SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    {
+        this(javaType, (Class<E>)javaType, jdbcType, length, precision);
     }
 
     @Override
     public Class<T> getJavaType()
     {
         return javaType;
+    }
+
+    public Class<E> getJavaReadType()
+    {
+        return javaReadType;
     }
 
     @Override
@@ -79,9 +92,9 @@ class SQLTypeImpl<T> implements SQLType<T>
     public T parse(Object value) throws SQLException
     {
         if(value == null) return null;
-        if(javaType.isAssignableFrom(value.getClass())) return (T)value;
-        if(adapter != null) return adapter.parse(value);
-        return (T)value;
+        Object val = CastUtils.castValue(javaReadType, value);
+        if(adapter != null) return adapter.parse(val);
+        return (T)val;
     }
 
     @Override
@@ -93,7 +106,7 @@ class SQLTypeImpl<T> implements SQLType<T>
     }
 
     @Override
-    public Expression<T> asParam()
+    public Expression<T, E> asParam()
     {
         if(param == null)
         {

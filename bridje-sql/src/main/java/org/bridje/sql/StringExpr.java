@@ -16,9 +16,9 @@
 
 package org.bridje.sql;
 
-public interface StringExpr<T> extends Expression<T>
+public interface StringExpr<T, E> extends Expression<T, E>
 {
-    StringExpr<T> trim();
+    StringExpr<T, E> trim();
 
-    ArithmeticExpr<Integer> length();
+    ArithmeticExpr<Integer, Integer> length();
 }

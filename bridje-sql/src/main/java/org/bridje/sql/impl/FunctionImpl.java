@@ -25,13 +25,13 @@ import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
-class FunctionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
+class FunctionImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>
 {
     private final String name;
 
-    private final Expression<?>[] params;
+    private final Expression<?, ?>[] params;
 
-    public FunctionImpl(String name, SQLType<T> type, Expression<?>... params)
+    public FunctionImpl(String name, SQLType<T, E> type, Expression<?, ?>... params)
     {
         super(type);
         this.name = name;
@@ -71,7 +71,7 @@ class FunctionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T>, Strin
         {
             return false;
         }
-        final FunctionImpl<?> other = (FunctionImpl<?>) obj;
+        final FunctionImpl<?, ?> other = (FunctionImpl<?, ?>) obj;
         if (!Objects.equals(this.name, other.name))
         {
             return false;

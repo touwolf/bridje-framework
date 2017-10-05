@@ -25,9 +25,9 @@ class OrderBy implements OrderExpr
 {
     private final SortType type;
 
-    private final Expression<?> column;
+    private final Expression<?, ?> column;
 
-    public OrderBy(SortType type, Expression<?> column)
+    public OrderBy(SortType type, Expression<?, ?> column)
     {
         this.type = type;
         this.column = column;
@@ -40,7 +40,7 @@ class OrderBy implements OrderExpr
     }
 
     @Override
-    public Expression<?> getColumn()
+    public Expression<?, ?> getColumn()
     {
         return column;
     }

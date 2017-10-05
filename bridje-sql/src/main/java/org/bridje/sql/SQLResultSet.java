@@ -22,11 +22,11 @@ public interface SQLResultSet extends AutoCloseable
 {
     boolean next() throws SQLException;
 
-    <T> T get(Expression<T> expr) throws SQLException;
+    <T, E> T get(Expression<T, E> expr) throws SQLException;
 
-    <T> T get(int column, SQLType<T> type) throws SQLException;
+    <T, E> T get(int column, SQLType<T, E> type) throws SQLException;
 
-    <T, E> T get(Expression<T> expr, SQLValueParser<T, E> parser) throws SQLException;
+    <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException;
 
-    <T, E> T get(int column, SQLType<T> type, SQLValueParser<T, E> parser) throws SQLException;
+    <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException;
 }

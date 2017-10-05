@@ -25,7 +25,7 @@ import org.bridje.sql.SQLType;
 import org.bridje.sql.StringColumn;
 import org.bridje.sql.Table;
 
-class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn<T>, StringColumn<T>, BooleanColumn<T>
+class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, NumberColumn<T, E>, StringColumn<T, E>, BooleanColumn<T, E>
 {
     private Table table;
 
@@ -39,7 +39,7 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final T defValue;
 
-    public ColumnImpl(String name, SQLType<T> sqlType, boolean key, boolean allowNull, T defValue)
+    public ColumnImpl(String name, SQLType<T, E> sqlType, boolean key, boolean allowNull, T defValue)
     {
         super(sqlType);
         this.name = name;
@@ -107,7 +107,7 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     }
 
     @Override
-    public Expression<T> asParam()
+    public Expression<T, E> asParam()
     {
         return getSQLType().asParam();
     }

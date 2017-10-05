@@ -28,6 +28,7 @@ import org.bridje.orm.ORMService;
 @Component
 class ORMServiceImpl implements ORMService
 {
+    @Override
     public ORMEnvironment createEnvironment(ORMConfig config)
     {
         return new ORMEnvironmentImpl(config);

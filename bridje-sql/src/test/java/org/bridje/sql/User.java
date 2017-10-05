@@ -20,13 +20,13 @@ public class User
 {
     public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID;
+    public static final NumberColumn<Long, Long> ID;
 
-    public static final StringColumn<String> EMAIL;
+    public static final StringColumn<String, String> EMAIL;
 
-    public static final StringColumn<String> PASSWORD;
+    public static final StringColumn<String, String> PASSWORD;
 
-    public static final BooleanColumn<Boolean> ACTIVE;
+    public static final BooleanColumn<Boolean, Boolean> ACTIVE;
     
     static {
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);

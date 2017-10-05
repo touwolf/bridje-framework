@@ -30,25 +30,25 @@ public class User
     
     public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID;
+    public static final NumberColumn<Long, Long> ID;
 
-    public static final StringColumn<String> EMAIL;
+    public static final StringColumn<String, String> EMAIL;
 
-    public static final StringColumn<String> PASSWORD;
+    public static final StringColumn<String, String> PASSWORD;
 
-    public static final BooleanColumn<Boolean> ACTIVE;
-    
+    public static final BooleanColumn<Boolean, Boolean> ACTIVE;
+
     public static final Query SELECT;
-    
+
     public static final Query INSERT;
 
     public static final Query UPDATE;
 
     public static final Query DELETE;
-    
+
     static {
         TYPE = SQL.buildType(User.class, SQLTypes.LONGID.getJDBCType());
-        
+
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
         EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, false, true, null);
         PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, false, true, null);
@@ -86,13 +86,13 @@ public class User
                     .where(ID.eq(ID.asParam()))
                     .toQuery();
     }
-    
+
     private Long id;
 
     private String email;
 
     private String password;
-    
+
     private Boolean active;
 
     public Long getId()

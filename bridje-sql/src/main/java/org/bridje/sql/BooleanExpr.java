@@ -16,15 +16,15 @@
 
 package org.bridje.sql;
 
-public interface BooleanExpr<T> extends Expression<T>
+public interface BooleanExpr<T, E> extends Expression<T, E>
 {
-    BooleanExpr<T> and(BooleanExpr<T> operand);
+    BooleanExpr<T, E> and(BooleanExpr<T, E> operand);
 
-    BooleanExpr<T> or(BooleanExpr<T> operand);
+    BooleanExpr<T, E> or(BooleanExpr<T, E> operand);
 
-    BooleanExpr<T> and(T operand);
+    BooleanExpr<T, E> and(T operand);
 
-    BooleanExpr<T> or(T operand);
+    BooleanExpr<T, E> or(T operand);
 
-    BooleanExpr<T> not();
+    BooleanExpr<T, E> not();
 }

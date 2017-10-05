@@ -37,11 +37,11 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
 {
     private final Table table;
 
-    private Column<?>[] columns;
+    private Column<?, ?>[] columns;
 
     private SelectExpr select;
 
-    private List<Expression<?>[]> values;
+    private List<Expression<?, ?>[]> values;
 
     public InsertBuilder(Table table)
     {
@@ -49,7 +49,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
     }
 
     @Override
-    public ColumnsStep columns(Column<?>... columns)
+    public ColumnsStep columns(Column<?, ?>... columns)
     {
         this.columns = columns;
         return this;
@@ -87,7 +87,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
     }
 
     @Override
-    public Expression<?>[] getResultFields()
+    public Expression<?, ?>[] getResultFields()
     {
         return table.getAutoIncrement();
     }
@@ -113,7 +113,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
         {
             builder.append(" VALUES ");
             boolean first = true;
-            for (Expression<?>[] row : values)
+            for (Expression<?, ?>[] row : values)
             {
                 if(!first) builder.append(", ");
                 builder.append('(');
@@ -123,9 +123,9 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
         }
     }
 
-    private Expression<?>[] toLiterals(Object[] row)
+    private Expression<?, ?>[] toLiterals(Object[] row)
     {
-        Expression<?>[] result = new Expression<?>[row.length];
+        Expression<?, ?>[] result = new Expression<?, ?>[row.length];
         for (int i = 0; i < row.length; i++)
         {
             Object object = row[i];
@@ -134,7 +134,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
                 if(object instanceof Param 
                         || object instanceof LiteralExpr)
                 {
-                    result[i] = (Param<?>)object;
+                    result[i] = (Param<?, ?>)object;
                 }
                 else
                 {

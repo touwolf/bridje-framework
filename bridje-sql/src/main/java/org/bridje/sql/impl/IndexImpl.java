@@ -26,11 +26,11 @@ class IndexImpl implements Index
 
     private Table table;
 
-    private final Column<?>[] columns;
+    private final Column<?, ?>[] columns;
 
     private final boolean unique;
 
-    public IndexImpl(String name, Table table, Column<?>[] columns, boolean unique)
+    public IndexImpl(String name, Table table, Column<?, ?>[] columns, boolean unique)
     {
         this.name = name;
         this.table = table;
@@ -57,7 +57,7 @@ class IndexImpl implements Index
     }
 
     @Override
-    public Column<?>[] getColumns()
+    public Column<?, ?>[] getColumns()
     {
         return columns;
     }
@@ -74,7 +74,7 @@ class IndexImpl implements Index
         StringBuilder sb = new StringBuilder();
         sb.append("idx_");
         sb.append(table.getName());
-        for (Column<?> column : columns)
+        for (Column<?, ?> column : columns)
         {
             sb.append("_");
             sb.append(column.getName());

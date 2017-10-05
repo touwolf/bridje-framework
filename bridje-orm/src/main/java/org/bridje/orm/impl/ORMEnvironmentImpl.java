@@ -34,7 +34,7 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
     private final ORMConfig config;
 
     private final Map<Class<?>, Object> models;
-    
+
     private final Map<Class<?>, EntityCache> cacheMap;
 
     public ORMEnvironmentImpl(ORMConfig config)

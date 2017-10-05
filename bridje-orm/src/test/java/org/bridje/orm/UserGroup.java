@@ -27,11 +27,11 @@ public class UserGroup
 {
     public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID;
+    public static final NumberColumn<Long, Long> ID;
 
-    public static final Column<Group> GROUP;
+    public static final Column<Group, Long> GROUP;
 
-    public static final Column<User> USER;
+    public static final Column<User, Long> USER;
 
     public static final Query SELECT;
     

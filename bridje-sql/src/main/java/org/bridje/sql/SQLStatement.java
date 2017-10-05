@@ -18,7 +18,7 @@ package org.bridje.sql;
 
 public interface SQLStatement
 {
-    Expression<?>[] getResultFields();
+    Expression<?, ?>[] getResultFields();
 
     boolean isWithGeneratedKeys();
 

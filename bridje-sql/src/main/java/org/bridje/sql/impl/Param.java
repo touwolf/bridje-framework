@@ -20,9 +20,9 @@ import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
 
-class Param<T> extends ExpressionBase<T> implements Expression<T>
+class Param<T, E> extends ExpressionBase<T, E> implements Expression<T, E>
 {
-    protected Param(SQLType<T> type)
+    protected Param(SQLType<T, E> type)
     {
         super(type);
     }

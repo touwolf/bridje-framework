@@ -22,6 +22,8 @@ import org.bridje.ioc.thls.ThlsActionException2;
 
 public interface ORMService
 {
+    ORMEnvironment createEnvironment(ORMConfig config);
+
     <T> T doWithData(ThlsAction<T> action, ORMConfig config);
 
     <T, E extends Throwable> T doWithDataEx(ThlsActionException<T, E> action, ORMConfig config) throws E;

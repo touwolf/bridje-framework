@@ -18,5 +18,5 @@ package org.bridje.sql;
 
 public interface BuildTableColumnsStep extends BuildTableIndexesStep
 {
-    BuildTableColumnsStep column(Column<?> column);
+    BuildTableColumnsStep column(Column<?, ?> column);
 }

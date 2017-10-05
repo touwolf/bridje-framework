@@ -29,6 +29,8 @@ public class TestModel
     static {
         SCHEMA = SQL.buildSchema("testdb")
                     .table(User.TABLE)
+                    .table(Group.TABLE)
+                    .table(UserGroup.TABLE)
                     .build();
     }
 
@@ -42,10 +44,36 @@ public class TestModel
         this.env = sql;
     }
 
+    public void findSchema() throws SQLException
+    {
+        env.fixSchema(SCHEMA);
+    }
+
     public User findUser(Long id) throws SQLException
     {
         if(ctx.contains(User.class, id)) return ctx.get(User.class, id);
         return env.fetchOne(User.SELECT, this::parseUser, id);
+    }
+
+    public void saveUser(User user) throws SQLException
+    {
+        if(user.getId() == null)
+        {
+            Long id = env.fetchOne(User.INSERT, 
+                        (rs) -> rs.get(User.ID), 
+                        user.getEmail(), 
+                        user.getPassword(), 
+                        user.getActive());
+            user.setId(id);
+        }
+        else
+        {
+            env.update(User.UPDATE, 
+                        user.getEmail(),
+                        user.getPassword(),
+                        user.getActive(),
+                        user.getId());
+        }
     }
 
     public User parseUser(SQLResultSet rs) throws SQLException
@@ -74,6 +102,23 @@ public class TestModel
         return group;
     }
 
+    public void saveGroup(Group group) throws SQLException
+    {
+        if(group.getId() == null)
+        {
+            Long id = env.fetchOne(Group.INSERT, 
+                        (rs) -> rs.get(Group.ID), 
+                        group.getTitle());
+            group.setId(id);
+        }
+        else
+        {
+            env.update(User.UPDATE, 
+                        group.getTitle(),
+                        group.getId());
+        }
+    }
+
     public UserGroup findUserGroup(Long id) throws SQLException
     {
         if(ctx.contains(UserGroup.class, id)) return ctx.get(UserGroup.class, id);
@@ -88,5 +133,24 @@ public class TestModel
         entity.setUser(rs.get(UserGroup.USER, this::findUser));
         ctx.put(entity.getId(), entity);
         return entity;
+    }
+
+    public void saveUserGroup(UserGroup userGroup) throws SQLException
+    {
+        if(userGroup.getId() == null)
+        {
+            Long id = env.fetchOne(UserGroup.INSERT, 
+                        (rs) -> rs.get(UserGroup.ID), 
+                        userGroup.getGroup(),
+                        userGroup.getUser());
+            userGroup.setId(id);
+        }
+        else
+        {
+            env.update(User.UPDATE, 
+                        userGroup.getGroup(),
+                        userGroup.getUser(),
+                        userGroup.getId());
+        }
     }
 }

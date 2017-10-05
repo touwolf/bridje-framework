@@ -22,7 +22,7 @@ public interface Index
 
     Table getTable();
 
-    Column<?>[] getColumns();
+    Column<?, ?>[] getColumns();
 
     boolean isUnique();
 }

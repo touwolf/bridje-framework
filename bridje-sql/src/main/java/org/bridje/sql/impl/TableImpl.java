@@ -33,26 +33,26 @@ class TableImpl implements Table
 
     private Schema schema;
 
-    private final Column<?>[] keys;
+    private final Column<?, ?>[] keys;
 
-    private final Column<?>[] aiColumns;
+    private final Column<?, ?>[] aiColumns;
 
-    private final Column<?>[] columns;
+    private final Column<?, ?>[] columns;
 
     private final ForeignKey[] foreignKeys;
 
     private final Index[] indexes;
     
-    private final Map<String, Column<?>> columnsMap;
+    private final Map<String, Column<?, ?>> columnsMap;
 
-    public TableImpl(String name, Column<?>[] columns, Index[] indexes, ForeignKey[] foreignKeys)
+    public TableImpl(String name, Column<?, ?>[] columns, Index[] indexes, ForeignKey[] foreignKeys)
     {
         this.name = name;
         columnsMap = new HashMap<>();
-        List<Column<?>> keysList = new ArrayList<>();
-        List<Column<?>> aiColumnsList = new ArrayList<>();
+        List<Column<?, ?>> keysList = new ArrayList<>();
+        List<Column<?, ?>> aiColumnsList = new ArrayList<>();
         this.columns = columns;
-        for (Column<?> column : columns)
+        for (Column<?, ?> column : columns)
         {
             ((ColumnImpl)column).setTable(this);
             if(column.isKey()) keysList.add(column);
@@ -93,25 +93,25 @@ class TableImpl implements Table
     }
 
     @Override
-    public Column<?>[] getPrimaryKey()
+    public Column<?, ?>[] getPrimaryKey()
     {
         return keys;
     }
     
     @Override
-    public Column<?>[] getAutoIncrement()
+    public Column<?, ?>[] getAutoIncrement()
     {
         return aiColumns;
     }
 
     @Override
-    public Column<?>[] getColumns()
+    public Column<?, ?>[] getColumns()
     {
         return columns;
     }
 
     @Override
-    public Column<?> getColumn(String name)
+    public Column<?, ?> getColumn(String name)
     {
         return columnsMap.get(name);
     }

@@ -16,17 +16,17 @@
 
 package org.bridje.sql;
 
-public interface Expression<T> extends SQLWritable
+public interface Expression<T, E> extends SQLWritable
 {
-    SQLType<T> getSQLType();
+    SQLType<T, E> getSQLType();
 
-    BooleanExpr<Boolean> eq(Expression<T> operand);
+    BooleanExpr<Boolean, Boolean> eq(Expression<T, E> operand);
 
-    BooleanExpr<Boolean> ne(Expression<T> operand);
+    BooleanExpr<Boolean, Boolean> ne(Expression<T, E> operand);
 
-    BooleanExpr<Boolean> eq(T operand);
+    BooleanExpr<Boolean, Boolean> eq(T operand);
 
-    BooleanExpr<Boolean> ne(T operand);
+    BooleanExpr<Boolean, Boolean> ne(T operand);
 
     OrderExpr asc();
 

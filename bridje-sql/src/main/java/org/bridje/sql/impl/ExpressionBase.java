@@ -24,143 +24,143 @@ import org.bridje.sql.SQLType;
 import org.bridje.sql.SortType;
 import org.bridje.sql.StringExpr;
 
-abstract class ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
+abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>
 {
-    private final SQLType<T> sqlType;
+    private final SQLType<T, E> sqlType;
 
-    public ExpressionBase(SQLType<T> sqlType)
+    public ExpressionBase(SQLType<T, E> sqlType)
     {
         this.sqlType = sqlType;
     }
     
     @Override
-    public SQLType<T> getSQLType()
+    public SQLType<T, E> getSQLType()
     {
         return sqlType;
     }
 
     @Override
-    public BooleanExpr<T> and(T operand)
+    public BooleanExpr<T, E> and(T operand)
     {
         return new BinaryExpr<>(this, Operators.AND, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public BooleanExpr<T> or(T operand)
+    public BooleanExpr<T, E> or(T operand)
     {
         return new BinaryExpr<>(this, Operators.OR, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public BooleanExpr<T> and(BooleanExpr<T> operand)
+    public BooleanExpr<T, E> and(BooleanExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.AND, operand, getSQLType());
     }
 
     @Override
-    public BooleanExpr<T> or(BooleanExpr<T> operand)
+    public BooleanExpr<T, E> or(BooleanExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.OR, operand, getSQLType());
     }
 
     @Override
-    public BooleanExpr<T> not()
+    public BooleanExpr<T, E> not()
     {
         return new UnaryExpr<>(Operators.NOT, this, getSQLType());
     }
 
     @Override
-    public BooleanExpr<Boolean> eq(T operand)
+    public BooleanExpr<Boolean, Boolean> eq(T operand)
     {
         return new BinaryExpr<>(this, Operators.EQ, new Literal<>(operand), SQLType.BOOLEAN);
     }
 
     @Override
-    public BooleanExpr<Boolean> ne(T operand)
+    public BooleanExpr<Boolean, Boolean> ne(T operand)
     {
         return new BinaryExpr<>(this, Operators.NE, new Literal<>(operand), SQLType.BOOLEAN);
     }
 
     @Override
-    public BooleanExpr<Boolean> eq(Expression<T> operand)
+    public BooleanExpr<Boolean, Boolean> eq(Expression<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.EQ, operand, SQLType.BOOLEAN);
     }
 
     @Override
-    public BooleanExpr<Boolean> ne(Expression<T> operand)
+    public BooleanExpr<Boolean, Boolean> ne(Expression<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.NE, operand, SQLType.BOOLEAN);
     }
 
     @Override
-    public StringExpr<T> trim()
+    public StringExpr<T, E> trim()
     {
         return new FunctionImpl("trim", getSQLType(), this);
     }
 
     @Override
-    public ArithmeticExpr<Integer> length()
+    public ArithmeticExpr<Integer, Integer> length()
     {
         return new FunctionImpl("length", SQLType.INTEGER, this);
     }
 
     @Override
-    public ArithmeticExpr<T> plus(ArithmeticExpr<T> operand)
+    public ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.PLUS, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> minus(ArithmeticExpr<T> operand)
+    public ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.MINUS, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> mul(ArithmeticExpr<T> operand)
+    public ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.MULT, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> div(ArithmeticExpr<T> operand)
+    public ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.DIV, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> mod(ArithmeticExpr<T> operand)
+    public ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand)
     {
         return new BinaryExpr<>(this, Operators.MOD, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> plus(T operand)
+    public ArithmeticExpr<T, E> plus(T operand)
     {
         return new BinaryExpr<>(this, Operators.PLUS, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> minus(T operand)
+    public ArithmeticExpr<T, E> minus(T operand)
     {
         return new BinaryExpr<>(this, Operators.MINUS, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> mul(T operand)
+    public ArithmeticExpr<T, E> mul(T operand)
     {
         return new BinaryExpr<>(this, Operators.MULT, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> div(T operand)
+    public ArithmeticExpr<T, E> div(T operand)
     {
         return new BinaryExpr<>(this, Operators.DIV, new Literal<>(operand), getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T> mod(T operand)
+    public ArithmeticExpr<T, E> mod(T operand)
     {
         return new BinaryExpr<>(this, Operators.MOD, new Literal<>(operand), getSQLType());
     }

@@ -53,19 +53,34 @@ public class SQLFactory
     {
     }
 
-    public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
         return new SQLTypeImpl(javaType, jdbcType, length, precision);
     }
     
-    public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
+    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
     {
         return new SQLTypeImpl(javaType, jdbcType, length, 0);
     }
 
-    public <T> SQLType<T> buildType(Class<T> javaType, JDBCType jdbcType)
+    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType)
     {
         return new SQLTypeImpl(javaType, jdbcType, 0, 0);
+    }
+
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision)
+    {
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, precision);
+    }
+
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length)
+    {
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, 0);
+    }
+
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType)
+    {
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, 0, 0);
     }
 
     public BuildSchemaStep buildSchema(String name)
@@ -78,94 +93,94 @@ public class SQLFactory
         return new TableBuilder(name);
     }
     
-    public <T> Column<T> buildColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, key, allowNull, null);
     }
     
-    public <T> NumberColumn<T> buildAiColumn(String name, SQLType<T> type, boolean key, boolean allowNull)
+    public <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull)
     {
         ColumnImpl result = new ColumnImpl<>(name, type, key, allowNull, null);
         result.setAutoIncrement(true);
         return result;
     }
 
-    public <T> NumberColumn<T> buildNumberColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
-    public <T> StringColumn<T> buildStringColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
-    public <T> BooleanColumn<T> buildBoolColumn(String name, SQLType<T> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, key, allowNull, defValue);
     }
 
-    public Index buildIndex(String name, Table table, Column<?>[] columns)
+    public Index buildIndex(String name, Table table, Column<?, ?>[] columns)
     {
         return new IndexImpl(name, table, columns, false);
     }
 
-    public Index buildIndex(Table table, Column<?>... columns)
+    public Index buildIndex(Table table, Column<?, ?>... columns)
     {
         return new IndexImpl(null, table, columns, false);
     }
 
-    public Index buildUnique(String name, Table table, Column<?>... columns)
+    public Index buildUnique(String name, Table table, Column<?, ?>... columns)
     {
         return new IndexImpl(name, table, columns, true);
     }
 
-    public Index buildUnique(Table table, Column<?>... columns)
+    public Index buildUnique(Table table, Column<?, ?>... columns)
     {
         return new IndexImpl(null, table, columns, true);
     }
 
-    public BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?>[] columns)
+    public BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(name, table, columns);
     }
     
-    public BuildForeignKeyStep buildForeignKey(Table table, Column<?>[] columns)
+    public BuildForeignKeyStep buildForeignKey(Table table, Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(null, table, columns);
     }
 
-    public Index buildIndex(String name, Column<?>[] columns)
+    public Index buildIndex(String name, Column<?, ?>[] columns)
     {
         return new IndexImpl(name, null, columns, false);
     }
 
-    public Index buildIndex(Column<?>... columns)
+    public Index buildIndex(Column<?, ?>... columns)
     {
         return new IndexImpl(null, null, columns, false);
     }
 
-    public Index buildUnique(String name, Column<?>... columns)
+    public Index buildUnique(String name, Column<?, ?>... columns)
     {
         return new IndexImpl(name, null, columns, true);
     }
 
-    public Index buildUnique(Column<?>... columns)
+    public Index buildUnique(Column<?, ?>... columns)
     {
         return new IndexImpl(null, null, columns, true);
     }
 
-    public BuildForeignKeyStep buildForeignKey(String name, Column<?>[] columns)
+    public BuildForeignKeyStep buildForeignKey(String name, Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(name, null, columns);
     }
     
-    public BuildForeignKeyStep buildForeignKey(Column<?>[] columns)
+    public BuildForeignKeyStep buildForeignKey(Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(null, null, columns);
     }
     
-    public SelectStep select(Expression<?>... columns)
+    public SelectStep select(Expression<?, ?>... columns)
     {
         return new SelectBuilder(columns);
     }
@@ -185,122 +200,122 @@ public class SQLFactory
         return new DeleteBuilder(tables);
     }
 
-    public ArithmeticExpr<Number> val(Number value)
+    public ArithmeticExpr<Number, Number> val(Number value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Byte> val(byte value)
+    public ArithmeticExpr<Byte, Byte> val(byte value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Byte> val(Byte value)
+    public ArithmeticExpr<Byte, Byte> val(Byte value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Short> val(short value)
+    public ArithmeticExpr<Short, Short> val(short value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Short> val(Short value)
+    public ArithmeticExpr<Short, Short> val(Short value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Integer> val(int value)
+    public ArithmeticExpr<Integer, Integer> val(int value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Integer> val(Integer value)
+    public ArithmeticExpr<Integer, Integer> val(Integer value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Long> val(long value)
+    public ArithmeticExpr<Long, Long> val(long value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Long> val(Long value)
+    public ArithmeticExpr<Long, Long> val(Long value)
     {
         return new Literal<>(value);
     }
     
-    public ArithmeticExpr<Float> val(float value)
+    public ArithmeticExpr<Float, Float> val(float value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Float> val(Float value)
+    public ArithmeticExpr<Float, Float> val(Float value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Double> val(double value)
+    public ArithmeticExpr<Double, Double> val(double value)
     {
         return new Literal<>(value);
     }
 
-    public ArithmeticExpr<Double> val(Double value)
+    public ArithmeticExpr<Double, Double> val(Double value)
     {
         return new Literal<>(value);
     }
 
-    public StringExpr<String> val(String value)
+    public StringExpr<String, String> val(String value)
     {
         return new Literal<>(value);
     }
 
-    public BooleanExpr<Boolean> val(Boolean value)
+    public BooleanExpr<Boolean, Boolean> val(Boolean value)
     {
         return new Literal<>(value);
     }
 
-    public BooleanExpr<Boolean> val(boolean value)
+    public BooleanExpr<Boolean, Boolean> val(boolean value)
     {
         return new Literal<>(value);
     }
 
-    public Expression<Character> val(char value)
+    public Expression<Character, Character> val(char value)
     {
         return new Literal<>(value);
     }
 
-    public Expression<Character> val(Character value)
+    public Expression<Character, Character> val(Character value)
     {
         return new Literal<>(value);
     }
 
-    public <T> ArithmeticExpr<T> number(T value)
+    public <T, E> ArithmeticExpr<T, E> number(T value)
     {
         return new Literal<>(value);
     }
 
-    public <T> BooleanExpr<T> bool(T value)
+    public <T, E> BooleanExpr<T, E> bool(T value)
     {
         return new Literal<>(value);
     }
 
-    public <T> StringExpr<T> str(T value)
+    public <T, E> StringExpr<T, E> str(T value)
     {
         return new Literal<>(value);
     }
 
-    public <T> Expression<T> custom(T value)
+    public <T, E> Expression<T, E> custom(T value)
     {
         return new Literal<>(value);
     }
 
-    public <T> Expression<T> param(SQLType<T> cls)
+    public <T, E> Expression<T, E> param(SQLType<T, E> cls)
     {
         return new Param<>(cls);
     }
 
-    public ArithmeticExpr<Integer> count()
+    public ArithmeticExpr<Integer, Integer> count()
     {
         return new SimpleExpressionImpl("count(*)", SQLType.INTEGER);
     }

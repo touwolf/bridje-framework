@@ -20,13 +20,13 @@ import java.sql.JDBCType;
 
 public class SQLTypes
 {
-    public static final SQLType<Long> LONGID;
+    public static final SQLType<Long, Long> LONGID;
 
-    public static final SQLType<String> STRING150;
+    public static final SQLType<String, String> STRING150;
 
-    public static final SQLType<String> PASSWORD;
+    public static final SQLType<String, String> PASSWORD;
 
-    public static final SQLType<Boolean> BOOLEAN;
+    public static final SQLType<Boolean, Boolean> BOOLEAN;
 
     static {
         LONGID = SQL.buildType(Long.class, JDBCType.BIGINT);

@@ -16,7 +16,7 @@
 
 package org.bridje.sql;
 
-public interface LiteralExpr<T> extends Expression<T>
+public interface LiteralExpr<T, E> extends Expression<T, E>
 {
     T getValue();
 }

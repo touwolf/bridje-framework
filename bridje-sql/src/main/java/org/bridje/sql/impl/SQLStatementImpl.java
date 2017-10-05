@@ -21,7 +21,7 @@ import org.bridje.sql.SQLStatement;
 
 class SQLStatementImpl implements SQLStatement
 {
-    private final Expression<?>[] resultFields;
+    private final Expression<?, ?>[] resultFields;
 
     private final String sql;
 
@@ -29,7 +29,7 @@ class SQLStatementImpl implements SQLStatement
     
     private final boolean generatedKeys;
 
-    public SQLStatementImpl(Expression<?>[] resultFields, String sql, Object[] parameters, boolean generatedKeys)
+    public SQLStatementImpl(Expression<?, ?>[] resultFields, String sql, Object[] parameters, boolean generatedKeys)
     {
         this.resultFields = resultFields;
         this.sql = sql;
@@ -38,7 +38,7 @@ class SQLStatementImpl implements SQLStatement
     }
 
     @Override
-    public Expression<?>[] getResultFields()
+    public Expression<?, ?>[] getResultFields()
     {
         return resultFields;
     }

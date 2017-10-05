@@ -31,7 +31,7 @@ class TableBuilder implements BuildTableStep
 {
     private final String name;
 
-    private final List<Column<?>> columns;
+    private final List<Column<?, ?>> columns;
     
     private final List<Index> indexes;
     
@@ -46,7 +46,7 @@ class TableBuilder implements BuildTableStep
     }
     
     @Override
-    public BuildTableStep key(Column<?> column)
+    public BuildTableStep key(Column<?, ?> column)
     {
         ((ColumnImpl)column).setKey(true);
         columns.add(column);
@@ -54,7 +54,7 @@ class TableBuilder implements BuildTableStep
     }
 
     @Override
-    public BuildTableColumnsStep column(Column<?> column)
+    public BuildTableColumnsStep column(Column<?, ?> column)
     {
         ((ColumnImpl)column).setKey(false);
         columns.add(column);
@@ -78,7 +78,7 @@ class TableBuilder implements BuildTableStep
     @Override
     public Table build()
     {
-        Column<?>[] columnsArr = new Column<?>[columns.size()];
+        Column<?, ?>[] columnsArr = new Column<?, ?>[columns.size()];
         columns.toArray(columnsArr);
         Index[] indexesArr = new Index[indexes.size()];
         indexes.toArray(indexesArr);

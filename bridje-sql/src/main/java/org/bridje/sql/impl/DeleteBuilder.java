@@ -42,7 +42,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
 
     private List<Join> joinsLst;
 
-    private BooleanExpr<?> where;
+    private BooleanExpr<?, ?> where;
 
     private OrderExpr[] orderBys;
 
@@ -61,7 +61,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public DeleteFromStep innerJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteFromStep innerJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.INNER, on));
@@ -69,7 +69,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public DeleteFromStep leftJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteFromStep leftJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.LEFT, on));
@@ -77,7 +77,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public DeleteFromStep rightJoin(TableExpr table, BooleanExpr<?> on)
+    public DeleteFromStep rightJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.RIGHT, on));
@@ -85,7 +85,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public DeleteWhereStep where(BooleanExpr<?> condition)
+    public DeleteWhereStep where(BooleanExpr<?, ?> condition)
     {
         this.where = condition;
         return this;
@@ -165,7 +165,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public Expression<?>[] getResultFields()
+    public Expression<?, ?>[] getResultFields()
     {
         return null;
     }

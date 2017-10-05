@@ -23,11 +23,11 @@ import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
-class SimpleExpressionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
+class SimpleExpressionImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>
 {
     private final String expr;
 
-    public SimpleExpressionImpl(String expr, SQLType<T> type)
+    public SimpleExpressionImpl(String expr, SQLType<T, E> type)
     {
         super(type);
         this.expr = expr;
@@ -62,7 +62,7 @@ class SimpleExpressionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T
         {
             return false;
         }
-        final SimpleExpressionImpl<?> other = (SimpleExpressionImpl<?>) obj;
+        final SimpleExpressionImpl<?, ?> other = (SimpleExpressionImpl<?, ?>) obj;
         if (!Objects.equals(this.expr, other.expr))
         {
             return false;

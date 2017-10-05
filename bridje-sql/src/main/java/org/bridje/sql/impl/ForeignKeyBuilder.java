@@ -30,7 +30,7 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
 
     private final Table table;
 
-    private final Column<?>[] columns;
+    private final Column<?, ?>[] columns;
 
     private Table referencesTable;
 
@@ -38,7 +38,7 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
 
     private ForeignKeyStrategy onDelete;
 
-    public ForeignKeyBuilder(String name, Table table, Column<?>[] columns)
+    public ForeignKeyBuilder(String name, Table table, Column<?, ?>[] columns)
     {
         this.name = name;
         this.table = table;

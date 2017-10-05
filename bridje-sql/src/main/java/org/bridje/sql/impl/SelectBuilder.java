@@ -38,28 +38,28 @@ import org.bridje.sql.Query;
 
 class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectWhereStep, OrderByStep, GroupByStep, SelectLimitStep, SelectExpr, Query
 {
-    private final Expression<?>[] select;
+    private final Expression<?, ?>[] select;
 
     private TableExpr from;
 
     private List<Join> joins;
 
-    private BooleanExpr<?> where;
+    private BooleanExpr<?, ?> where;
 
     private OrderExpr[] orderBys;
 
     private OrderExpr[] groupBys;
 
-    private BooleanExpr<?> having;
+    private BooleanExpr<?, ?> having;
 
     private LimitExpr limit;
 
-    public SelectBuilder(Expression<?>[] select)
+    public SelectBuilder(Expression<?, ?>[] select)
     {
         this.select = select;
     }
 
-    public Expression<?>[] getSelect()
+    public Expression<?, ?>[] getSelect()
     {
         return select;
     }
@@ -72,7 +72,7 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public FromStep innerJoin(TableExpr table, BooleanExpr<?> on)
+    public FromStep innerJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(this.joins == null) this.joins = new ArrayList<>();
         this.joins.add(new Join(table, JoinType.INNER, on));
@@ -80,21 +80,21 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public FromStep leftJoin(TableExpr table, BooleanExpr<?> on)
+    public FromStep leftJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         this.joins.add(new Join(table, JoinType.LEFT, on));
         return this;
     }
 
     @Override
-    public FromStep rightJoin(TableExpr table, BooleanExpr<?> on)
+    public FromStep rightJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         this.joins.add(new Join(table, JoinType.RIGHT, on));
         return this;
     }
 
     @Override
-    public SelectWhereStep where(BooleanExpr<?> condition)
+    public SelectWhereStep where(BooleanExpr<?, ?> condition)
     {
         this.where = condition;
         return this;
@@ -115,7 +115,7 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public SelectLimitStep having(BooleanExpr<?> condition)
+    public SelectLimitStep having(BooleanExpr<?, ?> condition)
     {
         this.having = condition;
         return this;
@@ -148,7 +148,7 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public Expression<?>[] getResultFields()
+    public Expression<?, ?>[] getResultFields()
     {
         return select;
     }

@@ -22,7 +22,7 @@ public interface ForeignKey
 
     Table getTable();
 
-    Column<?>[] getColumns();
+    Column<?, ?>[] getColumns();
 
     Table getReferences();
 

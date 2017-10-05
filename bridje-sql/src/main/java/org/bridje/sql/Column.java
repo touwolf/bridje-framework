@@ -16,7 +16,7 @@
 
 package org.bridje.sql;
 
-public interface Column<T> extends Expression<T>
+public interface Column<T, E> extends Expression<T, E>
 {
     Table getTable();
 
@@ -30,5 +30,5 @@ public interface Column<T> extends Expression<T>
 
     T getDefValue();
 
-    Expression<T> asParam();
+    Expression<T, E> asParam();
 }

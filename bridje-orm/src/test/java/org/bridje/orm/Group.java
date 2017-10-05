@@ -29,9 +29,9 @@ public class Group
 
     public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID;
+    public static final NumberColumn<Long, Long> ID;
 
-    public static final StringColumn<String> TITLE;
+    public static final StringColumn<String, String> TITLE;
 
     public static final Query SELECT;
     

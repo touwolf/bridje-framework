@@ -16,6 +16,6 @@
 
 package org.bridje.sql;
 
-public interface NumberColumn<T> extends Column<T>, ArithmeticExpr<T>
+public interface NumberColumn<T, E> extends Column<T, E>, ArithmeticExpr<T, E>
 {
 }

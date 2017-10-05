@@ -41,9 +41,9 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
 
     private List<Join> joinsLst;
 
-    private List<Assign<?>> setsLst;
+    private List<Assign<?, ?>> setsLst;
 
-    private BooleanExpr<?> where;
+    private BooleanExpr<?, ?> where;
 
     private OrderExpr[] orderBys;
 
@@ -55,7 +55,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public UpdateStep innerJoin(TableExpr table, BooleanExpr<?> on)
+    public UpdateStep innerJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.INNER, on));
@@ -63,7 +63,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public UpdateStep leftJoin(TableExpr table, BooleanExpr<?> on)
+    public UpdateStep leftJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.LEFT, on));
@@ -71,7 +71,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public UpdateStep rightJoin(TableExpr table, BooleanExpr<?> on)
+    public UpdateStep rightJoin(TableExpr table, BooleanExpr<?, ?> on)
     {
         if(joinsLst == null) joinsLst = new ArrayList<>();
         joinsLst.add(new Join(table, JoinType.RIGHT, on));
@@ -79,7 +79,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public <T> SetsStep set(Column<T> column, T value)
+    public <T, E> SetsStep set(Column<T, E> column, T value)
     {
         if(setsLst == null) setsLst = new ArrayList<>();
         setsLst.add(new Assign<>(column, new Literal<>(value)));
@@ -87,7 +87,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public <T> SetsStep set(Column<T> column, Expression<T> value)
+    public <T, E> SetsStep set(Column<T, E> column, Expression<T, E> value)
     {
         if(setsLst == null) setsLst = new ArrayList<>();
         setsLst.add(new Assign<>(column, value));
@@ -95,7 +95,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public UpdateWhereStep where(BooleanExpr<?> condition)
+    public UpdateWhereStep where(BooleanExpr<?, ?> condition)
     {
         this.where = condition;
         return this;
@@ -151,7 +151,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
         }
         if(setsLst != null)
         {
-            Assign<?>[] sets = new Assign<?>[setsLst.size()];
+            Assign<?, ?>[] sets = new Assign<?, ?>[setsLst.size()];
             setsLst.toArray(sets);
             builder.append(" SET ");
             builder.appendAll(sets, " ,");
@@ -173,7 +173,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public Expression<?>[] getResultFields()
+    public Expression<?, ?>[] getResultFields()
     {
         return null;
     }

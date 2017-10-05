@@ -109,7 +109,7 @@ class SchemaFixer
         return false;
     }
 
-    private boolean columnExists(DatabaseMetaData metadata, Column<?> column) throws SQLException
+    private boolean columnExists(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
     {
         try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
         {
@@ -121,7 +121,7 @@ class SchemaFixer
     private void fixColumns(Connection connection, Table table) throws SQLException
     {
         DatabaseMetaData metadata = connection.getMetaData();
-        for (Column<?> column : table.getColumns())
+        for (Column<?, ?> column : table.getColumns())
         {
             if(!columnExists(metadata, column))
             {
@@ -156,7 +156,7 @@ class SchemaFixer
     private boolean indexExists(DatabaseMetaData metadata, Index index) throws SQLException
     {
         List<String> columnNames = new ArrayList<>();
-        for (Column<?> column : index.getColumns())
+        for (Column<?, ?> column : index.getColumns())
         {
             columnNames.add(column.getName());
         }

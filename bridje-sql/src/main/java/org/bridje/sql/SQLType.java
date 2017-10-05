@@ -19,21 +19,23 @@ package org.bridje.sql;
 import java.sql.JDBCType;
 import java.sql.SQLException;
 
-public interface SQLType<T>
+public interface SQLType<T, E>
 {
-    public static final SQLType<Boolean> BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BOOLEAN);
+    public static final SQLType<Boolean, Boolean> BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BOOLEAN);
 
-    public static final SQLType<Long> LONG = SQL.buildType(Long.class, JDBCType.BIGINT);
+    public static final SQLType<Long, Long> LONG = SQL.buildType(Long.class, JDBCType.BIGINT);
 
-    public static final SQLType<Integer> INTEGER = SQL.buildType(Integer.class, JDBCType.INTEGER);
+    public static final SQLType<Integer, Integer> INTEGER = SQL.buildType(Integer.class, JDBCType.INTEGER);
 
-    public static final SQLType<Short> SHORT = SQL.buildType(Short.class, JDBCType.SMALLINT);
+    public static final SQLType<Short, Short> SHORT = SQL.buildType(Short.class, JDBCType.SMALLINT);
 
-    public static final SQLType<Character> CHAR = SQL.buildType(Character.class, JDBCType.CHAR);
+    public static final SQLType<Character, Character> CHAR = SQL.buildType(Character.class, JDBCType.CHAR);
 
-    public static final SQLType<String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
+    public static final SQLType<String, String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
     
     Class<T> getJavaType();
+    
+    Class<E> getJavaReadType();
 
     JDBCType getJDBCType();
 
@@ -41,10 +43,10 @@ public interface SQLType<T>
 
     int getPrecision();
 
-    Expression<T> asParam();
+    Expression<T, E> asParam();
 
     SQLValueAdapter<T, Object> getAdapter();
-
+    
     T parse(Object object) throws SQLException;
 
     Object write(T object) throws SQLException;

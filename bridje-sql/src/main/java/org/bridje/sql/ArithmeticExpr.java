@@ -16,25 +16,25 @@
 
 package org.bridje.sql;
 
-public interface ArithmeticExpr<T> extends Expression<T>
+public interface ArithmeticExpr<T, E> extends Expression<T, E>
 {
-    ArithmeticExpr<T> plus(ArithmeticExpr<T> operand);
+    ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand);
 
-    ArithmeticExpr<T> minus(ArithmeticExpr<T> operand);
+    ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand);
 
-    ArithmeticExpr<T> mul(ArithmeticExpr<T> operand);
+    ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand);
     
-    ArithmeticExpr<T> div(ArithmeticExpr<T> operand);
+    ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand);
     
-    ArithmeticExpr<T> mod(ArithmeticExpr<T> operand);
+    ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand);
     
-    ArithmeticExpr<T> plus(T operand);
+    ArithmeticExpr<T, E> plus(T operand);
 
-    ArithmeticExpr<T> minus(T operand);
+    ArithmeticExpr<T, E> minus(T operand);
 
-    ArithmeticExpr<T> mul(T operand);
+    ArithmeticExpr<T, E> mul(T operand);
     
-    ArithmeticExpr<T> div(T operand);
+    ArithmeticExpr<T, E> div(T operand);
     
-    ArithmeticExpr<T> mod(T operand);
+    ArithmeticExpr<T, E> mod(T operand);
 }

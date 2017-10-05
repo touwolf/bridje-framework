@@ -21,13 +21,13 @@ import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLWritable;
 
-class Assign<T> implements SQLWritable
+class Assign<T, E> implements SQLWritable
 {
-    private final Column<?> column;
+    private final Column<?, ?> column;
 
-    private final Expression<?> value;
+    private final Expression<?, ?> value;
 
-    public Assign(Column<T> column, Expression<T> value)
+    public Assign(Column<T, E> column, Expression<T, E> value)
     {
         this.column = column;
         this.value = value;

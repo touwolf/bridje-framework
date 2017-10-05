@@ -20,5 +20,5 @@ public interface OrderExpr extends SQLWritable
 {
     SortType getType();
 
-    Expression<?> getColumn();
+    Expression<?, ?> getColumn();
 }

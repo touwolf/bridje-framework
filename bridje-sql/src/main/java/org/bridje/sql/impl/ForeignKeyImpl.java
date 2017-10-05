@@ -27,7 +27,7 @@ class ForeignKeyImpl implements ForeignKey
 
     private Table table;
 
-    private final Column<?>[] columns;
+    private final Column<?, ?>[] columns;
 
     private final Table references;
 
@@ -35,7 +35,7 @@ class ForeignKeyImpl implements ForeignKey
 
     private final ForeignKeyStrategy onDelete;
 
-    public ForeignKeyImpl(String name, Table table, Column<?>[] columns, Table references, ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete)
+    public ForeignKeyImpl(String name, Table table, Column<?, ?>[] columns, Table references, ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete)
     {
         this.name = name;
         this.table = table;
@@ -64,7 +64,7 @@ class ForeignKeyImpl implements ForeignKey
     }
 
     @Override
-    public Column<?>[] getColumns()
+    public Column<?, ?>[] getColumns()
     {
         return columns;
     }
@@ -93,7 +93,7 @@ class ForeignKeyImpl implements ForeignKey
         StringBuilder sb = new StringBuilder();
         sb.append("fk_");
         sb.append(table.getName());
-        for (Column<?> column : columns)
+        for (Column<?, ?> column : columns)
         {
             sb.append("_");
             sb.append(column.getName());

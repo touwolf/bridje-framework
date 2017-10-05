@@ -22,13 +22,13 @@ public interface Table extends TableExpr
 
     Schema getSchema();
 
-    Column<?>[] getPrimaryKey();
+    Column<?, ?>[] getPrimaryKey();
 
-    Column<?>[] getAutoIncrement();
+    Column<?, ?>[] getAutoIncrement();
 
-    Column<?>[] getColumns();
+    Column<?, ?>[] getColumns();
 
-    Column<?> getColumn(String name);
+    Column<?, ?> getColumn(String name);
 
     Index[] getIndexes();
 

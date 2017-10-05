@@ -73,8 +73,8 @@ public class MySQLDialect implements SQLDialect
     {
         StringBuilder builder = new StringBuilder();
         createTable(builder, table);
-        Column<?>[] columns = table.getColumns();
-        for (Column<?> column : columns)
+        Column<?, ?>[] columns = table.getColumns();
+        for (Column<?, ?> column : columns)
         {
             createColumn(builder, params, column);
         }
@@ -83,7 +83,7 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public String addColumn(Column<?> column, List<Object> params)
+    public String addColumn(Column<?, ?> column, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
         alterTable(builder, column.getTable());
@@ -92,7 +92,7 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public String dropColumn(Column<?> column, List<Object> params)
+    public String dropColumn(Column<?, ?> column, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
         alterTable(builder, column.getTable());
@@ -101,7 +101,7 @@ public class MySQLDialect implements SQLDialect
     }
 
     @Override
-    public String changeColumn(String oldName, Column<?> column, List<Object> params)
+    public String changeColumn(String oldName, Column<?, ?> column, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
         alterTable(builder, column.getTable());
@@ -149,7 +149,7 @@ public class MySQLDialect implements SQLDialect
         builder.append(" (\n");
     }
 
-    public void createColumn(StringBuilder builder, List<Object> params, Column<?> column)
+    public void createColumn(StringBuilder builder, List<Object> params, Column<?, ?> column)
     {
         builder.append(" ");
         writeObjectName(builder, column.getName());
@@ -161,7 +161,7 @@ public class MySQLDialect implements SQLDialect
         builder.append(",\n");
     }
 
-    public void createIndex(StringBuilder builder, String name, Table table, Column<?>[] columns, boolean unique)
+    public void createIndex(StringBuilder builder, String name, Table table, Column<?, ?>[] columns, boolean unique)
     {
         builder.append("CREATE ");
         if(unique) builder.append("UNIQUE ");
@@ -174,7 +174,7 @@ public class MySQLDialect implements SQLDialect
         builder.append(" ) ");
     }
 
-    public void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?>[] columns)
+    public void createUniqueIndex(StringBuilder builder, String name, Table table, Column<?, ?>[] columns)
     {
         builder.append("CREATE UNIQUE INDEX ");
         writeObjectName(builder, name);
@@ -185,7 +185,7 @@ public class MySQLDialect implements SQLDialect
         builder.append(" ) ");
     }
 
-    public void primaryKey(StringBuilder builder, Column<?>[] columns)
+    public void primaryKey(StringBuilder builder, Column<?, ?>[] columns)
     {
         builder.append(" PRIMARY KEY (");
         writeColumnsNames(builder, columns, ", ");
@@ -199,7 +199,7 @@ public class MySQLDialect implements SQLDialect
         builder.append(" \n");
     }
 
-    public void addColumn(StringBuilder builder, List<Object> params, Column<?> column, boolean isLast)
+    public void addColumn(StringBuilder builder, List<Object> params, Column<?, ?> column, boolean isLast)
     {
         builder.append(" ADD COLUMN ");
         writeObjectName(builder, column.getName());
@@ -212,7 +212,7 @@ public class MySQLDialect implements SQLDialect
         builder.append("\n");
     }
 
-    public void dropColumn(StringBuilder builder, Column<?> column, boolean isLast)
+    public void dropColumn(StringBuilder builder, Column<?, ?> column, boolean isLast)
     {
         builder.append(" DROP COLUMN ");
         writeObjectName(builder, column.getName());
@@ -220,7 +220,7 @@ public class MySQLDialect implements SQLDialect
         builder.append("\n");
     }
 
-    public void changeColumn(StringBuilder builder, List<Object> params, Column<?> column, String oldColumn, boolean isLast)
+    public void changeColumn(StringBuilder builder, List<Object> params, Column<?, ?> column, String oldColumn, boolean isLast)
     {
         builder.append(" CHANGE COLUMN ");
         writeObjectName(builder, oldColumn);
@@ -243,7 +243,7 @@ public class MySQLDialect implements SQLDialect
         writeObjectName(builder, name);
     }
 
-    private String createType(Column<?> column)
+    private String createType(Column<?, ?> column)
     {
         switch(column.getSQLType().getJDBCType())
         {
@@ -300,13 +300,13 @@ public class MySQLDialect implements SQLDialect
         return column.getSQLType().getJDBCType().getName();
     }
 
-    private String createIsNull(Column<?> column)
+    private String createIsNull(Column<?, ?> column)
     {
         if(column.isAllowNull() && !column.isKey()) return " NULL";
         return " NOT NULL";
     }
 
-    private String createDefault(Column<?> column, List<Object> params)
+    private String createDefault(Column<?, ?> column, List<Object> params)
     {
         if(column.isAutoIncrement()) return "";
         if(column.getDefValue() != null)
@@ -322,7 +322,7 @@ public class MySQLDialect implements SQLDialect
         return "";
     }
 
-    private String createAutoIncrement(Column<?> column)
+    private String createAutoIncrement(Column<?, ?> column)
     {
         if(column.isAutoIncrement()) return " AUTO_INCREMENT";
         return "";
@@ -344,10 +344,10 @@ public class MySQLDialect implements SQLDialect
         builder.append(fk.getOnUpdate().name().replace("_", " "));
     }
 
-    private void writeColumnsNames(StringBuilder builder, Column<?>[] columns, String sep)
+    private void writeColumnsNames(StringBuilder builder, Column<?, ?>[] columns, String sep)
     {
         boolean isFirst = true;
-        for (Column<?> column : columns)
+        for (Column<?, ?> column : columns)
         {
             if(!isFirst) builder.append(sep);
             writeObjectName(builder, column.getName());

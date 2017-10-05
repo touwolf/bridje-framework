@@ -29,11 +29,11 @@ public interface SQLDialect
 
     String createTable(Table table, List<Object> params);
 
-    String addColumn(Column<?> column, List<Object> params);
+    String addColumn(Column<?, ?> column, List<Object> params);
 
-    String dropColumn(Column<?> column, List<Object> params);
+    String dropColumn(Column<?, ?> column, List<Object> params);
 
-    String changeColumn(String oldName, Column<?> column, List<Object> params);
+    String changeColumn(String oldName, Column<?, ?> column, List<Object> params);
 
     String createIndex(Index index, List<Object> params);
 

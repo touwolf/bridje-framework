@@ -20,11 +20,11 @@ public class UserGroup
 {
     public static final Table TABLE;
 
-    public static final NumberColumn<Long> ID;
+    public static final NumberColumn<Long, Long> ID;
 
-    public static final NumberColumn<Long> GROUP_ID;
+    public static final NumberColumn<Long, Long> GROUP_ID;
 
-    public static final NumberColumn<Long> USER_ID;
+    public static final NumberColumn<Long, Long> USER_ID;
 
     static {
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);

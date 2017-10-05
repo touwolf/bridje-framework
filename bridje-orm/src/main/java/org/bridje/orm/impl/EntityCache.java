@@ -47,7 +47,7 @@ class EntityCache
     {
         entitysMap.put(id, entity);
     }
-    
+
     public void clear()
     {
         entitysMap.clear();

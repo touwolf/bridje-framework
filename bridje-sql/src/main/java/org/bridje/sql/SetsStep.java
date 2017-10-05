@@ -18,9 +18,9 @@ package org.bridje.sql;
 
 public interface SetsStep extends UpdateWhereStep
 {
-    <T> SetsStep set(Column<T> column, T value);
+    <T, E> SetsStep set(Column<T, E> column, T value);
 
-    <T> SetsStep set(Column<T> column, Expression<T> value);
+    <T, E> SetsStep set(Column<T, E> column, Expression<T, E> value);
 
-    UpdateWhereStep where(BooleanExpr<?> condition);
+    UpdateWhereStep where(BooleanExpr<?, ?> condition);
 }
