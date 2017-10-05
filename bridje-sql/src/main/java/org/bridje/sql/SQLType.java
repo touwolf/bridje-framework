@@ -45,9 +45,11 @@ public interface SQLType<T, E>
 
     Expression<T, E> asParam();
 
-    SQLValueAdapter<T, Object> getAdapter();
+    SQLValueAdapter<T, E> getAdapter();
     
-    T parse(Object object) throws SQLException;
+    T parse(E object) throws SQLException;
+    
+    E read(Object object) throws SQLException;
 
     Object write(T object) throws SQLException;
 }

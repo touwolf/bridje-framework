@@ -35,7 +35,7 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
 
     private final int precision;
 
-    private SQLValueAdapter<T, Object> adapter;
+    private SQLValueAdapter<T, E> adapter;
 
     private Expression<T, E> param;
 
@@ -59,6 +59,7 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
         return javaType;
     }
 
+    @Override
     public Class<E> getJavaReadType()
     {
         return javaReadType;
@@ -83,18 +84,24 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
     }
 
     @Override
-    public SQLValueAdapter<T, Object> getAdapter()
+    public SQLValueAdapter<T, E> getAdapter()
     {
         return adapter;
     }
 
     @Override
-    public T parse(Object value) throws SQLException
+    public E read(Object value) throws SQLException
     {
         if(value == null) return null;
-        Object val = CastUtils.castValue(javaReadType, value);
-        if(adapter != null) return adapter.parse(val);
-        return (T)val;
+        return CastUtils.castValue(javaReadType, value);
+    }
+
+    @Override
+    public T parse(E value) throws SQLException
+    {
+        if(value == null) return null;
+        if(adapter != null) return adapter.parse(value);
+        return (T)value;
     }
 
     @Override

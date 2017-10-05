@@ -55,50 +55,47 @@ class SQLResultSetImpl implements SQLResultSet
     @Override
     public <T, E> T get(Expression<T, E> expr) throws SQLException
     {
+        if(expr.getSQLType() == null) return null;
         Integer index = getIndex(expr);
-        if(index != null)
-        {
-            if(expr.getSQLType() != null)
-            {
-                return expr.getSQLType().parse(rs.getObject(index+1));
-            }
-        }
-        return null;
+        if(index == null) return null;
+        return get(index+1, expr.getSQLType());
     }
 
     @Override
-    public <T, E> T get(int column, SQLType<T, E> sqlType) throws SQLException
+    public <T, E> T get(int index, SQLType<T, E> sqlType) throws SQLException
     {
-        return sqlType.parse(rs.getObject(column));
-    }
-
-    @Override
-    public void close() throws Exception
-    {
-        rs.close();
+        Object value = rs.getObject(index);
+        E readed = sqlType.read(value);
+        return sqlType.parse(readed);
     }
 
     @Override
     public <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException
     {
         Integer index = getIndex(expr);
-        if(index != null)
-        {
-            return parser.parse((E)rs.getObject(index+1));
-        }
+        if(index != null) return get(index+1, expr.getSQLType(), parser);
         return null;
     }
 
     @Override
-    public <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException
+    public <T, E> T get(int index, SQLType<T, E> sqlType, SQLValueParser<T, E> parser) throws SQLException
     {
-        /*
-        if(value == null) return null;
-        Object val = CastUtils.castValue(type.getJavaType(), value);
-        if(adapter != null) return adapter.parse(val);
-        return (T)val;
-        */
-        return parser.parse((E)rs.getObject(column));
+        Object value = rs.getObject(index);
+        if(sqlType != null)
+        {
+            E readed = sqlType.read(value);
+            return parser.parse(readed);
+        }
+        else
+        {
+            return parser.parse((E)value);
+        }
+    }
+
+    @Override
+    public void close() throws Exception
+    {
+        rs.close();
     }
 
     private <T, E> Integer getIndex(Expression<T, E> expr)

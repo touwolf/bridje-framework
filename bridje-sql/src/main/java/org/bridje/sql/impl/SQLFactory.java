@@ -38,6 +38,8 @@ import org.bridje.sql.UpdateStep;
 
 public class SQLFactory
 {
+    private static ArithmeticExpr<Integer, Integer> COUNT_EXPR;
+
     private static SQLFactory INST;
 
     public static SQLFactory getInstance()
@@ -317,6 +319,10 @@ public class SQLFactory
 
     public ArithmeticExpr<Integer, Integer> count()
     {
-        return new SimpleExpressionImpl("count(*)", SQLType.INTEGER);
+        if(COUNT_EXPR == null)
+        {
+            COUNT_EXPR = new SimpleExpressionImpl("count(*)", SQLType.INTEGER);
+        }
+        return COUNT_EXPR;
     }
 }
