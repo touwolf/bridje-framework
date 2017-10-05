@@ -46,8 +46,10 @@ public class User
 
     public static final Query DELETE;
 
+    public static final Query DELETE_ALL;
+
     static {
-        TYPE = SQL.buildType(User.class, SQLTypes.LONGID.getJDBCType());
+        TYPE = SQL.buildType(User.class, SQLTypes.LONGID.getJavaReadType(), SQLTypes.LONGID.getJDBCType(), null, (e) -> e.getId());
 
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
         EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, false, true, null);
@@ -84,6 +86,9 @@ public class User
         DELETE = SQL.delete()
                     .from(TABLE)
                     .where(ID.eq(ID.asParam()))
+                    .toQuery();
+        DELETE_ALL = SQL.delete()
+                    .from(TABLE)
                     .toQuery();
     }
 

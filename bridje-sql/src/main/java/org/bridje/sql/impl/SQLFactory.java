@@ -30,6 +30,8 @@ import org.bridje.sql.Index;
 import org.bridje.sql.InsertIntoStep;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLType;
+import org.bridje.sql.SQLValueParser;
+import org.bridje.sql.SQLValueWriter;
 import org.bridje.sql.SelectStep;
 import org.bridje.sql.StringColumn;
 import org.bridje.sql.StringExpr;
@@ -55,34 +57,19 @@ public class SQLFactory
     {
     }
 
-    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        return new SQLTypeImpl(javaType, jdbcType, length, precision);
-    }
-    
-    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
-    {
-        return new SQLTypeImpl(javaType, jdbcType, length, 0);
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, precision, parser, writer);
     }
 
-    public <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType)
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        return new SQLTypeImpl(javaType, jdbcType, 0, 0);
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, 0, parser, writer);
     }
 
-    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision)
+    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, precision);
-    }
-
-    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length)
-    {
-        return new SQLTypeImpl(javaType, javaReadType, jdbcType, length, 0);
-    }
-
-    public <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType)
-    {
-        return new SQLTypeImpl(javaType, javaReadType, jdbcType, 0, 0);
+        return new SQLTypeImpl(javaType, javaReadType, jdbcType, 0, 0, parser, writer);
     }
 
     public BuildSchemaStep buildSchema(String name)

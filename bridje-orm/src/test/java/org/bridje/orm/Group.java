@@ -42,7 +42,7 @@ public class Group
     public static final Query DELETE;
 
     static {
-        TYPE = SQL.buildType(Group.class, SQLTypes.LONGID.getJDBCType());
+        TYPE = SQL.buildType(Group.class, SQLTypes.LONGID.getJavaReadType(), SQLTypes.LONGID.getJDBCType(), null, (e) -> e.getId());
 
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
         TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, false, true, null);

@@ -115,6 +115,13 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
     }
 
     @Override
+    public <T> void clear(Class<T> entity)
+    {
+        EntityCache cache = cacheMap.get(entity);
+        if(cache != null) cache.clear();
+    }
+    
+    @Override
     public void clear()
     {
         cacheMap.clear();

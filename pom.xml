@@ -279,6 +279,7 @@
                 <module>bridje-vfs</module>
                 <module>bridje-http</module>
                 <module>bridje-jdbc</module>
+                <module>bridje-sql</module>
                 <module>bridje-orm</module>
                 <module>bridje-orm-srcgen</module>
                 <module>bridje-web</module>
@@ -288,8 +289,10 @@
                 <module>bridje-srcgen</module>
                 <module>bridje-jfx</module>
                 <module>bridje-jfx-srcgen</module>
+                <!--
                 <module>bridje-all</module>
                 <module>bridje-srcgen-all</module>
+                -->                
             </modules>
         </profile>
     </profiles>

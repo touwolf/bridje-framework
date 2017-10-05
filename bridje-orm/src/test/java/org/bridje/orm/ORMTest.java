@@ -65,6 +65,9 @@ public class ORMTest
         ORMEnvironment ormEnv = ormServ.createEnvironment(cfg);
         TestModel model = ormEnv.getModel(TestModel.class);
         model.findSchema();
+
+        model.deleteAllUsers();
+
         User user = new User();
         user.setEmail("someemail@hotmail.com");
         user.setPassword("pass");
@@ -75,6 +78,9 @@ public class ORMTest
         group.setTitle("Group");
         model.saveGroup(group);
 
-        
+        UserGroup userGroup = new UserGroup();
+        userGroup.setGroup(group);
+        userGroup.setUser(user);
+        model.saveUserGroup(userGroup);
     }
 }

@@ -26,5 +26,7 @@ public interface EntityContext
 
     <T> void remove(Class<T> entity, Object id);
 
+    <T> void clear(Class<T> entity);
+    
     void clear();
 }

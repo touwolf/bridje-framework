@@ -25,32 +25,32 @@ public class SQL
 
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
-        return FACT.buildType(javaType, jdbcType, length, precision);
+        return FACT.buildType(javaType, javaType, jdbcType, length, precision, null, null);
     }
-    
+
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
     {
-        return FACT.buildType(javaType, jdbcType, length);
+        return FACT.buildType(javaType, javaType, jdbcType, length, null, null);
     }
 
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType)
     {
-        return FACT.buildType(javaType, jdbcType);
+        return FACT.buildType(javaType, javaType, jdbcType, null, null);
     }
 
-    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision)
+    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        return FACT.buildType(javaType, javaReadType, jdbcType, length, precision);
-    }
-    
-    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length)
-    {
-        return FACT.buildType(javaType, javaReadType, jdbcType, length);
+        return FACT.buildType(javaType, javaReadType, jdbcType, length, precision, parser, writer);
     }
 
-    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType)
+    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        return FACT.buildType(javaType, javaReadType, jdbcType);
+        return FACT.buildType(javaType, javaReadType, jdbcType, length, parser, writer);
+    }
+
+    public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
+    {
+        return FACT.buildType(javaType, javaReadType, jdbcType, parser, writer);
     }
 
     public static final BuildSchemaStep buildSchema(String name)

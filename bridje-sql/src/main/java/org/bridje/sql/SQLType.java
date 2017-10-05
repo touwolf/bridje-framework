@@ -45,11 +45,13 @@ public interface SQLType<T, E>
 
     Expression<T, E> asParam();
 
-    SQLValueAdapter<T, E> getAdapter();
+    SQLValueParser<T, E> getParser();
+
+    SQLValueWriter<E, T> getWriter();
     
     T parse(E object) throws SQLException;
-    
+
     E read(Object object) throws SQLException;
 
-    Object write(T object) throws SQLException;
+    E write(T object);
 }

@@ -62,3 +62,4 @@ nbproject
 /bridje-ajax/node_modules
 /bridje-ajax/dist
 /bridje-sql/derby.log
+/bridje-orm/derby.log

@@ -16,10 +16,8 @@
 
 package org.bridje.sql;
 
-import java.sql.SQLException;
-
 @FunctionalInterface
 public interface SQLValueWriter<T, E>
 {
-    T write(E value) throws SQLException;
+    T write(E value);
 }

@@ -30,7 +30,9 @@ class BuilderBase
         {
             if(parameter instanceof Param)
             {
-                finalParams.add(parameters[i]);
+                Object value = parameters[i];
+                value = ((Param)parameter).getSQLType().write(value);
+                finalParams.add(value);
                 i++;
             }
             else

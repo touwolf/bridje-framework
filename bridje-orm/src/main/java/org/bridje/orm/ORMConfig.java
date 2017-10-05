@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
-import org.bridje.jdbc.JdbcService;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLService;
 

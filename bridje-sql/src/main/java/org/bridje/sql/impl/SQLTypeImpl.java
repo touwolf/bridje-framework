@@ -21,7 +21,8 @@ import java.sql.SQLException;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQL;
 import org.bridje.sql.SQLType;
-import org.bridje.sql.SQLValueAdapter;
+import org.bridje.sql.SQLValueParser;
+import org.bridje.sql.SQLValueWriter;
 
 class SQLTypeImpl<T, E> implements SQLType<T, E>
 {
@@ -35,22 +36,26 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
 
     private final int precision;
 
-    private SQLValueAdapter<T, E> adapter;
+    private SQLValueParser<T, E> parser;
+
+    private SQLValueWriter<E, T> writer;
 
     private Expression<T, E> param;
 
-    SQLTypeImpl(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision)
+    SQLTypeImpl(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
         this.javaType = javaType;
         this.jdbcType = jdbcType;
         this.length = length;
         this.precision = precision;
         this.javaReadType = javaReadType;
+        this.writer = writer;
+        this.parser = parser;
     }
 
-    SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision)
+    SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
-        this(javaType, (Class<E>)javaType, jdbcType, length, precision);
+        this(javaType, (Class<E>)javaType, jdbcType, length, precision, parser, writer);
     }
 
     @Override
@@ -84,11 +89,17 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
     }
 
     @Override
-    public SQLValueAdapter<T, E> getAdapter()
+    public SQLValueParser<T, E> getParser()
     {
-        return adapter;
+        return parser;
     }
 
+    @Override
+    public SQLValueWriter<E, T> getWriter()
+    {
+        return writer;
+    }
+    
     @Override
     public E read(Object value) throws SQLException
     {
@@ -100,16 +111,17 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
     public T parse(E value) throws SQLException
     {
         if(value == null) return null;
-        if(adapter != null) return adapter.parse(value);
+        if(parser != null) return parser.parse(value);
         return (T)value;
     }
 
     @Override
-    public Object write(T value) throws SQLException
+    public E write(T value)
     {
         if(value == null) return null;
-        if(adapter != null) return adapter.write(value);
-        return value;
+        if(writer != null) return writer.write(value);
+        if(javaReadType.isAssignableFrom(value.getClass())) return (E)value;
+        return null;
     }
 
     @Override

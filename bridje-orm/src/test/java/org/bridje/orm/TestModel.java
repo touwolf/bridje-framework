@@ -74,6 +74,19 @@ public class TestModel
                         user.getActive(),
                         user.getId());
         }
+        ctx.put(user.getId(), user);
+    }
+
+    public void delteUser(User user) throws SQLException
+    {
+        env.update(User.DELETE, user.getId());
+        ctx.remove(User.class, user.getId());
+    }
+
+    public void deleteAllUsers() throws SQLException
+    {
+        env.update(User.DELETE_ALL);
+        ctx.clear(User.class);
     }
 
     public User parseUser(SQLResultSet rs) throws SQLException
