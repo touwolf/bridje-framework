@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,6 @@
 
 package org.bridje.orm;
 
-/**
- * Represents a table column whos type is a comparable type.
- * 
- * @param <E> The type for the entity that this table belongs to.
- * @param <T> The type of the column.
- */
-public interface TableComparableColumn<E, T> extends TableColumn<E, T>, ComparableColumn<T>
+public interface ORMEnvironment
 {
-    
 }

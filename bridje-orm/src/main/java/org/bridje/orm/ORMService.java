@@ -16,22 +16,6 @@
 
 package org.bridje.orm;
 
-/**
- * Represents an order by statement that can be use in a query to order the
- * results.
- */
-public interface OrderBy
+public interface ORMService
 {
-    /**
-     * Gets the type of the order by ASD or DESC.
-     * @return ASC the order is ascending, DESC the order is descending.
-     */
-    OrderByType getType();
-
-    /**
-     * The column to be ordered.
-     * 
-     * @return A Column object witch represents the ordered column.
-     */
-    Column getColumn();
 }

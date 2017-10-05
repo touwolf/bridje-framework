@@ -20,13 +20,14 @@ import java.util.Objects;
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
 class SimpleExpressionImpl<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
 {
     private final String expr;
 
-    public SimpleExpressionImpl(String expr, Class<T> type)
+    public SimpleExpressionImpl(String expr, SQLType<T> type)
     {
         super(type);
         this.expr = expr;

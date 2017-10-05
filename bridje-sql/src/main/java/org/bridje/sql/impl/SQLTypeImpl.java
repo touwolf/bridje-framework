@@ -17,7 +17,11 @@
 package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
+import java.sql.SQLException;
+import org.bridje.sql.Expression;
+import org.bridje.sql.SQL;
 import org.bridje.sql.SQLType;
+import org.bridje.sql.SQLValueAdapter;
 
 class SQLTypeImpl<T> implements SQLType<T>
 {
@@ -28,6 +32,10 @@ class SQLTypeImpl<T> implements SQLType<T>
     private final int length;
 
     private final int precision;
+
+    private SQLValueAdapter<T, Object> adapter;
+
+    private Expression<T> param;
 
     SQLTypeImpl(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
@@ -59,5 +67,38 @@ class SQLTypeImpl<T> implements SQLType<T>
     public int getPrecision()
     {
         return precision;
+    }
+
+    @Override
+    public SQLValueAdapter<T, Object> getAdapter()
+    {
+        return adapter;
+    }
+
+    @Override
+    public T parse(Object value) throws SQLException
+    {
+        if(value == null) return null;
+        if(javaType.isAssignableFrom(value.getClass())) return (T)value;
+        if(adapter != null) return adapter.parse(value);
+        return (T)value;
+    }
+
+    @Override
+    public Object write(T value) throws SQLException
+    {
+        if(value == null) return null;
+        if(adapter != null) return adapter.write(value);
+        return value;
+    }
+
+    @Override
+    public Expression<T> asParam()
+    {
+        if(param == null)
+        {
+            param = SQL.param(this);
+        }
+        return param;
     }
 }

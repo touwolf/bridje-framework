@@ -20,6 +20,7 @@ import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
 class BinaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
@@ -30,7 +31,7 @@ class BinaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringE
 
     private final Expression<?> operand2;
 
-    public BinaryExpr(Expression<?> operand1, Operators operator, Expression<?> operand2, Class<T> type)
+    public BinaryExpr(Expression<?> operand1, Operators operator, Expression<?> operand2, SQLType<T> type)
     {
         super(type);
         this.operand1 = operand1;

@@ -22,11 +22,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLResultSet;
+import org.bridje.sql.SQLType;
 
 class SQLResultSetImpl implements SQLResultSet
 {
     private final ResultSet rs;
-    
+
     private final Map<Expression<?>, Integer> fieldsMap;
 
     public SQLResultSetImpl(ResultSet rs, Expression<?>[] fields)
@@ -57,15 +58,18 @@ class SQLResultSetImpl implements SQLResultSet
         Integer index = fieldsMap.get(expr);
         if(index != null)
         {
-            return rs.getObject(index+1, expr.getType());
+            if(expr.getSQLType() != null)
+            {
+                return expr.getSQLType().parse(rs.getObject(index+1));
+            }
         }
         return null;
     }
 
     @Override
-    public <T> T get(int column, Class<T> expr) throws SQLException
+    public <T> T get(int column, SQLType<T> sqlType) throws SQLException
     {
-        return rs.getObject(column, expr);
+        return sqlType.parse(rs.getObject(column));
     }
 
     @Override
@@ -73,5 +77,4 @@ class SQLResultSetImpl implements SQLResultSet
     {
         rs.close();
     }
-    
 }

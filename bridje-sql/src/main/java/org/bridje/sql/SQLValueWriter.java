@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.sql;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * A functional interface to parse the results of a ResultSet object into the
- * required type.
- *
- * @param <T> The type to convert the result set records to.
- */
 @FunctionalInterface
-interface QueryConsumer<T>
+public interface SQLValueWriter<T, E>
 {
-    /**
-     * Parse the result set and gets the required type.
-     *
-     * @param rs The result set to parse.
-     * @return The resulting type.
-     * @throws SQLException If any SQLException occurs during the close
-     * process.
-     */
-    T parse(ResultSet rs) throws SQLException;
+    T write(E value) throws SQLException;
 }

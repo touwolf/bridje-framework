@@ -18,7 +18,7 @@ package org.bridje.sql;
 
 public interface Expression<T> extends SQLWritable
 {
-    Class<T> getType();
+    SQLType<T> getSQLType();
 
     BooleanExpr<Boolean> eq(Expression<T> operand);
 

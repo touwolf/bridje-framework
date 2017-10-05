@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.sql;
 
-/**
- * Represents a table column whos type is a number.
- * 
- * @param <E> The type for the entity that this table belongs to.
- * @param <T> The type of the column.
- */
-public interface TableNumberColumn<E, T> extends TableColumn<E, T>, TableComparableColumn<E, T>, NumberColumn<T>
+public interface SQLValueAdapter<T, E> extends SQLValueParser<T, E>, SQLValueWriter<E, T>
 {
+    
 }

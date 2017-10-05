@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,126 +16,85 @@
 
 package org.bridje.orm.impl;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
-import org.bridje.orm.DbObject;
-import org.bridje.orm.Entity;
-import org.bridje.orm.Field;
-import org.bridje.orm.Key;
-import org.bridje.orm.Table;
-import org.bridje.orm.TableColumn;
-import org.bridje.orm.TableNumberColumn;
-import org.bridje.orm.TableRelationColumn;
-import org.bridje.orm.TableStringColumn;
+import org.bridje.sql.BooleanColumn;
+import org.bridje.sql.NumberColumn;
+import org.bridje.sql.Query;
+import org.bridje.sql.SQL;
+import org.bridje.sql.SQLType;
+import org.bridje.sql.StringColumn;
+import org.bridje.sql.Table;
 
-@Entity(table = "users", model = TestOrmModel.class)
 public class User
 {
-    @DbObject
-    public static Table<User> TABLE;
-
-    @DbObject("id")
-    public static TableNumberColumn<User, Long> ID;
-
-    @DbObject("name")
-    public static TableStringColumn<User> NAME;
-
-    @DbObject("clasif")
-    public static TableColumn<User, Character> CLASIF;
+    public static final SQLType TYPE;
     
-    @DbObject("enable")
-    public static TableColumn<User, Boolean> ENABLED;
+    public static final Table TABLE;
 
-    @DbObject("counts")
-    public static TableNumberColumn<User, Byte> COUNTS;
+    public static final NumberColumn<Long> ID;
+
+    public static final StringColumn<String> EMAIL;
+
+    public static final StringColumn<String> PASSWORD;
+
+    public static final BooleanColumn<Boolean> ACTIVE;
     
-    @DbObject("age")
-    public static TableNumberColumn<User, Short> AGE;
-
-    @DbObject("mins")
-    public static TableNumberColumn<User, Integer> MINS;
-
-    @DbObject("year")
-    public static TableNumberColumn<User, Long> YEAR;
-
-    @DbObject("credit")
-    public static TableNumberColumn<User, Float> CREDIT;
-
-    @DbObject("money")
-    public static TableNumberColumn<User, Double> MONEY;
-
-    @DbObject("brithday")
-    public static TableColumn<User, Date> BRIRTHDAY;
-
-    @DbObject("updated")
-    public static TableColumn<User, java.sql.Date> UPDATED;
-
-    @DbObject("created")
-    public static TableColumn<User, Timestamp> CREATED;
-
-    @DbObject("hour")
-    public static TableColumn<User, Time> HOUR;
+    public static final Query SELECT;
     
-    @DbObject("group")
-    public static TableRelationColumn<User, Group> GROUP;
+    public static final Query INSERT;
 
-    @Key
-    @Field
+    public static final Query UPDATE;
+
+    public static final Query DELETE;
+    
+    static {
+        TYPE = SQL.buildType(User.class, SQLTypes.LONGID.getJDBCType());
+        
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
+        EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, false, true, null);
+        PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, false, true, null);
+        ACTIVE = SQL.buildBoolColumn("active", SQLTypes.BOOLEAN, false, true, null);
+
+        TABLE = SQL.buildTable("users")
+                        .key(ID)
+                        .column(EMAIL)
+                        .column(PASSWORD)
+                        .column(ACTIVE)
+                        .index(SQL.buildUnique(EMAIL))
+                        .index(SQL.buildIndex(PASSWORD))
+                        .index(SQL.buildIndex(ACTIVE))
+                        .index(SQL.buildIndex(EMAIL, PASSWORD, ACTIVE))
+                        .build();
+        SELECT = SQL.select(ID)
+                    .from(TABLE)
+                    .where(ID.eq(ID.asParam()))
+                    .toQuery();
+
+        INSERT = SQL.insertInto(TABLE)
+                    .columns(EMAIL, PASSWORD, ACTIVE)
+                    .values(EMAIL.asParam(), PASSWORD.asParam(), ACTIVE.asParam())
+                    .toQuery();
+
+        UPDATE = SQL.update(TABLE)
+                    .set(EMAIL, EMAIL.asParam())
+                    .set(PASSWORD, PASSWORD.asParam())
+                    .set(ACTIVE, ACTIVE.asParam())
+                    .where(ID.eq(ID.asParam()))
+                    .toQuery();
+
+        DELETE = SQL.delete()
+                    .from(TABLE)
+                    .where(ID.eq(ID.asParam()))
+                    .toQuery();
+    }
+    
     private Long id;
 
-    @Field
-    private String name;
-    
-    @Field
-    private Character clasif;
-    
-    @Field
-    private Boolean enable;
-    
-    @Field
-    private Byte counts;
-    
-    @Field
-    private Short age;
-    
-    @Field
-    private Integer mins;
-    
-    @Field
-    private Long year;
-    
-    @Field
-    private Float credit;
-    
-    @Field
-    private Double money;
-    
-    @Field
-    private Date brithday;
-    
-    @Field
-    private java.sql.Date updated;
-    
-    @Field
-    private Timestamp created;
+    private String email;
 
-    @Field
-    private Time hour;
+    private String password;
     
-    @Field(column = "id_group")
-    private Group group;
+    private Boolean active;
 
-    public User()
-    {
-    }
-
-    public User(Long id, String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
-    
     public Long getId()
     {
         return id;
@@ -146,143 +105,33 @@ public class User
         this.id = id;
     }
 
-    public String getName()
+    public String getEmail()
     {
-        return name;
+        return email;
     }
 
-    public void setName(String name)
+    public void setEmail(String email)
     {
-        this.name = name;
+        this.email = email;
     }
 
-    public Character getClasif()
+    public String getPassword()
     {
-        return clasif;
+        return password;
     }
 
-    public void setClasif(Character clasif)
+    public void setPassword(String password)
     {
-        this.clasif = clasif;
+        this.password = password;
     }
 
-    public Boolean getEnable()
+    public Boolean getActive()
     {
-        return enable;
+        return active;
     }
 
-    public void setEnable(Boolean enable)
+    public void setActive(Boolean active)
     {
-        this.enable = enable;
-    }
-
-    public Byte getCounts()
-    {
-        return counts;
-    }
-
-    public void setCounts(Byte counts)
-    {
-        this.counts = counts;
-    }
-
-    public Short getAge()
-    {
-        return age;
-    }
-
-    public void setAge(Short age)
-    {
-        this.age = age;
-    }
-
-    public Integer getMins()
-    {
-        return mins;
-    }
-
-    public void setMins(Integer mins)
-    {
-        this.mins = mins;
-    }
-
-    public Long getYear()
-    {
-        return year;
-    }
-
-    public void setYear(Long year)
-    {
-        this.year = year;
-    }
-
-    public Float getCredit()
-    {
-        return credit;
-    }
-
-    public void setCredit(Float credit)
-    {
-        this.credit = credit;
-    }
-
-    public Double getMoney()
-    {
-        return money;
-    }
-
-    public void setMoney(Double money)
-    {
-        this.money = money;
-    }
-
-    public Date getBrithday()
-    {
-        return brithday;
-    }
-
-    public void setBrithday(Date brithday)
-    {
-        this.brithday = brithday;
-    }
-
-    public java.sql.Date getUpdated()
-    {
-        return updated;
-    }
-
-    public void setUpdated(java.sql.Date updated)
-    {
-        this.updated = updated;
-    }
-
-    public Timestamp getCreated()
-    {
-        return created;
-    }
-
-    public void setCreated(Timestamp created)
-    {
-        this.created = created;
-    }
-
-    public Time getHour()
-    {
-        return hour;
-    }
-
-    public void setHour(Time hour)
-    {
-        this.hour = hour;
-    }
-
-    public Group getGroup()
-    {
-        return group;
-    }
-
-    public void setGroup(Group group)
-    {
-        this.group = group;
+        this.active = active;
     }
 }

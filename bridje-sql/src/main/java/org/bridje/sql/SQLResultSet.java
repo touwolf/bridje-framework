@@ -24,5 +24,5 @@ public interface SQLResultSet extends AutoCloseable
 
     <T> T get(Expression<T> expr) throws SQLException;
 
-    <T> T get(int column, Class<T> expr) throws SQLException;
+    <T> T get(int column, SQLType<T> type) throws SQLException;
 }

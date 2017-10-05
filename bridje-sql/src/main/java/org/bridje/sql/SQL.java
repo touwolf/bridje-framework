@@ -263,12 +263,12 @@ public class SQL
         return FACT.custom(value);
     }
 
-    public static final <T> Expression<T> param(Class<T> cls)
+    public static final <T> Expression<T> param(SQLType<T> type)
     {
-        return FACT.param(cls);
+        return FACT.param(type);
     }
 
-    public static final ArithmeticExpr<Long> count()
+    public static final ArithmeticExpr<Integer> count()
     {
         return FACT.count();
     }

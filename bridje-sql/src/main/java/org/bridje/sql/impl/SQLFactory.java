@@ -295,13 +295,13 @@ public class SQLFactory
         return new Literal<>(value);
     }
 
-    public <T> Expression<T> param(Class<T> cls)
+    public <T> Expression<T> param(SQLType<T> cls)
     {
         return new Param<>(cls);
     }
 
-    public ArithmeticExpr<Long> count()
+    public ArithmeticExpr<Integer> count()
     {
-        return new SimpleExpressionImpl("count(*)", Long.class);
+        return new SimpleExpressionImpl("count(*)", SQLType.INTEGER);
     }
 }

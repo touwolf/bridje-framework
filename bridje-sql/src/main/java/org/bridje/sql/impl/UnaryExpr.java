@@ -20,6 +20,7 @@ import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
 class UnaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>
@@ -28,7 +29,7 @@ class UnaryExpr<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringEx
     
     private final Operators operator;
     
-    public UnaryExpr(Operators operator, Expression<?> operand, Class<T> type)
+    public UnaryExpr(Operators operator, Expression<?> operand, SQLType<T> type)
     {
         super(type);
         this.operand = operand;

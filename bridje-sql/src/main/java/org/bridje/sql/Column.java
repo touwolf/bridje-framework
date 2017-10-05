@@ -26,9 +26,9 @@ public interface Column<T> extends Expression<T>
 
     boolean isAllowNull();
 
-    SQLType<T> getSQLType();
-
     boolean isAutoIncrement();
 
     T getDefValue();
+
+    Expression<T> asParam();
 }

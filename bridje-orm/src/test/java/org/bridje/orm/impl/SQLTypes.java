@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-package org.bridje.sql.impl;
+package org.bridje.orm.impl;
 
-import org.bridje.sql.Expression;
-import org.bridje.sql.SQLBuilder;
+import java.sql.JDBCType;
+import org.bridje.sql.SQL;
 import org.bridje.sql.SQLType;
 
-class Param<T> extends ExpressionBase<T> implements Expression<T>
+public class SQLTypes
 {
-    protected Param(SQLType<T> type)
-    {
-        super(type);
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "?";
-    }
+    public static final SQLType<Long> LONGID;
 
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        builder.append('?');
-        builder.getParameters().add(this);
+    public static final SQLType<String> STRING150;
+
+    public static final SQLType<String> PASSWORD;
+
+    public static final SQLType<Boolean> BOOLEAN;
+
+    static {
+        LONGID = SQL.buildType(Long.class, JDBCType.BIGINT);
+        STRING150 = SQL.buildType(String.class, JDBCType.VARCHAR, 150);
+        PASSWORD = SQL.buildType(String.class, JDBCType.VARCHAR, 512);
+        BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BIT, 0, 0);
     }
 }

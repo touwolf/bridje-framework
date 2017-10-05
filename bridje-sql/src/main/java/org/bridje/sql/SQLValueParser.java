@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.adapters;
+package org.bridje.sql;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.sql.SQLException;
 
-/**
- * This annotation marks a method for a custom data type, as the method that 
- * will be use to write the value from its java object form to the SQL form.
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ToSQL
+@FunctionalInterface
+public interface SQLValueParser<T, E>
 {
+    T parse(E value) throws SQLException;
 }

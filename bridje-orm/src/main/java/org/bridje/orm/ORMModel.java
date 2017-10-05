@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm;
 
-/**
- * Operators used in queries.
- */
-enum Operator
+public interface ORMModel
 {
-    IS("IS"), 
-    EQ("="), 
-    GT(">"), 
-    GE(">="), 
-    LT("<"), 
-    LE("<="), 
-    NE("<>"), 
-    AND("and"), 
-    OR("or"), 
-    NOT("not"), 
-    LIKE("LIKE");
     
-    private final String symbol;
-
-    Operator(String symbol)
-    {
-        this.symbol = symbol;
-    }
-
-    @Override
-    public String toString()
-    {
-        return symbol;
-    }
 }

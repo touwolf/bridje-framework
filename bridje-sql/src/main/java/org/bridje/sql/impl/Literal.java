@@ -16,19 +16,28 @@
 
 package org.bridje.sql.impl;
 
+import java.sql.JDBCType;
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.LiteralExpr;
+import org.bridje.sql.SQL;
 import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
 class Literal<T> extends ExpressionBase<T> implements BooleanExpr<T>, StringExpr<T>, ArithmeticExpr<T>, LiteralExpr<T>
 {
     private final T value;
-    
+
     public Literal(T value)
     {
-        super((Class<T>)value.getClass());
+        super(null);
+        this.value = value;
+    }
+
+    public Literal(T value, SQLType<T> sqlType)
+    {
+        super(sqlType);
         this.value = value;
     }
 

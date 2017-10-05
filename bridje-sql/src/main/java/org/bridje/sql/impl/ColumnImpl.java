@@ -18,6 +18,7 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.Column;
+import org.bridje.sql.Expression;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
@@ -34,16 +35,13 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
 
     private final boolean allowNull;
 
-    private final SQLType<T> sqlType;
-
     private boolean autoIncrement;
 
     private final T defValue;
 
     public ColumnImpl(String name, SQLType<T> sqlType, boolean key, boolean allowNull, T defValue)
     {
-        super(sqlType.getJavaType());
-        this.sqlType = sqlType;
+        super(sqlType);
         this.name = name;
         this.key = key;
         this.allowNull = allowNull;
@@ -86,12 +84,6 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     }
 
     @Override
-    public SQLType<T> getSQLType()
-    {
-        return sqlType;
-    }
-
-    @Override
     public boolean isAutoIncrement()
     {
         return autoIncrement;
@@ -109,14 +101,14 @@ class ColumnImpl<T> extends ExpressionBase<T> implements Column<T>, NumberColumn
     }
 
     @Override
-    public Class<T> getType()
-    {
-        return sqlType.getJavaType();
-    }
-
-    @Override
     public void writeSQL(SQLBuilder builder)
     {
         builder.appendObjectName(name);
+    }
+
+    @Override
+    public Expression<T> asParam()
+    {
+        return getSQLType().asParam();
     }
 }

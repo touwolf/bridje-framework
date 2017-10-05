@@ -70,7 +70,7 @@ public class SQLTest
 
         Query insertUsers = SQL.insertInto(User.TABLE)
                 .columns(User.EMAIL, User.PASSWORD, User.ACTIVE)
-                .values(SQL.param(String.class), SQL.param(String.class), SQL.param(Boolean.class))
+                .values(User.EMAIL.asParam(), User.PASSWORD.asParam(), User.ACTIVE.asParam())
                 .toQuery();
         sqlEnv.update(insertUsers, "email1@domain.com", "pass1", true);
         sqlEnv.update(insertUsers, "email2@domain.com", "pass2", true);
@@ -82,13 +82,13 @@ public class SQLTest
                                     .from(User.TABLE)
                                     .toQuery();
 
-        Long ctn = sqlEnv.fetchOne(countUsers, (rs) -> rs.get(SQL.count()));
+        Integer ctn = sqlEnv.fetchOne(countUsers, (rs) -> rs.get(SQL.count()));
         Assert.assertNotNull(ctn);
         Assert.assertEquals(5l, ctn.longValue());
 
         Query insertGroups = SQL.insertInto(Group.TABLE)
                 .columns(Group.TITLE)
-                .values(SQL.param(String.class))
+                .values(Group.TITLE.asParam())
                 .toQuery();
         sqlEnv.update(insertGroups, "Group 1");
         sqlEnv.update(insertGroups, "Group 2");
