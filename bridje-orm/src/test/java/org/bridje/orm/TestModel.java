@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm;
 
 import java.sql.SQLException;
-import org.bridje.ioc.Inject;
-import org.bridje.orm.EntityContext;
 import org.bridje.sql.SQL;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultSet;
@@ -34,11 +32,15 @@ public class TestModel
                     .build();
     }
 
-    @Inject
-    private SQLEnvironment env;
+    private final EntityContext ctx;
 
-    @Inject
-    private EntityContext ctx;
+    private final SQLEnvironment env;
+
+    public TestModel(EntityContext orm, SQLEnvironment sql)
+    {
+        this.ctx = orm;
+        this.env = sql;
+    }
 
     public User findUser(Long id) throws SQLException
     {
@@ -53,7 +55,7 @@ public class TestModel
         user.setEmail(rs.get(User.EMAIL));
         user.setPassword(rs.get(User.PASSWORD));
         user.setActive(rs.get(User.ACTIVE));
-        ctx.put(user);
+        ctx.put(user.getId(), user);
         return user;
     }
 
@@ -68,7 +70,7 @@ public class TestModel
         Group group = new Group();
         group.setId(rs.get(Group.ID));
         group.setTitle(rs.get(Group.TITLE));
-        ctx.put(group);
+        ctx.put(group.getId(), group);
         return group;
     }
 
@@ -82,9 +84,9 @@ public class TestModel
     {
         UserGroup entity = new UserGroup();
         entity.setId(rs.get(UserGroup.ID));
-        entity.setGroup(rs.get(UserGroup.GROUP));
-        entity.setUser(rs.get(UserGroup.USER));
-        ctx.put(entity);
+        entity.setGroup(rs.get(UserGroup.GROUP, this::findGroup));
+        entity.setUser(rs.get(UserGroup.USER, this::findUser));
+        ctx.put(entity.getId(), entity);
         return entity;
     }
 }

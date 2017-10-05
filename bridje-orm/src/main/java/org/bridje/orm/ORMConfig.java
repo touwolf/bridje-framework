@@ -16,7 +16,27 @@
 
 package org.bridje.orm;
 
-public interface ORMEnvironment
+import java.util.HashMap;
+import java.util.Map;
+import org.bridje.sql.SQLEnvironment;
+
+public class ORMConfig
 {
-    <T> T getModel(Class<T> modelCls);
+    private final Map<Class<?>, SQLEnvironment> sqlEnvironments;
+
+    public ORMConfig()
+    {
+        sqlEnvironments = new HashMap<>();
+    }
+
+    public void put(Class<?> modelClass, SQLEnvironment env)
+    {
+        if(env == null) throw new IllegalArgumentException("The SQL environment must not be null.");
+        sqlEnvironments.put(modelClass, env);
+    }
+
+    public SQLEnvironment get(Class<?> modelClass)
+    {
+        return sqlEnvironments.get(modelClass);
+    }
 }

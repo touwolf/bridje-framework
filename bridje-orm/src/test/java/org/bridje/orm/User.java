@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm;
 
 import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.NumberColumn;

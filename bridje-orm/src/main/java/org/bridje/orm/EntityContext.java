@@ -22,7 +22,9 @@ public interface EntityContext
 
     <T> T get(Class<T> entity, Object id);
 
-    <T> void put(T entity);
+    <T> void put(Object id, T entity);
 
-    <T> void remove(T entity);
+    <T> void remove(Class<T> entity, Object id);
+
+    void clear();
 }

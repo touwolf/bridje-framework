@@ -16,7 +16,17 @@
 
 package org.bridje.orm;
 
-public interface ORMModel
+import org.bridje.ioc.thls.Thls;
+
+public class ORM
 {
-    
+    public static <T> T get(Class<T> clsModel)
+    {
+        ORMEnvironment env = Thls.get(ORMEnvironment.class);
+        if(env != null)
+        {
+            return env.getModel(clsModel);
+        }
+        return null;
+    }
 }

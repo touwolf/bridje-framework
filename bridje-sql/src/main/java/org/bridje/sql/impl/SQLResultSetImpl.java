@@ -23,6 +23,7 @@ import java.util.Map;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLResultSet;
 import org.bridje.sql.SQLType;
+import org.bridje.sql.SQLValueParser;
 
 class SQLResultSetImpl implements SQLResultSet
 {
@@ -54,8 +55,7 @@ class SQLResultSetImpl implements SQLResultSet
     @Override
     public <T> T get(Expression<T> expr) throws SQLException
     {
-        if(fieldsMap == null) return null;
-        Integer index = fieldsMap.get(expr);
+        Integer index = getIndex(expr);
         if(index != null)
         {
             if(expr.getSQLType() != null)
@@ -76,5 +76,28 @@ class SQLResultSetImpl implements SQLResultSet
     public void close() throws Exception
     {
         rs.close();
+    }
+
+    @Override
+    public <T, E> T get(Expression<T> expr, SQLValueParser<T, E> parser) throws SQLException
+    {
+        Integer index = getIndex(expr);
+        if(index != null)
+        {
+            return parser.parse((E)rs.getObject(index+1));
+        }
+        return null;
+    }
+
+    @Override
+    public <T, E> T get(int column, SQLType<T> type, SQLValueParser<T, E> parser) throws SQLException
+    {
+        return parser.parse((E)rs.getObject(column));
+    }
+
+    private <T> Integer getIndex(Expression<T> expr)
+    {
+        if(fieldsMap == null) return null;
+        return fieldsMap.get(expr);
     }
 }

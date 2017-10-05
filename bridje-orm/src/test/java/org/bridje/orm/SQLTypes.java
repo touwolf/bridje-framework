@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm;
 
 import java.sql.JDBCType;
 import org.bridje.sql.SQL;

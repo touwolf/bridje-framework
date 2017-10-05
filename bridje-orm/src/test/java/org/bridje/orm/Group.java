@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package org.bridje.orm.impl;
+package org.bridje.orm;
 
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKeyStrategy;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.Query;
 import org.bridje.sql.SQL;
+import org.bridje.sql.SQLType;
+import org.bridje.sql.StringColumn;
 import org.bridje.sql.Table;
 
-public class UserGroup
+public class Group
 {
+    public static final SQLType TYPE;
+
     public static final Table TABLE;
 
     public static final NumberColumn<Long> ID;
 
-    public static final Column<Group> GROUP;
-
-    public static final Column<User> USER;
+    public static final StringColumn<String> TITLE;
 
     public static final Query SELECT;
     
@@ -42,23 +42,16 @@ public class UserGroup
     public static final Query DELETE;
 
     static {
-        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
-        GROUP = SQL.buildNumberColumn("group", Group.TYPE, false, true, null);
-        USER = SQL.buildNumberColumn("user", User.TYPE, false, true, null);
+        TYPE = SQL.buildType(Group.class, SQLTypes.LONGID.getJDBCType());
 
-        TABLE = SQL.buildTable("user_groups")
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
+        TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, false, true, null);
+
+        TABLE = SQL.buildTable("groups")
                         .key(ID)
-                        .column(GROUP)
-                        .column(USER)
-                    .foreignKey(SQL.buildForeignKey(USER)
-                        .references(User.TABLE)
-                        .strategy(ForeignKeyStrategy.CASCADE)
-                        .build())
-                    .foreignKey(SQL.buildForeignKey(GROUP)
-                        .references(Group.TABLE)
-                        .strategy(ForeignKeyStrategy.CASCADE)
-                        .build())
-                    .build();
+                        .column(TITLE)
+                        .index(SQL.buildIndex(TITLE))
+                        .build();
 
         SELECT = SQL.select(ID)
                     .from(TABLE)
@@ -66,13 +59,12 @@ public class UserGroup
                     .toQuery();
 
         INSERT = SQL.insertInto(TABLE)
-                    .columns(GROUP, USER)
-                    .values(GROUP.asParam(), USER.asParam())
+                    .columns(TITLE)
+                    .values(TITLE.asParam())
                     .toQuery();
 
         UPDATE = SQL.update(TABLE)
-                    .set(GROUP, GROUP.asParam())
-                    .set(USER, USER.asParam())
+                    .set(TITLE, TITLE.asParam())
                     .where(ID.eq(ID.asParam()))
                     .toQuery();
 
@@ -81,12 +73,10 @@ public class UserGroup
                     .where(ID.eq(ID.asParam()))
                     .toQuery();
     }
-
+    
     private Long id;
-
-    private Group group;
-
-    private User user;
+    
+    private String title;
 
     public Long getId()
     {
@@ -98,23 +88,13 @@ public class UserGroup
         this.id = id;
     }
 
-    public Group getGroup()
+    public String getTitle()
     {
-        return group;
+        return title;
     }
 
-    public void setGroup(Group group)
+    public void setTitle(String title)
     {
-        this.group = group;
-    }
-
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
+        this.title = title;
     }
 }
