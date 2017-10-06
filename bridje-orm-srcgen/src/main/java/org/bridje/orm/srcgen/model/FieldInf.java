@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +19,8 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-/**
- * This class represents an entity template, entitys can extends from templates
- * in other to reuse the information.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EntityInfTemplate extends EntityInfBase
+public class FieldInf
 {
+    
 }

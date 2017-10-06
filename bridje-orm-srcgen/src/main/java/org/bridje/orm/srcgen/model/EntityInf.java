@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,41 +16,80 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlTransient;
 
-/**
- * This class represents an entity, entity classes will be generated out of the
- * information present in this object.
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EntityInf extends EntityInfBase
+public class EntityInf
 {
     @XmlAttribute
-    private String table;
+    private String name;
 
-    /**
-     * The name of the table for this entity.
-     *
-     * @return An string representing the table name for this entity.
-     */
-    public String getTable()
+    @XmlTransient
+    private ModelInf model;
+    
+    @XmlElementWrapper(name = "fields")
+    @XmlElements(
     {
-        if (this.table == null)
-        {
-            this.table = Utils.toSQLName(this.getName());
-        }
-        return table;
+        @XmlElement(name = "field", type = FieldInf.class)
+    })
+    private List<FieldInf> fields;
+
+    @XmlElementWrapper(name = "queries")
+    @XmlElements(
+    {
+        @XmlElement(name = "query", type = QueryInf.class)
+    })
+    private List<QueryInf> queries;
+
+    public String getName()
+    {
+        return name;
     }
 
-    /**
-     * The name of the table for this entity.
-     *
-     * @param table An string representing the table name for this entity.
-     */
-    public void setTable(String table)
+    public void setName(String name)
     {
-        this.table = table;
+        this.name = name;
+    }
+    
+    public String getFullName()
+    {
+        return model.getPackage() + "." + this.getName();
+    }
+
+    public ModelInf getModel()
+    {
+        return model;
+    }
+
+    public void setModel(ModelInf model)
+    {
+        this.model = model;
+    }
+    
+    public List<FieldInf> getFields()
+    {
+        return fields;
+    }
+
+    public void setFields(List<FieldInf> fields)
+    {
+        this.fields = fields;
+    }
+
+    public List<QueryInf> getQueries()
+    {
+        return queries;
+    }
+
+    public void setQueries(List<QueryInf> queries)
+    {
+        this.queries = queries;
     }
 }

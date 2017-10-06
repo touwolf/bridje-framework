@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,11 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
-/**
- * This enumerator represents the type of operations that this model have.
- */
-@XmlType
-@XmlEnum
-public enum OrderByType
+@XmlAccessorType(XmlAccessType.FIELD)
+public class QueryInf
 {
-    /**
-     * Ascending
-     */
-    ASC,
-    /**
-     * Descending
-     */
-    DESC;
+    
 }
