@@ -29,6 +29,9 @@ public abstract class FieldInf
     private String name;
 
     @XmlAttribute
+    private String column;
+    
+    @XmlAttribute
     private String type;
 
     @XmlAttribute
@@ -52,6 +55,16 @@ public abstract class FieldInf
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getColumn()
+    {
+        return column;
+    }
+
+    public void setColumn(String column)
+    {
+        this.column = column;
     }
 
     public SQLTypeInf getType()
@@ -87,5 +100,5 @@ public abstract class FieldInf
         this.parent = parent;
     }
     
-    public abstract String getColumn();
+    public abstract String getColumnClass();
 }

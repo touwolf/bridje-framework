@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class StringField extends FieldInf
 {
     @Override
-    public String getColumn()
+    public String getColumnClass()
     {
         return "StringColumn";
     }

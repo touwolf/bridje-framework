@@ -33,6 +33,9 @@ public class EntityInf
     @XmlAttribute
     private String name;
 
+    @XmlAttribute
+    private String table;
+
     @XmlTransient
     private ModelInf model;
 
@@ -65,6 +68,16 @@ public class EntityInf
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getTable()
+    {
+        return table;
+    }
+
+    public void setTable(String table)
+    {
+        this.table = table;
     }
     
     public String getFullName()

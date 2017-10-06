@@ -27,18 +27,18 @@ public class ${entity.name}
      * the SQL column used by the ${field.name} field.
      * ${field.description!}
      */
-    public static final ${field.column}<${field.type.javaType}, ${field.type.readType}> ${field.name?upper_case};
+    public static final ${field.columnClass}<${field.type.javaType}, ${field.type.readType}> ${field.column?upper_case};
 
     </#list>
     static {
         <#list entity.allFields as field>
-        ${field.name?upper_case} = SQL.build${field.column}("${field.name}", ${model.name}Types.${field.type.name}, false, null);
+        ${field.name?upper_case} = SQL.build${field.columnClass}("${field.column}", ${model.name}Types.${field.type.name}, false, null);
 
         </#list>
-        TABLE = SQL.buildTable("${entity.name?lower_case}")
+        TABLE = SQL.buildTable("${entity.table?lower_case}")
                     .key(${entity.key.name?upper_case})
                     <#list entity.fields as field>
-                    .column(${field.name?upper_case})
+                    .column(${field.column?upper_case})
                     </#list>
                     .build();
     }
