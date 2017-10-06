@@ -29,8 +29,11 @@ limitations under the License.
 
     <entities>
         <entity name="Group">
+            <key>
+                <ai name="id" type="LONGID" />
+            </key>
             <fields>
-                <field />
+                <string name="title" type="STRING150" />
             </fields>
             <queries>
                 <query />

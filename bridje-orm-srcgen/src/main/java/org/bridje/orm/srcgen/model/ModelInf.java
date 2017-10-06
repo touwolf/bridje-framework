@@ -93,4 +93,12 @@ public class ModelInf
     {
         this.entities = entities;
     }
+
+    public SQLTypeInf findSQLType(String type)
+    {
+        return types.stream()
+                .filter(t -> t.getName().equalsIgnoreCase(type))
+                .findFirst()
+                .orElse(null);
+    }
 }

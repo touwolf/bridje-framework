@@ -16,7 +16,6 @@
 
 package org.bridje.orm.srcgen;
 
-import com.github.javaparser.ast.CompilationUnit;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +63,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
         data = new HashMap<>();
         data.put("model", modelInf);
         srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
+        srcGen.createClass(modelInf.getFullName() + "Types", "orm/Types.ftl", data);
 
         data = new HashMap<>();
         data.put("model", modelInf);

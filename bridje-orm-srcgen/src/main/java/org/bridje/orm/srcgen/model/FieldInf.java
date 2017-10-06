@@ -18,9 +18,74 @@ package org.bridje.orm.srcgen.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FieldInf
+public abstract class FieldInf
 {
+    @XmlAttribute
+    private String name;
+
+    @XmlAttribute
+    private String type;
+
+    @XmlAttribute
+    private Boolean required;
+
+    @XmlTransient
+    private Object parent;
     
+    @XmlTransient
+    private SQLTypeInf typeInf;
+    
+    public FieldInf()
+    {
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public SQLTypeInf getType()
+    {
+        if(typeInf == null)
+        {
+            typeInf = getEntity().getModel().findSQLType(type);
+        }
+        return typeInf;
+    }
+
+    public Boolean getRequired()
+    {
+        return required;
+    }
+
+    public void setRequired(Boolean required)
+    {
+        this.required = required;
+    }
+
+    public EntityInf getEntity()
+    {
+        if(parent instanceof EntityInfKey)
+        {
+            return ((EntityInfKey)parent).getEntity();
+        }
+        return (EntityInf)parent;
+    }
+
+    public void setParent(Object parent)
+    {
+        this.parent = parent;
+    }
+    
+    public abstract String getColumn();
 }

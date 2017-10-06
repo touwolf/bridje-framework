@@ -82,31 +82,31 @@ public class SQLFactory
         return new TableBuilder(name);
     }
     
-    public <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, null);
+        return new ColumnImpl<>(name, type, allowNull, null);
     }
     
-    public <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull)
+    public <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean allowNull)
     {
-        ColumnImpl result = new ColumnImpl<>(name, type, key, allowNull, null);
+        ColumnImpl result = new ColumnImpl<>(name, type, allowNull, null);
         result.setAutoIncrement(true);
         return result;
     }
 
-    public <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, defValue);
+        return new ColumnImpl<>(name, type, allowNull, defValue);
     }
 
-    public <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, defValue);
+        return new ColumnImpl<>(name, type, allowNull, defValue);
     }
 
-    public <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return new ColumnImpl<>(name, type, key, allowNull, defValue);
+        return new ColumnImpl<>(name, type, allowNull, defValue);
     }
 
     public Index buildIndex(String name, Table table, Column<?, ?>[] columns)

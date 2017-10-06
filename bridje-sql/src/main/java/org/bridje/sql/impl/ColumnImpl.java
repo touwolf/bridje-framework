@@ -39,11 +39,11 @@ class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, Num
 
     private final T defValue;
 
-    public ColumnImpl(String name, SQLType<T, E> sqlType, boolean key, boolean allowNull, T defValue)
+    public ColumnImpl(String name, SQLType<T, E> sqlType, boolean allowNull, T defValue)
     {
         super(sqlType);
         this.name = name;
-        this.key = key;
+        this.key = false;
         this.allowNull = allowNull;
         this.defValue = defValue;
         this.autoIncrement = false;

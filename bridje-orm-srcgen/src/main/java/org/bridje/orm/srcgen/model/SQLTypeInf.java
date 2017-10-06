@@ -16,6 +16,7 @@
 
 package org.bridje.orm.srcgen.model;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -99,5 +100,10 @@ public class SQLTypeInf
     public void setPrecision(Integer precision)
     {
         this.precision = precision;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        
     }
 }

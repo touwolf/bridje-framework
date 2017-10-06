@@ -27,9 +27,9 @@ public class UserGroup
     public static final NumberColumn<Long, Long> USER_ID;
 
     static {
-        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
-        GROUP_ID = SQL.buildNumberColumn("groupId", SQLTypes.LONGID, false, true, null);
-        USER_ID = SQL.buildNumberColumn("userId", SQLTypes.LONGID, false, true, null);
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, false);
+        GROUP_ID = SQL.buildNumberColumn("groupId", SQLTypes.LONGID, true, null);
+        USER_ID = SQL.buildNumberColumn("userId", SQLTypes.LONGID, true, null);
 
         TABLE = SQL.buildTable("user_groups")
                         .key(ID)

@@ -1,8 +1,9 @@
 
-package ${entity.package};
+package ${entity.model.package};
 
 import java.sql.JDBCType;
 import org.bridje.orm.*;
+import org.bridje.sql.*;
 import java.util.Objects;
 import javax.annotation.Generated;
 
@@ -18,35 +19,42 @@ public class ${entity.name}
      * the SQL table used by the ${entity.name} entity.
      * ${entity.description!}
      */
-    @DbObject
-    public static Table<${entity.name}> TABLE;
+    public static final Table TABLE;
 
-    <#list entity.fields as field>
+    <#list entity.allFields as field>
     /**
      * This static field holds a reference to the TableColumn object that represents
      * the SQL column used by the ${field.name} field.
      * ${field.description!}
      */
-    @DbObject("${field.name}")
-    public static ${field.tableColumn}<${entity.name}<#if field.tableColumn != "TableStringColumn">, ${field.javaType}</#if>> ${field.column?upper_case};
+    public static final ${field.column}<${field.type.javaType}, ${field.type.readType}> ${field.name?upper_case};
 
     </#list>
-    <#list entity.fields as field>
-    <#if field.key >
-    @Key<#if field.autoIncrement!false>(autoIncrement = true)</#if>
-    </#if>
-    @Field(column = "${field.column!}"<#if field.length?? && field.length &gt; 0>, length = ${field.length?string.computer}</#if><#if field.required!>, required = true</#if><#if field.indexed>, index = true</#if><#if field.sqlType?? && field.sqlType != "">, type = JDBCType.${field.sqlType!}</#if><#if field.adapter?? && field.adapter != "">, adapter = ${field.adapter!}.class</#if>)
-    private ${field.javaType} ${field.name};
+    static {
+        <#list entity.allFields as field>
+        ${field.name?upper_case} = SQL.build${field.column}("${field.name}", ${model.name}Types.${field.type.name}, false, null);
+
+        </#list>
+        TABLE = SQL.buildTable("${entity.name?lower_case}")
+                    .key(${entity.key.name?upper_case})
+                    <#list entity.fields as field>
+                    .column(${field.name?upper_case})
+                    </#list>
+                    .build();
+    }
+
+    <#list entity.allFields as field>
+    private ${field.type.javaType} ${field.name};
 
     </#list>
-    <#list entity.fields as field>
+    <#list entity.allFields as field>
     /**
      * Gets the value of the ${field.name} field.
      * ${field.description!}
-     * @return A ${field.javaType} object representing the value 
+     * @return A ${field.type.javaType} object representing the value 
      * of the ${field.name} field.
      */
-    public ${field.javaType} get${field.name?cap_first}()
+    public ${field.type.javaType} get${field.name?cap_first}()
     {
         return this.${field.name};
     }
@@ -54,26 +62,11 @@ public class ${entity.name}
     /**
      * Sets the value of the ${field.name} field.
      * ${field.description!}
-     * @param ${field.name} The ${field.javaType} object representing the value 
+     * @param ${field.name} The ${field.type.javaType} object representing the value 
      * of the ${field.name} field.
      */
-    public void set${field.name?cap_first}(${field.javaType} ${field.name})
+    public void set${field.name?cap_first}(${field.type.javaType} ${field.name})
     {
-        <#if field.javaType == "String">
-        <#if field.blankToNull?? && field.blankToNull>
-        if(${field.name} != null && ${field.name}.trim().isEmpty())
-        {
-            this.${field.name} = null;
-            return;
-        }
-        <#elseif field.emptyToNull?? && field.emptyToNull>
-        if(${field.name} != null && ${field.name}.isEmpty())
-        {
-            this.${field.name} = null;
-            return;
-        }
-        </#if>
-        </#if>
         this.${field.name} = ${field.name};
     }
 
@@ -81,11 +74,11 @@ public class ${entity.name}
     @Override
     public int hashCode()
     {
-        if(get${entity.keyField.name?cap_first}() == null)
+        if(get${entity.key.name?cap_first}() == null)
         {
             return super.hashCode();
         }
-        return get${entity.keyField.name?cap_first}().hashCode();
+        return get${entity.key.name?cap_first}().hashCode();
     }
 
     @Override
@@ -95,6 +88,6 @@ public class ${entity.name}
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final ${entity.name} other = (${entity.name}) obj;
-        return Objects.equals(this.get${entity.keyField.name?cap_first}(), other.get${entity.keyField.name?cap_first}());
+        return Objects.equals(this.get${entity.key.name?cap_first}(), other.get${entity.key.name?cap_first}());
     }
 }

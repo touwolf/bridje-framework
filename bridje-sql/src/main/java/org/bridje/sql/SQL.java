@@ -63,29 +63,29 @@ public class SQL
         return FACT.buildTable(name);
     }
 
-    public static final <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public static final <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return FACT.buildColumn(name, type, key, allowNull, defValue);
+        return FACT.buildColumn(name, type, allowNull, defValue);
     }
     
-    public static final <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull)
+    public static final <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean allowNull)
     {
-        return FACT.buildAiColumn(name, type, key, allowNull);
+        return FACT.buildAiColumn(name, type, allowNull);
     }
 
-    public static final <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public static final <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return FACT.buildNumberColumn(name, type, key, allowNull, defValue);
+        return FACT.buildNumberColumn(name, type, allowNull, defValue);
     }
 
-    public static final <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public static final <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return FACT.buildStringColumn(name, type, key, allowNull, defValue);
+        return FACT.buildStringColumn(name, type, allowNull, defValue);
     }
 
-    public static final <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean key, boolean allowNull, T defValue)
+    public static final <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return FACT.buildBoolColumn(name, type, key, allowNull, defValue);
+        return FACT.buildBoolColumn(name, type, allowNull, defValue);
     }
 
     public static final Index buildIndex(String name, Table table, Column<?, ?>... columns)

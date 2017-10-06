@@ -21,10 +21,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QueryInf
+public class NumberField extends FieldInf
 {
+    @Override
+    public String getColumn()
+    {
+        return "NumberColumn";
+    }
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        
+        setParent(parent);
     }
 }

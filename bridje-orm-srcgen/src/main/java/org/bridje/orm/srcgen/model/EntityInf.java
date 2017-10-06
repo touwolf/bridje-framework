@@ -16,7 +16,9 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -33,11 +35,15 @@ public class EntityInf
 
     @XmlTransient
     private ModelInf model;
-    
+
+    private EntityInfKey key;
+
     @XmlElementWrapper(name = "fields")
     @XmlElements(
     {
-        @XmlElement(name = "field", type = FieldInf.class)
+        @XmlElement(name = "boolean", type = BooleanField.class),
+        @XmlElement(name = "number", type = NumberField.class),
+        @XmlElement(name = "string", type = StringField.class)
     })
     private List<FieldInf> fields;
 
@@ -47,6 +53,9 @@ public class EntityInf
         @XmlElement(name = "query", type = QueryInf.class)
     })
     private List<QueryInf> queries;
+
+    @XmlTransient
+    private List<FieldInf> allFields;
 
     public String getName()
     {
@@ -72,7 +81,18 @@ public class EntityInf
     {
         this.model = model;
     }
-    
+
+    public FieldInf getKey()
+    {
+        return key.getField();
+    }
+
+    public void setKey(FieldInf key)
+    {
+        if(this.key == null) this.key = new EntityInfKey();
+        this.key.setField(key);
+    }
+
     public List<FieldInf> getFields()
     {
         return fields;
@@ -83,6 +103,17 @@ public class EntityInf
         this.fields = fields;
     }
 
+    public List<FieldInf> getAllFields()
+    {
+        if(allFields == null)
+        {
+            allFields = new ArrayList<>();
+            allFields.add(key.getField());
+            allFields.addAll(fields);
+        }
+        return allFields;
+    }
+
     public List<QueryInf> getQueries()
     {
         return queries;
@@ -91,5 +122,10 @@ public class EntityInf
     public void setQueries(List<QueryInf> queries)
     {
         this.queries = queries;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        setModel((ModelInf)parent);
     }
 }

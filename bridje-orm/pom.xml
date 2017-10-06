@@ -53,6 +53,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.bridje</groupId>
+                <artifactId>bridje-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-bridje-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generate-sources</goal>
+                        </goals>
+                        <configuration>
+                            <dataFolder>./src/test/resources/BRIDJE-INF/srcgen/data</dataFolder>
+                            <targetFolder>${project.build.directory}/generated-sources/bridje</targetFolder>
+                            <targetResFolder>${project.build.directory}/generated-resources/bridje</targetResFolder>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.bridje</groupId>
+                        <artifactId>bridje-orm-srcgen</artifactId>
+                        <version>${project.version}</version>
+                        <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
 

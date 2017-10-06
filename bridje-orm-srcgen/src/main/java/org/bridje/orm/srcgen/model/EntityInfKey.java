@@ -19,12 +19,42 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class QueryInf
+public class EntityInfKey
 {
+    @XmlElements(
+    {
+        @XmlElement(name = "ai", type = AiField.class),
+        @XmlElement(name = "boolean", type = BooleanField.class),
+        @XmlElement(name = "number", type = NumberField.class),
+        @XmlElement(name = "string", type = StringField.class)
+    })
+    private FieldInf field;
+
+    @XmlTransient
+    private EntityInf entity;
+
+    public FieldInf getField()
+    {
+        return field;
+    }
+
+    public void setField(FieldInf field)
+    {
+        this.field = field;
+    }
+
+    public EntityInf getEntity()
+    {
+        return entity;
+    }
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        
+        entity = (EntityInf)parent;
     }
 }

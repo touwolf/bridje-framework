@@ -25,8 +25,8 @@ public class Group
     public static final StringColumn<String, String> TITLE;
 
     static {
-        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
-        TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, false, true, null);
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, false);
+        TITLE = SQL.buildStringColumn("title", SQLTypes.STRING150, true, null);
 
         TABLE = SQL.buildTable("groups")
                         .key(ID)

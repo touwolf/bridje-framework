@@ -29,10 +29,10 @@ public class User
     public static final BooleanColumn<Boolean, Boolean> ACTIVE;
     
     static {
-        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, true, false);
-        EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, false, true, null);
-        PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, false, true, null);
-        ACTIVE = SQL.buildBoolColumn("active", SQLTypes.BOOLEAN, false, true, null);
+        ID = SQL.buildAiColumn("id", SQLTypes.LONGID, false);
+        EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, true, null);
+        PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, true, null);
+        ACTIVE = SQL.buildBoolColumn("active", SQLTypes.BOOLEAN, true, null);
 
         TABLE = SQL.buildTable("users")
                         .key(ID)

@@ -130,6 +130,7 @@ class SrcGenServicesImpl implements SrcGenService
         }
         catch (JAXBException | ClassCastException e)
         {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
     }
