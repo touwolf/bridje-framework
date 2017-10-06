@@ -16,7 +16,17 @@
 
 package org.bridje.orm;
 
+import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
+
 public interface ORMEnvironment
 {
     <T> T getModel(Class<T> modelCls);
+
+    <T> T doWith(ThlsAction<T> action);
+
+    <T, E extends Throwable> T doWithEx(ThlsActionException<T, E> action) throws E;
+
+    <T, E extends Throwable, E2 extends Throwable> T doWithEx2(ThlsActionException2<T, E, E2> action) throws E, E2;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.orm;
+package org.bridje.orm.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,43 +22,53 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
+import org.bridje.orm.EnvironmentBuilder;
+import org.bridje.orm.ORMEnvironment;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLService;
 
-public class ORMConfig
+class EnvironmentBuilderImpl implements EnvironmentBuilder
 {
     private final Map<Class<?>, SQLEnvironment> sqlEnvironments;
 
     private final SQLService sqlServ;
 
-    public ORMConfig()
+    public EnvironmentBuilderImpl()
     {
         sqlEnvironments = new HashMap<>();
         sqlServ = Ioc.context().find(SQLService.class);
     }
 
-    public void put(Class<?> modelClass, SQLEnvironment env)
+    @Override
+    public EnvironmentBuilder model(Class<?> modelClass, SQLEnvironment env)
     {
         if(env == null) throw new IllegalArgumentException("The SQL environment must not be null.");
         sqlEnvironments.put(modelClass, env);
+        return this;
     }
 
-    public void put(Class<?> modelClass, DataSource ds) throws SQLException
+    @Override
+    public EnvironmentBuilder model(Class<?> modelClass, DataSource ds) throws SQLException
     {
         if(ds == null) throw new IllegalArgumentException("The DataSource must not be null.");
         sqlEnvironments.put(modelClass, createSQLEnvironment(ds));
+        return this;
     }
 
-    public void put(Class<?> modelClass, Connection conn) throws SQLException
+    @Override
+    public EnvironmentBuilder model(Class<?> modelClass, Connection conn) throws SQLException
     {
         if(conn == null) throw new IllegalArgumentException("The Connection must not be null.");
         sqlEnvironments.put(modelClass, createSQLEnvironment(conn));
+        return this;
     }
 
-    public void put(Class<?> modelClass, String dsName) throws SQLException
+    @Override
+    public EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException
     {
         if(dsName == null) throw new IllegalArgumentException("The name of the DataSource must not be null.");
         sqlEnvironments.put(modelClass, createSQLEnvironment(dsName));
+        return this;
     }
 
     public SQLEnvironment get(Class<?> modelClass)
@@ -79,5 +89,16 @@ public class ORMConfig
     private SQLEnvironment createSQLEnvironment(String dsName) throws SQLException
     {
         return sqlServ.createEnvironment(dsName);
+    }
+
+    public boolean contains(Class<?> type)
+    {
+        return sqlEnvironments.containsKey(type);
+    }
+
+    @Override
+    public ORMEnvironment build()
+    {
+        return new ORMEnvironmentImpl(this);
     }
 }

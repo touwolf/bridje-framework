@@ -33,13 +33,7 @@ public class Group
 
     public static final StringColumn<String, String> TITLE;
 
-    public static final Query SELECT;
-    
-    public static final Query INSERT;
-
-    public static final Query UPDATE;
-
-    public static final Query DELETE;
+    public static final Query QUERIES[];
 
     static {
         TYPE = SQL.buildType(Group.class, SQLTypes.LONGID.getJavaReadType(), SQLTypes.LONGID.getJDBCType(), null, (e) -> e.getId());
@@ -53,22 +47,20 @@ public class Group
                         .index(SQL.buildIndex(TITLE))
                         .build();
 
-        SELECT = SQL.select(ID)
+        QUERIES = new Query[10];
+        QUERIES[1] = SQL.select(ID)
                     .from(TABLE)
                     .where(ID.eq(ID.asParam()))
                     .toQuery();
-
-        INSERT = SQL.insertInto(TABLE)
+        QUERIES[2] = SQL.insertInto(TABLE)
                     .columns(TITLE)
                     .values(TITLE.asParam())
                     .toQuery();
-
-        UPDATE = SQL.update(TABLE)
+        QUERIES[3] = SQL.update(TABLE)
                     .set(TITLE, TITLE.asParam())
                     .where(ID.eq(ID.asParam()))
                     .toQuery();
-
-        DELETE = SQL.delete()
+        QUERIES[4] = SQL.delete()
                     .from(TABLE)
                     .where(ID.eq(ID.asParam()))
                     .toQuery();

@@ -17,13 +17,21 @@
 package org.bridje.orm.impl;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bridje.ioc.Inject;
+import org.bridje.ioc.Ioc;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
+import org.bridje.ioc.thls.ThlsActionException;
+import org.bridje.ioc.thls.ThlsActionException2;
 import org.bridje.orm.EntityContext;
-import org.bridje.orm.ORMConfig;
 import org.bridje.orm.ORMEnvironment;
 import org.bridje.sql.SQLEnvironment;
 
@@ -31,17 +39,23 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
 {
     private static final Logger LOG = Logger.getLogger(ORMEnvironmentImpl.class.getName());
 
-    private final ORMConfig config;
+    private final EnvironmentBuilderImpl config;
 
     private final Map<Class<?>, Object> models;
 
     private final Map<Class<?>, EntityCache> cacheMap;
 
-    public ORMEnvironmentImpl(ORMConfig config)
+    private final Map<Class<?>, List<Field>> fieldsMap;
+    
+    private final Map<Class<?>, Constructor<?>> contructorsMap;
+
+    public ORMEnvironmentImpl(EnvironmentBuilderImpl config)
     {
         this.config = config;
         this.models = new HashMap<>();
         this.cacheMap = new HashMap<>();
+        this.fieldsMap = new HashMap<>();
+        this.contructorsMap = new HashMap<>();
     }
 
     @Override
@@ -68,10 +82,15 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
     {
         try
         {
-            Constructor<T> constructor = modelCls.getConstructor(EntityContext.class, SQLEnvironment.class);
-            return constructor.newInstance(this, env);
+            Constructor<?> defConst = getDefConstructor(modelCls);
+            if(defConst != null)
+            {
+                T object = (T)defConst.newInstance();
+                injectModels(object, env);
+                return object;
+            }
         }
-        catch (IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e)
+        catch (IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException e)
         {
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -120,10 +139,127 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
         EntityCache cache = cacheMap.get(entity);
         if(cache != null) cache.clear();
     }
-    
+
     @Override
     public void clear()
     {
         cacheMap.clear();
+    }
+
+    private <T> void injectModels(T object, SQLEnvironment env)
+    {
+        List<Field> lst = getFieldList(object.getClass());
+        for (Field field : lst)
+        {
+            Object value = getValueForField(field, env);
+            setFieldValue(field, object, value);
+        }
+    }
+
+    private List<Field> getFieldList(Class<?> cls)
+    {
+        List<Field> result = fieldsMap.get(cls);
+        if(result == null)
+        {
+            result = findFieldList(cls);
+            if(result != null) fieldsMap.put(cls, result);
+        }
+        return result;
+    }
+
+    private List<Field> findFieldList(Class<?> cls)
+    {
+        List<Field> fieldsLst = new ArrayList<>();
+        Field[] fields = cls.getDeclaredFields();
+        for (Field field : fields)
+        {
+            Inject inject = field.getAnnotation(Inject.class);
+            if(inject != null)
+            {
+                fieldsLst.add(field);
+            }
+        }
+        return fieldsLst;
+    }
+
+    private Object getValueForField(Field field, SQLEnvironment env)
+    {
+        if(field.getType() == EntityContext.class)
+        {
+            return this;
+        }
+        else if(field.getType() == SQLEnvironment.class)
+        {
+            return env;
+        }
+        else 
+        {
+            if(config.contains(field.getType()))
+            {
+                return getModel(field.getType());
+            }
+            else
+            {
+                return Ioc.context().findGeneric(field.getGenericType());
+            }
+        }
+    }
+
+    private void setFieldValue(Field field, Object comp, Object value)
+    {
+        if(value != null)
+        {
+            try
+            {
+                field.setAccessible(true);
+                field.set(comp, value);
+            }
+            catch (IllegalAccessException | IllegalArgumentException | SecurityException e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+    }
+
+    private Constructor<?> findDefConstructor(Class<?> modelCls)
+    {
+        for (Constructor<?> constructor : modelCls.getDeclaredConstructors())
+        {
+            constructor.setAccessible(true);
+            if(constructor.getParameterTypes().length == 0)
+            {
+                return constructor;
+            }
+        }
+        return null;
+    }
+
+    private <T> Constructor<?> getDefConstructor(Class<T> modelCls)
+    {
+        Constructor<?> defConst = contructorsMap.get(modelCls);
+        if(defConst == null)
+        {
+            defConst = findDefConstructor(modelCls);
+            if(defConst != null) contructorsMap.put(modelCls, defConst);
+        }
+        return defConst;
+    }
+
+    @Override
+    public <T> T doWith(ThlsAction<T> action)
+    {
+        return Thls.doAs(action, ORMEnvironment.class, this);
+    }
+
+    @Override
+    public <T, E extends Throwable> T doWithEx(ThlsActionException<T, E> action) throws E
+    {
+        return Thls.doAsEx(action, ORMEnvironment.class, this);
+    }
+
+    @Override
+    public <T, E extends Throwable, E2 extends Throwable> T doWithEx2(ThlsActionException2<T, E, E2> action) throws E, E2
+    {
+        return Thls.doAsEx2(action, ORMEnvironment.class, this);
     }
 }

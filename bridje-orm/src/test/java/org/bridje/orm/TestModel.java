@@ -17,6 +17,7 @@
 package org.bridje.orm;
 
 import java.sql.SQLException;
+import org.bridje.ioc.Inject;
 import org.bridje.sql.SQL;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultSet;
@@ -34,14 +35,14 @@ public class TestModel
                     .build();
     }
 
-    private final EntityContext ctx;
+    @Inject
+    private EntityContext ctx;
 
-    private final SQLEnvironment env;
+    @Inject
+    private SQLEnvironment env;
 
-    public TestModel(EntityContext orm, SQLEnvironment sql)
+    private TestModel()
     {
-        this.ctx = orm;
-        this.env = sql;
     }
 
     public void findSchema() throws SQLException
@@ -77,7 +78,7 @@ public class TestModel
         ctx.put(user.getId(), user);
     }
 
-    public void delteUser(User user) throws SQLException
+    public void deleteUser(User user) throws SQLException
     {
         env.update(User.DELETE, user.getId());
         ctx.remove(User.class, user.getId());
@@ -103,33 +104,46 @@ public class TestModel
     public Group findGroup(Long id) throws SQLException
     {
         if(ctx.contains(Group.class, id)) return ctx.get(Group.class, id);
-        return env.fetchOne(Group.SELECT, this::parseGroup, id);
+        return env.fetchOne(Group.QUERIES[0], this::parseGroup, id);
     }
 
     public Group parseGroup(SQLResultSet rs) throws SQLException
     {
         Group group = new Group();
-        group.setId(rs.get(Group.ID));
-        group.setTitle(rs.get(Group.TITLE));
+        parseGroup(rs, group);
         ctx.put(group.getId(), group);
         return group;
+    }
+
+    public void parseGroup(SQLResultSet rs,Group group) throws SQLException
+    {
+        group.setId(rs.get(Group.ID));
+        group.setTitle(rs.get(Group.TITLE));
     }
 
     public void saveGroup(Group group) throws SQLException
     {
         if(group.getId() == null)
         {
-            Long id = env.fetchOne(Group.INSERT, 
-                        (rs) -> rs.get(Group.ID), 
-                        group.getTitle());
-            group.setId(id);
+            insertGroup(group);
         }
         else
         {
-            env.update(User.UPDATE, 
-                        group.getTitle(),
-                        group.getId());
+            updateGroup(group);
         }
+    }
+
+    private void insertGroup(Group group) throws SQLException
+    {
+        Long id = env.fetchOne(Group.QUERIES[1], (rs) -> rs.get(Group.ID), group.getTitle());
+        group.setId(id);
+        ctx.put(group.getId(), group);
+    }
+    
+    private void updateGroup(Group group) throws SQLException
+    {
+        env.update(Group.QUERIES[2], group.getTitle(), group.getId());
+        ctx.put(group.getId(), group);
     }
 
     public UserGroup findUserGroup(Long id) throws SQLException

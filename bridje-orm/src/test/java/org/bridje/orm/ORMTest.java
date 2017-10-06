@@ -60,9 +60,9 @@ public class ORMTest
     public void test1() throws SQLException
     {
         ORMService ormServ = Ioc.context().find(ORMService.class);
-        ORMConfig cfg = new ORMConfig();
-        cfg.put(TestModel.class, "Derby-DB");
-        ORMEnvironment ormEnv = ormServ.createEnvironment(cfg);
+        ORMEnvironment ormEnv = ormServ
+                                    .model(TestModel.class, "Derby-DB")
+                                    .build();
         TestModel model = ormEnv.getModel(TestModel.class);
         model.findSchema();
 
