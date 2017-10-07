@@ -19,36 +19,18 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StringField extends FieldInf
+public class EntityUniqueIndexInf extends EntityIndexInf
 {
-    @XmlAttribute
-    private String type;
-
-    @XmlTransient
-    private SQLTypeInf typeInf;
-
-    @Override
-    public SQLTypeInf getType()
+    public EntityUniqueIndexInf()
     {
-        if(typeInf == null)
-        {
-            typeInf = getEntity().getModel().findSQLType(type);
-        }
-        return typeInf;
+        super(true);
     }
 
     @Override
-    public String getColumnClass()
-    {
-        return "StringColumn";
-    }
-
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        setParent(parent);
+        setEntity( (EntityInf)parent );
     }
 }

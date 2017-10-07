@@ -30,19 +30,13 @@ public abstract class FieldInf
 
     @XmlAttribute
     private String column;
-    
-    @XmlAttribute
-    private String type;
 
     @XmlAttribute
     private Boolean required;
 
     @XmlTransient
     private Object parent;
-    
-    @XmlTransient
-    private SQLTypeInf typeInf;
-    
+
     public FieldInf()
     {
     }
@@ -59,6 +53,10 @@ public abstract class FieldInf
 
     public String getColumn()
     {
+        if(column == null)
+        {
+            column = Utils.toSQLName(name);
+        }
         return column;
     }
 
@@ -67,13 +65,11 @@ public abstract class FieldInf
         this.column = column;
     }
 
-    public SQLTypeInf getType()
+    public abstract SQLTypeInf getType();
+
+    public String getFullTypeName()
     {
-        if(typeInf == null)
-        {
-            typeInf = getEntity().getModel().findSQLType(type);
-        }
-        return typeInf;
+        return getEntity().getModel().getName() + "Types." + getType().getName();
     }
 
     public Boolean getRequired()

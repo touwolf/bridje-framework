@@ -35,6 +35,42 @@ limitations under the License.
             <fields>
                 <string name="title" type="STRING150" />
             </fields>
+            <indexes>
+                <index columns="title" />
+            </indexes>
+            <queries>
+                <query />
+            </queries>
+        </entity>
+
+        <entity name="User">
+            <key>
+                <ai name="id" type="LONGID" />
+            </key>
+            <fields>
+                <string name="email" type="STRING150" />
+                <string name="password" type="PASSWORD" />
+                <string name="active" type="BOOLEAN" />
+            </fields>
+            <indexes>
+                <index columns="email" />
+                <index columns="password" />
+                <index columns="active" />
+                <index columns="email,active" />
+            </indexes>
+            <queries>
+                <query />
+            </queries>
+        </entity>
+
+        <entity name="UserGroup">
+            <key>
+                <ai name="id" type="LONGID" />
+            </key>
+            <fields>
+                <relation name="group" with="Group" />
+                <relation name="user" with="User" />
+            </fields>
             <queries>
                 <query />
             </queries>

@@ -18,6 +18,7 @@ package org.bridje.orm.srcgen.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,11 +45,20 @@ public class EntityInf
     @XmlElementWrapper(name = "fields")
     @XmlElements(
     {
+        @XmlElement(name = "relation", type = RelationField.class),
         @XmlElement(name = "boolean", type = BooleanField.class),
         @XmlElement(name = "number", type = NumberField.class),
         @XmlElement(name = "string", type = StringField.class)
     })
     private List<FieldInf> fields;
+
+    @XmlElementWrapper(name = "indexes")
+    @XmlElements(
+    {
+        @XmlElement(name = "index", type = EntityIndexInf.class),
+        @XmlElement(name = "unique", type = EntityUniqueIndexInf.class)
+    })
+    private List<EntityIndexInf> indexes;
 
     @XmlElementWrapper(name = "queries")
     @XmlElements(
@@ -72,6 +82,10 @@ public class EntityInf
 
     public String getTable()
     {
+        if(table == null)
+        {
+            table = Utils.toSQLName(name);
+        }
         return table;
     }
 
@@ -79,7 +93,7 @@ public class EntityInf
     {
         this.table = table;
     }
-    
+
     public String getFullName()
     {
         return model.getPackage() + "." + this.getName();
@@ -137,8 +151,46 @@ public class EntityInf
         this.queries = queries;
     }
 
+    public List<EntityIndexInf> getIndexes()
+    {
+        return indexes;
+    }
+
+    public void setIndexes(List<EntityIndexInf> indexes)
+    {
+        this.indexes = indexes;
+    }
+
+    public List<RelationField> getForeignKeys()
+    {
+        return fields.stream()
+                    .filter(f -> f instanceof RelationField)
+                    .map(f -> (RelationField)f)
+                    .collect(Collectors.toList());
+    }
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         setModel((ModelInf)parent);
+    }
+
+    public FieldInf[] findFields(String[] names)
+    {
+        FieldInf[] fieldsArr = new FieldInf[names.length];
+        int i = 0;
+        for (String fieldName : names)
+        {
+            fieldsArr[i] = findField(fieldName);
+            i++;
+        }
+        return fieldsArr;
+    }
+
+    public FieldInf findField(String fieldName)
+    {
+        return getAllFields().stream()
+                .filter(f -> f.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 }

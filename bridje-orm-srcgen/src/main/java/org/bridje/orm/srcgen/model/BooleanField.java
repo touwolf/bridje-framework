@@ -19,10 +19,28 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BooleanField extends FieldInf
 {
+    @XmlAttribute
+    private String type;
+
+    @XmlTransient
+    private SQLTypeInf typeInf;
+
+    @Override
+    public SQLTypeInf getType()
+    {
+        if(typeInf == null)
+        {
+            typeInf = getEntity().getModel().findSQLType(type);
+        }
+        return typeInf;
+    }
+
     @Override
     public String getColumnClass()
     {

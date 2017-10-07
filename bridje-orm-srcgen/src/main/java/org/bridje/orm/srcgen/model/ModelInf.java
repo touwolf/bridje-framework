@@ -101,4 +101,12 @@ public class ModelInf
                 .findFirst()
                 .orElse(null);
     }
+
+    public EntityInf findEntity(String referencesName)
+    {
+        return entities.stream()
+                .filter(t -> t.getName().equalsIgnoreCase(referencesName))
+                .findFirst()
+                .orElse(null);
+    }
 }

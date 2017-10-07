@@ -23,32 +23,64 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StringField extends FieldInf
+public class EntityIndexInf
 {
     @XmlAttribute
-    private String type;
+    private String name;
 
     @XmlTransient
-    private SQLTypeInf typeInf;
+    private final Boolean unique;
 
-    @Override
-    public SQLTypeInf getType()
+    @XmlAttribute
+    private String fields;
+
+    @XmlTransient
+    private EntityInf entity;
+
+    public EntityIndexInf()
     {
-        if(typeInf == null)
-        {
-            typeInf = getEntity().getModel().findSQLType(type);
-        }
-        return typeInf;
+        unique = false;
     }
 
-    @Override
-    public String getColumnClass()
+    public EntityIndexInf(Boolean unique)
     {
-        return "StringColumn";
+        this.unique = unique;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public Boolean getUnique()
+    {
+        return unique;
+    }
+
+    public EntityInf getEntity()
+    {
+        return entity;
+    }
+
+    public void setEntity(EntityInf entity)
+    {
+        this.entity = entity;
+    }
+
+    public FieldInf[] getFields()
+    {
+        if(fields == null) return null;
+        String[] cols = fields.split(",");
+        return entity.findFields(cols);
     }
 
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        setParent(parent);
+        entity = (EntityInf)parent;
     }
 }
