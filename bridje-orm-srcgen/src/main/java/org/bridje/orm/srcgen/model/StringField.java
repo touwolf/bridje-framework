@@ -51,4 +51,10 @@ public class StringField extends FieldInf
     {
         setParent(parent);
     }
+
+    @Override
+    public boolean isAutoIncrement()
+    {
+        return false;
+    }
 }

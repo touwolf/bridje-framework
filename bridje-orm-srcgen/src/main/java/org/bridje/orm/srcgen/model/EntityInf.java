@@ -141,6 +141,14 @@ public class EntityInf
         return allFields;
     }
 
+    public List<FieldInf> getNonAiFields()
+    {
+        return getAllFields()
+                    .stream()
+                    .filter(f -> !f.isAutoIncrement())
+                    .collect(Collectors.toList());
+    }
+
     public List<QueryInf> getQueries()
     {
         return queries;

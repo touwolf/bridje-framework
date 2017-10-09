@@ -32,15 +32,23 @@ public class ${entity.name}
     public static final ${field.columnClass}<${field.type.javaType}, ${field.type.readType}> ${field.column?upper_case};
 
     </#list>
+    static final Query FIND_QUERY;
+
+    static final Query INSERT_QUERY;
+
+    static final Query UPDATE_QUERY;
+
+    static final Query DELETE_QUERY;
+
     static {
         RELATION_TYPE = SQL.buildType(${entity.name}.class, ${entity.key.type.readType}.class, JDBCType.${entity.key.type.jdbcType}, ${entity.key.type.length!0}, ${entity.key.type.precision!0}, null, null);
 
         <#list entity.allFields as field>
-        ${field.name?upper_case} = SQL.build${field.columnClass}("${field.column}", ${field.fullTypeName}, false, null);
+        ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, false<#if !field.autoIncrement>, null</#if>);
 
         </#list>
         TABLE = SQL.buildTable("${entity.table?lower_case}")
-                    .key(${entity.key.name?upper_case})
+                    .key(${entity.key.column?upper_case})
                     <#list entity.fields as field>
                     .column(${field.column?upper_case})
                     </#list>
@@ -58,6 +66,25 @@ public class ${entity.name}
                                     .build())
                     </#list>
                     .build();
+
+        FIND_QUERY = SQL.select(<#list entity.allFields as field>${field.column?upper_case}<#sep>, </#sep></#list>)
+                        .from(TABLE)
+                        .where(${entity.key.column?upper_case}.eq(${entity.key.column?upper_case}.asParam()))
+                        .toQuery();
+        INSERT_QUERY = SQL.insertInto(TABLE)
+                        .columns(<#list entity.nonAiFields as field>${field.column?upper_case}<#sep>, </#sep></#list>)
+                        .values(<#list entity.nonAiFields as field>${field.column?upper_case}.asParam()<#sep>, </#sep></#list>)
+                        .toQuery();
+        UPDATE_QUERY = SQL.update(TABLE)
+                        <#list entity.nonAiFields as field>
+                        .set(${field.column?upper_case}, ${field.column?upper_case}.asParam())
+                        </#list>
+                        .where(${entity.key.column?upper_case}.eq(${entity.key.column?upper_case}.asParam()))
+                        .toQuery();
+        DELETE_QUERY = SQL.delete()
+                        .from(TABLE)
+                        .where(${entity.key.column?upper_case}.eq(${entity.key.column?upper_case}.asParam()))
+                        .toQuery();
     }
 
     <#list entity.allFields as field>

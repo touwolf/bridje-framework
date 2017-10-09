@@ -67,6 +67,8 @@ public abstract class FieldInf
 
     public abstract SQLTypeInf getType();
 
+    public abstract boolean isAutoIncrement();
+
     public String getFullTypeName()
     {
         return getEntity().getModel().getName() + "Types." + getType().getName();

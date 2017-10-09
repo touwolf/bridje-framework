@@ -113,4 +113,10 @@ public class RelationField extends FieldInf
     {
         return getWith().getName() + "." + getType().getName();
     }
+
+    @Override
+    public boolean isAutoIncrement()
+    {
+        return false;
+    }
 }

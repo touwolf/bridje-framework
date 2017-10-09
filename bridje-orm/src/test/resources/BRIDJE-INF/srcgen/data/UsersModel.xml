@@ -18,7 +18,7 @@ limitations under the License.
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns='http://www.bridje.org/schemas/orm/model'
     xsi:schemaLocation='http://www.bridje.org/schemas/orm/model ../../../../../../../bridje-orm-srcgen/target/schemagen-work/compile_scope/schema1.xsd'
-    name="TestModel" package="org.bridje.orm" >
+    name="UsersModel" package="org.bridje.orm" >
 
     <types>
         <type name="LONGID" javaType="Long" readType="Long" jdbcType="BIGINT" />

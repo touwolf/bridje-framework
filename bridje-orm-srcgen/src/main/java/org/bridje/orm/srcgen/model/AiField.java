@@ -51,4 +51,10 @@ public class AiField extends FieldInf
     {
         setParent(parent);
     }
+
+    @Override
+    public boolean isAutoIncrement()
+    {
+        return true;
+    }
 }

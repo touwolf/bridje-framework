@@ -30,6 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ModelInf
 {
     @XmlAttribute
+    private String schema;
+
+    @XmlAttribute
     private String name;
 
     @XmlAttribute(name = "package")
@@ -59,6 +62,20 @@ public class ModelInf
         this.name = name;
     }
 
+    public String getSchema()
+    {
+        if(schema == null)
+        {
+            schema = Utils.toSQLName(name);
+        }
+        return schema;
+    }
+
+    public void setSchema(String schema)
+    {
+        this.schema = schema;
+    }
+    
     public String getPackage()
     {
         return packageName;
