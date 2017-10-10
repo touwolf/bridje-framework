@@ -37,6 +37,9 @@ public class ModelInf
 
     @XmlAttribute(name = "package")
     private String packageName;
+
+    @XmlAttribute(name = "description")
+    private String description;
     
     @XmlElementWrapper(name = "types")
     @XmlElements(
@@ -109,6 +112,16 @@ public class ModelInf
     public void setEntities(List<EntityInf> entities)
     {
         this.entities = entities;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public SQLTypeInf findSQLType(String type)

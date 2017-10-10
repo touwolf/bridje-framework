@@ -40,6 +40,9 @@ public class EntityInf
     @XmlTransient
     private ModelInf model;
 
+    @XmlAttribute(name = "description")
+    private String description;
+
     private EntityInfKey key;
 
     @XmlElementWrapper(name = "fields")
@@ -107,6 +110,16 @@ public class EntityInf
     public void setModel(ModelInf model)
     {
         this.model = model;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public FieldInf getKey()
@@ -197,7 +210,7 @@ public class EntityInf
     public FieldInf findField(String fieldName)
     {
         return getAllFields().stream()
-                .filter(f -> f.getName().equalsIgnoreCase(name))
+                .filter(f -> f.getName().equalsIgnoreCase(fieldName))
                 .findFirst()
                 .orElse(null);
     }

@@ -54,9 +54,9 @@ public class ${entity.name}
                     </#list>
                     <#list entity.indexes![] as index>
                     <#if index.unique>
-                    .index(SQL.buildUnique(<#if index.name??>"${index.name}", </#if><#list entity.fields as f>${f.column?upper_case}<#sep>, </#sep></#list>))
+                    .index(SQL.buildUnique(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))
                     <#else>
-                    .index(SQL.buildIndex(<#if index.name??>"${index.name}", </#if><#list entity.fields as f>${f.column?upper_case}<#sep>, </#sep></#list>))
+                    .index(SQL.buildIndex(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))
                     </#if>
                     </#list>
                     <#list entity.foreignKeys![] as key>

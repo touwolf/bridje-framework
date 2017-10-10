@@ -36,7 +36,7 @@ limitations under the License.
                 <string name="title" type="STRING150" />
             </fields>
             <indexes>
-                <index columns="title" />
+                <index fields="title" />
             </indexes>
             <queries>
                 <query />
@@ -53,10 +53,10 @@ limitations under the License.
                 <string name="active" type="BOOLEAN" />
             </fields>
             <indexes>
-                <index columns="email" />
-                <index columns="password" />
-                <index columns="active" />
-                <index columns="email,active" />
+                <index fields="email" />
+                <index fields="password" />
+                <index fields="active" />
+                <index fields="email,active" />
             </indexes>
             <queries>
                 <query />

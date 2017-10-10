@@ -34,6 +34,9 @@ public abstract class FieldInf
     @XmlAttribute
     private Boolean required;
 
+    @XmlAttribute(name = "description")
+    private String description;
+
     @XmlTransient
     private Object parent;
 
@@ -63,6 +66,16 @@ public abstract class FieldInf
     public void setColumn(String column)
     {
         this.column = column;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public abstract SQLTypeInf getType();
@@ -97,6 +110,6 @@ public abstract class FieldInf
     {
         this.parent = parent;
     }
-    
+
     public abstract String getColumnClass();
 }
