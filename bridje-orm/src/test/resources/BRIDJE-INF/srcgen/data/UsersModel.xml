@@ -43,7 +43,7 @@ limitations under the License.
                 <select name="findGroups" withPaging="false">
                     <where condition="title = $title" >
                         <or condition="title = $title1 and code != $code" />
-                        <or condition="!(code = $code2)" />
+                        <or condition="not (code = $code2)" />
                     </where>
                     <orderBy>
                         <asc field="title" />
