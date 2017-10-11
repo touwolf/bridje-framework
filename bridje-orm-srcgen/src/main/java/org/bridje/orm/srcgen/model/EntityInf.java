@@ -66,7 +66,7 @@ public class EntityInf
     @XmlElementWrapper(name = "queries")
     @XmlElements(
     {
-        @XmlElement(name = "query", type = QueryInf.class)
+        @XmlElement(name = "select", type = SelectQueryInf.class)
     })
     private List<QueryInf> queries;
 
@@ -164,6 +164,10 @@ public class EntityInf
 
     public List<QueryInf> getQueries()
     {
+        if(queries == null)
+        {
+            queries = new ArrayList<>();
+        }
         return queries;
     }
 
@@ -174,6 +178,10 @@ public class EntityInf
 
     public List<EntityIndexInf> getIndexes()
     {
+        if(indexes == null)
+        {
+            indexes = new ArrayList<>();
+        }
         return indexes;
     }
 

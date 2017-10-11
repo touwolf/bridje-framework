@@ -16,22 +16,22 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.LimitExpr;
 import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.Limit;
 
-class Limit implements LimitExpr
+class LimitImpl implements Limit
 {
     private final int offset;
 
     private final int count;
 
-    public Limit(int offset)
+    public LimitImpl(int offset)
     {
         this.offset = offset;
         this.count = -1;
     }
 
-    public Limit(int offset, int count)
+    public LimitImpl(int offset, int count)
     {
         this.offset = offset;
         this.count = count;

@@ -18,22 +18,22 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.LiteralExpr;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
+import org.bridje.sql.Literal;
 
-class Literal<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, LiteralExpr<T, E>
+class LiteralImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, Literal<T, E>
 {
     private final T value;
 
-    public Literal(T value)
+    public LiteralImpl(T value)
     {
         super(null);
         this.value = value;
     }
 
-    public Literal(T value, SQLType<T, E> sqlType)
+    public LiteralImpl(T value, SQLType<T, E> sqlType)
     {
         super(sqlType);
         this.value = value;

@@ -16,9 +16,7 @@
 
 package org.bridje.sql;
 
-public interface LimitExpr extends SQLWritable
+public interface Literal<T, E> extends Expression<T, E>
 {
-    int getOffset();
-
-    int getCount();
+    T getValue();
 }

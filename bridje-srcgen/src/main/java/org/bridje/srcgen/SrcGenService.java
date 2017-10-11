@@ -137,22 +137,22 @@ public interface SrcGenService
 
     /**
      * Create a class with the given data and the given template.
-     *
+     * 
      * @param clsFullName The full name of the class to create.
      * @param tplPath     The path of the template to use to create the class.
      * @param data        The data to use by the template to create the class.
-     *
+     * 
      * @throws IOException If any IO exception occurs.
      */
     void createClass(String clsFullName, String tplPath, Object data) throws IOException;
 
     /**
      * Creates a new resource with the given data and the given template.
-     *
+     * 
      * @param resourcePath The path and name of the resource file to create.
      * @param tplPath      The path of the template to use to create the class.
      * @param data         The data to use by the template to create the class.
-     *
+     * 
      * @throws IOException If any IO exception occurs.
      */
     void createResource(String resourcePath, String tplPath, Object data) throws IOException;

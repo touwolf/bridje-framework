@@ -46,7 +46,7 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
     private final Map<Class<?>, EntityCache> cacheMap;
 
     private final Map<Class<?>, List<Field>> fieldsMap;
-    
+
     private final Map<Class<?>, Constructor<?>> contructorsMap;
 
     public ORMEnvironmentImpl(EnvironmentBuilderImpl config)
@@ -77,7 +77,7 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
         T result = instantiateModel(modelCls, sqlEnv);
         return result;
     }
-    
+
     private <T> T instantiateModel(Class<T> modelCls, SQLEnvironment env)
     {
         try
@@ -148,11 +148,16 @@ class ORMEnvironmentImpl implements ORMEnvironment, EntityContext
 
     private <T> void injectModels(T object, SQLEnvironment env)
     {
-        List<Field> lst = getFieldList(object.getClass());
-        for (Field field : lst)
+        Class<?> currentCls = object.getClass();
+        while(currentCls != Object.class)
         {
-            Object value = getValueForField(field, env);
-            setFieldValue(field, object, value);
+            List<Field> lst = getFieldList(currentCls);
+            for (Field field : lst)
+            {
+                Object value = getValueForField(field, env);
+                setFieldValue(field, object, value);
+            }
+            currentCls = currentCls.getSuperclass();
         }
     }
 

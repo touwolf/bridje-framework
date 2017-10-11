@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Expression;
+import org.bridje.sql.FinalStep;
 import org.bridje.sql.FromStep;
 import org.bridje.sql.GroupByStep;
-import org.bridje.sql.LimitExpr;
 import org.bridje.sql.OrderByStep;
 import org.bridje.sql.OrderExpr;
 import org.bridje.sql.SQLBuilder;
@@ -35,6 +35,7 @@ import org.bridje.sql.SelectStep;
 import org.bridje.sql.SelectWhereStep;
 import org.bridje.sql.TableExpr;
 import org.bridje.sql.Query;
+import org.bridje.sql.Limit;
 
 class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectWhereStep, OrderByStep, GroupByStep, SelectLimitStep, SelectExpr, Query
 {
@@ -52,7 +53,7 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
 
     private BooleanExpr<?, ?> having;
 
-    private LimitExpr limit;
+    private Limit limit;
 
     public SelectBuilder(Expression<?, ?>[] select)
     {
@@ -128,16 +129,9 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public SelectFinalStep limit(int offset)
+    public FinalStep limit(Limit limit)
     {
-        this.limit = new Limit(offset);
-        return this;
-    }
-
-    @Override
-    public SelectFinalStep limit(int offset, int count)
-    {
-        this.limit = new Limit(offset, count);
+        this.limit = limit;
         return this;
     }
 

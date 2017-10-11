@@ -23,7 +23,6 @@ import org.bridje.sql.ColumnsStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.FinalStep;
 import org.bridje.sql.InsertIntoStep;
-import org.bridje.sql.LiteralExpr;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLStatement;
@@ -32,6 +31,7 @@ import org.bridje.sql.SelectExpr;
 import org.bridje.sql.Table;
 import org.bridje.sql.ValuesStep;
 import org.bridje.sql.Query;
+import org.bridje.sql.Literal;
 
 class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, Query
 {
@@ -132,7 +132,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
             if(object instanceof SQLWritable)
             {
                 if(object instanceof Param 
-                        || object instanceof LiteralExpr)
+                        || object instanceof Literal)
                 {
                     result[i] = (Param<?, ?>)object;
                 }
@@ -143,7 +143,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
             }
             else
             {
-                result[i] = new Literal<>(object);
+                result[i] = new LiteralImpl<>(object);
             }
         }
         return result;

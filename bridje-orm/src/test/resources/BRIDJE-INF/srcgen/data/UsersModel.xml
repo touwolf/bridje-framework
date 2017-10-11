@@ -40,7 +40,17 @@ limitations under the License.
                 <index fields="title" />
             </indexes>
             <queries>
-                <query />
+                <select name="findGroups" withPaging="false">
+                    <where condition="title = $title" >
+                        <or condition="title = $title1 and code != $code" />
+                        <or condition="!(code = $code2)" />
+                    </where>
+                    <orderBy>
+                        <asc field="title" />
+                    </orderBy>
+                </select>
+                <select name="findGroups" withPaging="true">
+                </select>
             </queries>
         </entity>
 
@@ -59,9 +69,6 @@ limitations under the License.
                 <index fields="active" />
                 <index fields="email,active" />
             </indexes>
-            <queries>
-                <query />
-            </queries>
         </entity>
 
         <entity name="UserGroup">
@@ -75,9 +82,6 @@ limitations under the License.
             <indexes>
                 <unique fields="group,user" />
             </indexes>
-            <queries>
-                <query />
-            </queries>
         </entity>
     </entities>
 </ormModel>

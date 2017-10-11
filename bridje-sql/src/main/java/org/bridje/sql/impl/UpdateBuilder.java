@@ -22,7 +22,6 @@ import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Column;
 import org.bridje.sql.Expression;
 import org.bridje.sql.FinalStep;
-import org.bridje.sql.LimitExpr;
 import org.bridje.sql.OrderExpr;
 import org.bridje.sql.Query;
 import org.bridje.sql.SQLBuilder;
@@ -34,6 +33,7 @@ import org.bridje.sql.TableExpr;
 import org.bridje.sql.UpdateLimitStep;
 import org.bridje.sql.UpdateStep;
 import org.bridje.sql.UpdateWhereStep;
+import org.bridje.sql.Limit;
 
 class UpdateBuilder extends BuilderBase implements UpdateStep, Query
 {
@@ -47,7 +47,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
 
     private OrderExpr[] orderBys;
 
-    private LimitExpr limit;
+    private Limit limit;
 
     public UpdateBuilder(Table table)
     {
@@ -82,7 +82,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     public <T, E> SetsStep set(Column<T, E> column, T value)
     {
         if(setsLst == null) setsLst = new ArrayList<>();
-        setsLst.add(new Assign<>(column, new Literal<>(value)));
+        setsLst.add(new Assign<>(column, new LiteralImpl<>(value)));
         return this;
     }
 
@@ -109,16 +109,9 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     }
 
     @Override
-    public FinalStep limit(int offset)
+    public FinalStep limit(Limit limit)
     {
-        this.limit = new Limit(offset);
-        return this;
-    }
-
-    @Override
-    public FinalStep limit(int offset, int count)
-    {
-        this.limit = new Limit(offset, count);
+        this.limit = limit;
         return this;
     }
 

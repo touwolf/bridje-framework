@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package org.bridje.sql;
+package org.bridje.orm;
 
-public interface LiteralExpr<T, E> extends Expression<T, E>
+import java.sql.SQLException;
+import java.util.List;
+import org.bridje.sql.Query;
+import org.bridje.sql.SQL;
+
+public class UsersModel extends UsersModelBase
 {
-    T getValue();
+    public List<User> findUsers(Paging paging) throws SQLException
+    {
+        Query query = SQL.select(User.TABLE.getColumns())
+                        .from(User.TABLE)
+                        .limit(paging.toLimit())
+                        .toQuery();
+        return env.fetchAll(query, this::parseUser);
+    }
 }

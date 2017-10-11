@@ -18,7 +18,5 @@ package org.bridje.sql;
 
 public interface DeleteLimitStep extends FinalStep
 {
-    FinalStep limit(int offset);
-
-    FinalStep limit(int offset, int count);
+    FinalStep limit(Limit limit);
 }

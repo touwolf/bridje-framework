@@ -18,7 +18,5 @@ package org.bridje.sql;
 
 public interface SelectLimitStep extends SelectFinalStep
 {
-    SelectFinalStep limit(int offset);
-
-    SelectFinalStep limit(int offset, int count);
+    FinalStep limit(Limit limit);
 }

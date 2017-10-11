@@ -16,7 +16,9 @@
 
 package org.bridje.sql;
 
-public interface UpdateLimitStep extends FinalStep
+public interface Limit extends SQLWritable
 {
-    FinalStep limit(Limit limit);
+    int getOffset();
+
+    int getCount();
 }

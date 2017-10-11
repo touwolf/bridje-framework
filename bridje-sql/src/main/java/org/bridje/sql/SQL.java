@@ -287,4 +287,9 @@ public class SQL
     {
         return FACT.count();
     }
+
+    public static final Limit limit(int offset, int count)
+    {
+        return FACT.limit(offset, count);
+    }
 }

@@ -28,6 +28,7 @@ import org.bridje.sql.DeleteStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.Index;
 import org.bridje.sql.InsertIntoStep;
+import org.bridje.sql.Limit;
 import org.bridje.sql.NumberColumn;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.SQLValueParser;
@@ -191,112 +192,112 @@ public class SQLFactory
 
     public ArithmeticExpr<Number, Number> val(Number value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Byte, Byte> val(byte value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Byte, Byte> val(Byte value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Short, Short> val(short value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Short, Short> val(Short value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Integer, Integer> val(int value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Integer, Integer> val(Integer value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Long, Long> val(long value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Long, Long> val(Long value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
     
     public ArithmeticExpr<Float, Float> val(float value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Float, Float> val(Float value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Double, Double> val(double value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public ArithmeticExpr<Double, Double> val(Double value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public StringExpr<String, String> val(String value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public BooleanExpr<Boolean, Boolean> val(Boolean value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public BooleanExpr<Boolean, Boolean> val(boolean value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public Expression<Character, Character> val(char value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public Expression<Character, Character> val(Character value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public <T, E> ArithmeticExpr<T, E> number(T value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public <T, E> BooleanExpr<T, E> bool(T value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public <T, E> StringExpr<T, E> str(T value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public <T, E> Expression<T, E> custom(T value)
     {
-        return new Literal<>(value);
+        return new LiteralImpl<>(value);
     }
 
     public <T, E> Expression<T, E> param(SQLType<T, E> cls)
@@ -311,5 +312,10 @@ public class SQLFactory
             COUNT_EXPR = new SimpleExpressionImpl("count(*)", SQLType.INTEGER);
         }
         return COUNT_EXPR;
+    }
+
+    public Limit limit(int offset, int count)
+    {
+        return new LimitImpl(offset, count);
     }
 }

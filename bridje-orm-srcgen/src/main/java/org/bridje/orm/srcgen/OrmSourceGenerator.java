@@ -62,7 +62,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
         Map<String, Object> data;
         data = new HashMap<>();
         data.put("model", modelInf);
-        srcGen.createClass(modelInf.getFullName(), "orm/Model.ftl", data);
+        srcGen.createClass(modelInf.getFullName() + "Base", "orm/Model.ftl", data);
         srcGen.createClass(modelInf.getFullName() + "Types", "orm/Types.ftl", data);
 
         data = new HashMap<>();

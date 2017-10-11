@@ -20,27 +20,30 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
-public abstract class QueryInf
+public class SelectQueryInf extends QueryInf
 {
     @XmlAttribute
-    private String name;
+    private boolean withPaging;
 
-    public String getName()
+    public boolean isWithPaging()
     {
-        return name;
+        return withPaging;
     }
 
-    public void setName(String name)
+    public void setWithPaging(boolean withPaging)
     {
-        this.name = name;
+        this.withPaging = withPaging;
     }
-    
-    public abstract String getQueryType();
-    
+
+    @Override
+    public String getQueryType()
+    {
+        return "select";
+    }
+
+    @Override
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         

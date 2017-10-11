@@ -25,7 +25,6 @@ import org.bridje.sql.DeleteStep;
 import org.bridje.sql.DeleteWhereStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.FinalStep;
-import org.bridje.sql.LimitExpr;
 import org.bridje.sql.OrderExpr;
 import org.bridje.sql.Query;
 import org.bridje.sql.SQLBuilder;
@@ -33,6 +32,7 @@ import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLStatement;
 import org.bridje.sql.Table;
 import org.bridje.sql.TableExpr;
+import org.bridje.sql.Limit;
 
 class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Query
 {
@@ -46,7 +46,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
 
     private OrderExpr[] orderBys;
 
-    private LimitExpr limit;
+    private Limit limit;
 
     public DeleteBuilder(Table[] tables)
     {
@@ -99,16 +99,9 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
     }
 
     @Override
-    public FinalStep limit(int offset)
+    public FinalStep limit(Limit limit)
     {
-        this.limit = new Limit(offset);
-        return this;
-    }
-
-    @Override
-    public FinalStep limit(int offset, int count)
-    {
-        this.limit = new Limit(offset, count);
+        this.limit = limit;
         return this;
     }
 
