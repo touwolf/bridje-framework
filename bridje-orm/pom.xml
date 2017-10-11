@@ -66,8 +66,8 @@
                         </goals>
                         <configuration>
                             <dataFolder>./src/test/resources/BRIDJE-INF/srcgen/data</dataFolder>
-                            <targetFolder>${project.build.directory}/generated-sources/bridje</targetFolder>
-                            <targetResFolder>${project.build.directory}/generated-resources/bridje</targetResFolder>
+                            <targetFolder>${project.build.directory}/generated-test-sources/bridje</targetFolder>
+                            <targetResFolder>${project.build.directory}/generated-test-resources/bridje</targetResFolder>
                         </configuration>
                     </execution>
                 </executions>

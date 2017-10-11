@@ -84,17 +84,26 @@ public class GenerateMojo extends AbstractMojo
                     }
                 }
             }
-            project.addCompileSourceRoot(targetFolder.getAbsolutePath());
+            if(targetFolder.getPath().contains("generated-test-sources"))
+            {
+                project.addTestCompileSourceRoot(targetFolder.getAbsolutePath());
+            }
+            else
+            {
+                project.addCompileSourceRoot(targetFolder.getAbsolutePath());
+            }
             Resource res = new Resource();
             res.setDirectory(targetResFolder.getAbsolutePath());
-            project.addResource(res);
+            if(targetFolder.getPath().contains("generated-test-resources"))
+            {
+                project.addTestResource(res);
+            }
+            else
+            {
+                project.addResource(res);
+            }
         }
-        catch (IOException e)
-        {
-            getLog().error(e.getMessage(), e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
-        catch (URISyntaxException e)
+        catch (IOException | URISyntaxException e)
         {
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);

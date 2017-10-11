@@ -41,7 +41,7 @@ public class ${entity.name}
     static final Query DELETE_QUERY;
 
     static {
-        RELATION_TYPE = SQL.buildType(${entity.name}.class, ${entity.key.type.readType}.class, JDBCType.${entity.key.type.jdbcType}, ${entity.key.type.length!0}, ${entity.key.type.precision!0}, null, null);
+        RELATION_TYPE = SQL.buildType(${entity.name}.class, ${entity.key.type.readType}.class, JDBCType.${entity.key.type.jdbcType}, ${entity.key.type.length!0}, ${entity.key.type.precision!0}, null, (e) -> e.get${entity.key.name?cap_first}());
 
         <#list entity.allFields as field>
         ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, false<#if !field.autoIncrement>, null</#if>);

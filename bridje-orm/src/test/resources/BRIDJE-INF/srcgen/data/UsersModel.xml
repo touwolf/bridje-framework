@@ -22,6 +22,7 @@ limitations under the License.
 
     <types>
         <type name="LONGID" javaType="Long" readType="Long" jdbcType="BIGINT" />
+        <type name="CODE" javaType="String" readType="String" jdbcType="CHAR" length="3" />
         <type name="STRING150" javaType="String" readType="String" jdbcType="VARCHAR" length="150" />
         <type name="PASSWORD" javaType="String" readType="String" jdbcType="VARCHAR" length="255" />
         <type name="BOOLEAN" javaType="Boolean" readType="Boolean" jdbcType="BOOLEAN" />
@@ -30,10 +31,10 @@ limitations under the License.
     <entities>
         <entity name="Group">
             <key>
-                <ai name="id" type="LONGID" />
+                <string name="code" type="CODE" />
             </key>
             <fields>
-                <string name="title" type="STRING150" />
+                <string name="title" type="STRING150" required="true" />
             </fields>
             <indexes>
                 <index fields="title" />
@@ -53,7 +54,7 @@ limitations under the License.
                 <string name="active" type="BOOLEAN" />
             </fields>
             <indexes>
-                <index fields="email" />
+                <unique fields="email" />
                 <index fields="password" />
                 <index fields="active" />
                 <index fields="email,active" />
@@ -71,6 +72,9 @@ limitations under the License.
                 <relation name="group" with="Group" />
                 <relation name="user" with="User" />
             </fields>
+            <indexes>
+                <unique fields="group,user" />
+            </indexes>
             <queries>
                 <query />
             </queries>

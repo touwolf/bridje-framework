@@ -19,6 +19,7 @@ package org.bridje.orm;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import org.bridje.ioc.Ioc;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
 import org.junit.After;
@@ -58,15 +59,12 @@ public class ORMTest
     @Test
     public void test1() throws SQLException
     {
-        /*
         ORMService ormServ = Ioc.context().find(ORMService.class);
         ORMEnvironment ormEnv = ormServ
-                                    .model(TestModel.class, "Derby-DB")
+                                    .model(UsersModel.class, "Derby-DB")
                                     .build();
-        TestModel model = ormEnv.getModel(TestModel.class);
-        model.findSchema();
-
-        model.deleteAllUsers();
+        UsersModel model = ormEnv.getModel(UsersModel.class);
+        model.fixSchema();
 
         User user = new User();
         user.setEmail("someemail@hotmail.com");
@@ -75,13 +73,13 @@ public class ORMTest
         model.saveUser(user);
 
         Group group = new Group();
+        group.setCode("GPU");
         group.setTitle("Group");
-        model.saveGroup(group);
+        model.insertGroup(group);
 
         UserGroup userGroup = new UserGroup();
         userGroup.setGroup(group);
         userGroup.setUser(user);
         model.saveUserGroup(userGroup);
-        */
     }
 }

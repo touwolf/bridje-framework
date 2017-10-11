@@ -63,7 +63,7 @@ public class ${model.name}
     void parse${entity.name}(${entity.name} entity, SQLResultSet rs) throws SQLException
     {
         <#list entity.allFields as field>
-        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}));
+        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(key)</#if>));
         </#list>
     }
 
@@ -72,6 +72,20 @@ public class ${model.name}
         return env.fetchOne(${entity.name}.FIND_QUERY, this::parse${entity.name}, key);
     }
 
+    <#if entity.key.autoIncrement>
+    public void save${entity.name}(${entity.name} entity) throws SQLException
+    {
+        if(entity.get${entity.key.name?cap_first}() == null)
+        {
+            entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, (rs) -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field>entity.get${field.name?cap_first}()<#sep>, </#sep></#list>));
+        }
+        else
+        {
+            env.update(${entity.name}.UPDATE_QUERY, <#list entity.nonAiFields as field>entity.get${field.name?cap_first}()<#sep>, </#sep></#list>, entity.get${entity.key.name?cap_first}());
+        }
+    }
+
+    <#else>
     public void insert${entity.name}(${entity.name} entity) throws SQLException
     {
         <#if entity.key.autoIncrement>
@@ -91,6 +105,7 @@ public class ${model.name}
         env.update(${entity.name}.UPDATE_QUERY, <#list entity.nonAiFields as field>entity.get${field.name?cap_first}()<#sep>, </#sep></#list>, key);
     }
 
+    </#if>
     public void delete${entity.name}(${entity.name} entity) throws SQLException
     {
         delete${entity.name}(entity.get${entity.key.name?cap_first}());
