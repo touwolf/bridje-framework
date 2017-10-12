@@ -16,42 +16,15 @@
 
 package org.bridje.orm.impl;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.bridje.ioc.Component;
 import org.bridje.orm.EnvironmentBuilder;
 import org.bridje.orm.ORMService;
-import org.bridje.sql.SQLEnvironment;
 
 @Component
 class ORMServiceImpl implements ORMService
 {
     @Override
-    public EnvironmentBuilder model(Class<?> modelClass, SQLEnvironment env)
-    {
-        return createEnvironment().model(modelClass, env);
-    }
-
-    @Override
-    public EnvironmentBuilder model(Class<?> modelClass, DataSource ds) throws SQLException
-    {
-        return createEnvironment().model(modelClass, ds);
-    }
-
-    @Override
-    public EnvironmentBuilder model(Class<?> modelClass, Connection conn) throws SQLException
-    {
-        return createEnvironment().model(modelClass, conn);
-    }
-
-    @Override
-    public EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException
-    {
-        return createEnvironment().model(modelClass, dsName);
-    }
-
-    private EnvironmentBuilder createEnvironment()
+    public EnvironmentBuilder createEnvironment()
     {
         return new EnvironmentBuilderImpl();
     }

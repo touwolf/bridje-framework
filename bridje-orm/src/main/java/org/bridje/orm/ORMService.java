@@ -16,18 +16,7 @@
 
 package org.bridje.orm;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.sql.DataSource;
-import org.bridje.sql.SQLEnvironment;
-
 public interface ORMService
 {
-    EnvironmentBuilder model(Class<?> modelClass, SQLEnvironment env);
-
-    EnvironmentBuilder model(Class<?> modelClass, DataSource ds) throws SQLException;
-
-    EnvironmentBuilder model(Class<?> modelClass, Connection conn) throws SQLException;
-
-    EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException;
+    EnvironmentBuilder createEnvironment();
 }
