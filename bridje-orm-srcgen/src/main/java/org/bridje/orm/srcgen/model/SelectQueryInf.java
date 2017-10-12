@@ -59,6 +59,7 @@ public class SelectQueryInf extends QueryInf
         this.where = where;
     }
 
+    @Override
     public EntityInf getEntity()
     {
         return entity;

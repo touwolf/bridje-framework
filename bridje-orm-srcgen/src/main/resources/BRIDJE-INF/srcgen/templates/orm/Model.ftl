@@ -162,9 +162,32 @@ public class ${model.name}Base
         return env.fetchAll(query, this::parse${entity.name});
     }
 
+    <#if query.withPaging>
+    public Paging ${query.name}Paging<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p},
+                                        </#list>
+                                        </#if>
+                                        int pageSize
+                                    ) throws SQLException</#compress></@compress>
+    {
+        Query query = SQL.select(SQL.count())
+                        .from(${entity.name}.TABLE)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        .toQuery();
+        return Paging.of(env.fetchOne(query, (rs) -> rs.get(SQL.count())), pageSize);
+    }
+
+    </#if>
     </#if>
     <#if query.queryType == "count">
-    public int ${query.name}<@compress single_line=true><#compress>
+    public int ${query.count}<@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>

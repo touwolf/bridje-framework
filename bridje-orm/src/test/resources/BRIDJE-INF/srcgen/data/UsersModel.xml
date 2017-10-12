@@ -40,15 +40,7 @@ limitations under the License.
                 <index fields="title" />
             </indexes>
             <queries>
-                <count name="countGroups">
-                    <where condition="title = $title" >
-                        <or condition="title = $title1">
-                            <and condition="code != $code" />
-                        </or>
-                        <orNot condition="code = $code2" />
-                    </where>
-                </count>
-                <select name="findGroups" withPaging="false">
+                <select name="findGroups" withPaging="false" count="countGroups" >
                     <where condition="title = $title" >
                         <or condition="title = $title1">
                             <and condition="code != $code" />
