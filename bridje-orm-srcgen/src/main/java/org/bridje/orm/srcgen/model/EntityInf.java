@@ -66,7 +66,8 @@ public class EntityInf
     @XmlElementWrapper(name = "queries")
     @XmlElements(
     {
-        @XmlElement(name = "select", type = SelectQueryInf.class)
+        @XmlElement(name = "select", type = SelectQueryInf.class),
+        @XmlElement(name = "count", type = CountQueryInf.class)
     })
     private List<QueryInf> queries;
 

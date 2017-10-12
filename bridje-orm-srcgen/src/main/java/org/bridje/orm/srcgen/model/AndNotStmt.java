@@ -16,29 +16,42 @@
 
 package org.bridje.orm.srcgen.model;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
-public abstract class QueryInf
+public class AndNotStmt extends ConditionStmt
 {
-    @XmlAttribute
-    private String name;
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    @XmlTransient
+    private ConditionStmt parent;
     
-    public abstract String getQueryType();
+    @Override
+    public boolean isNot()
+    {
+        return true;
+    }
 
-    public abstract EntityInf getEntity();
+    @Override
+    public String getBooleanOperator()
+    {
+        return "and";
+    }
+
+    public ConditionStmt getParent()
+    {
+        return parent;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        this.parent = (ConditionStmt)parent;
+    }
+
+    @Override
+    public QueryInf getQuery()
+    {
+        return getParent().getQuery();
+    }
 }

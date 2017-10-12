@@ -20,12 +20,18 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SelectQueryInf extends QueryInf
 {
     @XmlAttribute
     private boolean withPaging;
+
+    private WhereStmt where;
+
+    @XmlTransient
+    private EntityInf entity;
 
     public boolean isWithPaging()
     {
@@ -43,9 +49,23 @@ public class SelectQueryInf extends QueryInf
         return "select";
     }
 
-    @Override
+    public WhereStmt getWhere()
+    {
+        return where;
+    }
+
+    public void setWhere(WhereStmt where)
+    {
+        this.where = where;
+    }
+
+    public EntityInf getEntity()
+    {
+        return entity;
+    }
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        
+        entity = (EntityInf)parent;
     }
 }

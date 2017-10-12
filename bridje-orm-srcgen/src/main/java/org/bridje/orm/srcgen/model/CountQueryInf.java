@@ -16,29 +16,43 @@
 
 package org.bridje.orm.srcgen.model;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
-public abstract class QueryInf
+public class CountQueryInf extends QueryInf
 {
-    @XmlAttribute
-    private String name;
+    private WhereStmt where;
 
-    public String getName()
+    @XmlTransient
+    private EntityInf entity;
+
+    @Override
+    public String getQueryType()
     {
-        return name;
+        return "count";
     }
 
-    public void setName(String name)
+    public WhereStmt getWhere()
     {
-        this.name = name;
+        return where;
     }
-    
-    public abstract String getQueryType();
 
-    public abstract EntityInf getEntity();
+    public void setWhere(WhereStmt where)
+    {
+        this.where = where;
+    }
+
+    @Override
+    public EntityInf getEntity()
+    {
+        return entity;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        entity = (EntityInf)parent;
+    }
 }

@@ -16,29 +16,61 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
-public abstract class QueryInf
+public class WhereStmt extends ConditionStmt
 {
     @XmlAttribute
-    private String name;
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    private boolean not;
     
-    public abstract String getQueryType();
+    @XmlTransient
+    private QueryInf query;
 
-    public abstract EntityInf getEntity();
+    @XmlTransient
+    private Map<String, FieldInf> mapParams;
+
+    @Override
+    public boolean isNot()
+    {
+        return not;
+    }
+
+    public void setNot(boolean not)
+    {
+        this.not = not;
+    }
+
+    @Override
+    public String getBooleanOperator()
+    {
+        return null;
+    }
+
+    @Override
+    public QueryInf getQuery()
+    {
+        return query;
+    }
+
+    public Map<String, FieldInf> getParams()
+    {
+        if(mapParams == null)
+        {
+            mapParams = new HashMap<>();
+            fillParams(mapParams);
+        }
+        return mapParams;
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        query = (QueryInf)parent;
+    }
 }

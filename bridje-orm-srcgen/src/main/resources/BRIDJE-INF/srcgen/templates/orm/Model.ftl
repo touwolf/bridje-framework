@@ -109,17 +109,79 @@ public class ${model.name}Base
         env.update(${entity.name}.DELETE_QUERY, key);
     }
 
+    <#macro renderConditionContent entity condition >
+        <@compress single_line=true>
+        <#compress>
+        <#if condition.content??>
+        <#list condition.content as newCond>
+            .${newCond.booleanOperator}(<@renderCondition entity newCond />)
+        </#list>
+        </#if>
+        </#compress>
+        </@compress>
+    </#macro>
+    <#macro renderCondition entity condition >
+        <@compress single_line=true>
+        <#compress>
+        ${entity.name}.${condition.field.column?upper_case}.${condition.operatorMethod}(${condition.value})<#if condition.not>.not()</#if>
+        <@renderConditionContent entity condition />
+        </#compress>
+        </@compress>
+    </#macro>
     <#list entity.queries as query>
     <#if query.queryType == "select">
-    public List<${entity.name}> ${query.name}(<#if query.withPaging>Paging paging</#if>) throws SQLException
+    public List<${entity.name}> ${query.name}<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.withPaging>
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}, 
+                                        </#list>
+                                        </#if>
+                                        Paging paging
+                                        <#else>
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        </#list>
+                                        </#if>
+                                        </#if>
+                                    ) throws SQLException</#compress></@compress>
     {
         Query query = SQL.select(${entity.name}.TABLE.getColumns())
                         .from(${entity.name}.TABLE)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
                         <#if query.withPaging>
                         .limit(paging.toLimit())
                         </#if>
                         .toQuery();
         return env.fetchAll(query, this::parse${entity.name});
+    }
+
+    </#if>
+    <#if query.queryType == "count">
+    public int ${query.name}<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        </#list>
+                                        </#if>
+                                    ) throws SQLException</#compress></@compress>
+    {
+        Query query = SQL.select(SQL.count())
+                        .from(${entity.name}.TABLE)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        .toQuery();
+        return env.fetchOne(query, (rs) -> rs.get(SQL.count()));
     }
 
     </#if>
