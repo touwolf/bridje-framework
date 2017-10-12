@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.List;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.thls.Thls;
 import org.bridje.sql.*;
 import org.bridje.orm.*;
 import javax.annotation.Generated;
@@ -32,6 +33,11 @@ public class ${model.name}Base
                     .table(${entity.name}.TABLE)
                     </#list>
                     .build();
+    }
+
+    public static ${model.name} get()
+    {
+        return Thls.get(ORMEnvironment.class).getModel(${model.name}.class);
     }
 
     @Inject
@@ -130,7 +136,7 @@ public class ${model.name}Base
     </#macro>
     <#list entity.queries as query>
     <#if query.queryType == "select">
-    public List<${entity.name}> ${query.name}<@compress single_line=true><#compress>
+    public List<<#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if>> ${query.name}<@compress single_line=true><#compress>
                                     (
                                         <#if query.withPaging>
                                         <#if query.where??>
@@ -159,7 +165,11 @@ public class ${model.name}Base
                         .limit(paging.toLimit())
                         </#if>
                         .toQuery();
+        <#if query.fetchField??>
+        return env.fetchAll(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}));
+        <#else>
         return env.fetchAll(query, this::parse${entity.name});
+        </#if>
     }
 
     <#if query.withPaging>
@@ -187,7 +197,7 @@ public class ${model.name}Base
     </#if>
     </#if>
     <#if query.queryType == "count">
-    public int ${query.count}<@compress single_line=true><#compress>
+    public int ${query.name}<@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>
@@ -205,6 +215,32 @@ public class ${model.name}Base
                         </#if>
                         .toQuery();
         return env.fetchOne(query, (rs) -> rs.get(SQL.count()));
+    }
+
+    </#if>
+    <#if query.queryType == "selectOne">
+    public <#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if> ${query.name}<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        </#list>
+                                        </#if>
+                                    ) throws SQLException</#compress></@compress>
+    {
+        Query query = SQL.select(${entity.name}.TABLE.getColumns())
+                        .from(${entity.name}.TABLE)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        .toQuery();
+        <#if query.fetchField??>
+        return env.fetchOne(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}));
+        <#else>
+        return env.fetchOne(query, this::parse${entity.name});
+        </#if>
     }
 
     </#if>

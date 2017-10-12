@@ -14,7 +14,14 @@ public class ${model.name}Types
     </#list>
     static {
         <#list model.types as type>
-        ${type.name} = SQL.buildType(${type.javaType}.class, ${type.readType}.class, JDBCType.${type.jdbcType}, ${type.length!0}, ${type.precision!0}, null, null);
+        ${type.name} = SQL.buildType(
+                    ${type.javaType}.class, 
+                    ${type.readType}.class, 
+                    JDBCType.${type.jdbcType}, 
+                    ${type.length?string.computer}, 
+                    ${type.precision?string.computer}, 
+                    <#if type.parser??>(v) -> ${type.parserCode("v")}<#else>null</#if>, 
+                    <#if type.writer??>(v) -> ${type.writerCode("v")}<#else>null</#if>);
 
         </#list>
     }

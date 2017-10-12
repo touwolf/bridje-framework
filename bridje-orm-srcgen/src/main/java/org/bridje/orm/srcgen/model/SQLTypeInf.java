@@ -42,6 +42,12 @@ public class SQLTypeInf
     @XmlAttribute
     private Integer precision;
 
+    @XmlAttribute
+    private String parser;
+
+    @XmlAttribute
+    private String writer;
+
     public String getName()
     {
         return name;
@@ -84,6 +90,10 @@ public class SQLTypeInf
 
     public Integer getLength()
     {
+        if(length == null)
+        {
+            return 0;
+        }
         return length;
     }
 
@@ -94,12 +104,46 @@ public class SQLTypeInf
 
     public Integer getPrecision()
     {
+        if(precision == null)
+        {
+            return 0;
+        }
         return precision;
     }
 
     public void setPrecision(Integer precision)
     {
         this.precision = precision;
+    }
+
+    public String getParser()
+    {
+        return parser;
+    }
+
+    public void setParser(String parser)
+    {
+        this.parser = parser;
+    }
+
+    public String getWriter()
+    {
+        return writer;
+    }
+
+    public void setWriter(String writer)
+    {
+        this.writer = writer;
+    }
+
+    public String writerCode(String value)
+    {
+        return String.format(writer, value);
+    }
+
+    public String parserCode(String value)
+    {
+        return String.format(parser, value);
     }
 
     void afterUnmarshal(Unmarshaller u, Object parent)

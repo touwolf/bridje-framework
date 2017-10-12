@@ -23,11 +23,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SelectQueryInf extends QueryInf
+public class SelectOneQueryInf extends QueryInf
 {
-    @XmlAttribute
-    private boolean withPaging;
-
     private WhereStmt where;
 
     @XmlTransient
@@ -36,20 +33,10 @@ public class SelectQueryInf extends QueryInf
     @XmlAttribute
     private String fetch;
 
-    public boolean isWithPaging()
-    {
-        return withPaging;
-    }
-
-    public void setWithPaging(boolean withPaging)
-    {
-        this.withPaging = withPaging;
-    }
-
     @Override
     public String getQueryType()
     {
-        return "select";
+        return "selectOne";
     }
 
     public WhereStmt getWhere()
@@ -60,6 +47,12 @@ public class SelectQueryInf extends QueryInf
     public void setWhere(WhereStmt where)
     {
         this.where = where;
+    }
+
+    @Override
+    public EntityInf getEntity()
+    {
+        return entity;
     }
 
     public FieldInf getFetchField()
@@ -76,12 +69,6 @@ public class SelectQueryInf extends QueryInf
     public void setFetch(String fetch)
     {
         this.fetch = fetch;
-    }
-
-    @Override
-    public EntityInf getEntity()
-    {
-        return entity;
     }
 
     void afterUnmarshal(Unmarshaller u, Object parent)

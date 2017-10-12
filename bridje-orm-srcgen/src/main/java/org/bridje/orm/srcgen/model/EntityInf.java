@@ -67,7 +67,8 @@ public class EntityInf
     @XmlElements(
     {
         @XmlElement(name = "select", type = SelectQueryInf.class),
-        @XmlElement(name = "count", type = CountQueryInf.class)
+        @XmlElement(name = "count", type = CountQueryInf.class),
+        @XmlElement(name = "selectOne", type = SelectOneQueryInf.class)
     })
     private List<QueryInf> queries;
 
