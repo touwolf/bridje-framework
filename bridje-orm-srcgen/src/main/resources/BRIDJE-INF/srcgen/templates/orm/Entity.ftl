@@ -48,7 +48,7 @@ public class ${entity.name}
                             ${entity.key.type.length!0}, 
                             ${entity.key.type.precision!0}, 
                             null, 
-                            <#if entity.key.type.writer??>(e) -> ${entity.key.type.writerCode("e.get" + entity.key.name?cap_first + "()")}<#else>null</#if>);
+                            <#if entity.key.type.writer??>(e) -> ${entity.key.type.writerCode("e.get" + entity.key.name?cap_first + "()")}<#else>(e) -> e.get${entity.key.name?cap_first}()</#if>);
 
         <#list entity.allFields as field>
         ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, false<#if !field.autoIncrement>, null</#if>);
