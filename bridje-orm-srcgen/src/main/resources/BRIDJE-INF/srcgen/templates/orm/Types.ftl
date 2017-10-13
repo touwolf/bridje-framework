@@ -14,14 +14,15 @@ public class ${model.name}Types
     </#list>
     static {
         <#list model.types as type>
-        ${type.name} = SQL.buildType(
+        ${type.name} = SQL.buildType(<@compress single_line=true><#compress>
                     ${type.javaType}.class, 
                     ${type.readType}.class, 
                     JDBCType.${type.jdbcType}, 
                     ${type.length?string.computer}, 
                     ${type.precision?string.computer}, 
                     <#if type.parser??>(v) -> ${type.parserCode("v")}<#else>null</#if>, 
-                    <#if type.writer??>(v) -> ${type.writerCode("v")}<#else>null</#if>);
+                    <#if type.writer??>(v) -> ${type.writerCode("v")}<#else>null</#if>
+                    </#compress></@compress>);
 
         </#list>
     }

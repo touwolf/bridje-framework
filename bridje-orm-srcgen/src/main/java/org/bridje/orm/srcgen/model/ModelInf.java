@@ -55,6 +55,14 @@ public class ModelInf
     })
     private List<EntityInf> entities;
 
+    @XmlElementWrapper(name = "enums")
+    @XmlElements(
+            {
+                @XmlElement(name = "enum", type = EnumInf.class),
+                @XmlElement(name = "external", type = ExternalEnumInf.class)
+            })
+    private List<EnumBaseInf> enums;
+
     public String getName()
     {
         return name;
@@ -122,6 +130,16 @@ public class ModelInf
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    public List<EnumBaseInf> getEnums()
+    {
+        return enums;
+    }
+
+    public void setEnums(List<EnumBaseInf> enums)
+    {
+        this.enums = enums;
     }
 
     public SQLTypeInf findSQLType(String type)

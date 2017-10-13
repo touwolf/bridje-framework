@@ -41,17 +41,21 @@ public class ${entity.name}
     static final Query DELETE_QUERY;
 
     static {
-        RELATION_TYPE = SQL.buildType(
+        RELATION_TYPE = SQL.buildType(<@compress single_line=true><#compress>
                             ${entity.name}.class, 
                             ${entity.key.type.readType}.class, 
                             JDBCType.${entity.key.type.jdbcType}, 
                             ${entity.key.type.length!0}, 
                             ${entity.key.type.precision!0}, 
                             null, 
-                            <#if entity.key.type.writer??>(e) -> ${entity.key.type.writerCode("e.get" + entity.key.name?cap_first + "()")}<#else>(e) -> e.get${entity.key.name?cap_first}()</#if>);
+                            <#if entity.key.type.writer??>
+                            (e) -> ${entity.key.type.writerCode("e.get" + entity.key.name?cap_first + "()")}
+                            <#else>
+                            (e) -> e.get${entity.key.name?cap_first}()
+                            </#if></#compress></@compress>);
 
         <#list entity.allFields as field>
-        ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, false<#if !field.autoIncrement>, null</#if>);
+        ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
 
         </#list>
         TABLE = SQL.buildTable("${entity.table?lower_case}")

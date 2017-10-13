@@ -26,6 +26,7 @@ limitations under the License.
         <type name="STRING150" javaType="String" readType="String" jdbcType="VARCHAR" length="150" />
         <type name="PASSWORD" javaType="String" readType="String" jdbcType="VARCHAR" length="255" />
         <type name="BOOLEAN" javaType="Boolean" readType="Boolean" jdbcType="BOOLEAN" />
+        <type name="USER_STATUS" javaType="UserStatus" readType="Integer" jdbcType="INTEGER" parser="UserStatus.values()[%s]" writer="%s.ordinal()" />
     </types>
 
     <entities>
@@ -64,6 +65,7 @@ limitations under the License.
                 <string name="email" type="STRING150" />
                 <string name="password" type="PASSWORD" />
                 <string name="active" type="BOOLEAN" />
+                <number name="status" type="USER_STATUS" />
             </fields>
             <indexes>
                 <unique fields="email" />
@@ -86,4 +88,11 @@ limitations under the License.
             </indexes>
         </entity>
     </entities>
+
+    <enums>
+        <enum name="UserStatus" description="The user status." >
+            <constant name="ENABLED" description="The user is enabled." />
+            <constant name="DISABLED" description="The user is disabled." />
+        </enum>
+    </enums>
 </ormModel>

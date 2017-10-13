@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.orm.srcgen.model.EntityInf;
+import org.bridje.orm.srcgen.model.EnumBaseInf;
+import org.bridje.orm.srcgen.model.EnumInf;
 import org.bridje.orm.srcgen.model.ModelInf;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
@@ -73,7 +75,6 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
             srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
         }
 
-        /*
         data = new HashMap<>();
         data.put("model", modelInf);
         for (EnumBaseInf enumInf : modelInf.getEnums())
@@ -84,6 +85,5 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
                 srcGen.createClass(enumInf.getFullName(), "orm/Enum.ftl", data);
             }
         }
-        */
     }
 }

@@ -116,23 +116,19 @@ public class ${model.name}Base
     }
 
     <#macro renderConditionContent entity condition >
-        <@compress single_line=true>
-        <#compress>
+        <@compress single_line=true><#compress>
         <#if condition.content??>
         <#list condition.content as newCond>
             .${newCond.booleanOperator}(<@renderCondition entity newCond />)
         </#list>
         </#if>
-        </#compress>
-        </@compress>
+        </#compress></@compress>
     </#macro>
     <#macro renderCondition entity condition >
-        <@compress single_line=true>
-        <#compress>
+        <@compress single_line=true><#compress>
         ${entity.name}.${condition.field.column?upper_case}.${condition.operatorMethod}(${condition.value})<#if condition.not>.not()</#if>
         <@renderConditionContent entity condition />
-        </#compress>
-        </@compress>
+        </#compress></@compress>
     </#macro>
     <#list entity.queries as query>
     <#if query.queryType == "select">

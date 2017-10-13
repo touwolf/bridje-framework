@@ -89,6 +89,10 @@ public abstract class FieldInf
 
     public Boolean getRequired()
     {
+        if(required == null)
+        {
+            required = false;
+        }
         return required;
     }
 
