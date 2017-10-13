@@ -16,9 +16,23 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface BuildFkReferencesStep
 {
+    /**
+     * 
+     * @param onUpdate
+     * @param onDelete
+     * @return 
+     */
     BuildFkFinalStep strategy(ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete);
 
+    /**
+     * 
+     * @param stategy
+     * @return 
+     */
     BuildFkFinalStep strategy(ForeignKeyStrategy stategy);
 }

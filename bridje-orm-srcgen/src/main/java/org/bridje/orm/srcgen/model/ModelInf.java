@@ -16,7 +16,11 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,11 +28,17 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.bridje.ioc.Ioc;
+import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.VFile;
 
 @XmlRootElement(name = "ormModel")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModelInf
 {
+    private static final Logger LOG = Logger.getLogger(ModelInf.class.getName());
+
     @XmlAttribute
     private String schema;
 
@@ -40,7 +50,14 @@ public class ModelInf
 
     @XmlAttribute(name = "description")
     private String description;
-    
+
+    @XmlElementWrapper(name = "includes")
+    @XmlElements(
+    {
+        @XmlElement(name = "include", type = String.class)
+    })
+    private List<String> includes;
+
     @XmlElementWrapper(name = "types")
     @XmlElements(
     {
@@ -62,6 +79,9 @@ public class ModelInf
                 @XmlElement(name = "external", type = ExternalEnumInf.class)
             })
     private List<EnumBaseInf> enums;
+
+    @XmlTransient
+    private List<ModelInf> includeModels;
 
     public String getName()
     {
@@ -142,12 +162,57 @@ public class ModelInf
         this.enums = enums;
     }
 
+    public List<String> getIncludes()
+    {
+        if(includes == null)
+        {
+            includes = new ArrayList<>();
+        }
+        return includes;
+    }
+
+    public void setIncludes(List<String> includes)
+    {
+        this.includes = includes;
+    }
+
     public SQLTypeInf findSQLType(String type)
     {
-        return types.stream()
+        SQLTypeInf result = types.stream()
                 .filter(t -> t.getName().equalsIgnoreCase(type))
                 .findFirst()
                 .orElse(null);
+        if(result == null)
+        {
+            for (ModelInf model : getIncludeModels())
+            {
+                result = model.findSQLType(type);
+                if(result != null) return result;
+            }
+        }
+        return result;
+    }
+
+    public List<ModelInf> getIncludeModels()
+    {
+        SrcGenService srcGen = Ioc.context().find(SrcGenService.class);
+        if(includeModels == null)
+        {
+            includeModels = new ArrayList<>();
+            for (String include : getIncludes())
+            {
+                try
+                {
+                    ModelInf model = srcGen.readFile(new VFile(SrcGenService.SUPL_PATH.join(include)), ModelInf.class);
+                    includeModels.add(model);
+                }
+                catch (IOException e)
+                {
+                    LOG.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+        }
+        return includeModels;
     }
 
     public EntityInf findEntity(String referencesName)

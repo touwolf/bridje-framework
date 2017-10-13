@@ -16,6 +16,9 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface TableExpr extends SQLWritable
 {
 }

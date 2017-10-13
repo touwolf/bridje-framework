@@ -16,7 +16,14 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface FinalStep
 {
+    /**
+     * 
+     * @return 
+     */
     Query toQuery();
 }

@@ -16,7 +16,15 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface BuildSchemaIndexesStep extends BuildSchemaFKsStep
 {
+    /**
+     * 
+     * @param index
+     * @return 
+     */
     BuildSchemaFKsStep index(Index index);
 }

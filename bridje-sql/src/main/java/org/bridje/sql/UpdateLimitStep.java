@@ -16,7 +16,15 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface UpdateLimitStep extends FinalStep
 {
+    /**
+     * 
+     * @param limit
+     * @return 
+     */
     FinalStep limit(Limit limit);
 }

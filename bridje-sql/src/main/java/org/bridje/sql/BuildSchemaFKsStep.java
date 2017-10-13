@@ -16,9 +16,21 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface BuildSchemaFKsStep
 {
+    /**
+     * 
+     * @param foreignKey
+     * @return 
+     */
     BuildSchemaFKsStep foreignKey(ForeignKey foreignKey);
 
+    /**
+     * 
+     * @return 
+     */
     Schema build();
 }

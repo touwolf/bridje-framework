@@ -16,7 +16,15 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface DeleteStep
 {
+    /**
+     * 
+     * @param table
+     * @return 
+     */
     DeleteFromStep from(TableExpr table);
 }

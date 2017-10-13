@@ -16,7 +16,16 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 public interface Literal<T, E> extends Expression<T, E>
 {
+    /**
+     * 
+     * @return 
+     */
     T getValue();
 }

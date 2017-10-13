@@ -16,13 +16,32 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface Schema
 {
+    /**
+     * 
+     * @return 
+     */
     String getName();
 
+    /**
+     * 
+     * @return 
+     */
     Table[] getTables();
 
+    /**
+     * 
+     * @return 
+     */
     Index[] getIndexes();
 
+    /**
+     * 
+     * @return 
+     */
     ForeignKey[] getForeignKeys();
 }

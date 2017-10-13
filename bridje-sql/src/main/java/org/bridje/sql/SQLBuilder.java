@@ -18,35 +18,110 @@ package org.bridje.sql;
 
 import java.util.List;
 
+/**
+ * 
+ */
 public interface SQLBuilder
 {
+    /**
+     * 
+     * @return 
+     */
     boolean isSimpleColumnNames();
 
+    /**
+     * 
+     * @param simpleColumnNames 
+     */
     void setSimpleColumnNames(boolean simpleColumnNames);
 
+    /**
+     * 
+     * @return 
+     */
     SQLDialect getDialect();
 
+    /**
+     * 
+     * @return 
+     */
     List<Object> getParameters();
 
+    /**
+     * 
+     * @param str
+     * @return 
+     */
     SQLBuilder append(String str);
 
+    /**
+     * 
+     * @param s
+     * @return 
+     */
     SQLBuilder append(CharSequence s);
 
+    /**
+     * 
+     * @param c
+     * @return 
+     */
     SQLBuilder append(char c);
 
+    /**
+     * 
+     * @param i
+     * @return 
+     */
     SQLBuilder append(int i);
 
+    /**
+     * 
+     * @param lng
+     * @return 
+     */
     SQLBuilder append(long lng);
 
+    /**
+     * 
+     * @param f
+     * @return 
+     */
     SQLBuilder append(float f);
 
+    /**
+     * 
+     * @param d
+     * @return 
+     */
     SQLBuilder append(double d);
 
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     SQLBuilder appendObjectName(String name);
 
+    /**
+     * 
+     * @param offset
+     * @param count
+     * @return 
+     */
     SQLBuilder appendLimit(int offset, int count);
 
+    /**
+     * 
+     * @param expression
+     * @return 
+     */
     SQLBuilder append(SQLWritable expression);
 
+    /**
+     * 
+     * @param expressions
+     * @param sep 
+     */
     void appendAll(SQLWritable[] expressions, String sep);
 }

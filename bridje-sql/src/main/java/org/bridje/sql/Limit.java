@@ -16,9 +16,20 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface Limit extends SQLWritable
 {
+    /**
+     * 
+     * @return 
+     */
     int getOffset();
 
+    /**
+     * 
+     * @return 
+     */
     int getCount();
 }

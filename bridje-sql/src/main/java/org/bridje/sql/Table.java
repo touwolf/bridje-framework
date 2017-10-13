@@ -16,21 +16,57 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface Table extends TableExpr
 {
+    /**
+     * 
+     * @return 
+     */
     String getName();
 
+    /**
+     * 
+     * @return 
+     */
     Schema getSchema();
 
+    /**
+     * 
+     * @return 
+     */
     Column<?, ?>[] getPrimaryKey();
 
+    /**
+     * 
+     * @return 
+     */
     Column<?, ?>[] getAutoIncrement();
 
+    /**
+     * 
+     * @return 
+     */
     Column<?, ?>[] getColumns();
 
+    /**
+     * 
+     * @param name
+     * @return 
+     */
     Column<?, ?> getColumn(String name);
 
+    /**
+     * 
+     * @return 
+     */
     Index[] getIndexes();
 
+    /**
+     * 
+     * @return 
+     */
     ForeignKey[] getForeignKeys();
 }

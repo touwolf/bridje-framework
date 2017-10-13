@@ -16,6 +16,11 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 public interface StringColumn<T, E> extends Column<T, E>, StringExpr<T, E>
 {
 }

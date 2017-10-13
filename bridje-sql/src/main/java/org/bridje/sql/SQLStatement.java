@@ -16,13 +16,32 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface SQLStatement
 {
+    /**
+     * 
+     * @return 
+     */
     Expression<?, ?>[] getResultFields();
 
+    /**
+     * 
+     * @return 
+     */
     boolean isWithGeneratedKeys();
 
+    /**
+     * 
+     * @return 
+     */
     String getSQL();
 
+    /**
+     * 
+     * @return 
+     */
     Object[] getParameters();
 }

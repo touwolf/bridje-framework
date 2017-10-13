@@ -18,8 +18,19 @@ package org.bridje.sql;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 @FunctionalInterface
 public interface SQLValueParser<T, E>
 {
+    /**
+     * 
+     * @param value
+     * @return
+     * @throws SQLException 
+     */
     T parse(E value) throws SQLException;
 }

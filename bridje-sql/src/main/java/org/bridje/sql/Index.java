@@ -16,13 +16,32 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface Index
 {
+    /**
+     * 
+     * @return 
+     */
     String getName();
 
+    /**
+     * 
+     * @return 
+     */
     Table getTable();
 
+    /**
+     * 
+     * @return 
+     */
     Column<?, ?>[] getColumns();
 
+    /**
+     * 
+     * @return 
+     */
     boolean isUnique();
 }

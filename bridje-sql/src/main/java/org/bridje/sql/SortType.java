@@ -16,8 +16,17 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public enum SortType
 {
+    /**
+     * 
+     */
     ASC,
+    /**
+     * 
+     */
     DESC;
 }

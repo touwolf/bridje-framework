@@ -16,15 +16,44 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 public interface BooleanExpr<T, E> extends Expression<T, E>
 {
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     BooleanExpr<T, E> and(BooleanExpr<T, E> operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     BooleanExpr<T, E> or(BooleanExpr<T, E> operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     BooleanExpr<T, E> and(T operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     BooleanExpr<T, E> or(T operand);
 
+    /**
+     * 
+     * @return 
+     */
     BooleanExpr<T, E> not();
 }

@@ -16,11 +16,35 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface SetsStep extends UpdateWhereStep
 {
+    /**
+     * 
+     * @param <T> The final java type of the expression.
+     * @param <E> The result set read java type of the expression.
+     * @param column
+     * @param value
+     * @return 
+     */
     <T, E> SetsStep set(Column<T, E> column, T value);
 
+    /**
+     * 
+     * @param <T> The final java type of the expression.
+     * @param <E> The result set read java type of the expression.
+     * @param column
+     * @param value
+     * @return 
+     */
     <T, E> SetsStep set(Column<T, E> column, Expression<T, E> value);
 
+    /**
+     * 
+     * @param condition
+     * @return 
+     */
     UpdateWhereStep where(BooleanExpr<?, ?> condition);
 }

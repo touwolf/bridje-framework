@@ -19,39 +19,111 @@ package org.bridje.sql;
 import java.sql.JDBCType;
 import java.sql.SQLException;
 
+/**
+ * 
+ * @param <T>
+ * @param <E> 
+ */
 public interface SQLType<T, E>
 {
+    /**
+     * 
+     */
     public static final SQLType<Boolean, Boolean> BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BOOLEAN);
 
+    /**
+     * 
+     */
     public static final SQLType<Long, Long> LONG = SQL.buildType(Long.class, JDBCType.BIGINT);
 
+    /**
+     * 
+     */
     public static final SQLType<Integer, Integer> INTEGER = SQL.buildType(Integer.class, JDBCType.INTEGER);
 
+    /**
+     * 
+     */
     public static final SQLType<Short, Short> SHORT = SQL.buildType(Short.class, JDBCType.SMALLINT);
 
+    /**
+     * 
+     */
     public static final SQLType<Character, Character> CHAR = SQL.buildType(Character.class, JDBCType.CHAR);
 
+    /**
+     * 
+     */
     public static final SQLType<String, String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
     
+    /**
+     * 
+     * @return 
+     */
     Class<T> getJavaType();
     
+    /**
+     * 
+     * @return 
+     */
     Class<E> getJavaReadType();
 
+    /**
+     * 
+     * @return 
+     */
     JDBCType getJDBCType();
 
+    /**
+     * 
+     * @return 
+     */
     int getLength();
 
+    /**
+     * 
+     * @return 
+     */
     int getPrecision();
 
+    /**
+     * 
+     * @return 
+     */
     Expression<T, E> asParam();
 
+    /**
+     * 
+     * @return 
+     */
     SQLValueParser<T, E> getParser();
 
+    /**
+     * 
+     * @return 
+     */
     SQLValueWriter<E, T> getWriter();
     
+    /**
+     * 
+     * @param object
+     * @return
+     * @throws SQLException 
+     */
     T parse(E object) throws SQLException;
 
+    /**
+     * 
+     * @param object
+     * @return
+     * @throws SQLException 
+     */
     E read(Object object) throws SQLException;
 
+    /**
+     * 
+     * @param object
+     * @return 
+     */
     E write(T object);
 }

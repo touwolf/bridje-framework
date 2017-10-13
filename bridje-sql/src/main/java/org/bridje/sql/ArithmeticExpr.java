@@ -16,25 +16,81 @@
 
 package org.bridje.sql;
 
+/**
+ * An arithmetic SQL expression.
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 public interface ArithmeticExpr<T, E> extends Expression<T, E>
 {
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand);
-    
+
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand);
-    
+
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand);
-    
+
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> plus(T operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> minus(T operand);
 
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> mul(T operand);
-    
+
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> div(T operand);
-    
+
+    /**
+     * 
+     * @param operand
+     * @return 
+     */
     ArithmeticExpr<T, E> mod(T operand);
 }

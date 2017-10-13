@@ -28,10 +28,12 @@ public class CpSource implements VfsSource
 {
     private final String resource;
 
+    private final ClassLoader clsLoader;
+
     private Map<String, CpSource> childs;
 
     /**
-     * The only constructor for this object, the resource path needs to be specified.
+     * The primary constructor for this object, the resource path needs to be specified.
      * 
      * @param resource The path to the resource folder to be mount.
      * @throws IOException If any IO exception occurs scanning the resource.
@@ -39,6 +41,20 @@ public class CpSource implements VfsSource
      */
     public CpSource(String resource) throws IOException, URISyntaxException
     {
+        this(resource, CpSource.class.getClassLoader());
+    }
+    
+    /**
+     * Constructor that receive a classLoader for this object, the resource path needs to be specified.
+     * 
+     * @param resource The path to the resource folder to be mount.
+     * @param classLoader The class loader.
+     * @throws IOException If any IO exception occurs scanning the resource.
+     * @throws URISyntaxException If the specified resource has an invalid URI.
+     */
+    public CpSource(String resource, ClassLoader classLoader) throws IOException, URISyntaxException
+    {
+        this.clsLoader = classLoader;
         this.resource = new Path(resource).toString();
         List<String> resourceListing = getResourceListing(getClass(), this.resource + "/");
         if(resourceListing != null && !resourceListing.isEmpty())
@@ -46,7 +62,7 @@ public class CpSource implements VfsSource
             this.childs = new HashMap<>();
             for (String childName : resourceListing)
             {
-                this.childs.put(childName, new CpSource(resource + "/" + childName));
+                this.childs.put(childName, new CpSource(resource + "/" + childName, clsLoader));
             }
         }
     }
@@ -118,7 +134,7 @@ public class CpSource implements VfsSource
         {
             if(childs == null)
             {
-                return getClass().getClassLoader().getResourceAsStream(resource);
+                return clsLoader.getResourceAsStream(resource);
             }
             return null;
         }
@@ -143,7 +159,7 @@ public class CpSource implements VfsSource
         {
             currentPath = currentPath.substring(1);
         }
-        Enumeration<URL> resources = clazz.getClassLoader().getResources(currentPath);
+        Enumeration<URL> resources = clsLoader.getResources(currentPath);
         Set<String> result = new HashSet<>(); //avoid duplicates in case it is a subdirectory
         while (resources.hasMoreElements())
         {
@@ -166,7 +182,7 @@ public class CpSource implements VfsSource
                  * Have to assume the same jar as clazz.
                  */
                 String me = clazz.getName().replace(".", "/").concat(".class");
-                dirURL = clazz.getClassLoader().getResource(me);
+                dirURL = clsLoader.getResource(me);
             }
 
             if (dirURL != null && dirURL.getProtocol().equals("jar"))

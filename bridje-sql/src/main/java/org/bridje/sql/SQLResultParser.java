@@ -18,8 +18,18 @@ package org.bridje.sql;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ * @param <T> 
+ */
 @FunctionalInterface
 public interface SQLResultParser<T>
 {
+    /**
+     * 
+     * @param rs
+     * @return
+     * @throws SQLException 
+     */
     T parse(SQLResultSet rs) throws SQLException;
 }

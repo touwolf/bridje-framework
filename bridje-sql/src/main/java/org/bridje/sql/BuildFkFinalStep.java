@@ -16,7 +16,14 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface BuildFkFinalStep
 {
+    /**
+     * 
+     * @return 
+     */
     ForeignKey build();
 }

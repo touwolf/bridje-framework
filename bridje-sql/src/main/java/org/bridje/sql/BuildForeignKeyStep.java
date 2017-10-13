@@ -16,7 +16,15 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface BuildForeignKeyStep
 {
+    /**
+     * 
+     * @param table
+     * @return 
+     */
     BuildFkReferencesStep references(Table table);
 }

@@ -16,10 +16,25 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public enum ForeignKeyStrategy
 {
+    /**
+     * 
+     */
     NO_ACTION,
+    /**
+     * 
+     */
     CASCADE,
+    /**
+     * 
+     */
     SET_NULL,
+    /**
+     * 
+     */
     SET_DEFAULT;
 }

@@ -18,9 +18,16 @@ package org.bridje.maven.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -68,7 +75,7 @@ public class GenerateMojo extends AbstractMojo
             if(!targetFolder.exists()) targetFolder.mkdirs();
             if(!targetResFolder.exists()) targetResFolder.mkdirs();
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(dataFolder));
-            new VFile(SrcGenService.SUPL_PATH).mount(new CpSource("/BRIDJE-INF/srcgen/data"));
+            new VFile(SrcGenService.SUPL_PATH).mount(new CpSource("/BRIDJE-INF/srcgen/data", createClassLoader()));
             if(sourcesFolder.exists()) new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
@@ -107,6 +114,27 @@ public class GenerateMojo extends AbstractMojo
         {
             getLog().error(e.getMessage(), e);
             throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
+    public ClassLoader createClassLoader() throws MojoFailureException
+    {
+        try
+        {
+            Set<URL> urls = new HashSet<>();
+            List<String> elements = project.getCompileClasspathElements();
+            for (String element : elements)
+            {
+                urls.add(new File(element).toURI().toURL());
+            }
+
+            return URLClassLoader.newInstance(
+                    urls.toArray(new URL[0]),
+                    Thread.currentThread().getContextClassLoader());
+        }
+        catch (DependencyResolutionRequiredException | MalformedURLException e)
+        {
+            throw new MojoFailureException(e.getMessage(), e);
         }
     }
 }

@@ -16,7 +16,14 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface SQLWritable
 {
+    /**
+     * 
+     * @param builder 
+     */
     void writeSQL(SQLBuilder builder);
 }

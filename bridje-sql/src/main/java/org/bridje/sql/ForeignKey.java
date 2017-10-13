@@ -16,17 +16,44 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface ForeignKey
 {
+    /**
+     * 
+     * @return 
+     */
     String getName();
 
+    /**
+     * 
+     * @return 
+     */
     Table getTable();
 
+    /**
+     * 
+     * @return 
+     */
     Column<?, ?>[] getColumns();
 
+    /**
+     * 
+     * @return 
+     */
     Table getReferences();
 
+    /**
+     * 
+     * @return 
+     */
     ForeignKeyStrategy getOnUpdate();
 
+    /**
+     * 
+     * @return 
+     */
     ForeignKeyStrategy getOnDelete();
 }

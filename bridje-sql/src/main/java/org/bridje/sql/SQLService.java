@@ -20,11 +20,32 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
+/**
+ * 
+ */
 public interface SQLService
 {
+    /**
+     * 
+     * @param dataSource
+     * @return
+     * @throws SQLException 
+     */
     SQLEnvironment createEnvironment(DataSource dataSource) throws SQLException;
 
+    /**
+     * 
+     * @param connection
+     * @return
+     * @throws SQLException 
+     */
     SQLEnvironment createEnvironment(Connection connection) throws SQLException;
-    
+
+    /**
+     * 
+     * @param dataSourceName
+     * @return
+     * @throws SQLException 
+     */
     SQLEnvironment createEnvironment(String dataSourceName) throws SQLException;
 }

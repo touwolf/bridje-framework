@@ -16,19 +16,52 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
 public interface Column<T, E> extends Expression<T, E>
 {
+    /**
+     * 
+     * @return 
+     */
     Table getTable();
 
+    /**
+     * 
+     * @return 
+     */
     String getName();
 
+    /**
+     * 
+     * @return 
+     */
     boolean isKey();
 
+    /**
+     * 
+     * @return 
+     */
     boolean isAllowNull();
 
+    /**
+     * 
+     * @return 
+     */
     boolean isAutoIncrement();
 
+    /**
+     * 
+     * @return 
+     */
     T getDefValue();
 
+    /**
+     * 
+     * @return 
+     */
     Expression<T, E> asParam();
 }

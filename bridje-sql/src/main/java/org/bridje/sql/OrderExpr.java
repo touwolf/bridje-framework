@@ -16,9 +16,20 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface OrderExpr extends SQLWritable
 {
+    /**
+     * 
+     * @return 
+     */
     SortType getType();
 
+    /**
+     * 
+     * @return 
+     */
     Expression<?, ?> getColumn();
 }

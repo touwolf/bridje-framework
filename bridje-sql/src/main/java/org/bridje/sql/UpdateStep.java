@@ -16,11 +16,32 @@
 
 package org.bridje.sql;
 
+/**
+ * 
+ */
 public interface UpdateStep extends SetsStep
 {
+    /**
+     * 
+     * @param table
+     * @param on
+     * @return 
+     */
     UpdateStep innerJoin(TableExpr table, BooleanExpr<?, ?> on);
 
+    /**
+     * 
+     * @param table
+     * @param on
+     * @return 
+     */
     UpdateStep leftJoin(TableExpr table, BooleanExpr<?, ?> on);
 
+    /**
+     * 
+     * @param table
+     * @param on
+     * @return 
+     */
     UpdateStep rightJoin(TableExpr table, BooleanExpr<?, ?> on);
 }
