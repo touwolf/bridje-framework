@@ -17,13 +17,14 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build schema step.
  */
 public interface BuildSchemaStep extends BuildSchemaIndexesStep
 {
     /**
+     * Adds a table to the schema.
      *
-     * @param table
+     * @param table The table to add.
      *
      * @return The next step.
      */

@@ -17,19 +17,21 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build schema foreign keys step.
  */
 public interface BuildSchemaFKsStep
 {
     /**
-     *
-     * @param foreignKey
+     * Adds a foreign key to the schema.
+     * 
+     * @param foreignKey The foreign key to add.
      *
      * @return The next step.
      */
     BuildSchemaFKsStep foreignKey(ForeignKey foreignKey);
 
     /**
+     * Creates the schema.
      *
      * @return The created schema.
      */

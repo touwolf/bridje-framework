@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build table step.
  */
 public interface BuildTableStep extends BuildTableColumnsStep
 {

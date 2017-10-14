@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The select step.
  */
 public interface SelectStep extends SelectFinalStep
 {

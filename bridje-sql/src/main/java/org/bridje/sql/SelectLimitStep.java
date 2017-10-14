@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The select limit step.
  */
 public interface SelectLimitStep extends SelectFinalStep
 {

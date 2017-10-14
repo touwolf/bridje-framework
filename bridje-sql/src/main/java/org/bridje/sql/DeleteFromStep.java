@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Delete from step.
  */
 public interface DeleteFromStep extends DeleteWhereStep
 {

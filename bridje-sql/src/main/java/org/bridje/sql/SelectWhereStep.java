@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The select where step.
  */
 public interface SelectWhereStep extends OrderByStep
 {

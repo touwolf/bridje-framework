@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The update where step.
  */
 public interface UpdateWhereStep extends UpdateLimitStep
 {

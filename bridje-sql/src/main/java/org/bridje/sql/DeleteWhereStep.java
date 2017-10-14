@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Delete where step.
  */
 public interface DeleteWhereStep extends DeleteLimitStep
 {

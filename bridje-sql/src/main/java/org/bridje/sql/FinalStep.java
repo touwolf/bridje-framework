@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- * 
+ * The final step for queries.
  */
 public interface FinalStep
 {

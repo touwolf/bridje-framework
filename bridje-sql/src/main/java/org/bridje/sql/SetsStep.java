@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The sets step.
  */
 public interface SetsStep extends UpdateWhereStep
 {

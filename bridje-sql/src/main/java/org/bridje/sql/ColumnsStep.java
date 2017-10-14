@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Insert columns step.
  */
 public interface ColumnsStep extends ValuesStep
 {

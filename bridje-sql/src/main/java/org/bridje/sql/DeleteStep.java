@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Delete step.
  */
 public interface DeleteStep
 {

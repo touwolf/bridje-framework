@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build table foreign keys step.
  */
 public interface BuildTableFKsStep
 {

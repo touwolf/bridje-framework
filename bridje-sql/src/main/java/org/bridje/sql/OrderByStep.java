@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The order by step.
  */
 public interface OrderByStep extends SelectLimitStep
 {

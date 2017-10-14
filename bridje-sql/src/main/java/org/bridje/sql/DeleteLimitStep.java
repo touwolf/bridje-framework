@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Delete limit step.
  */
 public interface DeleteLimitStep extends FinalStep
 {

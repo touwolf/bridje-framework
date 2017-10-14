@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The group by step.
  */
 public interface GroupByStep extends SelectLimitStep
 {

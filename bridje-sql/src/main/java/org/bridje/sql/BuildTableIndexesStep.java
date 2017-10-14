@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build table indexes step.
  */
 public interface BuildTableIndexesStep extends BuildTableFKsStep
 {

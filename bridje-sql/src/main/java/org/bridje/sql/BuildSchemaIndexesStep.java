@@ -17,13 +17,14 @@
 package org.bridje.sql;
 
 /**
- *
+ * Build schema indexes step.
  */
 public interface BuildSchemaIndexesStep extends BuildSchemaFKsStep
 {
     /**
-     *
-     * @param index
+     * Adds an index to the schema.
+     * 
+     * @param index The index to add.
      *
      * @return The next step.
      */

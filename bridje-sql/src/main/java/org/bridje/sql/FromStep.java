@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The form step.
  */
 public interface FromStep extends SelectWhereStep
 {

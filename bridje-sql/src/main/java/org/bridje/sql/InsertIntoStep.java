@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- *
+ * The insert into step.
  */
 public interface InsertIntoStep
 {
