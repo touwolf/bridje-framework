@@ -17,13 +17,14 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Build foreign key final step.
  */
 public interface BuildFkFinalStep
 {
     /**
+     * Builds the foreign key.
      * 
-     * @return 
+     * @return The foreign key.
      */
     ForeignKey build();
 }

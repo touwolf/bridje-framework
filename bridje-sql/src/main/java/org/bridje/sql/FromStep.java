@@ -17,38 +17,43 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface FromStep extends SelectWhereStep
 {
     /**
-     * 
+     *
      * @param table
      * @param on
-     * @return 
+     *
+     * @return The next step.
      */
     FromStep innerJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
-     * 
+     *
      * @param table
      * @param on
-     * @return 
+     *
+     * @return The next step.
      */
     FromStep leftJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
-     * 
+     *
      * @param table
      * @param on
-     * @return 
+     *
+     * @return The next step.
      */
     FromStep rightJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
-     * 
+     *
      * @param condition
-     * @return 
+     *
+     * @return The next step.
      */
     SelectWhereStep where(BooleanExpr<?, ?> condition);
+
 }

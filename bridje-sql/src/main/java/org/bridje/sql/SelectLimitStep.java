@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface SelectLimitStep extends SelectFinalStep
 {
     /**
-     * 
+     *
      * @param limit
-     * @return 
+     *
+     * @return The next step.
      */
     FinalStep limit(Limit limit);
+
 }

@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface OrderByStep extends SelectLimitStep
 {
     /**
-     * 
+     *
      * @param columns
-     * @return 
+     *
+     * @return The next step.
      */
     GroupByStep groupBy(OrderExpr... columns);
+
 }

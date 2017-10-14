@@ -21,5 +21,9 @@ package org.bridje.sql;
  */
 public interface SelectFinalStep extends FinalStep
 {
+    /**
+     * 
+     * @return 
+     */
     SelectExpr asTable();
 }

@@ -23,7 +23,7 @@ public interface FinalStep
 {
     /**
      * 
-     * @return 
+     * @return The created query.
      */
     Query toQuery();
 }

@@ -18,79 +18,110 @@ package org.bridje.sql;
 
 /**
  * An arithmetic SQL expression.
- * 
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
 public interface ArithmeticExpr<T, E> extends Expression<T, E>
 {
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the addition of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the substraction of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the multiplication of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the division of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the modulus of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the addition of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> plus(T operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the substraction of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> minus(T operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the multiplication of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> mul(T operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new arithmetic expression that performs the division of this
+     * expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> div(T operand);
 
     /**
+     * Creates a new arithmetic expression that performs the modulus of this
+     * expresion with the given one.
      * 
-     * @param operand
-     * @return 
+     * @param operand The second operand.
+     *
+     * @return The new arithmetic expression.
      */
     ArithmeticExpr<T, E> mod(T operand);
+
 }

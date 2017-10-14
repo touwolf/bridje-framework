@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface BuildSchemaStep extends BuildSchemaIndexesStep
 {
     /**
-     * 
+     *
      * @param table
-     * @return 
+     *
+     * @return The next step.
      */
     BuildSchemaStep table(Table table);
+
 }

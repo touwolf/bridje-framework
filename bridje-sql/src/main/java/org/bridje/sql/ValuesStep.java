@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface ValuesStep extends FinalStep
 {
     /**
-     * 
+     *
      * @param row
-     * @return 
+     *
+     * @return The next step.
      */
     ValuesStep values(Object... row);
+
 }

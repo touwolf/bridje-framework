@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface DeleteWhereStep extends DeleteLimitStep
 {
     /**
-     * 
+     *
      * @param orderBys
-     * @return 
+     *
+     * @return The next step.
      */
     DeleteLimitStep orderBy(OrderExpr... orderBys);
+
 }

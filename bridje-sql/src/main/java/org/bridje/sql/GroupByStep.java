@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface GroupByStep extends SelectLimitStep
 {
     /**
-     * 
+     *
      * @param condition
-     * @return 
+     *
+     * @return The next step.
      */
     SelectLimitStep having(BooleanExpr<?, ?> condition);
+
 }

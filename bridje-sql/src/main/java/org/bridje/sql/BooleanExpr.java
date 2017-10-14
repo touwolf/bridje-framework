@@ -17,43 +17,59 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents a boolean SQL expression.
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
 public interface BooleanExpr<T, E> extends Expression<T, E>
 {
     /**
+     * Creates a new boolean expression that performs the logical and of this
+     * expresion with the given one.
      * 
-     * @param operand
-     * @return 
+     * @param operand The second operand.
+     * 
+     * @return The new boolean expression.
      */
     BooleanExpr<T, E> and(BooleanExpr<T, E> operand);
 
     /**
+     * Creates a new boolean expression that performs the logical or of this
+     * expresion with the given one.
      * 
-     * @param operand
-     * @return 
+     * @param operand The second operand.
+     * 
+     * @return The new boolean expression.
      */
     BooleanExpr<T, E> or(BooleanExpr<T, E> operand);
 
     /**
+     * Creates a new boolean expression that performs the logical and of this
+     * expresion with the given one.
      * 
-     * @param operand
-     * @return 
+     * @param operand The second operand.
+     * 
+     * @return The new boolean expression.
      */
     BooleanExpr<T, E> and(T operand);
 
     /**
+     * Creates a new boolean expression that performs the logical or of this
+     * expresion with the given one.
      * 
-     * @param operand
-     * @return 
+     * @param operand The second operand.
+     * 
+     * @return The new boolean expression.
      */
     BooleanExpr<T, E> or(T operand);
 
     /**
+     * Creates a new boolean expression that performs the logical not for this
+     * expresion.
      * 
-     * @return 
+     * @return The new boolean expression.
      */
     BooleanExpr<T, E> not();
+
 }

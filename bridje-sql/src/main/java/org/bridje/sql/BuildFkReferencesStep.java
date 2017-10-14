@@ -17,22 +17,27 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Build foreign key references step.
  */
 public interface BuildFkReferencesStep
 {
     /**
-     * 
-     * @param onUpdate
-     * @param onDelete
-     * @return 
+     * Adds the ON DELTE, ON UPDATE strategy for the foreign key.
+     *
+     * @param onUpdate The ON DELETE strategy.
+     * @param onDelete The ON UPDATE strategy.
+     *
+     * @return The next step.
      */
     BuildFkFinalStep strategy(ForeignKeyStrategy onUpdate, ForeignKeyStrategy onDelete);
 
     /**
-     * 
-     * @param stategy
-     * @return 
+     * Adds the ON DELTE, ON UPDATE strategy for the foreign key.
+     *
+     * @param stategy The ON DELETE, ON UPDATE strategy.
+     *
+     * @return The next step.
      */
     BuildFkFinalStep strategy(ForeignKeyStrategy stategy);
+
 }

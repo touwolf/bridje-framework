@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface SelectWhereStep extends OrderByStep
 {
     /**
-     * 
+     *
      * @param orderBys
-     * @return 
+     *
+     * @return The next step.
      */
     OrderByStep orderBy(OrderExpr... orderBys);
+
 }

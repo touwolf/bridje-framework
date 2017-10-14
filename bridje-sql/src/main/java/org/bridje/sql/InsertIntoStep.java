@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
-public interface InsertIntoStep 
+public interface InsertIntoStep
 {
     /**
-     * 
+     *
      * @param column
-     * @return 
+     *
+     * @return The next step.
      */
     ColumnsStep columns(Column<?, ?>... column);
+
 }

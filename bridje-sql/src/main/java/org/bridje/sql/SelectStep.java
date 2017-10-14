@@ -17,14 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  */
 public interface SelectStep extends SelectFinalStep
 {
     /**
-     * 
+     *
      * @param table
-     * @return 
+     *
+     * @return The next step.
      */
     FromStep from(TableExpr table);
+
 }
