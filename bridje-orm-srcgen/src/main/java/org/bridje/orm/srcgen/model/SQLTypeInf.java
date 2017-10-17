@@ -138,11 +138,13 @@ public class SQLTypeInf
 
     public String writerCode(String value)
     {
+        if(writer == null) return value;
         return String.format(writer, value);
     }
 
     public String parserCode(String value)
     {
+        if(parser == null) return value;
         return String.format(parser, value);
     }
 

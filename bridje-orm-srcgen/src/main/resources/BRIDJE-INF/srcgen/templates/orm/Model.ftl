@@ -62,7 +62,7 @@ public class ${model.name}Base
     protected void parse${entity.name}(${entity.name} entity, SQLResultSet rs) throws SQLException
     {
         <#list entity.allFields as field>
-        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(${entity.key.type.parserCode("key"))</#if>));
+        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(${entity.key.type.parserCode("key")})</#if>));
         </#list>
     }
 

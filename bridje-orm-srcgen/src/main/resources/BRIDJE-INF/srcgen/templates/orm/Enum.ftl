@@ -88,4 +88,12 @@ public enum ${enum.name}
 
     </#list>
     </#if>
+
+    public static ${enum.name} valueOf(Integer ordinal)
+    {
+        if(ordinal == null || ordinal < 0) return null;
+        ${enum.name}[] values = ${enum.name}.values();
+        if(ordinal >= values.length) return null;
+        return values[ordinal];
+    }
 }
