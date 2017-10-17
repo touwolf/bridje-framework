@@ -124,4 +124,43 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      */
     ArithmeticExpr<T, E> mod(T operand);
 
+    /**
+     * Creates a new boolean expression that performs the grather than comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> gt(ArithmeticExpr<T, E> operand);
+
+    /**
+     * Creates a new boolean expression that performs the grather or equals to comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> ge(ArithmeticExpr<T, E> operand);
+
+    /**
+     * Creates a new boolean expression that performs the less than comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> lt(ArithmeticExpr<T, E> operand);
+
+    /**
+     * Creates a new boolean expression that performs the less or equals to comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> le(ArithmeticExpr<T, E> operand);
 }

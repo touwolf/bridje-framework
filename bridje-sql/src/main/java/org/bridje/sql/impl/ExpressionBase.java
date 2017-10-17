@@ -18,13 +18,14 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.DateExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.OrderExpr;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.SortType;
 import org.bridje.sql.StringExpr;
 
-abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>
+abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>
 {
     private final SQLType<T, E> sqlType;
 
@@ -164,7 +165,56 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         return new BinaryExpr<>(this, Operators.MOD, new LiteralImpl<>(operand), getSQLType());
     }
-    
+
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> gt(ArithmeticExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.GT, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> ge(ArithmeticExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.GE, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> lt(ArithmeticExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.LT, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> le(ArithmeticExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.LE, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> gt(DateExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.GT, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> ge(DateExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.GE, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> lt(DateExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.LT, operand, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> le(DateExpr<T, E> operand)
+    {
+        return new BinaryExpr<>(this, Operators.LE, operand, SQLType.BOOLEAN);
+    }
+
     @Override
     public OrderExpr asc()
     {

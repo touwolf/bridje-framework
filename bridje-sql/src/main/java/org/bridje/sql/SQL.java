@@ -190,6 +190,21 @@ public class SQL
      * @param defValue
      * @return 
      */
+    public static final <T, E> DateColumn<T, E> buildDateColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
+    {
+        return FACT.buildDateColumn(name, type, allowNull, defValue);
+    }
+
+    /**
+     * 
+     * @param <T> The final java type of the expression.
+     * @param <E> The result set read java type of the expression.
+     * @param name
+     * @param type
+     * @param allowNull
+     * @param defValue
+     * @return 
+     */
     public static final <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return FACT.buildStringColumn(name, type, allowNull, defValue);

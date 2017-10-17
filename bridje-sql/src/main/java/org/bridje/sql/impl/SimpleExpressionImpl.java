@@ -63,10 +63,6 @@ class SimpleExpressionImpl<T, E> extends ExpressionBase<T, E> implements Boolean
             return false;
         }
         final SimpleExpressionImpl<?, ?> other = (SimpleExpressionImpl<?, ?>) obj;
-        if (!Objects.equals(this.expr, other.expr))
-        {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.expr, other.expr);
     }
 }

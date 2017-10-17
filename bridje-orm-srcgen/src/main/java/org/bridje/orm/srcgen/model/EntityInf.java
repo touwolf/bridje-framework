@@ -51,7 +51,8 @@ public class EntityInf
         @XmlElement(name = "relation", type = RelationField.class),
         @XmlElement(name = "boolean", type = BooleanField.class),
         @XmlElement(name = "number", type = NumberField.class),
-        @XmlElement(name = "string", type = StringField.class)
+        @XmlElement(name = "string", type = StringField.class),
+        @XmlElement(name = "date", type = DateField.class)
     })
     private List<FieldInf> fields;
 
@@ -68,7 +69,9 @@ public class EntityInf
     {
         @XmlElement(name = "select", type = SelectQueryInf.class),
         @XmlElement(name = "count", type = CountQueryInf.class),
-        @XmlElement(name = "selectOne", type = SelectOneQueryInf.class)
+        @XmlElement(name = "selectOne", type = SelectOneQueryInf.class),
+        @XmlElement(name = "update", type = UpdateQueryInf.class),
+        @XmlElement(name = "delete", type = DeleteQueryInf.class)
     })
     private List<QueryInf> queries;
 

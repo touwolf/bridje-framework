@@ -18,12 +18,13 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.BooleanExpr;
+import org.bridje.sql.DateExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;
 import org.bridje.sql.StringExpr;
 
-class BinaryExpr<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>
+class BinaryExpr<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>
 {
     private final Expression<?, ?> operand1;
 

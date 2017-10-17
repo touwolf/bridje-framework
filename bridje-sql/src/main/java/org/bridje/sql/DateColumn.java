@@ -14,34 +14,13 @@
  * limitations under the License.
  */
 
-package org.bridje.sql.impl;
+package org.bridje.sql;
 
-enum Operators
+/**
+ * 
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
+public interface DateColumn<T, E> extends Column<T, E>, DateExpr<T, E>
 {
-    EQ("="),
-    NE("<>"),
-    LE("<="),
-    LT("<"),
-    GE(">="),
-    GT(">"),
-    PLUS("+"),
-    MINUS("-"),
-    MULT("*"),
-    DIV("/"),
-    MOD("%"),
-    AND("AND"),
-    OR("OR"),
-    NOT("NOT");
-
-    private final String sql;
-
-    private Operators(String sql)
-    {
-        this.sql = sql;
-    }
-
-    public String toSQL()
-    {
-        return sql;
-    }
 }

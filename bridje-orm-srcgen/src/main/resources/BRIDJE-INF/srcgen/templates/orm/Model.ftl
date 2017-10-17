@@ -62,7 +62,7 @@ public class ${model.name}Base
     protected void parse${entity.name}(${entity.name} entity, SQLResultSet rs) throws SQLException
     {
         <#list entity.allFields as field>
-        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(key)</#if>));
+        entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(${entity.key.type.parserCode("key"))</#if>));
         </#list>
     }
 
@@ -237,6 +237,50 @@ public class ${model.name}Base
         <#else>
         return env.fetchOne(query, this::parse${entity.name});
         </#if>
+    }
+
+    </#if>
+    <#if query.queryType == "update">
+    public int ${query.name}<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        </#list>
+                                        </#if>
+                                    ) throws SQLException</#compress></@compress>
+    {
+        Query query = SQL.update(${entity.name}.TABLE)
+                        .set(....)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        .toQuery();
+        return env.update(query);
+    }
+
+    </#if>
+    <#if query.queryType == "delete">
+    public int ${query.name}<@compress single_line=true><#compress>
+                                    (
+                                        <#if query.where??>
+                                        <#list query.where.params?keys as p>
+                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        </#list>
+                                        </#if>
+                                    ) throws SQLException</#compress></@compress>
+    {
+        Query query = SQL.delete()
+                        .from(${entity.name}.TABLE)
+                        <#if query.where??>
+                        <@compress single_line=true><#compress>.where(
+                            <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        .toQuery();
+        return env.update(query);
     }
 
     </#if>

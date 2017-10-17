@@ -24,6 +24,7 @@ import org.bridje.sql.BuildForeignKeyStep;
 import org.bridje.sql.BuildSchemaStep;
 import org.bridje.sql.BuildTableStep;
 import org.bridje.sql.Column;
+import org.bridje.sql.DateColumn;
 import org.bridje.sql.DeleteStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.Index;
@@ -96,6 +97,11 @@ public class SQLFactory
     }
 
     public <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
+    {
+        return new ColumnImpl<>(name, type, allowNull, defValue);
+    }
+    
+    public <T, E> DateColumn<T, E> buildDateColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, allowNull, defValue);
     }
