@@ -220,9 +220,9 @@ public class SQL
      * @param defValue
      * @return 
      */
-    public static final <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
+    public static final <T, E> BooleanColumn<T, E> buildBooleanColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
-        return FACT.buildBoolColumn(name, type, allowNull, defValue);
+        return FACT.buildBooleanColumn(name, type, allowNull, defValue);
     }
 
     /**

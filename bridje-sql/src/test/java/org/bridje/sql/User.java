@@ -32,7 +32,7 @@ public class User
         ID = SQL.buildAiColumn("id", SQLTypes.LONGID, false);
         EMAIL = SQL.buildStringColumn("email", SQLTypes.STRING150, true, null);
         PASSWORD = SQL.buildStringColumn("password", SQLTypes.PASSWORD, true, null);
-        ACTIVE = SQL.buildBoolColumn("active", SQLTypes.BOOLEAN, true, null);
+        ACTIVE = SQL.buildBooleanColumn("active", SQLTypes.BOOLEAN, true, null);
 
         TABLE = SQL.buildTable("users")
                         .key(ID)

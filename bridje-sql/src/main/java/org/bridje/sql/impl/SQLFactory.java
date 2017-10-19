@@ -111,7 +111,7 @@ public class SQLFactory
         return new ColumnImpl<>(name, type, allowNull, defValue);
     }
 
-    public <T, E> BooleanColumn<T, E> buildBoolColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
+    public <T, E> BooleanColumn<T, E> buildBooleanColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, allowNull, defValue);
     }
