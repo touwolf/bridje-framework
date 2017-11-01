@@ -67,6 +67,11 @@ class SchemaFixer
         {
             fixTable(connection, table);
         }
+
+        for (Table table : tables)
+        {
+            fixForeignKeys(connection, table);
+        }
     }
 
     private void fixIndexes(Connection connection, Index[] indexes) throws SQLException
@@ -96,10 +101,14 @@ class SchemaFixer
         {
             createTable(connection, table);
         }
-        fixForeignKeys(connection, table.getForeignKeys());
         fixIndexes(connection, table.getIndexes());
     }
 
+    private void fixForeignKeys(Connection connection, Table table) throws SQLException
+    {
+        fixForeignKeys(connection, table.getForeignKeys());
+    }
+    
     private boolean tableExists(DatabaseMetaData metadata, Table table) throws SQLException
     {
         try (ResultSet resultSet = metadata.getTables(null, null, table.getName(), null))

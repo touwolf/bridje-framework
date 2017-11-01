@@ -71,10 +71,12 @@ public class ${entity.name}
                     </#if>
                     </#list>
                     <#list entity.foreignKeys![] as key>
+                    <#if !key.isWithItSelf>
                     .foreignKey(SQL.buildForeignKey(${key.column?upper_case})
                                     .references(${key.with.name}.TABLE)
                                     .strategy(ForeignKeyStrategy.${key.onUpdate}, ForeignKeyStrategy.${key.onDelete})
                                     .build())
+                    </#if>
                     </#list>
                     .build();
 

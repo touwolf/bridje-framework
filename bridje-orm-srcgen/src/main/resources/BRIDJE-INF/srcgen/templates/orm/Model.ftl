@@ -32,6 +32,16 @@ public class ${model.name}Base
                     <#list model.entities as entity>
                     .table(${entity.name}.TABLE)
                     </#list>
+                    <#list model.entities as entity>
+                    <#list entity.foreignKeys![] as key>
+                    <#if !key.isWithItSelf>
+                    .foreignKey(SQL.buildForeignKey(${entity.name}.TABLE, ${entity.name}.${key.column?upper_case})
+                                    .references(${key.with.name}.TABLE)
+                                    .strategy(ForeignKeyStrategy.${key.onUpdate}, ForeignKeyStrategy.${key.onDelete})
+                                    .build())
+                    </#if>
+                    </#list>
+                    </#list>
                     .build();
     }
 

@@ -51,6 +51,11 @@ public class RelationField extends FieldInf
     {
         return getEntity().getModel().findEntity(referencesName);
     }
+    
+    public boolean getIsWithItSelf()
+    {
+        return getEntity().equals(getWith());
+    }
 
     public RelationStrategy getOnUpdate()
     {
