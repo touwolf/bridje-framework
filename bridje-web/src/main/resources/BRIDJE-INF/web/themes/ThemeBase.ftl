@@ -1,5 +1,4 @@
-<#ftl encoding="UTF-8">
-<#ftl output_format="HTML">
+<#ftl encoding="UTF-8" output_format="HTML" auto_esc=true >
 <#-- 
  # Copyright 2016 Bridje Framework.
  #
@@ -111,7 +110,7 @@
 <#macro renderState>
     <#local currState = stateProvider.currentState />
     <#list currState?keys as k>
-        <input type="hidden" name="__st.${k}" value="${currState[k]?xhtml}" />
+        <input type="hidden" name="__st.${k}" value="${currState[k]}" />
     </#list>
 </#macro>
 

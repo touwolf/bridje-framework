@@ -208,7 +208,7 @@ limitations under the License.
                 <![CDATA[
                     <div class="form-group">
                         <#assign controlId = tools.bootstrap.randomId />
-                        <label class="control-label col-sm-2" for="${controlId}">${(control.label?xhtml)!}</label>
+                        <label class="control-label col-sm-2" for="${controlId}">${(control.label)!}</label>
                         <div class="col-sm-10">
                             <#if control.content??>
                                 <@renderControl control.content />
@@ -232,7 +232,7 @@ limitations under the License.
                 <![CDATA[
                     <div class="form-group">
                         <#assign controlId = tools.bootstrap.randomId />
-                        <label <#if currFormHideLabels>class="sr-only"</#if> for="${controlId}">${(control.label?xhtml)!}</label>
+                        <label <#if currFormHideLabels>class="sr-only"</#if> for="${controlId}">${(control.label)!}</label>
                         <#if control.content??>
                             <@renderControl control.content />
                         </#if>
@@ -255,7 +255,7 @@ limitations under the License.
                 <![CDATA[
                     <div class="form-group">
                         <#assign controlId = tools.bootstrap.randomId />
-                        <label for="${controlId}">${(control.label?xhtml)!}</label>
+                        <label for="${controlId}">${(control.label)!}</label>
                         <#if control.content??>
                             <@renderControl control.content />
                         </#if>
@@ -323,7 +323,7 @@ limitations under the License.
             <render>
                 <![CDATA[
                     <input id="${controlId!}" type="password" ${valueInAttrName(control)}
-                               placeholder="${(control.placeholder?xhtml)!}" 
+                               placeholder="${(control.placeholder)!}" 
                                class="form-control" 
                                autocomplete="off"
                                value="${control.value!}" />
@@ -338,10 +338,10 @@ limitations under the License.
                 <![CDATA[
                     <input id="${controlId!}" type="email" 
                                ${valueInAttrName(control)}
-                               placeholder="${(control.placeholder?xhtml)!}" 
+                               placeholder="${(control.placeholder)!}" 
                                class="form-control" 
                                autocomplete="off"
-                               value="${(control.value?xhtml)!}" />
+                               value="${(control.value)!}" />
                 ]]>
             </render>
         </control>
@@ -366,10 +366,10 @@ limitations under the License.
                 <![CDATA[
                     <input id="${controlId!}" type="text" 
                                ${valueInAttrName(control)}
-                               placeholder="${(control.placeholder?xhtml)!}" 
+                               placeholder="${(control.placeholder)!}" 
                                class="form-control" 
                                autocomplete="off"
-                               value="${(control.value?xhtml)!}" />
+                               value="${(control.value)!}" />
                 ]]>
             </render>
         </control>
@@ -384,12 +384,12 @@ limitations under the License.
             </fields>
             <render>
                 <![CDATA[
-                    <select class="form-control" placeholder="${(control.placeholder?xhtml)!}" ${valueInAttrName(control)} >
+                    <select class="form-control" placeholder="${(control.placeholder)!}" ${valueInAttrName(control)} >
                         <@doWithData control.data "item">
                             <#if control.optionValue??>
                                 <#assign isSelected = control.value?? && compare(control.optionValue, control.value) />
                                 <#assign strValue = control.optionValueExpression.asString />
-                                <option value="${(strValue?xhtml)!}" <#if isSelected>selected</#if> >${(control.optionTitle?xhtml)!}</option>
+                                <option value="${(strValue)!}" <#if isSelected>selected</#if> >${(control.optionTitle)!}</option>
                             </#if>
                         </@doWithData>
                     </select>
@@ -405,7 +405,7 @@ limitations under the License.
                 <![CDATA[
                     <textarea id="${controlId!}" class="form-control" rows="${control.rows}"
                                ${valueInAttrName(control)}
-                               placeholder="${control.placeholder!}" >${control.value?xhtml}</textarea>
+                               placeholder="${control.placeholder!}" >${control.value}</textarea>
                 ]]>
             </render>
         </control>

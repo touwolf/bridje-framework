@@ -1,5 +1,5 @@
 [#ftl]
-<#ftl encoding="UTF-8" output_format="HTML">
+<#ftl encoding="UTF-8" output_format="HTML" auto_esc=true >
 <#include "../ThemeBase.ftl" >
 [#list uisuite.ftlIncludes![] as ftlInc]
 <#include "${ftlInc}" >
