@@ -77,7 +77,6 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
         srcGen.createClass(fullName + "Defines", "web/Defines.ftl", data);
         srcGen.createClass(fullName + "ExtendsFrom", "web/ExtendsFrom.ftl", data);
         srcGen.createClass(fullName + "Layout", "web/Layout.ftl", data);
-        srcGen.createClass(fullName + "MetaTag", "web/MetaTag.ftl", data);
         srcGen.createClass(fullName + "Standalone", "web/Standalone.ftl", data);
         srcGen.createClass(fullName + "View", "web/View.ftl", data);
         if(uiSuite.getControls() != null)

@@ -265,7 +265,7 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            Control ctrl = view.getRoot().findById(req.getHeader("Bridje-ControlId"));
+            Control ctrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-ControlId"));
             if(ctrl != null)
             {
                 ctrl.readInput(new ControlInputReader(req), elEnv);
@@ -278,7 +278,7 @@ public class WebViewsManager
                 }
                 else
                 {
-                    Control resultCtrl = view.getRoot().findById(req.getHeader("Bridje-ResultId"));
+                    Control resultCtrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-ResultId"));
                     if(resultCtrl == null) resultCtrl = ctrl;
                     elEnv.pushVar("view", view);
                     elEnv.pushVar("i18n", webI18nServ.getI18nMap());

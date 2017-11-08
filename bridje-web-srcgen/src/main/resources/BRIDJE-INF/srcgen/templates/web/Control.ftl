@@ -250,7 +250,7 @@ public class ${control.name} extends ${control.baseName}
     }
 
     <#if control.input??>
-    <#macro printReadInputActions actions ident>
+    <#macro printActions actions ident type>
         <#list actions as ria>
         <#switch ria.class.simpleName>
             <#case "PushEnvVar">
@@ -260,134 +260,109 @@ public class ${control.name} extends ${control.baseName}
         ${ident}env.popVar(${ria.var});
                 <#break>
             <#case "ReadForEachData">
-                <@printForActions ria ident />
+                <@printForActions ria ident type />
                 <#break>
             <#case "ReadIfData">
-                <@printIfActions ria ident />
+                <@printIfActions ria ident type />
                 <#break>
             <#case "ReadElseData">
-                <@printElseActions ria ident />
+                <@printElseActions ria ident type />
                 <#break>
             <#case "PopFieldInput">
+                <#if type == "input">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
         ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popUploadedFile(this.${ria.fieldName}.getParameter()));
                 <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
         ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popParameter(this.${ria.fieldName}.getParameter()));
                 </#if>
+                </#if>
                 <#break>
             <#case "PopAllFieldInputs">
+                <#if type == "input">
         ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
         ${ident}inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
+                </#if>
                 <#break>
             <#case "ReadFieldInput">
+                <#if type == "input">
                 <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
         ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getUploadedFile(this.${ria.fieldName}.getParameter()));
                 <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
         ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getParameter(this.${ria.fieldName}.getParameter()));
                 </#if>
+                </#if>
                 <#break>
             <#case "ReadAllFieldInputs">
+                <#if type == "input">
         ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
         ${ident}inputs().stream().forEachOrdered(input -> set(input, req.getParameter(input.getParameter())));
+                </#if>
                 <#break>
-            <#case "ReadChildren">
-                <#if control.findField(ria.fieldName).javaType.startsWith("List")>
-        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.forEachOrdered(control -> control.readInput(req, env));
-                <#else>
-        ${ident}if(this.${ria.fieldName} != null) this.${ria.fieldName}.readInput(req, env);
+            <#case "ExecuteAllEvents">
+                <#if type == "execute">
+        ${ident}for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
                 </#if>
                 <#break>
             <#case "ReadAllChildren">
+                <#if type == "input">
         ${ident}childs().forEach(control -> control.readInput(req, env));
-                <#break>
-        </#switch>
-        </#list>
-    </#macro>
-    <#macro printForActions forStmt ident>
-        ${ident}for(Object ${forStmt.var} : ${forStmt.in})
-        ${ident}{
-        <#assign newIdent = ident + "    " />
-        <@printReadInputActions forStmt.actions newIdent />
-        ${ident}}
-    </#macro>
-    <#macro printIfActions ifStmt ident>
-        ${ident}if(${ifStmt.condition})
-        ${ident}{
-        <#assign newIdent = ident + "    " />
-        <@printReadInputActions ifStmt.actions newIdent />
-        ${ident}}
-    </#macro>
-    <#macro printElseActions ifStmt ident>
-        ${ident}else
-        ${ident}{
-        <#assign newIdent = ident + "    " />
-        <@printReadInputActions ifStmt.actions newIdent />
-        ${ident}}
-    </#macro>
-    @Override
-    public void readInput(ControlInputReader req, ElEnvironment env)
-    {
-        <@printReadInputActions control.input.actions "" />
-    }
-
-    </#if>
-    <#if control.execute??>
-    <#macro printExecuteEventActions actions ident>
-        <#list actions as ria>
-        <#switch ria.class.simpleName>
-            <#case "PushEnvVar">
-        ${ident}env.pushVar(${ria.var}, ${ria.value!});
-                <#break>
-            <#case "PopEnvVar">
-        ${ident}env.popVar(${ria.var});
-                <#break>
-            <#case "ExecuteForEachData">
-                <@printExecForActions ria ident />
-                <#break>
-            <#case "ExecuteIfData">
-                <@printExecIfActions ria ident />
-                <#break>
-            <#case "ExecuteElseData">
-                <@printExecElseActions ria ident />
-                <#break>
-            <#case "ExecuteAllEvents">
-        ${ident}for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
-                <#break>
-            <#case "ReadAllChildren">
+                <#elseif type == "execute">
         ${ident}for (Control control : childs())
         ${ident}{
         ${ident}${"    "}EventResult result = control.executeEvent(req, env);
         ${ident}${"    "}if(result != null) return result;
         ${ident}}
+                <#elseif type == "find">
+        ${ident}for (Control control : childs())
+        ${ident}{
+        ${ident}${"    "}Control result = control.findById(env, id);
+        ${ident}${"    "}if (result != null) return result;
+        ${ident}}
+                </#if>
                 <#break>
         </#switch>
         </#list>
     </#macro>
-    <#macro printExecForActions forStmt ident>
+    <#macro printForActions forStmt ident type>
         ${ident}for(Object ${forStmt.var} : ${forStmt.in})
         ${ident}{
         <#assign newIdent = ident + "    " />
-        <@printExecuteEventActions forStmt.actions newIdent />
+        <@printActions forStmt.actions newIdent type />
         ${ident}}
     </#macro>
-    <#macro printExecIfActions ifStmt ident>
+    <#macro printIfActions ifStmt ident type>
         ${ident}if(${ifStmt.condition})
         ${ident}{
         <#assign newIdent = ident + "    " />
-        <@printExecuteEventActions ifStmt.actions newIdent />
+        <@printActions ifStmt.actions newIdent type />
         ${ident}}
     </#macro>
-    <#macro printExecElseActions ifStmt ident>
+    <#macro printElseActions ifStmt ident type>
         ${ident}else
         ${ident}{
         <#assign newIdent = ident + "    " />
-        <@printExecuteEventActions ifStmt.actions newIdent />
+        <@printActions ifStmt.actions newIdent type />
         ${ident}}
     </#macro>
     @Override
+    public void readInput(ControlInputReader req, ElEnvironment env)
+    {
+        <@printActions control.input.actions "" "input" />
+    }
+
+    @Override
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
-        <@printExecuteEventActions control.execute.actions "" />
+        <@printActions control.input.actions "" "execute" />
+        return null;
+    }
+
+    @Override
+    public Control findById(ElEnvironment env, String id)
+    {
+        if(id == null || id.isEmpty()) return null;
+        if(id.equals(getId())) return this;
+        <@printActions control.input.actions "" "find" />
         return null;
     }
 

@@ -31,11 +31,6 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     @XmlAttribute(name = "title")
     private UIExpression title;
 
-    @XmlElements(
-        @XmlElement(name = "meta", type = ${uisuite.name}MetaTag.class)
-    )
-    private List<MetaTag> metaTags;
-
     @XmlTransient
     private Map<String, UIEvent> events;
 
@@ -50,28 +45,6 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
 
     @XmlTransient
     private Set<String> resources;
-
-    @Override
-    public List<MetaTag> getMetaTags()
-    {
-        return metaTags;
-    }
-
-    @Override
-    public void updateMetaTags(List<MetaTag> metas)
-    {
-        if (metas == null || metas.isEmpty())
-        {
-            return;
-        }
-        if (metaTags == null)
-        {
-            metaTags = new ArrayList<>();
-        }
-        metas.stream()
-                .filter((meta) -> !metaTags.contains(meta))
-                .forEachOrdered(metaTags::add);
-    }
 
     @Override
     public String getTitle()

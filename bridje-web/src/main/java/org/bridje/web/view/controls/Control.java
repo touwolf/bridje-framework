@@ -184,13 +184,13 @@ public abstract class Control
         return Collections.emptyList();
     }
     
-    public Control findById(String id)
+    public Control findById(ElEnvironment env, String id)
     {
         if(id == null || id.isEmpty()) return null;
         if(id.equals(getId())) return this;
         for (Control control : childs())
         {
-            Control result = control.findById(id);
+            Control result = control.findById(env, id);
             if (result != null) return result;
         }
         return null;

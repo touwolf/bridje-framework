@@ -135,16 +135,11 @@ limitations under the License.
             </fields>
             <input>
                 <if condition="getVisible()">
+                    <executeAll />
                     <popAll />
                     <childrenAll />
                 </if>
             </input>
-            <execute>
-                <if condition="getVisible()">
-                    <execute />
-                    <childrenAll />
-                </if>                
-            </execute>
             <render>
                 <![CDATA[
                     <#if control.visible?? && control.visible>
