@@ -16,8 +16,6 @@
 
 package org.bridje.web.view;
 
-import java.util.List;
-
 /**
  * Represents a view of the application, views are render by themes and are
  * composed from controls. The views are inmutables so once defined they will
@@ -25,10 +23,4 @@ import java.util.List;
  */
 public interface WebLayout extends AbstractView
 {
-    /**
-     * Gets a list of meta information tags information to be rendered with views that extends this layout.
-     *
-     * @return A list of meta information tags assigned to views.
-     */
-    List<MetaTag> getMetaTags();
 }

@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.el.ELException;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.el.ElService;
@@ -37,16 +36,15 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
 import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
+import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.controls.ControlInputReader;
 import org.bridje.web.view.controls.ControlManager;
-import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.state.StateManager;
 import org.bridje.web.view.themes.ThemesManager;
 
@@ -267,28 +265,35 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            view.getRoot().readInput(new ControlInputReader(req), elEnv);
-            EventResult result = view.getRoot().executeEvent(new ControlInputReader(req), elEnv);
-            if(result == null) result = EventResult.none();
-            if(result.getData() != null && result.getData() instanceof RedirectTo)
+            Control ctrl = view.getRoot().findById(req.getHeader("Bridje-ControlId"));
+            if(ctrl != null)
             {
-                RedirectTo redirectTo = (RedirectTo)result.getData();
-                context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
-            }
-            else
-            {
-                elEnv.pushVar("view", view);
-                elEnv.pushVar("i18n", webI18nServ.getI18nMap());
-                elEnv.pushVar("eventResult", result);
-                HttpBridletResponse resp = context.getResponse();
-                try (OutputStream os = resp.getOutputStream())
+                ctrl.readInput(new ControlInputReader(req), elEnv);
+                EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
+                if(result == null) result = EventResult.none();
+                if(result.getData() != null && result.getData() instanceof RedirectTo)
                 {
-                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
-                    os.flush();
+                    RedirectTo redirectTo = (RedirectTo)result.getData();
+                    context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
                 }
-                catch (IOException ex)
+                else
                 {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    Control resultCtrl = view.getRoot().findById(req.getHeader("Bridje-ResultId"));
+                    if(resultCtrl == null) resultCtrl = ctrl;
+                    elEnv.pushVar("view", view);
+                    elEnv.pushVar("i18n", webI18nServ.getI18nMap());
+                    elEnv.pushVar("eventResult", result);
+                    elEnv.pushVar("control", resultCtrl);
+                    HttpBridletResponse resp = context.getResponse();
+                    try (OutputStream os = resp.getOutputStream())
+                    {
+                        themesMang.render(resultCtrl, view, os, result, () -> stateManag.createViewState(wrsCtx));
+                        os.flush();
+                    }
+                    catch (IOException ex)
+                    {
+                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
                 }
             }
             return null;
@@ -368,27 +373,12 @@ public class WebViewsManager
             if (view != null)
             {
                 view.setFile(f);
-                updateViewMetaTags(view);
                 views.put(view.getName(), view);
             }
         }
         catch (IOException e)
         {
             LOG.log(Level.SEVERE, "Could not parse " + f.getPath() + ". " + e.getMessage(), e);
-        }
-    }
-
-    private void updateViewMetaTags(WebView view)
-    {
-        if (!(view.getDefinition() instanceof ExtendsFrom))
-        {
-            return;
-        }
-        String layout = ((ExtendsFrom) view.getDefinition()).getLayout();
-        WebLayout webLayout = layoutManag.loadLayout(view, layout);
-        if (webLayout != null)
-        {
-            view.updateMetaTags(webLayout.getMetaTags());
         }
     }
 }
