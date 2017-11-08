@@ -68,7 +68,7 @@
     <script>
         window.__bridje_info = {
             dataBridjeView: '${view.name}',
-            enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>'
+            enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
             currState: '${stateProvider.currentState!}'
         };
     </script>

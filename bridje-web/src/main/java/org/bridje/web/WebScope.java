@@ -16,8 +16,11 @@
 
 package org.bridje.web;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
@@ -33,6 +36,8 @@ import org.bridje.web.session.WebSession;
  */
 public final class WebScope implements Scope
 {
+    private static final Logger LOG = Logger.getLogger(WebScope.class.getName());
+
     private final HttpBridletRequest req;
 
     private final HttpBridletResponse resp;
@@ -368,13 +373,21 @@ public final class WebScope implements Scope
 
     private void initStateMap()
     {
-        stateMap = new HashMap<>();
-        String state = getHeader("Bridje-State");
-        String[] statesArr = state.split("&");
-        for (String pair : statesArr)
+        try
         {
-            String[] pairArr = pair.split("=");
-            stateMap.put(pairArr[0], pairArr[1]);
+            stateMap = new HashMap<>();
+            String state = getHeader("Bridje-State");
+            if(state == null || state.isEmpty()) return ;
+            String[] statesArr = state.split("&");
+            for (String pair : statesArr)
+            {
+                String[] pairArr = pair.split("=");
+                if(pairArr.length > 1) stateMap.put(pairArr[0], URLDecoder.decode(pairArr[1], "UTF-8"));
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
