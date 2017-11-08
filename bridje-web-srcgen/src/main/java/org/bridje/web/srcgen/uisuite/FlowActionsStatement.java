@@ -20,9 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * Pops all values of all inputs out of the request.
+ * Read the value of all fields from the request.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PopAllFieldInputs implements ControlFlowAction
+public class FlowActionsStatement implements ControlFlowAction
 {
 }

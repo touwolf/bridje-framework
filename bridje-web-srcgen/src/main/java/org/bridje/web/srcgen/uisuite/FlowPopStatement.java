@@ -21,31 +21,31 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * Pops the value of the given field out of the request.
+ * Pops the given var out of the el environment.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PopFieldInput implements ControlFlowAction
+public class FlowPopStatement implements ControlFlowAction
 {
     @XmlAttribute
-    private String fieldName;
+    private String var;
 
     /**
-     * The name of the field to pop the value.
+     * The name of var to set.
      * 
-     * @return The name of the field to pop the value.
+     * @return The name of var to set.
      */
-    public String getFieldName()
+    public String getVar()
     {
-        return fieldName;
+        return var;
     }
 
     /**
-     * The name of the field to pop the value.
+     * The name of var to set.
      * 
-     * @param fieldName The name of the field to pop the value.
+     * @param var The name of var to set.
      */
-    public void setFieldName(String fieldName)
+    public void setVar(String var)
     {
-        this.fieldName = fieldName;
+        this.var = var;
     }
 }

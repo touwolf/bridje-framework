@@ -20,9 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * Read the value of all fields from the request.
+ * Reads the input for all childrens.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadAllFieldInputs implements ControlFlowAction
+public class FlowChildrenStatement implements ControlFlowAction
 {
 }

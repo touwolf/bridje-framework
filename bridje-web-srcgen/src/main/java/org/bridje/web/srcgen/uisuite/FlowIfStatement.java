@@ -27,24 +27,20 @@ import javax.xml.bind.annotation.XmlElements;
  * For each statement for the read input flow.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadIfData implements ControlFlowAction
+public class FlowIfStatement implements ControlFlowAction
 {
     @XmlAttribute
     private String condition;
 
     @XmlElements(
     {
-        @XmlElement(name = "if", type = ReadIfData.class),
-        @XmlElement(name = "else", type = ReadElseData.class),
-        @XmlElement(name = "for", type = ReadForEachData.class),
-        @XmlElement(name = "pushVar", type = PushEnvVar.class),
-        @XmlElement(name = "popVar", type = PopEnvVar.class),
-        @XmlElement(name = "pop", type = PopFieldInput.class),
-        @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
-        @XmlElement(name = "get", type = ReadFieldInput.class),
-        @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
-        @XmlElement(name = "executeAll", type = ExecuteAllEvents.class),
-        @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
+        @XmlElement(name = "if", type = FlowIfStatement.class),
+        @XmlElement(name = "else", type = FlowElseStatement.class),
+        @XmlElement(name = "for", type = FlowForEachStatement.class),
+        @XmlElement(name = "push", type = FlowPushStatement.class),
+        @XmlElement(name = "pop", type = FlowPopStatement.class),
+        @XmlElement(name = "actions", type = FlowActionsStatement.class),
+        @XmlElement(name = "children", type = FlowChildrenStatement.class)
     })
     private List<ControlFlowAction> actions;
 

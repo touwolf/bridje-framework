@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlDef extends BaseControlDef
 {
-    private ReadInputWorkFlow input;
+    private ControlWorkFlow input;
 
     @XmlAttribute
     private String base;
@@ -94,7 +94,7 @@ public class ControlDef extends BaseControlDef
      * 
      * @return The read input flow for this control.
      */
-    public ReadInputWorkFlow getInput()
+    public ControlWorkFlow getInput()
     {
         return input;
     }

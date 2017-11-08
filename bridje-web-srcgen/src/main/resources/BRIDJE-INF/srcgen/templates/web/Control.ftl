@@ -253,57 +253,33 @@ public class ${control.name} extends ${control.baseName}
     <#macro printActions actions ident type>
         <#list actions as ria>
         <#switch ria.class.simpleName>
-            <#case "PushEnvVar">
+            <#case "FlowPushStatement">
         ${ident}env.pushVar(${ria.var}, ${ria.value!});
                 <#break>
-            <#case "PopEnvVar">
+            <#case "FlowPopStatement">
         ${ident}env.popVar(${ria.var});
                 <#break>
-            <#case "ReadForEachData">
+            <#case "FlowForEachStatement">
                 <@printForActions ria ident type />
                 <#break>
-            <#case "ReadIfData">
+            <#case "FlowIfStatement">
                 <@printIfActions ria ident type />
                 <#break>
-            <#case "ReadElseData">
+            <#case "FlowElseStatement">
                 <@printElseActions ria ident type />
                 <#break>
-            <#case "PopFieldInput">
-                <#if type == "input">
-                <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
-        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popUploadedFile(this.${ria.fieldName}.getParameter()));
-                <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
-        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.popParameter(this.${ria.fieldName}.getParameter()));
-                </#if>
-                </#if>
-                <#break>
-            <#case "PopAllFieldInputs">
-                <#if type == "input">
-        ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
-        ${ident}inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
-                </#if>
-                <#break>
-            <#case "ReadFieldInput">
-                <#if type == "input">
-                <#if control.findField(ria.fieldName).javaType == "UIFileExpression" >
-        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getUploadedFile(this.${ria.fieldName}.getParameter()));
-                <#elseif control.findField(ria.fieldName).javaType == "UIInputExpression" >
-        ${ident}if(this.${ria.fieldName} != null) set(this.${ria.fieldName}, req.getParameter(this.${ria.fieldName}.getParameter()));
-                </#if>
-                </#if>
-                <#break>
-            <#case "ReadAllFieldInputs">
-                <#if type == "input">
-        ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.getUploadedFile(inputFile.getParameter())));
-        ${ident}inputs().stream().forEachOrdered(input -> set(input, req.getParameter(input.getParameter())));
-                </#if>
-                <#break>
-            <#case "ExecuteAllEvents">
+            <#case "FlowActionsStatement">
                 <#if type == "execute">
         ${ident}for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
+                <#elseif type == "input">
+        ${ident}inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
+        ${ident}inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
+                <#elseif type == "find">
+        ${ident}if(id == null || id.isEmpty()) return null;
+        ${ident}if(id.equals(getId())) return this;
                 </#if>
                 <#break>
-            <#case "ReadAllChildren">
+            <#case "FlowChildrenStatement">
                 <#if type == "input">
         ${ident}childs().forEach(control -> control.readInput(req, env));
                 <#elseif type == "execute">
@@ -360,8 +336,6 @@ public class ${control.name} extends ${control.baseName}
     @Override
     public Control findById(ElEnvironment env, String id)
     {
-        if(id == null || id.isEmpty()) return null;
-        if(id.equals(getId())) return this;
         <@printActions control.input.actions "" "find" />
         return null;
     }
