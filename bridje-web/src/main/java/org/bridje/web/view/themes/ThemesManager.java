@@ -58,6 +58,9 @@ public class ThemesManager
     @Inject
     private IocContext<Application> context;
 
+    @Inject
+    private AssetCompressor[] compressors;
+
     private Map<String, Object> themeTools;
 
     @Inject
@@ -180,12 +183,13 @@ public class ThemesManager
     private InputStream findInputStream(VFile file) throws FileNotFoundException
     {
         boolean canCompress = true;//fixme: check for configuration to enable compression
-        if (canCompress && CompressHandler.canCompress(file))
+        if (canCompress)
         {
-            InputStream is = compressedInputStream(file);
-            if (is != null)
+            String content = compressedContent(file);
+            if (content != null)
             {
-                return is;
+                byte[] compressedBytes = content.getBytes(Charset.defaultCharset());
+                return new ByteArrayInputStream(compressedBytes);
             }
         }
         return new VFileInputStream(file);
@@ -193,20 +197,32 @@ public class ThemesManager
 
     private Map<String, String> compressedStreams = new HashMap<>();
 
-    private InputStream compressedInputStream(VFile file)
+    private String compressedContent(VFile file)
     {
+        AssetCompressor compressor = findCompressor(file);
+        if (compressor == null)
+        {
+            return null;
+        }
+
         String fileStr = file.getPath().toString();
         String content = compressedStreams.get(fileStr);
         if (content == null)
         {
-            content = CompressHandler.compress(file);
+            content = compressor.compress(file);
             compressedStreams.put(fileStr, content);
         }
+        return content;
+    }
 
-        if (content != null)
+    private AssetCompressor findCompressor(VFile file)
+    {
+        for (AssetCompressor compressor : compressors)
         {
-            byte[] compressedBytes = content.getBytes(Charset.defaultCharset());
-            return new ByteArrayInputStream(compressedBytes);
+            if (compressor.canCompress(file))
+            {
+                return compressor;
+            }
         }
         return null;
     }
