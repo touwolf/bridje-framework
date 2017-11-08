@@ -19,12 +19,16 @@ package org.bridje.web.srcgen.uisuite;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -62,6 +66,7 @@ import org.w3c.dom.Document;
     "ftlMacros",
     "ftlFunctions",
     "ftlIncludes",
+    "fields",
     "templates",
     "controls",
     "enums"
@@ -88,6 +93,29 @@ public class UISuite extends UISuiteBase
     private StandaloneDef defines;
 
     private Resource defaultResources;
+
+    @XmlElementWrapper(name = "fields")
+    @XmlElements(
+    {
+        @XmlElement(name = "outAttr", type = OutAttrField.class),
+        @XmlElement(name = "inAttr", type = InAttrField.class),
+        @XmlElement(name = "eventAttr", type = EventAttrField.class),
+        @XmlElement(name = "fileAttr", type = FileAttrField.class),
+        @XmlElement(name = "attr", type = AttrField.class),
+        @XmlElement(name = "outEl", type = OutElementField.class),
+        @XmlElement(name = "inEl", type = InElementField.class),
+        @XmlElement(name = "fileEl", type = FileElementField.class),
+        @XmlElement(name = "eventEl", type = EventElementField.class),
+        @XmlElement(name = "el", type = ElementField.class),
+        @XmlElement(name = "outValue", type = OutValueField.class),
+        @XmlElement(name = "inValue", type = InValueField.class),
+        @XmlElement(name = "fileValue", type = FileValueField.class),
+        @XmlElement(name = "eventValue", type = EventValueField.class),
+        @XmlElement(name = "value", type = ValueField.class),
+        @XmlElement(name = "child", type = ChildField.class),
+        @XmlElement(name = "children", type = ChildrenField.class)
+    })
+    private List<FieldDef> fields;
     
     /**
      * The name of the suite.
@@ -327,6 +355,16 @@ public class UISuite extends UISuiteBase
         nullTransformer.transform(new DOMSource(document), new StreamResult(os));
     }
 
+    public List<FieldDef> getFields()
+    {
+        return fields;
+    }
+
+    public void setFields(List<FieldDef> fields)
+    {
+        this.fields = fields;
+    }
+    
     @Override
     public String toString()
     {

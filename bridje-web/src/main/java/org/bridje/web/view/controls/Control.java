@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.el.ELException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.http.HttpReqParam;
@@ -42,6 +43,9 @@ import org.bridje.web.view.EventResult;
 public abstract class Control
 {
     private static final Logger LOG = Logger.getLogger(Control.class.getName());
+    
+    @XmlAttribute
+    private UIExpression id;
 
     /**
      * Evaluates the given expression in the current ElEnvironment.
@@ -120,6 +124,16 @@ public abstract class Control
     }
 
     /**
+     * Identificador del control.
+     * 
+     * @return El identificador del control.
+     */
+    public String getId()
+    {
+        return get(id, String.class, null);
+    }
+
+    /**
      * Gets all the UIInputExpressions in this control.
      *
      * @return A list of the UIInputExpressions available in this control.
@@ -168,6 +182,18 @@ public abstract class Control
     public List<String> resources()
     {
         return Collections.emptyList();
+    }
+    
+    public Control findById(ElEnvironment env, String id)
+    {
+        if(id == null || id.isEmpty()) return null;
+        if(id.equals(getId())) return this;
+        for (Control control : childs())
+        {
+            Control result = control.findById(env, id);
+            if (result != null) return result;
+        }
+        return null;
     }
 
     /**

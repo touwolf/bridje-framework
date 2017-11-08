@@ -29,21 +29,6 @@ import org.bridje.web.view.controls.UIInputExpression;
 public interface WebView extends AbstractView
 {
     /**
-     * Gets a list of meta information tags information to be rendered with this
-     * view.
-     *
-     * @return A list of meta information tags assigned to this view.
-     */
-    List<MetaTag> getMetaTags();
-
-    /**
-     * Adds the given meta tags for this view.
-     * 
-     * @param metas The list of meta tags to be added.
-     */
-    void updateMetaTags(List<MetaTag> metas);
-
-    /**
      * The title for this view.
      *
      * @return The title for this view.

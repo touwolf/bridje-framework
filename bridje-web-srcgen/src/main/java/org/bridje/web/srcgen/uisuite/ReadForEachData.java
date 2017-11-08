@@ -46,7 +46,7 @@ public class ReadForEachData implements ControlFlowAction
         @XmlElement(name = "popAll", type = PopAllFieldInputs.class),
         @XmlElement(name = "get", type = ReadFieldInput.class),
         @XmlElement(name = "getAll", type = ReadAllFieldInputs.class),
-        @XmlElement(name = "children", type = ReadChildren.class),
+        @XmlElement(name = "executeAll", type = ExecuteAllEvents.class),
         @XmlElement(name = "childrenAll", type = ReadAllChildren.class)
     })
     private List<ControlFlowAction> actions;
