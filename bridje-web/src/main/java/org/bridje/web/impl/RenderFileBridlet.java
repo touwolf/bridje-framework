@@ -45,42 +45,35 @@ class RenderFileBridlet implements HttpBridlet
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         VFile file = context.get(VFile.class);
-        if(file == null)
+        if (file == null)
         {
             String pathStr = context.get(WebScope.class).getPath();
-            if(pathStr != null && 
+            if (pathStr != null &&
                     !(pathStr.endsWith(".view.xml") || pathStr.endsWith(".layout.xml")))
             {
                 Path path = new Path(pathStr).getCanonicalPath();
-                if(path != null)
+                if (path != null)
                 {
                     path = PUBLIC_PATH.join(path);
                     file = new VFile(path);
                 }
             }
         }
-        if(file != null)
+        if (file != null && file.exists() && file.isFile())
         {
-            if(file.exists() && file.isFile())
+            HttpBridletResponse resp = context.getResponse();
+            try (InputStream is = new VFileInputStream(file))
             {
-                HttpBridletResponse resp = context.getResponse();
-                try(InputStream is = new VFileInputStream(file))
+                try (OutputStream os = resp.getOutputStream())
                 {
-                    try(OutputStream os = resp.getOutputStream())
-                    {
-                        resp.setContentType(file.getMimeType());
-                        copy(is, os);
-                        os.flush();
-                    }
+                    resp.setContentType(file.getMimeType());
+                    copy(is, os);
+                    os.flush();
                 }
-                return true;
             }
+            return true;
         }
-        if(nextHandler != null)
-        {
-            return nextHandler.handle(context);
-        }
-        return false;
+        return nextHandler != null && nextHandler.handle(context);
     }
 
     private void copy(InputStream is, OutputStream os) throws IOException

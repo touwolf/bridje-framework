@@ -20,11 +20,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -169,7 +165,7 @@ public class ThemesManager
                 resp.setContentType(contentType);
                 try(OutputStream os = resp.getOutputStream())
                 {
-                    try(InputStream is = new VFileInputStream(f))
+                    try (InputStream is = findInputStream(f))
                     {
                         copy(is, os);
                         os.flush();
@@ -179,6 +175,40 @@ public class ThemesManager
             }
         }
         return false;
+    }
+
+    private InputStream findInputStream(VFile file) throws FileNotFoundException
+    {
+        boolean canCompress = true;//fixme: check for configuration to enable compression
+        if (canCompress && CompressHandler.canCompress(file))
+        {
+            InputStream is = compressedInputStream(file);
+            if (is != null)
+            {
+                return is;
+            }
+        }
+        return new VFileInputStream(file);
+    }
+
+    private Map<String, String> compressedStreams = new HashMap<>();
+
+    private InputStream compressedInputStream(VFile file)
+    {
+        String fileStr = file.getPath().toString();
+        String content = compressedStreams.get(fileStr);
+        if (content == null)
+        {
+            content = CompressHandler.compress(file);
+            compressedStreams.put(fileStr, content);
+        }
+
+        if (content != null)
+        {
+            byte[] compressedBytes = content.getBytes(Charset.defaultCharset());
+            return new ByteArrayInputStream(compressedBytes);
+        }
+        return null;
     }
 
     private void copy(InputStream is, OutputStream os) throws IOException
