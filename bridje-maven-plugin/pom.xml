@@ -8,7 +8,6 @@
         <version>0.5.0-beta4-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.bridje</groupId>
     <artifactId>bridje-maven-plugin</artifactId>
     <version>0.5.0-beta4-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>

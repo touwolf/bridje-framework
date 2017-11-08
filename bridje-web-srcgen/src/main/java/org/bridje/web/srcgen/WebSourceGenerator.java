@@ -16,16 +16,21 @@
 
 package org.bridje.web.srcgen;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.srcgen.SourceGenerator;
 import org.bridje.srcgen.SrcGenService;
+import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 import org.bridje.web.srcgen.uisuite.ControlDef;
 import org.bridje.web.srcgen.uisuite.ControlEnum;
 import org.bridje.web.srcgen.uisuite.UISuite;
@@ -66,7 +71,7 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
         Map<String, Object> data = new HashMap<>();
         uiSuite.processIncludes(file.getParent());
         data.put("uisuite", uiSuite);
-        srcGen.createResource("BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftl", "web/Theme.ftl", data);
+        srcGen.createResource("BRIDJE-INF/web/themes/" + uiSuite.getName().toLowerCase() + "/Theme.ftlh", "web/Theme.ftlh", data);
         srcGen.createClass(uiSuite.getPackage() + "/package-info", "web/package-info.ftl", data);
         String fullName = uiSuite.getPackage() + "." + uiSuite.getName();
         srcGen.createClass(fullName + "AbstractView", "web/AbstractView.ftl", data);
@@ -104,12 +109,50 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
     {
         try
         {
-            return srcGen.findData(UISuite.class);
+            Map<UISuite, VFile> data = srcGen.findData(UISuite.class);
+            data.forEach(((uiSuite, vFile) ->
+            {
+                for (ControlDef control : uiSuite.getControls())
+                {
+                    if (control.getRender() == null && control.getRenderFile() != null)
+                    {
+                        String renderContent = findRenderContent(vFile.getParent(), control.getRenderFile());
+                        control.setRender(renderContent);
+                    }
+                }
+            }));
+            return data;
         }
         catch (IOException ex)
         {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
+    }
+
+    private String findRenderContent(VFile parent, String fileName)
+    {
+        if (parent == null)
+        {
+            return "";
+        }
+        VFile[] files = parent.search(new GlobExpr(fileName));
+        if (files == null || files.length == 0)
+        {
+            return "";
+        }
+        try (InputStream is = new VFileInputStream(files[0]))
+        {
+            Reader streamReader = new InputStreamReader(is, Charset.defaultCharset());
+            try (BufferedReader reader = new BufferedReader(streamReader))
+            {
+                return reader.lines()
+                        .collect(Collectors.joining(System.lineSeparator()));
+            }
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
     }
 }

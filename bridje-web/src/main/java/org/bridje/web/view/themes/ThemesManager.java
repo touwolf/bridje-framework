@@ -97,9 +97,9 @@ public class ThemesManager
         {
             String themeName = view.getDefaultTheme();
             if(themeName == null || themeName.isEmpty()) return;
-            String templatePath = themeName + "/Theme.ftl";
+            String templatePath = themeName + "/Theme.ftlh";
             Template tpl = ftlCfg.getTemplate(templatePath);
-            Map data = new HashMap();
+            Map<String, Object> data = new HashMap<>();
             data.put("i18n", webI18nServ.getI18nMap());
             data.put("tools", themeTools);
             data.put("view", view);
@@ -128,9 +128,9 @@ public class ThemesManager
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = view.getDefaultTheme();
-            String templatePath = themeName + "/Theme.ftl";
+            String templatePath = themeName + "/Theme.ftlh";
             Template tpl = ftlCfg.getTemplate(templatePath);
-            Map data = new HashMap();
+            Map<String, Object> data = new HashMap();
             data.put("i18n", webI18nServ.getI18nMap());
             data.put("tools", themeTools);
             data.put("view", view);

@@ -40,6 +40,9 @@ public class ControlDef extends BaseControlDef
 
     private String render;
 
+    @XmlAttribute
+    private String renderFile;
+
     public boolean getIsTransient()
     {
         return isTransient;
@@ -73,7 +76,7 @@ public class ControlDef extends BaseControlDef
         while(currBase != null)
         {
             result.add(currBase);
-            currBase = ((ControlDef)currBase).getBase();
+            currBase = currBase.getBase();
         }
         return result;
     }
@@ -115,6 +118,17 @@ public class ControlDef extends BaseControlDef
     }
 
     /**
+     * Defines the path (relative to XML suite) to the file with the control render content.
+     * Only used when the render value is not defined.
+     *
+     * @return the path (relative to XML suite) to the file with the control render content.
+     */
+    public String getRenderFile()
+    {
+        return renderFile;
+    }
+
+    /**
      * Defines the render freemarker script to be use by this control.
      * 
      * @return The text of the render script.
@@ -126,7 +140,7 @@ public class ControlDef extends BaseControlDef
 
     /**
      * 
-     * @param render 
+     * @param render the control content.
      */
     public void setRender(String render)
     {
@@ -151,6 +165,4 @@ public class ControlDef extends BaseControlDef
         }
         return replaced;
     }
-    
-    
 }

@@ -1,4 +1,4 @@
-<#ftl encoding="UTF-8" output_format="HTML" auto_esc=true >
+<#ftl encoding="UTF-8">
 <#-- 
  # Copyright 2016 Bridje Framework.
  #
@@ -65,6 +65,17 @@
     <form data-bridje-view="${view.name}" id="bridje-view-container" enctype="<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>" method="post"  >
         <#nested />
     </form>
+    <#--
+    <div id="bridje-view-container">
+        <#nested />
+    </div>
+    <script>
+        window.__bridje_info = {
+            dataBridjeView: '${view.name}',
+            enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>'
+        };
+    </script>
+    -->
 </#macro>
 
 <#macro renderBody>

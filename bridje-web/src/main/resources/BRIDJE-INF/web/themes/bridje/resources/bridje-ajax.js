@@ -17,7 +17,7 @@
 /**
  * Executes a bridje action to the server, and updates the HTML of the current view.
  * 
- * @param string event The event to invoke on the server.
+ * @param {string} id event The event to invoke on the server.
  */
 function bridjeExecuteAction(id)
 {
@@ -72,7 +72,7 @@ function bridjeExecuteAction(id)
                     window.bridjeActionExecutionComplete && window.bridjeActionExecutionComplete();
                 }
             }
-            else if (xhr.status !== 200)
+            else
             {
                 window.console && console.log('Request failed. Returned status of ' + xhr.status);
             }
