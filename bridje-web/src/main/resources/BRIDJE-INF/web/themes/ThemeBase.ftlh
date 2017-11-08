@@ -62,10 +62,6 @@
 </#macro>
 
 <#macro renderViewContainer>
-    <form data-bridje-view="${view.name}" id="bridje-view-container" enctype="<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>" method="post"  >
-        <#nested />
-    </form>
-    <#--
     <div id="bridje-view-container">
         <#nested />
     </div>
@@ -75,7 +71,6 @@
             enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>'
         };
     </script>
-    -->
 </#macro>
 
 <#macro renderBody>
@@ -97,7 +92,7 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
-            <@renderScript "bridje" "bridje-ajax.js" />
+            <@renderScript "bridje" "bridje-ajax-all.js" />
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </@renderHead>
