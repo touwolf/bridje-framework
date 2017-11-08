@@ -16,6 +16,7 @@
 
 package org.bridje.web;
 
+import java.util.HashMap;
 import java.util.Map;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
@@ -42,6 +43,8 @@ public final class WebScope implements Scope
     private final HttpBridletContext srvCtx;
 
     private WebSession session;
+    
+    private Map<String,String> stateMap;
 
     /**
      * The only constructor for this object, the HTTP bridlet context for the
@@ -355,5 +358,23 @@ public final class WebScope implements Scope
             session = srvCtx.get(WebSession.class);
         }
         return session;
+    }
+
+    public String getStateValue(String name)
+    {
+        if(stateMap == null) initStateMap();
+        return stateMap.get(name);
+    }
+
+    private void initStateMap()
+    {
+        stateMap = new HashMap<>();
+        String state = getHeader("Bridje-State");
+        String[] statesArr = state.split("&");
+        for (String pair : statesArr)
+        {
+            String[] pairArr = pair.split("=");
+            stateMap.put(pairArr[0], pairArr[1]);
+        }
     }
 }

@@ -211,7 +211,7 @@ public class WebViewsManager
             elEnv.pushVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
-                themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
+                themesMang.render(view, os, () -> stateManag.createStringViewState(wrsCtx));
                 os.flush();
                 return null;
             }, ElEnvironment.class, elEnv);
@@ -240,7 +240,7 @@ public class WebViewsManager
             elEnv.pushVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
-                themesMang.render(view, os, () -> stateManag.createViewState(wrsCtx));
+                themesMang.render(view, os, () -> stateManag.createStringViewState(wrsCtx));
                 os.flush();
                 return null;
             }, ElEnvironment.class, elEnv);
@@ -285,13 +285,14 @@ public class WebViewsManager
                     HttpBridletResponse resp = context.getResponse();
                     try (OutputStream os = resp.getOutputStream())
                     {
-                        themesMang.render(ctrl, view, os, result, () -> stateManag.createViewState(wrsCtx));
+                        themesMang.render(ctrl, view, os, result, () -> stateManag.createStringViewState(wrsCtx));
                         os.flush();
                     }
                     catch (IOException ex)
                     {
                         LOG.log(Level.SEVERE, ex.getMessage(), ex);
                     }
+                    context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(wrsCtx));
                 }
             }
             return null;
@@ -321,7 +322,7 @@ public class WebViewsManager
                 HttpBridletResponse resp = context.getResponse();
                 try (OutputStream os = resp.getOutputStream())
                 {
-                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createViewState(wrsCtx));
+                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createStringViewState(wrsCtx));
                     os.flush();
                 }
                 return null;

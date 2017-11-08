@@ -69,6 +69,7 @@
         window.__bridje_info = {
             dataBridjeView: '${view.name}',
             enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>'
+            currState: '${stateProvider.currentState!}'
         };
     </script>
 </#macro>
@@ -110,14 +111,6 @@
 
 <#macro renderPartialView currentControl themeName>
     <@renderControl currentControl />
-    <@renderState />
-</#macro>
-
-<#macro renderState>
-    <#local currState = stateProvider.currentState />
-    <#list currState?keys as k>
-        <input type="hidden" name="__st.${k}" value="${currState[k]}" />
-    </#list>
 </#macro>
 
 <#macro renderMain themeName >

@@ -30,5 +30,5 @@ public interface StateRenderProvider
      * 
      * @return A map with the current state of the view.
      */
-    Map<String, String> getCurrentState();
+    String getCurrentState();
 }

@@ -17,9 +17,12 @@
 package org.bridje.web.view.state;
 
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.el.ElService;
@@ -63,6 +66,40 @@ public class StateManager
         return result;
     }
     
+    /**
+     * 
+     * @param map
+     * @return 
+     */
+    public String toStateString(Map<String, String> map)
+    {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        Set<Map.Entry<String, String>> entrySet = map.entrySet();
+        for (Map.Entry<String, String> entry : entrySet)
+        {
+            try
+            {
+                if(!first) sb.append("&");
+                sb.append(entry.getKey());
+                sb.append("=");
+                sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.name()));
+                first = false;
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        return sb.toString();
+    }
+    
+    public String createStringViewState(IocContext<WebScope> ctx)
+    {
+        Map<String, String> map = createViewState(ctx);
+        return toStateString(map);
+    }
+    
     private void fillStateValues(Class<?> comp, Object inst, Map<String, String> stateValues)
     {
         Map<Field, String> map = stateFields.get(comp);
@@ -103,7 +140,7 @@ public class StateManager
     {
         try
         {
-            HttpReqParam value = req.getPostParameter("__st." + stateName);
+            String value = req.getStateValue("__st." + stateName);
             if (value != null)
             {
                 Object cv = elServ.convert(value, field.getType());
