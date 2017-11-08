@@ -265,7 +265,7 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            Control ctrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-ControlId"));
+            Control ctrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-Container"));
             if(ctrl != null)
             {
                 ctrl.readInput(new ControlInputReader(req), elEnv);
@@ -278,16 +278,14 @@ public class WebViewsManager
                 }
                 else
                 {
-                    Control resultCtrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-ResultId"));
-                    if(resultCtrl == null) resultCtrl = ctrl;
                     elEnv.pushVar("view", view);
                     elEnv.pushVar("i18n", webI18nServ.getI18nMap());
                     elEnv.pushVar("eventResult", result);
-                    elEnv.pushVar("control", resultCtrl);
+                    elEnv.pushVar("control", ctrl);
                     HttpBridletResponse resp = context.getResponse();
                     try (OutputStream os = resp.getOutputStream())
                     {
-                        themesMang.render(resultCtrl, view, os, result, () -> stateManag.createViewState(wrsCtx));
+                        themesMang.render(ctrl, view, os, result, () -> stateManag.createViewState(wrsCtx));
                         os.flush();
                     }
                     catch (IOException ex)
