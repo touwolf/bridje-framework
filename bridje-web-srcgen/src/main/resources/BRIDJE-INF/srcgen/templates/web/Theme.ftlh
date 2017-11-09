@@ -54,23 +54,23 @@
 
 [/#list]
 [@compress single_line=true][#compress]
-<#macro render${w.name}Control control>
-    [#if w.base?? && w.base.render??]
-    <@render${w.base.name}Control control >
-    [/#if]
+<#macro render${w.name}Control control doStatic=false>
+    [#if w.class.simpleName == "DynamicControlDef"]
+    <@doDynamicControl control doStatic >
     ${w.replaceMacros(w.render)}
-    [#if w.base?? && w.base.render??]
-    </@render${w.base.name}Control>
+    </@doDynamicControl>
+    [#else]
+    ${w.replaceMacros(w.render)}
     [/#if]
 </#macro>
 [/#compress][/@compress]
 
 [/#list]
-<#macro renderControl control>
+<#macro renderControl control doStatic=false>
     <#if control.class.package.name == "${uisuite.package}">
         <#assign macroName = "render" + control.class.simpleName?cap_first + "Control" />
         <#if .vars[macroName]?? >
-            <@.vars[macroName] control />
+            <@.vars[macroName] control doStatic />
         <#else>
             <!-- ERROR Control ${r"${control.class.simpleName}"} Not Found -->
         </#if>

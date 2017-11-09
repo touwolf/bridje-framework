@@ -43,6 +43,7 @@ import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.controls.Control;
+import org.bridje.web.view.controls.ControlCallback;
 import org.bridje.web.view.controls.ControlInputReader;
 import org.bridje.web.view.controls.ControlManager;
 import org.bridje.web.view.state.StateManager;
@@ -265,8 +266,7 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            Control ctrl = view.getRoot().findById(elEnv, req.getHeader("Bridje-Container"));
-            if(ctrl != null)
+            view.getRoot().findById(elEnv, req.getHeader("Bridje-Container"), (Control ctrl) ->
             {
                 ctrl.readInput(new ControlInputReader(req), elEnv);
                 EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
@@ -294,7 +294,7 @@ public class WebViewsManager
                     }
                     context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(wrsCtx));
                 }
-            }
+            });
             return null;
         }, ElEnvironment.class, elEnv);
     }

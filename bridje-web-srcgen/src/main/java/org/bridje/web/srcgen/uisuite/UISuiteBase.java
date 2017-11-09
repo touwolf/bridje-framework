@@ -78,7 +78,8 @@ public class UISuiteBase
     @XmlElementWrapper(name = "controls")
     @XmlElements(
     {
-        @XmlElement(name = "control", type = ControlDef.class)
+        @XmlElement(name = "control", type = ControlDef.class),
+        @XmlElement(name = "dynamic", type = DynamicControlDef.class)
     })
     private List<ControlDef> controls;
 

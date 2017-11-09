@@ -110,7 +110,7 @@
 </#macro>
 
 <#macro renderPartialView currentControl themeName>
-    <@renderControl currentControl />
+    <@renderControl currentControl true />
 </#macro>
 
 <#macro renderMain themeName >
@@ -120,5 +120,21 @@
     <#else>
         <#assign renderType = "full" />
         <@renderFullView themeName />
+    </#if>
+</#macro>
+
+<#macro doDynamicControl control doStatic=false>
+    <#if control.data?? && !doStatic>
+        <#local itemVarName = control.var />
+        <#local indexVarName = control.var + "Index" />
+        <#list control.data as dataItem >
+            ${env.pushVar(itemVarName, dataItem)}
+            ${env.pushVar(indexVarName, dataItem_index)}
+                <#nested />
+            ${env.popVar(itemVarName)}
+            ${env.popVar(indexVarName)}
+        </#list>
+    <#else>
+        <#nested />
     </#if>
 </#macro>

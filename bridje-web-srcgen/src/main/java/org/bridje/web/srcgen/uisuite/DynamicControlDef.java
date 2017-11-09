@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2017 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package org.bridje.web.view.state;
+package org.bridje.web.srcgen.uisuite;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * An interface that must be implemented by the component that will retrieve the
- * current state to the theme so it can render the state of the current view.
+ * A UI suite control definition.
  */
-@FunctionalInterface
-public interface StateRenderProvider
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DynamicControlDef extends ControlDef
 {
-    /**
-     * The current state for this view.
-     * 
-     * @return A map with the current state of the view.
-     */
-    String getCurrentState();
+
 }

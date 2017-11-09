@@ -184,13 +184,24 @@ public abstract class Control
         return Collections.emptyList();
     }
     
-    public Control findById(ElEnvironment env, String id)
+    /**
+     * 
+     * @param env
+     * @param id
+     * @param callback
+     * @return 
+     */
+    public Control findById(ElEnvironment env, String id, ControlCallback callback)
     {
         if(id == null || id.isEmpty()) return null;
-        if(id.equals(getId())) return this;
+        if(id.equals(getId()))
+        {
+            callback.process(this);
+            return this;
+        }
         for (Control control : childs())
         {
-            Control result = control.findById(env, id);
+            Control result = control.findById(env, id, callback);
             if (result != null) return result;
         }
         return null;
