@@ -48,7 +48,7 @@ class IocEnviromentImpl implements ElEnvironment
     public <T> T get(String expression, Class<T> resultCls)
     {
         ValueExpression valueExp = factory.createValueExpression(context, expression, resultCls);
-        return (T)valueExp.getValue(context);
+        return resultCls.cast(valueExp.getValue(context));
     }
 
     @Override
@@ -73,12 +73,7 @@ class IocEnviromentImpl implements ElEnvironment
     @Override
     public <T> void pushVar(String name, T value)
     {
-        Stack<ValueExpression> stack = varsStack.get(name);
-        if(stack == null)
-        {
-            stack = new Stack<>();
-            varsStack.put(name, stack);
-        }
+        Stack<ValueExpression> stack = varsStack.computeIfAbsent(name, k -> new Stack<>());
         ValueExpression exp = null;
         if(value != null) exp = factory.createValueExpression(value, value.getClass());
         stack.push(exp);
