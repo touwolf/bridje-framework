@@ -140,7 +140,7 @@ public class StateManager
     {
         try
         {
-            String value = req.getStateValue("__st." + stateName);
+            String value = req.getStateValue(stateName);
             if (value != null)
             {
                 Object cv = elServ.convert(value, field.getType());

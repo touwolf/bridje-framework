@@ -40,6 +40,7 @@ window.onload = function()
         }
         window.console && console.log('      data: ' + dataStr);
         window.console && console.log('      container: ' + data.controlId);
+        window.console && console.log('      state: ' + window.__bridje_info.currState);
 
         try
         {
@@ -85,11 +86,6 @@ window.onload = function()
         }
     };
 
-    /**
-     * Executes a bridje action to the server, and updates the HTML of the current view.
-     *
-     * @param {HTMLElement} eventEl.
-     */
     const bridjeExecuteAction = function(eventEl)
     {
         const form = findForm(eventEl);
