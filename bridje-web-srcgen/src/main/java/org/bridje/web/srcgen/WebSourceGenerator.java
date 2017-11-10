@@ -110,12 +110,15 @@ public class WebSourceGenerator implements SourceGenerator<UISuite>
             Map<UISuite, VFile> data = srcGen.findData(UISuite.class);
             data.forEach(((uiSuite, vFile) ->
             {
-                for (ControlDef control : uiSuite.getControls())
+                if(uiSuite.getControls() != null)
                 {
-                    if (control.getRender() == null && control.getRenderFile() != null)
+                    for (ControlDef control : uiSuite.getControls())
                     {
-                        String renderContent = findRenderContent(vFile.getParent(), control.getRenderFile());
-                        control.setRender(renderContent);
+                        if (control.getRender() == null && control.getRenderFile() != null)
+                        {
+                            String renderContent = findRenderContent(vFile.getParent(), control.getRenderFile());
+                            control.setRender(renderContent);
+                        }
                     }
                 }
             }));
