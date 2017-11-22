@@ -271,6 +271,9 @@ public class ${control.name} extends <#if control.class.simpleName == "DynamicCo
      */
     public void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        this.parent = (Control) parent;
+        if(parent instanceof Control)
+        {
+            this.parent = (Control) parent;
+        }
     }
 }
