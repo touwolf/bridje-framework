@@ -140,11 +140,41 @@ window.onload = function()
             const action = actions[i];
             if (findForm(action))
             {
-                action.onclick = function(e)
+                var eventType = 'click';
+                if(action.nodeName == 'SELECT') eventType = 'change';
+                if(action.nodeName == 'INPUT') 
                 {
-                    e && e.preventDefault();
-                    bridjeExecuteAction(action);
-                };
+                    var inputType = action.getAttribute('type');
+                    if(inputType == 'button'
+                            || inputType == 'radio' 
+                            || inputType == 'submit'
+                            || inputType == 'reset'
+                            || inputType == 'checkbox')
+                    {
+                        eventType = 'click';
+                    }
+                    else
+                    {
+                        eventType = 'change';
+                    }
+                }
+                
+                if(eventType == 'change')
+                {
+                    action.onchange = function(e)
+                    {
+                        e && e.preventDefault();
+                        bridjeExecuteAction(action);
+                    };
+                }
+                else
+                {
+                    action.onclick = function(e)
+                    {
+                        e && e.preventDefault();
+                        bridjeExecuteAction(action);
+                    };
+                }
             }
         }
     };

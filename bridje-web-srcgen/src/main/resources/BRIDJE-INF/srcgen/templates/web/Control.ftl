@@ -20,6 +20,7 @@ import org.bridje.web.view.controls.*;
 import org.bridje.http.UploadedFile;
 import org.bridje.el.ElEnvironment;
 import javax.annotation.Generated;
+import javax.xml.bind.Unmarshaller;
 
 /**
  * This object represents the ${control.name} for the ${uisuite.name} Theme.
@@ -84,6 +85,9 @@ public class ${control.name} extends <#if control.class.simpleName == "DynamicCo
     private ${f.javaType!} ${f.name};
 
     </#list>
+    @XmlTransient
+    private Control parent;
+
     <#list control.fields as f>
     <#if f.javaType == "UIExpression">
     public ${f.javaType} get${f.name?cap_first}Expression()
@@ -247,5 +251,26 @@ public class ${control.name} extends <#if control.class.simpleName == "DynamicCo
         </#if>
         </#if>
         </#list>
+    }
+
+    /**
+     * Gets the parent control of this control.
+     *
+     * @return The parent control of this control.
+     */
+    public Control getParent()
+    {
+        return this.parent;
+    }
+
+    /**
+     * Called by JAXB.
+     * 
+     * @param u The unmarshaller.
+     * @param parent The parent.
+     */
+    public void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        this.parent = (Control) parent;
     }
 }

@@ -30,7 +30,7 @@ public class ObjectInf
     
     @XmlAttribute
     private String toString;
-    
+
     @XmlTransient
     private PropertyInf keyProperty;
 
