@@ -1,6 +1,8 @@
 
 package org.bridje.orm;
 
+import java.util.Arrays;
+import java.util.List;
 import org.bridje.sql.Limit;
 import org.bridje.sql.SQL;
 
@@ -61,6 +63,16 @@ public class Paging
         }
         return section;
     }
+
+    public List<Page> getPagesAsList()
+    {
+        return Arrays.asList(getPages());
+    }
+    
+    public List<Page> getPagesSectionAsList(int sectionSize)
+    {
+        return Arrays.asList(getPagesSection(sectionSize));
+    }
     
     public int getPageCount()
     {
@@ -81,6 +93,32 @@ public class Paging
     public void setCurrent(int current)
     {
         this.current = current;
+    }
+    
+    public void next()
+    {
+        if(!isLast())
+        {
+            setCurrent(current + 1);
+        }
+    }
+    
+    public void prev()
+    {
+        if(!isFirst())
+        {
+            setCurrent(current - 1);
+        }
+    }
+    
+    public boolean isFirst()
+    {
+        return current == 1;
+    }
+
+    public boolean isLast()
+    {
+        return current == pageCount;
     }
 
     public Page getPage(int value)

@@ -1,6 +1,7 @@
 
 package org.bridje.web.view.controls;
 
+import java.util.Collections;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -26,7 +27,7 @@ public class DynamicControl extends Control
 
     public List getData()
     {
-        return get(data, List.class, null);
+        return get(data, List.class, Collections.EMPTY_LIST);
     }
 
     public String getVar()
@@ -45,11 +46,11 @@ public class DynamicControl extends Control
     {
         for(Object item : getData())
         {
-            env.pushVar("item", item);
+            env.pushVar(getVar(), item);
             inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
             inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
             childs().forEach(control -> control.readInput(req, env));
-            env.popVar("item");
+            env.popVar(getVar());
         }
     }
 
@@ -58,14 +59,14 @@ public class DynamicControl extends Control
     {
         for(Object item : getData())
         {
-            env.pushVar("item", item);
+            env.pushVar(getVar(), item);
             for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
             for (Control control : childs())
             {
                 EventResult result = control.executeEvent(req, env);
                 if(result != null) return result;
             }
-            env.popVar("item");
+            env.popVar(getVar());
         }
         return null;
     }
