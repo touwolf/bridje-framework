@@ -140,40 +140,45 @@ window.onload = function()
             const action = actions[i];
             if (findForm(action))
             {
-                var eventType = 'click';
-                if(action.nodeName == 'SELECT') eventType = 'change';
-                if(action.nodeName == 'INPUT') 
+                const eventId = action.getAttribute('data-eventid');
+                const eventInput = document.getElementById(eventId);
+                if (eventInput)
                 {
-                    var inputType = action.getAttribute('type');
-                    if(inputType == 'button'
-                            || inputType == 'radio' 
-                            || inputType == 'submit'
-                            || inputType == 'reset'
-                            || inputType == 'checkbox')
+                    var eventType = 'click';
+                    if(action.nodeName == 'SELECT') eventType = 'change';
+                    if(action.nodeName == 'INPUT') 
                     {
-                        eventType = 'click';
+                        var inputType = action.getAttribute('type');
+                        if(inputType == 'button'
+                                || inputType == 'radio' 
+                                || inputType == 'submit'
+                                || inputType == 'reset'
+                                || inputType == 'checkbox')
+                        {
+                            eventType = 'click';
+                        }
+                        else
+                        {
+                            eventType = 'change';
+                        }
+                    }
+
+                    if(eventType == 'change')
+                    {
+                        action.onchange = function(e)
+                        {
+                            e && e.preventDefault();
+                            bridjeExecuteAction(action);
+                        };
                     }
                     else
                     {
-                        eventType = 'change';
+                        action.onclick = function(e)
+                        {
+                            e && e.preventDefault();
+                            bridjeExecuteAction(action);
+                        };
                     }
-                }
-                
-                if(eventType == 'change')
-                {
-                    action.onchange = function(e)
-                    {
-                        e && e.preventDefault();
-                        bridjeExecuteAction(action);
-                    };
-                }
-                else
-                {
-                    action.onclick = function(e)
-                    {
-                        e && e.preventDefault();
-                        bridjeExecuteAction(action);
-                    };
                 }
             }
         }
