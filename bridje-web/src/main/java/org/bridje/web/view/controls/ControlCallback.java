@@ -17,7 +17,7 @@
 package org.bridje.web.view.controls;
 
 @FunctionalInterface
-public interface ControlCallback
+public interface ControlCallback<T>
 {
-    void process(Control control); 
+    T process(Control control); 
 }

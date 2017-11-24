@@ -43,7 +43,6 @@ import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
 import org.bridje.web.view.controls.Control;
-import org.bridje.web.view.controls.ControlCallback;
 import org.bridje.web.view.controls.ControlInputReader;
 import org.bridje.web.view.controls.ControlManager;
 import org.bridje.web.view.state.StateManager;
@@ -266,35 +265,43 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
         Thls.doAs(() ->
         {
-            view.getRoot().findById(elEnv, req.getHeader("Bridje-Container"), (Control ctrl) ->
-            {
-                ctrl.readInput(new ControlInputReader(req), elEnv);
-                EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
-                if(result == null) result = EventResult.none();
-                if(result.getData() != null && result.getData() instanceof RedirectTo)
-                {
-                    RedirectTo redirectTo = (RedirectTo)result.getData();
-                    context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
-                }
-                else
-                {
-                    elEnv.pushVar("view", view);
-                    elEnv.pushVar("i18n", webI18nServ.getI18nMap());
-                    elEnv.pushVar("eventResult", result);
-                    elEnv.pushVar("control", ctrl);
-                    HttpBridletResponse resp = context.getResponse();
-                    try (OutputStream os = resp.getOutputStream())
+            EventResult evResult = view.getRoot()
+                    .findById(elEnv, req.getHeader("Bridje-Form"), (Control ctrl) ->
                     {
-                        themesMang.render(ctrl, view, os, result, () -> stateManag.createStringViewState(wrsCtx));
-                        os.flush();
-                    }
-                    catch (IOException ex)
+                        ctrl.readInput(new ControlInputReader(req), elEnv);
+                        EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
+                        if(result == null) result = EventResult.none();
+                        return result;
+                    });
+            
+            view.getRoot()
+                    .findById(elEnv, req.getHeader("Bridje-Container"), (Control ctrl) ->
                     {
-                        LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                    context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(wrsCtx));
-                }
-            });
+                        if(evResult.getData() != null && evResult.getData() instanceof RedirectTo)
+                        {
+                            RedirectTo redirectTo = (RedirectTo)evResult.getData();
+                            context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
+                        }
+                        else
+                        {
+                            elEnv.pushVar("view", view);
+                            elEnv.pushVar("i18n", webI18nServ.getI18nMap());
+                            elEnv.pushVar("eventResult", evResult);
+                            elEnv.pushVar("control", ctrl);
+                            HttpBridletResponse resp = context.getResponse();
+                            try (OutputStream os = resp.getOutputStream())
+                            {
+                                themesMang.render(ctrl, view, os, evResult, () -> stateManag.createStringViewState(wrsCtx));
+                                os.flush();
+                            }
+                            catch (IOException ex)
+                            {
+                                LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                            }
+                            context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(wrsCtx));
+                        }
+                        return true;
+                    });
             return null;
         }, ElEnvironment.class, elEnv);
     }

@@ -72,7 +72,7 @@ public class DynamicControl extends Control
     }
 
     @Override
-    public Control findById(ElEnvironment env, String id, ControlCallback callback)
+    public <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback)
     {
         if(id == null || id.isEmpty()) return null;
         if(getVisible() != null && getVisible())
@@ -80,7 +80,7 @@ public class DynamicControl extends Control
             for(Object item : getData())
             {
                 env.pushVar(getVar(), item);
-                Control result = doFindById(env, id, callback);
+                T result = doFindById(env, id, callback);
                 env.popVar(getVar());
                 if(result != null) return result;
             }

@@ -40,7 +40,8 @@ window.onload = function()
                       .map(e => encodeURIComponent(e[0]) + "=" + encodeURIComponent(e[1]));
         }
         window.console && console.log('      data: ' + dataStr);
-        window.console && console.log('      container: ' + data.controlId);
+        window.console && console.log('      form: ' + data.formId);
+        window.console && console.log('      container: ' + data.containerId);
         window.console && console.log('      state: ' + window.__bridje.info.currState);
 
         try
@@ -50,7 +51,8 @@ window.onload = function()
             if(data.isUrlEncoded) xhr.setRequestHeader('Content-type', data.enctype);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.setRequestHeader('Bridje-View', encodeURI(data.view));
-            xhr.setRequestHeader('Bridje-Container', data.controlId);
+            xhr.setRequestHeader('Bridje-Form', data.formId);
+            xhr.setRequestHeader('Bridje-Container', data.containerId);
             xhr.setRequestHeader('Bridje-State', window.__bridje.info.currState);
 
             xhr.onload = function()
@@ -65,10 +67,11 @@ window.onload = function()
                     }
                     else
                     {
-                        const renderEl = document.getElementById(data.controlId);
-                        if (renderEl)
+                        let renderEl = document.getElementById(data.containerId);
+                        if (renderEl) renderEl.outerHTML = xhr.responseText;
+                        renderEl = document.getElementById(data.containerId);
+                        if (renderEl) 
                         {
-                            renderEl.innerHTML = xhr.responseText;
                             initialize(renderEl);
                             window.__bridje.callback && window.__bridje.callback(renderEl);
                         }
@@ -90,10 +93,7 @@ window.onload = function()
     const execute = function(eventEl)
     {
         const form = findForm(eventEl);
-        if (!form)
-        {
-            return;
-        }
+        if (!form) return;
 
         const eventId = eventEl.getAttribute('data-eventid');
         const eventInput = document.getElementById(eventId);
@@ -122,13 +122,16 @@ window.onload = function()
             }
             sendData = params.toString();
         }
+        let containerId = form.getAttribute('data-container')
+        if(!containerId) containerId = form.id;
         ajax({
             view: view,
             enctype: enctype,
             event: eventName,
             method: method,
             isUrlEncoded: isUrlEncoded,
-            controlId: form.id,
+            formId: form.id,
+            containerId: containerId,
             sendData: sendData
         });
     };
@@ -161,6 +164,7 @@ window.onload = function()
             if (findForm(action))
             {
                 const eventId = action.getAttribute('data-eventid');
+                console.log(eventId);
                 const eventInput = document.getElementById(eventId);
                 if (eventInput)
                 {

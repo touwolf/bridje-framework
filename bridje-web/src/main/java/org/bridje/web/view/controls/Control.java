@@ -205,7 +205,7 @@ public abstract class Control
      * @param callback The callback when the control is found.
      * @return The control found.
      */
-    public Control findById(ElEnvironment env, String id, ControlCallback callback)
+    public <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback)
     {
         if(getVisible() != null && getVisible())
         {
@@ -255,16 +255,15 @@ public abstract class Control
      * @param callback The callback when the control is found.
      * @return The control found.
      */
-    protected final Control doFindById(ElEnvironment env, String id, ControlCallback callback)
+    protected final <T> T doFindById(ElEnvironment env, String id, ControlCallback<T> callback)
     {
         if(id.equals(getId()))
         {
-            callback.process(this);
-            return this;
+            return callback.process(this);
         }
         for (Control control : childs())
         {
-            Control result = control.findById(env, id, callback);
+            T result = control.findById(env, id, callback);
             if (result != null) return result;
         }
         return null;
