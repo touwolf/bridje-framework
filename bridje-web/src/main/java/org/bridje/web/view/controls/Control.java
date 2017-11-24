@@ -143,7 +143,7 @@ public abstract class Control
      */
     public Boolean getVisible()
     {
-        return get(visible, Boolean.class, false);
+        return get(visible, Boolean.class, true);
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class Control
     {
         if(getVisible() != null && getVisible())
         {
-            doExecuteEvent(req, env);
+            return doExecuteEvent(req, env);
         }
         return null;
     }

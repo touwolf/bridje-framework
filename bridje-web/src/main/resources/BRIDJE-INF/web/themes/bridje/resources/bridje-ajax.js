@@ -16,6 +16,7 @@
 
 window.onload = function()
 {
+    if( !window.__bridje ) window.__bridje = {};
     const findForm = function(element)
     {
         let node = element;
@@ -134,7 +135,7 @@ window.onload = function()
 
     const initialize = function(element)
     {
-        const actions = element.getElementsByClassName('bridje-action-click');
+        let actions = element.getElementsByClassName('bridje-action-click');
         for (let i = 0; i < actions.length; i++)
         {
             const action = actions[i];
@@ -153,7 +154,7 @@ window.onload = function()
             }
         }
         
-        const actions = element.getElementsByClassName('bridje-action-change');
+        actions = element.getElementsByClassName('bridje-action-change');
         for (let i = 0; i < actions.length; i++)
         {
             const action = actions[i];

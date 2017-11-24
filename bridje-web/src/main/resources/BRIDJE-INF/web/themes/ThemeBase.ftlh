@@ -66,6 +66,7 @@
         <#nested />
     </div>
     <script>
+        if( !window.__bridje ) window.__bridje = {};
         window.__bridje.info = {
             dataBridjeView: '${view.name}',
             enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
