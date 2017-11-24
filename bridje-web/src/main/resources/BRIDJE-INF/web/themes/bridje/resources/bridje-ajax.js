@@ -14,81 +14,164 @@
  * limitations under the License.
  */
 
-/**
- * Executes a bridje action to the server, and updates the HTML of the current view.
- * 
- * @param {string} id event The event to invoke on the server.
- */
-function bridjeExecuteAction(id)
+window.onload = function()
 {
-    var form = document.getElementById("bridje-view-container");
-    var eventEl = document.getElementById(id);
-    var event = eventEl.getAttribute("name");
-    eventEl.setAttribute("value", "t");
-    var multiPartData = new FormData(form);
-    var enctype = form.getAttribute("enctype");
-    var view = form.getAttribute("data-bridje-view");
-    var url = window.location;
-
-    window.console && console.log('executing bridje action: ');
-    window.console && console.log('      view: ' + view);
-    window.console && console.log('      enctype: ' + enctype);
-    window.console && console.log('      event: ' + event);
-    window.console && console.log('      data: ' + multiPartData);
-
-    var isUrlEncoded = enctype === "application/x-www-form-urlencoded";
-    if(isUrlEncoded)
+    const findForm = function(element)
     {
-        var params = new URLSearchParams();
-        for(var pair of multiPartData.entries())
+        let node = element;
+        while (node.nodeName !== 'FORM' && node.parentNode)
         {
-            if(typeof pair[1] === 'string')
-            {
-                params.append(pair[0], pair[1]);
-            }
+            node = node.parentNode;
         }
-        encodedData = params.toString();
-    }
+        return node.nodeName === 'FORM' ? node : null;
+    };
 
-    try
+    const ajax = function(data)
     {
-        xhr = new XMLHttpRequest();
-        xhr.open(form.getAttribute("method"), url, 1);
-        if(isUrlEncoded) xhr.setRequestHeader('Content-type', enctype);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.setRequestHeader('Bridje-View', encodeURI(view));
-        xhr.onload = function()
+        window.console && console.log('executing bridje action: ');
+        window.console && console.log('      view: ' + data.view);
+        window.console && console.log('      enctype: ' + data.enctype);
+        window.console && console.log('      event: ' + data.event);
+        let dataStr = data.sendData;
+        if (typeof(dataStr) !== 'string' && typeof(dataStr.entries) === 'function')
         {
-            if (xhr.status === 200)
+            dataStr = [...dataStr.entries()]
+                      .map(e => encodeURIComponent(e[0]) + "=" + encodeURIComponent(e[1]));
+        }
+        window.console && console.log('      data: ' + dataStr);
+        window.console && console.log('      container: ' + data.controlId);
+        window.console && console.log('      state: ' + window.__bridje.info.currState);
+
+        try
+        {
+            let xhr = new XMLHttpRequest();
+            xhr.open(data.method, window.location, true);
+            if(data.isUrlEncoded) xhr.setRequestHeader('Content-type', data.enctype);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('Bridje-View', encodeURI(data.view));
+            xhr.setRequestHeader('Bridje-Container', data.controlId);
+            xhr.setRequestHeader('Bridje-State', window.__bridje.info.currState);
+
+            xhr.onload = function()
             {
-                var location = xhr.getResponseHeader("Bridje-Location");
-                if(typeof location === "string")
+                if (xhr.status === 200)
                 {
-                    window.location = location;
+                    window.__bridje.info.currState = xhr.getResponseHeader('Bridje-State') || '';
+                    const location = xhr.getResponseHeader('Bridje-Location');
+                    if(location && (typeof(location) === 'string'))
+                    {
+                        window.location = location;
+                    }
+                    else
+                    {
+                        const renderEl = document.getElementById(data.controlId);
+                        if (renderEl)
+                        {
+                            renderEl.innerHTML = xhr.responseText;
+                            initialize(renderEl);
+                            window.__bridje.callback && window.__bridje.callback(renderEl);
+                        }
+                    }
                 }
                 else
                 {
-                    form.innerHTML = xhr.responseText;
-                    window.bridjeActionExecutionComplete && window.bridjeActionExecutionComplete();
+                    window.console && console.error('Request failed. Status: ' + xhr.status);
                 }
-            }
-            else
-            {
-                window.console && console.log('Request failed. Returned status of ' + xhr.status);
-            }
-        };
+            };
+            xhr.send(data.sendData);
+        }
+        catch (e)
+        {
+            window.console && console.error(e);
+        }
+    };
+
+    const execute = function(eventEl)
+    {
+        const form = findForm(eventEl);
+        if (!form)
+        {
+            return;
+        }
+
+        const eventId = eventEl.getAttribute('data-eventid');
+        const eventInput = document.getElementById(eventId);
+        let eventName = '';
+        if (eventInput)
+        {
+            eventName = eventInput.getAttribute('name');
+            eventInput.setAttribute("value", "t");
+        }
+
+        let enctype = form.getAttribute('enctype') || window.__bridje.info.enctype;
+        let view = form.getAttribute('data-bridje-view') || window.__bridje.info.dataBridjeView;
+        let sendData = new FormData(form);
+        let method = form.getAttribute('method') || 'post';
+
+        let isUrlEncoded = enctype === 'application/x-www-form-urlencoded';
         if(isUrlEncoded)
         {
-            xhr.send(encodedData);
+            let params = new URLSearchParams();
+            for(let pair of sendData.entries())
+            {
+                if(typeof(pair[1]) === 'string')
+                {
+                    params.append(pair[0], pair[1]);
+                }
+            }
+            sendData = params.toString();
         }
-        else
+        ajax({
+            view: view,
+            enctype: enctype,
+            event: eventName,
+            method: method,
+            isUrlEncoded: isUrlEncoded,
+            controlId: form.id,
+            sendData: sendData
+        });
+    };
+
+    const initialize = function(element)
+    {
+        const actions = element.getElementsByClassName('bridje-action-click');
+        for (let i = 0; i < actions.length; i++)
         {
-            xhr.send(multiPartData);
+            const action = actions[i];
+            if (findForm(action))
+            {
+                const eventId = action.getAttribute('data-eventid');
+                const eventInput = document.getElementById(eventId);
+                if (eventInput)
+                {
+                    action.onclick = function(e)
+                    {
+                        e && e.preventDefault();
+                        execute(action);
+                    };
+                }
+            }
         }
         
-    }
-    catch (e)
-    {
-        window.console && console.log(e);
-    }
-}
+        const actions = element.getElementsByClassName('bridje-action-change');
+        for (let i = 0; i < actions.length; i++)
+        {
+            const action = actions[i];
+            if (findForm(action))
+            {
+                const eventId = action.getAttribute('data-eventid');
+                const eventInput = document.getElementById(eventId);
+                if (eventInput)
+                {
+                    action.onchange = function(e)
+                    {
+                        e && e.preventDefault();
+                        execute(action);
+                    };
+                }
+            }
+        }
+    };
+
+    initialize(document);
+};

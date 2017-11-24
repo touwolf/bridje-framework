@@ -24,48 +24,65 @@ package org.bridje.sql;
 public interface Expression<T, E> extends SQLWritable
 {
     /**
+     * The SQL type for this expression.
      * 
-     * @return 
+     * @return The SQLType for this expression.
      */
     SQLType<T, E> getSQLType();
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new boolean expression that performs the equals comparation of 
+     * this expression with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> eq(Expression<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new boolean expression that performs the non equals comparation of 
+     * this expression with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> ne(Expression<T, E> operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new boolean expression that performs the equals comparation of 
+     * this expression with the given operand.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> eq(T operand);
 
     /**
-     * 
-     * @param operand
-     * @return 
+     * Creates a new boolean expression that performs the non equals comparation of 
+     * this expression with the given operand.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> ne(T operand);
 
     /**
+     * Creates a new order by expression that orders for this expression in an 
+     * ascending manner.
      * 
-     * @return 
+     * @return The new order by expression .
      */
     OrderExpr asc();
 
     /**
+     * Creates a new order by expression that orders for this expression in a 
+     * descending manner.
      * 
-     * @return 
+     * @return The new order by expression .
      */
     OrderExpr desc();
 }

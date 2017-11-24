@@ -22,14 +22,16 @@ package org.bridje.sql;
 public interface BuildTableFKsStep
 {
     /**
+     * Adds a foreign key to the table.
      *
-     * @param foreignKey
+     * @param foreignKey The foreign key to add.
      *
      * @return The next step.
      */
     BuildTableFKsStep foreignKey(ForeignKey foreignKey);
 
     /**
+     * Builds the table.
      *
      * @return The created table.
      */

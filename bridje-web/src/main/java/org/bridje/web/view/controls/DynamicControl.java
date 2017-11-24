@@ -44,29 +44,29 @@ public class DynamicControl extends Control
     @Override
     public void readInput(ControlInputReader req, ElEnvironment env)
     {
-        for(Object item : getData())
+        if(getVisible() != null && getVisible())
         {
-            env.pushVar(getVar(), item);
-            inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
-            inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
-            childs().forEach(control -> control.readInput(req, env));
-            env.popVar(getVar());
+            for(Object item : getData())
+            {
+                env.pushVar(getVar(), item);
+                doReadInput(req, env);
+                env.popVar(getVar());
+            }
         }
     }
 
     @Override
     public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
     {
-        for(Object item : getData())
+        if(getVisible() != null && getVisible())
         {
-            env.pushVar(getVar(), item);
-            for (UIEvent event : events()) if(eventTriggered(req, event)) return invokeEvent(event);
-            for (Control control : childs())
+            for(Object item : getData())
             {
-                EventResult result = control.executeEvent(req, env);
+                env.pushVar(getVar(), item);
+                EventResult result = doExecuteEvent(req, env);
+                env.popVar(getVar());
                 if(result != null) return result;
             }
-            env.popVar(getVar());
         }
         return null;
     }
@@ -75,20 +75,15 @@ public class DynamicControl extends Control
     public Control findById(ElEnvironment env, String id, ControlCallback callback)
     {
         if(id == null || id.isEmpty()) return null;
-        for(Object item : getData())
+        if(getVisible() != null && getVisible())
         {
-            env.pushVar("item", item);
-            if(id.equals(getId())) 
+            for(Object item : getData())
             {
-                callback.process(this);
-                return this;
+                env.pushVar(getVar(), item);
+                Control result = doFindById(env, id, callback);
+                env.popVar(getVar());
+                if(result != null) return result;
             }
-            for (Control control : childs())
-            {
-                Control result = control.findById(env, id, callback);
-                if (result != null) return result;
-            }
-            env.popVar("item");
         }
         return null;
     }

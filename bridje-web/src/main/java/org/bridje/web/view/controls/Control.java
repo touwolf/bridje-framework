@@ -47,6 +47,9 @@ public abstract class Control
     @XmlAttribute
     private UIExpression id;
 
+    @XmlAttribute
+    private UIExpression visible;
+
     /**
      * Evaluates the given expression in the current ElEnvironment.
      *
@@ -124,13 +127,23 @@ public abstract class Control
     }
 
     /**
-     * Identificador del control.
+     * Control identificator.
      * 
-     * @return El identificador del control.
+     * @return The control identificator.
      */
     public String getId()
     {
         return get(id, String.class, null);
+    }
+
+    /**
+     * If the control is visible.
+     * 
+     * @return If the control is visible.
+     */
+    public Boolean getVisible()
+    {
+        return get(visible, Boolean.class, false);
     }
 
     /**
@@ -183,17 +196,67 @@ public abstract class Control
     {
         return Collections.emptyList();
     }
-    
+
     /**
+     * Finds a control recursively by id.
      * 
-     * @param env
-     * @param id
-     * @param callback
-     * @return 
+     * @param env The EL environment.
+     * @param id The control id.
+     * @param callback The callback when the control is found.
+     * @return The control found.
      */
     public Control findById(ElEnvironment env, String id, ControlCallback callback)
     {
-        if(id == null || id.isEmpty()) return null;
+        if(getVisible() != null && getVisible())
+        {
+            if(id == null || id.isEmpty()) return null;
+            return doFindById(env, id, callback);
+        }
+        return null;
+    }
+
+    /**
+     * Reads the input recursively for this and all the child controls sent in
+     * the given HTTP request.
+     *
+     * @param req The HTTP request to read the input from.
+     * @param env The EL environment to write the data to.
+     */
+    public void readInput(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            doReadInput(req, env);
+        }
+    }
+
+    /**
+     * Executes any event sended from the client to the server.
+     *
+     * @param req The HTTP request.
+     * @param env The EL environment.
+     *
+     * @return The event result.
+     */
+    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            doExecuteEvent(req, env);
+        }
+        return null;
+    }
+
+    /**
+     * Finds a control recursively by id.
+     * 
+     * @param env The EL environment.
+     * @param id The control id.
+     * @param callback The callback when the control is found.
+     * @return The control found.
+     */
+    protected final Control doFindById(ElEnvironment env, String id, ControlCallback callback)
+    {
         if(id.equals(getId()))
         {
             callback.process(this);
@@ -214,7 +277,7 @@ public abstract class Control
      * @param req The HTTP request to read the input from.
      * @param env The EL environment to write the data to.
      */
-    public void readInput(ControlInputReader req, ElEnvironment env)
+    protected final void doReadInput(ControlInputReader req, ElEnvironment env)
     {
         inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
         inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
@@ -229,22 +292,16 @@ public abstract class Control
      *
      * @return The event result.
      */
-    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    protected final EventResult doExecuteEvent(ControlInputReader req, ElEnvironment env)
     {
         for (UIEvent event : events())
         {
-            if (eventTriggered(req, event))
-            {
-                return invokeEvent(event);
-            }
+            if (eventTriggered(req, event)) return invokeEvent(event);
         }
         for (Control control : childs())
         {
             EventResult result = control.executeEvent(req, env);
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
         }
         return null;
     }

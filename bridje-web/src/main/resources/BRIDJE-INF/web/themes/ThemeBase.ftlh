@@ -66,7 +66,7 @@
         <#nested />
     </div>
     <script>
-        window.__bridje_info = {
+        window.__bridje.info = {
             dataBridjeView: '${view.name}',
             enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
             currState: '${stateProvider.currentState!}'
@@ -93,7 +93,7 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
-            <@renderScript "bridje" "bridje-ajax-all.js" />
+            <@renderScript "bridje" "bridje-ajax.js" />
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </@renderHead>

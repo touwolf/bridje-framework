@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface BuildTableColumnsStep extends BuildTableIndexesStep
 {
     /**
-     *
-     * @param column
+     * Adds a column to this table.
+     * 
+     * @param column The column to add.
      *
      * @return The next step.
      */

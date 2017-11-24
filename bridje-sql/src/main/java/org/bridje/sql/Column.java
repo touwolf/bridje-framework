@@ -18,6 +18,7 @@ package org.bridje.sql;
 
 /**
  * 
+ * 
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
