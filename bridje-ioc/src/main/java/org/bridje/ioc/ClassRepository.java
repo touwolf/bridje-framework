@@ -53,7 +53,7 @@ public interface ClassRepository
     <A extends Annotation> void forEachField(Class<A> annotation, FieldNavigator<A> navigator);
 
     /**
-     * Navigates through all component classes registred in this repository,
+     * Navigates through all component classes registered in this repository,
      * that are annotated with the given annotation. This includes superclasses
      * fields.
      * <p>
@@ -67,7 +67,7 @@ public interface ClassRepository
     <A extends Annotation> void forEachClass(Class<A> annotation, ClassNavigator<A, Object> navigator);
 
     /**
-     * Navigates through all component classes registred in this repository,
+     * Navigates through all component classes registered in this repository,
      * that are annotated with the given annotation. This includes superclasses
      * fields.
      * <p>

@@ -201,10 +201,7 @@ class TableImpl<T> implements Table<T>
 
     public T parse(ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        if(rs.next())
-        {
-            return parseNew(rs, ctx);
-        }
+        if(rs.next()) return parseNew(rs, ctx);
         return null;
     }
 
@@ -224,16 +221,12 @@ class TableImpl<T> implements Table<T>
     {
         if(column instanceof AbstractColumn)
         {
-            AbstractColumn absColumn = (AbstractColumn)column;
+            AbstractColumn<C> absColumn = (AbstractColumn)column;
             List<C> result = new ArrayList<>();
             while(rs.next())
             {
-                Object value = CastUtils.castValue(column.getType(), rs.getObject(index), ctx);
-                if(value != null)
-                {
-                    C unsValue = (C)absColumn.unserialize(value);
-                    result.add(unsValue);
-                }
+                C value = absColumn.readValue(index, rs, ctx);
+                if(value != null) result.add((C)value);
             }
             return result;
         }
@@ -249,10 +242,7 @@ class TableImpl<T> implements Table<T>
         while(rs.next())
         {
             Object value = CastUtils.castValue(type, rs.getObject(index), ctx);
-            if(value != null)
-            {
-                result.add((C)value);
-            }
+            if(value != null) result.add((C)value);
         }
         return result;
     }
@@ -263,13 +253,8 @@ class TableImpl<T> implements Table<T>
         {
             if(rs.next())
             {
-                AbstractColumn absColumn = (AbstractColumn)column;
-                Object value = CastUtils.castValue(absColumn.getType(), rs.getObject(index), ctx);
-                if(value != null)
-                {
-                    C unsValue = (C)absColumn.unserialize(value);
-                    return unsValue;
-                }
+                AbstractColumn<C> absColumn = (AbstractColumn<C>)column;
+                return absColumn.readValue(index, rs, ctx);
             }
             return null;
         }
@@ -284,20 +269,14 @@ class TableImpl<T> implements Table<T>
         if(rs.next())
         {
             Object value = CastUtils.castValue(type, rs.getObject(index), ctx);
-            if(value != null)
-            {
-                return (C)value;
-            }
+            if(value != null) return (C)value;
         }
         return null;
     }
 
     public int parseCount(ResultSet rs) throws SQLException
     {
-        if(rs.next())
-        {
-            return rs.getInt(1);
-        }
+        if(rs.next()) return rs.getInt(1);
         return -1;
     }
 
@@ -324,9 +303,9 @@ class TableImpl<T> implements Table<T>
 
     private void fillKey(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
     {
-        Object value = rs.getObject(key.getName());
-        Object realValue = CastUtils.castValue(key.getType(), value, ctx);
-        ((TableColumnImpl)key).setValue(entity, realValue);
+        TableColumnImpl keyImpl = ((TableColumnImpl)key);
+        Object value = keyImpl.readValue(rs, ctx);
+        keyImpl.setValue(entity, value);
     }
     
     private void fill(T entity, ResultSet rs, EntityContextImpl ctx) throws SQLException
@@ -335,9 +314,9 @@ class TableImpl<T> implements Table<T>
         {
             if(!column.isKey())
             {
-                Object value = rs.getObject(column.getName());
-                Object realValue = CastUtils.castValue(column.getType(), value, ctx);
-                ((TableColumnImpl)column).setValue(entity, realValue);
+                TableColumnImpl columnImpl = ((TableColumnImpl)column);
+                Object value = columnImpl.readValue(rs, ctx);
+                columnImpl.setValue(entity, value);
             }
         }
     }
@@ -345,8 +324,8 @@ class TableImpl<T> implements Table<T>
     public <T> Object[] buildUpdateParameters(T entity, Object id)
     {
         List<Object> result = columns.stream()
-                            .filter((fi) -> !fi.isAutoIncrement())
-                            .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
+                            .filter(fi -> !fi.isAutoIncrement())
+                            .map(fi -> ((TableColumnImpl)fi).getQueryParameter(entity))
                             .collect(Collectors.toList());
         result.add(id);
         return result.toArray();
@@ -355,8 +334,8 @@ class TableImpl<T> implements Table<T>
     public <T> Object[] buildInsertParameters(T entity)
     {
         List<Object> result = columns.stream()
-                                .filter((fi) -> !fi.isAutoIncrement())
-                                .map((fi) -> ((TableColumnImpl)fi).getQueryParameter(entity))
+                                .filter(fi -> !fi.isAutoIncrement())
+                                .map(fi -> ((TableColumnImpl)fi).getQueryParameter(entity))
                                 .collect(Collectors.toList());
         return result.toArray();
     }

@@ -1,97 +1,150 @@
-/*
- * Copyright 2015 Bridje Framework.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.bridje.vfs;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This interface represents the virtual file system for Bridje, it provides
  * methods to mount and file files and folder into the system.
  */
-public interface VfsService extends VFolder
+public interface VfsService
 {
-    /**
-     * Mounts a new source into the given path.
-     *
-     * @param path The path to mount the source.
-     * @param source The virtual file system source object to be mounted.
-     */
-    void mount(Path path, VfsSource source);
 
     /**
      * Mounts a new source into the given path.
      *
-     * @param path The path to mount the source.
+     * @param path   The path to mount the source.
      * @param source The virtual file system source object to be mounted.
+     * @throws java.io.FileNotFoundException If the underliying file does not exists.
      */
-    void mount(String path, VfsSource source);
+    void mount(Path path, VfsSource source) throws FileNotFoundException;
 
     /**
-     * Mounts a new class path resource VFS source into the given path.
+     * Check if the node is a directory
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param resource The class path resource folder to be mounted.
-     * @throws java.io.IOException If any input-output exception occurs.
-     * @throws java.net.URISyntaxException If an invalid resource is provided.
+     * @return Boolean, true if the node is a directory and false otherwise.
      */
-    void mountResource(Path path, String resource) throws IOException, URISyntaxException;
+    boolean isDirectory(Path path);
 
     /**
-     * Mounts a new class path resource VFS source into the given path.
+     * Check if the file exist really.
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param resource The class path resource folder to be mounted.
-     * @throws java.io.IOException If any input-output exception occurs.
-     * @throws java.net.URISyntaxException If an invalid resource is provided.
+     * @return Boolean, true if the file exist and false otherwise.
      */
-    void mountResource(String path, String resource) throws IOException, URISyntaxException;
+    boolean exists(Path path);
 
     /**
-     * Mounts a new file VFS source into the given path.
+     * Check if the node is a file.
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param file The folder to be mounted.
+     * @return Boolean, true if the node is a file and false otherwise.
      */
-    void mountFile(Path path, File file);
+    boolean isFile(Path path);
 
     /**
-     * Mounts a new file VFS source into the given path.
+     * Check if we can write on this node.
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param file The folder to be mounted.
+     * @return Boolean, true if we can write and false otherwise.
      */
-    void mountFile(String path, File file);
-    
+    boolean canWrite(Path path);
 
     /**
-     * Mounts a new file VFS source into the given path.
+     * Check if we can read on this node.
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param file The folder to be mounted.
+     * @return Boolean, true if we can read and false otherwise.
      */
-    void mountFile(Path path, String file);
+    boolean canRead(Path path);
 
     /**
-     * Mounts a new file VFS source into the given path.
+     * Return String Array with the names of files and folder that they exist in
+     * this path attribute.
+     * <p>
+     * @param path The path attribute
      *
-     * @param path The path to mount the source.
-     * @param file The folder to be mounted.
+     * @return String[] ,String Array with the names of files and folder that
+     *         they exist in this path attribute.
      */
-    void mountFile(String path, String file);
+    String[] list(Path path);
+
+    /**
+     * Return InputStream object, then we can read the files. This method we
+     * utilized it when we want to read a file
+     * <p>
+     * @param path The path attribute
+     *
+     * @return InputStream object.
+     */
+    InputStream openForRead(Path path);
+
+    /**
+     * Return OutputStream object, then we can write the file. This method we
+     * utilized it when we want to write a file
+     * <p>
+     * @param path The path attribute
+     *
+     * @return OutputStream object.
+     */
+    OutputStream openForWrite(Path path);
+
+    /**
+     * This method we utilized it when we want to search any file inside of the
+     * path
+     * <p>
+     * @param globExpr object, that represent the regular expression for make
+     *                 the quest.
+     * @param path     The path attribute
+     *
+     * @return VFile[], return VFile Array that result of the quest.
+     */
+    VFile[] search(GlobExpr globExpr, Path path);
+
+    /**
+     * Create a new file.
+     * <p>
+     * @param path The path attribute
+     *
+     * @return Boolean, true if the file is created without problem and false
+     *         otherwise.
+     */
+    boolean createNewFile(Path path);
+
+    /**
+     * Delete a file in the VFS tree.
+     * <p>
+     * @param path The path attribute
+     *
+     * @return Boolean, true if the file is deleted without problem and false
+     *         otherwise.
+     */
+    boolean delete(Path path);
+
+    /**
+     * Create a new directory.
+     * <p>
+     * @param path The path attribute
+     *
+     * @return Boolean, true if the directory is created without problem and
+     *         false otherwise.
+     */
+    boolean mkdir(Path path);
+
+    /**
+     * Return String object with the name of the file type.
+     * <p>
+     * @param extension The extension of the file.
+     *
+     * @return String object, return String object with name of the file type.
+     */
+    String getMimeType(String extension);
 }

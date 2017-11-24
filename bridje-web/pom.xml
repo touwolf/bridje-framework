@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.1-beta1</version>
     </parent>
 
     <artifactId>bridje-web</artifactId>
@@ -30,7 +30,7 @@
                     <processors>
                         <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
                         <processor>org.bridje.web.WebComponentProcessor</processor>
-                        <processor>org.bridje.web.view.widgets.WidgetProcessor</processor>
+                        <processor>org.bridje.web.view.controls.ControlProcessor</processor>
                     </processors>
                 </configuration>
                 <executions>
@@ -47,52 +47,6 @@
                             <goal>process-test</goal>
                         </goals>
                         <phase>test-compile</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>schemagen</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <sources>
-                                <source>src/main/java/org/bridje/web/view</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.10</version>
-                <executions>
-                    <execution>
-                        <id>attach-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>target/generated-resources/schemagen/schema1.xsd</file>
-                                    <type>xsd</type>
-                                    <classifier>view</classifier>
-                                </artifact>
-                                <artifact>
-                                    <file>src/main/resources/BRIDJE-INF/srcgen/web/theme.xsd</file>
-                                    <type>xsd</type>
-                                    <classifier>theme</classifier>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

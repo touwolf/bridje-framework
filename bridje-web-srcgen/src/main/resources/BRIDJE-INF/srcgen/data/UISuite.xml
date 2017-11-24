@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns='http://www.bridje.com/schemas/jfxmodel'
+    xsi:schemaLocation='http://www.bridje.com/schemas/jfxmodel ../../../../../../../bridje-jfx/target/generated-resources/schemagen/schema1.xsd'
+    name="UISuitesModel" package="org.bridje.web.srcgen.models">
+
+    <includes>
+        
+    </includes>
+
+    <icons>
+        <icon name="addField" file="add-field.png" />
+        <icon name="addUISuite" file="add-uisuite.png" />
+        <icon name="addControl" file="add-control.png" />
+        <icon name="add" file="add.png" />
+        <icon name="control" file="control.png" />
+        <icon name="delete" file="delete.png" />
+        <icon name="resource" file="resource.png" />
+        <icon name="save" file="save.png" />
+        <icon name="uisuite" file="uisuite.png" />
+        <icon name="field" file="field.png" />
+    </icons>
+
+    <properties>
+        <observableList type="UISuiteModel" name="suites" />
+    </properties>
+
+    <objects>
+        <object name="PartialUISuiteModel">
+            <includes>
+                <include fullName="org.bridje.vfs.VFile" />
+            </includes>
+            <key type="String" name="name" />
+            <properties>
+                <property type="VFile" name="file" />
+                <property type="UISuiteModel" name="parent" />
+                <observableList type="String" name="ftlIncludes" />
+                <observableList type="ResourceModel" name="resources" />
+                <observableList type="ControlDefModel" name="controls" />
+                <observableList type="ControlDefModel" name="controlsTemplates" />
+            </properties>
+        </object>
+        <object name="UISuiteModel">
+            <includes>
+                <include fullName="org.bridje.vfs.VFile" />
+            </includes>
+            <key type="String" name="name" />
+            <properties>
+                <property type="VFile" name="file" />
+                <property type="String" name="packageName" />
+                <property type="String" name="namespace" />
+                <property type="String" name="renderViewContainer" />
+                <property type="String" name="renderBody" />
+                <property type="String" name="renderHead" />
+                <property type="StandaloneDefModel" name="standalone" />
+                <property type="StandaloneDefModel" name="defines" />
+                <property type="ResourceModel" name="defaultResources" />
+                <observableList type="PartialUISuiteModel" name="includes" />
+                <observableList type="String" name="ftlIncludes" />
+                <observableList type="ResourceModel" name="resources" />
+                <observableList type="ControlDefModel" name="controls" />
+                <observableList type="ControlDefModel" name="controlsTemplates" />
+            </properties>
+        </object>
+        <object name="StandaloneDefModel">
+            <key type="String" name="name" />
+            <properties>
+                <property type="UISuiteModel" name="parent" />
+                <observableList type="FieldDefModel" name="content" />
+            </properties>
+        </object>
+        <object name="ResourceModel">
+            <key type="String" name="name" />
+            <properties>
+                <property type="UISuiteModel" name="parent" />
+                <property type="PartialUISuiteModel" name="partialSuite" />
+                <observableList type="AssetModel" name="content" />
+            </properties>
+        </object>
+        <object name="ControlDefModel">
+            <key type="String" name="name" />
+            <properties>
+                <property type="UISuiteModel" name="parent" />
+                <property type="PartialUISuiteModel" name="partialSuite" />
+                <property type="String" name="base" />
+                <observableList type="ResourceRefModel" name="resources" />
+                <observableList type="FieldDefModel" name="fields" />
+                <property type="String" name="baseTemplate" />
+                <property type="String" name="render" />
+            </properties>
+        </object>
+        <object name="AssetModel">
+            <key type="String" name="href" />
+            <properties>
+                <property type="ResourceModel" name="parent" />
+                <property type="String" name="type" />
+                <property type="String" name="rel" />
+            </properties>
+            <components>
+                <table />
+            </components>
+        </object>
+        <object name="FieldDefModel">
+            <key type="String" name="name" />
+            <properties>
+                <property type="ControlDefModel" name="parent" />
+                <property type="String" name="field" />
+                <property type="String" name="type" />
+                <property type="String" name="defaultValue" />
+                <property type="Boolean" name="allowPlaceHolder" />
+                <property type="String" name="wrapper" />
+                <property type="Boolean" name="single" />
+                <observableList type="FieldDefModel" name="childs" />
+            </properties>
+            <components>
+                <treeTable />
+            </components>
+        </object>
+        <object name="ResourceRefModel">
+            <key type="ResourceModel" name="resource" />
+            <properties>
+                <property type="Boolean" name="selected" />
+            </properties>
+        </object>
+    </objects>
+
+</model>

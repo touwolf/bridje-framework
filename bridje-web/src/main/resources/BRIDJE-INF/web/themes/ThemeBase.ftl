@@ -45,13 +45,13 @@
 <#macro renderThemeStyles themeName>
 </#macro>
 
-<#macro renderWidget widget>
-    macro renderWidget must be implemented for this theme.
+<#macro renderControl control>
+    macro renderControl must be implemented for this theme.
 </#macro>
 
-<#macro renderAllWidgets widgets>
-    <#list widgets as w>
-        <@renderWidget w />
+<#macro renderAllControls controls>
+    <#list controls as w>
+        <@renderControl w />
     </#list>
 </#macro>
 
@@ -101,11 +101,11 @@
     </html>
 </#macro>
 
-<#macro renderPartialView currentWidget>
+<#macro renderPartialView currentControl>
     <input type="hidden" name="__view" value="${view.name}" />
     <input type="hidden" name="__action" value="" />
     <@renderState />
-    <@renderWidget currentWidget />
+    <@renderControl currentControl />
 </#macro>
 
 <#macro renderState>
@@ -125,8 +125,8 @@
             window.location = '${result.data.resource}';
         </script>
     <#else>
-        <#if widget??>
-            <@renderPartialView widget />
+        <#if control??>
+            <@renderPartialView control />
         <#else>
             <@renderFullView themeName />
         </#if>

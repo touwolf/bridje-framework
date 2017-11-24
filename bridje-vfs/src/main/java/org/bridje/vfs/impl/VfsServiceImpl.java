@@ -1,477 +1,154 @@
-/*
- * Copyright 2015 Bridje Framework.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.bridje.vfs.impl;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
-import org.bridje.vfs.CpSource;
-import org.bridje.vfs.FileSource;
-import org.bridje.vfs.MultiVFile;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileAdapter;
-import org.bridje.vfs.VFolder;
-import org.bridje.vfs.VfsService;
-import org.bridje.vfs.VfsSource;
+import org.bridje.vfs.*;
 
 @Component
 class VfsServiceImpl implements VfsService
 {
     private static final Logger LOG = Logger.getLogger(VfsServiceImpl.class.getName());
 
-    private MemoryFolder root;
+    private final VfsFolderNode root;
+    
+    private final Properties mimeTypes;
 
-    @Inject
-    private VFileAdapter[] fileAdapters;
-
-    private Map<String, Map<Class<?>, List<VFileAdapter>>> adaptersMap;
-
-    private Map<String, List<VFileAdapter>> genericReadersMap;
+    public VfsServiceImpl()
+    {
+        this.root = new VfsFolderNode(null);
+        this.mimeTypes = new Properties();
+    }
 
     @PostConstruct
-    public void init()
+    public synchronized void init() throws IOException, URISyntaxException
     {
-        root = new MemoryFolder(null);
-        initFileAdapters();
-        try
+        VFile vfsBridje = new VFile("/vfs/bridje");
+        vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
+        VFile mimeTypes = new VFile(vfsBridje.getPath().join("mime-types.properties"));
+        try(VFileInputStream is = new VFileInputStream(mimeTypes))
         {
-            mountResource("/vfs", "/BRIDJE-INF/vfs");
-            List<Properties> mountCpList = readAllFiles("/vfs/classpath-sources.properties", Properties.class);
-            for (Properties mountCp : mountCpList)
+            this.mimeTypes.load(is);
+        }
+        VFile[] sources = vfsBridje.search(new GlobExpr("*-classpath-sources.properties"));
+        for (VFile source : sources)
+        {
+            try(VFileInputStream is = new VFileInputStream(source))
             {
-                mountCp.forEach((p, r) ->
+                Properties prop = new Properties();
+                prop.load(is);
+                Set<Map.Entry<Object, Object>> entrySet = prop.entrySet();
+                for (Map.Entry<Object, Object> entry : entrySet)
                 {
                     try
                     {
-                        mountResource((String)p, (String)r);
+                        VFile folder = new VFile((String)entry.getKey());
+                        folder.mount(new CpSource((String)entry.getValue()));
                     }
-                    catch (IOException | URISyntaxException e)
+                    catch (Exception e)
                     {
                         LOG.log(Level.SEVERE, e.getMessage(), e);
                     }
-                });
+                }
             }
-        }
-        catch (IOException | URISyntaxException e)
-        {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public VFolder findFolder(String path)
-    {
-        return root.findFolder(path);
-    }
-
-    @Override
-    public VFolder findFolder(Path path)
-    {
-        return root.findFolder(path);
-    }
-
-    @Override
-    public VFile findFile(String path)
-    {
-        return root.findFile(path);
-    }
-
-    @Override
-    public VFile findFile(Path path)
-    {
-        return root.findFile(path);
-    }
-
-    @Override
-    public List<VFolder> listFolders()
-    {
-        return root.listFolders();
-    }
-
-    @Override
-    public List<VFile> listFiles()
-    {
-        return root.listFiles();
-    }
-
-    @Override
-    public List<VFolder> listFolders(String query)
-    {
-        return root.listFolders(query);
-    }
-
-    @Override
-    public List<VFile> listFiles(String query)
-    {
-        return root.listFiles(query);
-    }
-
-    @Override
-    public void mount(Path path, VfsSource source)
-    {
-        Path canPath = path.getCanonicalPath();
-        if(canPath == null)
-        {
-            throw new IllegalArgumentException("The specified path " + path  + " is not valid .");
-        }
-        Path mountPath = canPath.getParent();
-        String mountName = canPath.getName();
-        MemoryFolder currentFolder = root;
-        if(mountPath != null)
-        {
-            for (Path currentPath : mountPath)
+            catch (Exception ex)
             {
-                VFolder currVFolder = root.findFolder(currentPath);
-                if(currVFolder != null && (currVFolder instanceof MemoryFolder))
-                {
-                    currentFolder = (MemoryFolder)currVFolder;
-                }
-                else
-                {
-                    currentFolder = currentFolder.addFolder(new MemoryFolder(currentPath));
-                }
-            }
-        }
-
-        currentFolder.addFolder(new PhysicalFolder(source, mountPath, new Path(mountName)));
-    }
-
-
-    @Override
-    public void mount(String path, VfsSource source)
-    {
-        mount(new Path(path), source);
-    }
-
-    @Override
-    public void mountResource(Path path, String resource) throws IOException, URISyntaxException
-    {
-        mount(path, new CpSource(resource));
-    }
-
-    @Override
-    public void mountResource(String path, String resource) throws IOException, URISyntaxException
-    {
-        mount(new Path(path), new CpSource(resource));
-    }
-
-    @Override
-    public void mountFile(Path path, File file)
-    {
-        mount(path, new FileSource(file));
-    }
-
-    @Override
-    public void mountFile(String path, File file)
-    {
-        mount(new Path(path), new FileSource(file));
-    }
-
-    @Override
-    public void mountFile(Path path, String file)
-    {
-        mountFile(path, new File(file));
-    }
-
-    @Override
-    public void mountFile(String path, String file)
-    {
-        mountFile(path, new File(file));
-    }
-
-    @Override
-    public <T> T readFile(String path, Class<T> resultCls) throws IOException
-    {
-        VFile file = findFile(path);
-        return readFile(file, resultCls);
-    }
-
-    @Override
-    public <T> T readFile(Path path, Class<T> resultCls) throws IOException
-    {
-        VFile file = findFile(path);
-        return readFile(file, resultCls);
-    }
-
-    @Override
-    public <T> void writeFile(String path, T contentObj) throws IOException
-    {
-        VFile file = findFile(path);
-        writeFile(file, contentObj);
-    }
-
-    @Override
-    public <T> void writeFile(Path path, T contentObj) throws IOException
-    {
-        VFile file = findFile(path);
-        writeFile(file, contentObj);
-    }
-
-    public <T> T readFile(VFile file, Class<T> resultCls) throws IOException
-    {
-        if(file != null)
-        {
-            Map<Class<?>, List<VFileAdapter>> map = adaptersMap.get(file.getExtension());
-            if(map != null)
-            {
-                List<VFileAdapter> lst = map.get(resultCls);
-                if(lst != null)
-                {
-                    for (VFileAdapter adapter : lst)
-                    {
-                        if(adapter.canHandle(file, resultCls))
-                        {
-                            return adapter.read(file, resultCls);
-                        }
-                    }
-                }
-            }
-
-            List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
-            if(lst != null)
-            {
-                for (VFileAdapter adapter : lst)
-                {
-                    if(adapter.canHandle(file, resultCls))
-                    {
-                        return adapter.read(file, resultCls);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public <T> void writeFile(VFile file, T contentObj) throws IOException
-    {
-        if(file != null)
-        {
-            Map<Class<?>, List<VFileAdapter>> map = adaptersMap.get(file.getExtension());
-            if(map != null)
-            {
-                List<VFileAdapter> lst = map.get(contentObj.getClass());
-                if(lst != null)
-                {
-                    for (VFileAdapter adapter : lst)
-                    {
-                        if(adapter.canHandle(file, contentObj.getClass()))
-                        {
-                            adapter.write(file, contentObj);
-                        }
-                    }
-                }
-            }
-
-            List<VFileAdapter> lst = genericReadersMap.get(file.getExtension());
-            if(lst != null)
-            {
-                for (VFileAdapter adapter : lst)
-                {
-                    if(adapter.canHandle(file, contentObj.getClass()))
-                    {
-                        adapter.write(file, contentObj);
-                    }
-                }
-            }
-        }
-    }
-
-    private void initFileAdapters()
-    {
-        genericReadersMap = new HashMap<>();
-        adaptersMap = new HashMap<>();
-        for (VFileAdapter reader : fileAdapters)
-        {
-            String[] extensions = reader.getExtensions();
-            for (String extension : extensions)
-            {
-                Class<?>[] clsArray = reader.getClasses();
-                if(clsArray != null)
-                {
-                    Map<Class<?>, List<VFileAdapter>> clsMap = adaptersMap.get(extension);
-                    if(clsMap == null)
-                    {
-                        clsMap = new HashMap<>();
-                        adaptersMap.put(extension, clsMap);
-                    }
-                    for (Class<?> cls : clsArray)
-                    {
-                        List<VFileAdapter> lst = clsMap.get(cls);
-                        if(lst == null)
-                        {
-                            lst = new ArrayList<>();
-                            clsMap.put(cls, lst);
-                        }
-                        lst.add(reader);
-                    }
-                }
-                else
-                {
-                    List<VFileAdapter> lst = genericReadersMap.get(extension);
-                    if(lst == null)
-                    {
-                        lst = new ArrayList<>();
-                        genericReadersMap.put(extension, lst);
-                    }
-                    lst.add(reader);
-                }
+                LOG.log(Level.SEVERE, "Reading " + source.getName() + ": " + ex.getMessage(), ex);
             }
         }
     }
 
     @Override
-    public VFile createNewFile(Path filePath) throws IOException
+    public synchronized void mount(Path path, VfsSource source) throws FileNotFoundException
     {
-        return root.createNewFile(filePath);
+        root.mount(path, source);
     }
 
     @Override
-    public VFolder mkDir(Path folderPath) throws IOException
+    public boolean isDirectory(Path path)
     {
-        return root.mkDir(folderPath);
+        return root.isDirectory(path);
     }
 
     @Override
-    public boolean canCreateNewFile(Path filePath)
+    public boolean isFile(Path path)
     {
-        return root.canCreateNewFile(filePath);
+        return root.isFile(path);
     }
 
     @Override
-    public boolean canMkDir(Path folderPath)
+    public boolean exists(Path path)
     {
-        return root.canMkDir(folderPath);
+        return root.exists(path);
     }
 
     @Override
-    public VFile createNewFile(String filePath) throws IOException
+    public boolean canWrite(Path path)
     {
-        return createNewFile(new Path(filePath));
+        return root.canWrite(path);
     }
 
     @Override
-    public VFolder mkDir(String folderPath) throws IOException
+    public boolean canRead(Path path)
     {
-        return mkDir(new Path(folderPath));
+        return root.canRead(path);
     }
 
     @Override
-    public boolean canCreateNewFile(String filePath)
+    public String[] list(Path path)
     {
-        return canCreateNewFile(new Path(filePath));
+        return root.list(path);
     }
 
     @Override
-    public boolean canMkDir(String folderPath)
+    public InputStream openForRead(Path path)
     {
-        return canMkDir(new Path(folderPath));
+        return root.openForRead(path);
     }
 
     @Override
-    public VFolder getParent()
+    public OutputStream openForWrite(Path path)
     {
-        return root.getParent();
+        return root.openForWrite(path);
     }
 
     @Override
-    public String getName()
+    public VFile[] search(GlobExpr globExpr, Path path)
     {
-        return root.getName();
+        return root.search(globExpr, path);
     }
 
     @Override
-    public Path getPath()
+    public boolean createNewFile(Path path)
     {
-        return root.getPath();
+        return root.createNewFile(path);
     }
 
     @Override
-    public Path getParentPath()
+    public boolean delete(Path path)
     {
-        return root.getParentPath();
+        return root.delete(path);
     }
 
     @Override
-    public Path getPathFrom(String ancestorPath)
+    public boolean mkdir(Path path)
     {
-        return root.getPathFrom(ancestorPath);
+        return root.mkdir(path);
     }
-
+    
     @Override
-    public <T> VFile createAndWriteNewFile(Path filePath, T contentObj) throws IOException
+    public String getMimeType(String extension)
     {
-        VFile file = createNewFile(filePath);
-        if(!file.canOpenForWrite())
-        {
-            throw new IOException("The file cannot be open for writing");
-        }
-        writeFile(filePath, contentObj);
-        return file;
-    }
-
-    @Override
-    public <T> VFile createAndWriteNewFile(String filePath, T contentObj) throws IOException
-    {
-        return createAndWriteNewFile(new Path(filePath), contentObj);
-    }
-
-    @Override
-    public <T> List<T> readAllFiles(String path, Class<T> resultCls) throws IOException
-    {
-        return readAllFiles(new Path(path), resultCls);
-    }
-
-    @Override
-    public <T> List<T> readAllFiles(Path path, Class<T> resultCls) throws IOException
-    {
-        List<T> result = new ArrayList<>();
-        VFile file = findFile(path);
-        if(file instanceof MultiVFile)
-        {
-            MultiVFile mvf = (MultiVFile)file;
-            List<VFile> files = mvf.getFiles();
-            for (VFile f : files)
-            {
-                T content = readFile(f, resultCls);
-                if(content != null)
-                {
-                    result.add(content);
-                }
-            }
-        }
-        else
-        {
-            T content = readFile(file, resultCls);
-            if(content != null)
-            {
-                result.add(content);
-            }
-        }
-        return result;
+        return (String)mimeTypes.get(extension);
     }
 }

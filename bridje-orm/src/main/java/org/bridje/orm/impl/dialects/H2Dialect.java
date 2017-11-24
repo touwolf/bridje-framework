@@ -15,6 +15,8 @@
  */
 package org.bridje.orm.impl.dialects;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -25,6 +27,7 @@ import org.bridje.orm.SQLDialect;
 import org.bridje.orm.Table;
 import org.bridje.orm.TableColumn;
 import org.bridje.orm.impl.sql.DDLBuilder;
+import org.h2.jdbc.JdbcClob;
 
 @Component
 class H2Dialect implements SQLDialect
@@ -123,5 +126,36 @@ class H2Dialect implements SQLDialect
         sb.append(", ");
         sb.append(size);
         return sb.toString();
+    }
+
+    @Override
+    public Object parseSQLValue(Object sqlValue)
+    {
+        if(sqlValue instanceof JdbcClob)
+        {
+            JdbcClob clob = (JdbcClob)sqlValue;
+            try
+            {
+                char[] buff = new char[1024];
+                StringBuilder strBuilder = new StringBuilder();
+                Reader reader = clob.getCharacterStream();
+                int readed = reader.read(buff);
+                while (readed > 0)
+                {
+                    strBuilder.append(buff);
+                    readed = reader.read(buff);
+                }
+                return strBuilder.toString();
+            }
+            catch (SQLException | IOException e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+            finally
+            {
+                clob.free();
+            }
+        }
+        return sqlValue;
     }
 }

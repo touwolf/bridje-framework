@@ -18,10 +18,17 @@ package org.bridje.orm.impl;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
@@ -34,6 +41,9 @@ import org.bridje.orm.SQLAdapter;
 import org.bridje.orm.SQLCustomType;
 import org.bridje.orm.TableNumberColumn;
 import org.bridje.orm.adapters.EnumAdapter;
+import org.bridje.orm.adapters.LocalDateAdapter;
+import org.bridje.orm.adapters.LocalDateTimeAdapter;
+import org.bridje.orm.adapters.LocalTimeAdapter;
 
 class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColumn<E, T>
 {
@@ -62,6 +72,8 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     private final boolean required;
     
     private SQLAdapter<T, Object> adapter;
+    
+    private static Map<Class<?>, Class<? extends SQLAdapter>> DEF_ADAPTERS;
     
     public TableColumnImpl(TableImpl<E> table, Field field, Class<T> type)
     {
@@ -212,6 +224,11 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
         if(customType != null && (cls == null || cls == SQLAdapter.class))
         {
             cls = customType.adapter();
+        }
+        if(cls == null || cls == SQLAdapter.class)
+        {
+            Class<? extends SQLAdapter> defAdapt = getDefAdaters().get(type);
+            if(defAdapt != null) return defAdapt;
         }
         return cls;
     }
@@ -491,5 +508,31 @@ class TableColumnImpl<E, T> extends AbstractColumn<T> implements TableNumberColu
     public Column<T> min()
     {
         return new FunctionColumnImpl<>(this, type, "MIN(%s)");
+    }
+
+    private static Map<Class<?>, Class<? extends SQLAdapter>> getDefAdaters()
+    {
+        if(DEF_ADAPTERS == null) DEF_ADAPTERS = new HashMap<>();
+        DEF_ADAPTERS.putIfAbsent(LocalDate.class, LocalDateAdapter.class);
+        DEF_ADAPTERS.putIfAbsent(LocalDateTime.class, LocalDateTimeAdapter.class);
+        DEF_ADAPTERS.putIfAbsent(LocalTime.class, LocalTimeAdapter.class);
+        return DEF_ADAPTERS;
+    }
+
+    @Override
+    public T readValue(int index, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object sqlValue = rs.getObject(index);
+        Object value = ctx.getDialect().parseSQLValue(sqlValue);
+        T realValue = CastUtils.castValue(getType(), value, ctx);
+        return realValue;
+    }
+
+    public T readValue(ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object sqlValue = rs.getObject(getName());
+        Object value = ctx.getDialect().parseSQLValue(sqlValue);
+        T realValue = CastUtils.castValue(getType(), value, ctx);
+        return unserialize(realValue);
     }
 }

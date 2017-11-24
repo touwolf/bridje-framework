@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -30,7 +31,11 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bridje.vfs.VFile;
+import org.bridje.vfs.VFileInputStream;
 
 /**
  * HTTP server configuration.
@@ -304,5 +309,48 @@ public class HttpServerConfig
     private InputStream readKeyStoreData() throws FileNotFoundException
     {
         return new FileInputStream(new File(keyStoreFile));
+    }
+
+    /**
+     * Loads a HttpServerConfig from a file.
+     * 
+     * @param xmlFile The file to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     * @throws IOException If any IO Exception occurs.
+     */
+    public static HttpServerConfig load(VFile xmlFile) throws JAXBException, IOException
+    {
+        if(!xmlFile.exists()) return null;
+        try(InputStream is = new VFileInputStream(xmlFile))
+        {
+            return load(is);
+        }
+    }
+
+    /**
+     * Loads a HttpServerConfig from an input stream.
+     * 
+     * @param is The input stream to load the object from.
+     * @return The loaded object.
+     * @throws JAXBException If any JAXB Exception occurs.
+     */
+    private static HttpServerConfig load(InputStream is) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        return (HttpServerConfig)ctx.createUnmarshaller().unmarshal(is);
+    }
+
+    /**
+     * Save a SipServerConfig to an output stream.
+     * 
+     * @param os The output stream to write the object to.
+     * @param object The object to write.
+     * @throws JAXBException If any JAXB Exception occurs.
+     */
+    public static void save(OutputStream os, HttpServerConfig object) throws JAXBException
+    {
+        JAXBContext ctx = JAXBContext.newInstance(HttpServerConfig.class);
+        ctx.createMarshaller().marshal(object, os);
     }
 }

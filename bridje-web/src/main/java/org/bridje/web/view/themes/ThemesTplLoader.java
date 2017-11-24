@@ -22,27 +22,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VFileInputStream;
 
 @Component
 class ThemesTplLoader implements TemplateLoader
 {
-    @Inject
-    private VfsService vfs;
-
     private final Long time = System.currentTimeMillis();
 
     @Override
     public Object findTemplateSource(String name) throws IOException
     {
-        VFile tpl = vfs.findFile("/web/themes/" + name);
-        if(tpl == null)
-        {
-            return null;
-        }
-        return tpl.openForRead();
+        VFile tpl = new VFile("/web/themes/" + name);
+        if(!tpl.isFile()) return null;
+        return new VFileInputStream(tpl);
     }
 
     @Override

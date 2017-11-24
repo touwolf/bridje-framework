@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.3.0</version>
+        <version>0.3.1-beta1</version>
     </parent>
 
     <groupId>org.bridje</groupId>
     <artifactId>bridje-maven-plugin</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-beta1</version>
     <packaging>maven-plugin</packaging>
 
     <name>Bridje Maven Plugin</name>
@@ -70,14 +70,14 @@
             <version>3.4</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>2.4.5</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
             <version>2.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bridje-srcgen</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

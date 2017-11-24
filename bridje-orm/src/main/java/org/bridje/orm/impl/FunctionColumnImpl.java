@@ -16,6 +16,8 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridje.orm.Column;
@@ -219,5 +221,13 @@ class FunctionColumnImpl<T, B> extends AbstractColumn<T> implements NumberColumn
     public Column<T> min()
     {
         return new FunctionColumnImpl<>(this, getType(), "MIN(%s)");
+    }
+
+    @Override
+    public T readValue(int index, ResultSet rs, EntityContextImpl ctx) throws SQLException
+    {
+        Object value = rs.getObject(index);
+        T realValue = CastUtils.castValue(getType(), value, ctx);
+        return realValue;
     }
 }

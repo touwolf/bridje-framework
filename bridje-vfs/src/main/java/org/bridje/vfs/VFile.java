@@ -1,143 +1,290 @@
-/*
- * Copyright 2015 Bridje Framework.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.bridje.vfs;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
+import org.bridje.ioc.Ioc;
 
 /**
  * Represents a file of the VFS tree.
  */
-public interface VFile extends VResource
+public class VFile
 {
+    private static VfsService VFS;
+
     /**
-     * Open a file's InputStream for reading it's content.
+     * Return VfsService component, after we can call of this component to all
+     * the methods.
      * <p>
-     * @return An InputStream to the file.
-     *
-     * @throws IOException This method may access to physical device so this
-     *                     exception may be throw if any input output operation
-     *                     fails.
+     * @return VfsService component.
      */
-    InputStream openForRead() throws IOException;
+    private static VfsService getVfs()
+    {
+        if (VFS == null) VFS = Ioc.context().find(VfsService.class);
+        return VFS;
+    }
+
+    private final Path path;
 
     /**
-     * Open a file's OutputStream for writing it's content.
+     * Constructor of this class.
      * <p>
-     * @return An OutputStream to the file.
-     *
-     * @throws IOException This method may access to physical device so this
-     *                     exception may be throw if any input output operation
-     *                     fails.
+     * @param path The Path object that represent the file or folder.
      */
-    OutputStream openForWrite() throws IOException;
+    public VFile(Path path)
+    {
+        this.path = path;
+    }
 
     /**
-     * Determines when ever the file can be open for writing.
+     * Another constructor of this class.
      * <p>
-     * @return true the file can be open for writing.
+     * @param path The string representation of the path (file or folder).
      */
-    boolean canOpenForWrite();
+    public VFile(String path)
+    {
+        this.path = new Path(path);
+    }
 
     /**
-     * Determines when ever this file can be delete.
-     *
-     * @return true the file can be delete, false otherwise.
+     * Call to getName method of Path class.
+     * <p>
+     * @return A String object that represents the first element of the path.
      */
-    boolean canDelete();
+    public String getName()
+    {
+        return path.getName();
+    }
 
     /**
-     * Deletes this file.
-     *
-     * @throws java.io.IOException If the file cannot be deleted.
+     * Return the path representation of the path attribute
+     * <p>
+     * @return A Path object.
      */
-    void delete() throws IOException;
+    public Path getPath()
+    {
+        return path;
+    }
 
     /**
-     * Copies this file into the given folder.
-     *
-     * @param folder The destiny folder to copy this file.
-     *
-     * @throws java.io.IOException If the file connot be read or the destiny
-     *                             folder connot be write.
+     * Return VFile object that represent the parent of the file in the VFS
+     * tree.
+     * <p>
+     * For example, if the path represented by this object equals to
+     * {@literal "usr/local/somefile"}, this method will return a VFile object
+     * where the path attribute has value{@literal "usr/local"}.
+     * <p>
+     * @return A VFile object, this is the parent of the file.
      */
-    void copyTo(VFolder folder) throws IOException;
+    public VFile getParent()
+    {
+        if (path.isRoot()) return null;
+        return new VFile(path.getParent());
+    }
 
     /**
-     * Copies this file into the given OutpuStream.
-     *
-     * @param os The OutputStream to copy the file to.
-     *
-     * @throws java.io.IOException If the file connot be read, or any
-     *                             IOException ocurrs with the OutputStream.
+     * Check if the node is a directory
+     * <p>
+     * @return Boolean, true if the node is a directory and false otherwise.
      */
-    void copyTo(OutputStream os) throws IOException;
+    public boolean isDirectory()
+    {
+        return getVfs().isDirectory(path);
+    }
 
     /**
-     * Move this file to the given folder.
-     *
-     * @param folder The folder to move this file to.
-     *
-     * @throws java.io.IOException If the file connot be read, delete, or the
-     *                             folder cannot be write.
+     * Check if the file exist really.
+     * <p>
+     * @return Boolean, true if the file exist and false otherwise.
      */
-    void moveTo(VFolder folder) throws IOException;
+    public boolean exists()
+    {
+        return getVfs().exists(path);
+    }
 
     /**
-     * Gets the extension part of the name of the file.
-     *
-     * @return The extension part of the name of the file.
+     * Create a new file.
+     * <p>
+     * @return Boolean, true if the file is created without problem and false
+     *         otherwise.
      */
-    public String getExtension();
+    public boolean createNewFile()
+    {
+        return getVfs().createNewFile(path);
+    }
 
     /**
-     * Gets the mime type associated to the extension of the file.
-     *
-     * @see
-     * <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">Mime
-     * Types</a>
-     *
-     * @return The mime type of the file.
+     * Delete a file in the VFS tree.
+     * <p>
+     * @return Boolean, true if the file is deleted without problem and false
+     *         otherwise.
      */
-    public String getMimeType();
+    public boolean delete()
+    {
+        return getVfs().delete(path);
+    }
 
     /**
-     * Reads it content to a new instance of the result class.
-     *
-     * @param <T>       The type of the result class.
-     * @param resultCls The result class that the files need to be parsed to.
-     *
-     * @return The file founded or null if it does not exists.
-     *
-     * @throws java.io.IOException If any input-output error occurs reading the
-     *                             file.
+     * Create a new directory.
+     * <p>
+     * @return Boolean, true if the directory is created without problem and
+     *         false otherwise.
      */
-    <T> T readFile(Class<T> resultCls) throws IOException;
+    public boolean mkdir()
+    {
+        return getVfs().mkdir(path);
+    }
 
     /**
-     * Writes it's content with the instance of the given object.
-     *
-     * @param <T>        The type of the result class.
-     * @param contentObj The object to be serialize to the file.
-     *
-     * @throws java.io.IOException If any input-output error occurs writing the
-     *                             file.
+     * Check if the node is a file.
+     * <p>
+     * @return Boolean, true if the node is a file and false otherwise.
      */
-    <T> void writeFile(T contentObj) throws IOException;
+    public boolean isFile()
+    {
+        return getVfs().isFile(path);
+    }
 
+    /**
+     * Check if we can write on this node.
+     * <p>
+     * @return Boolean, true if we can write and false otherwise.
+     */
+    public boolean canWrite()
+    {
+        return getVfs().canWrite(path);
+    }
+
+    /**
+     * Check if we can read on this node.
+     * <p>
+     * @return Boolean, true if we can read and false otherwise.
+     */
+    public boolean canRead()
+    {
+        return getVfs().canRead(path);
+    }
+
+    /**
+     * Mount a node(file or folder) on VFS tree. for example, Let's suppose that
+     * we want to mount the folder ("/etc/resources"), the call to the method:
+     * mount(new FileSource(new File("/etc/resources")))
+     *
+     * @param source VfsSource object
+     * <p>
+     * @throws java.io.FileNotFoundException If the underliying file does not exists.
+     */
+    public void mount(VfsSource source) throws FileNotFoundException
+    {
+        getVfs().mount(path, source);
+    }
+
+    /**
+     * Return String Array with the names of files and folder that they exist in
+     * this path attribute.
+     * <p>
+     * @return String[] ,String Array with the names of files and folder that
+     *         they exist in this path attribute.
+     */
+    public String[] list()
+    {
+        return getVfs().list(path);
+    }
+
+    /**
+     * Return VFile Array with the names of files and folder that they exist in
+     * this path attribute.
+     * <p>
+     * @return VFile[] ,VFiles Array with the names of files and folder that
+     *         they exist in this path attribute.
+     */
+    public VFile[] listFiles()
+    {
+        String[] list = getVfs().list(path);
+        VFile[] result = new VFile[list.length];
+        for (int i = 0; i < list.length; i++)
+        {
+            String name = list[i];
+            result[i] = new VFile(path.join(name));
+        }
+        return result;
+    }
+
+    /**
+     * Return InputStream object, then we can read the files. This method we
+     * utilized it when we want to read a file
+     * <p>
+     * @return InputStream object.
+     */
+    InputStream openForRead()
+    {
+        return getVfs().openForRead(path);
+    }
+
+    /**
+     * Return OutputStream object, then we can write the file. This method we
+     * utilized it when we want to write a file
+     * <p>
+     * @return OutputStream object.
+     */
+    OutputStream openForWrite()
+    {
+        return getVfs().openForWrite(path);
+    }
+
+    /**
+     * This method we utilized it when we want to search any file inside of the
+     * path for example: VFile[] files = file.search(new GlobExpr("*.txt"));
+     * this code return VFile[] with all files with txt extension, we can
+     * utilize in the quest any regular expression.
+     * <p>
+     * @param globExpr The expression to filter the files.
+     * @return VFile[], return VFile Array that result of the quest.
+     */
+    public VFile[] search(GlobExpr globExpr)
+    {
+        return getVfs().search(globExpr, path);
+    }
+
+    /**
+     * Return String object with the name of the file type, for example: For the
+     * case of the files .txt, this method return "text/plain"
+     * <p>
+     * @return String object, return String object with name of the file type.
+     */
+    public String getMimeType()
+    {
+        String ext = path.getExtension();
+        if (ext == null || ext.trim().isEmpty()) return null;
+        return getVfs().getMimeType(ext);
+    }
+
+    /**
+     * Return String object, convert a path object to the String representation.
+     * <p>
+     * @return String object, return String object that represent el path of
+     *         files that String.
+     */
+    @Override
+    public String toString()
+    {
+        return path.toString();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return this.path.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        final VFile other = (VFile) obj;
+        return Objects.equals(this.path, other.path);
+    }
 }

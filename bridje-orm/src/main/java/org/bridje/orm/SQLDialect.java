@@ -76,4 +76,14 @@ public interface SQLDialect
      * @return The limit statement.
      */
     public String limit(int index, int size);
+
+    /**
+     * This method will be called by the framework when a value has being readed 
+     * from the ResultSet in order to convert it from especific SQL vendor class 
+     * to a more standard java class.
+     * 
+     * @param sqlValue The SQL value readed from the ResultSet.
+     * @return The converted value, if necesary, or the same value if not.
+     */
+    public Object parseSQLValue(Object sqlValue);
 }

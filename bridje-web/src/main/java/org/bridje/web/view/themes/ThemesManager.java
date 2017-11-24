@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -38,13 +39,14 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
-import org.bridje.vfs.VfsService;
+import org.bridje.vfs.VFileInputStream;
 import org.bridje.web.view.EventResult;
 import org.bridje.web.view.WebView;
+import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.state.StateRenderProvider;
-import org.bridje.web.view.widgets.Widget;
 
 /**
  * The manager for the web themes that can be used in the web application.
@@ -57,12 +59,9 @@ public class ThemesManager
     private Configuration ftlCfg;
 
     @Inject
-    private VfsService vfs;
-
-    @Inject
     private IocContext<Application> context;
 
-    private Map<String,Object> themeTools;
+    private Map<String, Object> themeTools;
 
     /**
      * Component Initializer
@@ -82,16 +81,18 @@ public class ThemesManager
 
     /**
      * Renders the full web view to the given OutputStream.
-     * 
+     *
      * @param view The view to be render.
      * @param os The output stream to render the view.
      * @param stateProv The provider for the current state of the view.
      */
     public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
     {
+        if(view == null) return;
         try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = view.getDefaultTheme();
+            if(themeName == null || themeName.isEmpty()) return;
             String templatePath = themeName + "/Theme.ftl";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map data = new HashMap();
@@ -109,15 +110,15 @@ public class ThemesManager
     }
 
     /**
-     * Renders only the given widget to the given output stream.
-     * 
-     * @param widget The widget 
+     * Renders only the given control to the given output stream.
+     *
+     * @param control The control
      * @param view The view to be render.
      * @param os The output stream to render the view.
      * @param result The result of the event invocation.
      * @param stateProv The provider for the current state of the view.
      */
-    public void render(Widget widget, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
+    public void render(Control control, WebView view, OutputStream os, EventResult result, StateRenderProvider stateProv)
     {
         try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
@@ -127,7 +128,7 @@ public class ThemesManager
             Map data = new HashMap();
             data.put("tools", themeTools);
             data.put("view", view);
-            data.put("widget", widget);
+            data.put("control", control);
             data.put("result", result);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
@@ -142,7 +143,7 @@ public class ThemesManager
 
     /**
      * Renders the expected resource to the client.
-     * 
+     *
      * @param themeName The name of the theme for the resource.
      * @param resPath The path of the resource within the theme.
      * @param resp The bridlet response to render the resource.
@@ -152,21 +153,36 @@ public class ThemesManager
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
         Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
-        if(path.getCanonicalPath().globMatches("/web/themes/**/resources/**"))
+        GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
+        if(globExpr.globMatches(path.getCanonicalPath()))
         {
-            VFile f = vfs.findFile(path);
-            if(f != null)
+            VFile f = new VFile(path);
+            if(f.isFile())
             {
                 String contentType = f.getMimeType();
                 resp.setContentType(contentType);
                 try(OutputStream os = resp.getOutputStream())
                 {
-                    f.copyTo(os);
-                    os.flush();
+                    try(InputStream is = new VFileInputStream(f))
+                    {
+                        copy(is, os);
+                        os.flush();
+                    }
                 }
                 return true;
             }
         }
         return false;
+    }
+
+    private void copy(InputStream is, OutputStream os) throws IOException
+    {
+        byte[] buffer = new byte[1024];
+        int bytesCount = is.read(buffer);
+        while(bytesCount > -1)
+        {
+            os.write(buffer, 0, bytesCount);
+            bytesCount = is.read(buffer);
+        }
     }
 }

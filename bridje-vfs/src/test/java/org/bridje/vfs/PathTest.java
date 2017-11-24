@@ -79,9 +79,8 @@ public class PathTest
     public void testHasNext()
     {
         Path instance = new Path("/www");
-        boolean expResult = false;
         boolean result = instance.hasNext();
-        assertEquals(expResult, result);
+        assertEquals(false, result);
     }
 
     /**
@@ -91,9 +90,8 @@ public class PathTest
     public void testIsSelf()
     {
         Path instance = new Path("/./asd");
-        boolean expResult = true;
         boolean result = instance.isSelf();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -103,9 +101,8 @@ public class PathTest
     public void testIsParent()
     {
         Path instance = new Path("/../");
-        boolean expResult = true;
         boolean result = instance.isParent();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -115,9 +112,8 @@ public class PathTest
     public void testIsLast()
     {
         Path instance = new Path("/www");
-        boolean expResult = true;
         boolean result = instance.isLast();
-        assertEquals(expResult, result);
+        assertEquals(true, result);
     }
 
     /**
@@ -184,61 +180,61 @@ public class PathTest
     }
 
     /**
-     * Test of {@link Path#globMatches(java.lang.String)}
+     * Test of {@link GlobExpr#globMatches(Path)}
      */
     @Test
     public void testGlob_Matches()
     {
         Path folder = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje");
         // ok
-        assertTrue(folder.globMatches("/usr/dev/**"));
-        assertTrue(folder.globMatches("/usr/dev/**/src/**/bridje"));
-        assertTrue(folder.globMatches("/usr/**/main/java/**"));
-        assertTrue(folder.globMatches("/usr/**/main/{java,js,php}/**"));
-        assertTrue(folder.globMatches("/usr/**/main/{j?va,js,php}/**"));
-        assertTrue(folder.globMatches("/usr/**/main/{j*}/**"));
-        assertTrue(folder.globMatches("/usr/**/main/{*ava}/**"));
-        assertTrue(folder.globMatches("/usr/**/main/{?ava}/**"));
-        assertTrue(folder.globMatches("/usr/**/src/**/[maven,java]/**"));
-        assertTrue(folder.globMatches("/usr/**/src/**/[a-z]ava/**"));
+        assertTrue(new GlobExpr("/usr/dev/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/dev/**/src/**/bridje").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/java/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/{java,js,php}/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/{j?va,js,php}/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/{j*}/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/{*ava}/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/main/{?ava}/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/src/**/[maven,java]/**").globMatches(folder));
+        assertTrue(new GlobExpr("/usr/**/src/**/[a-z]ava/**").globMatches(folder));
         // not ok
-        assertFalse(folder.globMatches("/usr/**/main/js/**"));
-        assertFalse(folder.globMatches("/usr/**/main/{css,js,php}/**"));
-        assertFalse(folder.globMatches("/usr/dev/?"));
-        assertFalse(folder.globMatches("/usr/**/main/{j?ava,js,php}/**"));
-        assertFalse(folder.globMatches("/usr/**/main/java/*"));
-        assertFalse(folder.globMatches("/usr/**/main/{p*}/**"));
-        assertFalse(folder.globMatches("/usr/**/main/*/bridje"));
-        assertFalse(folder.globMatches("/usr/**/src/**/[?ava]/**"));
+        assertFalse(new GlobExpr("/usr/**/main/js/**").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/main/{css,js,php}/**").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/dev/?").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/main/{j?ava,js,php}/**").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/main/java/*").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/main/{p*}/**").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/main/*/bridje").globMatches(folder));
+        assertFalse(new GlobExpr("/usr/**/src/**/[?ava]/**").globMatches(folder));
 
         Path file = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje/main.java");
         // ok
-        assertTrue(file.globMatches("/usr/dev/**/*.*"));
-        assertTrue(file.globMatches("/usr/dev/**/*.java"));
-        assertTrue(file.globMatches("/usr/dev/**/main.*"));
-        assertTrue(file.globMatches("/usr/dev/**/ma?n.*"));
-        assertTrue(file.globMatches("/usr/dev/**/[a-z]???.*"));
-        assertTrue(file.globMatches("/usr/dev/**/java/**/bridje/{main,Class,Interface}.java"));
-        assertTrue(file.globMatches("/usr/dev/**/java/**/{m*}.java"));
-        assertTrue(file.globMatches("/usr/dev/**/java/**/*.*"));
-        assertTrue(file.globMatches("/usr/dev/**/java/**/*"));
+        assertTrue(new GlobExpr("/usr/dev/**/*.*").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/*.java").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/main.*").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/ma?n.*").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/[a-z]???.*").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/java/**/bridje/{main,Class,Interface}.java").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/java/**/{m*}.java").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/java/**/*.*").globMatches(file));
+        assertTrue(new GlobExpr("/usr/dev/**/java/**/*").globMatches(file));
         // not ok
-        assertFalse(file.globMatches("/usr/dev/**/[0-9]???.*"));
-        assertFalse(file.globMatches("/usr/dev/**/[a-z]??.*"));
-        assertFalse(file.globMatches("/usr/dev/**/java/**/{l*}.java"));
-        assertFalse(file.globMatches("/usr/dev/**/php/**/*.*"));
-        assertFalse(file.globMatches("/usr/dev/**/java/**/*."));
+        assertFalse(new GlobExpr("/usr/dev/**/[0-9]???.*").globMatches(file));
+        assertFalse(new GlobExpr("/usr/dev/**/[a-z]??.*").globMatches(file));
+        assertFalse(new GlobExpr("/usr/dev/**/java/**/{l*}.java").globMatches(file));
+        assertFalse(new GlobExpr("/usr/dev/**/php/**/*.*").globMatches(file));
+        assertFalse(new GlobExpr("/usr/dev/**/java/**/*.").globMatches(file));
     }
 
     /**
-     * Test of {@link Path#globRemaining(java.lang.String)}
+     * Test of {@link GlobExpr#globRemaining(Path)}
      */
     @Test
     public void testGlob_Remaining()
     {
         Path folder = new Path("/usr/dev/projects/superProject/src/main/java/org/bridje");
-        assertEquals("src/main/java/org/bridje", folder.globRemaining("/**/superProject").toString());
-        assertEquals("src/main/java/org/bridje", folder.globRemaining("/**/dev/projects/{s*}t").toString());
-        assertNotEquals("src/main/java/org/bridje", folder.globRemaining("/**/projects/**").toString());
+        assertEquals("src/main/java/org/bridje", new GlobExpr("/**/superProject").globRemaining(folder).toString());
+        assertEquals("src/main/java/org/bridje", new GlobExpr("/**/dev/projects/{s*}t").globRemaining(folder).toString());
+        assertNotEquals("src/main/java/org/bridje", new GlobExpr("/**/projects/**").globRemaining(folder).toString());
     }
 }

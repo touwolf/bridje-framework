@@ -16,6 +16,8 @@
 
 package org.bridje.orm.impl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import org.bridje.orm.Column;
 import org.bridje.orm.Condition;
 import org.bridje.orm.OrderBy;
@@ -68,8 +70,25 @@ abstract class AbstractColumn<T> implements Column<T>
     {
         return new UnaryCondition(null, this, "IS NULL");
     }
-    
+
+    /**
+     * 
+     * @param value
+     * @return 
+     */
+    public abstract T readValue(int index, ResultSet rs, EntityContextImpl ctx) throws SQLException;
+
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public abstract T unserialize(Object value);
     
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public abstract Object serialize(T value);
 }

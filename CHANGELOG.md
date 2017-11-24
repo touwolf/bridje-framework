@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.3.0](https://github.com/bridje/bridje-framework/tree/v0.3.0) (2016-11-23)
+[Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.3...v0.3.0)
+
+ - The web framework now has layouts along with web themes generation, also several enhances were made to the framework logic to asure is fast and robust.
+ - The derby dialet in the ORM was fix, now it can be use.
+ - A reconnect test was added to the JDBC API, to avoid expired connections.
+ - Adding a complete mime type list to be use in the VFS and the Web frameworks.
+ - A new WebComponent annotation now replace the old Component(WebScope) sintax.
+ - Several enhances were made to the VFS, create, read, update, and delete virtual files and folders are now more intuitive, the travel methods were remove and replace by a better glob expression matching in the find methods.
+ - The Ioc now supports multiple components listing files.
+ - New concepts were added to the ORM like custom data types, adapters, operations, etc... along with the code generation the ORM is now more powerfull and easy to use.
+ - The maven plugin was reformed to allow xml data parsing for the generators in groovy inside each module, along with freemarker this is now a powerfull way of generating code in general.
+ - The bridje-wui project was removed, and replace by a new way of defining themes, by generating code, bridje-web now support web themes generation, this feature allow users to entirely customize the way the application will look.
+ - The juel integration for the web views was moved to a new project, bridje-el.
+
 ## [v0.2.3](https://github.com/bridje/bridje-framework/tree/v0.2.3) (2016-07-29)
 [Full Changelog](https://github.com/bridje/bridje-framework/compare/v0.2.2...v0.2.3)
 

@@ -4,7 +4,7 @@
 
     <groupId>org.bridje</groupId>
     <artifactId>bridje-parent</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-beta1</version>
     <packaging>pom</packaging>
 
     <name>Bridje (Parent)</name>
@@ -21,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <bridje.version>0.2.3-SNAPSHOT</bridje.version>
     </properties>
 
     <modules>
@@ -30,16 +29,21 @@
         <module>bridje-http</module>
         <module>bridje-jdbc</module>
         <module>bridje-orm</module>
+        <module>bridje-orm-srcgen</module>
         <module>bridje-web</module>
+        <module>bridje-web-srcgen</module>
         <module>bridje-el</module>
         <module>bridje-maven-plugin</module>
+        <module>bridje-srcgen</module>
+        <module>bridje-jfx</module>
+        <module>bridje-jfx-srcgen</module>
     </modules>
 
     <scm>
         <url>https://github.com/bridje/bridje-framework</url>
         <connection>scm:git:https://github.com/bridje/bridje-framework.git</connection>
         <developerConnection>scm:git:https://github.com/bridje/bridje-framework.git</developerConnection>
-        <tag>v0.3.0</tag>
+        <tag>HEAD</tag>
     </scm>
     
     <issueManagement>
@@ -211,62 +215,4 @@
             </plugin>
         </plugins>
     </reporting>
-    
-    <repositories>
-        <repository>
-            <id>sonatype-public</id>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>sonatype-staging</id>
-            <url>https://oss.sonatype.org/content/groups/staging</url>
-        </repository>
-    </repositories>
-    
-    <profiles>
-        <profile>
-            <id>release-profile</id>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-gpg-plugin</artifactId>
-                            <version>1.6</version>
-                            <executions>
-                                <execution>
-                                    <id>sign-artifacts</id>
-                                    <phase>verify</phase>
-                                    <goals>
-                                        <goal>sign</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <configuration>
-                            <gpgArguments>
-                                <arg>--no-tty</arg>
-                            </gpgArguments>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

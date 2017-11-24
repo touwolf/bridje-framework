@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.bridje</groupId>
+        <artifactId>bridje-parent</artifactId>
+        <version>0.3.1-beta1</version>
+    </parent>
+
+    <artifactId>bridje-all</artifactId>
+
+    <name>Bridje All</name>
+    <description>All Bridje runtime APIs</description>
+    <url>http://www.bridje.org</url>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>../bridje-vfs/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>../bridje-jfx/src/main/resources</directory>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>../bridje-ioc/src/main/java</source>
+                                <source>../bridje-vfs/src/main/java</source>
+                                <source>../bridje-el/src/main/java</source>
+                                <source>../bridje-http/src/main/java</source>
+                                <source>../bridje-jdbc/src/main/java</source>
+                                <source>../bridje-jfx/src/main/java</source>
+                                <source>../bridje-orm/src/main/java</source>
+                                <source>../bridje-web/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <configuration>
+                    <addCompileSourceRoots>true</addCompileSourceRoots>
+                    <processors>
+                        <processor>org.bridje.ioc.impl.ComponentProcessor</processor>
+                        <processor>org.bridje.web.WebComponentProcessor</processor>
+                        <processor>org.bridje.web.view.controls.ControlProcessor</processor>
+                    </processors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.23</version>
+        </dependency>
+        <dependency>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-impl</artifactId>
+            <version>2.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>de.odysseus.juel</groupId>
+            <artifactId>juel-api</artifactId>
+            <version>2.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.34.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+</project>

@@ -59,9 +59,6 @@ import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.ioc.Ioc;
 
-/**
- *
- */
 class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 {
     private static final Logger LOG = Logger.getLogger(HttpServerChannelHandler.class.getName());
@@ -144,13 +141,16 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         {
             String key = entry.getKey();
             Object value = entry.getValue();
-            if(value instanceof Iterable)
+            if(value != null)
             {
-                response.headers().set(key, (Iterable<?>)value);
-            }
-            else
-            {
-                response.headers().set(key, value);
+                if(value instanceof Iterable)
+                {
+                    response.headers().set(key, (Iterable<?>)value);
+                }
+                else
+                {
+                    response.headers().set(key, value);
+                }
             }
         }
         writeCookies(response);

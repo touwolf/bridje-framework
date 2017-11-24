@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import javax.xml.bind.JAXBException;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpServer;
 import org.bridje.http.WsServerHandler;
@@ -48,8 +49,6 @@ import org.bridje.ioc.Application;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VfsService;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -61,15 +60,12 @@ class HttpServerImpl implements HttpServer
     private HttpServerConfig config;
 
     @Inject
-    private VfsService vfsServ;
-
-    @Inject
     private List<WsServerHandler> handlers;
 
     private SSLContext sslContext;
-    
+
     private Thread serverThread;
-    
+
     @Inject
     private IocContext<Application> appCtx;
 
@@ -157,17 +153,22 @@ class HttpServerImpl implements HttpServer
         return config.getName();
     }
 
-    private void initConfig() throws IOException
+    private void initConfig() 
     {
-        Path path = new Path("/etc/http.xml");
-        config = vfsServ.readFile(path, HttpServerConfig.class);
-        if(config == null)
+        config = loadConfigFile();
+        if(config == null) config = new HttpServerConfig();
+    }
+    
+    private HttpServerConfig loadConfigFile() 
+    {
+        try
         {
-            config = new HttpServerConfig();
-            if(vfsServ.canCreateNewFile(path))
-            {
-                vfsServ.createAndWriteNewFile(path, config);
-            }
+            return HttpServerConfig.load(CONFIG_FILE);
+        }
+        catch (JAXBException | IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+            return null;
         }
     }
 

@@ -16,80 +16,36 @@
 
 package org.bridje.web.view;
 
-import java.util.Objects;
-import javax.xml.bind.annotation.*;
-
 /**
  * Defines a meta information for the current view.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class MetaTag
+public interface MetaTag
 {
-    @XmlAttribute(name = "name")
-    private String name;
-
-    @XmlValue
-    private String content;
-
     /**
      * The name of the meta tag.
      * 
      * @return The name of the meta tag.
      */
-    public String getName()
-    {
-        return name;
-    }
+    String getName();
 
     /**
      * The name of the meta tag.
      * 
      * @param name The name of the meta tag.
      */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    void setName(String name);
 
     /**
      * The content of the meta tag.
      * 
      * @return The content of the meta tag.
      */
-    public String getContent()
-    {
-        return content;
-    }
+    String getContent();
 
     /**
      * The name of the meta tag.
      * 
      * @param content The content of the meta tag.
      */
-    public void setContent(String content)
-    {
-        this.content = content;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final MetaTag other = (MetaTag) obj;
-        return Objects.equals(this.name, other.name);
-    }
+    void setContent(String content);
 }

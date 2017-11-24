@@ -16,14 +16,11 @@
 
 package org.bridje.web.view;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
  * This object represents a reference to the web view to be rendered by the
  * current http request. Bridlets may override this object in the current web
  * context to change the current web view that will be rendered to the client.
  */
-@XmlTransient
 public class WebViewRef
 {
     private String viewPath;
@@ -35,7 +32,8 @@ public class WebViewRef
      */
     public WebViewRef(String viewPath)
     {
-        setViewPath(viewPath);
+        this.viewPath = viewPath;
+        updateViewPath();
     }
 
     /**
@@ -56,6 +54,11 @@ public class WebViewRef
     public void setViewPath(String viewPath)
     {
         this.viewPath = viewPath;
+        updateViewPath();
+    }
+
+    private void updateViewPath()
+    {
         if(this.viewPath == null || this.viewPath.trim().isEmpty())
         {
             this.viewPath = "/index";

@@ -17,12 +17,19 @@
 package org.bridje.http;
 
 import java.io.PrintWriter;
+import org.bridje.vfs.VFile;
 
 /**
  * Http server service, you can inject this interface to control HTTP server.
  */
 public interface HttpServer
 {
+    
+    /**
+     * Default configuration file for the HTTP Server.
+     */
+    public static VFile CONFIG_FILE = new VFile("/etc/http.xml");
+
     /**
      * Starts the HTTP server, this method does not wait for the server to start
      * it returns inmediatly. The HTTP server is started in a diferent thread.
