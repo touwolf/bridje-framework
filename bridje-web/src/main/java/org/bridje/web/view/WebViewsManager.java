@@ -70,9 +70,6 @@ public class WebViewsManager
 
     @Inject
     private StateManager stateManag;
-
-    @Inject
-    private WebLayoutManager layoutManag;
     
     @Inject
     private WebI18nServices webI18nServ;

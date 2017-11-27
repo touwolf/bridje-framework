@@ -164,7 +164,6 @@ window.onload = function()
             if (findForm(action))
             {
                 const eventId = action.getAttribute('data-eventid');
-                console.log(eventId);
                 const eventInput = document.getElementById(eventId);
                 if (eventInput)
                 {
