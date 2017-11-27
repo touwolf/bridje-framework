@@ -46,6 +46,36 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
     @XmlTransient
     private Set<String> resources;
 
+    <#list uisuite.fields as f>
+    <#if f.fieldType == "attribute">
+    @XmlAttribute
+    <#elseif f.fieldType == "value">
+    @XmlValue
+    <#elseif f.fieldType == "children">
+    <#if f.wrapper?? && f.wrapper != "">
+    @XmlElementWrapper( name = "${f.wrapper}" )
+    </#if>
+    @XmlElements(
+    {
+        <#list f.content![] as c>
+        @XmlElement( name = "${c.name}", type = ${c.type}.class ),
+        </#list>
+        <#if f.allowPlaceHolder>
+        @XmlElement( name = "placeholder", type = ControlPlaceHolder.class ),
+        </#if>
+    })
+    <#elseif f.fieldType == "child">
+    @XmlElements(
+    {
+        @XmlElement( name = "${f.name}", type = ${f.javaType}.class ),
+        <#if f.allowPlaceHolder>
+        @XmlElement( name = "placeholder", type = ControlPlaceHolder.class ),
+        </#if>
+    })
+    </#if>
+    private ${f.javaType!} ${f.name};
+
+    </#list>
     @Override
     public String getTitle()
     {
@@ -97,6 +127,29 @@ public final class ${uisuite.name}View extends ${uisuite.name}AbstractView imple
         return controls;
     }
 
+    <#list uisuite.fields as f>
+    <#if f.javaType == "UIExpression">
+    public ${f.javaType} get${f.name?cap_first}Expression()
+    {
+        return ${f.name};
+    }
+
+    public ${f.type} get${f.name?cap_first}()
+    {
+        return Control.get(${f.name}, ${f.type}.class, ${f.defaultValue});
+    }
+
+    <#else>
+    public ${f.javaType} get${f.name?cap_first}()
+    {
+        <#if f.defaultValue??>
+        if(${f.name} == null) ${f.name} = ${f.defaultValue};
+        </#if>
+        return ${f.name};
+    }
+    </#if>
+
+    </#list>
     @Override
     public UIInputExpression findInput(String exp)
     {

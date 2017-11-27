@@ -98,19 +98,10 @@ public class UISuite extends UISuiteBase
     @XmlElements(
     {
         @XmlElement(name = "outAttr", type = OutAttrField.class),
-        @XmlElement(name = "inAttr", type = InAttrField.class),
-        @XmlElement(name = "eventAttr", type = EventAttrField.class),
-        @XmlElement(name = "fileAttr", type = FileAttrField.class),
         @XmlElement(name = "attr", type = AttrField.class),
         @XmlElement(name = "outEl", type = OutElementField.class),
-        @XmlElement(name = "inEl", type = InElementField.class),
-        @XmlElement(name = "fileEl", type = FileElementField.class),
-        @XmlElement(name = "eventEl", type = EventElementField.class),
         @XmlElement(name = "el", type = ElementField.class),
         @XmlElement(name = "outValue", type = OutValueField.class),
-        @XmlElement(name = "inValue", type = InValueField.class),
-        @XmlElement(name = "fileValue", type = FileValueField.class),
-        @XmlElement(name = "eventValue", type = EventValueField.class),
         @XmlElement(name = "value", type = ValueField.class),
         @XmlElement(name = "child", type = ChildField.class),
         @XmlElement(name = "children", type = ChildrenField.class)
