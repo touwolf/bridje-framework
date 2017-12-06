@@ -74,10 +74,10 @@ public class ModelInf
 
     @XmlElementWrapper(name = "enums")
     @XmlElements(
-            {
-                @XmlElement(name = "enum", type = EnumInf.class),
-                @XmlElement(name = "external", type = ExternalEnumInf.class)
-            })
+    {
+        @XmlElement(name = "enum", type = EnumInf.class),
+        @XmlElement(name = "external", type = ExternalEnumInf.class)
+    })
     private List<EnumBaseInf> enums;
 
     @XmlTransient
