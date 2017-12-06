@@ -143,7 +143,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
             }
             else
             {
-                result[i] = new LiteralImpl<>(object);
+                result[i] = new LiteralImpl<>(object, (SQLTypeImpl<Object,Object>)columns[i].getSQLType());
             }
         }
         return result;

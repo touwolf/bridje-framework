@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.bridje.sql.impl;
 
 import org.bridje.sql.ArithmeticExpr;
@@ -26,6 +25,7 @@ import org.bridje.sql.Literal;
 
 class LiteralImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>, Literal<T, E>
 {
+
     private final T value;
 
     public LiteralImpl(T value)
@@ -49,7 +49,14 @@ class LiteralImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E
     @Override
     public void writeSQL(SQLBuilder builder)
     {
-        builder.getParameters().add(value);
+        if (getSQLType() != null)
+        {
+            builder.getParameters().add(getSQLType().write(value));
+        }
+        else
+        {
+            builder.getParameters().add(value);
+        }
         builder.append('?');
     }
 

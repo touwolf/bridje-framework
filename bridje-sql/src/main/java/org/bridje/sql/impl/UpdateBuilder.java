@@ -82,7 +82,7 @@ class UpdateBuilder extends BuilderBase implements UpdateStep, Query
     public <T, E> SetsStep set(Column<T, E> column, T value)
     {
         if(setsLst == null) setsLst = new ArrayList<>();
-        setsLst.add(new Assign<>(column, new LiteralImpl<>(value)));
+        setsLst.add(new Assign<>(column, new LiteralImpl<>(value, column.getSQLType())));
         return this;
     }
 
