@@ -55,6 +55,7 @@
 [/#list]
 [@compress single_line=true][#compress]
 <#macro render${w.name}Control control doStatic=false>
+    <#if control.visible?? && control.visible>
     [#if w.class.simpleName == "DynamicControlDef"]
     <@doDynamicControl control doStatic >
     ${w.replaceMacros(w.render)}
@@ -62,6 +63,7 @@
     [#else]
     ${w.replaceMacros(w.render)}
     [/#if]
+    </#if>
 </#macro>
 [/#compress][/@compress]
 
