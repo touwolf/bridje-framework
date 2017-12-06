@@ -61,9 +61,9 @@ public interface HttpBridletRequest
     String getAccept();
 
     /**
-     * The AcceptLanguaje header sent by the client.
+     * The Accept-Language header sent by the client.
      *
-     * @return An String representing the value of the AcceptLanguaje header
+     * @return An String representing the value of the Accept-Language header
      */
     String getAcceptLanguage();
 
