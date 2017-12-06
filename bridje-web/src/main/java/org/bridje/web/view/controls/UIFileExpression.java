@@ -37,6 +37,8 @@ public class UIFileExpression
 
     private String parameter;
 
+    private String fieldName;
+
     UIFileExpression(String expression)
     {
         this.expression = expression;
@@ -63,11 +65,11 @@ public class UIFileExpression
      */
     public String getFieldName()
     {
-        if (parameter == null && isValid())
+        if (fieldName == null && isValid())
         {
-            parameter = getExpression().substring(2, getExpression().length() - 1);
+            fieldName = getExpression().substring(2, getExpression().length() - 1);
         }
-        return parameter;
+        return fieldName;
     }
     
     /**

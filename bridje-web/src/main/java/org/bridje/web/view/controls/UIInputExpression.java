@@ -31,6 +31,8 @@ public class UIInputExpression extends UIExpression
 {
     private String parameter;
 
+    private String fieldName;
+
     UIInputExpression(String expression)
     {
         super(expression);
@@ -58,11 +60,11 @@ public class UIInputExpression extends UIExpression
      */
     public String getFieldName()
     {
-        if (parameter == null && isValid())
+        if (fieldName == null && isValid())
         {
-            parameter = getExpression().substring(2, getExpression().length() - 1);
+            fieldName = getExpression().substring(2, getExpression().length() - 1);
         }
-        return parameter;
+        return fieldName;
     }
     
     /**
