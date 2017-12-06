@@ -30,7 +30,7 @@ public class OrStmt extends ConditionStmt
     @Override
     public boolean isNot()
     {
-        return true;
+        return false;
     }
 
     @Override
