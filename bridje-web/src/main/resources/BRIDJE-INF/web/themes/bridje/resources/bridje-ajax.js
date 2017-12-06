@@ -81,19 +81,31 @@ window.onload = function()
                 {
                     window.console && console.error('Request failed. Status: ' + xhr.status);
                 }
+                window.__bridje.inAction = false;
+                removeElementActionClass(data.eventEl);
             };
             xhr.send(data.sendData);
         }
         catch (e)
         {
             window.console && console.error(e);
+            window.__bridje.inAction = false;
+            removeElementActionClass(data.eventEl);
         }
     };
 
     const execute = function(eventEl)
     {
+        if (window.__bridje.inAction)
+        {
+            return;
+        }
+
+        window.__bridje.inAction = true;
         const form = findForm(eventEl);
         if (!form) return;
+
+        addElementActionClass(eventEl);
 
         const eventId = eventEl.getAttribute('data-eventid');
         const eventInput = document.getElementById(eventId);
@@ -132,8 +144,32 @@ window.onload = function()
             isUrlEncoded: isUrlEncoded,
             formId: form.id,
             containerId: containerId,
-            sendData: sendData
+            sendData: sendData,
+            eventEl: eventEl
         });
+    };
+
+    const removeElementActionClass = function(element)
+    {
+        const actionClass = element.getAttribute('data-action-class');
+        if (actionClass)
+        {
+            const regex = new RegExp('\\b' + actionClass + '\\b','g')
+            element.className.replace(regex, "");
+        }
+    };
+
+    const addElementActionClass = function(element)
+    {
+        const actionClass = element.getAttribute('data-action-class');
+        if (actionClass)
+        {
+            const clsArr = element.className.split(" ");
+            if (clsArr.indexOf(actionClass) < 0)
+            {
+                element.className += " " + name;
+            }
+        }
     };
 
     const initialize = function(element)
