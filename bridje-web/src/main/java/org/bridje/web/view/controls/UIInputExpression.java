@@ -52,6 +52,20 @@ public class UIInputExpression extends UIExpression
     }
 
     /**
+     * Gets the name of the field for this input expression.
+     *
+     * @return The name of the field for this input expression.
+     */
+    public String getFieldName()
+    {
+        if (parameter == null && isValid())
+        {
+            parameter = getExpression().substring(2, getExpression().length() - 1);
+        }
+        return parameter;
+    }
+    
+    /**
      * Gets the name of the parameter that must be send to the server.
      *
      * @return The name of the parameter that must be send to the server.

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.web.view.controls.UIEvent;
+import org.bridje.web.view.controls.UIInputExpression;
 
 /**
  * The result of the invocation of a web event.
@@ -426,7 +427,7 @@ public class EventResult
     {
         return fields;
     }
-    
+
     /**
      * Determines if the given field has an explicit status information object set in this result.
      * 
@@ -453,5 +454,27 @@ public class EventResult
                     .filter(f -> f.getFieldName().equalsIgnoreCase(name))
                     .findFirst()
                     .orElse(null);
+    }
+    
+    /**
+     * Determines if the given field has an explicit status information object set in this result.
+     * 
+     * @param expr The input expression for the field.
+     * @return true the field has an field status information object in this result, false othewise.
+     */
+    public boolean hasInputFieldStatus(UIInputExpression expr)
+    {
+        return hasFieldStatus(expr.getFieldName());
+    }
+
+    /**
+     * Gets the status information object set in this result for the given input expression.
+     * 
+     * @param expr The input expresion for the field.
+     * @return The field status information object.
+     */
+    public FieldStatusInf findInputFieldStatus(UIInputExpression expr)
+    {
+        return findFieldStatus(expr.getFieldName());
     }
 }
