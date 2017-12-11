@@ -4,6 +4,8 @@ package ${model.package};
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import org.bridje.ioc.Ioc;
 import org.bridje.ioc.Inject;
@@ -27,6 +29,12 @@ public class ${model.name}Base
 {
     public static final Schema SCHEMA;
 
+    static final Set<Class<?>> ENTITIES;
+
+    static final Map<Class<?>, EntityValueFinder> TO_KEYS;
+
+    static final Map<Class<?>, EntityValueFinder> TO_ENTITIES;
+
     static {
         SCHEMA = SQL.buildSchema("${model.schema}")
                     <#list model.entities as entity>
@@ -43,6 +51,22 @@ public class ${model.name}Base
                     </#list>
                     </#list>
                     .build();
+
+        ENTITIES = new HashSet<>();
+        <#list model.entities as entity>
+        ENTITIES.add(${entity.name}.class);
+        </#list>
+
+        TO_KEYS = new HashMap<>();
+        <#list model.entities as entity>
+        TO_KEYS.put(${entity.name}.class, (v) -> ((${entity.name})v).getId());
+        </#list>
+
+        TO_ENTITIES = new HashMap<>();
+        <#list model.entities as entity>
+        TO_ENTITIES.put(${entity.name}.class, (v) -> get().find${entity.name}(((${entity.key.type.javaType})v)));
+        </#list>
+        
     }
 
     public static ${model.name} get()
@@ -59,6 +83,20 @@ public class ${model.name}Base
     public void fixSchema() throws SQLException
     {
         env.fixSchema(SCHEMA);
+    }
+
+    protected <T> T find(Object key, Class<T> entityCls) throws SQLException
+    {
+        EntityValueFinder finder = TO_ENTITIES.get(entityCls);
+        if(finder == null) return null;
+        return (T)finder.find(key);
+    }
+
+    protected <T> Object getKey(T entity) throws SQLException
+    {
+        EntityValueFinder finder = TO_KEYS.get(entity.getClass());
+        if(finder == null) return null;
+        return finder.find(entity);
     }
 
     <#list model.entities as entity>
