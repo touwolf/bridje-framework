@@ -59,7 +59,7 @@ public class ${model.name}Base
 
         TO_KEYS = new HashMap<>();
         <#list model.entities as entity>
-        TO_KEYS.put(${entity.name}.class, (v) -> ((${entity.name})v).getId());
+        TO_KEYS.put(${entity.name}.class, (v) -> ((${entity.name})v).get${entity.key.name?cap_first}());
         </#list>
 
         TO_ENTITIES = new HashMap<>();
