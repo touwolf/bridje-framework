@@ -210,7 +210,7 @@ public class ${model.name}Base
                         </#if>
                         .toQuery();
         <#if query.fetchField??>
-        return env.fetchAll(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}));
+        return env.fetchAll(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
         <#else>
         return env.fetchAll(query, this::parse${entity.name});
         </#if>
@@ -281,7 +281,7 @@ public class ${model.name}Base
                         </#if>
                         .toQuery();
         <#if query.fetchField??>
-        return env.fetchOne(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}));
+        return env.fetchOne(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
         <#else>
         return env.fetchOne(query, this::parse${entity.name});
         </#if>
