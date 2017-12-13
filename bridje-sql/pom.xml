@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.5.0-beta11-SNAPSHOT</version>
+        <version>0.5.0-beta11</version>
     </parent>
 
     <artifactId>bridje-sql</artifactId>
