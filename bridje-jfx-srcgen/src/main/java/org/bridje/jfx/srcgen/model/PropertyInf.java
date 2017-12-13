@@ -176,6 +176,11 @@ public class PropertyInf
         return false;
     }
 
+    /**
+     * If this property is a list property or not.
+     * 
+     * @return true if this property is a list property, false otherwise.
+     */
     public boolean getIsList()
     {
         return false;

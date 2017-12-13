@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * 
+ * A property mapping information.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ObjectInfMappingProperty
@@ -36,8 +36,9 @@ public class ObjectInfMappingProperty
     private String type;
     
     /**
+     * The source property.
      * 
-     * @return 
+     * @return The source property.
      */
     public String getSource()
     {
@@ -49,8 +50,9 @@ public class ObjectInfMappingProperty
     }
 
     /**
+     * The source property.
      * 
-     * @param source 
+     * @param source The source property.
      */
     public void setSource(String source)
     {
@@ -58,8 +60,9 @@ public class ObjectInfMappingProperty
     }
 
     /**
+     * The target property.
      * 
-     * @return 
+     * @return The target property.
      */
     public String getTarget()
     {
@@ -67,8 +70,9 @@ public class ObjectInfMappingProperty
     }
 
     /**
+     * The target property.
      * 
-     * @param target 
+     * @param target The target property.
      */
     public void setTarget(String target)
     {
@@ -76,8 +80,9 @@ public class ObjectInfMappingProperty
     }
 
     /**
+     * The type of the property.
      * 
-     * @return 
+     * @return The type of the property.
      */
     public String getType()
     {
@@ -85,8 +90,9 @@ public class ObjectInfMappingProperty
     }
 
     /**
+     * The type of the property.
      * 
-     * @param type 
+     * @param type The type of the property.
      */
     public void setType(String type)
     {

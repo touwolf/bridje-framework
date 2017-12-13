@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
 /**
- * 
+ * Represents an object information mapping.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ObjectInfMapping
@@ -42,8 +42,9 @@ public class ObjectInfMapping
     private List<ObjectInfMappingProperty> properties;
     
     /**
+     * The target object for this mapping.
      * 
-     * @return 
+     * @return The target object for this mapping.
      */
     public String getTarget()
     {
@@ -51,8 +52,9 @@ public class ObjectInfMapping
     }
 
     /**
+     * The target object for this mapping.
      * 
-     * @param target 
+     * @param target The target object for this mapping.
      */
     public void setTarget(String target)
     {
@@ -60,8 +62,9 @@ public class ObjectInfMapping
     }
 
     /**
+     * The base object of the mapping object.
      * 
-     * @return 
+     * @return The base object of the mapping object.
      */
     public String getBase()
     {
@@ -69,8 +72,9 @@ public class ObjectInfMapping
     }
 
     /**
+     * The base object of the mapping object.
      * 
-     * @param base 
+     * @param base The base object of the mapping object.
      */
     public void setBase(String base)
     {
@@ -78,8 +82,9 @@ public class ObjectInfMapping
     }
     
     /**
+     * The properties to map.
      * 
-     * @return 
+     * @return The properties to map.
      */
     public List<ObjectInfMappingProperty> getProperties()
     {
@@ -87,8 +92,9 @@ public class ObjectInfMapping
     }
 
     /**
+     * The properties to map.
      * 
-     * @param properties 
+     * @param properties The properties to map.
      */
     public void setProperties(List<ObjectInfMappingProperty> properties)
     {

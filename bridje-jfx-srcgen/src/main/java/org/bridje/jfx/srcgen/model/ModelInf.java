@@ -27,39 +27,40 @@ public class ModelInf
     private String packageName;
 
     private String description;
-    
+
     @XmlElementWrapper(name = "objects")
     @XmlElements(
-    {
-        @XmlElement(name = "object", type = ObjectInf.class)
-    })
+            {
+                @XmlElement(name = "object", type = ObjectInf.class)
+            })
     private List<ObjectInf> objects;
 
     @XmlElementWrapper(name = "icons")
     @XmlElements(
-    {
-        @XmlElement(name = "icon", type = IconDef.class)
-    })
+            {
+                @XmlElement(name = "icon", type = IconDef.class)
+            })
     private List<IconDef> icons;
 
     @XmlElementWrapper(name = "properties")
     @XmlElements(
-    {
-        @XmlElement(name = "observableList", type = ObListPropertyInf.class),
+            {
+                @XmlElement(name = "observableList", type = ObListPropertyInf.class)
+                ,
         @XmlElement(name = "property", type = PropertyInf.class)
-    })
+            })
     private List<PropertyInf> properties;
 
     @XmlElementWrapper(name = "includes")
     @XmlElements(
-    {
-        @XmlElement(name = "include", type = IncludeInf.class)
-    })
+            {
+                @XmlElement(name = "include", type = IncludeInf.class)
+            })
     private List<IncludeInf> includes;
 
     /**
      * The name of the model.
-     * 
+     *
      * @return The name of the model.
      */
     public String getName()
@@ -69,7 +70,7 @@ public class ModelInf
 
     /**
      * The name of the model.
-     * 
+     *
      * @param name The name of the model.
      */
     public void setName(String name)
@@ -79,7 +80,7 @@ public class ModelInf
 
     /**
      * The objects for this model.
-     * 
+     *
      * @return The objects for this model.
      */
     public List<ObjectInf> getObjects()
@@ -89,7 +90,7 @@ public class ModelInf
 
     /**
      * The package for this model.
-     * 
+     *
      * @return The package for this model.
      */
     public String getPackage()
@@ -99,7 +100,7 @@ public class ModelInf
 
     /**
      * The package for this model.
-     * 
+     *
      * @param packageName The package for this model.
      */
     public void setPackage(String packageName)
@@ -109,7 +110,7 @@ public class ModelInf
 
     /**
      * A list of java classes to include.
-     * 
+     *
      * @return A list of java classes to include.
      */
     public List<IncludeInf> getIncludes()
@@ -119,17 +120,17 @@ public class ModelInf
 
     /**
      * A list of java classes to include.
-     * 
+     *
      * @param includes A list of java classes to include.
      */
     public void setIncludes(List<IncludeInf> includes)
     {
         this.includes = includes;
     }
-    
+
     /**
      * Gets the full name for the model class.
-     * 
+     *
      * @return The full name for the model class.
      */
     public String getFullName()
@@ -139,7 +140,7 @@ public class ModelInf
 
     /**
      * The properties of the model class.
-     * 
+     *
      * @return The properties of the model class.
      */
     public List<PropertyInf> getProperties()
@@ -149,7 +150,7 @@ public class ModelInf
 
     /**
      * The properties of the model class.
-     * 
+     *
      * @param properties The properties of the model class.
      */
     public void setProperties(List<PropertyInf> properties)
@@ -159,18 +160,21 @@ public class ModelInf
 
     /**
      * The icons for this model.
-     * 
+     *
      * @return The icons for this model.
      */
     public List<IconDef> getIcons()
     {
-        if(icons == null) icons = new ArrayList<>();
+        if (icons == null)
+        {
+            icons = new ArrayList<>();
+        }
         return icons;
     }
 
     /**
      * The icons for this model.
-     * 
+     *
      * @param icons The icons for this model.
      */
     public void setIcons(List<IconDef> icons)
@@ -180,7 +184,7 @@ public class ModelInf
 
     /**
      * The description of the model.
-     * 
+     *
      * @return The description of the model.
      */
     public String getDescription()
@@ -190,7 +194,7 @@ public class ModelInf
 
     /**
      * The description of the model.
-     * 
+     *
      * @param description The description of the model.
      */
     public void setDescription(String description)
@@ -198,11 +202,18 @@ public class ModelInf
         this.description = description;
     }
 
+    /**
+     * Find an object by its name.
+     *
+     * @param name The name of the object.
+     *
+     * @return The object found, or null if it does not exists.
+     */
     public ObjectInf findObject(String name)
     {
         for (ObjectInf obj : getObjects())
         {
-            if(obj.getName().equals(name))
+            if (obj.getName().equals(name))
             {
                 return obj;
             }
@@ -210,6 +221,13 @@ public class ModelInf
         return null;
     }
 
+    /**
+     * Determines if the given name is an object.
+     *
+     * @param name The name of the object.
+     *
+     * @return true the given name is an object, false otherwise.
+     */
     public boolean isObject(String name)
     {
         return findObject(name) != null;

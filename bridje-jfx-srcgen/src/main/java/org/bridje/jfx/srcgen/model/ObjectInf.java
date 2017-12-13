@@ -27,7 +27,7 @@ public class ObjectInf
 
     @XmlAttribute
     private String key;
-    
+
     @XmlAttribute
     private String toString;
 
@@ -39,17 +39,18 @@ public class ObjectInf
 
     @XmlElementWrapper(name = "properties")
     @XmlElements(
-    {
-        @XmlElement(name = "observableList", type = ObListPropertyInf.class),
+            {
+                @XmlElement(name = "observableList", type = ObListPropertyInf.class)
+                ,
         @XmlElement(name = "property", type = PropertyInf.class)
-    })
+            })
     private List<PropertyInf> properties;
 
     @XmlElementWrapper(name = "includes")
     @XmlElements(
-    {
-        @XmlElement(name = "include", type = IncludeInf.class)
-    })
+            {
+                @XmlElement(name = "include", type = IncludeInf.class)
+            })
     private List<IncludeInf> includes;
 
     @XmlTransient
@@ -60,10 +61,11 @@ public class ObjectInf
 
     @XmlElementWrapper(name = "components")
     @XmlElements(
-    {
-        @XmlElement(name = "table", type = TableComponent.class),
+            {
+                @XmlElement(name = "table", type = TableComponent.class)
+                ,
         @XmlElement(name = "treeTable", type = TreeTableComponent.class)
-    })
+            })
     private List<JFxComponent> components;
 
     @XmlAttribute
@@ -71,14 +73,14 @@ public class ObjectInf
 
     @XmlElementWrapper(name = "mappings")
     @XmlElements(
-    {
-        @XmlElement(name = "mapping", type = ObjectInfMapping.class)
-    })
+            {
+                @XmlElement(name = "mapping", type = ObjectInfMapping.class)
+            })
     private List<ObjectInfMapping> mappings;
 
     /**
      * The java class name of the object.
-     * 
+     *
      * @return The java class name of the object.
      */
     public String getName()
@@ -88,7 +90,7 @@ public class ObjectInf
 
     /**
      * The java class name of the object.
-     * 
+     *
      * @param name The java class name of the object.
      */
     public void setName(String name)
@@ -98,7 +100,7 @@ public class ObjectInf
 
     /**
      * A description of this object.
-     * 
+     *
      * @return A description of this object.
      */
     public String getDescription()
@@ -108,7 +110,7 @@ public class ObjectInf
 
     /**
      * A description of this object.
-     * 
+     *
      * @param description A description of this object.
      */
     public void setDescription(String description)
@@ -118,12 +120,12 @@ public class ObjectInf
 
     /**
      * The properties of this object.
-     * 
+     *
      * @return The properties of this object.
      */
     public List<PropertyInf> getProperties()
     {
-        if(properties == null)
+        if (properties == null)
         {
             properties = new ArrayList<>();
         }
@@ -132,7 +134,7 @@ public class ObjectInf
 
     /**
      * The properties of this object.
-     * 
+     *
      * @param properties The properties of this object.
      */
     public void setProperties(List<PropertyInf> properties)
@@ -142,7 +144,7 @@ public class ObjectInf
 
     /**
      * The parent JavaFx model of this object.
-     * 
+     *
      * @return The parent JavaFx model of this object.
      */
     public ModelInf getModel()
@@ -152,7 +154,7 @@ public class ObjectInf
 
     /**
      * The java package of this object.
-     * 
+     *
      * @return The java package of this object.
      */
     public String getPackage()
@@ -162,7 +164,7 @@ public class ObjectInf
 
     /**
      * The full java class name for this object.
-     * 
+     *
      * @return The full java class name for this object.
      */
     public String getFullName()
@@ -172,8 +174,8 @@ public class ObjectInf
 
     /**
      * Called by JAXB.
-     * 
-     * @param u The unmarshaller.
+     *
+     * @param u      The unmarshaller.
      * @param parent The parent.
      */
     public void afterUnmarshal(Unmarshaller u, Object parent)
@@ -183,7 +185,7 @@ public class ObjectInf
 
     /**
      * The key property for this object.
-     * 
+     *
      * @return The key property for this object.
      */
     public PropertyInf getKeyProperty()
@@ -193,12 +195,12 @@ public class ObjectInf
 
     /**
      * The key property for this object.
-     * 
+     *
      * @param keyProperty The key property for this object.
      */
     public void setKeyProperty(PropertyInf keyProperty)
     {
-        if(keyProperty == null && key != null)
+        if (keyProperty == null && key != null)
         {
             keyProperty = findProperty(key);
         }
@@ -207,7 +209,7 @@ public class ObjectInf
 
     /**
      * The list of java classes to include.
-     * 
+     *
      * @return The list of java classes to include.
      */
     public List<IncludeInf> getIncludes()
@@ -217,7 +219,7 @@ public class ObjectInf
 
     /**
      * The list of java classes to include.
-     * 
+     *
      * @param includes The list of java classes to include.
      */
     public void setIncludes(List<IncludeInf> includes)
@@ -227,16 +229,16 @@ public class ObjectInf
 
     /**
      * The toString property.
-     * 
+     *
      * @return The toString property.
      */
     public PropertyInf getToStringProperty()
     {
-        if(toString == null && key != null)
+        if (toString == null && key != null)
         {
             toString = key;
         }
-        if(toStringProperty == null && toString != null) 
+        if (toStringProperty == null && toString != null)
         {
             toStringProperty = findProperty(toString);
         }
@@ -245,7 +247,7 @@ public class ObjectInf
 
     /**
      * The toString property.
-     * 
+     *
      * @param toStringProperty The toString property.
      */
     public void setToStringProperty(PropertyInf toStringProperty)
@@ -255,7 +257,7 @@ public class ObjectInf
 
     /**
      * The components that must be generated for this object.
-     * 
+     *
      * @return The components that must be generated for this object.
      */
     public List<JFxComponent> getComponents()
@@ -265,7 +267,7 @@ public class ObjectInf
 
     /**
      * The components that must be generated for this object.
-     * 
+     *
      * @param components The components that must be generated for this object.
      */
     public void setComponents(List<JFxComponent> components)
@@ -275,7 +277,7 @@ public class ObjectInf
 
     /**
      * The base object.
-     * 
+     *
      * @return The base object.
      */
     public String getBase()
@@ -285,7 +287,7 @@ public class ObjectInf
 
     /**
      * The base object.
-     * 
+     *
      * @param base The base object.
      */
     public void setBase(String base)
@@ -295,7 +297,7 @@ public class ObjectInf
 
     /**
      * The list of mappings for this object.
-     * 
+     *
      * @return The list of mappings for this object.
      */
     public List<ObjectInfMapping> getMappings()
@@ -305,24 +307,26 @@ public class ObjectInf
 
     /**
      * The list of mappings for this object.
-     * 
+     *
      * @param mappings The list of mappings for this object.
      */
     public void setMappings(List<ObjectInfMapping> mappings)
     {
         this.mappings = mappings;
     }
-    
+
     /**
-     * 
-     * @param propName
-     * @return 
+     * Finds the given property in this object.
+     *
+     * @param propName The name of the property.
+     *
+     * @return The property found, or null if it does not exsits.
      */
     public PropertyInf findProperty(String propName)
     {
         for (PropertyInf property : getProperties())
         {
-            if(property.getName().equals(propName))
+            if (property.getName().equals(propName))
             {
                 return property;
             }
@@ -331,38 +335,54 @@ public class ObjectInf
     }
 
     /**
-     * 
-     * @param propName
-     * @return 
+     * Determines if the given property is a list.
+     *
+     * @param propName The property name.
+     *
+     * @return true the property is a list, false otherwise.
      */
     public boolean isList(String propName)
     {
         PropertyInf prop = findProperty(propName);
-        if(prop != null) return prop.getIsList();
+        if (prop != null)
+        {
+            return prop.getIsList();
+        }
         return false;
     }
 
     /**
-     * 
-     * @param propName
-     * @return 
+     * Determines if the given property is an object.
+     *
+     * @param propName The property name.
+     *
+     * @return true the property is a list, false otherwise.
      */
     public boolean isObject(String propName)
     {
         PropertyInf prop = findProperty(propName);
-        if(prop != null) return model.isObject(prop.getType());
+        if (prop != null)
+        {
+            return model.isObject(prop.getType());
+        }
         return false;
     }
 
     /**
-     * 
-     * @param propName
-     * @return 
+     * Finds the object information of a property by the property name.
+     *
+     * @param propName The property name.
+     *
+     * @return The object information of the property, or null if the property is not found.
      */
     public ObjectInf findObject(String propName)
     {
         PropertyInf prop = findProperty(propName);
-        if(prop != null) return model.findObject(prop.getType());
+        if (prop != null)
+        {
+            return model.findObject(prop.getType());
+        }
         return null;
     }
+
 }
