@@ -17,6 +17,7 @@
 package org.bridje.sql.impl;
 
 import org.bridje.sql.ArithmeticExpr;
+import org.bridje.sql.ArrayExpr;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.DateExpr;
 import org.bridje.sql.Expression;
@@ -33,7 +34,7 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         this.sqlType = sqlType;
     }
-    
+
     @Override
     public SQLType<T, E> getSQLType()
     {
@@ -94,6 +95,18 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
         return new BinaryExpr<>(this, Operators.NE, operand, SQLType.BOOLEAN);
     }
 
+    @Override
+    public BooleanExpr<Boolean, Boolean> isNull()
+    {
+        return new IsNullExpr(this, SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> in(ArrayExpr<T, E> array)
+    {
+        return new BinaryExpr<>(this, Operators.IN, array, SQLType.BOOLEAN);
+    }
+    
     @Override
     public StringExpr<T, E> trim()
     {
@@ -165,7 +178,6 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         return new BinaryExpr<>(this, Operators.MOD, new LiteralImpl<>(operand, getSQLType()), getSQLType());
     }
-
 
     @Override
     public BooleanExpr<Boolean, Boolean> gt(ArithmeticExpr<T, E> operand)

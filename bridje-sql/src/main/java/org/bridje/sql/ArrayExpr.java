@@ -14,35 +14,15 @@
  * limitations under the License.
  */
 
-package org.bridje.sql.impl;
+package org.bridje.sql;
 
-enum Operators
+/**
+ * An array of elements SQL expression.
+ *
+ * @param <T> The final java type of the expression.
+ * @param <E> The result set read java type of the expression.
+ */
+public interface ArrayExpr<T, E> extends Expression<T, E>
 {
-    EQ("="),
-    NE("<>"),
-    LE("<="),
-    LT("<"),
-    GE(">="),
-    GT(">"),
-    PLUS("+"),
-    MINUS("-"),
-    MULT("*"),
-    DIV("/"),
-    MOD("%"),
-    AND("AND"),
-    OR("OR"),
-    NOT("NOT"),
-    IN("IN");
-
-    private final String sql;
-
-    private Operators(String sql)
-    {
-        this.sql = sql;
-    }
-
-    public String toSQL()
-    {
-        return sql;
-    }
+    Expression<T, E>[] getElements();
 }

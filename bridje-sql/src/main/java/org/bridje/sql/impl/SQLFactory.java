@@ -18,6 +18,7 @@ package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
 import org.bridje.sql.ArithmeticExpr;
+import org.bridje.sql.ArrayExpr;
 import org.bridje.sql.BooleanColumn;
 import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.BuildForeignKeyStep;
@@ -323,5 +324,11 @@ public class SQLFactory
     public Limit limit(int offset, int count)
     {
         return new LimitImpl(offset, count);
+    }
+
+    public <T, E> ArrayExpr<Integer, Integer> array(Expression<T, E>... elements)
+    {
+        if(elements.length == 0) return new ArrayExprImpl(elements, null);
+        return new ArrayExprImpl(elements, elements[0].getSQLType());
     }
 }

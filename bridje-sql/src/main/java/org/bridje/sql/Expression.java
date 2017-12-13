@@ -17,7 +17,8 @@
 package org.bridje.sql;
 
 /**
- * 
+ * An SQL expression.
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
@@ -25,13 +26,13 @@ public interface Expression<T, E> extends SQLWritable
 {
     /**
      * The SQL type for this expression.
-     * 
+     *
      * @return The SQLType for this expression.
      */
     SQLType<T, E> getSQLType();
 
     /**
-     * Creates a new boolean expression that performs the equals comparation of 
+     * Creates a new boolean expression that performs the equals comparation of
      * this expression with the given one.
      *
      * @param operand The second operand.
@@ -41,8 +42,8 @@ public interface Expression<T, E> extends SQLWritable
     BooleanExpr<Boolean, Boolean> eq(Expression<T, E> operand);
 
     /**
-     * Creates a new boolean expression that performs the non equals comparation of 
-     * this expression with the given one.
+     * Creates a new boolean expression that performs the non equals comparation
+     * of this expression with the given one.
      *
      * @param operand The second operand.
      *
@@ -51,27 +52,45 @@ public interface Expression<T, E> extends SQLWritable
     BooleanExpr<Boolean, Boolean> ne(Expression<T, E> operand);
 
     /**
-     * Creates a new boolean expression that performs the equals comparation of 
+     * Creates a new boolean expression that performs the equals comparation of
      * this expression with the given operand.
      *
      * @param operand The second operand.
-     *
+     * 
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> eq(T operand);
 
     /**
-     * Creates a new boolean expression that performs the non equals comparation of 
-     * this expression with the given operand.
+     * Creates a new boolean expression that performs the non equals comparation
+     * of this expression with the given operand.
      *
      * @param operand The second operand.
-     *
+     * 
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> ne(T operand);
 
     /**
-     * Creates a new order by expression that orders for this expression in an 
+     * Creates a new boolean expression that performs the "is null" comparation
+     * for this expression.
+     * 
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> isNull();
+
+    /**
+     * Creates a new boolean expression that performs the "in" search of this
+     * expression with in the given array.
+     *
+     * @param array The array of elements to look for this expression.
+     * 
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> in(ArrayExpr<T, E> array);
+
+    /**
+     * Creates a new order by expression that orders for this expression in an
      * ascending manner.
      * 
      * @return The new order by expression .
@@ -79,10 +98,11 @@ public interface Expression<T, E> extends SQLWritable
     OrderExpr asc();
 
     /**
-     * Creates a new order by expression that orders for this expression in a 
+     * Creates a new order by expression that orders for this expression in a
      * descending manner.
      * 
      * @return The new order by expression .
      */
     OrderExpr desc();
+
 }

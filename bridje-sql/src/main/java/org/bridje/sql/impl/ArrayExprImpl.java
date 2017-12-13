@@ -16,33 +16,32 @@
 
 package org.bridje.sql.impl;
 
-enum Operators
+import org.bridje.sql.ArrayExpr;
+import org.bridje.sql.Expression;
+import org.bridje.sql.SQLBuilder;
+import org.bridje.sql.SQLType;
+
+class ArrayExprImpl<T, E> extends ExpressionBase<T, E> implements ArrayExpr<T, E>
 {
-    EQ("="),
-    NE("<>"),
-    LE("<="),
-    LT("<"),
-    GE(">="),
-    GT(">"),
-    PLUS("+"),
-    MINUS("-"),
-    MULT("*"),
-    DIV("/"),
-    MOD("%"),
-    AND("AND"),
-    OR("OR"),
-    NOT("NOT"),
-    IN("IN");
+    private final Expression<T, E>[] elements;
 
-    private final String sql;
-
-    private Operators(String sql)
+    public ArrayExprImpl(Expression<T, E>[] elements, SQLType<T, E> type)
     {
-        this.sql = sql;
+        super(type);
+        this.elements = elements;
     }
 
-    public String toSQL()
+    @Override
+    public void writeSQL(SQLBuilder builder)
     {
-        return sql;
+        builder.append('(');
+        builder.appendAll(elements, ", ");
+        builder.append(')');
+    }
+
+    @Override
+    public Expression<T, E>[] getElements()
+    {
+        return elements;
     }
 }

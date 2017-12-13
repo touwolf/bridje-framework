@@ -20,20 +20,22 @@ import java.sql.JDBCType;
 import org.bridje.sql.impl.SQLFactory;
 
 /**
- * 
+ * This class provides an starting point to create SQL objects and queries.
  */
 public class SQL
 {
     private static final SQLFactory FACT = SQLFactory.getInstance();
 
     /**
-     * 
-     * @param <T>
-     * @param javaType
-     * @param jdbcType
-     * @param length
-     * @param precision
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>       The java type for the new SQL type.
+     * @param javaType  The java class for the new SQL type.
+     * @param jdbcType  The JDBC type for the new SQL type.
+     * @param length    The length for strings and numeric types.
+     * @param precision The precision for numeric types.
+     *
+     * @return The new create SQL type.
      */
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length, int precision)
     {
@@ -41,12 +43,14 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param javaType
-     * @param jdbcType
-     * @param length
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>      The java type for the new SQL type.
+     * @param javaType The java class for the new SQL type.
+     * @param jdbcType The JDBC type for the new SQL type.
+     * @param length   The length for strings and numeric types.
+     *
+     * @return The new create SQL type.
      */
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType, int length)
     {
@@ -54,11 +58,13 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param javaType
-     * @param jdbcType
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>      The java type for the new SQL type.
+     * @param javaType The java class for the new SQL type.
+     * @param jdbcType The JDBC type for the new SQL type.
+     *
+     * @return The new create SQL type.
      */
     public static final <T> SQLType<T, T> buildType(Class<T> javaType, JDBCType jdbcType)
     {
@@ -66,17 +72,21 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param javaType
-     * @param javaReadType
-     * @param jdbcType
-     * @param length
-     * @param precision
-     * @param parser
-     * @param writer
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>          The final java type of the expression.
+     * @param <E>          The ResultSet read java type of the expression.
+     * @param javaType     The java class for the new SQL type.
+     * @param javaReadType The read java class for the new SQL type.
+     * @param jdbcType     The JDBC type for the new SQL type.
+     * @param length       The length for strings and numeric types.
+     * @param precision    The precision for numeric types.
+     * @param parser       The object that will parse the values from the
+     *                     database for the new SQL type.
+     * @param writer       The object that will write the values to the database
+     *                     for the new SQL type.
+     *
+     * @return The new create SQL type.
      */
     public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, int precision, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
@@ -84,16 +94,20 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param javaType
-     * @param javaReadType
-     * @param jdbcType
-     * @param length
-     * @param parser
-     * @param writer
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>          The final java type of the expression.
+     * @param <E>          The ResultSet read java type of the expression.
+     * @param javaType     The java class for the new SQL type.
+     * @param javaReadType The read java class for the new SQL type.
+     * @param jdbcType     The JDBC type for the new SQL type.
+     * @param length       The length for strings and numeric types.
+     * @param parser       The object that will parse the values from the
+     *                     database for the new SQL type.
+     * @param writer       The object that will write the values to the database
+     *                     for the new SQL type.
+     *
+     * @return The new create SQL type.
      */
     public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, int length, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
@@ -101,15 +115,19 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param javaType
-     * @param javaReadType
-     * @param jdbcType
-     * @param parser
-     * @param writer
-     * @return 
+     * Builds a new SQL type.
+     *
+     * @param <T>          The final java type of the expression.
+     * @param <E>          The ResultSet read java type of the expression.
+     * @param javaType     The java class for the new SQL type.
+     * @param javaReadType The read java class for the new SQL type.
+     * @param jdbcType     The JDBC type for the new SQL type.
+     * @param parser       The object that will parse the values from the
+     *                     database for the new SQL type.
+     * @param writer       The object that will write the values to the database
+     *                     for the new SQL type.
+     *
+     * @return The new create SQL type.
      */
     public static final <T, E> SQLType<T, E> buildType(Class<T> javaType, Class<E> javaReadType, JDBCType jdbcType, SQLValueParser<T, E> parser, SQLValueWriter<E, T> writer)
     {
@@ -117,19 +135,25 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @return 
+     * Creates a new database schema builder, that can be use to collect all the
+     * data for the new schema.
+     *
+     * @param name The name of the schema.
+     *
+     * @return A builder that can collect the data for the schema.
      */
     public static final BuildSchemaStep buildSchema(String name)
     {
         return FACT.buildSchema(name);
     }
-    
+
     /**
-     * 
-     * @param name
-     * @return 
+     * Creates a new SQL table builder, that can be use to collect all the data
+     * for the new table.
+     *
+     * @param name The name of the table.
+     *
+     * @return A builder that can collect the data for the table.
      */
     public static final BuildTableStep buildTable(String name)
     {
@@ -137,28 +161,32 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @param defValue
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
      */
     public static final <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return FACT.buildColumn(name, type, allowNull, defValue);
     }
-    
+
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     *
+     * @return The new created column.
      */
     public static final <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean allowNull)
     {
@@ -166,14 +194,16 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @param defValue
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
      */
     public static final <T, E> NumberColumn<T, E> buildNumberColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
@@ -181,14 +211,16 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @param defValue
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
      */
     public static final <T, E> DateColumn<T, E> buildDateColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
@@ -196,14 +228,16 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @param defValue
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
      */
     public static final <T, E> StringColumn<T, E> buildStringColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
@@ -211,14 +245,16 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param name
-     * @param type
-     * @param allowNull
-     * @param defValue
-     * @return 
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
      */
     public static final <T, E> BooleanColumn<T, E> buildBooleanColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
@@ -226,11 +262,13 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @param table
-     * @param columns
-     * @return 
+     * Create a new index.
+     *
+     * @param name    The name of the index.
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The new created index.
      */
     public static final Index buildIndex(String name, Table table, Column<?, ?>... columns)
     {
@@ -238,10 +276,12 @@ public class SQL
     }
 
     /**
-     * 
-     * @param table
-     * @param columns
-     * @return 
+     * Create a new index.
+     *
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The new created index.
      */
     public static final Index buildIndex(Table table, Column<?, ?>... columns)
     {
@@ -249,11 +289,13 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @param table
-     * @param columns
-     * @return 
+     * Create a new unique index.
+     *
+     * @param name    The name of the index.
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The new created unique index.
      */
     public static final Index buildUnique(String name, Table table, Column<?, ?>... columns)
     {
@@ -261,10 +303,12 @@ public class SQL
     }
 
     /**
-     * 
-     * @param table
-     * @param columns
-     * @return 
+     * Create a new unique index.
+     *
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The new created unique index.
      */
     public static final Index buildUnique(Table table, Column<?, ?>... columns)
     {
@@ -272,11 +316,13 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @param table
-     * @param columns
-     * @return 
+     * Creates a new builder that can be use to create a foreign key.
+     *
+     * @param name    The name for the foreign key.
+     * @param table   The table that the fk belongs to.
+     * @param columns The columns for the foreign key.
+     *
+     * @return The new created builder.
      */
     public static final BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?, ?>... columns)
     {
@@ -284,21 +330,25 @@ public class SQL
     }
 
     /**
-     * 
-     * @param table
-     * @param columns
-     * @return 
+     * Creates a new builder that can be use to create a foreign key.
+     *
+     * @param table   The table that the fk belongs to.
+     * @param columns The columns for the foreign key.
+     *
+     * @return The new created builder.
      */
     public static final BuildForeignKeyStep buildForeignKey(Table table, Column<?, ?>... columns)
     {
         return FACT.buildForeignKey(table, columns);
     }
-    
+
     /**
-     * 
-     * @param name
-     * @param columns
-     * @return 
+     * Create a new index.
+     *
+     * @param name    The name of the index.
+     * @param columns The columns for the index.
+     *
+     * @return The new created index.
      */
     public static final Index buildIndex(String name, Column<?, ?>... columns)
     {
@@ -306,9 +356,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param columns
-     * @return 
+     * Create a new index.
+     *
+     * @param columns The columns for the index.
+     *
+     * @return The new created index.
      */
     public static final Index buildIndex(Column<?, ?>... columns)
     {
@@ -316,10 +368,12 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @param columns
-     * @return 
+     * Create a new unique index.
+     *
+     * @param name    The name of the index.
+     * @param columns The columns for the index.
+     *
+     * @return The new created unique index.
      */
     public static final Index buildUnique(String name, Column<?, ?>... columns)
     {
@@ -327,9 +381,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param columns
-     * @return 
+     * Create a new unique index.
+     *
+     * @param columns The columns for the index.
+     *
+     * @return The new created unique index.
      */
     public static final Index buildUnique(Column<?, ?>... columns)
     {
@@ -337,10 +393,12 @@ public class SQL
     }
 
     /**
-     * 
-     * @param name
-     * @param columns
-     * @return 
+     * Creates a new builder that can be use to create a foreign key.
+     *
+     * @param name    The name for the foreign key.
+     * @param columns The columns for the foreign key.
+     *
+     * @return The new created builder.
      */
     public static final BuildForeignKeyStep buildForeignKey(String name, Column<?, ?>... columns)
     {
@@ -348,9 +406,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param columns
-     * @return 
+     * Creates a new builder that can be use to create a foreign key.
+     *
+     * @param columns The columns for the foreign key.
+     *
+     * @return The new created builder.
      */
     public static final BuildForeignKeyStep buildForeignKey(Column<?, ?>... columns)
     {
@@ -358,9 +418,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param columns
-     * @return 
+     * Creates a new "select" SQL query.
+     *
+     * @param columns The columns for the select.
+     *
+     * @return The next step in the select query builder.
      */
     public static final SelectStep select(Expression<?, ?>... columns)
     {
@@ -368,9 +430,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param table
-     * @return 
+     * Creates a new "insert" SQL query.
+     *
+     * @param table The table to insert to.
+     *
+     * @return The next step in the insert query builder.
      */
     public static final InsertIntoStep insertInto(Table table)
     {
@@ -378,9 +442,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param table
-     * @return 
+     * Creates a new "update" SQL query.
+     *
+     * @param table The table to update.
+     *
+     * @return The next step in the update query builder.
      */
     public static final UpdateStep update(Table table)
     {
@@ -388,9 +454,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param tables
-     * @return 
+     * Creates a new "delete" SQL query.
+     *
+     * @param tables The tables to delete.
+     *
+     * @return The next step in the delete query builder.
      */
     public static final DeleteStep delete(Table... tables)
     {
@@ -398,9 +466,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Number, Number> val(Number value)
     {
@@ -408,9 +478,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Byte, Byte> val(byte value)
     {
@@ -418,9 +490,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Byte, Byte> val(Byte value)
     {
@@ -428,9 +502,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Short, Short> val(short value)
     {
@@ -438,9 +514,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Short, Short> val(Short value)
     {
@@ -448,9 +526,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Integer, Integer> val(int value)
     {
@@ -458,9 +538,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Integer, Integer> val(Integer value)
     {
@@ -468,9 +550,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Long, Long> val(long value)
     {
@@ -478,19 +562,23 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Long, Long> val(Long value)
     {
         return FACT.val(value);
     }
-    
+
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Float, Float> val(float value)
     {
@@ -498,9 +586,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Float, Float> val(Float value)
     {
@@ -508,9 +598,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Double, Double> val(double value)
     {
@@ -518,9 +610,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final ArithmeticExpr<Double, Double> val(Double value)
     {
@@ -528,9 +622,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final StringExpr<String, String> val(String value)
     {
@@ -538,9 +634,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final BooleanExpr<Boolean, Boolean> val(Boolean value)
     {
@@ -548,9 +646,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final BooleanExpr<Boolean, Boolean> val(boolean value)
     {
@@ -558,9 +658,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final Expression<Character, Character> val(char value)
     {
@@ -568,9 +670,11 @@ public class SQL
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final Expression<Character, Character> val(Character value)
     {
@@ -578,11 +682,13 @@ public class SQL
     }
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param value
-     * @return 
+     * Creates a new literal.
+     *
+     * @param <T>   The final java type of the expression.
+     * @param <E>   The ResultSet read java type of the expression.
+     * @param value The value for the literal.
+     *
+     * @return The new created literal.
      */
     public static final <T, E> ArithmeticExpr<T, E> number(T value)
     {
@@ -590,10 +696,12 @@ public class SQL
     }
 
     /**
+     * Creates a new literal.
      * 
-     * @param <T>
-     * @param value
-     * @return 
+     * @param <T>   The final java type of the expression.
+     * @param value The value for the literal.
+     * 
+     * @return The new created literal.
      */
     public static final <T> BooleanExpr<T, T> bool(T value)
     {
@@ -601,10 +709,12 @@ public class SQL
     }
 
     /**
+     * Creates a new literal.
      * 
-     * @param <T>
-     * @param value
-     * @return 
+     * @param <T>   The final java type of the expression.
+     * @param value The value for the literal.
+     * 
+     * @return The new created literal.
      */
     public static final <T> StringExpr<T, T> str(T value)
     {
@@ -612,10 +722,12 @@ public class SQL
     }
 
     /**
+     * Creates a new literal.
      * 
-     * @param <T>
-     * @param value
-     * @return 
+     * @param <T>   The final java type of the expression.
+     * @param value The value for the literal.
+     * 
+     * @return The new created literal.
      */
     public static final <T> Expression<T, T> custom(T value)
     {
@@ -623,11 +735,13 @@ public class SQL
     }
 
     /**
+     * Creates a new param.
      * 
-     * @param <T>
-     * @param <E>
-     * @param type
-     * @return 
+     * @param <T>  The final java type of the expression.
+     * @param <E>  The ResultSet read java type of the expression.
+     * @param type The type for the param.
+     * 
+     * @return The new created param.
      */
     public static final <T, E> Expression<T, E> param(SQLType<T, E> type)
     {
@@ -635,8 +749,9 @@ public class SQL
     }
 
     /**
+     * Creates a new count all expression.
      * 
-     * @return 
+     * @return The new created expression.
      */
     public static final ArithmeticExpr<Integer, Integer> count()
     {
@@ -644,10 +759,26 @@ public class SQL
     }
 
     /**
+     * Creates a new array of elements.
      * 
-     * @param offset
-     * @param count
-     * @return 
+     * @param <T>  The final java type of the expression.
+     * @param <E>  The ResultSet read java type of the expression.
+     * @param elements The elements for the array.
+     * 
+     * @return The new created array.
+     */
+    public static final <T, E> ArrayExpr<Integer, Integer> array(Expression<T, E>... elements)
+    {
+        return FACT.array(elements);
+    }
+
+    /**
+     * Creates a new limit expression.
+     * 
+     * @param offset The offset for the limit expression.
+     * @param count The count for the limit expression.
+     * 
+     * @return The new created limit expression.
      */
     public static final Limit limit(int offset, int count)
     {
