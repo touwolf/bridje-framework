@@ -200,6 +200,7 @@ public abstract class Control
     /**
      * Finds a control recursively by id.
      * 
+     * @param <T> The result type for the callback.
      * @param env The EL environment.
      * @param id The control id.
      * @param callback The callback when the control is found.
@@ -250,6 +251,7 @@ public abstract class Control
     /**
      * Finds a control recursively by id.
      * 
+     * @param <T> The result type for the callback.
      * @param env The EL environment.
      * @param id The control id.
      * @param callback The callback when the control is found.

@@ -72,27 +72,27 @@ public class BaseControlDef
 
     @XmlElementWrapper(name = "resources")
     @XmlElements(
-    {
-        @XmlElement(name = "resource", type = ResourceRef.class)
-    })
+            {
+                @XmlElement(name = "resource", type = ResourceRef.class)
+            })
     private List<ResourceRef> resources;
 
     @XmlElementWrapper(name = "ftlMacros")
     @XmlElements(
-    {
-        @XmlElement(name = "ftlMacro", type = ControlFtlMacro.class)
-    })
+            {
+                @XmlElement(name = "ftlMacro", type = ControlFtlMacro.class)
+            })
     private List<ControlFtlMacro> macros;
-    
+
     @XmlTransient
     private List<FieldDef> allFields;
-    
+
     @XmlTransient
     private List<ResourceRef> allResources;
 
     @XmlTransient
     private List<ControlFtlMacro> allMacros;
-    
+
     @XmlTransient
     private UISuiteBase uiSuite;
 
@@ -118,18 +118,22 @@ public class BaseControlDef
 
     /**
      * The base template for this control.
-     * 
+     *
      * @return The template to be use by this control.
      */
     public List<String> getTemplatesNames()
     {
-        if(templates == null || templates.trim().isEmpty()) return Collections.EMPTY_LIST; 
+        if (templates == null || templates.trim().isEmpty())
+        {
+            return Collections.EMPTY_LIST;
+        }
         return Arrays.asList(templates.trim().split(" "));
     }
 
     /**
-     * Gets the list of declared resources for this control. (only the declared ones).
-     * 
+     * Gets the list of declared resources for this control. (only the declared
+     * ones).
+     *
      * @return The list of declard resources for this control.
      */
     public List<ResourceRef> getDeclaredResources()
@@ -138,56 +142,73 @@ public class BaseControlDef
     }
 
     /**
-     * Gets the list of declared fields for this control. (only the declared ones).
-     * 
+     * Gets the list of declared fields for this control. (only the declared
+     * ones).
+     *
      * @return The list of declard fields for this control.
      */
     public List<FieldDef> getDeclaredFields()
     {
         return fields;
     }
-    
+
     /**
      * The list of fields that this control will support.
-     * 
+     *
      * @return The list of fields that this control will support.
      */
     public List<FieldDef> getFields()
     {
-        if(allFields == null)
+        if (allFields == null)
         {
             allFields = new ArrayList<>();
             List<TemplateControlDef> tmpls = getTemplates();
             tmpls.forEach(t -> t.getFields().forEach(this::overrideField));
-            if(fields != null) fields.forEach(this::overrideField);
+            if (fields != null)
+            {
+                fields.forEach(this::overrideField);
+            }
         }
         return allFields;
     }
 
+    /**
+     * The actual declared macros in this control.
+     *
+     * @return The actual declared macros in this control.
+     */
     public List<ControlFtlMacro> getDeclaredMacros()
     {
         return macros;
     }
 
+    /**
+     * The actual declared macros in this control.
+     *
+     * @param macros The actual declared macros in this control.
+     */
     public void setDeclaredMacros(List<ControlFtlMacro> macros)
     {
         this.macros = macros;
         allMacros = null;
     }
-    
+
     /**
      * Gets the macros asociated with this control.
-     * 
+     *
      * @return The list of macros asociated with this control.
      */
     public List<ControlFtlMacro> getMacros()
     {
-        if(allMacros == null)
+        if (allMacros == null)
         {
-            Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
+            Map<String, ControlFtlMacro> macrosMap = new LinkedHashMap<>();
             List<TemplateControlDef> tmpls = getTemplates();
             tmpls.stream().forEach(t -> t.getMacros().forEach(r -> macrosMap.put(r.getName(), r)));
-            if(macros != null) macros.forEach(r -> macrosMap.put(r.getName(), r));
+            if (macros != null)
+            {
+                macros.forEach(r -> macrosMap.put(r.getName(), r));
+            }
             allMacros = new ArrayList<>();
             macrosMap.forEach((k, v) -> allMacros.add(v));
         }
@@ -195,21 +216,22 @@ public class BaseControlDef
     }
 
     /**
-     * Overrides some of the data of this control with the data of the given control.
-     * 
+     * Overrides some of the data of this control with the data of the given
+     * control.
+     *
      * @param control The control to override this control with.
      */
     public void override(BaseControlDef control)
     {
         control.getFields().forEach(this::overrideField);
 
-        Map<String,ControlFtlMacro> macrosMap = new LinkedHashMap<>();
+        Map<String, ControlFtlMacro> macrosMap = new LinkedHashMap<>();
         control.getMacros().forEach(r -> macrosMap.put(r.getName(), r));
         getMacros().forEach(r -> macrosMap.put(r.getName(), r));
         allMacros = new ArrayList<>();
         macrosMap.forEach((k, v) -> allMacros.add(v));
 
-        Map<String,ResourceRef> resourcesMap = new LinkedHashMap<>();
+        Map<String, ResourceRef> resourcesMap = new LinkedHashMap<>();
         control.getResources().forEach(r -> resourcesMap.put(r.getName(), r));
         getResources().forEach(r -> resourcesMap.put(r.getName(), r));
         allResources = new ArrayList<>();
@@ -220,35 +242,38 @@ public class BaseControlDef
     private void overrideField(FieldDef field)
     {
         FieldDef baseField = getFields().stream()
-                                    .filter(f -> f.getName().equals(field.getName()))
-                                    .findFirst()
-                                    .orElse(null);
+                .filter(f -> f.getName().equals(field.getName()))
+                .findFirst()
+                .orElse(null);
         FieldDef fieldToAdd = field;
-        if(baseField != null)
+        if (baseField != null)
         {
             allFields.remove(baseField);
-            if(field instanceof ChildrenField 
+            if (field instanceof ChildrenField
                     && baseField instanceof ChildrenField)
             {
-                fieldToAdd = ((ChildrenField)field).merge((ChildrenField)baseField);
+                fieldToAdd = ((ChildrenField) field).merge((ChildrenField) baseField);
             }
         }
         allFields.add(fieldToAdd);
     }
-    
+
     /**
      * The resources this control needs.
-     * 
+     *
      * @return The resources this control needs.
      */
     public List<ResourceRef> getResources()
     {
-        if(allResources == null)
+        if (allResources == null)
         {
-            Map<String,ResourceRef> resourcesMap = new LinkedHashMap<>();
+            Map<String, ResourceRef> resourcesMap = new LinkedHashMap<>();
             List<TemplateControlDef> tmpls = getTemplates();
             tmpls.stream().forEach(t -> t.getResources().forEach(r -> resourcesMap.put(r.getName(), r)));
-            if(resources != null) resources.forEach(r -> resourcesMap.put(r.getName(), r));
+            if (resources != null)
+            {
+                resources.forEach(r -> resourcesMap.put(r.getName(), r));
+            }
             allResources = new ArrayList<>();
             resourcesMap.forEach((k, v) -> allResources.add(v));
             allResources.forEach(r -> r.setUiSuite(uiSuite));
@@ -258,7 +283,7 @@ public class BaseControlDef
 
     /**
      * The full name of the java class for this control.
-     * 
+     *
      * @return The full name of the java class for this control.
      */
     public String getFullName()
@@ -268,13 +293,13 @@ public class BaseControlDef
 
     /**
      * This method is called by JAXB after the unmarshal has happend.
-     * 
-     * @param u The unmarshaller.
+     *
+     * @param u      The unmarshaller.
      * @param parent The parent.
      */
     public void afterUnmarshal(Unmarshaller u, Object parent)
     {
-        if(parent instanceof UISuite)
+        if (parent instanceof UISuite)
         {
             uiSuite = (UISuite) parent;
         }
@@ -282,7 +307,7 @@ public class BaseControlDef
 
     /**
      * Gets the parent UISuite object.
-     * 
+     *
      * @return The parent UISuite object.
      */
     public UISuiteBase getUISuite()
@@ -292,29 +317,35 @@ public class BaseControlDef
 
     /**
      * Sets the parent UISuite object.
-     * 
+     *
      * @param uiSuite The parent UISuite object.
      */
     void setUiSuite(UISuiteBase uiSuite)
     {
-        if(resources != null) resources.stream().forEach(r -> r.setUiSuite(uiSuite));
+        if (resources != null)
+        {
+            resources.stream().forEach(r -> r.setUiSuite(uiSuite));
+        }
         this.uiSuite = uiSuite;
     }
 
     /**
      * The java class package for this control. This is taken from the UISuite.
-     * 
+     *
      * @return The java class package for this control.
      */
     public String getPackage()
     {
-        if(uiSuite instanceof UISuite) return ((UISuite)uiSuite).getPackage();
+        if (uiSuite instanceof UISuite)
+        {
+            return ((UISuite) uiSuite).getPackage();
+        }
         return null;
     }
 
     /**
      * If this control has any children.
-     * 
+     *
      * @return true the control has childrens, false otherwise.
      */
     public boolean getHasChildren()
@@ -324,7 +355,7 @@ public class BaseControlDef
 
     /**
      * If the control has inputs.
-     * 
+     *
      * @return true the control has inputs, false otherwise.
      */
     public boolean getHasInputs()
@@ -334,7 +365,7 @@ public class BaseControlDef
 
     /**
      * If the control has inputs.
-     * 
+     *
      * @return true the control has inputs, false otherwise.
      */
     public boolean getHasInputFiles()
@@ -344,7 +375,7 @@ public class BaseControlDef
 
     /**
      * If the control has any event.
-     * 
+     *
      * @return true the control has events, false otherwise.
      */
     public boolean getHasEvents()
@@ -354,7 +385,7 @@ public class BaseControlDef
 
     /**
      * If the control has resources.
-     * 
+     *
      * @return true the control has resources, false otherwise.
      */
     public boolean getHasResources()
@@ -364,21 +395,22 @@ public class BaseControlDef
 
     /**
      * Finds the base template for this control.
-     * 
+     *
      * @return The base template for this control.
      */
     public List<TemplateControlDef> getTemplates()
     {
         List<String> names = getTemplatesNames();
         return uiSuite.getTemplates()
-                    .stream()
-                    .filter(p -> names.contains(p.getName()))
-                    .collect(Collectors.toList());
+                .stream()
+                .filter(p -> names.contains(p.getName()))
+                .collect(Collectors.toList());
     }
-    
+
     /**
-     * 
-     * @param templates 
+     * Sets the list of templates this control extends from.
+     *
+     * @param templates The list of templates this controls extends from.
      */
     public void setTemplates(List<TemplateControlDef> templates)
     {
@@ -393,12 +425,14 @@ public class BaseControlDef
 
     /**
      * Finds the field with the given name.
-     * 
+     *
      * @param fieldName The name of the field.
+     *
      * @return Returns the field finded or null is it does not exists.
      */
     public FieldDef findField(String fieldName)
     {
         return getFields().stream().filter(f -> f.getName().equals(fieldName)).findFirst().orElse(null);
     }
+
 }

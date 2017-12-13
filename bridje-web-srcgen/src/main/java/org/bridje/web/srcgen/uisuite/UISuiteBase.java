@@ -271,9 +271,9 @@ public class UISuiteBase
     }
 
     /**
+     * The suites that this suite includes.
      * 
-     * 
-     * @return 
+     * @return The suites that this suite includes.
      */
     public List<String> getIncludes()
     {
@@ -281,9 +281,9 @@ public class UISuiteBase
     }
 
     /**
+     * The suites that this suite includes.
      * 
-     * 
-     * @param includes 
+     * @param includes The suites that this suite includes.
      */
     public void setIncludes(List<String> includes)
     {

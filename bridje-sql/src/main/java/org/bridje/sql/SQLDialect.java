@@ -20,94 +20,115 @@ import java.sql.Connection;
 import java.util.List;
 
 /**
- * 
+ * Represents an SQL dialect for any especific RDBM or version.
  */
 public interface SQLDialect
 {
     /**
-     * 
-     * @param connection
-     * @return 
+     * Determines if this dialect can handle the given connection.
+     *
+     * @param connection The connection to test.
+     *
+     * @return true if this dialect can handle the connection, false otherwise.
      */
     boolean canHandle(Connection connection);
 
     /**
-     * 
-     * @param builder
-     * @param name 
+     * Writes the name of the object with this dialect rules for names.
+     *
+     * @param builder The string builder for the query.
+     * @param name    The name to write.
      */
     void writeObjectName(StringBuilder builder, String name);
 
     /**
-     * 
-     * @param builder
-     * @param offset
-     * @param count 
+     * Writes a limit statement.
+     *
+     * @param builder The string builder for the query.
+     * @param offset  The offset for the limit.
+     * @param count   The quantity of records to return.
      */
     void writeLimit(StringBuilder builder, int offset, int count);
 
     /**
-     * 
-     * @param table
-     * @param params
-     * @return 
+     * Creates the given table DDLs.
+     *
+     * @param table  The table to create.
+     * @param params The params
+     *
+     * @return The DDL statement.
      */
     String createTable(Table table, List<Object> params);
 
     /**
+     * Creates the given column add DDLs.
      * 
-     * @param column
-     * @param params
-     * @return 
+     * @param column The column to add.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String addColumn(Column<?, ?> column, List<Object> params);
 
     /**
-     * 
-     * @param column
-     * @param params
-     * @return 
+     * Creates the given column drop DDLs.
+     *
+     * @param column The colum to drop.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String dropColumn(Column<?, ?> column, List<Object> params);
 
     /**
+     * Creates the given column change DDLs.
+     *
+     * @param oldName The old name of the column.
+     * @param column The colum to change.
+     * @param params The list of parameters.
      * 
-     * @param oldName
-     * @param column
-     * @param params
-     * @return 
+     * @return The DDL statement.
      */
     String changeColumn(String oldName, Column<?, ?> column, List<Object> params);
 
     /**
-     * 
-     * @param index
-     * @param params
-     * @return 
+     * Creates the given index DDLs.
+     *
+     * @param index The index to create.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String createIndex(Index index, List<Object> params);
 
     /**
-     * 
-     * @param index
-     * @param params
-     * @return 
+     * Creates the given index drop DDLs.
+     *
+     * @param index The index to drop.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String dropIndex(Index index, List<Object> params);
 
     /**
-     * 
-     * @param fk
-     * @param params
-     * @return 
+     * Creates the given foreign key DDLs.
+     *
+     * @param fk The foreign key to create.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String createForeignKey(ForeignKey fk, List<Object> params);
 
     /**
-     * 
-     * @param fk
-     * @param params
-     * @return 
+     * Creates the given foreign key drop DDLs.
+     *
+     * @param fk The foreign key to drop.
+     * @param params The list of parameters.
+     *
+     * @return The DDL statement.
      */
     String dropForeignKey(ForeignKey fk, List<Object> params);
+
 }

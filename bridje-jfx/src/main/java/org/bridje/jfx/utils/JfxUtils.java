@@ -76,9 +76,10 @@ public class JfxUtils
     }
 
     /**
+     * Creates a clone of the given ImageView item.
      * 
-     * @param icon
-     * @return 
+     * @param icon The image to clone.
+     * @return The new cloned image.
      */
     public static ImageView copyImageView(ImageView icon)
     {
