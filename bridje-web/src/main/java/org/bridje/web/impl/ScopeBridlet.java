@@ -43,25 +43,15 @@ class ScopeBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        WebScope scope = new WebScope(context);
-        IocContext<WebScope> wrsCtx = appCtx.createChild(scope);
-        context.set(WebScope.class, scope);
-        context.set(IocContext.class, wrsCtx);
+        IocContext<WebScope> wrsCtx = appCtx.createChild(new WebScope(context));
+        context.set(WebScope.class, wrsCtx.getScope());
         return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
         {
             @Override
             public Boolean execute() throws IOException, HttpException
             {
-                return Thls.doAsEx2(new ThlsActionException2<Boolean, IOException, HttpException>()
-                {
-                    @Override
-                    public Boolean execute() throws IOException, HttpException
-                    {
-                        return nextHandler.handle(context);
-                    }
-                }, WebScope.class, scope );
+                return nextHandler.handle(context);
             }
-
-        }, IocContext.class, wrsCtx );
+        }, WebScope.class, wrsCtx.getScope() );
     }
 }

@@ -48,7 +48,7 @@ public final class WebScope implements Scope
     private final HttpBridletContext srvCtx;
 
     private WebSession session;
-    
+
     private Map<String,String> stateMap;
 
     /**

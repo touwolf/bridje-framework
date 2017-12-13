@@ -27,7 +27,6 @@ import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Priority;
 import org.bridje.web.WebScope;
 
@@ -47,20 +46,17 @@ class WebSessionBridlet implements HttpBridlet
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        IocContext<WebScope> ctx = context.get(IocContext.class);
-        String sessionId = findSessionId(ctx.getScope());
+        WebScope scope = context.get(WebScope.class);
+        String sessionId = findSessionId(scope);
         WebSessionImpl webSess = new WebSessionImpl(sessionId, sessionProvider);
         context.set(WebSession.class, webSess);
-        if(nextHandler == null)
-        {
-            return false;
-        }
-        WebSessionListener listener = ctx.find(WebSessionListener.class);
+        if(nextHandler == null) return false;
+        WebSessionListener listener = scope.getIocContext().find(WebSessionListener.class);
         if(nextHandler.handle(context))
         {
             listener.getInjectedClasses().forEach((Class<?> cls, Set<Field> fields) ->
             {
-                sessionManager.storeValue(ctx, cls, ctx.find(cls), webSess);
+                sessionManager.storeValue(scope.getIocContext(), cls, scope.getIocContext().find(cls), webSess);
             });
             return true;
         }

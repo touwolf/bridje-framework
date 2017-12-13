@@ -49,24 +49,15 @@ class ControllerBridlet implements HttpBridlet
 
     @InjectNext
     private HttpBridlet next;
-    
+
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
-        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
-        if(methodsData == null)
-        {
-            initMethods(wrsCtx);
-        }
-        Object result = invokeMethod(wrsCtx, ReqPathRef.findCurrentPath(context));
-        if(result != null)
-        {
-            context.set((Class)result.getClass(), result);
-        }
-        if(next != null)
-        {
-            return next.handle(context);
-        }
+        WebScope wrsCtx = context.get(WebScope.class);
+        if(methodsData == null) initMethods(wrsCtx.getIocContext());
+        Object result = invokeMethod(wrsCtx.getIocContext(), ReqPathRef.findCurrentPath(context));
+        if(result != null) context.set((Class)result.getClass(), result);
+        if(next != null) return next.handle(context);
         return false;
     }
 

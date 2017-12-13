@@ -34,7 +34,6 @@ import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
-import org.bridje.ioc.IocContext;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
@@ -197,18 +196,18 @@ public class WebViewsManager
     public void renderView(WebView view, HttpBridletContext context, Map<String,Object> params)
     {
         if(view == null) return;
-        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        WebScope scope = context.get(WebScope.class);
         HttpBridletResponse resp = context.getResponse();
         try (OutputStream os = resp.getOutputStream())
         {
-            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
             elEnv.pushVar("view", view);
             elEnv.pushVar("i18n", webI18nServ.getI18nMap());
             elEnv.pushVar("params", params);
             elEnv.pushVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
-                themesMang.render(view, os, () -> stateManag.createStringViewState(wrsCtx));
+                themesMang.render(view, os, () -> stateManag.createStringViewState(scope.getIocContext()));
                 os.flush();
                 return null;
             }, ElEnvironment.class, elEnv);
@@ -227,17 +226,17 @@ public class WebViewsManager
      */
     public void renderView(WebView view, HttpBridletContext context)
     {
-        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        WebScope scope = context.get(WebScope.class);
         HttpBridletResponse resp = context.getResponse();
         try (OutputStream os = resp.getOutputStream())
         {
-            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
             elEnv.pushVar("view", view);
             elEnv.pushVar("i18n", webI18nServ.getI18nMap());
             elEnv.pushVar("eventResult", EventResult.none());
             Thls.doAsEx(() ->
             {
-                themesMang.render(view, os, () -> stateManag.createStringViewState(wrsCtx));
+                themesMang.render(view, os, () -> stateManag.createStringViewState(scope.getIocContext()));
                 os.flush();
                 return null;
             }, ElEnvironment.class, elEnv);
@@ -257,9 +256,9 @@ public class WebViewsManager
      */
     public void updateView(WebView view, HttpBridletContext context)
     {
-        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        WebScope scope = context.get(WebScope.class);
         HttpBridletRequest req = context.getRequest();
-        ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+        ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
         Thls.doAs(() ->
         {
             EventResult evResult = view.getRoot()
@@ -288,14 +287,14 @@ public class WebViewsManager
                             HttpBridletResponse resp = context.getResponse();
                             try (OutputStream os = resp.getOutputStream())
                             {
-                                themesMang.render(ctrl, view, os, evResult, () -> stateManag.createStringViewState(wrsCtx));
+                                themesMang.render(ctrl, view, os, evResult, () -> stateManag.createStringViewState(scope.getIocContext()));
                                 os.flush();
                             }
                             catch (IOException ex)
                             {
                                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
                             }
-                            context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(wrsCtx));
+                            context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(scope.getIocContext()));
                         }
                         return true;
                     });
@@ -313,10 +312,10 @@ public class WebViewsManager
      */
     public void renderPartialView(WebView view, HttpBridletContext context, EventResult result, Map<String,Object> params)
     {
-        IocContext<WebScope> wrsCtx = context.get(IocContext.class);
+        WebScope scope = context.get(WebScope.class);
         try
         {
-            ElEnvironment elEnv = elServ.createElEnvironment(wrsCtx);
+            ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
             Thls.doAsEx(() ->
             {
                 elEnv.pushVar("view", view);
@@ -326,7 +325,7 @@ public class WebViewsManager
                 HttpBridletResponse resp = context.getResponse();
                 try (OutputStream os = resp.getOutputStream())
                 {
-                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createStringViewState(wrsCtx));
+                    themesMang.render(view.getRoot(), view, os, result, () -> stateManag.createStringViewState(scope.getIocContext()));
                     os.flush();
                 }
                 return null;
