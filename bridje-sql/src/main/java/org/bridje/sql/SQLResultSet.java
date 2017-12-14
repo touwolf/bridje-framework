@@ -41,7 +41,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException
+     * @throws SQLException If any SQL error ocurrs.
      */
     <T, E> T get(Expression<T, E> expr) throws SQLException;
 
@@ -55,7 +55,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException
+     * @throws SQLException If any SQL error ocurrs.
      */
     <T, E> T get(int column, SQLType<T, E> type) throws SQLException;
 
@@ -69,7 +69,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException
+     * @throws SQLException If any SQL error ocurrs.
      */
     <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException;
 
@@ -84,7 +84,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException
+     * @throws SQLException If any SQL error ocurrs.
      */
     <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException;
 
