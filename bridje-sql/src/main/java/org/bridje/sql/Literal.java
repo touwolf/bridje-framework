@@ -24,8 +24,9 @@ package org.bridje.sql;
 public interface Literal<T, E> extends Expression<T, E>
 {
     /**
+     * The actual literal.
      * 
-     * @return 
+     * @return The actual literal.
      */
     T getValue();
 }

@@ -19,58 +19,73 @@ package org.bridje.sql;
 import java.sql.SQLException;
 
 /**
- * 
+ * Represents a reuslt set for the execution of a select query in the database.
  */
 public interface SQLResultSet extends AutoCloseable
 {
     /**
+     * Fetch the next record.
      * 
-     * @return
-     * @throws SQLException 
+     * @return true if more records exists, false otherwise.
+     * 
+     * @throws SQLException If any SQL error ocurrs.
      */
     boolean next() throws SQLException;
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param expr
-     * @return
-     * @throws SQLException 
+     * Gets the value for the given expression.
+     *
+     * @param <T>  The final java type of the expression.
+     * @param <E>  The result set read java type of the expression.
+     * @param expr The expression to find.
+     *
+     * @return The value found.
+     *
+     * @throws SQLException
      */
     <T, E> T get(Expression<T, E> expr) throws SQLException;
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param column
-     * @param type
-     * @return
-     * @throws SQLException 
+     * Gets the value for the given column.
+     *
+     * @param <T>    The final java type of the expression.
+     * @param <E>    The result set read java type of the expression.
+     * @param column The column number. starting in 1
+     * @param type   The type of the result.
+     *
+     * @return The value found.
+     *
+     * @throws SQLException
      */
     <T, E> T get(int column, SQLType<T, E> type) throws SQLException;
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param expr
-     * @param parser
-     * @return
-     * @throws SQLException 
+     * Gets the value for the given expression.
+     *
+     * @param <T>    The final java type of the expression.
+     * @param <E>    The result set read java type of the expression.
+     * @param expr   The expression to find.
+     * @param parser The parser to use.
+     *
+     * @return The value found.
+     *
+     * @throws SQLException
      */
     <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException;
 
     /**
-     * 
-     * @param <T> The final java type of the expression.
-     * @param <E> The result set read java type of the expression.
-     * @param column
-     * @param type
-     * @param parser
-     * @return
-     * @throws SQLException 
+     * Gets the value for the given column.
+     *
+     * @param <T>    The final java type of the expression.
+     * @param <E>    The result set read java type of the expression.
+     * @param column The column number. starting in 1
+     * @param type   The type of the result.
+     * @param parser The parser to use.
+     *
+     * @return The value found.
+     *
+     * @throws SQLException
      */
     <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException;
+
 }

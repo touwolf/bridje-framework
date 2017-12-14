@@ -22,11 +22,12 @@ package org.bridje.sql;
 public interface InsertIntoStep
 {
     /**
+     * Addss the columns to insert to for this query.
      *
-     * @param column
+     * @param columns The columns to insert to.
      *
      * @return The next step.
      */
-    ColumnsStep columns(Column<?, ?>... column);
+    ColumnsStep columns(Column<?, ?>... columns);
 
 }

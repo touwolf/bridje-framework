@@ -22,22 +22,24 @@ package org.bridje.sql;
 public interface SetsStep extends UpdateWhereStep
 {
     /**
+     * Adds the value to set for a column in this query.
      *
      * @param <T>    The final java type of the expression.
      * @param <E>    The result set read java type of the expression.
-     * @param column
-     * @param value
+     * @param column The column to set.
+     * @param value  The value for the column.
      *
      * @return The next step.
      */
     <T, E> SetsStep set(Column<T, E> column, T value);
 
     /**
+     * Adds the value to set for a column in this query.
      *
      * @param <T>    The final java type of the expression.
      * @param <E>    The result set read java type of the expression.
-     * @param column
-     * @param value
+     * @param column The column to set.
+     * @param value  The value for the column.
      *
      * @return The next step.
      */

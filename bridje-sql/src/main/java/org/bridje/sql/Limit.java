@@ -17,19 +17,21 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents an SQL limit statement.
  */
 public interface Limit extends SQLWritable
 {
     /**
+     * The offset of the limit statement.
      * 
-     * @return 
+     * @return The offset of the limit statement.
      */
     int getOffset();
 
     /**
+     * The records count for the limit statement.
      * 
-     * @return 
+     * @return The records count for the limit statement.
      */
     int getCount();
 }

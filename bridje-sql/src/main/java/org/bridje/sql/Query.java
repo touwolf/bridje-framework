@@ -17,27 +17,32 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents an SQL query.
  */
 public interface Query
 {
     /**
-     * 
-     * @return 
+     * The resulting fields for this query.
+     *
+     * @return The resulting fields for this query.
      */
     Expression<?, ?>[] getResultFields();
 
     /**
-     * 
-     * @return 
+     * If this query needs to retrieve generated keys.
+     *
+     * @return If this query needs to retrieve generated keys.
      */
     boolean isWithGeneratedKeys();
 
     /**
-     * 
-     * @param dialect
-     * @param parameters
-     * @return 
+     * Converts this query to a new SQL statement.
+     *
+     * @param dialect    The dialect to use for the convertion.
+     * @param parameters The parameters to fill in the query.
+     *
+     * @return The resulting SQL statement.
      */
     SQLStatement toStatement(SQLDialect dialect, Object... parameters);
+
 }

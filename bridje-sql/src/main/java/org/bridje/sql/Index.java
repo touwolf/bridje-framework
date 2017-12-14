@@ -17,31 +17,35 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents an SQL index.
  */
 public interface Index
 {
     /**
+     * The name of the index.
      * 
      * @return 
      */
     String getName();
 
     /**
+     * The table that the index belongs to.
      * 
-     * @return 
+     * @return The table that the index belongs to.
      */
     Table getTable();
 
     /**
+     * The columns of the index.
      * 
-     * @return 
+     * @return The columns of the index.
      */
     Column<?, ?>[] getColumns();
 
     /**
+     * If this index is unique.
      * 
-     * @return 
+     * @return true the index is unique, false otherwise.
      */
     boolean isUnique();
 }

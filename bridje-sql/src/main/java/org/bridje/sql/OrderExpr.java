@@ -17,19 +17,21 @@
 package org.bridje.sql;
 
 /**
- * 
+ * An order by expression.
  */
 public interface OrderExpr extends SQLWritable
 {
     /**
+     * The type of order, asc or desc.
      * 
-     * @return 
+     * @return The type of order.
      */
     SortType getType();
 
     /**
+     * The column to order.
      * 
-     * @return 
+     * @return The column to order.
      */
     Expression<?, ?> getColumn();
 }

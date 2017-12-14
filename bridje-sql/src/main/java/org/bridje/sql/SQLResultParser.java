@@ -19,17 +19,22 @@ package org.bridje.sql;
 import java.sql.SQLException;
 
 /**
- * 
- * @param <T> 
+ * A parser for the execution of a select query in the database.
+ *
+ * @param <T> The type of the result.
  */
 @FunctionalInterface
 public interface SQLResultParser<T>
 {
     /**
-     * 
-     * @param rs
-     * @return
-     * @throws SQLException 
+     * Parses a single record out of the given ResultSet.
+     *
+     * @param rs The ResultSet for the record.
+     *
+     * @return The parsed value.
+     *
+     * @throws SQLException If any SQL error ocurrs.
      */
     T parse(SQLResultSet rs) throws SQLException;
+
 }
