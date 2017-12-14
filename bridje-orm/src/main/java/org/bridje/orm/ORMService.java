@@ -16,7 +16,14 @@
 
 package org.bridje.orm;
 
+/**
+ * 
+ */
 public interface ORMService
 {
+    /**
+     * 
+     * @return 
+     */
     EnvironmentBuilder createEnvironment();
 }

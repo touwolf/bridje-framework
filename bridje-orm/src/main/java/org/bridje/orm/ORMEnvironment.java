@@ -20,13 +20,46 @@ import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.ioc.thls.ThlsActionException;
 import org.bridje.ioc.thls.ThlsActionException2;
 
+/**
+ * 
+ */
 public interface ORMEnvironment
 {
+    /**
+     * 
+     * @param <T>
+     * @param modelCls
+     * @return 
+     */
     <T> T getModel(Class<T> modelCls);
 
+    /**
+     * 
+     * @param <T>
+     * @param action
+     * @return 
+     */
     <T> T doWith(ThlsAction<T> action);
 
+    /**
+     * 
+     * @param <T>
+     * @param <E>
+     * @param action
+     * @return
+     * @throws E 
+     */
     <T, E extends Throwable> T doWithEx(ThlsActionException<T, E> action) throws E;
 
+    /**
+     * 
+     * @param <T>
+     * @param <E>
+     * @param <E2>
+     * @param action
+     * @return
+     * @throws E
+     * @throws E2 
+     */
     <T, E extends Throwable, E2 extends Throwable> T doWithEx2(ThlsActionException2<T, E, E2> action) throws E, E2;
 }

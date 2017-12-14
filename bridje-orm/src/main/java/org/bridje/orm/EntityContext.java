@@ -16,17 +16,65 @@
 
 package org.bridje.orm;
 
+/**
+ * Context where entities are keep.
+ */
 public interface EntityContext
 {
+    /**
+     * Determines if this context contains the given entity.
+     *
+     * @param <T>    The type of the entity.
+     * @param entity The class of the entity to look for.
+     * @param id     The id of the entity to look for.
+     *
+     * @return true if this context contains the entity, false otherwise.
+     */
     <T> boolean contains(Class<T> entity, Object id);
 
+    /**
+     * Gets the given entity by its id.
+     *
+     * @param <T>    The type of the entity.
+     * @param entity The class of the entity to look for.
+     * @param id     The id of the entity to look for.
+     *
+     * @return The entity found, or null if it does not exists.
+     */
     <T> T get(Class<T> entity, Object id);
 
+    /**
+     * Adds the given entity to the context.
+     *
+     * @param <T>    The type of the entity.
+     * @param entity The class of the entity to look for.
+     * @param id     The id of the entity to look for.
+     *
+     */
     <T> void put(Object id, T entity);
 
+    /**
+     * Remove the given entity.
+     *
+     * @param <T>    The type of the entity.
+     * @param entity The class of the entity to look for.
+     * @param id     The id of the entity to look for.
+     *
+     */
     <T> void remove(Class<T> entity, Object id);
 
+    /**
+     * Remove all stored entities of the given class.
+     *
+     * @param <T>    The type of the entity.
+     * @param entity The class of the entity to look for.
+     *
+     */
     <T> void clear(Class<T> entity);
-    
+
+    /**
+     * Remove all stored entitys.
+     */
     void clear();
+
 }

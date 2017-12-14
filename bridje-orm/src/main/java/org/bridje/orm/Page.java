@@ -1,6 +1,9 @@
 
 package org.bridje.orm;
 
+/**
+ * 
+ */
 public class Page
 {
     private final int value;
@@ -9,18 +12,32 @@ public class Page
     {
         this.value = value;
     }
-    
+
+    /**
+     * 
+     * @return 
+     */
     public int getValue()
     {
         return value;
     }
 
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public static Page of(int value)
     {
         if(value <= 0) return null;
         return new Page(value);
     }
 
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public static Page fromString(String value)
     {
         return of(Integer.valueOf(value));

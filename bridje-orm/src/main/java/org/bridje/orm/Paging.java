@@ -6,6 +6,9 @@ import java.util.List;
 import org.bridje.sql.Limit;
 import org.bridje.sql.SQL;
 
+/**
+ * 
+ */
 public class Paging
 {
     private final int recordCount;
@@ -27,16 +30,28 @@ public class Paging
         setCurrent(1);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getRecordCount()
     {
         return recordCount;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getPageSize()
     {
         return pageSize;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Page[] getPages()
     {
         if(pages == null)
@@ -50,6 +65,11 @@ public class Paging
         return pages;
     }
     
+    /**
+     * 
+     * @param sectionSize
+     * @return 
+     */
     public Page[] getPagesSection(int sectionSize)
     {
         if(sectionSize >= pageCount) return getPages();
@@ -64,37 +84,65 @@ public class Paging
         return section;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<Page> getPagesAsList()
     {
         return Arrays.asList(getPages());
     }
     
+    /**
+     * 
+     * @param sectionSize
+     * @return 
+     */
     public List<Page> getPagesSectionAsList(int sectionSize)
     {
         return Arrays.asList(getPagesSection(sectionSize));
     }
     
+    /**
+     * 
+     * @return 
+     */
     public int getPageCount()
     {
         return pageCount;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Page getCurrent()
     {
         if(pages == null) return Page.of(current);
         return pages[current - 1];
     }
 
+    /**
+     * 
+     * @param current 
+     */
     public void setCurrent(Page current)
     {
         this.current = current.getValue();
     }
     
+    /**
+     * 
+     * @param current 
+     */
     public void setCurrent(int current)
     {
         this.current = current;
     }
     
+    /**
+     * 
+     */
     public void next()
     {
         if(!isLast())
@@ -103,6 +151,9 @@ public class Paging
         }
     }
     
+    /**
+     * 
+     */
     public void prev()
     {
         if(!isFirst())
@@ -111,16 +162,29 @@ public class Paging
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public boolean isFirst()
     {
         return current == 1;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public boolean isLast()
     {
         return current == pageCount;
     }
 
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public Page getPage(int value)
     {
         if(pageCount == 0) return null;
@@ -130,12 +194,25 @@ public class Paging
         return pages[value-1];
     }
 
+    /**
+     * 
+     * @param count
+     * @param size
+     * @return 
+     */
     public static Paging of(int count, int size)
     {
         if(count <= 0 && size <= 0) return null;
         return new Paging(count, size);
     }
 
+    /**
+     * 
+     * @param count
+     * @param size
+     * @param current
+     * @return 
+     */
     public static Paging of(int count, int size, int current)
     {
         if(count <= 0 && size <= 0) return null;
@@ -150,6 +227,11 @@ public class Paging
         return recordCount + ":" + pageSize + ":" + current;
     }
 
+    /**
+     * 
+     * @param value
+     * @return 
+     */
     public static Paging fromString(String value) 
     {
         if(value == null || value.trim().isEmpty()) return null;
@@ -160,6 +242,10 @@ public class Paging
         return Paging.of(count, size, current);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public Limit toLimit()
     {
         return SQL.limit((current - 1) * pageSize, pageSize);

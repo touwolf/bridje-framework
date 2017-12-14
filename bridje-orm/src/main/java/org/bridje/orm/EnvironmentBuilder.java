@@ -21,15 +21,49 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.bridje.sql.SQLEnvironment;
 
+/**
+ * 
+ */
 public interface EnvironmentBuilder
 {
+    /**
+     * 
+     * @param modelClass
+     * @param env
+     * @return 
+     */
     EnvironmentBuilder model(Class<?> modelClass, SQLEnvironment env);
 
+    /**
+     * 
+     * @param modelClass
+     * @param ds
+     * @return
+     * @throws SQLException 
+     */
     EnvironmentBuilder model(Class<?> modelClass, DataSource ds) throws SQLException;
 
+    /**
+     * 
+     * @param modelClass
+     * @param conn
+     * @return
+     * @throws SQLException 
+     */
     EnvironmentBuilder model(Class<?> modelClass, Connection conn) throws SQLException;
 
+    /**
+     * 
+     * @param modelClass
+     * @param dsName
+     * @return
+     * @throws SQLException 
+     */
     EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException;
 
+    /**
+     * 
+     * @return 
+     */
     ORMEnvironment build();
 }

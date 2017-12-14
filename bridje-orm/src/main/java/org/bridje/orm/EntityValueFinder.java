@@ -18,8 +18,17 @@ package org.bridje.orm;
 
 import java.sql.SQLException;
 
+/**
+ * 
+ */
 @FunctionalInterface
 public interface EntityValueFinder
 {
+    /**
+     * 
+     * @param value
+     * @return
+     * @throws SQLException 
+     */
     Object find(Object value) throws SQLException;
 }
