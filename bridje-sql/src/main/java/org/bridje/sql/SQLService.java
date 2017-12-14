@@ -21,31 +21,41 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
- * 
+ * The service for the SQL API.
  */
 public interface SQLService
 {
     /**
-     * 
-     * @param dataSource
-     * @return
-     * @throws SQLException 
+     * Creates a new SQL environment.
+     *
+     * @param dataSource The datasource for the new environment.
+     *
+     * @return The new created SQL environment.
+     *
+     * @throws SQLException If any SQL error occurs.
      */
     SQLEnvironment createEnvironment(DataSource dataSource) throws SQLException;
 
     /**
-     * 
-     * @param connection
-     * @return
-     * @throws SQLException 
+     * Creates a new SQL environment.
+     *
+     * @param connection The JDBC connection to use.
+     *
+     * @return The new created SQL environment.
+     *
+     * @throws SQLException If any SQL error occurs.
      */
     SQLEnvironment createEnvironment(Connection connection) throws SQLException;
 
     /**
-     * 
-     * @param dataSourceName
-     * @return
-     * @throws SQLException 
+     * Creates a new SQL environment.
+     *
+     * @param dataSourceName The name of the datasource.
+     *
+     * @return The new created SQL environment.
+     *
+     * @throws SQLException If any SQL error occurs.
      */
     SQLEnvironment createEnvironment(String dataSourceName) throws SQLException;
+
 }

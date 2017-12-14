@@ -24,7 +24,7 @@ public interface Index
     /**
      * The name of the index.
      * 
-     * @return 
+     * @return The name of the index.
      */
     String getName();
 

@@ -19,7 +19,7 @@ package org.bridje.sql;
 import java.sql.SQLException;
 
 /**
- * 
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
@@ -27,10 +27,14 @@ import java.sql.SQLException;
 public interface SQLValueParser<T, E>
 {
     /**
-     * 
-     * @param value
-     * @return
-     * @throws SQLException 
+     * Parses the given value to the final value.
+     *
+     * @param value The value to parse.
+     *
+     * @return The final value.
+     *
+     * @throws SQLException If any SQL error occurs.
      */
     T parse(E value) throws SQLException;
+
 }

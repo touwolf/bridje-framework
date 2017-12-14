@@ -17,56 +17,66 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents an SQL table.
  */
 public interface Table extends TableExpr
 {
     /**
-     * 
-     * @return 
+     * The name of the table.
+     *
+     * @return The name of the table.
      */
     String getName();
 
     /**
-     * 
-     * @return 
+     * The schema that this table belongs to.
+     *
+     * @return The schema that this table belongs to.
      */
     Schema getSchema();
 
     /**
-     * 
-     * @return 
+     * The primary key of the table.
+     *
+     * @return The primary key of the table.
      */
     Column<?, ?>[] getPrimaryKey();
 
     /**
-     * 
-     * @return 
+     * The autoincrement columns for this table.
+     *
+     * @return The autoincrement columns for this table.
      */
     Column<?, ?>[] getAutoIncrement();
 
     /**
-     * 
-     * @return 
+     * The columns for this table.
+     *
+     * @return The columns for this table.
      */
     Column<?, ?>[] getColumns();
 
     /**
-     * 
-     * @param name
-     * @return 
+     * Gets the given column.
+     *
+     * @param name The column name.
+     *
+     * @return The column that was found, or null if it does not exists.
      */
     Column<?, ?> getColumn(String name);
 
     /**
+     * The indexs for this table.
      * 
-     * @return 
+     * @return The indexs for this table.
      */
     Index[] getIndexes();
 
     /**
+     * The foreign keys for this table.
      * 
-     * @return 
+     * @return The foreign keys for this table.
      */
     ForeignKey[] getForeignKeys();
+
 }

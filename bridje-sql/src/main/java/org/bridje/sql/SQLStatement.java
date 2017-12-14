@@ -17,31 +17,35 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represent an SQL statement tha can be execute in the database.
  */
 public interface SQLStatement
 {
     /**
+     * The resulting fields of the execution of this statement.
      * 
-     * @return 
+     * @return The resulting fields.
      */
     Expression<?, ?>[] getResultFields();
 
     /**
+     * If this statement retrives new generated keys.
      * 
-     * @return 
+     * @return true this statement retrives new generated keys, false otherwise.
      */
     boolean isWithGeneratedKeys();
 
     /**
+     * The actual SQL to execute in the database.
      * 
-     * @return 
+     * @return The actual SQL to execute in the database.
      */
     String getSQL();
 
     /**
+     * The parameter to send to the database for this query.
      * 
-     * @return 
+     * @return The parameter to send to the database for this query.
      */
     Object[] getParameters();
 }

@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- * 
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
@@ -25,9 +25,12 @@ package org.bridje.sql;
 public interface SQLValueWriter<T, E>
 {
     /**
-     * 
-     * @param value
-     * @return 
+     * Writes the valued given to the database ready value.
+     *
+     * @param value The final value.
+     *
+     * @return The database ready value.
      */
     T write(E value);
+
 }
