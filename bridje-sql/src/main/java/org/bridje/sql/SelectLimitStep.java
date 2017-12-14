@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface SelectLimitStep extends SelectFinalStep
 {
     /**
+     * Adds a limit statement to the query.
      *
-     * @param limit
+     * @param limit The limit statement to add.
      *
      * @return The next step.
      */

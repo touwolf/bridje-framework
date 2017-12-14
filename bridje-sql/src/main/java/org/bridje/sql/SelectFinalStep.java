@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface SelectFinalStep extends FinalStep
 {
     /**
+     * Gets the query as a select expression.
      * 
-     * @return 
+     * @return This query as a select expression.
      */
     SelectExpr asTable();
 }

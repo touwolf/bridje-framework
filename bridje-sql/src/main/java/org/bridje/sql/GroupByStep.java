@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface GroupByStep extends SelectLimitStep
 {
     /**
-     *
-     * @param condition
+     * Adds a having statement to this query.
+     * 
+     * @param condition The condition of the having statement.
      *
      * @return The next step.
      */

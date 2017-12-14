@@ -22,11 +22,12 @@ package org.bridje.sql;
 public interface OrderByStep extends SelectLimitStep
 {
     /**
+     * Adds group by expresions to this query.
      *
-     * @param columns
+     * @param groupBys The group by expressions.
      *
      * @return The next step.
      */
-    GroupByStep groupBy(OrderExpr... columns);
+    GroupByStep groupBy(OrderExpr... groupBys);
 
 }

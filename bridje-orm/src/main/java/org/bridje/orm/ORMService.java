@@ -17,13 +17,14 @@
 package org.bridje.orm;
 
 /**
- * 
+ * THe service for the ORM API.
  */
 public interface ORMService
 {
     /**
+     * Creates a new ORMEnvironment builder.
      * 
-     * @return 
+     * @return The new ORMEnvironment builder.
      */
     EnvironmentBuilder createEnvironment();
 }

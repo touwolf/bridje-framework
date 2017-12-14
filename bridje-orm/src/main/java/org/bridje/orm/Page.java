@@ -2,7 +2,7 @@
 package org.bridje.orm;
 
 /**
- * 
+ * Represent a page in a pagin object.
  */
 public class Page
 {
@@ -14,8 +14,9 @@ public class Page
     }
 
     /**
-     * 
-     * @return 
+     * The value of the page.
+     *
+     * @return The value of the page.
      */
     public int getValue()
     {
@@ -23,20 +24,27 @@ public class Page
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Create a page out of the value.
+     *
+     * @param value The value of the page.
+     *
+     * @return The page.
      */
     public static Page of(int value)
     {
-        if(value <= 0) return null;
+        if (value <= 0)
+        {
+            return null;
+        }
         return new Page(value);
     }
 
     /**
-     * 
-     * @param value
-     * @return 
+     * Create a page out of the value.
+     *
+     * @param value The value of the page.
+     *
+     * @return The page.
      */
     public static Page fromString(String value)
     {
@@ -79,4 +87,5 @@ public class Page
     {
         return String.valueOf(value);
     }
+
 }

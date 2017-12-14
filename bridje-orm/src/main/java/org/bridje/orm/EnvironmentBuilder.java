@@ -22,48 +22,61 @@ import javax.sql.DataSource;
 import org.bridje.sql.SQLEnvironment;
 
 /**
- * 
+ * Builder for ORM environments.
  */
 public interface EnvironmentBuilder
 {
     /**
-     * 
-     * @param modelClass
-     * @param env
-     * @return 
+     * Adds a new model class with it SQLEnvironment to this builder.
+     *
+     * @param modelClass The class of the model.
+     * @param env        The SQLEnvironment for the model class.
+     *
+     * @return this object.
      */
     EnvironmentBuilder model(Class<?> modelClass, SQLEnvironment env);
 
     /**
-     * 
-     * @param modelClass
-     * @param ds
-     * @return
-     * @throws SQLException 
+     * Adds a new model class with it SQLEnvironment to this builder.
+     *
+     * @param modelClass The class of the model.
+     * @param ds The JDBC data source to use for the model.
+     *
+     * @return this object.
+     *
+     * @throws SQLException If any SQL exception occurs.
      */
     EnvironmentBuilder model(Class<?> modelClass, DataSource ds) throws SQLException;
 
     /**
-     * 
-     * @param modelClass
-     * @param conn
-     * @return
-     * @throws SQLException 
+     * Adds a new model class with it SQLEnvironment to this builder.
+     *
+     * @param modelClass The class of the model.
+     * @param conn The JDBC connection to use for the model.
+     *
+     * @return this object.
+     *
+     * @throws SQLException If any SQL exception occurs.
      */
     EnvironmentBuilder model(Class<?> modelClass, Connection conn) throws SQLException;
 
     /**
-     * 
-     * @param modelClass
-     * @param dsName
-     * @return
-     * @throws SQLException 
+     * Adds a new model class with it SQLEnvironment to this builder.
+     *
+     * @param modelClass The class of the model.
+     * @param dsName The name for the data source.
+     *
+     * @return this object.
+     *
+     * @throws SQLException If any SQL exception occurs.
      */
     EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException;
 
     /**
-     * 
-     * @return 
+     * Builds the ORMEnvironment.
+     *
+     * @return The ORMEnvironment.
      */
     ORMEnvironment build();
+
 }

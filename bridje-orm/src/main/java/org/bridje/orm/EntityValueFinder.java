@@ -19,16 +19,20 @@ package org.bridje.orm;
 import java.sql.SQLException;
 
 /**
- * 
+ * Used to find a value out of other value for a field in an entity.
  */
 @FunctionalInterface
 public interface EntityValueFinder
 {
     /**
-     * 
-     * @param value
-     * @return
-     * @throws SQLException 
+     * Finds the required value out of the given one.
+     *
+     * @param value The value to search.
+     *
+     * @return The value found.
+     *
+     * @throws SQLException If any SQLException occur during the mapping.
      */
     Object find(Object value) throws SQLException;
+
 }

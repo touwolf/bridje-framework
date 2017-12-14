@@ -21,45 +21,59 @@ import org.bridje.ioc.thls.ThlsActionException;
 import org.bridje.ioc.thls.ThlsActionException2;
 
 /**
- * 
+ * The work environment for the ORM API.
  */
 public interface ORMEnvironment
 {
     /**
-     * 
-     * @param <T>
-     * @param modelCls
-     * @return 
+     * Gets the instance of the given model for its class.
+     *
+     * @param <T>      The type of the model.
+     * @param modelCls The model class.
+     *
+     * @return The instance of the model, or nul if it does not exists.
      */
     <T> T getModel(Class<T> modelCls);
 
     /**
-     * 
-     * @param <T>
-     * @param action
-     * @return 
+     * Performs the given ThlsAction with this environment in the current thread
+     * local storage.
+     *
+     * @param <T>    The type of the result for the action.
+     * @param action The action to perform.
+     *
+     * @return The result of the action.
      */
     <T> T doWith(ThlsAction<T> action);
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param action
-     * @return
-     * @throws E 
+     * Performs the given ThlsAction with this environment in the current thread
+     * local storage.
+     *
+     * @param <T>    The type of the result for the action.
+     * @param <E>    The type of the exception thrown by the action.
+     * @param action The action to perform.
+     *
+     * @return The result of the action.
+     *
+     * @throws E The exception thrown by the action.
      */
     <T, E extends Throwable> T doWithEx(ThlsActionException<T, E> action) throws E;
 
     /**
-     * 
-     * @param <T>
-     * @param <E>
-     * @param <E2>
-     * @param action
-     * @return
-     * @throws E
-     * @throws E2 
+     * Performs the given ThlsAction with this environment in the current thread
+     * local storage.
+     *
+     * @param <T>    The type of the result for the action.
+     * @param <E>    The type of the exception thrown by the action.
+     * @param <E2>   The type of the second exception thrown by the action.
+     * @param action The action to perform.
+     *
+     * @return The result of the action.
+     *
+     * @throws E  The exception thrown by the action.
+     * @throws E2 The second exception thrown by the action.
      */
     <T, E extends Throwable, E2 extends Throwable> T doWithEx2(ThlsActionException2<T, E, E2> action) throws E, E2;
+
 }

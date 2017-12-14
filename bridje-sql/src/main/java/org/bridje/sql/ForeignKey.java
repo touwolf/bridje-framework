@@ -17,43 +17,49 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents a foreign key.
  */
 public interface ForeignKey
 {
     /**
+     * The name of the foreign key.
      * 
-     * @return 
+     * @return The name of the foreign key.
      */
     String getName();
 
     /**
+     * The table of the foreign key.
      * 
-     * @return 
+     * @return The table of the foreign key.
      */
     Table getTable();
 
     /**
+     * The columns for the foreign key.
      * 
-     * @return 
+     * @return The columns for the foreign key.
      */
     Column<?, ?>[] getColumns();
 
     /**
+     * The references for the foreign key.
      * 
-     * @return 
+     * @return The references for the foreign key.
      */
     Table getReferences();
 
     /**
+     * The strategy to do on update.
      * 
-     * @return 
+     * @return The strategy to do on update.
      */
     ForeignKeyStrategy getOnUpdate();
 
     /**
+     * The strategy to do on delete.
      * 
-     * @return 
+     * @return The strategy to do on delete.
      */
     ForeignKeyStrategy getOnDelete();
 }

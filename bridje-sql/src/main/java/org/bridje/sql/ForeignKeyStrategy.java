@@ -17,24 +17,24 @@
 package org.bridje.sql;
 
 /**
- * 
+ * The strategies to use for the rows on update and on delete events.
  */
 public enum ForeignKeyStrategy
 {
     /**
-     * 
+     * Does not allow the modification.
      */
     NO_ACTION,
     /**
-     * 
+     * Modifies the records in cascade.
      */
     CASCADE,
     /**
-     * 
+     * Set the foreign columns to null.
      */
     SET_NULL,
     /**
-     * 
+     * Set the foreign columns to the default value they have.
      */
     SET_DEFAULT;
 }
