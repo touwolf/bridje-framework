@@ -291,15 +291,15 @@ public class ${model.name}Base
     <#if query.queryType == "update">
     public int ${query.name}<@compress single_line=true><#compress>
                                     (
-                                        <#if query.where??>
-                                        <#list query.where.params?keys as p>
-                                        ${query.where.params[p].type.javaType} ${p}<#sep>, </#sep>
+                                        <#list query.params?keys as p>
+                                        ${query.params[p].type.javaType} ${p}<#sep>, </#sep>
                                         </#list>
-                                        </#if>
                                     ) throws SQLException</#compress></@compress>
     {
         Query query = SQL.update(${entity.name}.TABLE)
-                        .set(....)
+                        <#list query.sets as set>
+                        .set(${entity.name}.${set.field.column?upper_case}, ${set.value})
+                        </#list>
                         <#if query.where??>
                         <@compress single_line=true><#compress>.where(
                             <@renderCondition entity query.where />

@@ -16,22 +16,36 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UpdateQueryInf extends QueryInf
 {
+    private static final Logger LOG = Logger.getLogger(UpdateQueryInf.class.getName());
+
     private WhereStmt where;
 
     @XmlTransient
     private EntityInf entity;
     
-    @XmlAttribute
-    private String fetch;
+    @XmlElements(
+    {
+        @XmlElement(name = "set", type = SetFieldStmt.class)
+    })
+    private List<SetFieldStmt> sets;
+    
+    @XmlTransient
+    private Map<String, FieldInf> mapParams;
 
     @Override
     public String getQueryType()
@@ -49,28 +63,49 @@ public class UpdateQueryInf extends QueryInf
         this.where = where;
     }
 
-    public FieldInf getFetchField()
-    {
-        if(fetch == null) return null;
-        return getEntity().findField(fetch);
-    }
-
-    public String getFetch()
-    {
-        return fetch;
-    }
-
-    public void setFetch(String fetch)
-    {
-        this.fetch = fetch;
-    }
-
     @Override
     public EntityInf getEntity()
     {
         return entity;
     }
 
+    public List<SetFieldStmt> getSets()
+    {
+        return sets;
+    }
+    
+    public Map<String, FieldInf> getParams()
+    {
+        if(mapParams == null)
+        {
+            mapParams = new HashMap<>();
+            if(getWhere() != null)
+            {
+                mapParams.putAll(getWhere().getParams());
+            }
+            fillParams(mapParams);
+        }
+        return mapParams;
+    }
+
+    public void fillParams(Map<String, FieldInf> fillParams)
+    {
+        try
+        {
+            for (SetFieldStmt set : sets)
+            {
+                if(set.getParam() != null && set.getField() != null)
+                {
+                    fillParams.put(set.getParam(), set.getField());
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+    
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         entity = (EntityInf)parent;
