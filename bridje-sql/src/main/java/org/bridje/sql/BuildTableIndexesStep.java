@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface BuildTableIndexesStep extends BuildTableFKsStep
 {
     /**
+     * Adds an index to the table.
      *
-     * @param index
+     * @param index The index to add.
      *
      * @return The next step.
      */

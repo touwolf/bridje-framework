@@ -17,52 +17,60 @@
 package org.bridje.sql;
 
 /**
- * 
- * 
+ * Represents a column for a table for an SQL database.
+ *
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
  */
 public interface Column<T, E> extends Expression<T, E>
 {
     /**
-     * 
-     * @return 
+     * The table that this column belongs to.
+     *
+     * @return The table that this column belongs to.
      */
     Table getTable();
 
     /**
-     * 
-     * @return 
+     * The name of the column.
+     *
+     * @return The name of the column.
      */
     String getName();
 
     /**
-     * 
-     * @return 
+     * If this column is part of the primary key.
+     *
+     * @return true this column is part of the primary key, false otherwise.
      */
     boolean isKey();
 
     /**
-     * 
-     * @return 
+     * If this column allows null values.
+     *
+     * @return true this column allows null values, false otherwise.
      */
     boolean isAllowNull();
 
     /**
-     * 
-     * @return 
+     * If this column is an autoincrement column.
+     *
+     * @return true this column is an autoincrement column, false otherwise.
      */
     boolean isAutoIncrement();
 
     /**
-     * 
-     * @return 
+     * The default value for this column.
+     *
+     * @return The default value for this column.
      */
     T getDefValue();
 
     /**
-     * 
-     * @return 
+     * Gets an SQL expression that represents a param (?) for this column.
+     *
+     * @return The SQL expression that represents a param (?) for this column.
      */
     Expression<T, E> asParam();
+
 }

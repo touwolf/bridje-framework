@@ -44,8 +44,9 @@ public interface SetsStep extends UpdateWhereStep
     <T, E> SetsStep set(Column<T, E> column, Expression<T, E> value);
 
     /**
+     * Adds a WHERE statement to the query.
      *
-     * @param condition
+     * @param condition The condition for the where statement.
      *
      * @return The next step.
      */

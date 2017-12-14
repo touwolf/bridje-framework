@@ -22,35 +22,39 @@ package org.bridje.sql;
 public interface DeleteFromStep extends DeleteWhereStep
 {
     /**
+     * Creates a INNER JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */
     DeleteFromStep innerJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
+     * Creates a LEFT JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */
     DeleteFromStep leftJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
+     * Creates a RIGHT JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */
     DeleteFromStep rightJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
+     * Adds a WHERE statement to the query.
      *
-     * @param condition
+     * @param condition The condition for the where statement.
      *
      * @return The next step.
      */

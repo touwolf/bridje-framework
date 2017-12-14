@@ -17,13 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ * This interface must be implemented by any class that can be write as an SQL
+ * object or statement.
  */
 public interface SQLWritable
 {
     /**
-     * 
-     * @param builder 
+     * Writes the actual SQL object or statement to the SQLBuilder provided.
+     *
+     * @param builder The SQL builder provided.
      */
     void writeSQL(SQLBuilder builder);
+
 }

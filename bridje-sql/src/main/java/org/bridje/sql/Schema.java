@@ -17,31 +17,36 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents an SQL database schema.
  */
 public interface Schema
 {
     /**
-     * 
-     * @return 
+     * The name of the schema.
+     *
+     * @return The name of the schema.
      */
     String getName();
 
     /**
-     * 
-     * @return 
+     * The tables that this schema contains.
+     *
+     * @return The tables that this schema contains.
      */
     Table[] getTables();
 
     /**
-     * 
-     * @return 
+     * The aditional indexes for this schema.
+     *
+     * @return The aditional indexes for this schema.
      */
     Index[] getIndexes();
 
     /**
-     * 
-     * @return 
+     * The aditional foreign keys for this schema.
+     *
+     * @return The aditional foreign keys for this schema.
      */
     ForeignKey[] getForeignKeys();
+
 }

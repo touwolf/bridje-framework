@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface ColumnsStep extends ValuesStep
 {
     /**
+     * Sets the select expresion for this insert query.
      *
-     * @param table
+     * @param table The select expresion to use in the insert.
      *
      * @return The next step.
      */

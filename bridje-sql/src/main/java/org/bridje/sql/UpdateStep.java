@@ -22,27 +22,30 @@ package org.bridje.sql;
 public interface UpdateStep extends SetsStep
 {
     /**
+     * Creates a INNER JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */
     UpdateStep innerJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
+     * Creates a LEFT JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */
     UpdateStep leftJoin(TableExpr table, BooleanExpr<?, ?> on);
 
     /**
+     * Creates a RIGHT JOIN statement for this query.
      *
-     * @param table
-     * @param on
+     * @param table The table to join.
+     * @param on The condition to join.
      *
      * @return The next step.
      */

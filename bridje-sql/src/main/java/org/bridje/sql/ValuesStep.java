@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface ValuesStep extends FinalStep
 {
     /**
+     * Sets an array of value to insert into the table.
      * 
-     * @param row
+     * @param row The array of values to insert.
      * 
      * @return The next step.
      */
