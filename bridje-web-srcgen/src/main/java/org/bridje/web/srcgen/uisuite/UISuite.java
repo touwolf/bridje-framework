@@ -325,8 +325,8 @@ public class UISuite extends UISuiteBase
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.
-     * @throws javax.xml.parsers.ParserConfigurationException
-     * @throws javax.xml.transform.TransformerConfigurationException
+     * @throws javax.xml.parsers.ParserConfigurationException If any Exception occurs writing the suite.
+     * @throws javax.xml.transform.TransformerConfigurationException If any Exception occurs writing the suite.
      */
     public static void save(OutputStream os, UISuite object) throws JAXBException, ParserConfigurationException, TransformerConfigurationException, TransformerException
     {

@@ -17,6 +17,7 @@
 package org.bridje.sql;
 
 /**
+ * Represents a date/time column.
  * 
  * @param <T> The final java type of the expression.
  * @param <E> The result set read java type of the expression.
