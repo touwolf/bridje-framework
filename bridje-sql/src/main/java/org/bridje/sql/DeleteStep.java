@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface DeleteStep
 {
     /**
-     *
-     * @param table
+     * Adds the from table to this query.
+     * 
+     * @param table The table for this query.
      *
      * @return The next step.
      */

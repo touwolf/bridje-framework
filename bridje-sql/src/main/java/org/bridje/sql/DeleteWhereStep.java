@@ -22,8 +22,9 @@ package org.bridje.sql;
 public interface DeleteWhereStep extends DeleteLimitStep
 {
     /**
+     * Adds the order bys statements for this query.
      *
-     * @param orderBys
+     * @param orderBys The order bys statements for this query.
      *
      * @return The next step.
      */
