@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * The information for an index.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityIndexInf
 {
@@ -37,41 +40,79 @@ public class EntityIndexInf
     @XmlTransient
     private EntityInf entity;
 
+    /**
+     * Default constructor.
+     */
     public EntityIndexInf()
     {
         unique = false;
     }
 
+    /**
+     * Constructor with the unique type of the index.
+     * 
+     * @param unique If the index is unique or not.
+     */
     public EntityIndexInf(Boolean unique)
     {
         this.unique = unique;
     }
 
+    /**
+     * The name of the index.
+     * 
+     * @return The name of the index.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * The name of the index.
+     * 
+     * @param name The name of the index.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * If the index is unique.
+     * 
+     * @return true if the index is unique, false otherwise.
+     */
     public Boolean getUnique()
     {
         return unique;
     }
 
+    /**
+     * The entity that this index belongs to.
+     * 
+     * @return The entity that this index belongs to.
+     */
     public EntityInf getEntity()
     {
         return entity;
     }
 
+    /**
+     * The entity that this index belongs to.
+     * 
+     * @param entity The entity that this index belongs to.
+     */
     public void setEntity(EntityInf entity)
     {
         this.entity = entity;
     }
 
+    /**
+     * The array of fields for this index.
+     * 
+     * @return The array of fields for this index.
+     */
     public FieldInf[] getFields()
     {
         if(fields == null) return null;

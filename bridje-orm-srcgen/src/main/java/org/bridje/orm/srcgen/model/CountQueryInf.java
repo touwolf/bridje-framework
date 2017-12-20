@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information for a count query, for an entity.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CountQueryInf extends QueryInf
 {
@@ -35,11 +38,21 @@ public class CountQueryInf extends QueryInf
         return "count";
     }
 
+    /**
+     * The information for the where statement of the query.
+     * 
+     * @return The information for the where statement of the query.
+     */
     public WhereStmt getWhere()
     {
         return where;
     }
 
+    /**
+     * The information for the where statement of the query.
+     * 
+     * @param where The information for the where statement of the query.
+     */
     public void setWhere(WhereStmt where)
     {
         this.where = where;

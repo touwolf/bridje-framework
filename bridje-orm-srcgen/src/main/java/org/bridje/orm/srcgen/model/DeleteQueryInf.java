@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information for a delete query.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DeleteQueryInf extends QueryInf
 {
@@ -29,9 +32,6 @@ public class DeleteQueryInf extends QueryInf
 
     @XmlTransient
     private EntityInf entity;
-    
-    @XmlAttribute
-    private String fetch;
 
     @Override
     public String getQueryType()
@@ -39,30 +39,24 @@ public class DeleteQueryInf extends QueryInf
         return "delete";
     }
 
+    /**
+     * Information for the where statement of the query.
+     * 
+     * @return Information for the where statement of the query.
+     */
     public WhereStmt getWhere()
     {
         return where;
     }
 
+    /**
+     * Information for the where statement of the query.
+     * 
+     * @param where Information for the where statement of the query.
+     */
     public void setWhere(WhereStmt where)
     {
         this.where = where;
-    }
-
-    public FieldInf getFetchField()
-    {
-        if(fetch == null) return null;
-        return getEntity().findField(fetch);
-    }
-
-    public String getFetch()
-    {
-        return fetch;
-    }
-
-    public void setFetch(String fetch)
-    {
-        this.fetch = fetch;
     }
 
     @Override

@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information for a date field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DateField extends FieldInf
 {

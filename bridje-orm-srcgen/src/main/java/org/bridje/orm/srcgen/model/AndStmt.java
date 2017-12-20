@@ -42,6 +42,11 @@ public class AndStmt extends ConditionStmt
         return "and";
     }
 
+    /**
+     * The previous condition of this condition.
+     * 
+     * @return The previous condition of this condition.
+     */
     public ConditionStmt getParent()
     {
         return parent;
