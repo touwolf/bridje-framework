@@ -31,4 +31,19 @@ public class UsersModel extends UsersModelBase
                         .toQuery();
         return env.fetchAll(query, this::parseUser);
     }
+
+    public void saveUser(User user) throws SQLException
+    {
+        doSaveUser(user);
+    }
+
+    public void insertGroup(Group group) throws SQLException
+    {
+        doInsertGroup(group);
+    }
+
+    public void saveUserGroup(UserGroup userGroup) throws SQLException
+    {
+        doSaveUserGroup(userGroup);
+    }
 }
