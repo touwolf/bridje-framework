@@ -17,16 +17,16 @@
 package org.bridje.sql;
 
 /**
- * 
+ * The types of orders for the order by and group by statements.
  */
 public enum SortType
 {
     /**
-     * 
+     * Order ascending.
      */
     ASC,
     /**
-     * 
+     * Order descending.
      */
     DESC;
 }

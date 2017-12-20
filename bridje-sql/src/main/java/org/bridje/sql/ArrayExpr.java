@@ -24,5 +24,10 @@ package org.bridje.sql;
  */
 public interface ArrayExpr<T, E> extends Expression<T, E>
 {
+    /**
+     * Gets the elements of the array expression.
+     * 
+     * @return The elements of the array expression.
+     */
     Expression<T, E>[] getElements();
 }

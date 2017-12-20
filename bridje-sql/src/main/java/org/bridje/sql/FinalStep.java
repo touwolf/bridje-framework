@@ -22,6 +22,7 @@ package org.bridje.sql;
 public interface FinalStep
 {
     /**
+     * Gets the actual query object.
      * 
      * @return The created query.
      */

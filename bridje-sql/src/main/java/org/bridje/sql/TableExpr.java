@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- * 
+ * An expression that outputs a table.
  */
 public interface TableExpr extends SQLWritable
 {

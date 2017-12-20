@@ -29,6 +29,9 @@ import org.bridje.sql.Index;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.Table;
 
+/**
+ * A dialect for MySQL database.
+ */
 @Component
 public class MySQLDialect implements SQLDialect
 {

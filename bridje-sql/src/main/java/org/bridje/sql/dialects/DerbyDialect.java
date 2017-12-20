@@ -30,6 +30,9 @@ import org.bridje.sql.Index;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.Table;
 
+/**
+ * A dialect for DERBY database.
+ */
 @Component
 public class DerbyDialect implements SQLDialect
 {

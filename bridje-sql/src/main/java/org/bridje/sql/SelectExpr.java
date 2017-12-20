@@ -17,7 +17,7 @@
 package org.bridje.sql;
 
 /**
- * 
+ * Represents a select expression that can be use in queries.
  */
 public interface SelectExpr extends TableExpr
 {
