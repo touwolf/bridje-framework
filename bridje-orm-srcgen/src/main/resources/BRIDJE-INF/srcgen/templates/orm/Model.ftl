@@ -120,7 +120,7 @@ public class ${model.name}Base
     }
 
     <#if entity.key.autoIncrement>
-    public void save${entity.name}(${entity.name} entity) throws SQLException
+    protected void doSave${entity.name}(${entity.name} entity) throws SQLException
     {
         if(entity.get${entity.key.name?cap_first}() == null)
         {
@@ -133,7 +133,7 @@ public class ${model.name}Base
     }
 
     <#else>
-    public void insert${entity.name}(${entity.name} entity) throws SQLException
+    protected void doInsert${entity.name}(${entity.name} entity) throws SQLException
     {
         <#if entity.key.autoIncrement>
         entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, (rs) -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field>entity.get${field.name?cap_first}()<#sep>, </#sep></#list>));
@@ -142,23 +142,23 @@ public class ${model.name}Base
         </#if>
     }
 
-    public void update${entity.name}(${entity.name} entity) throws SQLException
+    protected void doUpdate${entity.name}(${entity.name} entity) throws SQLException
     {
-        update${entity.name}(entity, entity.get${entity.key.name?cap_first}());
+        doUpdate${entity.name}(entity, entity.get${entity.key.name?cap_first}());
     }
 
-    public void update${entity.name}(${entity.name} entity, ${entity.key.type.javaType} key) throws SQLException
+    protected void doUpdate${entity.name}(${entity.name} entity, ${entity.key.type.javaType} key) throws SQLException
     {
         env.update(${entity.name}.UPDATE_QUERY, <#list entity.nonAiFields as field>entity.get${field.name?cap_first}()<#sep>, </#sep></#list>, key);
     }
 
     </#if>
-    public void delete${entity.name}(${entity.name} entity) throws SQLException
+    protected void doDelete${entity.name}(${entity.name} entity) throws SQLException
     {
-        delete${entity.name}(entity.get${entity.key.name?cap_first}());
+        doDelete${entity.name}(entity.get${entity.key.name?cap_first}());
     }
 
-    public void delete${entity.name}(${entity.key.type.javaType} key) throws SQLException
+    protected void doDelete${entity.name}(${entity.key.type.javaType} key) throws SQLException
     {
         env.update(${entity.name}.DELETE_QUERY, key);
     }
