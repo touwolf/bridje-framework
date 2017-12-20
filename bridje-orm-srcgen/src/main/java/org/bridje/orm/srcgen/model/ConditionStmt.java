@@ -79,9 +79,9 @@ public abstract class ConditionStmt
     public abstract QueryInf getQuery();
 
     /**
+     * This method adds the params of this condition and its children recursively.
      * 
-     * 
-     * @param fillParams 
+     * @param fillParams The map to fill the params.
      */
     public void fillParams(Map<String, FieldInf> fillParams)
     {
@@ -103,8 +103,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * Gets the text of the condition.
      * 
-     * @return 
+     * @return Gets the text of the condition.
      */
     public String getCondition()
     {
@@ -112,8 +113,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * Gets the text of the condition.
      * 
-     * @param condition 
+     * @param condition Gets the text of the condition.
      */
     public void setCondition(String condition)
     {
@@ -121,8 +123,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * Gets the children conditions of this one.
      * 
-     * @return 
+     * @return The children conditions of this one.
      */
     public List<ConditionStmt> getContent()
     {
@@ -130,8 +133,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * Sets the children conditions of this one.
      * 
-     * @param content 
+     * @param content The children conditions of this one.
      */
     public void setContent(List<ConditionStmt> content)
     {
@@ -139,8 +143,9 @@ public abstract class ConditionStmt
     }
     
     /**
+     * The field that this conditions test.
      * 
-     * @return 
+     * @return The field that this conditions test.
      */
     public FieldInf getField()
     {
@@ -149,8 +154,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * The name of the parameter for this condition.
      * 
-     * @return 
+     * @return The name of the parameter for this condition.
      */
     public String getParam()
     {
@@ -160,8 +166,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * The value of the condition.
      * 
-     * @return 
+     * @return The value of the condition.
      */
     public String getValue()
     {
@@ -171,8 +178,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * The name of the method operator of the condition.
      * 
-     * @return 
+     * @return The name of the method operator of the condition.
      */
     public String getOperatorMethod()
     {
@@ -184,8 +192,9 @@ public abstract class ConditionStmt
     }
 
     /**
+     * The actual text of the operator for this condition.
      * 
-     * @return 
+     * @return The actual text of the operator for this condition.
      */
     public String getCompareOperator()
     {
