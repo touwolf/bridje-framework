@@ -74,6 +74,7 @@ class WebSessionBridlet implements HttpBridlet
         {
             String sessionId = UUID.randomUUID().toString();
             sessionIdCookie = req.addCookie("sessionid", sessionId);
+            sessionIdCookie.setPath("/");
             return sessionId;
         }
     }
