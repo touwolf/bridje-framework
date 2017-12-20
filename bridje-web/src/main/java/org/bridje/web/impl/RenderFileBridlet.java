@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;

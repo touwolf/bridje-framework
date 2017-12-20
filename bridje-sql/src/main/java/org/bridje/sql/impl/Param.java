@@ -16,8 +16,6 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.ArithmeticExpr;
-import org.bridje.sql.BooleanExpr;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SQLType;

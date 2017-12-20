@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information about a boolean field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BooleanField extends FieldInf
 {

@@ -16,9 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

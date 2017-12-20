@@ -22,6 +22,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Represents the information for an autoincrement field.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AiField extends FieldInf
 {

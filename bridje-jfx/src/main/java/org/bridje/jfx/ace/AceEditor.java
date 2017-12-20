@@ -242,6 +242,11 @@ public final class AceEditor extends VBox
         gate.exec("editorContent", realText);
     }
     
+    /**
+     * Called from the javascript script to set the text of this object.
+     * 
+     * @param text The text to set.
+     */
     protected void setTextFromJs(String text)
     {
         textProperty().removeListener(listener);

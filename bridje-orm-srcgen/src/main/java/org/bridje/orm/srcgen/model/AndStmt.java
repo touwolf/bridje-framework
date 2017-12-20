@@ -21,6 +21,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information about a condition with an "and" operator.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AndStmt extends ConditionStmt
 {

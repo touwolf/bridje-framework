@@ -16,7 +16,6 @@
 
 package org.bridje.orm.srcgen.model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,6 +27,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Information about a condition.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlTransient
 public abstract class ConditionStmt
@@ -55,12 +57,32 @@ public abstract class ConditionStmt
     @XmlTransient
     private String operand2;
 
+    /**
+     * If the condition is nagated.
+     * 
+     * @return true the condition has a not befor.
+     */
     public abstract boolean isNot();
 
+    /**
+     * Gets the boolan operator used to join this condition with a previous one.
+     * 
+     * @return The boolan operator used to join this condition with a previous one.
+     */
     public abstract String getBooleanOperator();
 
+    /**
+     * The query that this condition belongs to.
+     * 
+     * @return The query that this condition belongs to.
+     */
     public abstract QueryInf getQuery();
 
+    /**
+     * 
+     * 
+     * @param fillParams 
+     */
     public void fillParams(Map<String, FieldInf> fillParams)
     {
         try
@@ -80,32 +102,56 @@ public abstract class ConditionStmt
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getCondition()
     {
         return condition;
     }
 
+    /**
+     * 
+     * @param condition 
+     */
     public void setCondition(String condition)
     {
         this.condition = condition;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public List<ConditionStmt> getContent()
     {
         return content;
     }
 
+    /**
+     * 
+     * @param content 
+     */
     public void setContent(List<ConditionStmt> content)
     {
         this.content = content;
     }
     
+    /**
+     * 
+     * @return 
+     */
     public FieldInf getField()
     {
         if(operand1 == null) readCondition();
         return getQuery().getEntity().findField(operand1);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getParam()
     {
         if(operand2 == null) readCondition();
@@ -113,6 +159,10 @@ public abstract class ConditionStmt
         return null;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getValue()
     {
         if(operand2 == null) readCondition();
@@ -120,6 +170,10 @@ public abstract class ConditionStmt
         return operand2;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getOperatorMethod()
     {
         if(operator == null) readCondition();
@@ -129,6 +183,10 @@ public abstract class ConditionStmt
         return "eq";
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getCompareOperator()
     {
         if(operator == null) readCondition();

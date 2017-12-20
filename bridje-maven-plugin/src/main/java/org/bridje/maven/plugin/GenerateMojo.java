@@ -71,19 +71,31 @@ public class GenerateMojo extends AbstractMojo
         try
         {
             getLog().info("Generating Source Code");
-            if(!dataFolder.exists()) return;
-            if(!targetFolder.exists()) targetFolder.mkdirs();
-            if(!targetResFolder.exists()) targetResFolder.mkdirs();
+            if (!dataFolder.exists())
+            {
+                return;
+            }
+            if (!targetFolder.exists())
+            {
+                targetFolder.mkdirs();
+            }
+            if (!targetResFolder.exists())
+            {
+                targetResFolder.mkdirs();
+            }
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(dataFolder));
             new VFile(SrcGenService.SUPL_PATH).mount(new CpSource("/BRIDJE-INF/srcgen/data", createClassLoader()));
-            if(sourcesFolder.exists()) new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
+            if (sourcesFolder.exists())
+            {
+                new VFile(SrcGenService.SOURCES_PATH).mount(new FileSource(sourcesFolder));
+            }
             new VFile(SrcGenService.CLASSES_PATH).mount(new FileSource(targetFolder));
             new VFile(SrcGenService.RESOURCE_PATH).mount(new FileSource(targetResFolder));
             SourceGenerator<Object>[] generators = Ioc.context().findAll(SourceGenerator.class);
             for (SourceGenerator<Object> generator : generators)
             {
                 Map<Object, VFile> datas = generator.findData();
-                if(datas != null)
+                if (datas != null)
                 {
                     for (Entry<Object, VFile> data : datas.entrySet())
                     {
@@ -91,7 +103,7 @@ public class GenerateMojo extends AbstractMojo
                     }
                 }
             }
-            if(targetFolder.getPath().contains("generated-test-sources"))
+            if (targetFolder.getPath().contains("generated-test-sources"))
             {
                 project.addTestCompileSourceRoot(targetFolder.getAbsolutePath());
             }
@@ -101,7 +113,7 @@ public class GenerateMojo extends AbstractMojo
             }
             Resource res = new Resource();
             res.setDirectory(targetResFolder.getAbsolutePath());
-            if(targetFolder.getPath().contains("generated-test-resources"))
+            if (targetFolder.getPath().contains("generated-test-resources"))
             {
                 project.addTestResource(res);
             }
@@ -117,6 +129,13 @@ public class GenerateMojo extends AbstractMojo
         }
     }
 
+    /**
+     * Creates a ClassLoader from the projects classpath.
+     *
+     * @return The classloader created.
+     *
+     * @throws MojoFailureException If the creation fails.
+     */
     public ClassLoader createClassLoader() throws MojoFailureException
     {
         try
@@ -137,4 +156,5 @@ public class GenerateMojo extends AbstractMojo
             throw new MojoFailureException(e.getMessage(), e);
         }
     }
+
 }
