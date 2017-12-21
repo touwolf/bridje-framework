@@ -18,11 +18,14 @@ package org.bridje.web.i18n;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.thls.Thls;
 
 /**
  * This service allows to gets an inject i1n resources for the web views.
@@ -31,6 +34,8 @@ import org.bridje.ioc.Inject;
 public class WebI18nServices
 {
     private Map<String,ResourceBundle> i18nMap;
+    
+    private Map<Locale, Map<String,ResourceBundle>> i18nLocaleMap;
 
     @Inject
     private WebI18nProvider[] webI18nProv;
@@ -59,6 +64,31 @@ public class WebI18nServices
      */
     public Map<String, ResourceBundle> getI18nMap()
     {
-        return i18nMap;
+        Locale locale = Thls.get(Locale.class);
+        if(locale == null) return i18nMap;
+        return getI18nMap(locale);
+    }
+    
+    private Map<String, ResourceBundle> getI18nMap(Locale locale)
+    {
+        if(i18nLocaleMap == null) i18nLocaleMap = new ConcurrentHashMap<>();
+        if(!i18nLocaleMap.containsKey(locale)) initLocale(locale);
+        return i18nLocaleMap.get(locale);
+    }
+
+    private void initLocale(Locale locale)
+    {
+        i18nLocaleMap.put(locale, findLocaleMap(locale));
+    }
+
+    private Map<String, ResourceBundle> findLocaleMap(Locale locale)
+    {
+        Map<String, ResourceBundle> i18nMap = new HashMap<>();
+        for (WebI18nProvider webI18nProvider : webI18nProv)
+        {
+            Map<String, ResourceBundle> map = webI18nProvider.findResourceBundles(locale);
+            i18nMap.putAll(map);
+        }
+        return Collections.unmodifiableMap(i18nMap);
     }
 }

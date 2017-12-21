@@ -16,6 +16,7 @@
 
 package org.bridje.web.i18n;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -30,4 +31,12 @@ public interface WebI18nProvider
      * @return Finds all the resources for this provider.
      */
     Map<String, ResourceBundle> findResourceBundles();
+    
+    /**
+     * 
+     * 
+     * @param locale
+     * @return 
+     */
+    Map<String, ResourceBundle> findResourceBundles(Locale locale);
 }
