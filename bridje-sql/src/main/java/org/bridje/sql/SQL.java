@@ -177,6 +177,25 @@ public class SQL
         return FACT.buildColumn(name, type, allowNull, defValue);
     }
 
+
+    /**
+     * Create a new SQL column that can be use for creating a SQL table.
+     *
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param name      The name for the column.
+     * @param table     The table for the column.
+     * @param type      The SQL type for the colum.
+     * @param allowNull If the columns allow null values.
+     * @param defValue  The default value for the column.
+     *
+     * @return The new created column.
+     */
+    public static final <T, E> Column<T, E> buildColumn(String name, Table table, SQLType<T, E> type, boolean allowNull, T defValue)
+    {
+        return FACT.buildColumn(name, table, type, allowNull, defValue);
+    }
+
     /**
      * Create a new SQL column that can be use for creating a SQL table.
      *

@@ -33,10 +33,11 @@ public class ${entity.name}
 
     <#if field.class.simpleName == "RelationField">
     /**
-     * 
+     * This static field holds a reference to the TableColumn object that represents
+     * the raw version of the SQL column used by the ${field.name} field.
      */
     static final ${field.columnClass}<${field.with.key.type.javaType}, ${field.with.key.type.readType}> ${field.column?upper_case}_KEY;
-    
+
     </#if>
     </#list>
     static final Query FIND_QUERY;
@@ -64,10 +65,6 @@ public class ${entity.name}
         <#list entity.allFields as field>
         ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
 
-        <#if field.class.simpleName == "RelationField">
-        ${field.column?upper_case}_KEY = SQL.build${field.columnClass}("${field.column}", ${field.with.key.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
-
-        </#if>
         </#list>
         TABLE = SQL.buildTable("${entity.table?lower_case}")
                     .key(${entity.key.column?upper_case})
@@ -91,6 +88,12 @@ public class ${entity.name}
                     </#list>
                     .build();
 
+        <#list entity.allFields as field>
+        <#if field.class.simpleName == "RelationField">
+        ${field.column?upper_case}_KEY = SQL.build${field.columnClass}("${field.column}", TABLE, ${field.with.key.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
+
+        </#if>
+        </#list>
         FIND_QUERY = SQL.select(<#list entity.allFields as field>${field.column?upper_case}<#sep>, </#sep></#list>)
                         .from(TABLE)
                         .where(${entity.key.column?upper_case}.eq(${entity.key.column?upper_case}.asParam()))

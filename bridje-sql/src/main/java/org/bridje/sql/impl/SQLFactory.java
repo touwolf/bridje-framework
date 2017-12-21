@@ -89,7 +89,14 @@ public class SQLFactory
     {
         return new ColumnImpl<>(name, type, allowNull, null);
     }
-    
+
+    public <T, E> Column<T, E> buildColumn(String name, Table table, SQLType<T, E> type, boolean allowNull, T defValue)
+    {
+        ColumnImpl result = new ColumnImpl<>(name, type, allowNull, null);
+        result.setTable(table);
+        return result;
+    }
+
     public <T, E> NumberColumn<T, E> buildAiColumn(String name, SQLType<T, E> type, boolean allowNull)
     {
         ColumnImpl result = new ColumnImpl<>(name, type, allowNull, null);
