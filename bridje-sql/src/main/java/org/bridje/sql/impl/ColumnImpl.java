@@ -107,7 +107,7 @@ class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, Num
     @Override
     public void writeSQL(SQLBuilder builder)
     {
-        if(table != null)
+        if(table != null && !builder.isSimpleColumnNames())
         {
             builder.appendObjectName(table.getName());
             builder.append('.');

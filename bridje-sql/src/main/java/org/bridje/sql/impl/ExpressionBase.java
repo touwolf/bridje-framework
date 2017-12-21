@@ -106,7 +106,7 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         return new BinaryExpr<>(this, Operators.IN, array, SQLType.BOOLEAN);
     }
-    
+
     @Override
     public StringExpr<T, E> trim()
     {
@@ -117,6 +117,18 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     public ArithmeticExpr<Integer, Integer> length()
     {
         return new FunctionImpl("length", SQLType.INTEGER, this);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> like(String operand)
+    {
+        return new BinaryExpr<>(this, Operators.EQ, new LiteralImpl<>(operand, SQLType.STRING), SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> like(StringExpr<?, ?> operand)
+    {
+        return new BinaryExpr<>(this, Operators.EQ, operand, SQLType.BOOLEAN);
     }
 
     @Override

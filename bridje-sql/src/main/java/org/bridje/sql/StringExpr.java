@@ -25,9 +25,11 @@ package org.bridje.sql;
 public interface StringExpr<T, E> extends Expression<T, E>
 {
     /**
-     * Create a new string expression that is the trim of this string expression.
+     * Create a new string expression that is the trim of this string
+     * expression.
      *
-     * @return A new string expression that is the trim of this string expression.
+     * @return A new string expression that is the trim of this string
+     *         expression.
      */
     StringExpr<T, E> trim();
 
@@ -37,5 +39,26 @@ public interface StringExpr<T, E> extends Expression<T, E>
      * @return The length of the string as a number expression.
      */
     ArithmeticExpr<Integer, Integer> length();
+
+    /**
+     * Creates a new boolean expression that performs the LIKE comparation of
+     * this expression with the given one.
+     *
+     * @param stringExpr The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> like(StringExpr<?, ?> stringExpr);
+
+    /**
+     * Creates a new boolean expression that performs the LIKE comparation of
+     * this expression with the given one.
+     *
+     *
+     * @param value The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> like(String value);
 
 }

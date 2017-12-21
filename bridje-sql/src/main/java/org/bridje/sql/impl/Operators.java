@@ -32,7 +32,8 @@ enum Operators
     AND("AND"),
     OR("OR"),
     NOT("NOT"),
-    IN("IN");
+    IN("IN"),
+    LIKE("LIKE");
 
     private final String sql;
 
