@@ -31,6 +31,13 @@ public class ${entity.name}
      */
     static final ${field.columnClass}<${field.type.javaType}, ${field.type.readType}> ${field.column?upper_case};
 
+    <#if field.class.simpleName == "RelationField">
+    /**
+     * 
+     */
+    static final ${field.columnClass}<${field.with.key.type.javaType}, ${field.with.key.type.readType}> ${field.column?upper_case}_KEY;
+    
+    </#if>
     </#list>
     static final Query FIND_QUERY;
 
@@ -57,6 +64,10 @@ public class ${entity.name}
         <#list entity.allFields as field>
         ${field.column?upper_case} = SQL.<#if field.autoIncrement>buildAiColumn<#else>build${field.columnClass}</#if>("${field.column}", ${field.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
 
+        <#if field.class.simpleName == "RelationField">
+        ${field.column?upper_case}_KEY = SQL.build${field.columnClass}("${field.column}", ${field.with.key.fullTypeName}, ${field.required?string("false","true")}<#if !field.autoIncrement>, null</#if>);
+
+        </#if>
         </#list>
         TABLE = SQL.buildTable("${entity.table?lower_case}")
                     .key(${entity.key.column?upper_case})
