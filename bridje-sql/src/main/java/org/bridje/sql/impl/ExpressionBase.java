@@ -122,13 +122,13 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     @Override
     public BooleanExpr<Boolean, Boolean> like(String operand)
     {
-        return new BinaryExpr<>(this, Operators.EQ, new LiteralImpl<>(operand, SQLType.STRING), SQLType.BOOLEAN);
+        return new BinaryExpr<>(this, Operators.LIKE, new LiteralImpl<>(operand, SQLType.STRING), SQLType.BOOLEAN);
     }
 
     @Override
     public BooleanExpr<Boolean, Boolean> like(StringExpr<?, ?> operand)
     {
-        return new BinaryExpr<>(this, Operators.EQ, operand, SQLType.BOOLEAN);
+        return new BinaryExpr<>(this, Operators.LIKE, operand, SQLType.BOOLEAN);
     }
 
     @Override
