@@ -366,4 +366,11 @@ public class DerbyDialect implements SQLDialect
             isFirst = false;
         }        
     }
+
+    @Override
+    public void writeLimit(StringBuilder builder, int count)
+    {
+        builder.append(" LIMIT ");
+        builder.append(count);
+    }
 }

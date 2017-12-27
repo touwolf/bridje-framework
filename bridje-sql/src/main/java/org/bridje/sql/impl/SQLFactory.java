@@ -333,6 +333,11 @@ public class SQLFactory
         return new LimitImpl(offset, count);
     }
 
+    public Limit limit(int count)
+    {
+        return new LimitImpl(count);
+    }
+
     public <T, E> ArrayExpr<Integer, Integer> array(Expression<T, E>... elements)
     {
         if(elements.length == 0) return new ArrayExprImpl(elements, null);

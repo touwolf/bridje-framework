@@ -138,6 +138,15 @@ public interface SQLBuilder
     SQLBuilder appendLimit(int offset, int count);
 
     /**
+     * Appends a new limit statement to the SQL query.
+     *
+     * @param count  The count to append.
+     *
+     * @return this object.
+     */
+    SQLBuilder appendLimit(int count);
+
+    /**
      * Appends a new SQL expression to the SQL query.
      *
      * @param expression The expression to append.

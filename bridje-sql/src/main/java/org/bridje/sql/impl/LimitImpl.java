@@ -25,10 +25,10 @@ class LimitImpl implements Limit
 
     private final int count;
 
-    public LimitImpl(int offset)
+    public LimitImpl(int count)
     {
-        this.offset = offset;
-        this.count = -1;
+        this.offset = -1;
+        this.count = count;
     }
 
     public LimitImpl(int offset, int count)
@@ -36,7 +36,7 @@ class LimitImpl implements Limit
         this.offset = offset;
         this.count = count;
     }
-    
+
     @Override
     public int getOffset()
     {
@@ -52,6 +52,13 @@ class LimitImpl implements Limit
     @Override
     public void writeSQL(SQLBuilder builder)
     {
-        builder.appendLimit(offset, count);
+        if (offset < 0)
+        {
+            builder.appendLimit(count);
+        }
+        else
+        {
+            builder.appendLimit(offset, count);
+        }
     }
 }

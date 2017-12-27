@@ -51,6 +51,14 @@ public interface SQLDialect
     void writeLimit(StringBuilder builder, int offset, int count);
 
     /**
+     * Writes a limit statement.
+     *
+     * @param builder The string builder for the query.
+     * @param count   The quantity of records to return.
+     */
+    void writeLimit(StringBuilder builder, int count);
+
+    /**
      * Creates the given table DDLs.
      *
      * @param table  The table to create.

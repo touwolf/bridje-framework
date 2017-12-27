@@ -803,4 +803,16 @@ public class SQL
     {
         return FACT.limit(offset, count);
     }
+
+    /**
+     * Creates a new limit expression.
+     * 
+     * @param count The count for the limit expression.
+     * 
+     * @return The new created limit expression.
+     */
+    public static final Limit limit(int count)
+    {
+        return FACT.limit(count);
+    }
 }

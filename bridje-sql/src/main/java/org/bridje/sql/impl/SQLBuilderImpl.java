@@ -127,6 +127,13 @@ class SQLBuilderImpl implements SQLBuilder
     }
 
     @Override
+    public SQLBuilder appendLimit(int count)
+    {
+        dialect.writeLimit(builder, count);
+        return this;
+    }
+
+    @Override
     public SQLBuilder append(SQLWritable expression)
     {
         expression.writeSQL(this);
@@ -150,4 +157,5 @@ class SQLBuilderImpl implements SQLBuilder
     {
         return builder.toString();
     }
+
 }
