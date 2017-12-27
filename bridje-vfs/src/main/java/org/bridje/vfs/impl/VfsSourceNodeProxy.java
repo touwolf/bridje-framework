@@ -38,11 +38,14 @@ class VfsSourceNodeProxy extends VfsNode
         reverseNodes.forEach(node ->
         {
             VFile[] nodeFiles = node.search(globExpr, path);
-            for (VFile file : nodeFiles)
+            if(nodeFiles != null)
             {
-                if (!files.contains(file))
+                for (VFile file : nodeFiles)
                 {
-                    files.add(file);
+                    if (!files.contains(file))
+                    {
+                        files.add(file);
+                    }
                 }
             }
         });
