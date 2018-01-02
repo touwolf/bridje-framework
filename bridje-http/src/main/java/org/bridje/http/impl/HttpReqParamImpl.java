@@ -18,14 +18,15 @@ package org.bridje.http.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.bridje.http.HttpReqParam;
 
 class HttpReqParamImpl implements HttpReqParam
 {
     private final String name;
-    
+
     private final List<String> values;
+
+    private int current = 0;
 
     public HttpReqParamImpl(String name)
     {
@@ -38,19 +39,19 @@ class HttpReqParamImpl implements HttpReqParam
         this.name = name;
         this.values = values;
     }
-    
+
     public HttpReqParamImpl(String name, String value)
     {
         this.name = name;
         this.values = new ArrayList<>();
         this.values.add(value);
     }
-    
+
     public void addValue(String value)
     {
         this.values.add(value);
     }
-    
+
     @Override
     public String getName()
     {
@@ -72,11 +73,33 @@ class HttpReqParamImpl implements HttpReqParam
     @Override
     public String getValue()
     {
+        if(values == null || current >= values.size())
+        {
+            return null;
+        }
+        return values.get(current);
+    }
+
+    @Override
+    public String getFirst()
+    {
         if(values == null || values.size() < 1)
         {
             return null;
         }
         return values.get(0);
+    }
+
+    @Override
+    public String popValue()
+    {
+        if(values == null || current >= values.size())
+        {
+            return null;
+        }
+        String res = values.get(current);
+        current++;
+        return res;
     }
 
     @Override
@@ -89,19 +112,16 @@ class HttpReqParamImpl implements HttpReqParam
     @Override
     public boolean isEmpty()
     {
-        if(values == null || values.size() < 1)
+        if(values == null || current >= values.size())
         {
             return true;
         }
-        return values.get(0).trim().isEmpty();
+        return values.get(current).trim().isEmpty();
     }
 
     @Override
-    public HttpReqParam[] separate()
+    public void reset()
     {
-        return values.stream()
-                        .map(p -> new HttpReqParamImpl(name, p))
-                        .collect(Collectors.toList())
-                        .toArray(new HttpReqParam[0]);
+        current = 0;
     }
 }

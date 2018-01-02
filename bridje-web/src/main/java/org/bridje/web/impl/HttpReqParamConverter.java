@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.bridje.web.impl.convert;
+package org.bridje.web.impl;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.lang.reflect.Array;
@@ -59,7 +59,7 @@ class HttpReqParamConverter implements ElAdvanceConverter
         }
         else
         {
-            return (T)doConvert(param.getValue(), resClass);
+            return (T)doConvert(param.popValue(), resClass);
         }
     }
 

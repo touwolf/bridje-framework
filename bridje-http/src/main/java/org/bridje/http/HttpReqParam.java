@@ -52,7 +52,24 @@ public interface HttpReqParam
      *
      * @return The string representation of the value.
      */
+    String getFirst();
+    
+    /**
+     * 
+     * @return 
+     */
     String getValue();
+
+    /**
+     * 
+     * @return 
+     */
+    String popValue();
+
+    /**
+     * 
+     */
+    void reset();
 
     /**
      * If this parameter is mulitple this method will return all of the values
@@ -69,12 +86,4 @@ public interface HttpReqParam
      *         otherwise.
      */
     boolean isEmpty();
-
-    /**
-     * This method will separate this object into several parameters one for each 
-     * value this parameter holds.
-     * 
-     * @return The array of the separated parameters.
-     */
-    HttpReqParam[] separate();
 }

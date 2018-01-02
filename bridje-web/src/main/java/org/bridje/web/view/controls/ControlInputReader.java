@@ -17,7 +17,6 @@
 package org.bridje.web.view.controls;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class ControlInputReader
 {
     private final Map<String,List<UploadedFile>> filesMap;
 
-    private final Map<String,List<HttpReqParam>> parametersMap;
+    private final Map<String,HttpReqParam> parametersMap;
 
     /**
      * Default constructor.
@@ -55,30 +54,7 @@ public class ControlInputReader
             }
             lst.add(file);
         }
-        Map<String, HttpReqParam> postParameters = req.getPostParameters();
-        for (Entry<String, HttpReqParam> param : postParameters.entrySet())
-        {
-            List<HttpReqParam> lst = parametersMap.get(param.getKey());
-            if(lst == null)
-            {
-                lst = new ArrayList<>();
-                parametersMap.put(param.getKey(), lst);
-            }
-            lst.addAll(Arrays.asList(param.getValue().separate()));
-        }
-    }
-
-    /**
-     * Gets the given uploaded file.
-     * 
-     * @param parameter The name of the uploaded file.
-     * @return The uploaded file or null if it does not exists.
-     */
-    public UploadedFile getUploadedFile(String parameter)
-    {
-        List<UploadedFile> result = filesMap.get(parameter);
-        if(result != null && !result.isEmpty()) return result.get(0);
-        return null;
+        parametersMap.putAll(req.getPostParameters());
     }
 
     /**
@@ -108,27 +84,6 @@ public class ControlInputReader
      */
     public HttpReqParam getParameter(String parameter)
     {
-        List<HttpReqParam> result = parametersMap.get(parameter);
-        if(result != null && !result.isEmpty()) return result.get(0);
-        return null;
-    }
-
-    /**
-     * Reads and remove the given parameter from the request.
-     * 
-     * @param parameter The name of the parameter.
-     * @return The readed parameter.
-     */
-    public HttpReqParam popParameter(String parameter)
-    {
-        List<HttpReqParam> result = parametersMap.get(parameter);
-        if(result != null && !result.isEmpty())
-        {
-            HttpReqParam param = result.get(0);
-            if(param != null) result.remove(0);
-            if(result.isEmpty()) parametersMap.remove(parameter);
-            return param;
-        }
-        return null;
+        return parametersMap.get(parameter);
     }
 }

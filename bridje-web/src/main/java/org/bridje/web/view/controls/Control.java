@@ -281,7 +281,7 @@ public abstract class Control
     protected final void doReadInput(ControlInputReader req, ElEnvironment env)
     {
         inputFiles().stream().forEachOrdered(inputFile -> set(inputFile, req.popUploadedFile(inputFile.getParameter())));
-        inputs().stream().forEachOrdered(input -> set(input, req.popParameter(input.getParameter())));
+        inputs().stream().forEachOrdered(input -> set(input, req.getParameter(input.getParameter())));
         childs().forEach(control -> control.readInput(req, env));
     }
 
@@ -361,7 +361,7 @@ public abstract class Control
      */
     public boolean eventTriggered(ControlInputReader req, UIEvent event)
     {
-        HttpReqParam param = req.popParameter(event.getParameter());
+        HttpReqParam param = req.getParameter(event.getParameter());
         if (param != null) return "t".equals(param.getValue());
         return false;
     }
