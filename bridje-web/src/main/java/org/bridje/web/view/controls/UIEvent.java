@@ -31,11 +31,12 @@ public class UIEvent
 {
     private final String expression;
     
-    private String parameter;
+    private final String parameter;
 
     UIEvent(String expression)
     {
         this.expression = expression;
+        parameter = "__ev." + ParamsContext.createParam(expression);
     }
 
     /**
@@ -55,10 +56,6 @@ public class UIEvent
      */
     public String getParameter()
     {
-        if(parameter == null)
-        {
-            parameter = "__ev." + ViewUtils.simplifyParam(expression);
-        }
         return parameter;
     }
     

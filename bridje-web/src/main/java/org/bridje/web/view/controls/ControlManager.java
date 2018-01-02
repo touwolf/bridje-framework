@@ -34,6 +34,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
@@ -164,19 +166,22 @@ public class ControlManager
 
     private AbstractView toWebView(VFile f)
     {
-        try (InputStream is = new VFileInputStream(f))
+        return Thls.doAs(() ->
         {
-            Object unmObj = webViewUnmarsh.unmarshal(is);
-            if (unmObj instanceof AbstractView)
+            try (InputStream is = new VFileInputStream(f))
             {
-                return (AbstractView) unmObj;
+                Object unmObj = webViewUnmarsh.unmarshal(is);
+                if (unmObj instanceof AbstractView)
+                {
+                    return (AbstractView) unmObj;
+                }
             }
-        }
-        catch (JAXBException | IOException ex)
-        {
-            LOG.log(Level.SEVERE, "Could not load the  view " + f.getPath() + " " + ex.getMessage(), ex);
-        }
-        return null;
+            catch (JAXBException | IOException ex)
+            {
+                LOG.log(Level.SEVERE, "Could not load the  view " + f.getPath() + " " + ex.getMessage(), ex);
+            }
+            return null;
+        }, ParamsContext.class, new ParamsContext());
     }
 
     private void writeWebView(VFile f, WebView view)

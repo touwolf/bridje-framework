@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.http.UploadedFile;
 import org.bridje.ioc.thls.Thls;
+import org.bridje.web.view.ViewUtils;
 
 /**
  * Represents an input expression for a control.
@@ -42,6 +43,10 @@ public class UIFileExpression
     UIFileExpression(String expression)
     {
         this.expression = expression;
+        if (isValid())
+        {
+            parameter = ParamsContext.createParam(getExpression().substring(2, getExpression().length() - 1));
+        }
     }
 
     /**
@@ -79,10 +84,6 @@ public class UIFileExpression
      */
     public String getParameter()
     {
-        if (parameter == null && isValid())
-        {
-            parameter = getExpression().substring(2, getExpression().length() - 1);
-        }
         return parameter;
     }
 

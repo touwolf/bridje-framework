@@ -36,6 +36,10 @@ public class UIInputExpression extends UIExpression
     UIInputExpression(String expression)
     {
         super(expression);
+        if (isValid())
+        {
+            parameter = ParamsContext.createParam(getExpression().substring(2, getExpression().length() - 1));
+        }
     }
 
     /**
@@ -74,10 +78,6 @@ public class UIInputExpression extends UIExpression
      */
     public String getParameter()
     {
-        if (parameter == null && isValid())
-        {
-            parameter = ViewUtils.simplifyParam(getExpression().substring(2, getExpression().length() - 1));
-        }
         return parameter;
     }
 
