@@ -64,9 +64,13 @@ public class UIExpression
         {
             return Thls.get(ElEnvironment.class).get(expression, resultClasss);
         }
-        catch (Exception e)
+        catch (javax.el.PropertyNotFoundException e)
         {
             LOG.log(Level.WARNING, "The expression {0} is not valid: {1}", new Object[]{expression, e.getMessage()});
+        }
+        catch (Exception e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
     }
