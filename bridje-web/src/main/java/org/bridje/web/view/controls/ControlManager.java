@@ -35,7 +35,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.ioc.thls.ThlsAction;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
@@ -52,22 +51,18 @@ public class ControlManager
 {
     private static final Logger LOG = Logger.getLogger(ControlManager.class.getName());
 
-    private Unmarshaller webViewUnmarsh;
-
-    private Marshaller webViewMarsh;
+    private Class<?>[] controlClasses;
 
     @PostConstruct
     private void init()
     {
         try
         {
-            JAXBContext webViewJaxbCtx = JAXBContext.newInstance(findComponentsClasses());
-            webViewUnmarsh = webViewJaxbCtx.createUnmarshaller();
-            webViewMarsh = webViewJaxbCtx.createMarshaller();
+            controlClasses = findComponentsClasses();
         }
-        catch (JAXBException | IOException e)
+        catch (IOException ex)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -170,6 +165,8 @@ public class ControlManager
         {
             try (InputStream is = new VFileInputStream(f))
             {
+                JAXBContext webViewJaxbCtx = JAXBContext.newInstance(controlClasses);
+                Unmarshaller webViewUnmarsh = webViewJaxbCtx.createUnmarshaller();
                 Object unmObj = webViewUnmarsh.unmarshal(is);
                 if (unmObj instanceof AbstractView)
                 {
@@ -188,6 +185,8 @@ public class ControlManager
     {
         try (OutputStream os = new VFileOutputStream(f))
         {
+            JAXBContext webViewJaxbCtx = JAXBContext.newInstance(controlClasses);
+            Marshaller webViewMarsh = webViewJaxbCtx.createMarshaller();
             webViewMarsh.marshal(view, os);
         }
         catch (JAXBException | IOException ex)
