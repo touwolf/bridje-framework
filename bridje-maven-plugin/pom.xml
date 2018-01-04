@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.5.0-beta14</version>
+        <version>0.5.0-beta15-SNAPSHOT</version>
     </parent>
 
     <artifactId>bridje-maven-plugin</artifactId>
-    <version>0.5.0-beta14</version>
+    <version>0.5.0-beta15-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>Bridje Maven Plugin</name>
