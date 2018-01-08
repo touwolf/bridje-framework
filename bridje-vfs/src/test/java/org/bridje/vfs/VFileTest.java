@@ -86,10 +86,17 @@ public class VFileTest
         new VFile("/merged1/vfs/other/folder1").mount(new FileSource(new File("./target/test-classes/merged/folder1")));
         new VFile("/merged1/vfs/other/folder2").mount(new FileSource(new File("./target/test-classes/merged/folder2")));
 
-        Assert.assertArrayEquals(new String[]{"vfs", "merged.txt"}, new VFile("/merged1").list());
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1").list()).contains("vfs"));
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1").list()).contains("merged.txt"));
+
         Assert.assertArrayEquals(new String[]{"other"}, new VFile("/merged1/vfs").list());
-        Assert.assertArrayEquals(new String[]{"folder2", "folder1", "other-common.txt"}, new VFile("/merged1/vfs/other").list());
-        Assert.assertArrayEquals(new String[]{"common.txt", "document1.txt"}, new VFile("/merged1/vfs/other/folder1").list());
+        
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("other-common.txt"));
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("folder1"));
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("folder2"));
+
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other/folder1").list()).contains("document1.txt"));
+        Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other/folder1").list()).contains("common.txt"));
     }
 
     @Test
