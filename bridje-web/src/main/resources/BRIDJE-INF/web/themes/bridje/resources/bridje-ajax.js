@@ -148,6 +148,10 @@ window.onload = function()
             eventEl: eventEl
         });
     };
+    window.__bridje.execute = function(element)
+    {
+        execute(element);
+    };
 
     const removeElementActionClass = function(element)
     {
