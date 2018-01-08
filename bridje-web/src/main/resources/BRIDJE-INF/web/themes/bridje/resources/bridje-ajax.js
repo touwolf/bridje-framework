@@ -224,10 +224,13 @@ window.onload = function()
                 {
                     action.onkeypress = function(e)
                     {
-                        e && e.preventDefault();
-                        if (event.which == 13 || event.keyCode == 13)
+                        if(e)
                         {
-                            execute(action);
+                            if (e.which == 13 || e.keyCode == 13)
+                            {
+                                e.preventDefault();
+                                execute(action);
+                            }
                         }
                     };
                 }
