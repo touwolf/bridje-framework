@@ -211,6 +211,28 @@ window.onload = function()
                 }
             }
         }
+        
+        actions = element.getElementsByClassName('bridje-action-enter');
+        for (let i = 0; i < actions.length; i++)
+        {
+            const action = actions[i];
+            if (findForm(action))
+            {
+                const eventId = action.getAttribute('data-eventid');
+                const eventInput = document.getElementById(eventId);
+                if (eventInput)
+                {
+                    action.onkeypress = function(e)
+                    {
+                        e && e.preventDefault();
+                        if (event.which == 13 || event.keyCode == 13)
+                        {
+                            execute(action);
+                        }
+                    };
+                }
+            }
+        }
     };
 
     initialize(document);
