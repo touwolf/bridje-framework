@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bridje/bridje-framework.svg?branch=master)](https://travis-ci.org/bridje/bridje-framework)
+[![Build Status](https://travis-ci.org/touwolf/bridje-framework.svg?branch=master)](https://travis-ci.org/touwolf/bridje-framework)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.bridje/bridje-parent)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/096fce438e94496185cbb855c0e16b67)](https://www.codacy.com/app/gilberto-vento/bridje-framework)
 
