@@ -42,7 +42,7 @@ public class ${model.name}Base
                     </#list>
                     <#list model.entities as entity>
                     <#list entity.foreignKeys![] as key>
-                    <#if !key.isWithItSelf>
+                    <#if key.isWithItSelf || key.fkOnModel>
                     .foreignKey(SQL.buildForeignKey(${entity.name}.TABLE, ${entity.name}.${key.column?upper_case})
                                     .references(${key.with.name}.TABLE)
                                     .strategy(ForeignKeyStrategy.${key.onUpdate}, ForeignKeyStrategy.${key.onDelete})

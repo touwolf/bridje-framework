@@ -37,6 +37,9 @@ public class RelationField extends FieldInf
     @XmlAttribute
     private RelationStrategy onDelete;
     
+    @XmlAttribute
+    private Boolean fkOnModel;
+    
     public String getReferencesName()
     {
         return referencesName;
@@ -123,5 +126,19 @@ public class RelationField extends FieldInf
     public boolean isAutoIncrement()
     {
         return false;
+    }
+
+    public Boolean getFkOnModel()
+    {
+        if(fkOnModel == null)
+        {
+            fkOnModel = false;
+        }
+        return fkOnModel;
+    }
+
+    public void setFkOnModel(Boolean fkOnModel)
+    {
+        this.fkOnModel = fkOnModel;
     }
 }
