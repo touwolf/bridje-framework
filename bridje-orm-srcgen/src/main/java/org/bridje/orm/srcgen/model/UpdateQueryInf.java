@@ -16,7 +16,7 @@
 
 package org.bridje.orm.srcgen.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -78,7 +78,7 @@ public class UpdateQueryInf extends QueryInf
     {
         if(mapParams == null)
         {
-            mapParams = new HashMap<>();
+            mapParams = new LinkedHashMap<>();
             if(getWhere() != null)
             {
                 mapParams.putAll(getWhere().getParams());

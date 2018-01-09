@@ -16,7 +16,7 @@
 
 package org.bridje.orm.srcgen.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -63,7 +63,7 @@ public class WhereStmt extends ConditionStmt
     {
         if(mapParams == null)
         {
-            mapParams = new HashMap<>();
+            mapParams = new LinkedHashMap<>();
             fillParams(mapParams);
         }
         return mapParams;
