@@ -126,6 +126,22 @@ class SchemaFixer
         }
         return false;
     }
+    
+    private Boolean isNullable(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
+    {
+        try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
+        {
+            if (resultSet.next())
+            {
+                String str = resultSet.getString("IS_NULLABLE");
+                if(str != null && !str.trim().isEmpty())
+                {
+                    return "YES".equalsIgnoreCase(resultSet.getString("IS_NULLABLE"));
+                }
+            }
+        }
+        return null;
+    }
 
     private void fixColumns(Connection connection, Table table) throws SQLException
     {
@@ -138,6 +154,17 @@ class SchemaFixer
                 String sql = dialect.addColumn(column, params);
                 SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
                 executeStmt(connection, sqlStmt);
+            }
+            else
+            {
+                Boolean isNullable = isNullable(metadata, column);
+                if(isNullable != null && isNullable != column.isAllowNull())
+                {
+                    List<Object> params = new ArrayList<>();
+                    String sql = dialect.changeColumn(column.getName(), column, params);
+                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+                    executeStmt(connection, sqlStmt);
+                }
             }
         }
     }

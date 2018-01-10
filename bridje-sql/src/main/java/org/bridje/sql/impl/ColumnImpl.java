@@ -84,6 +84,7 @@ class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, Num
     @Override
     public boolean isAllowNull()
     {
+        if(isKey()) return false;
         return allowNull;
     }
 
