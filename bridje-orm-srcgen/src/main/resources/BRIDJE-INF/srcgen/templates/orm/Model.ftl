@@ -109,13 +109,16 @@ public class ${model.name}Base
 
     protected void parse${entity.name}(${entity.name} entity, SQLResultSet rs) throws SQLException
     {
-        <#list entity.allFields as field>
+        entity.set${entity.key.name?cap_first}(rs.get(${entity.name}.${entity.key.column?upper_case}));
+        ctx.put(entity.get${entity.key.name?cap_first}(), entity);
+        <#list entity.fields as field>
         entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(${entity.key.type.parserCode("key")})</#if>));
         </#list>
     }
 
     public ${entity.name} find${entity.name}(${entity.key.type.javaType} key) throws SQLException
     {
+        if(ctx.contains(${entity.name}.class, key)) return ctx.get(${entity.name}.class, key);
         return env.fetchOne(${entity.name}.FIND_QUERY, this::parse${entity.name}, key);
     }
 
