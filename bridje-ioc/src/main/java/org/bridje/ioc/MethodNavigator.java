@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * Functional interface used by {@link ClassRepository} for navigating annotated 
  * methods in the inversion of control context.
  * <p>
- * @param <A> The annotation that the methods must have in orther to be accept by
+ * @param <A> The annotation that the methods must have in other to be accept by
  *            the navigator.
  */
 @FunctionalInterface

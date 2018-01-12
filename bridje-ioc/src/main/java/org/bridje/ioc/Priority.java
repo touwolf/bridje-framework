@@ -34,7 +34,7 @@ public @interface Priority
     /**
      * The priority of the component.
      * <p>
-     * @return An intenger witch represents the priority of the component.
+     * @return An integer witch represents the priority of the component.
      */
     int value() default Integer.MAX_VALUE;
 }

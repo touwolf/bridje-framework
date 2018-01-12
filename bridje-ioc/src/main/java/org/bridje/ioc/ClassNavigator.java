@@ -24,7 +24,7 @@ import java.lang.annotation.Annotation;
  * Functional interface used by {@link ClassRepository} for navigating annotated 
  * classes in the inversion of control context.
  * <p>
- * @param <A> The annotation that classes must have in orther to be accept by
+ * @param <A> The annotation that classes must have in other to be accept by
  *            the navigator.
  * @param <T> The type for the component that will be accepted by this navigator.
  */

@@ -25,7 +25,7 @@ import java.lang.annotation.Annotation;
 public interface ClassRepository
 {
     /**
-     * Navigates through all methods of all component classes registred in this
+     * Navigates through all methods of all component classes registered in this
      * repository, that are annotated with the given annotation. This includes
      * superclasses methods.
      * <p>
@@ -39,7 +39,7 @@ public interface ClassRepository
     <A extends Annotation> void forEachMethod(Class<A> annotation, MethodNavigator<A> navigator);
 
     /**
-     * Navigates through all fields of all component classes registred in this
+     * Navigates through all fields of all component classes registered in this
      * repository, that are annotated with the given annotation. This includes
      * superclasses fields.
      * <p>
