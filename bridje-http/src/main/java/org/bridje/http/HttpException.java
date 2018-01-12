@@ -51,7 +51,7 @@ public class HttpException extends Exception
      * 
      * @param status The status code to return to the client, must be a valid HTTP status code.
      * @param message The message for this exception.
-     * @param cause The coause for this exception.
+     * @param cause The cause for this exception.
      */
     public HttpException(int status, String message, Throwable cause)
     {
@@ -63,7 +63,7 @@ public class HttpException extends Exception
      * Status and cause constructor.
      * 
      * @param status The status code to return to the client, must be a valid HTTP status code.
-     * @param cause The coause for this exception.
+     * @param cause The cause for this exception.
      */
     public HttpException(int status, Throwable cause)
     {

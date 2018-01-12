@@ -50,29 +50,38 @@ public interface HttpReqParam
     /**
      * Gets the first value sent to the server with the name of this parameter.
      *
-     * @return The string representation of the value.
+     * @return The string representation of the first value or <code>null</code>
+     *         if the parameter has no values.
      */
     String getFirst();
     
     /**
-     * 
-     * @return 
+     * If this parameter is multiple this method will return a value according
+     * to an internal cursor.
+     *
+     * @return The string representation of the current value of parameter or
+     *         <code>null</code> if the parameter has no more values.
      */
     String getValue();
 
     /**
-     * 
-     * @return 
+     * If this parameter is multiple this method will return a value according
+     * to an internal cursor and increment the cursor position.
+     * If this parameter is single this method will return the value only the
+     * first time is called.
+     *
+     * @return The string representation of the current value of parameter or
+     *         <code>null</code> if the parameter has no more values.
      */
     String popValue();
 
     /**
-     * 
+     * Reset the internal cursor to position <code>0</code>
      */
     void reset();
 
     /**
-     * If this parameter is mulitple this method will return all of the values
+     * If this parameter is multiple this method will return all of the values
      * that were sent to the server under it´s name.
      *
      * @return The string array with all the values for this parameter.
