@@ -57,5 +57,4 @@ public interface SQLService
      * @throws SQLException If any SQL error occurs.
      */
     SQLEnvironment createEnvironment(String dataSourceName) throws SQLException;
-
 }

@@ -41,7 +41,7 @@ public interface StringExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<Integer, Integer> length();
 
     /**
-     * Creates a new boolean expression that performs the LIKE comparation of
+     * Creates a new boolean expression that performs the LIKE comparison of
      * this expression with the given one.
      *
      * @param stringExpr The second operand.
@@ -51,7 +51,7 @@ public interface StringExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> like(StringExpr<?, ?> stringExpr);
 
     /**
-     * Creates a new boolean expression that performs the LIKE comparation of
+     * Creates a new boolean expression that performs the LIKE comparison of
      * this expression with the given one.
      *
      *

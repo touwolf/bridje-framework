@@ -66,9 +66,9 @@ public interface Table extends TableExpr
     Column<?, ?> getColumn(String name);
 
     /**
-     * The indexs for this table.
+     * The indexes for this table.
      * 
-     * @return The indexs for this table.
+     * @return The indexes for this table.
      */
     Index[] getIndexes();
 
