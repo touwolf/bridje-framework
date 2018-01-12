@@ -34,9 +34,9 @@ public class EnumConstantInf
     private String description;
 
     @XmlElements(
-            {
-                @XmlElement(name = "property", type = EnumConstantProperty.class)
-            })
+    {
+        @XmlElement(name = "property", type = EnumConstantProperty.class)
+    })
     private List<EnumConstantProperty> properties;
 
     /**
@@ -109,5 +109,4 @@ public class EnumConstantInf
                         .findFirst()
                         .orElse("");
     }
-
 }

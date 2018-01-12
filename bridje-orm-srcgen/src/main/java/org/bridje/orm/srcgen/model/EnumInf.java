@@ -35,16 +35,16 @@ public class EnumInf extends EnumBaseInf
     private Boolean descriptionAsProperty;
 
     @XmlElements(
-            {
-                @XmlElement(name = "constant", type = EnumConstantInf.class)
-            })
+    {
+        @XmlElement(name = "constant", type = EnumConstantInf.class)
+    })
     private List<EnumConstantInf> constants;
 
     @XmlElementWrapper(name = "properties")
     @XmlElements(
-            {
-                @XmlElement(name = "property", type = EnumPropertyInf.class)
-            })
+    {
+        @XmlElement(name = "property", type = EnumPropertyInf.class)
+    })
     private List<EnumPropertyInf> properties;
 
     /**
@@ -124,7 +124,7 @@ public class EnumInf extends EnumBaseInf
 
     /**
      * The name of the package for this enumerator.
-     * 
+     *
      * @return The name of the package for this enumerator.
      */
     @Override

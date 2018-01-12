@@ -2,7 +2,7 @@
 package org.bridje.orm;
 
 /**
- * Represent a page in a pagin object.
+ * Represent a page in a paging object.
  */
 public class Page
 {
@@ -87,5 +87,4 @@ public class Page
     {
         return String.valueOf(value);
     }
-
 }

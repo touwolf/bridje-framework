@@ -73,7 +73,7 @@ public interface EntityContext
     <T> void clear(Class<T> entity);
 
     /**
-     * Remove all stored entitys.
+     * Remove all stored entities.
      */
     void clear();
 
