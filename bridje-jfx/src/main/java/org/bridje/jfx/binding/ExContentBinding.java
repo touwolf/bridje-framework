@@ -76,7 +76,7 @@ class ExContentBinding
     private static <E, T> Collection<? extends T> convert(List<? extends E> subList, ContentConverter<E, T> converter)
     {
         return subList.stream()
-                        .map(e -> converter.convert(e))
+                        .map(converter::convert)
                         .collect(Collectors.toList());
     }
 }

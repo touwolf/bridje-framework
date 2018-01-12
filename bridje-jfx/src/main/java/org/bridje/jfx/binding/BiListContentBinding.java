@@ -24,7 +24,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 /**
- * A bidirectional binding for two lists of diferent types.
+ * A bidirectional binding for two lists of different types.
  * 
  * @param <E> The type of the first list.
  * @param <T> The type of the second list.
@@ -160,14 +160,14 @@ public class BiListContentBinding<E, T> implements ListChangeListener, WeakListe
     private List<T> convertFrom(List<E> subList)
     {
         return subList.stream()
-                        .map(e -> converter.convertFrom(e))
+                        .map(converter::convertFrom)
                         .collect(Collectors.toList());
     }
 
     private List<E> convertTo(List<T> subList)
     {
         return subList.stream()
-                        .map(e -> converter.convertTo(e))
+                        .map(converter::convertTo)
                         .collect(Collectors.toList());
     }
 }

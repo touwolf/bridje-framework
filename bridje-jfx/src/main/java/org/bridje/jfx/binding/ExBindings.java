@@ -21,7 +21,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Utility functions for binding of the content of collections. This functions extend the 
- * funtionality provided by the javafx Bindings class.
+ * functionality provided by the javafx Bindings class.
  */
 public class ExBindings
 {
@@ -41,7 +41,7 @@ public class ExBindings
     }
 
     /**
-     * Unbinds a bidirectino binding.
+     * Unbinds a bidirectional binding.
      * 
      * @param obj1 The first object.
      * @param obj2 The second object.
