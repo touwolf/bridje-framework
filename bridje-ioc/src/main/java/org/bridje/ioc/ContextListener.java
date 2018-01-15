@@ -26,7 +26,7 @@ package org.bridje.ioc;
  * ContextListener, the framework must search all ContextListener
  * implementations via the standard way of components resolution and call the 3
  * methods of the interface in the propper place.
- * <p>
+ * </p>
  *
  * @param <T> Component class that you want listen.
  *            <p>
