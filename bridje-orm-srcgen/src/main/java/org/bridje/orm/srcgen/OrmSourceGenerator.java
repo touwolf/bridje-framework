@@ -34,7 +34,7 @@ import org.bridje.vfs.VFile;
 /**
  * This components is the source code generator for the ORM API. it will read
  * the ORM model files in from the SrcGenService and will generate al the
- * entityts and enumerators for that model.
+ * entities and enumerators for that model.
  */
 @Component
 public class OrmSourceGenerator implements SourceGenerator<ModelInf>

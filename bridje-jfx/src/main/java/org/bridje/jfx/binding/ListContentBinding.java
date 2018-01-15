@@ -24,7 +24,7 @@ import javafx.beans.WeakListener;
 import javafx.collections.ListChangeListener;
 
 /**
- * A content binding for two lists of diferent types.
+ * A content binding for two lists of different types.
  * 
  * @param <E> The type of the first list.
  * @param <T> The type of the second list.
@@ -111,7 +111,7 @@ public class ListContentBinding<E, T> implements ListChangeListener<E>, WeakList
     private Collection<? extends T> convert(List<? extends E> subList)
     {
         return subList.stream()
-                        .map(e -> converter.convert(e))
+                        .map(converter::convert)
                         .collect(Collectors.toList());
     }
 }

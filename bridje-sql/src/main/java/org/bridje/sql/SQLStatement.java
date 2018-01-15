@@ -29,9 +29,9 @@ public interface SQLStatement
     Expression<?, ?>[] getResultFields();
 
     /**
-     * If this statement retrives new generated keys.
+     * If this statement retrieves new generated keys.
      * 
-     * @return true this statement retrives new generated keys, false otherwise.
+     * @return true this statement retrieves new generated keys, false otherwise.
      */
     boolean isWithGeneratedKeys();
 

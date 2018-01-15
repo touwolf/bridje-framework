@@ -76,7 +76,6 @@ public interface HttpBridletResponse
      * @return The new created HttpCookie object.
      */
     HttpCookie addCookie(String name, String value);
-
     /**
      * Adds a new HttpCookie to the response of this request.
      *

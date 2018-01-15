@@ -32,7 +32,7 @@ import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 
 /**
- * Configuration object for the JdbcService. It specify all the datasources
+ * Configuration object for the JdbcService. It specify all the data sources
  * available for the application. Users can specify their configurations by
  * putting the jdbc.xml file into the configuration folder.
  */
@@ -51,7 +51,7 @@ public class JdbcConfig
      * Gets all the DataSourceConfig objects specified by the user in the
      * jdbc.xml configuration file.
      *
-     * @return A list of DataSorucesConfig objects specified by the user.
+     * @return A list of DataSourcesConfig objects specified by the user.
      */
     public List<DataSourceConfig> getDataSources()
     {
@@ -66,7 +66,7 @@ public class JdbcConfig
      * Sets all the DataSourceConfig objects that can be user by the
      * JdbcService.
      *
-     * @param dataSources A list of DataSorucesConfig objects to be use by the
+     * @param dataSources A list of DataSourcesConfig objects to be use by the
      * JdbcService.
      */
     public void setDataSources(List<DataSourceConfig> dataSources)
@@ -75,7 +75,7 @@ public class JdbcConfig
     }
 
     /**
-     * Loads a HttpServerConfig from a file.
+     * Loads a JdbcConfig from a file.
      * 
      * @param xmlFile The file to load the object from.
      * @return The loaded object.
@@ -105,7 +105,7 @@ public class JdbcConfig
     }
 
     /**
-     * Save a SipServerConfig to an output stream.
+     * Save a JdbcConfig to an output stream.
      * 
      * @param os The output stream to write the object to.
      * @param object The object to write.

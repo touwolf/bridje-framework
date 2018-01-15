@@ -17,7 +17,7 @@
 package org.bridje.jfx.binding;
 
 /**
- * A bidirectional converter from/to two diferent types, for the content of two collections.
+ * A bidirectional converter from/to two different types, for the content of two collections.
  * 
  * @param <E> The first type.
  * @param <T> The second type.

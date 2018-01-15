@@ -22,7 +22,7 @@ import javafx.beans.WeakListener;
 import javafx.collections.SetChangeListener;
 
 /**
- * A content binding for two sets of diferent types.
+ * A content binding for two sets of different types.
  * 
  * @param <E> The type of the first list.
  * @param <T> The type of the second list.

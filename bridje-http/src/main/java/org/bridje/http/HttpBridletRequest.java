@@ -83,21 +83,21 @@ public interface HttpBridletRequest
     String getContentType();
 
     /**
-     * When ever this request is http method is "GET".
+     * Whenever this request is http method is "GET".
      *
      * @return true the http method for this request is "GET", false otherwise.
      */
     boolean isGet();
 
     /**
-     * When ever this request is http method is "POST".
+     * Whenever this request is http method is "POST".
      *
      * @return true the http method for this request is "GET", false otherwise.
      */
     boolean isPost();
 
     /**
-     * When ever this request is http method is "DELETE".
+     * Whenever this request is http method is "DELETE".
      *
      * @return true the http method for this request is "DELETE", false
      *         otherwise.
@@ -105,14 +105,14 @@ public interface HttpBridletRequest
     boolean isDelete();
 
     /**
-     * When ever this request is http method is "PUT".
+     * Whenever this request is http method is "PUT".
      *
      * @return true the http method for this request is "PUT", false otherwise.
      */
     boolean isPut();
 
     /**
-     * When ever this request is http method is "PATCH".
+     * Whenever this request is http method is "PATCH".
      *
      * @return true the http method for this request is "PATCH", false
      *         otherwise.
@@ -120,7 +120,7 @@ public interface HttpBridletRequest
     boolean isPatch();
 
     /**
-     * When ever this request content type is a www-form or multipart-form.
+     * Whenever this request content type is a www-form or multipart-form.
      *
      * @return true this request content type is a www-form or multipart-form,
      *         false otherwise.
@@ -128,7 +128,7 @@ public interface HttpBridletRequest
     boolean isForm();
 
     /**
-     * When ever this request is a "application/x-www-form-urlencoded".
+     * Whenever this request is a "application/x-www-form-urlencoded".
      *
      * @return true this request is a "application/x-www-form-urlencoded", false
      *         otherwise.
@@ -136,14 +136,14 @@ public interface HttpBridletRequest
     boolean isWwwForm();
 
     /**
-     * When ever this request is a "multipart/form-data".
+     * Whenever this request is a "multipart/form-data".
      *
      * @return true this request is a "multipart/form-data", false otherwise.
      */
     boolean isMultipartForm();
 
     /**
-     * Gets a unmodificable map to the post parameters sent by the client. If
+     * Gets a unmodifiable map to the post parameters sent by the client. If
      * this request is not a "application/x-www-form-urlencoded" or a
      * multipart/form-data" the post parameters map will be empty.
      *
@@ -216,7 +216,7 @@ public interface HttpBridletRequest
     String[] getHeaders();
 
     /**
-     * Gets the value of the especified header.
+     * Gets the value of the specified header.
      *
      * @param header The header name
      *

@@ -23,7 +23,7 @@ import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener.Change;
 
 /**
- * A bidirectional binding for two sets of diferent types.
+ * A bidirectional binding for two sets of different types.
  * 
  * @param <E> The type of the first list.
  * @param <T> The type of the second list.
@@ -139,7 +139,7 @@ public class BiSetContentBinding<E, T> implements SetChangeListener<Object>, Wea
             if ((propertyB1 == null) || (propertyB2 == null)) return false;
 
             if ((propertyA1 == propertyB1) && (propertyA2 == propertyB2)) return true;
-            if ((propertyA1 == propertyB2) && (propertyA2 == propertyB1)) return true;
+            return (propertyA1 == propertyB2) && (propertyA2 == propertyB1);
         }
         return false;
     }

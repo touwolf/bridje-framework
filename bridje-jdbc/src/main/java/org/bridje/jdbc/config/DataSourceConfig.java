@@ -153,11 +153,11 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the maximun numer of configurations allowed in the datasource. If
-     * the current total connectios in the datasource reach this number, new
+     * Gets the maximum number of configurations allowed in the datasource. If
+     * the current total connections in the datasource reach this number, new
      * requests will have to wait for a new connection to be released.
      *
-     * @return The maximun numer of connections in the datasource.
+     * @return The maximum number of connections in the datasource.
      */
     public int getMaxConnections()
     {
@@ -169,11 +169,11 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the maximun numer of configurations allowed in the datasource. If
-     * the current total connectios in the datasource reach this number, new
+     * Sets the maximum number of configurations allowed in the datasource. If
+     * the current total connections in the datasource reach this number, new
      * requests will have to wait for a new connection to be released.
      *
-     * @param maxConnections The maximun numer of connections in the datasource.
+     * @param maxConnections The maximum number of connections in the datasource.
      */
     public void setMaxConnections(int maxConnections)
     {
@@ -181,10 +181,10 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the minimun time in seconds that a connection is unused in the
-     * datasource to be considered iddle and released.
+     * Gets the minimum time in seconds that a connection is unused in the
+     * datasource to be considered idle and released.
      *
-     * @return The minimun amount of seconds a connection can be unused before
+     * @return The minimum amount of seconds a connection can be unused before
      *         it is released.
      */
     public long getIdleTime()
@@ -197,10 +197,10 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the minimun time in seconds that a connection is unused in the
-     * datasource to be considered iddle and released.
+     * Sets the minimum time in seconds that a connection is unused in the
+     * datasource to be considered idle and released.
      *
-     * @param idleTime The minimun amount of seconds a connection can be unused
+     * @param idleTime The minimum amount of seconds a connection can be unused
      *                 before it is released.
      */
     public void setIdleTime(long idleTime)
@@ -209,13 +209,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Gets the minumun amount of connections to keep in the datasource when
-     * iddle connections are released. Iddle connections will be released from
+     * Gets the minimum amount of connections to keep in the datasource when
+     * idle connections are released. Idle connections will be released from
      * the datasource but not all, a number of connections equals to this
-     * parameter will be keep even if they are iddle.
+     * parameter will be keep even if they are idle.
      *
      * @return The number of connections to keep in the datasource even if they
-     *         are iddle.
+     *         are idle.
      */
     public int getMinConnections()
     {
@@ -227,13 +227,13 @@ public class DataSourceConfig
     }
 
     /**
-     * Sets the minumun amount of connections to keep in the datasource when
-     * iddle connections are released. Iddle connections will be released from
+     * Sets the minimum amount of connections to keep in the datasource when
+     * idle connections are released. Idle connections will be released from
      * the datasource but not all, a number of connections equals to this
-     * parameter will be keep even if they are iddle.
+     * parameter will be keep even if they are idle.
      *
      * @param minConnections The number of connections to keep in the datasource
-     *                       even if they are iddle.
+     *                       even if they are idle.
      */
     public void setMinConnections(int minConnections)
     {
@@ -241,7 +241,7 @@ public class DataSourceConfig
     }
 
     /**
-     * The time in seconds before the connection is tested to be discarted as
+     * The time in seconds before the connection is tested to be discarded as
      * idle, and the framework tries to reconnect it again.
      *
      * @return An integer representing the time in seconds.
@@ -256,7 +256,7 @@ public class DataSourceConfig
     }
 
     /**
-     * The time in seconds before the connection is tested to be discarted as
+     * The time in seconds before the connection is tested to be discarded as
      * idle, and the framework tries to reconnect it again.
      *
      * @param reconnectTime An integer representing the time in seconds.

@@ -33,7 +33,7 @@ public interface SQLResultParser<T>
      *
      * @return The parsed value.
      *
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     T parse(SQLResultSet rs) throws SQLException;
 

@@ -58,16 +58,16 @@ public abstract class ConditionStmt
     private String operand2;
 
     /**
-     * If the condition is nagated.
+     * If the condition is negated.
      * 
      * @return true the condition has a not befor.
      */
     public abstract boolean isNot();
 
     /**
-     * Gets the boolan operator used to join this condition with a previous one.
+     * Gets the boolean operator used to join this condition with a previous one.
      * 
-     * @return The boolan operator used to join this condition with a previous one.
+     * @return The boolean operator used to join this condition with a previous one.
      */
     public abstract String getBooleanOperator();
 

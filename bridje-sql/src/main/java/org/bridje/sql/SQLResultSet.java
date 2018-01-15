@@ -19,7 +19,7 @@ package org.bridje.sql;
 import java.sql.SQLException;
 
 /**
- * Represents a reuslt set for the execution of a select query in the database.
+ * Represents a result set for the execution of a select query in the database.
  */
 public interface SQLResultSet extends AutoCloseable
 {
@@ -28,7 +28,7 @@ public interface SQLResultSet extends AutoCloseable
      * 
      * @return true if more records exists, false otherwise.
      * 
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     boolean next() throws SQLException;
 
@@ -41,7 +41,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     <T, E> T get(Expression<T, E> expr) throws SQLException;
 
@@ -55,7 +55,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     <T, E> T get(int column, SQLType<T, E> type) throws SQLException;
 
@@ -69,7 +69,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     <T, E> T get(Expression<T, E> expr, SQLValueParser<T, E> parser) throws SQLException;
 
@@ -84,8 +84,7 @@ public interface SQLResultSet extends AutoCloseable
      *
      * @return The value found.
      *
-     * @throws SQLException If any SQL error ocurrs.
+     * @throws SQLException If any SQL error occurs.
      */
     <T, E> T get(int column, SQLType<T, E> type, SQLValueParser<T, E> parser) throws SQLException;
-
 }

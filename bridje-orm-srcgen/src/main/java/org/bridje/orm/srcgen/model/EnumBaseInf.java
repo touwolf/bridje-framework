@@ -20,7 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 
 /**
- * This class is the base class for the enumerators information clases.
+ * This class is the base class for the enumerators information classes.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class EnumBaseInf
@@ -63,7 +63,7 @@ public abstract class EnumBaseInf
     }
 
     /**
-     * Called by JAXB after unmarshal.
+     * Called by JAXB after unmarshall.
      *
      * @param u      The unmarshaller.
      * @param parent The parent object.
@@ -74,9 +74,9 @@ public abstract class EnumBaseInf
     }
 
     /**
-     * The package for this enitty.
+     * The package for this entity.
      * 
-     * @return The package for this enitty.
+     * @return The package for this entity.
      */
     public abstract String getPackage();
 

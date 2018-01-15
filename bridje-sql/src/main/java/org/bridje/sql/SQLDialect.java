@@ -20,7 +20,7 @@ import java.sql.Connection;
 import java.util.List;
 
 /**
- * Represents an SQL dialect for any especific RDBM or version.
+ * Represents an SQL dialect for any specific RDBM or version.
  */
 public interface SQLDialect
 {
@@ -81,7 +81,7 @@ public interface SQLDialect
     /**
      * Creates the given column drop DDLs.
      *
-     * @param column The colum to drop.
+     * @param column The column to drop.
      * @param params The list of parameters.
      *
      * @return The DDL statement.
@@ -92,7 +92,7 @@ public interface SQLDialect
      * Creates the given column change DDLs.
      *
      * @param oldName The old name of the column.
-     * @param column The colum to change.
+     * @param column The column to change.
      * @param params The list of parameters.
      * 
      * @return The DDL statement.
@@ -138,5 +138,4 @@ public interface SQLDialect
      * @return The DDL statement.
      */
     String dropForeignKey(ForeignKey fk, List<Object> params);
-
 }

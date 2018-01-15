@@ -42,7 +42,7 @@ public abstract class ClassListPropertyFile extends AbstractProcessor
     private static final Logger LOG = Logger.getLogger(ClassListPropertyFile.class.getName());
 
     /**
-     * Gets the name for the file that will be writed by this annotation processor.
+     * Gets the name for the file that will be written by this annotation processor.
      * 
      * @return The name of the file for this annotation processor.
      */
@@ -54,14 +54,14 @@ public abstract class ClassListPropertyFile extends AbstractProcessor
      * the component reference to de file.
      * 
      * @param element The element representing the current component class.
-     * @throws IOException If the component cannot be writed to the file.
+     * @throws IOException If the component cannot be written to the file.
      */
     public abstract void processElement(Element element) throws IOException;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv)
     {
-        //Creating necesary objects for annotations procesing.
+        //Creating necessary objects for annotations processing.
         super.init(processingEnv);
         Messager messager = processingEnv.getMessager();
         try

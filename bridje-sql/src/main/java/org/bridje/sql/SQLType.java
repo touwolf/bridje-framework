@@ -30,32 +30,32 @@ public interface SQLType<T, E>
     /**
      * A boolean SQL type.
      */
-    public static final SQLType<Boolean, Boolean> BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BOOLEAN);
+    SQLType<Boolean, Boolean> BOOLEAN = SQL.buildType(Boolean.class, JDBCType.BOOLEAN);
 
     /**
      * A long SQL type.
      */
-    public static final SQLType<Long, Long> LONG = SQL.buildType(Long.class, JDBCType.BIGINT);
+    SQLType<Long, Long> LONG = SQL.buildType(Long.class, JDBCType.BIGINT);
 
     /**
      * An integer SQL type.
      */
-    public static final SQLType<Integer, Integer> INTEGER = SQL.buildType(Integer.class, JDBCType.INTEGER);
+    SQLType<Integer, Integer> INTEGER = SQL.buildType(Integer.class, JDBCType.INTEGER);
 
     /**
      * A short SQL type.
      */
-    public static final SQLType<Short, Short> SHORT = SQL.buildType(Short.class, JDBCType.SMALLINT);
+    SQLType<Short, Short> SHORT = SQL.buildType(Short.class, JDBCType.SMALLINT);
 
     /**
      * A char SQL type.
      */
-    public static final SQLType<Character, Character> CHAR = SQL.buildType(Character.class, JDBCType.CHAR);
+    SQLType<Character, Character> CHAR = SQL.buildType(Character.class, JDBCType.CHAR);
 
     /**
      * An string SQL type.
      */
-    public static final SQLType<String, String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
+    SQLType<String, String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
 
     /**
      * The actual java type.
@@ -79,16 +79,16 @@ public interface SQLType<T, E>
     JDBCType getJDBCType();
 
     /**
-     * The length for string and numerics types.
+     * The length for string and numerical types.
      *
-     * @return The length for string and numerics types.
+     * @return The length for string and numerical types.
      */
     int getLength();
 
     /**
-     * The precision for numerics types.
+     * The precision for numerical types.
      *
-     * @return The precision for numerics types.
+     * @return The precision for numerical types.
      */
     int getPrecision();
 
@@ -107,9 +107,9 @@ public interface SQLType<T, E>
     SQLValueParser<T, E> getParser();
 
     /**
-     * The wirter used by this type.
+     * The writer used by this type.
      *
-     * @return The wirter used by this type.
+     * @return The writer used by this type.
      */
     SQLValueWriter<E, T> getWriter();
 
@@ -143,5 +143,4 @@ public interface SQLType<T, E>
      * @return The resulting SQL ready object.
      */
     E write(T object);
-
 }

@@ -32,7 +32,7 @@ public interface SQLEnvironment extends AutoCloseable
     SQLDialect getDialect();
 
     /**
-     * Fix a schema (creates all missing objects) in the underliying SQL
+     * Fix a schema (creates all missing objects) in the underlying SQL
      * database.
      *
      * @param schema The schema to fix.
@@ -45,7 +45,7 @@ public interface SQLEnvironment extends AutoCloseable
      * Performs an update query in the database.
      *
      * @param query      The query to execute.
-     * @param parameters The paarameter for the query.
+     * @param parameters The parameter for the query.
      *
      * @return The uypdated records count.
      *
@@ -86,7 +86,7 @@ public interface SQLEnvironment extends AutoCloseable
      *
      * @param stmt The SQL statement to execute.
      *
-     * @return The uypdated records count.
+     * @return The updated records count.
      *
      * @throws SQLException If any SQL error occurs.
      */

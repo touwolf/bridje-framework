@@ -79,7 +79,7 @@ class ExBiContentBinding
     private static <E, T> List<E> convertTo(List<T> subList, BiContentConverter<E, T> converter)
     {
         return subList.stream()
-                        .map(e -> converter.convertTo(e))
+                        .map(converter::convertTo)
                         .collect(Collectors.toList());
     }
 }

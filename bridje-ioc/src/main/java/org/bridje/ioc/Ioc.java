@@ -39,12 +39,13 @@ public class Ioc
      * This method returns the {@link IocContext} for the APPLICATION scoped
      * {@link IocContext}.
      * <p>
+     *
      * @return The APPLICATION scoped {@link IocContext} instance for this
      * application.
      */
     public static IocContext<Application> context()
     {
-        if(appContext == null)
+        if (appContext == null)
         {
             appContext = ContextFactory.createApplicationContext(new Application());
         }

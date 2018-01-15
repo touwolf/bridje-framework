@@ -19,7 +19,7 @@ package org.bridje.orm.srcgen.model;
 import javax.xml.bind.annotation.*;
 
 /**
- * This class represents a propety value for an enumerator constant.
+ * This class represents a property value for an enumerator constant.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnumConstantProperty
@@ -31,9 +31,9 @@ public class EnumConstantProperty
     private String value;
 
     /**
-     * The name of the enumarator property.
+     * The name of the enumerator property.
      *
-     * @return The name of the enumerator propery.
+     * @return The name of the enumerator property.
      */
     public String getName()
     {
@@ -41,9 +41,9 @@ public class EnumConstantProperty
     }
 
     /**
-     * The name of the enumarator property.
+     * The name of the enumerator property.
      *
-     * @param name The name of the enumarator property.
+     * @param name The name of the enumerator property.
      */
     public void setName(String name)
     {

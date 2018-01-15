@@ -28,10 +28,10 @@ public interface JdbcService
 {
 
     /**
-     * Retrives a pooled DataSource object associated with the given name.
+     * Retrieves a pooled DataSource object associated with the given name.
      *
-     * @param name The name of the DataSource that was especified in the jdbc.xml
-     * configuration file.
+     * @param name The name of the DataSource that was specified in the jdbc.xml
+     *             configuration file.
      * @return The DataSource object if it was configured in the jdbc.xml or null
      * if no DataSource was configure with the given name.
      */
@@ -50,7 +50,7 @@ public interface JdbcService
      *
      * @param dataSource The DataSource to be closed.
      * @throws SQLException If any SQLException occurs during the closing
-     * process.
+     *                      process.
      */
     void closeDataSource(DataSource dataSource) throws SQLException;
 
