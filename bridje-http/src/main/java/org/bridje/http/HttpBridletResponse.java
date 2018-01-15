@@ -77,4 +77,54 @@ public interface HttpBridletResponse
      */
     HttpCookie addCookie(String name, String value);
 
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name  The name of the cookie.
+     * @param value The value for the cookie.
+     * @param path  The path for the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    HttpCookie addCookie(String name, String value, String path);
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    HttpCookie addCookie(String name, String value, String path, String domain);
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     * @param maxAge The max age of the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    HttpCookie addCookie(String name, String value, String path, String domain, int maxAge);
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     * @param maxAge The max age of the cookie.
+     * @param secure If the cookie is for secure requests.
+     *
+     * @return The new created HttpCookie object.
+     */
+    HttpCookie addCookie(String name, String value, String path, String domain, int maxAge, boolean secure);
+
 }

@@ -27,9 +27,6 @@ import java.util.Map;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpCookie;
 
-/**
- *
- */
 class HttpBridletResponseImpl implements HttpBridletResponse
 {
     private final ByteBuf buffer;
@@ -133,5 +130,63 @@ class HttpBridletResponseImpl implements HttpBridletResponse
             return cookies.containsKey(name);
         }
         return false;
+    }
+
+    @Override
+    public HttpCookie addCookie(String name, String value, String path)
+    {
+        if(cookies == null)
+        {
+            cookies = new HashMap<>();
+        }
+        HttpCookieImpl c = new HttpCookieImpl(new DefaultCookie(name, value));
+        c.setPath(path);
+        cookies.put(c.getName(), c);
+        return c;
+    }
+
+    @Override
+    public HttpCookie addCookie(String name, String value, String path, String domain)
+    {
+        if(cookies == null)
+        {
+            cookies = new HashMap<>();
+        }
+        HttpCookieImpl c = new HttpCookieImpl(new DefaultCookie(name, value));
+        c.setPath(path);
+        c.setDomain(domain);
+        cookies.put(c.getName(), c);
+        return c;
+    }
+
+    @Override
+    public HttpCookie addCookie(String name, String value, String path, String domain, int maxAge)
+    {
+        if(cookies == null)
+        {
+            cookies = new HashMap<>();
+        }
+        HttpCookieImpl c = new HttpCookieImpl(new DefaultCookie(name, value));
+        c.setPath(path);
+        c.setDomain(domain);
+        c.setMaxAge(maxAge);
+        cookies.put(c.getName(), c);
+        return c;
+    }
+
+    @Override
+    public HttpCookie addCookie(String name, String value, String path, String domain, int maxAge, boolean secure)
+    {
+        if(cookies == null)
+        {
+            cookies = new HashMap<>();
+        }
+        HttpCookieImpl c = new HttpCookieImpl(new DefaultCookie(name, value));
+        c.setPath(path);
+        c.setDomain(domain);
+        c.setMaxAge(maxAge);
+        c.setSecure(secure);
+        cookies.put(c.getName(), c);
+        return c;
     }
 }
