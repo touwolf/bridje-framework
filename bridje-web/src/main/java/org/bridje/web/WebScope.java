@@ -49,14 +49,13 @@ public final class WebScope implements Scope
 
     private WebSession session;
 
-    private Map<String,String> stateMap;
+    private Map<String, String> stateMap;
 
     /**
      * The only constructor for this object, the HTTP bridlet context for the
      * request mus be provided.
      *
-     * @param ctx The HTTP bridlet context for the current HTTP
-     * request.
+     * @param ctx The HTTP bridlet context for the current HTTP request.
      */
     public WebScope(HttpBridletContext ctx)
     {
@@ -109,7 +108,7 @@ public final class WebScope implements Scope
      * The UserAgent heather from the HTTP request if any.
      *
      * @return An String representing the UserAgent information from the client
-     * if is available.
+     *         if is available.
      */
     public String getUserAgent()
     {
@@ -183,7 +182,7 @@ public final class WebScope implements Scope
      * When ever this request is http method is "DELETE".
      *
      * @return true the http method for this request is "DELETE", false
-     * otherwise.
+     *         otherwise.
      */
     public boolean isDelete()
     {
@@ -204,17 +203,18 @@ public final class WebScope implements Scope
      * When ever this request is HTTP method is "PATCH".
      *
      * @return true the HTTP method for this request is "PATCH", false
-     * otherwise.
+     *         otherwise.
      */
     public boolean isPatch()
     {
         return req.isPatch();
     }
-    
+
     /**
      * Gets the value of the given header.
-     * 
+     *
      * @param header The header's name.
+     *
      * @return The value of the header.
      */
     public String getHeader(String header)
@@ -238,6 +238,7 @@ public final class WebScope implements Scope
      * Gets the specific post parameter from the parameters map.
      *
      * @param parameter The post parameter name.
+     *
      * @return The post parameter value or null if it does not exists.
      */
     public HttpReqParam getPostParameter(String parameter)
@@ -249,7 +250,7 @@ public final class WebScope implements Scope
      * Gets all the post parameters names for this request if any.
      *
      * @return An array of String representing all the post parameters for this
-     * request.
+     *         request.
      */
     public String[] getPostParametersNames()
     {
@@ -271,6 +272,7 @@ public final class WebScope implements Scope
      * Gets the specific "GET" parameter from the parameters map.
      *
      * @param parameter The "GET" parameter name.
+     *
      * @return The "GET" parameter value or null if it does not exists.
      */
     public HttpReqParam getGetParameter(String parameter)
@@ -282,7 +284,7 @@ public final class WebScope implements Scope
      * Gets all the "GET" parameters names for this request if any.
      *
      * @return An array of String representing all the "GET" parameters for this
-     * request.
+     *         request.
      */
     public String[] getGetParametersNames()
     {
@@ -303,8 +305,9 @@ public final class WebScope implements Scope
      * Gets the specified HTTP cookie.
      *
      * @param name The name of the HTTP Cookie.
+     *
      * @return the HttpCookie object representing the cookie or null if it does
-     * not exists.
+     *         not exists.
      */
     public HttpCookie getCookie(String name)
     {
@@ -314,13 +317,76 @@ public final class WebScope implements Scope
     /**
      * Adds a cookie to the HTTP response.
      *
-     * @param name The name of the HTTP Cookie.
+     * @param name  The name of the HTTP Cookie.
      * @param value The value of the HTTP Cookie.
+     *
      * @return The HTTP Cookie added.
      */
     public HttpCookie addCookie(String name, String value)
     {
         return resp.addCookie(name, value);
+    }
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name  The name of the cookie.
+     * @param value The value for the cookie.
+     * @param path  The path for the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    public HttpCookie addCookie(String name, String value, String path)
+    {
+        return resp.addCookie(name, value, path);
+    }
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    public HttpCookie addCookie(String name, String value, String path, String domain)
+    {
+        return resp.addCookie(name, value, path, domain);
+    }
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     * @param maxAge The max age of the cookie.
+     *
+     * @return The new created HttpCookie object.
+     */
+    public HttpCookie addCookie(String name, String value, String path, String domain, int maxAge)
+    {
+        return resp.addCookie(name, value, path, domain, maxAge);
+    }
+
+    /**
+     * Adds a new HttpCookie to the response of this request.
+     *
+     * @param name   The name of the cookie.
+     * @param value  The value for the cookie.
+     * @param path   The path for the cookie.
+     * @param domain The domain for the cookie.
+     * @param maxAge The max age of the cookie.
+     * @param secure If the cookie is for secure requests.
+     *
+     * @return The new created HttpCookie object.
+     */
+    public HttpCookie addCookie(String name, String value, String path, String domain, int maxAge, boolean secure)
+    {
+        return resp.addCookie(name, value, path, domain, maxAge, secure);
     }
 
     /**
@@ -367,7 +433,10 @@ public final class WebScope implements Scope
 
     public String getStateValue(String name)
     {
-        if(stateMap == null) initStateMap();
+        if (stateMap == null)
+        {
+            initStateMap();
+        }
         return stateMap.get(name);
     }
 
@@ -377,12 +446,18 @@ public final class WebScope implements Scope
         {
             stateMap = new HashMap<>();
             String state = getHeader("Bridje-State");
-            if(state == null || state.isEmpty()) return ;
+            if (state == null || state.isEmpty())
+            {
+                return;
+            }
             String[] statesArr = state.split("&");
             for (String pair : statesArr)
             {
                 String[] pairArr = pair.split("=");
-                if(pairArr.length > 1) stateMap.put(pairArr[0], URLDecoder.decode(pairArr[1], "UTF-8"));
+                if (pairArr.length > 1)
+                {
+                    stateMap.put(pairArr[0], URLDecoder.decode(pairArr[1], "UTF-8"));
+                }
             }
         }
         catch (Exception e)
@@ -390,4 +465,5 @@ public final class WebScope implements Scope
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
+
 }
