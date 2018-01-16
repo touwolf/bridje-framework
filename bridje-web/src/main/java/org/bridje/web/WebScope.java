@@ -223,7 +223,7 @@ public final class WebScope implements Scope
     }
 
     /**
-     * Gets a unmodificable map to the post parameters sent by the client. If
+     * Gets a unmodifiable map to the post parameters sent by the client. If
      * this request is not a "application/x-www-form-urlencoded" or a
      * multipart/form-data" the post parameters map will be empty.
      *

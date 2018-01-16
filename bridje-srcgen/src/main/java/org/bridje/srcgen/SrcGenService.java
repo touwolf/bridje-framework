@@ -75,9 +75,9 @@ public interface SrcGenService
     CompilationUnit findJavaClass(String name);
 
     /**
-     * Finds all clases by the given predicate.
+     * Finds all classes by the given predicate.
      *
-     * @param predicate The predicate to test the clases.
+     * @param predicate The predicate to test the classes.
      *
      * @return The result list of classes.
      */
@@ -100,7 +100,7 @@ public interface SrcGenService
      * @param <T> The type of the data to read.
      * @param cls The class of the data to read.
      *
-     * @return A map with the data readed as the key and the corresponding
+     * @return A map with the data read as the key and the corresponding
      *         VFile.
      *
      * @throws IOException If any IO exception occurs.
@@ -114,21 +114,21 @@ public interface SrcGenService
      * @param file The file to read.
      * @param cls The class of the data to read.
      *
-     * @return The readed object or null if the file is not that object.
+     * @return The read object or null if the file is not that object.
      *
      * @throws IOException If any IO exception occurs.
      */
     <T> T readFile(VFile file, Class<T> cls) throws IOException;
 
     /**
-     * Finds the suplementary data by the given class, this method will read the
+     * Finds the supplementary data by the given class, this method will read the
      * data from the default virtual path in the VFS tree and parse all the
      * files that have the content of the given class.
      *
      * @param <T> The type of the data to read.
      * @param cls The class of the data to read.
      *
-     * @return A map with the data readed as the key and the corresponding
+     * @return A map with the data read as the key and the corresponding
      *         VFile.
      *
      * @throws IOException If any IO exception occurs.

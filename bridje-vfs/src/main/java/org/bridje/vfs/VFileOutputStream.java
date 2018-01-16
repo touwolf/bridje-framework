@@ -65,5 +65,4 @@ public class VFileOutputStream extends OutputStream
     {
         this.os.close();
     }
-
 }

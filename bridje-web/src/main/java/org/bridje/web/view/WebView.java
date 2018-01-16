@@ -23,7 +23,7 @@ import org.bridje.web.view.controls.UIInputExpression;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from controls. The views are inmutables so once defined they will
+ * composed from controls. The views are immutable so once defined they will
  * stay the same at runtime.
  */
 public interface WebView extends AbstractView
@@ -40,7 +40,7 @@ public interface WebView extends AbstractView
      *
      * @return The name of this view.
      */
-    public String getName();
+    String getName();
 
     /**
      * Finds the set of resources used in this view by all the controls defined 
@@ -48,21 +48,21 @@ public interface WebView extends AbstractView
      *
      * @return A set with all the names of the resources.
      */
-    public Set<String> getResources();
+    Set<String> getResources();
 
     /**
      * Gets the set of controls classes used in this view.
      *
      * @return All the controls classes used in this view.
      */
-    public Set<Class<?>> getControls();
+    Set<Class<?>> getControls();
 
     /**
      * Determines if this view has any file input field.
      * 
      * @return true this view has any file input field, false this view has none.
      */
-    public boolean hasFileInput();
+    boolean hasFileInput();
     
     /**
      * Finds the file upload input expression that match the given string.
@@ -71,7 +71,7 @@ public interface WebView extends AbstractView
      * @return The UIInputExpression object that match with the given String if
      * any.
      */
-    public UIFileExpression findFileInput(String exp);
+    UIFileExpression findFileInput(String exp);
 
     /**
      * Finds the input expression that match the given string.
@@ -80,7 +80,7 @@ public interface WebView extends AbstractView
      * @return The UIInputExpression object that match with the given String if
      * any.
      */
-    public UIInputExpression findInput(String exp);
+    UIInputExpression findInput(String exp);
 
     /**
      * Finds the event that match with the given action.
@@ -88,5 +88,5 @@ public interface WebView extends AbstractView
      * @param action The name of the action.
      * @return The UIEvent object that match the given expression.
      */
-    public UIEvent findEvent(String action);
+    UIEvent findEvent(String action);
 }

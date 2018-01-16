@@ -24,7 +24,7 @@ import org.bridje.web.view.Defines;
 
 /**
  * A control that represents a placeholder for a layout. This controls can be
- * overrited by the corresponding Defines objects.
+ * overwritten by the corresponding Defines objects.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ControlPlaceHolder extends Control

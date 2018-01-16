@@ -1,11 +1,3 @@
-
-package org.bridje.web.session;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /*
  * Copyright 2016 Bridje Framework.
  *
@@ -21,10 +13,18 @@ import java.lang.annotation.Target;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.bridje.web.session;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * This annotation can be use with the fields of web components to mark then as
- * web session fields. web session fields will be persisted amoung diferent
- * requests, this is thwy will be loaded and saved to the current web session on
+ * web session fields. web session fields will be persisted among different
+ * requests, this is why will be loaded and saved to the current web session on
  * each http request, when ever they are requested.
  */
 @Retention(RetentionPolicy.RUNTIME)

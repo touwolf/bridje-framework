@@ -18,7 +18,7 @@ package org.bridje.web.view;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from controls. The views are inmutables so once defined they will
+ * composed from controls. The views are immutable so once defined they will
  * stay the same at runtime.
  */
 public interface WebLayout extends AbstractView

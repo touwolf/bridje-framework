@@ -72,8 +72,8 @@ public class ControlManager
      * @param <T> The web view type.
      * @param vf The file to read from.
      * @param resultCls The web view class.
-     * @return The new readed object.
-     * @throws IOException If any IO error ocurrs.
+     * @return The new read object.
+     * @throws IOException If any IO error occurs.
      */
     public <T> T read(VFile vf, Class<T> resultCls) throws IOException
     {
@@ -93,7 +93,7 @@ public class ControlManager
      * @param <T> The type of the web view class.
      * @param vf The file to write to.
      * @param contentObj The view to write.
-     * @throws IOException If any IO error ocurrs.
+     * @throws IOException If any IO error occurs.
      */
     public <T> void write(VFile vf, T contentObj) throws IOException
     {

@@ -129,7 +129,7 @@ public class ThemesManager
             String themeName = view.getDefaultTheme();
             String templatePath = themeName + "/Theme.ftlh";
             Template tpl = ftlCfg.getTemplate(templatePath);
-            Map<String, Object> data = new HashMap();
+            Map<String, Object> data = new HashMap<>();
             data.put("i18n", webI18nServ.getI18nMap());
             data.put("tools", themeTools);
             data.put("view", view);

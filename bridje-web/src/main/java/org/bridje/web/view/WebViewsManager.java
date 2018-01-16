@@ -113,7 +113,7 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the view to be updated by the Bridje-View header sended to the
+     * Finds the view to be updated by the Bridje-View header sent to the
      * server.
      *
      * @param context The current HTTP bridlet context to extract the path of
@@ -142,7 +142,7 @@ public class WebViewsManager
     }
 
     /**
-     * Finds if there is a view to be updated by the  Bridje-View header name sended to
+     * Finds if there is a view to be updated by the  Bridje-View header name sent to
      * the server.
      *
      * @param context The current HTTP bridlet context to extract the path of
@@ -166,7 +166,7 @@ public class WebViewsManager
     }
 
     /**
-     * Finds the name of the view to be updated by the Bridje-View header name sended
+     * Finds the name of the view to be updated by the Bridje-View header name sent
      * to the server.
      *
      * @param context The current HTTP bridlet context to extract the path of
@@ -248,7 +248,7 @@ public class WebViewsManager
     }
 
     /**
-     * Performs a view update and/or an event invocation by the data sended to
+     * Performs a view update and/or an event invocation by the data sent to
      * the server in the given request.
      *
      * @param view    The view to be updated.

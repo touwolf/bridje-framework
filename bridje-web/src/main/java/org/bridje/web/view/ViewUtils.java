@@ -22,7 +22,7 @@ package org.bridje.web.view;
 public class ViewUtils
 {
     /**
-     * Simplifies the name of the param so it can be sended to/from the client
+     * Simplifies the name of the param so it can be sent to/from the client
      * in a more compact way.
      *
      * @param name The name to simplify.
@@ -66,5 +66,4 @@ public class ViewUtils
         }
         return sb.toString().toLowerCase();
     }
-
 }
