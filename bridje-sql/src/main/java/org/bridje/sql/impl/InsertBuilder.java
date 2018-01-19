@@ -119,6 +119,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
                 builder.append('(');
                 builder.appendAll(row, ", ");
                 builder.append(") ");
+                first = false;
             }
         }
     }
