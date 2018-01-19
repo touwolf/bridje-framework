@@ -21,22 +21,22 @@ import org.bridje.web.view.controls.Control;
 
 /**
  * Represents a view of the application, views are render by themes and are
- * composed from controls. The views are inmutables so once defined they will
+ * composed from controls. The views are immutable so once defined they will
  * stay the same at runtime.
  */
 public interface AbstractView
 {
     /**
-     * The file this view was readed from.
+     * The file this view was read from.
      * 
-     * @return The file this view was readed from.
+     * @return The file this view was read from.
      */
     VFile getFile();
     
     /**
-     * The file this view was readed from.
+     * The file this view was read from.
      * 
-     * @param file The file this view was readed from.
+     * @param file The file this view was read from.
      */
     void setFile(VFile file);
     
@@ -48,7 +48,7 @@ public interface AbstractView
     Control getRoot();
 
     /**
-     * Gets the default theme associated with the roor control of the view.
+     * Gets the default theme associated with the root control of the view.
      * 
      * @return The default theme for the root control of the view.
      */

@@ -220,7 +220,7 @@ public class EventResult
      * @param message   The message to show to the user.
      * @param data      The data to pass to the web view as the result of the
      *                  event.
-     * @param exception The exception responsable for this warning.
+     * @param exception The exception responsible for this warning.
      *
      * @return An EventResult object of type warning.
      */
@@ -236,7 +236,7 @@ public class EventResult
      * @param message   The message to show to the user.
      * @param data      The data to pass to the web view as the result of the
      *                  event.
-     * @param exception The exception responsable for this warning.
+     * @param exception The exception responsible for this warning.
      * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type warning.
@@ -251,7 +251,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message   The message to show to the user.
-     * @param exception The exception responsable for this error.
+     * @param exception The exception responsible for this error.
      * 
      * @return An EventResult object of type error.
      */
@@ -278,7 +278,7 @@ public class EventResult
      * message to the end user.
      *
      * @param message   The message to show to the user.
-     * @param exception The exception responsable for this error.
+     * @param exception The exception responsible for this error.
      * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type error.
@@ -310,7 +310,7 @@ public class EventResult
      * @param message   The message to show to the user.
      * @param data      The data to pass to the web view as the result of the
      *                  event.
-     * @param exception The exception responsable for this error.
+     * @param exception The exception responsible for this error.
      *
      * @return An EventResult object of type error.
      */
@@ -327,7 +327,7 @@ public class EventResult
      * @param message   The message to show to the user.
      * @param data      The data to pass to the web view as the result of the
      *                  event.
-     * @param exception The exception responsable for this error.
+     * @param exception The exception responsible for this error.
      * @param fields    The information of the fields status after this event execution.
      *
      * @return An EventResult object of type error.
@@ -444,7 +444,7 @@ public class EventResult
     /**
      * Gets the status information object set in this result for the given field.
      * 
-     * @param name The full expresion for the field.
+     * @param name The full expression for the field.
      * @return The field status information object.
      */
     public FieldStatusInf findFieldStatus(String name)
@@ -460,7 +460,7 @@ public class EventResult
      * Determines if the given field has an explicit status information object set in this result.
      * 
      * @param expr The input expression for the field.
-     * @return true the field has an field status information object in this result, false othewise.
+     * @return true the field has an field status information object in this result, false otherwise.
      */
     public boolean hasInputFieldStatus(UIInputExpression expr)
     {
@@ -470,7 +470,7 @@ public class EventResult
     /**
      * Gets the status information object set in this result for the given input expression.
      * 
-     * @param expr The input expresion for the field.
+     * @param expr The input expression for the field.
      * @return The field status information object.
      */
     public FieldStatusInf findInputFieldStatus(UIInputExpression expr)

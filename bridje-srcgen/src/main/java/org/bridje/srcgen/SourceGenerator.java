@@ -39,7 +39,7 @@ public interface SourceGenerator<T>
      * Generates the sources for the given data and the given file.
      *
      * @param data The data for the code generation.
-     * @param file The file that the data was readed from.
+     * @param file The file that the data was read from.
      *
      * @throws IOException If any io exception occurs.
      */

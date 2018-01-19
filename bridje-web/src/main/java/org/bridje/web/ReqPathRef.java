@@ -70,7 +70,7 @@ public final class ReqPathRef
     }
 
     /**
-     * A convinient method that returns the current path for the http request,
+     * A convenient method that returns the current path for the http request,
      * if any ReqPathRef was put in the HttpBridletContext this method will
      * return the path for that object, if no ReqPathRef was HttpBridletContext
      * this method will return the original requested path.

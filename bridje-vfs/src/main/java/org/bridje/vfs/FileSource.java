@@ -23,7 +23,7 @@ public class FileSource implements VfsSource
     private final File file;
 
     /**
-     * Default contructor for this object.
+     * Default constructor for this object.
      * 
      * @param file The file for this VFS source object.
      * @throws IOException If any IO occurs.

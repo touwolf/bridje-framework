@@ -35,7 +35,7 @@ public interface WebSessionProvider
 
     /**
      * Stores the given data into the specified name for the given web session.
-     * The data store with this method can be retreived with the find method
+     * The data store with this method can be retrieved with the find method
      * later.
      *
      * @param sessionId The id of the web session.

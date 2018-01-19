@@ -205,5 +205,4 @@ public class GlobExpr
 
         return regex;
     }
-
 }

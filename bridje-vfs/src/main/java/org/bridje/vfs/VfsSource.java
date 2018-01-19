@@ -129,5 +129,4 @@ public interface VfsSource
      *         otherwise.
      */
     boolean delete(Path path);
-
 }

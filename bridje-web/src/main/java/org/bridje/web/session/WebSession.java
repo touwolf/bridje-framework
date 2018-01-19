@@ -17,7 +17,7 @@
 package org.bridje.web.session;
 
 /**
- * Represents a web session, this interface can be used to save and retreive
+ * Represents a web session, this interface can be used to save and retrieve
  * data for the current session, all session data will be store as string and
  * will be identified by a another string.
  */
@@ -41,7 +41,7 @@ public interface WebSession
 
     /**
      * Stores the given data into the specified name in this session. The data
-     * store with this method can be retreived with the find method later.
+     * store with this method can be retrieved with the find method later.
      *
      * @param name The name of the data to be store.
      * @param value The data to be store.

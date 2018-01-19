@@ -127,9 +127,9 @@ public abstract class Control
     }
 
     /**
-     * Control identificator.
+     * Control identifier.
      * 
-     * @return The control identificator.
+     * @return The control identifier.
      */
     public String getId()
     {
@@ -232,7 +232,7 @@ public abstract class Control
     }
 
     /**
-     * Executes any event sended from the client to the server.
+     * Executes any event sent from the client to the server.
      *
      * @param req The HTTP request.
      * @param env The EL environment.
@@ -286,7 +286,7 @@ public abstract class Control
     }
 
     /**
-     * Executes any event sended from the client to the server.
+     * Executes any event sent from the client to the server.
      *
      * @param req The HTTP request.
      * @param env The EL environment.
@@ -352,7 +352,7 @@ public abstract class Control
     }
 
     /**
-     * Determines if the given event was triggered .
+     * Determines if the given event was triggered.
      * 
      * @param req   The request.
      * @param event The event to be invoked.
@@ -449,5 +449,4 @@ public abstract class Control
      * @param definesMap The source map for the placeholders.
      */
     public abstract void doOverride(Map<String, Defines> definesMap);
-
 }

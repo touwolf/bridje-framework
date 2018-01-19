@@ -80,7 +80,7 @@ public class ControlInputReader
      * Reads the given parameter from the request.
      * 
      * @param parameter The name of the parameter.
-     * @return The readed parameter.
+     * @return The read parameter.
      */
     public HttpReqParam getParameter(String parameter)
     {

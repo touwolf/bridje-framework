@@ -26,7 +26,7 @@ import org.bridje.web.view.controls.Control;
 public interface Defines
 {
     /**
-     * Gest the name of the placeholder to be defined.
+     * Gets the name of the placeholder to be defined.
      * 
      * @return The name of the placeholder.
      */

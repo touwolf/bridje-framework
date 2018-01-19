@@ -49,5 +49,4 @@ class RedirectBridlet implements HttpBridlet
         }
         return false;
     }
-    
 }

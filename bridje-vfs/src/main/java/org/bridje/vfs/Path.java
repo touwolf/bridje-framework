@@ -394,7 +394,7 @@ public class Path implements Iterable<Path>
      * Remove the given path from the current path if the given path is a prefix of this path.
      * 
      * @param path The prefix path.
-     * @return the new trimed path, or null if the given path is not a prefix for this path.
+     * @return the new trimmed path, or null if the given path is not a prefix for this path.
      */
     public Path leftTrim(Path path)
     {

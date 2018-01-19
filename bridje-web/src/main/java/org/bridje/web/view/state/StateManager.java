@@ -48,7 +48,7 @@ public class StateManager
 
     /**
      * Creates a new map with the current state of the web request. All the
-     * components that were created during the request that have fields annoted
+     * components that were created during the request that have fields annotated
      * as StateFields will be serialized to the result map, so it can be
      * persisted across multiple HTTP requests.
      *

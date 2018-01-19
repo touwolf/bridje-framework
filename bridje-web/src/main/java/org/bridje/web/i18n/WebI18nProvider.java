@@ -26,19 +26,16 @@ import java.util.ResourceBundle;
 public interface WebI18nProvider
 {
     /**
-     * Finds all the resources for this provider for the default locale.
-     *
-     * @return The map with the resources.
+     * Finds all the resources for this provider.
+     * 
+     * @return Finds all the resources for this provider.
      */
     Map<String, ResourceBundle> findResourceBundles();
-
+    
     /**
-     * Finds all the resources for this provider, for the given locale.
+     * Finds the resources for the specified locale and this provider.
      *
-     * @param locale The locale of the resources.
-     *
-     * @return The map with the resources.
+     * @return The resources for the specified locale and this provider.
      */
     Map<String, ResourceBundle> findResourceBundles(Locale locale);
-
 }

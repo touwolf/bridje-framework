@@ -15,7 +15,7 @@ public class VFileInputStream extends InputStream
     private final InputStream is;
 
     /**
-     * Default contructor for the VFileInputStream object.
+     * Default constructor for the VFileInputStream object.
      * 
      * @param vfile The virtual file for this input stream.
      * @throws FileNotFoundException If the file does not exists.
@@ -28,9 +28,9 @@ public class VFileInputStream extends InputStream
     }
 
     /**
-     * Gets the underliying VFile.
+     * Gets the underlying VFile.
      * 
-     * @return The VFile for this input sream.
+     * @return The VFile for this input stream.
      */
     public VFile getVFile()
     {

@@ -181,7 +181,7 @@ public class VFile
      *
      * @param source VfsSource object
      * <p>
-     * @throws java.io.FileNotFoundException If the underliying file does not exists.
+     * @throws java.io.FileNotFoundException If the underlying file does not exists.
      */
     public void mount(VfsSource source) throws FileNotFoundException
     {

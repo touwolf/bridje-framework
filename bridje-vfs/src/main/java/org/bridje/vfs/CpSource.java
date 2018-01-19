@@ -238,10 +238,10 @@ public class CpSource implements VfsSource
     }
     
     /**
-     * Finds a Class Path source associeted with the given path.
+     * Finds a Class Path source associated with the given path.
      * 
      * @param path The path of the resource.
-     * @return The Class Path source associeted with the given path.
+     * @return The Class Path source associated with the given path.
      */
     public CpSource findResource(Path path)
     {

@@ -17,7 +17,7 @@ public interface VfsService
      *
      * @param path   The path to mount the source.
      * @param source The virtual file system source object to be mounted.
-     * @throws java.io.FileNotFoundException If the underliying file does not exists.
+     * @throws java.io.FileNotFoundException If the underlying file does not exists.
      */
     void mount(Path path, VfsSource source) throws FileNotFoundException;
 

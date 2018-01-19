@@ -18,7 +18,7 @@ package org.bridje.web;
 
 /**
  * This object represents an HTTP redirection instruction. Any web method or
- * handler can retrieve or put this into the context respectibly to indicate that
+ * handler can retrieve or put this into the context respectively to indicate that
  * the result of the request should be a redirection to the specified resource.
  */
 public class RedirectTo
