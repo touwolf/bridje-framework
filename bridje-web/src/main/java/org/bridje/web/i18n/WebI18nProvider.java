@@ -35,6 +35,7 @@ public interface WebI18nProvider
     /**
      * Finds the resources for the specified locale and this provider.
      *
+     * @param locale The locale for the ResourceBundles.
      * @return The resources for the specified locale and this provider.
      */
     Map<String, ResourceBundle> findResourceBundles(Locale locale);

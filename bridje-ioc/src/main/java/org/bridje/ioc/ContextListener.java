@@ -53,7 +53,7 @@ package org.bridje.ioc;
  *            </pre>
  *            <p>
  *            If you want to listen to all components use Object
- *            <p>
+ *            </p>
  *            <pre>
  *            <code>&#64;Component
  *            class MyContextListener implement ContextListener&lt;Object&gt;
