@@ -362,7 +362,7 @@ public abstract class Control
     public boolean eventTriggered(ControlInputReader req, UIEvent event)
     {
         HttpReqParam param = req.getParameter(event.getParameter());
-        if (param != null) return "t".equals(param.getValue());
+        if (param != null) return "t".equals(param.popValue());
         return false;
     }
 
