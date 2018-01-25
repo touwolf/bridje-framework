@@ -120,31 +120,31 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     }
 
     @Override
-    public ArithmeticExpr<Integer, Integer> year(DateExpr<?, ?> date)
+    public ArithmeticExpr<Integer, Integer> year()
     {
         return new FunctionImpl("YEAR", SQLType.INTEGER, this);
     }
 
     @Override
-    public ArithmeticExpr<Integer, Integer> month(DateExpr<?, ?> date)
+    public ArithmeticExpr<Integer, Integer> month()
     {
         return new FunctionImpl("MONTH", SQLType.INTEGER, this);
     }
 
     @Override
-    public ArithmeticExpr<Integer, Integer> dayOfMonth(DateExpr<?, ?> date)
+    public ArithmeticExpr<Integer, Integer> dayOfMonth()
     {
         return new FunctionImpl("DAYOFMONTH", SQLType.INTEGER, this);
     }
 
     @Override
-    public ArithmeticExpr<Integer, Integer> dayOfWeek(DateExpr<?, ?> date)
+    public ArithmeticExpr<Integer, Integer> dayOfWeek()
     {
         return new FunctionImpl("DAYOFWEEK", SQLType.INTEGER, this);
     }
 
     @Override
-    public ArithmeticExpr<Integer, Integer> dayOfYear(DateExpr<?, ?> date)
+    public ArithmeticExpr<Integer, Integer> dayOfYear()
     {
         return new FunctionImpl("DAYOFYEAR", SQLType.INTEGER, this);
     }

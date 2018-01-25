@@ -66,36 +66,31 @@ public interface DateExpr<T, E> extends Expression<T, E>
 
     /**
      * 
-     * @param date
      * @return 
      */
-    ArithmeticExpr<Integer, Integer> year(DateExpr<?, ?> date);
+    ArithmeticExpr<Integer, Integer> year();
 
     /**
      * 
-     * @param date
      * @return 
      */
-    ArithmeticExpr<Integer, Integer> month(DateExpr<?, ?> date);
+    ArithmeticExpr<Integer, Integer> month();
 
     /**
      * 
-     * @param date
      * @return 
      */
-    ArithmeticExpr<Integer, Integer> dayOfMonth(DateExpr<?, ?> date);
+    ArithmeticExpr<Integer, Integer> dayOfMonth();
 
     /**
      * 
-     * @param date
      * @return 
      */
-    ArithmeticExpr<Integer, Integer> dayOfWeek(DateExpr<?, ?> date);
+    ArithmeticExpr<Integer, Integer> dayOfWeek();
 
     /**
      * 
-     * @param date
      * @return 
      */
-    ArithmeticExpr<Integer, Integer> dayOfYear(DateExpr<?, ?> date);
+    ArithmeticExpr<Integer, Integer> dayOfYear();
 }
