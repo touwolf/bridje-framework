@@ -16,8 +16,12 @@
 
 package org.bridje.sql;
 
+import java.sql.Date;
 import java.sql.JDBCType;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Represents an SQL type.
@@ -56,6 +60,13 @@ public interface SQLType<T, E>
      * An string SQL type.
      */
     SQLType<String, String> STRING = SQL.buildType(String.class, JDBCType.VARCHAR, 255);
+
+    /**
+     * 
+     */
+    SQLType<LocalDateTime, Date> DATETIME = SQL.buildType(LocalDateTime.class, Date.class, JDBCType.DATE, 
+                                                    v -> LocalDateTime.ofInstant(Instant.ofEpochMilli(v.getTime()), ZoneOffset.UTC),
+                                                    v -> new Date(v.toInstant(ZoneOffset.UTC).toEpochMilli()) );
 
     /**
      * The actual java type.

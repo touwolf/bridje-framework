@@ -17,6 +17,8 @@
 package org.bridje.sql;
 
 import java.sql.JDBCType;
+import java.time.LocalDateTime;
+import java.util.Date;
 import org.bridje.sql.impl.SQLFactory;
 
 /**
@@ -814,5 +816,14 @@ public class SQL
     public static final Limit limit(int count)
     {
         return FACT.limit(count);
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    public static final DateExpr<LocalDateTime, Date> now()
+    {
+        return FACT.now();
     }
 }

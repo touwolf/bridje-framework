@@ -63,4 +63,39 @@ public interface DateExpr<T, E> extends Expression<T, E>
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> le(DateExpr<T, E> operand);
+
+    /**
+     * 
+     * @param date
+     * @return 
+     */
+    ArithmeticExpr<Integer, Integer> year(DateExpr<?, ?> date);
+
+    /**
+     * 
+     * @param date
+     * @return 
+     */
+    ArithmeticExpr<Integer, Integer> month(DateExpr<?, ?> date);
+
+    /**
+     * 
+     * @param date
+     * @return 
+     */
+    ArithmeticExpr<Integer, Integer> dayOfMonth(DateExpr<?, ?> date);
+
+    /**
+     * 
+     * @param date
+     * @return 
+     */
+    ArithmeticExpr<Integer, Integer> dayOfWeek(DateExpr<?, ?> date);
+
+    /**
+     * 
+     * @param date
+     * @return 
+     */
+    ArithmeticExpr<Integer, Integer> dayOfYear(DateExpr<?, ?> date);
 }

@@ -17,6 +17,8 @@
 package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
+import java.time.LocalDateTime;
+import java.util.Date;
 import org.bridje.sql.ArithmeticExpr;
 import org.bridje.sql.ArrayExpr;
 import org.bridje.sql.BooleanColumn;
@@ -26,6 +28,7 @@ import org.bridje.sql.BuildSchemaStep;
 import org.bridje.sql.BuildTableStep;
 import org.bridje.sql.Column;
 import org.bridje.sql.DateColumn;
+import org.bridje.sql.DateExpr;
 import org.bridje.sql.DeleteStep;
 import org.bridje.sql.Expression;
 import org.bridje.sql.Index;
@@ -342,5 +345,10 @@ public class SQLFactory
     {
         if(elements.length == 0) return new ArrayExprImpl(elements, null);
         return new ArrayExprImpl(elements, elements[0].getSQLType());
+    }
+
+    public DateExpr<LocalDateTime, Date> now()
+    {
+        return new FunctionImpl("NOW", SQLType.DATETIME);
     }
 }
