@@ -29,9 +29,6 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 
-/**
- *
- */
 @Component
 @Priority(Integer.MIN_VALUE)
 class RootHttpBridlet implements HttpBridlet
@@ -46,7 +43,7 @@ class RootHttpBridlet implements HttpBridlet
     {
         HttpBridletRequest req = context.getRequest();
         HttpBridletResponse resp = context.getResponse();
-        LOG.log(Level.INFO, "{0} {1} {2}", new Object[]{req.getMethod(), req.getPath(), req.getProtocol()});
+        if(LOG.isLoggable(Level.INFO)) LOG.log(Level.INFO, String.format("%s %s %s", req.getMethod(), req.getPath(), req.getProtocol()));
         try
         {
             if(handler == null || !handler.handle(context))
@@ -56,8 +53,7 @@ class RootHttpBridlet implements HttpBridlet
         }
         catch (HttpException e)
         {
-            LOG.log(Level.WARNING, "{0} {1} {2} - {3} {4}", 
-                        new Object[]{req.getMethod(), req.getPath(), req.getProtocol(), e.getStatus(), e.getMessage()});
+            if(LOG.isLoggable(Level.INFO)) LOG.log(Level.WARNING, String.format("%s %s - %s %s", req.getMethod(), req.getPath(), req.getProtocol(), e.getStatus(), e.getMessage()));
             resp.setStatusCode(e.getStatus());
             try (OutputStreamWriter writer = new OutputStreamWriter(resp.getOutputStream()))
             {
