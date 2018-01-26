@@ -245,7 +245,7 @@ class SchemaFixer
         }
         return false;
     }
-    
+
     private PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
         PreparedStatement stmt;
@@ -268,7 +268,7 @@ class SchemaFixer
 
     private int executeStmt(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
-        LOG.log(Level.INFO, sqlStmt.getSQL());
+        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             return stmt.executeUpdate();

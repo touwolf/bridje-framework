@@ -74,7 +74,7 @@ abstract class EnvironmentBase implements SQLEnvironment
 
     protected int update(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
-        LOG.log(Level.INFO, sqlStmt.getSQL());
+        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             return stmt.executeUpdate();
@@ -83,7 +83,7 @@ abstract class EnvironmentBase implements SQLEnvironment
 
     protected <T> List<T> fetchAll(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
-        LOG.log(Level.INFO, sqlStmt.getSQL());
+        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             SQLResultSet rs;
@@ -102,7 +102,7 @@ abstract class EnvironmentBase implements SQLEnvironment
 
     protected <T> T fetchOne(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
-        LOG.log(Level.INFO, sqlStmt.getSQL());
+        LOG.log(Level.FINE, sqlStmt.getSQL());
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             SQLResultSet rs;
