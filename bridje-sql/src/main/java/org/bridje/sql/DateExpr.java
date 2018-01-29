@@ -65,32 +65,37 @@ public interface DateExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> le(DateExpr<T, E> operand);
 
     /**
+     * Gets an arithmetic expression that represents the year of the date field.
      * 
-     * @return 
+     * @return An arithmetic expression that represents the year of the date field.
      */
     ArithmeticExpr<Integer, Integer> year();
 
     /**
+     * Gets an arithmetic expression that represents the month of the date field.
      * 
-     * @return 
+     * @return An arithmetic expression that represents the month of the date field.
      */
     ArithmeticExpr<Integer, Integer> month();
 
     /**
+     * Gets an arithmetic expression that represents the day of the month of the date field.
      * 
-     * @return 
+     * @return An arithmetic expression that represents the day of the month of the date field.
      */
     ArithmeticExpr<Integer, Integer> dayOfMonth();
 
     /**
+     * Gets an arithmetic expression that represents the day of the week of the date field.
      * 
-     * @return 
+     * @return An arithmetic expression that represents the day of the week of the date field.
      */
     ArithmeticExpr<Integer, Integer> dayOfWeek();
 
     /**
+     * Gets an arithmetic expression that represents the day of the year of the date field.
      * 
-     * @return 
+     * @return An arithmetic expression that represents the day of the year of the date field.
      */
     ArithmeticExpr<Integer, Integer> dayOfYear();
 }
