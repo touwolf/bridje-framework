@@ -819,8 +819,9 @@ public class SQL
     }
 
     /**
+     * Gets a date time expresion that represents the current date and time.
      * 
-     * @return 
+     * @return A date time expresion that represents the current date and time.
      */
     public static final DateExpr<LocalDateTime, Date> now()
     {
