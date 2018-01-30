@@ -35,8 +35,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand);
 
     /**
-     * Creates a new arithmetic expression that performs the substraction of this
-     * expresion with the given one.
+     * Creates a new arithmetic expression that performs the substraction of
+     * this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -45,8 +45,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand);
 
     /**
-     * Creates a new arithmetic expression that performs the multiplication of this
-     * expresion with the given one.
+     * Creates a new arithmetic expression that performs the multiplication of
+     * this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -85,8 +85,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<T, E> plus(T operand);
 
     /**
-     * Creates a new arithmetic expression that performs the substraction of this
-     * expresion with the given one.
+     * Creates a new arithmetic expression that performs the substraction of
+     * this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -95,8 +95,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<T, E> minus(T operand);
 
     /**
-     * Creates a new arithmetic expression that performs the multiplication of this
-     * expresion with the given one.
+     * Creates a new arithmetic expression that performs the multiplication of
+     * this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -117,7 +117,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     /**
      * Creates a new arithmetic expression that performs the modulus of this
      * expresion with the given one.
-     * 
+     *
      * @param operand The second operand.
      *
      * @return The new arithmetic expression.
@@ -125,8 +125,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     ArithmeticExpr<T, E> mod(T operand);
 
     /**
-     * Creates a new boolean expression that performs the grather than comparation
-     * of this expresion with the given one.
+     * Creates a new boolean expression that performs the grather than
+     * comparation of this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -135,8 +135,8 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> gt(ArithmeticExpr<T, E> operand);
 
     /**
-     * Creates a new boolean expression that performs the grather or equals to comparation
-     * of this expresion with the given one.
+     * Creates a new boolean expression that performs the grather or equals to
+     * comparation of this expresion with the given one.
      *
      * @param operand The second operand.
      *
@@ -155,12 +155,92 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> lt(ArithmeticExpr<T, E> operand);
 
     /**
-     * Creates a new boolean expression that performs the less or equals to comparation
-     * of this expresion with the given one.
+     * Creates a new boolean expression that performs the less or equals to
+     * comparation of this expresion with the given one.
      *
      * @param operand The second operand.
      *
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> le(ArithmeticExpr<T, E> operand);
+
+    /**
+     * Creates a new boolean expression that performs the grather than
+     * comparation of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> gt(T operand);
+
+    /**
+     * Creates a new boolean expression that performs the grather or equals to
+     * comparation of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> ge(T operand);
+
+    /**
+     * Creates a new boolean expression that performs the less than comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> lt(T operand);
+
+    /**
+     * Creates a new boolean expression that performs the less or equals to
+     * comparation of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> le(T operand);
+
+    /**
+     * Creates a new arithmetic expression that performs the total sum of this
+     * expression.
+     *
+     * @return The new arithmetic expression.
+     */
+    ArithmeticExpr<Long, Long> sum();
+
+    /**
+     * Creates a new arithmetic expression that performs the average of this
+     * expression.
+     *
+     * @return The new arithmetic expression.
+     */
+    ArithmeticExpr<Long, Long> avg();
+
+    /**
+     * Creates a new arithmetic expression that performs the count of this
+     * expression.
+     *
+     * @return The new arithmetic expression.
+     */
+    ArithmeticExpr<Long, Long> count();
+
+    /**
+     * Creates a new arithmetic expression that returns the minimun value for
+     * this expression.
+     *
+     * @return The new arithmetic expression.
+     */
+    ArithmeticExpr<T, E> min();
+
+    /**
+     * Creates a new arithmetic expression that returns the maximun value for
+     * this expression.
+     *
+     * @return The new arithmetic expression.
+     */
+    ArithmeticExpr<T, E> max();
 }

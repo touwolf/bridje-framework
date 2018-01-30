@@ -270,6 +270,60 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     }
 
     @Override
+    public BooleanExpr<Boolean, Boolean> gt(T operand)
+    {
+        return new BinaryExpr<>(this, Operators.GT, new LiteralImpl<>(operand, getSQLType()), SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> ge(T operand)
+    {
+        return new BinaryExpr<>(this, Operators.GE, new LiteralImpl<>(operand, getSQLType()), SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> lt(T operand)
+    {
+        return new BinaryExpr<>(this, Operators.LT, new LiteralImpl<>(operand, getSQLType()), SQLType.BOOLEAN);
+    }
+
+    @Override
+    public BooleanExpr<Boolean, Boolean> le(T operand)
+    {
+        return new BinaryExpr<>(this, Operators.LE, new LiteralImpl<>(operand, getSQLType()), SQLType.BOOLEAN);
+    }
+
+    @Override
+    public ArithmeticExpr<Long, Long> sum()
+    {
+         return new FunctionImpl("SUM", SQLType.LONG, this);
+    }
+
+    @Override
+    public ArithmeticExpr<Long, Long> avg()
+    {
+        return new FunctionImpl("AVG", SQLType.LONG, this);
+    }
+
+    @Override
+    public ArithmeticExpr<Long, Long> count()
+    {
+        return new FunctionImpl("COUNT", SQLType.LONG, this);
+    }
+
+    @Override
+    public ArithmeticExpr<T, E> min()
+    {
+        return new FunctionImpl("MIN", SQLType.LONG, this);
+    }
+
+    @Override
+    public ArithmeticExpr<T, E> max()
+    {
+        return new FunctionImpl("MAX", SQLType.LONG, this);
+    }
+    
+    @Override
     public OrderExpr asc()
     {
         return new OrderBy(SortType.ASC, this);
