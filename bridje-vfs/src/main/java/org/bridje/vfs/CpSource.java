@@ -20,12 +20,16 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This object represents a Class Path source for the virtual file system.
  */
 public class CpSource implements VfsSource
 {
+    private static final Logger LOG = Logger.getLogger(CpSource.class.getName());
+
     private final String resource;
 
     private final ClassLoader clsLoader;
@@ -134,7 +138,12 @@ public class CpSource implements VfsSource
         {
             if(childs == null)
             {
-                return clsLoader.getResourceAsStream(resource);
+                InputStream is = clsLoader.getResourceAsStream(resource);
+                if(is == null)
+                {
+                    LOG.log(Level.SEVERE, String.format("Cannot open the resource %s", resource));
+                }
+                return is;
             }
             return null;
         }
