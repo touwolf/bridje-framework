@@ -314,13 +314,13 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     @Override
     public ArithmeticExpr<T, E> min()
     {
-        return new FunctionImpl("MIN", SQLType.LONG, this);
+        return new FunctionImpl("MIN", getSQLType(), this);
     }
 
     @Override
     public ArithmeticExpr<T, E> max()
     {
-        return new FunctionImpl("MAX", SQLType.LONG, this);
+        return new FunctionImpl("MAX", getSQLType(), this);
     }
     
     @Override
