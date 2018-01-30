@@ -66,7 +66,7 @@ public class CpSource implements VfsSource
             this.childs = new HashMap<>();
             for (String childName : resourceListing)
             {
-                this.childs.put(childName, new CpSource(resource + "/" + childName, clsLoader));
+                this.childs.put(childName, new CpSource(new Path(resource).join(childName).toString(), clsLoader));
             }
         }
     }
