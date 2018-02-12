@@ -17,10 +17,16 @@
 package org.bridje.web;
 
 import java.net.URLDecoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.bridje.http.HttpBridletContext;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
@@ -30,6 +36,7 @@ import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
 import org.bridje.web.session.WebSession;
+import org.bridje.web.view.state.StateEncryptation;
 
 /**
  * Represents the IoC scope for the web request IocContext.
@@ -431,6 +438,23 @@ public final class WebScope implements Scope
         return session;
     }
 
+    /**
+     * Gets the view state map.
+     * 
+     * @return The view state map.
+     */
+    public Map<String, String> getStateMap()
+    {
+        if(stateMap == null) return Collections.EMPTY_MAP;
+        return Collections.unmodifiableMap(stateMap);
+    }
+
+    /**
+     * Gets the value of the given state field.
+     * 
+     * @param name The reduce id of the state field.
+     * @return The value of the state field if it exists.
+     */
     public String getStateValue(String name)
     {
         if (stateMap == null)
@@ -445,11 +469,9 @@ public final class WebScope implements Scope
         try
         {
             stateMap = new HashMap<>();
-            String state = getHeader("Bridje-State");
-            if (state == null || state.isEmpty())
-            {
-                return;
-            }
+            String encriptedState = getHeader("Bridje-State");
+            if (encriptedState == null || encriptedState.trim().isEmpty()) return;
+            String state = decryptStateString(encriptedState);
             String[] statesArr = state.split("&");
             for (String pair : statesArr)
             {
@@ -466,4 +488,18 @@ public final class WebScope implements Scope
         }
     }
 
+    private String decryptStateString(String encStateString)
+    {
+        try
+        {
+            String key = "MZygpewJsCpRrfOr";
+            StateEncryptation encryptation = new StateEncryptation(key);
+            return encryptation.decryptBase64(encStateString);
+        }
+        catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return "";
+        }
+    }
 }

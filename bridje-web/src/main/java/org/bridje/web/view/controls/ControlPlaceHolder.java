@@ -20,7 +20,9 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import org.bridje.el.ElEnvironment;
 import org.bridje.web.view.Defines;
+import org.bridje.web.view.EventResult;
 
 /**
  * A control that represents a placeholder for a layout. This controls can be
@@ -40,6 +42,36 @@ public class ControlPlaceHolder extends Control
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            if(id == null || id.isEmpty()) return null;
+            return doFindById(env, id, callback);
+        }
+        return null;
+    }
+
+    @Override
+    public void readInput(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            doReadInput(req, env);
+        }
+    }
+
+    @Override
+    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            return doExecuteEvent(req, env);
+        }
+        return null;
     }
 
     @Override

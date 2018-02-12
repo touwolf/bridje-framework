@@ -269,25 +269,31 @@ public class WebViewsManager
                         if(result == null) result = EventResult.none();
                         return result;
                     });
+            if(evResult == null)
+            {
+                LOG.log(Level.SEVERE, String.format("Error could not find form element %s in the view %s.", req.getHeader("Bridje-Form"), view.getName()));
+                evResult = EventResult.error("The action could not be execute.");
+            }
             
+            final EventResult eventResult = evResult;
             view.getRoot()
                     .findById(elEnv, req.getHeader("Bridje-Container"), (Control ctrl) ->
                     {
-                        if(evResult.getData() != null && evResult.getData() instanceof RedirectTo)
+                        if(eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
                         {
-                            RedirectTo redirectTo = (RedirectTo)evResult.getData();
+                            RedirectTo redirectTo = (RedirectTo)eventResult.getData();
                             context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
                         }
                         else
                         {
                             elEnv.pushVar("view", view);
                             elEnv.pushVar("i18n", webI18nServ.getI18nMap());
-                            elEnv.pushVar("eventResult", evResult);
+                            elEnv.pushVar("eventResult", eventResult);
                             elEnv.pushVar("control", ctrl);
                             HttpBridletResponse resp = context.getResponse();
                             try (OutputStream os = resp.getOutputStream())
                             {
-                                themesMang.render(ctrl, view, os, evResult, () -> stateManag.createStringViewState(scope.getIocContext()));
+                                themesMang.render(ctrl, view, os, eventResult, () -> stateManag.createStringViewState(scope.getIocContext()));
                                 os.flush();
                             }
                             catch (IOException ex)

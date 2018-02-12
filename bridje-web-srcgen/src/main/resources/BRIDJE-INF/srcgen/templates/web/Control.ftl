@@ -348,5 +348,36 @@ public class ${control.name} extends Control
         return null;
     }
 
+    <#else>
+    @Override
+    public <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            if(id == null || id.isEmpty()) return null;
+            return doFindById(env, id, callback);
+        }
+        return null;
+    }
+
+    @Override
+    public void readInput(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            doReadInput(req, env);
+        }
+    }
+
+    @Override
+    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
+    {
+        if(getVisible() != null && getVisible())
+        {
+            return doExecuteEvent(req, env);
+        }
+        return null;
+    }
+
     </#if>
 }

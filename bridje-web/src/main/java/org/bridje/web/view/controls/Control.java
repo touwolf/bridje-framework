@@ -206,15 +206,7 @@ public abstract class Control
      * @param callback The callback when the control is found.
      * @return The control found.
      */
-    public <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback)
-    {
-        if(getVisible() != null && getVisible())
-        {
-            if(id == null || id.isEmpty()) return null;
-            return doFindById(env, id, callback);
-        }
-        return null;
-    }
+    public abstract <T> T findById(ElEnvironment env, String id, ControlCallback<T> callback);
 
     /**
      * Reads the input recursively for this and all the child controls sent in
@@ -223,13 +215,7 @@ public abstract class Control
      * @param req The HTTP request to read the input from.
      * @param env The EL environment to write the data to.
      */
-    public void readInput(ControlInputReader req, ElEnvironment env)
-    {
-        if(getVisible() != null && getVisible())
-        {
-            doReadInput(req, env);
-        }
-    }
+    public abstract void readInput(ControlInputReader req, ElEnvironment env);
 
     /**
      * Executes any event sent from the client to the server.
@@ -239,14 +225,7 @@ public abstract class Control
      *
      * @return The event result.
      */
-    public EventResult executeEvent(ControlInputReader req, ElEnvironment env)
-    {
-        if(getVisible() != null && getVisible())
-        {
-            return doExecuteEvent(req, env);
-        }
-        return null;
-    }
+    public abstract EventResult executeEvent(ControlInputReader req, ElEnvironment env);
 
     /**
      * Finds a control recursively by id.

@@ -19,12 +19,17 @@ package org.bridje.web.view.state;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.bridje.el.ElService;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
@@ -64,6 +69,7 @@ public class StateManager
         }
         Map<Class<?>, Object> comps = ctx.find(StateListener.class).getStateComps();
         Map<String, String> result = new LinkedHashMap<>();
+        result.putAll(ctx.getScope().getStateMap());
         if (comps != null)
         {
             comps.forEach((c, i) -> fillStateValues(c, i, result));
@@ -101,7 +107,7 @@ public class StateManager
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
-        return sb.toString();
+        return encriptStateString(sb.toString());
     }
 
     /**
@@ -212,6 +218,22 @@ public class StateManager
                 lst.put(field, name);
             });
             stateFields = result;
+        }
+    }
+
+    private String encriptStateString(String stateString)
+    {
+        try
+        {
+            if(stateString == null || stateString.trim().isEmpty()) return null;
+            String key = "MZygpewJsCpRrfOr";
+            StateEncryptation encryptation = new StateEncryptation(key);
+            return encryptation.encryptBase64(stateString);            
+        }
+        catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return "";
         }
     }
 
