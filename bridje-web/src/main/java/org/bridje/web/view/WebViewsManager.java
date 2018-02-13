@@ -261,23 +261,29 @@ public class WebViewsManager
         ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
         Thls.doAs(() ->
         {
-            EventResult evResult = view.getRoot()
-                    .findById(elEnv, req.getHeader("Bridje-Form"), (Control ctrl) ->
-                    {
-                        ctrl.readInput(new ControlInputReader(req), elEnv);
-                        EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
-                        if(result == null) result = EventResult.none();
-                        return result;
-                    });
-            if(evResult == null)
+            String containerId = req.getHeader("Bridje-Container");
+            String formId = req.getHeader("Bridje-Form");
+            EventResult evResult = EventResult.none();
+            if(formId != null && !formId.trim().isEmpty())
             {
-                LOG.log(Level.SEVERE, String.format("Error could not find form element %s in the view %s.", req.getHeader("Bridje-Form"), view.getName()));
-                evResult = EventResult.error("The action could not be execute.");
+                evResult = view.getRoot()
+                        .findById(elEnv, formId, (Control ctrl) ->
+                        {
+                            ctrl.readInput(new ControlInputReader(req), elEnv);
+                            EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
+                            if(result == null) result = EventResult.none();
+                            return result;
+                        });
+                if(evResult == null)
+                {
+                    LOG.log(Level.SEVERE, String.format("Error could not find form element %s in the view %s.", req.getHeader("Bridje-Form"), view.getName()));
+                    evResult = EventResult.error("The action could not be execute.");
+                }
             }
-            
+
             final EventResult eventResult = evResult;
             view.getRoot()
-                    .findById(elEnv, req.getHeader("Bridje-Container"), (Control ctrl) ->
+                    .findById(elEnv, containerId, (Control ctrl) ->
                     {
                         if(eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
                         {

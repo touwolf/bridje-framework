@@ -73,6 +73,7 @@ window.onload = function()
                         if (renderEl) 
                         {
                             initialize(renderEl);
+                            window.__bridje.inAction = false;
                             window.__bridje.callback && window.__bridje.callback(renderEl);
                         }
                     }
@@ -151,6 +152,34 @@ window.onload = function()
     window.__bridje.execute = function(element)
     {
         execute(element);
+    };
+    
+    const refresh = function(container)
+    {
+        if (window.__bridje.inAction)
+        {
+            return;
+        }
+
+        window.__bridje.inAction = true;
+        let enctype = 'application/x-www-form-urlencoded';
+        let method = 'post';
+        let containerId = container.id;
+        ajax({
+            view: window.__bridje.info.dataBridjeView,
+            enctype: enctype,
+            event: '',
+            method: method,
+            isUrlEncoded: true,
+            formId: '',
+            containerId: containerId,
+            sendData: '',
+            eventEl: container
+        });
+    };
+    window.__bridje.refresh = function(element)
+    {
+        refresh(element);
     };
 
     const removeElementActionClass = function(element)
