@@ -26,6 +26,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Utility class for state string encriptation.
+ */
 public class StateEncryptation
 {
     private final byte[] key;
@@ -50,12 +53,12 @@ public class StateEncryptation
      * Encrypts the given plain text
      *
      * @param plainText The plain text to encrypt
-     * @return 
-     * @throws java.security.NoSuchAlgorithmException 
-     * @throws javax.crypto.NoSuchPaddingException 
-     * @throws java.security.InvalidKeyException 
-     * @throws javax.crypto.IllegalBlockSizeException 
-     * @throws javax.crypto.BadPaddingException 
+     * @return The encripted string.
+     * @throws java.security.NoSuchAlgorithmException Throw in the encrypt
+     * @throws javax.crypto.NoSuchPaddingException Throw in the encrypt
+     * @throws java.security.InvalidKeyException Throw in the encrypt
+     * @throws javax.crypto.IllegalBlockSizeException Throw in the encrypt
+     * @throws javax.crypto.BadPaddingException Throw in the encrypt
      */
     public byte[] encrypt(byte[] plainText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
@@ -70,12 +73,12 @@ public class StateEncryptation
      * Encrypts the given plain text to a base64 string.
      *
      * @param plainText The plain text to encrypt
-     * @return 
-     * @throws java.security.NoSuchAlgorithmException 
-     * @throws javax.crypto.NoSuchPaddingException 
-     * @throws java.security.InvalidKeyException 
-     * @throws javax.crypto.IllegalBlockSizeException 
-     * @throws javax.crypto.BadPaddingException 
+     * @return The encripted base64 string.
+     * @throws java.security.NoSuchAlgorithmException Throw in the encrypt
+     * @throws javax.crypto.NoSuchPaddingException Throw in the encrypt
+     * @throws java.security.InvalidKeyException Throw in the encrypt
+     * @throws javax.crypto.IllegalBlockSizeException Throw in the encrypt
+     * @throws javax.crypto.BadPaddingException Throw in the encrypt
      */
     public String encryptBase64(String plainText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
@@ -87,12 +90,12 @@ public class StateEncryptation
      * Decrypts the given byte array
      *
      * @param cipherText The data to decrypt
-     * @return 
-     * @throws java.security.NoSuchAlgorithmException
-     * @throws javax.crypto.NoSuchPaddingException
-     * @throws java.security.InvalidKeyException
-     * @throws javax.crypto.IllegalBlockSizeException
-     * @throws javax.crypto.BadPaddingException
+     * @return The decripted string.
+     * @throws java.security.NoSuchAlgorithmException Throw in the decrypt.
+     * @throws javax.crypto.NoSuchPaddingException Throw in the decrypt.
+     * @throws java.security.InvalidKeyException Throw in the decrypt.
+     * @throws javax.crypto.IllegalBlockSizeException Throw in the decrypt.
+     * @throws javax.crypto.BadPaddingException Throw in the decrypt.
      */
     public byte[] decrypt(byte[] cipherText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
@@ -108,12 +111,12 @@ public class StateEncryptation
      * Decrypts the given base64 string.
      *
      * @param cipherText The data to decrypt
-     * @return 
-     * @throws java.security.NoSuchAlgorithmException
-     * @throws javax.crypto.NoSuchPaddingException
-     * @throws java.security.InvalidKeyException
-     * @throws javax.crypto.IllegalBlockSizeException
-     * @throws javax.crypto.BadPaddingException
+     * @return The decripted string.
+     * @throws java.security.NoSuchAlgorithmException Throw in the decrypt.
+     * @throws javax.crypto.NoSuchPaddingException Throw in the decrypt.
+     * @throws java.security.InvalidKeyException Throw in the decrypt.
+     * @throws javax.crypto.IllegalBlockSizeException Throw in the decrypt.
+     * @throws javax.crypto.BadPaddingException Throw in the decrypt.
      */
     public String decryptBase64(String cipherText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
