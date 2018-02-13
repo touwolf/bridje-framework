@@ -74,7 +74,7 @@ window.onload = function()
                         {
                             initialize(renderEl);
                             window.__bridje.inAction = false;
-                            window.__bridje.callback && window.__bridje.callback(renderEl);
+                            window.__bridje.callback && window.__bridje.callback(renderEl, data);
                         }
                     }
                 }
