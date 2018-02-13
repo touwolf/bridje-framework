@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,6 +51,13 @@ public class StateManager
     private ElService elServ;
 
     private Map<Class<?>, Map<Field, String>> stateFields;
+    
+    private Random random;
+
+    private final String[] letters = new String[]
+    {
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    };
 
     /**
      * Creates a new map with the current state of the web request. All the
@@ -81,10 +89,11 @@ public class StateManager
      * Create an String representation of the given web view state.
      *
      * @param map The state map.
+     * @param scope The current web scope.
      *
      * @return The String representation for the given state.
      */
-    public String toStateString(Map<String, String> map)
+    public String toStateString(Map<String, String> map, WebScope scope)
     {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
@@ -107,7 +116,7 @@ public class StateManager
                 LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
-        return encriptStateString(sb.toString());
+        return encriptStateString(sb.toString(), scope);
     }
 
     /**
@@ -120,7 +129,7 @@ public class StateManager
     public String createStringViewState(IocContext<WebScope> ctx)
     {
         Map<String, String> map = createViewState(ctx);
-        return toStateString(map);
+        return toStateString(map, ctx.getScope());
     }
 
     private void fillStateValues(Class<?> comp, Object inst, Map<String, String> stateValues)
@@ -221,12 +230,17 @@ public class StateManager
         }
     }
 
-    private String encriptStateString(String stateString)
+    private String encriptStateString(String stateString, WebScope scope)
     {
         try
         {
             if(stateString == null || stateString.trim().isEmpty()) return null;
-            String key = "MZygpewJsCpRrfOr";
+            String key = scope.getSession().find("stateEncryptKey");
+            if(key == null || key.length() != 16)
+            {
+                key = generateRandomKey(16);
+                scope.getSession().save("stateEncryptKey", key);
+            }
             StateEncryptation encryptation = new StateEncryptation(key);
             return encryptation.encryptBase64(stateString);            
         }
@@ -235,6 +249,19 @@ public class StateManager
             LOG.log(Level.SEVERE, e.getMessage(), e);
             return "";
         }
+    }
+    
+    private String generateRandomKey(int size)
+    {
+        random = new Random();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < size; i++)
+        {
+            String letter = letters[random.nextInt(letters.length)];
+            if(random.nextBoolean()) letter = letter.toUpperCase();
+            result.append(letter);
+        }
+        return result.toString();
     }
 
 }

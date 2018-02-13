@@ -492,7 +492,7 @@ public final class WebScope implements Scope
     {
         try
         {
-            String key = "MZygpewJsCpRrfOr";
+            String key = getSession().find("stateEncryptKey");
             StateEncryptation encryptation = new StateEncryptation(key);
             return encryptation.decryptBase64(encStateString);
         }
