@@ -17,22 +17,24 @@
 package org.bridje.orm.srcgen.model;
 
 import java.util.List;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * The information for a field of an entity in the model.
  */
-@XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WrappedFieldInf extends FieldInfBase
 {
     @XmlElements(
     {
-        @XmlElement(name = "field", type = FieldInf.class)
+        @XmlElement(name = "boolean", type = BooleanField.class),
+        @XmlElement(name = "number", type = NumberField.class),
+        @XmlElement(name = "string", type = StringField.class),
+        @XmlElement(name = "date", type = DateField.class)
     })
     private List<FieldInf> fields;
 
@@ -41,4 +43,8 @@ public class WrappedFieldInf extends FieldInfBase
         return fields;
     }
     
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        setParent(parent);
+    }
 }

@@ -27,6 +27,7 @@ limitations under the License.
         <type name="PASSWORD" javaType="String" readType="String" jdbcType="VARCHAR" length="255" />
         <type name="BOOLEAN" javaType="Boolean" readType="Boolean" jdbcType="BOOLEAN" />
         <type name="USER_STATUS" javaType="UserStatus" readType="Integer" jdbcType="INTEGER" parser="UserStatus.values()[%s]" writer="%s.ordinal()" />
+        <type name="COORDINATE" javaType="Double" readType="Double" jdbcType="DECIMAL" length="9" precision="6" />
     </types>
 
     <entities>
@@ -66,6 +67,10 @@ limitations under the License.
                 <string name="password" type="PASSWORD" />
                 <string name="active" type="BOOLEAN" />
                 <number name="status" type="USER_STATUS" />
+                <wrapper>
+                    <number name="latitude" type="COORDINATE" />
+                    <number name="longitude" type="COORDINATE" />
+                </wrapper>
             </fields>
             <indexes>
                 <unique fields="email" />
