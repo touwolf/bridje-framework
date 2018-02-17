@@ -55,8 +55,12 @@ public class EntityInf
         @XmlElement(name = "boolean", type = BooleanField.class),
         @XmlElement(name = "number", type = NumberField.class),
         @XmlElement(name = "string", type = StringField.class),
-        @XmlElement(name = "date", type = DateField.class)
+        @XmlElement(name = "date", type = DateField.class),
+        @XmlElement(name = "wrapper", type = WrappedFieldInf.class)
     })
+    private List<FieldInfBase> wrappedFields;
+    
+    @XmlTransient
     private List<FieldInf> fields;
 
     @XmlElementWrapper(name = "indexes")
@@ -206,17 +210,21 @@ public class EntityInf
      */
     public List<FieldInf> getFields()
     {
+        if(fields == null)
+        {
+            fields = unwrapFields();
+        }
         return fields;
     }
 
-    /**
-     * The list of fields for this entity.
-     *
-     * @param fields The list of fields for this entity.
-     */
-    public void setFields(List<FieldInf> fields)
+    public List<FieldInfBase> getWrappedFields()
     {
-        this.fields = fields;
+        return wrappedFields;
+    }
+
+    public void setWrappedFields(List<FieldInfBase> wrappedFields)
+    {
+        this.wrappedFields = wrappedFields;
     }
 
     /**
@@ -230,7 +238,7 @@ public class EntityInf
         {
             allFields = new ArrayList<>();
             allFields.add(key.getField());
-            allFields.addAll(fields);
+            allFields.addAll(getFields());
         }
         return allFields;
     }
@@ -346,6 +354,25 @@ public class EntityInf
                 .filter(f -> f.getName().equalsIgnoreCase(fieldName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private List<FieldInf> unwrapFields()
+    {
+        List<FieldInf> result = new ArrayList<>();
+
+        for (FieldInfBase fieldInfBase : wrappedFields)
+        {
+            if(fieldInfBase instanceof WrappedFieldInf)
+            {
+                result.addAll(((WrappedFieldInf) fieldInfBase).getFields());
+            }
+            else
+            {
+                result.add(((FieldInf) fieldInfBase));
+            }
+        }
+
+        return result;
     }
 
 }
