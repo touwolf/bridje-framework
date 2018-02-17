@@ -311,7 +311,7 @@ public class EntityInf
      */
     public List<RelationField> getForeignKeys()
     {
-        return fields.stream()
+        return getFields().stream()
                 .filter(f -> f instanceof RelationField)
                 .map(f -> (RelationField) f)
                 .collect(Collectors.toList());
