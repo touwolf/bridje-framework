@@ -48,7 +48,7 @@ public class UsersModel extends UsersModelBase
     }
 
     @Override
-    public Coordinates parseCoordinates(SQLResultSet rs) throws SQLException
+    public Coordinates parseUserCoordinates(SQLResultSet rs) throws SQLException
     {
         Float lat = rs.get(User.LATITUDE);
         Float lng = rs.get(User.LONGITUDE);
