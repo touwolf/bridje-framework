@@ -20,6 +20,7 @@ import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
@@ -27,8 +28,11 @@ import javax.xml.bind.annotation.XmlElements;
  * The information for a field of an entity in the model.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class WrappedFieldInf extends FieldInfBase
+public class WrapperFieldInf extends FieldInfBase
 {
+    @XmlAttribute
+    private String type;
+
     @XmlElements(
     {
         @XmlElement(name = "boolean", type = BooleanField.class),
@@ -42,7 +46,23 @@ public class WrappedFieldInf extends FieldInfBase
     {
         return fields;
     }
-    
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    @Override
+    public String getJavaType()
+    {
+        return getType();
+    }
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         setParent(parent);

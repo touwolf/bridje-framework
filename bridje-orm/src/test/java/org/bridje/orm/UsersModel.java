@@ -20,14 +20,14 @@ import java.sql.SQLException;
 import java.util.List;
 import org.bridje.sql.Query;
 import org.bridje.sql.SQL;
+import org.bridje.sql.SQLResultSet;
 
 public class UsersModel extends UsersModelBase
 {
-    public List<User> findUsers(Paging paging) throws SQLException
+    public List<User> findUsers() throws SQLException
     {
         Query query = SQL.select(User.TABLE.getColumns())
                         .from(User.TABLE)
-                        .limit(paging.toLimit())
                         .toQuery();
         return env.fetchAll(query, this::parseUser);
     }
@@ -45,5 +45,28 @@ public class UsersModel extends UsersModelBase
     public void saveUserGroup(UserGroup userGroup) throws SQLException
     {
         doSaveUserGroup(userGroup);
+    }
+
+    @Override
+    public Coordinates parseCoordinates(SQLResultSet rs) throws SQLException
+    {
+        Float lat = rs.get(User.LATITUDE);
+        Float lng = rs.get(User.LONGITUDE);
+        if(lat == null || lng == null) return null;
+        return new Coordinates(lat, lng);
+    }
+
+    @Override
+    public Float getUserLatitude(User entity)
+    {
+        if(entity.getCoordinates() == null) return null;
+        return entity.getCoordinates().getLatitude();
+    }
+
+    @Override
+    public Float getUserLongitude(User entity)
+    {
+        if(entity.getCoordinates() == null) return null;
+        return entity.getCoordinates().getLongitude();
     }
 }

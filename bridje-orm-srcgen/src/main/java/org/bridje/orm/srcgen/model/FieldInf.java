@@ -110,10 +110,26 @@ public abstract class FieldInf extends FieldInfBase
         this.required = required;
     }
 
+    @Override
+    public String getJavaType()
+    {
+        return getType().getJavaType();
+    }
+    
     /**
      * Gets the name of the class for the column of this field.
      * 
      * @return The name of the class for the column of this field.
      */
     public abstract String getColumnClass();
+
+    /**
+     * If this fields needs a custom getter.
+     * 
+     * @return true this fields needs a custom getter, false otherwise.
+     */    
+    public boolean getNeedCustomGetter()
+    {
+        return getParent() instanceof WrapperFieldInf;
+    }
 }

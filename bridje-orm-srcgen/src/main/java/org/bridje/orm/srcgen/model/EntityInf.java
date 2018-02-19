@@ -56,7 +56,7 @@ public class EntityInf
         @XmlElement(name = "number", type = NumberField.class),
         @XmlElement(name = "string", type = StringField.class),
         @XmlElement(name = "date", type = DateField.class),
-        @XmlElement(name = "wrapper", type = WrappedFieldInf.class)
+        @XmlElement(name = "wrapper", type = WrapperFieldInf.class)
     })
     private List<FieldInfBase> wrappedFields;
     
@@ -84,6 +84,9 @@ public class EntityInf
 
     @XmlTransient
     private List<FieldInf> allFields;
+    
+    @XmlTransient
+    private List<FieldInfBase> allWrappedFields;
 
     /**
      * The name for the entity.
@@ -244,6 +247,22 @@ public class EntityInf
     }
 
     /**
+     * Gets all the fields of this entity, including the key field.
+     *
+     * @return All the fields of this entity, including the key field.
+     */
+    public List<FieldInfBase> getAllWrappedFields()
+    {
+        if (allWrappedFields == null)
+        {
+            allWrappedFields = new ArrayList<>();
+            allWrappedFields.add(key.getField());
+            allWrappedFields.addAll(getWrappedFields());
+        }
+        return allWrappedFields;
+    }
+
+    /**
      * Gets all the non-autoincrement fields of this entity.
      *
      * @return All the non-autoincrement fields of this entity.
@@ -362,9 +381,9 @@ public class EntityInf
 
         for (FieldInfBase fieldInfBase : wrappedFields)
         {
-            if(fieldInfBase instanceof WrappedFieldInf)
+            if(fieldInfBase instanceof WrapperFieldInf)
             {
-                result.addAll(((WrappedFieldInf) fieldInfBase).getFields());
+                result.addAll(((WrapperFieldInf) fieldInfBase).getFields());
             }
             else
             {

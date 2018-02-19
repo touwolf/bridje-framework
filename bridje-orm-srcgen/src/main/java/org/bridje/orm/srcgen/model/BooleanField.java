@@ -54,7 +54,7 @@ public class BooleanField extends FieldInf
     {
         setParent(parent);
     }
-
+    
     @Override
     public boolean isAutoIncrement()
     {

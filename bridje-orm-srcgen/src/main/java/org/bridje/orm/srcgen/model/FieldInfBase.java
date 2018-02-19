@@ -92,13 +92,25 @@ public abstract class FieldInfBase
         {
             return ((EntityInfKey)parent).getEntity();
         }
-        if(parent instanceof WrappedFieldInf)
+        if(parent instanceof WrapperFieldInf)
         {
-            return ((WrappedFieldInf)parent).getEntity();
+            return ((WrapperFieldInf)parent).getEntity();
         }
         return (EntityInf)parent;
     }
+    
+    /**
+     * Gets the java type for this field.
+     * 
+     * @return The java type for this field.
+     */
+    public abstract String getJavaType();
 
+    public Object getParent()
+    {
+        return parent;
+    }
+    
     /**
      * Sets the parent object for this field.
      * 
