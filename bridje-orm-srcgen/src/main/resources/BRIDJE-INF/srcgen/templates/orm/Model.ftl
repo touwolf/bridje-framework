@@ -113,7 +113,7 @@ public abstract class ${model.name}Base
         ctx.put(entity.get${entity.key.name?cap_first}(), entity);
         <#list entity.allWrappedFields as field>
         <#if field.class.simpleName == "WrapperFieldInf" >
-        entity.set${field.name?cap_first}(parse${field.name?cap_first}(rs));
+        entity.set${field.name?cap_first}(parse${entity.name}${field.name?cap_first}(rs));
         <#else>
         entity.set${field.name?cap_first}(rs.get(${entity.name}.${field.column?upper_case}<#if field.with??>, (key) -> find${field.with.name}(${entity.key.type.parserCode("key")})</#if>));
         </#if>
@@ -122,7 +122,7 @@ public abstract class ${model.name}Base
 
     <#list entity.allWrappedFields as field>
     <#if field.class.simpleName == "WrapperFieldInf" >
-    public abstract ${field.javaType} parse${field.name?cap_first}(SQLResultSet rs) throws SQLException;
+    public abstract ${field.javaType} parse${entity.name}${field.name?cap_first}(SQLResultSet rs) throws SQLException;
 
     </#if>
     </#list>
