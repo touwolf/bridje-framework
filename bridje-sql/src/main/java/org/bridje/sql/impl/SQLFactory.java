@@ -341,7 +341,7 @@ public class SQLFactory
         return new LimitImpl(count);
     }
 
-    public <T, E> ArrayExpr<Integer, Integer> array(Expression<T, E>... elements)
+    public <T, E> ArrayExpr<T, E> array(Expression<T, E>... elements)
     {
         if(elements.length == 0) return new ArrayExprImpl(elements, null);
         return new ArrayExprImpl(elements, elements[0].getSQLType());

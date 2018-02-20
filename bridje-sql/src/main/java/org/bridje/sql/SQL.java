@@ -788,7 +788,7 @@ public class SQL
      * 
      * @return The new created array.
      */
-    public static final <T, E> ArrayExpr<Integer, Integer> array(Expression<T, E>... elements)
+    public static final <T, E> ArrayExpr<T, E> array(Expression<T, E>... elements)
     {
         return FACT.array(elements);
     }
