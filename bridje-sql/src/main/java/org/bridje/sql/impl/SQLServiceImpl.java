@@ -55,7 +55,9 @@ class SQLServiceImpl implements SQLService
     @Override
     public SQLEnvironment createEnvironment(String dataSourceName) throws SQLException
     {
-        return createEnvironment(jdbcServ.getDataSource(dataSourceName));
+        DataSource ds = jdbcServ.getDataSource(dataSourceName);
+        if(ds == null) throw new SQLException("Could not find the data source: " + dataSourceName);
+        return createEnvironment(ds);
     }
 
     private SQLDialect findDialect(Connection connection)

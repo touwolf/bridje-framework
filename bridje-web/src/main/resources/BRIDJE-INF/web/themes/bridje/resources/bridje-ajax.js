@@ -125,15 +125,16 @@ window.onload = function()
         let isUrlEncoded = enctype === 'application/x-www-form-urlencoded';
         if(isUrlEncoded)
         {
-            let params = new URLSearchParams();
+            let params = "";
             for(let pair of sendData.entries())
             {
                 if(typeof(pair[1]) === 'string')
                 {
-                    params.append(pair[0], pair[1]);
+                    if (params.length > 0) { params += "&"; }
+                    params += pair[0] + "=" + pair[1];
                 }
             }
-            sendData = params.toString();
+            sendData = params;
         }
         let containerId = form.getAttribute('data-container')
         if(!containerId) containerId = form.id;
