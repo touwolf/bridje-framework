@@ -96,6 +96,7 @@ class ControllerBridlet implements HttpBridlet
                     }
                     else
                     {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
                         throw new HttpException(500, e.getCause().getMessage(), e.getCause());
                     }
                 }

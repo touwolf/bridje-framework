@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Bridje Framework.
+ * Copyright 2018 Bridje Framework.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
-@XmlSchema(namespace = "http://www.bridje.org/schemas/http/config",
-        attributeFormDefault = XmlNsForm.UNQUALIFIED,
-        elementFormDefault = XmlNsForm.QUALIFIED)
-package org.bridje.sip.config;
+package org.bridje.orm;
 
-import javax.xml.bind.annotation.XmlNsForm;
-import javax.xml.bind.annotation.XmlSchema;
+public class Coordinates
+{
+    private final Float latitude;
+    
+    private final Float longitude;
 
+    public Coordinates(Float latitude, Float longitude)
+    {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Float getLatitude()
+    {
+        return latitude;
+    }
+
+    public Float getLongitude()
+    {
+        return longitude;
+    }
+}

@@ -19,17 +19,23 @@ package org.bridje.orm;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ORMTest
 {
+    private static final Logger LOG = Logger.getLogger(ORMTest.class.getName());
+
     public ORMTest()
     {
     }
@@ -65,12 +71,31 @@ public class ORMTest
                                     .build();
         UsersModel model = ormEnv.getModel(UsersModel.class);
         model.fixSchema();
+        List<User> lst = model.findUsers();
+        lst.forEach(u -> {
+            try
+            {
+                model.doDeleteUser(u);
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        });
 
         User user = new User();
         user.setEmail("someemail@hotmail.com");
         user.setPassword("pass");
         user.setActive(true);
+        user.setCoordinates(new Coordinates(45.1f, 67.2f));
         model.saveUser(user);
+        
+        lst = model.findUsers();
+        Assert.assertNotNull(lst);
+        Assert.assertEquals(1, lst.size());
+        Assert.assertEquals("someemail@hotmail.com", user.getEmail());
+        Assert.assertEquals(45.1f, lst.get(0).getCoordinates().getLatitude(), 0.1f);
+        Assert.assertEquals(67.2f, lst.get(0).getCoordinates().getLongitude(), 0.10f);
 
         Group group = new Group();
         group.setCode("GPU");

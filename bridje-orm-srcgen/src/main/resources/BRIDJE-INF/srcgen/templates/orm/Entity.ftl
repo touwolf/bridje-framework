@@ -114,18 +114,18 @@ public class ${entity.name}
                         .toQuery();
     }
 
-    <#list entity.allFields as field>
-    private ${field.type.javaType} ${field.name};
+    <#list entity.allWrappedFields as field>
+    private ${field.javaType} ${field.name};
 
     </#list>
-    <#list entity.allFields as field>
+    <#list entity.allWrappedFields as field>
     /**
      * Gets the value of the ${field.name} field.
      * ${field.description!}
-     * @return A ${field.type.javaType} object representing the value 
+     * @return A ${field.javaType} object representing the value 
      * of the ${field.name} field.
      */
-    public ${field.type.javaType} get${field.name?cap_first}()
+    public ${field.javaType} get${field.name?cap_first}()
     {
         return this.${field.name};
     }
@@ -133,10 +133,10 @@ public class ${entity.name}
     /**
      * Sets the value of the ${field.name} field.
      * ${field.description!}
-     * @param ${field.name} The ${field.type.javaType} object representing the value 
+     * @param ${field.name} The ${field.javaType} object representing the value 
      * of the ${field.name} field.
      */
-    public void set${field.name?cap_first}(${field.type.javaType} ${field.name})
+    public void set${field.name?cap_first}(${field.javaType} ${field.name})
     {
         this.${field.name} = ${field.name};
     }

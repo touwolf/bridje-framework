@@ -26,45 +26,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class FieldInf
+public abstract class FieldInf extends FieldInfBase
 {
-    @XmlAttribute
-    private String name;
-
     @XmlAttribute
     private String column;
 
     @XmlAttribute
     private Boolean required;
 
-    @XmlAttribute(name = "description")
-    private String description;
-
-    @XmlTransient
-    private Object parent;
-
     public FieldInf()
     {
-    }
-
-    /**
-     * The name of the field.
-     * 
-     * @return The name of the field.
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * The name of the field.
-     * 
-     * @param name The name of the field.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
     }
 
     /**
@@ -76,7 +47,7 @@ public abstract class FieldInf
     {
         if(column == null)
         {
-            column = Utils.toSQLName(name);
+            column = Utils.toSQLName(getName());
         }
         return column;
     }
@@ -89,26 +60,6 @@ public abstract class FieldInf
     public void setColumn(String column)
     {
         this.column = column;
-    }
-
-    /**
-     * A description of the field.
-     * 
-     * @return A description of the field.
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-    /**
-     * A description of the field.
-     * 
-     * @param description A description of the field.
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     /**
@@ -159,34 +110,26 @@ public abstract class FieldInf
         this.required = required;
     }
 
-    /**
-     * The entity that this field belongs to.
-     * 
-     * @return The entity that this field belongs to.
-     */
-    public EntityInf getEntity()
+    @Override
+    public String getJavaType()
     {
-        if(parent instanceof EntityInfKey)
-        {
-            return ((EntityInfKey)parent).getEntity();
-        }
-        return (EntityInf)parent;
+        return getType().getJavaType();
     }
-
-    /**
-     * Sets the parent object for this field.
-     * 
-     * @param parent Sets the parent object for this field.
-     */
-    public void setParent(Object parent)
-    {
-        this.parent = parent;
-    }
-
+    
     /**
      * Gets the name of the class for the column of this field.
      * 
      * @return The name of the class for the column of this field.
      */
     public abstract String getColumnClass();
+
+    /**
+     * If this fields needs a custom getter.
+     * 
+     * @return true this fields needs a custom getter, false otherwise.
+     */    
+    public boolean getNeedCustomGetter()
+    {
+        return getParent() instanceof WrapperFieldInf;
+    }
 }

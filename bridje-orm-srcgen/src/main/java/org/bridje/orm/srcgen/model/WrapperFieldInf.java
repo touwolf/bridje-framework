@@ -16,48 +16,55 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 
 /**
- * Information about a boolean field.
+ * The information for a field of an entity in the model.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BooleanField extends FieldInf
+public class WrapperFieldInf extends FieldInfBase
 {
     @XmlAttribute
     private String type;
 
-    @XmlTransient
-    private SQLTypeInf typeInf;
-
-    @Override
-    public SQLTypeInf getType()
+    @XmlElements(
     {
-        if(typeInf == null)
-        {
-            typeInf = getEntity().getModel().findSQLType(type);
-        }
-        return typeInf;
+        @XmlElement(name = "boolean", type = BooleanField.class),
+        @XmlElement(name = "number", type = NumberField.class),
+        @XmlElement(name = "string", type = StringField.class),
+        @XmlElement(name = "date", type = DateField.class)
+    })
+    private List<FieldInf> fields;
+
+    public List<FieldInf> getFields()
+    {
+        return fields;
+    }
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
     }
 
     @Override
-    public String getColumnClass()
+    public String getJavaType()
     {
-        return "BooleanColumn";
+        return getType();
     }
 
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         setParent(parent);
-    }
-    
-    @Override
-    public boolean isAutoIncrement()
-    {
-        return false;
     }
 }
