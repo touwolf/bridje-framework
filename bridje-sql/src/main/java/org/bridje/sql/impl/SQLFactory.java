@@ -317,6 +317,11 @@ public class SQLFactory
         return new LiteralImpl<>(value);
     }
 
+    public <T, E> Expression<T, E> custom(T value, SQLType<T, E> type)
+    {
+        return new LiteralImpl<>(value, type);
+    }
+
     public <T, E> Expression<T, E> param(SQLType<T, E> cls)
     {
         return new Param<>(cls);
@@ -345,6 +350,16 @@ public class SQLFactory
     {
         if(elements.length == 0) return new ArrayExprImpl(elements, null);
         return new ArrayExprImpl(elements, elements[0].getSQLType());
+    }
+
+    public <T, E> ArrayExpr<T, E> array(SQLType<T, E> type, T... elements)
+    {
+        Expression[] result = new Expression[elements.length];
+        for (int i = 0; i < result.length; i++)
+        {
+            result[i] = custom(elements[i], type);
+        }
+        return array(result);
     }
 
     public DateExpr<LocalDateTime, Date> now()

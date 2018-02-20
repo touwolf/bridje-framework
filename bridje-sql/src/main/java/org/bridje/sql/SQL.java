@@ -755,6 +755,22 @@ public class SQL
         return FACT.custom(value);
     }
 
+
+    /**
+     * Creates a new literal.
+     * 
+     * @param <T>   The final java type of the expression.
+     * @param <E>   The ResultSet read java type of the expression.
+     * @param value The value for the literal.
+     * @param type
+     * 
+     * @return The new created literal.
+     */
+    public static final <T, E> Expression<T, E> custom(T value, SQLType<T, E> type)
+    {
+        return FACT.custom(value, type);
+    }
+    
     /**
      * Creates a new param.
      * 
@@ -791,6 +807,19 @@ public class SQL
     public static final <T, E> ArrayExpr<T, E> array(Expression<T, E>... elements)
     {
         return FACT.array(elements);
+    }
+
+    /**
+     * 
+     * @param <T>
+     * @param <E>
+     * @param type
+     * @param elements
+     * @return 
+     */
+    public static final <T, E> ArrayExpr<T, E> array(SQLType<T, E> type, T... elements)
+    {
+        return FACT.array(type, elements);
     }
 
     /**
