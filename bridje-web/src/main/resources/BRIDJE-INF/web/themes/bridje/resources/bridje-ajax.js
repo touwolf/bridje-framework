@@ -17,6 +17,11 @@
 window.onload = function()
 {
     if( !window.__bridje ) window.__bridje = {};
+    window.__bridje.callbacks = [];
+    window.__bridje.callback = function(callbackFunc)
+    {
+        window.__bridje.callbacks.push(callbackFunc);
+    };
     const findForm = function(element)
     {
         let node = element;
@@ -74,7 +79,11 @@ window.onload = function()
                         {
                             initialize(renderEl);
                             window.__bridje.inAction = false;
-                            window.__bridje.callback && window.__bridje.callback(renderEl, data);
+                            for (i = 0; i < window.__bridje.callbacks.length; i++)
+                            {
+                                let func = window.__bridje.callbacks[i];
+                                func(renderEl, data);
+                            }
                         }
                     }
                 }
