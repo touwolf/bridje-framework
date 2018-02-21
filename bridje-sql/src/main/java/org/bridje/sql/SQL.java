@@ -755,7 +755,6 @@ public class SQL
         return FACT.custom(value);
     }
 
-
     /**
      * Creates a new literal.
      * 
@@ -810,12 +809,13 @@ public class SQL
     }
 
     /**
+     * Creates a new array of elements.
      * 
-     * @param <T>
-     * @param <E>
-     * @param type
-     * @param elements
-     * @return 
+     * @param <T>       The final java type of the expression.
+     * @param <E>       The ResultSet read java type of the expression.
+     * @param type      The type for the param.
+     * @param elements  The elements for the array.
+     * @return          The new created array.
      */
     public static final <T, E> ArrayExpr<T, E> array(SQLType<T, E> type, T... elements)
     {
