@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-window.onload = function()
+(function()
 {
     if( !window.__bridje ) window.__bridje = {};
     window.__bridje.callbacks = [];
     window.__bridje.callback = function(callbackFunc)
     {
         window.__bridje.callbacks.push(callbackFunc);
+    };
+    window.__bridje.initialize = function()
+    {
+        for (i = 0; i < window.__bridje.callbacks.length; i++)
+        {
+            let func = window.__bridje.callbacks[i];
+            func(document, {});
+        }
     };
     const findForm = function(element)
     {
@@ -77,7 +85,7 @@ window.onload = function()
                         renderEl = document.getElementById(data.containerId);
                         if (renderEl) 
                         {
-                            initialize(renderEl);
+                            initializeActions(renderEl);
                             window.__bridje.inAction = false;
                             for (i = 0; i < window.__bridje.callbacks.length; i++)
                             {
@@ -163,7 +171,7 @@ window.onload = function()
     {
         execute(element);
     };
-    
+
     const refresh = function(container)
     {
         if (window.__bridje.inAction)
@@ -215,7 +223,7 @@ window.onload = function()
         }
     };
 
-    const initialize = function(element)
+    const initializeActions = function(element)
     {
         let actions = element.getElementsByClassName('bridje-action-click');
         for (let i = 0; i < actions.length; i++)
@@ -235,7 +243,7 @@ window.onload = function()
                 }
             }
         }
-        
+
         actions = element.getElementsByClassName('bridje-action-change');
         for (let i = 0; i < actions.length; i++)
         {
@@ -254,7 +262,7 @@ window.onload = function()
                 }
             }
         }
-        
+
         actions = element.getElementsByClassName('bridje-action-enter');
         for (let i = 0; i < actions.length; i++)
         {
@@ -281,5 +289,8 @@ window.onload = function()
         }
     };
 
-    initialize(document);
-};
+    window.onload = function()
+    {
+        initializeActions(document);
+    };
+})();
