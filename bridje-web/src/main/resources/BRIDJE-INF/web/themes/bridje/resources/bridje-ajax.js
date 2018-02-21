@@ -139,6 +139,10 @@
         let sendData = new FormData(form);
         let method = form.getAttribute('method') || 'post';
 
+        if(typeof(sendData.entries) !== 'function')
+        {
+            enctype = 'multipart/form-data';
+        }
         let isUrlEncoded = enctype === 'application/x-www-form-urlencoded';
         if(isUrlEncoded)
         {
