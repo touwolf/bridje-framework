@@ -19,11 +19,7 @@
     <#if style?starts_with("http://") || style?starts_with("https://") || style?starts_with("/")>
         <link rel="stylesheet" href="${style}" />
     <#else>
-        <#if isRenderStatic?? && isRenderStatic>
-            <link rel="stylesheet" href="${httpUrlPrefix}/__themes/${theme}/${style}" />
-        <#else>
-            <link rel="stylesheet" href="/__themes/${theme}/${style}" />
-        </#if>
+        <link rel="stylesheet" href="/__themes/${theme}/${style}" />
     </#if>
 </#macro>
 
@@ -67,7 +63,7 @@
 
 <#macro renderViewContainer>
     <#nested />
-    <#if isRenderStatic?? && isRenderStatic>
+    <#if !(isRenderStatic?? && isRenderStatic)>
         <script>
             if( !window.__bridje ) window.__bridje = {};
             window.__bridje.info = {
@@ -87,9 +83,11 @@
 
 <#macro renderHead>
     <head>
-        <title>${view.title!}</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <#if !(isRenderStatic?? && isRenderStatic)>
+            <title>${view.title!}</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </#if>
         <#nested />
     </head>
 </#macro>
@@ -98,11 +96,11 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
-            <#if isRenderStatic?? && isRenderStatic>
+            <#if !(isRenderStatic?? && isRenderStatic)>
                 <@renderScript "bridje" "bridje-ajax.js" />
+                <@renderMetaTag />
+                <@renderThemeStyles themeName />
             </#if>
-            <@renderMetaTag />
-            <@renderThemeStyles themeName />
         </@renderHead>
         <@renderBody>
             <@renderViewContainer>
@@ -111,7 +109,7 @@
                 </#if>
             </@renderViewContainer>
 
-            <#if isRenderStatic?? && isRenderStatic>
+            <#if !(isRenderStatic?? && isRenderStatic)>
                 <@renderThemeScripts themeName />
             </#if>
         </@renderBody>
