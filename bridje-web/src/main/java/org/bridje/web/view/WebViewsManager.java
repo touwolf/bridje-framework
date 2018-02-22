@@ -19,6 +19,7 @@ package org.bridje.web.view;
 import org.bridje.web.i18n.WebI18nServices;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.Ioc;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
@@ -209,6 +211,36 @@ public class WebViewsManager
             {
                 themesMang.render(view, os, () -> stateManag.createStringViewState(scope.getIocContext()));
                 os.flush();
+                return null;
+            }, ElEnvironment.class, elEnv);
+        }
+        catch (Exception ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Renders the given web view to the response output stream.
+     *
+     * @param httpUrlPrefix  The HTTP prefix for HTTP links
+     * @param view           The view to render.
+     * @param params         The parameters that can be accessed within the view.
+     * @param writer         The writer to output the view.
+     */
+    public void renderStaticView(String httpUrlPrefix, WebView view, Map<String,Object> params, Writer writer)
+    {
+        if(view == null) return;
+        try
+        {
+            ElEnvironment elEnv = elServ.createElEnvironment(Ioc.context());
+            elEnv.pushVar("view", view);
+            elEnv.pushVar("i18n", webI18nServ.getI18nMap());
+            elEnv.pushVar("params", params);
+            elEnv.pushVar("httpUrlPrefix", httpUrlPrefix);
+            Thls.doAsEx(() ->
+            {
+                themesMang.renderStatic(httpUrlPrefix, view, writer);
                 return null;
             }, ElEnvironment.class, elEnv);
         }

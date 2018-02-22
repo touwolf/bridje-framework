@@ -74,7 +74,7 @@ public class ThemesManager
     {
         themeTools = new HashMap<>();
         context.getClassRepository()
-                .forEachClass(ThemeTool.class, (cls, ann) -> themeTools.put(ann.name(), context.find(cls)) );
+                .forEachClass(ThemeTool.class, (cls, ann) -> themeTools.put(ann.name(), context.find(cls)));
         ftlCfg = new Configuration(Configuration.VERSION_2_3_23);
         ftlCfg.setTemplateLoader(Ioc.context().find(ThemesTplLoader.class));
         ftlCfg.setDefaultEncoding("UTF-8");
@@ -85,17 +85,17 @@ public class ThemesManager
     /**
      * Renders the full web view to the given OutputStream.
      *
-     * @param view The view to be render.
-     * @param os The output stream to render the view.
+     * @param view      The view to be render.
+     * @param writer    The writer to render the view.
      * @param stateProv The provider for the current state of the view.
      */
-    public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
+    public void render(WebView view, Writer writer, StateRenderProvider stateProv)
     {
-        if(view == null) return;
-        try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
+        if (view == null) return;
+        try
         {
             String themeName = view.getDefaultTheme();
-            if(themeName == null || themeName.isEmpty()) return;
+            if (themeName == null || themeName.isEmpty()) return;
             String templatePath = themeName + "/Theme.ftlh";
             Template tpl = ftlCfg.getTemplate(templatePath);
             Map<String, Object> data = new HashMap<>();
@@ -104,8 +104,8 @@ public class ThemesManager
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
-            tpl.process(data, w);
-            w.flush();
+            tpl.process(data, writer);
+            writer.flush();
         }
         catch (TemplateException | IOException ex)
         {
@@ -114,17 +114,69 @@ public class ThemesManager
     }
 
     /**
+     * Renders the full web view to the given OutputStream.
+     *
+     * @param httpUrlPrefix  The prefix for the urls.
+     * @param view           The view to be render.
+     * @param writer         The writer to render the view.
+     */
+    public void renderStatic(String httpUrlPrefix, WebView view, Writer writer)
+    {
+        if (view == null) return;
+        try
+        {
+            String themeName = view.getDefaultTheme();
+            if (themeName == null || themeName.isEmpty()) return;
+            String templatePath = themeName + "/Theme.ftlh";
+            Template tpl = ftlCfg.getTemplate(templatePath);
+            Map<String, Object> data = new HashMap<>();
+            data.put("i18n", webI18nServ.getI18nMap());
+            data.put("tools", themeTools);
+            data.put("view", view);
+            data.put("env", Thls.get(ElEnvironment.class));
+            data.put("isRenderStatic", true);
+            data.put("httpUrlPrefix", httpUrlPrefix);
+            tpl.process(data, writer);
+            writer.flush();
+        }
+        catch (TemplateException | IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+    
+    /**
+     * Renders the full web view to the given OutputStream.
+     *
+     * @param view      The view to be render.
+     * @param os        The output stream to render the view.
+     * @param stateProv The provider for the current state of the view.
+     */
+    public void render(WebView view, OutputStream os, StateRenderProvider stateProv)
+    {
+        if (view == null) return;
+        try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
+        {
+            render(view, w, stateProv);
+        }
+        catch (IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    /**
      * Renders only the given control to the given output stream.
      *
-     * @param control The control
-     * @param view The view to be render.
-     * @param os The output stream to render the view.
+     * @param control     The control
+     * @param view        The view to be render.
+     * @param os          The output stream to render the view.
      * @param eventResult The result of the event invocation.
-     * @param stateProv The provider for the current state of the view.
+     * @param stateProv   The provider for the current state of the view.
      */
     public void render(Control control, WebView view, OutputStream os, EventResult eventResult, StateRenderProvider stateProv)
     {
-        try(Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
+        try (Writer w = new OutputStreamWriter(os, Charset.forName("UTF-8")))
         {
             String themeName = view.getDefaultTheme();
             String templatePath = themeName + "/Theme.ftlh";
@@ -150,23 +202,26 @@ public class ThemesManager
      * Renders the expected resource to the client.
      *
      * @param themeName The name of the theme for the resource.
-     * @param resPath The path of the resource within the theme.
-     * @param resp The bridlet response to render the resource.
-     * @return If the resource was found an was rendered to the output. false if the resource was not found.
+     * @param resPath   The path of the resource within the theme.
+     * @param resp      The bridlet response to render the resource.
+     *
+     * @return If the resource was found an was rendered to the output. false if
+     *         the resource was not found.
+     *
      * @throws IOException If any I/O exception occurs.
      */
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
         Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
         GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
-        if(globExpr.globMatches(path.getCanonicalPath()))
+        if (globExpr.globMatches(path.getCanonicalPath()))
         {
             VFile f = new VFile(path);
-            if(f.isFile())
+            if (f.isFile())
             {
                 String contentType = f.getMimeType();
                 resp.setContentType(contentType);
-                try(OutputStream os = resp.getOutputStream())
+                try (OutputStream os = resp.getOutputStream())
                 {
                     try (InputStream is = findInputStream(f))
                     {
@@ -195,7 +250,7 @@ public class ThemesManager
         return new VFileInputStream(file);
     }
 
-    private Map<String, String> compressedStreams = new HashMap<>();
+    private final Map<String, String> compressedStreams = new HashMap<>();
 
     private String compressedContent(VFile file)
     {
@@ -231,10 +286,11 @@ public class ThemesManager
     {
         byte[] buffer = new byte[1024];
         int bytesCount = is.read(buffer);
-        while(bytesCount > -1)
+        while (bytesCount > -1)
         {
             os.write(buffer, 0, bytesCount);
             bytesCount = is.read(buffer);
         }
     }
+
 }

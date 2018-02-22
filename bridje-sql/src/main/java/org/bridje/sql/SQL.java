@@ -761,7 +761,7 @@ public class SQL
      * @param <T>   The final java type of the expression.
      * @param <E>   The ResultSet read java type of the expression.
      * @param value The value for the literal.
-     * @param type
+     * @param type  The SQL type for the colum.
      * 
      * @return The new created literal.
      */

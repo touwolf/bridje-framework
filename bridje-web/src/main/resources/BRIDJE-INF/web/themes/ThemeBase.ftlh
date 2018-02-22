@@ -19,7 +19,11 @@
     <#if style?starts_with("http://") || style?starts_with("https://") || style?starts_with("/")>
         <link rel="stylesheet" href="${style}" />
     <#else>
-        <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+        <#if isRenderStatic?? && isRenderStatic>
+            <link rel="stylesheet" href="${httpUrlPrefix}/__themes/${theme}/${style}" />
+        <#else>
+            <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+        </#if>
     </#if>
 </#macro>
 
@@ -62,17 +66,17 @@
 </#macro>
 
 <#macro renderViewContainer>
-    <div id="bridje-view-container">
-        <#nested />
-    </div>
-    <script>
-        if( !window.__bridje ) window.__bridje = {};
-        window.__bridje.info = {
-            dataBridjeView: '${view.name}',
-            enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
-            currState: '${stateProvider.currentState!}'
-        };
-    </script>
+    <#nested />
+    <#if isRenderStatic?? && isRenderStatic>
+        <script>
+            if( !window.__bridje ) window.__bridje = {};
+            window.__bridje.info = {
+                dataBridjeView: '${view.name}',
+                enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
+                currState: '${stateProvider.currentState!}'
+            };
+        </script>
+    </#if>
 </#macro>
 
 <#macro renderBody>
@@ -94,7 +98,9 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
-            <@renderScript "bridje" "bridje-ajax.js" />
+            <#if isRenderStatic?? && isRenderStatic>
+                <@renderScript "bridje" "bridje-ajax.js" />
+            </#if>
             <@renderMetaTag />
             <@renderThemeStyles themeName />
         </@renderHead>
@@ -105,7 +111,9 @@
                 </#if>
             </@renderViewContainer>
 
-            <@renderThemeScripts themeName />
+            <#if isRenderStatic?? && isRenderStatic>
+                <@renderThemeScripts themeName />
+            </#if>
         </@renderBody>
     </html>
 </#macro>
