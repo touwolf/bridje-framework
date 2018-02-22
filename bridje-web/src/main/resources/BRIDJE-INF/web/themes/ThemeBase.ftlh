@@ -70,16 +70,14 @@
 
 <#macro renderViewContainer>
     <#nested />
-    <#if renderMode == "dinamic">
-        <script>
-            if( !window.__bridje ) window.__bridje = {};
-            window.__bridje.info = {
-                dataBridjeView: '${view.name}',
-                enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
-                currState: '${stateProvider.currentState!}'
-            };
-        </script>
-    </#if>
+    <script>
+        if( !window.__bridje ) window.__bridje = {};
+        window.__bridje.info = {
+            dataBridjeView: '${view.name}',
+            enctype: '<#if view.hasFileInput()>multipart/form-data<#else>application/x-www-form-urlencoded</#if>',
+            currState: '${stateProvider.currentState!}'
+        };
+    </script>
 </#macro>
 
 <#macro renderBody>
@@ -90,37 +88,37 @@
 
 <#macro renderHead>
     <head>
-        <#if renderMode == "dinamic">
-            <title>${view.title!}</title>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </#if>
+        <title>${view.title!}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <#nested />
     </head>
 </#macro>
 
 <#macro renderFullView themeName>
-    <!DOCTYPE html>
-    <html>
-        <@renderHead>
-            <#if renderMode == "dinamic">
+    <#if renderMode == "dinamic">
+        <!DOCTYPE html>
+        <html>
+            <@renderHead>
                 <@renderScript "bridje" "bridje-ajax.js" />
                 <@renderMetaTag />
-            </#if>
-            <@renderThemeStyles themeName />
-        </@renderHead>
-        <@renderBody>
-            <@renderViewContainer>
-                <#if view.root??>
-                    <@renderPartialView view.root themeName />
-                </#if>
-            </@renderViewContainer>
-
-            <#if renderMode == "dinamic">
+                <@renderThemeStyles themeName />
+            </@renderHead>
+            <@renderBody>
+                <@renderViewContainer>
+                    <#if view.root??>
+                        <@renderPartialView view.root themeName />
+                    </#if>
+                </@renderViewContainer>
                 <@renderThemeScripts themeName />
-            </#if>
-        </@renderBody>
-    </html>
+            </@renderBody>
+        </html>
+    <#else>
+        <@renderThemeStyles themeName />
+        <#if view.root??>
+            <@renderPartialView view.root themeName />
+        </#if>
+    </#if>
 </#macro>
 
 <#macro renderPartialView currentControl themeName>
