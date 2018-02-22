@@ -223,12 +223,11 @@ public class WebViewsManager
     /**
      * Renders the given web view to the response output stream.
      *
-     * @param httpUrlPrefix  The HTTP prefix for HTTP links
      * @param view           The view to render.
      * @param params         The parameters that can be accessed within the view.
      * @param writer         The writer to output the view.
      */
-    public void renderStaticView(String httpUrlPrefix, WebView view, Map<String,Object> params, Writer writer)
+    public void renderStaticView(WebView view, Map<String,Object> params, Writer writer)
     {
         if(view == null) return;
         try
@@ -237,10 +236,9 @@ public class WebViewsManager
             elEnv.pushVar("view", view);
             elEnv.pushVar("i18n", webI18nServ.getI18nMap());
             elEnv.pushVar("params", params);
-            elEnv.pushVar("httpUrlPrefix", httpUrlPrefix);
             Thls.doAsEx(() ->
             {
-                themesMang.renderStatic(httpUrlPrefix, view, writer);
+                themesMang.renderStatic(view, writer);
                 return null;
             }, ElEnvironment.class, elEnv);
         }

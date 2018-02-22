@@ -103,6 +103,7 @@ public class ThemesManager
             data.put("tools", themeTools);
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
+            data.put("renderMode", "dinamic");
             data.put("stateProvider", stateProv);
             tpl.process(data, writer);
             writer.flush();
@@ -116,11 +117,10 @@ public class ThemesManager
     /**
      * Renders the full web view to the given OutputStream.
      *
-     * @param httpUrlPrefix  The prefix for the urls.
      * @param view           The view to be render.
      * @param writer         The writer to render the view.
      */
-    public void renderStatic(String httpUrlPrefix, WebView view, Writer writer)
+    public void renderStatic(WebView view, Writer writer)
     {
         if (view == null) return;
         try
@@ -134,8 +134,8 @@ public class ThemesManager
             data.put("tools", themeTools);
             data.put("view", view);
             data.put("env", Thls.get(ElEnvironment.class));
-            data.put("isRenderStatic", true);
-            data.put("httpUrlPrefix", httpUrlPrefix);
+            data.put("renderMode", "static");
+            data.put("resourceRenderer", (ResourceRenderProvider) (theme, resource) -> getResourceContent(theme, resource));
             tpl.process(data, writer);
             writer.flush();
         }
@@ -189,6 +189,7 @@ public class ThemesManager
             data.put("eventResult", eventResult);
             data.put("env", Thls.get(ElEnvironment.class));
             data.put("stateProvider", stateProv);
+            data.put("renderMode", "dinamic");
             tpl.process(data, w);
             w.flush();
         }
@@ -235,6 +236,42 @@ public class ThemesManager
         return false;
     }
 
+    /**
+     * Gets the content of the given resource.
+     *
+     * @param themeName The name of the theme for the resource.
+     * @param resPath   The path of the resource within the theme.
+     *
+     * @return If the resource was found an was rendered to the output. false if
+     *         the resource was not found.
+     */
+    public String getResourceContent(String themeName, String resPath)
+    {
+        Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
+        GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
+        if (globExpr.globMatches(path.getCanonicalPath()))
+        {
+            VFile f = new VFile(path);
+            if (f.isFile())
+            {
+                try (ByteArrayOutputStream os = new ByteArrayOutputStream())
+                {
+                    try (InputStream is = findInputStream(f))
+                    {
+                        copy(is, os);
+                        os.flush();
+                    }
+                    return os.toString("UTF-8");
+                }
+                catch(IOException ex)
+                {
+                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
+        return "";
+    }
+    
     private InputStream findInputStream(VFile file) throws FileNotFoundException
     {
         boolean canCompress = true;//fixme: check for configuration to enable compression

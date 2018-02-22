@@ -19,7 +19,14 @@
     <#if style?starts_with("http://") || style?starts_with("https://") || style?starts_with("/")>
         <link rel="stylesheet" href="${style}" />
     <#else>
-        <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+        <#if renderMode == "dinamic">
+            <link rel="stylesheet" href="/__themes/${theme}/${style}" />
+        <#else>
+            <style>
+                ${resourceRenderer.renderResource(theme, style)}
+            </style>
+        </#if>
+        
     </#if>
 </#macro>
 
@@ -63,7 +70,7 @@
 
 <#macro renderViewContainer>
     <#nested />
-    <#if !(isRenderStatic?? && isRenderStatic)>
+    <#if renderMode == "dinamic">
         <script>
             if( !window.__bridje ) window.__bridje = {};
             window.__bridje.info = {
@@ -83,7 +90,7 @@
 
 <#macro renderHead>
     <head>
-        <#if !(isRenderStatic?? && isRenderStatic)>
+        <#if renderMode == "dinamic">
             <title>${view.title!}</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,11 +103,11 @@
     <!DOCTYPE html>
     <html>
         <@renderHead>
-            <#if !(isRenderStatic?? && isRenderStatic)>
+            <#if renderMode == "dinamic">
                 <@renderScript "bridje" "bridje-ajax.js" />
                 <@renderMetaTag />
-                <@renderThemeStyles themeName />
             </#if>
+            <@renderThemeStyles themeName />
         </@renderHead>
         <@renderBody>
             <@renderViewContainer>
@@ -109,7 +116,7 @@
                 </#if>
             </@renderViewContainer>
 
-            <#if !(isRenderStatic?? && isRenderStatic)>
+            <#if renderMode == "dinamic">
                 <@renderThemeScripts themeName />
             </#if>
         </@renderBody>
