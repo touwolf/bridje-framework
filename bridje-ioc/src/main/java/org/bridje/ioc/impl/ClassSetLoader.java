@@ -215,7 +215,7 @@ class ClassSetLoader
             {
                 Files.find(f.toPath(),
                         Integer.MAX_VALUE,
-                        (t, u) -> t.getFileName().toString().equals("ioc-components.properties"))
+                        (t, u) -> t.getFileName().toString().endsWith("ioc-components.properties"))
                         .forEach(path ->
                         {
                             int lastIndex = path.toString().lastIndexOf("BRIDJE-INF");

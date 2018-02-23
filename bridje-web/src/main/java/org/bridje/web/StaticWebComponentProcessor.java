@@ -33,7 +33,7 @@ public class StaticWebComponentProcessor extends ClassListPropertyFile
     /**
      * The web components resource file.
      */
-    public static final String WEB_STATIC_COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/web-static/ioc-components.properties";
+    public static final String WEB_STATIC_COMPONENTS_RESOURCE_FILE = "BRIDJE-INF/web/static-ioc-components.properties";
 
     @Override
     public String getFileName()
