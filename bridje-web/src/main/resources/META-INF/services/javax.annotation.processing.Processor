@@ -1,2 +1,3 @@
 org.bridje.web.WebComponentProcessor
+org.bridje.web.StaticWebComponentProcessor
 org.bridje.web.view.controls.ControlProcessor
