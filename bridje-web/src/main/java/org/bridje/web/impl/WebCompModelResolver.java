@@ -20,6 +20,7 @@ import java.util.Map;
 import org.bridje.el.ModelResolver;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.IocContext;
+import org.bridje.web.StaticWebComponent;
 import org.bridje.web.WebComponent;
 
 /**
@@ -33,6 +34,8 @@ class WebCompModelResolver implements ModelResolver
     {
         ctx.getClassRepository()
                 .forEachClass(WebComponent.class, (c, a) -> result.put(a.name(), c) );
+        ctx.getClassRepository()
+                .forEachClass(StaticWebComponent.class, (c, a) -> result.put(a.name(), c) );
     }
     
 }

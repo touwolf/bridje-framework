@@ -61,10 +61,13 @@ class IocElContext extends ELContext
         if(MODELS == null)
         {
             Map<String, Class<?>> result = new HashMap<>();
-            ModelResolver resolver = ctx.find(ModelResolver.class);
-            if(resolver != null)
+            ModelResolver[] resolvers = ctx.findAll(ModelResolver.class);
+            for (ModelResolver resolver : resolvers)
             {
-                resolver.resolveAllModels(ctx, result);
+                if(resolver != null)
+                {
+                    resolver.resolveAllModels(ctx, result);
+                }                
             }
             MODELS = result;
         }
