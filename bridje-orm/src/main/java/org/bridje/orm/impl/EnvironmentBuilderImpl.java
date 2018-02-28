@@ -70,6 +70,14 @@ class EnvironmentBuilderImpl implements EnvironmentBuilder
         sqlEnvironments.put(modelClass, createSQLEnvironment(dsName));
         return this;
     }
+    
+    @Override
+    public EnvironmentBuilder modelBySchema(Class<?> modelClass, String schemaName) throws SQLException
+    {
+        if(schemaName == null) throw new IllegalArgumentException("The name of the schema must not be null.");
+        sqlEnvironments.put(modelClass, createSQLEnvironmentBySchema(schemaName));
+        return this;
+    }
 
     public SQLEnvironment get(Class<?> modelClass)
     {
@@ -89,6 +97,11 @@ class EnvironmentBuilderImpl implements EnvironmentBuilder
     private SQLEnvironment createSQLEnvironment(String dsName) throws SQLException
     {
         return sqlServ.createEnvironment(dsName);
+    }
+    
+    private SQLEnvironment createSQLEnvironmentBySchema(String schenmaName) throws SQLException
+    {
+        return sqlServ.createEnvironmentBySchema(schenmaName);
     }
 
     public boolean contains(Class<?> type)

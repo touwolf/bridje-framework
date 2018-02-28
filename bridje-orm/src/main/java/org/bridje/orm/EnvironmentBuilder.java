@@ -40,7 +40,7 @@ public interface EnvironmentBuilder
      * Adds a new model class with it SQLEnvironment to this builder.
      *
      * @param modelClass The class of the model.
-     * @param ds The JDBC data source to use for the model.
+     * @param ds         The JDBC data source to use for the model.
      *
      * @return this object.
      *
@@ -52,7 +52,7 @@ public interface EnvironmentBuilder
      * Adds a new model class with it SQLEnvironment to this builder.
      *
      * @param modelClass The class of the model.
-     * @param conn The JDBC connection to use for the model.
+     * @param conn       The JDBC connection to use for the model.
      *
      * @return this object.
      *
@@ -64,13 +64,25 @@ public interface EnvironmentBuilder
      * Adds a new model class with it SQLEnvironment to this builder.
      *
      * @param modelClass The class of the model.
-     * @param dsName The name for the data source.
+     * @param dsName     The name for the data source.
      *
      * @return this object.
      *
      * @throws SQLException If any SQL exception occurs.
      */
     EnvironmentBuilder model(Class<?> modelClass, String dsName) throws SQLException;
+
+    /**
+     * Adds a new model class with it SQLEnvironment to this builder.
+     *
+     * @param modelClass The class of the model.
+     * @param schemaName The name of the schema.
+     *
+     * @return this object.
+     *
+     * @throws SQLException SQLException If any SQL exception occurs.
+     */
+    EnvironmentBuilder modelBySchema(Class<?> modelClass, String schemaName) throws SQLException;
 
     /**
      * Builds the ORMEnvironment.
