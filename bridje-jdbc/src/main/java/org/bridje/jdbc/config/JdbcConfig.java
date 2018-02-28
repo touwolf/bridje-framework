@@ -46,6 +46,13 @@ public class JdbcConfig
                 @XmlElement(name = "datasource", type = DataSourceConfig.class)
             })
     private List<DataSourceConfig> dataSources;
+    
+    @XmlElementWrapper(name = "schemas")
+    @XmlElements(
+            {
+                @XmlElement(name = "schema", type = SchemaConfig.class)
+            })
+    private List<SchemaConfig> schemas;
 
     /**
      * Gets all the DataSourceConfig objects specified by the user in the
@@ -72,6 +79,20 @@ public class JdbcConfig
     public void setDataSources(List<DataSourceConfig> dataSources)
     {
         this.dataSources = dataSources;
+    }
+
+    public List<SchemaConfig> getSchemas()
+    {
+        if (schemas == null)
+        {
+            schemas = new ArrayList<>();
+        }
+        return schemas;
+    }
+
+    public void setSchemas(List<SchemaConfig> schemas)
+    {
+        this.schemas = schemas;
     }
 
     /**

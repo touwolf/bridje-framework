@@ -40,6 +40,8 @@ class JdbcServiceImpl implements JdbcService
     
     private Map<String, DataSourceImpl> dsMap;
     
+    private Map<String, DataSourceImpl> schemaMap;
+    
     private JdbcConfig config;
     
     @PostConstruct
@@ -49,8 +51,8 @@ class JdbcServiceImpl implements JdbcService
         {
             dsMap = new ConcurrentHashMap<>();
             initConfig();
-            config.getDataSources().stream()
-                    .forEach((cfg) ->dsMap.put(cfg.getName(), new DataSourceImpl(cfg)) );
+            config.getDataSources().forEach(cfg -> dsMap.put(cfg.getName(), new DataSourceImpl(cfg)) );
+            config.getSchemas().forEach(cfg -> schemaMap.put(cfg.getName(), dsMap.get(cfg.getDataSource())));
         }
         catch (IOException e)
         {
@@ -59,9 +61,19 @@ class JdbcServiceImpl implements JdbcService
     }
     
     @Override
+    public DataSource getDataSourceBySchema(String schemaName)
+    {
+        DataSource result = schemaMap.get(schemaName);
+        if(result == null) LOG.log(Level.WARNING, String.format("Could not find the DataSource for the schema %s.", schemaName));
+        return null;
+    }
+
+    @Override
     public DataSource getDataSource(String name)
     {
-        return dsMap.get(name);
+        DataSource result = dsMap.get(name);
+        if(result == null) LOG.log(Level.WARNING, String.format("The DataSource %s does not exists.", name));
+        return result;
     }
 
     @Override

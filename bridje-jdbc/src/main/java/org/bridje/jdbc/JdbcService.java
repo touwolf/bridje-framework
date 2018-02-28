@@ -26,14 +26,25 @@ import org.bridje.jdbc.config.DataSourceConfig;
  */
 public interface JdbcService
 {
+    /**
+     * Retrieves a pooled DataSource object associated with the given name.
+     *
+     * @param schemaName The name of the model that was specified in the
+     *                   jdbc.xml configuration file.
+     *
+     * @return The DataSource object if it was configured in the jdbc.xml or
+     *         null if no DataSource was configure with the given name.
+     */
+    DataSource getDataSourceBySchema(String schemaName);
 
     /**
      * Retrieves a pooled DataSource object associated with the given name.
      *
      * @param name The name of the DataSource that was specified in the jdbc.xml
      *             configuration file.
-     * @return The DataSource object if it was configured in the jdbc.xml or null
-     * if no DataSource was configure with the given name.
+     *
+     * @return The DataSource object if it was configured in the jdbc.xml or
+     *         null if no DataSource was configure with the given name.
      */
     DataSource getDataSource(String name);
 
@@ -41,6 +52,7 @@ public interface JdbcService
      * Creates a new pooled DataSource object from the given configuration.
      *
      * @param config The DataSource configuration parameters.
+     *
      * @return The new created DataSource object.
      */
     DataSource createDataSource(DataSourceConfig config);
@@ -49,6 +61,7 @@ public interface JdbcService
      * Close the given DataSource and all its database connections.
      *
      * @param dataSource The DataSource to be closed.
+     *
      * @throws SQLException If any SQLException occurs during the closing
      *                      process.
      */
@@ -58,4 +71,5 @@ public interface JdbcService
      * Close all the DataSources stored in the JdbcService.
      */
     void closeAllDataSource();
+
 }
