@@ -66,7 +66,7 @@ class JdbcServiceImpl implements JdbcService
     {
         DataSource result = schemaMap.get(schemaName);
         if(result == null) LOG.log(Level.WARNING, String.format("Could not find the DataSource for the schema %s.", schemaName));
-        return null;
+        return result;
     }
 
     @Override
