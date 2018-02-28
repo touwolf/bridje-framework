@@ -57,4 +57,15 @@ public interface SQLService
      * @throws SQLException If any SQL error occurs.
      */
     SQLEnvironment createEnvironment(String dataSourceName) throws SQLException;
+
+    /**
+     * Creates a new SQL environment.
+     *
+     * @param schemName The name of the schema.
+     *
+     * @return The new created SQL environment.
+     *
+     * @throws SQLException If any SQL error occurs.
+     */
+    SQLEnvironment createEnvironmentBySchema(String schemName) throws SQLException;
 }

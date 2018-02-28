@@ -59,6 +59,14 @@ class SQLServiceImpl implements SQLService
         if(ds == null) throw new SQLException("Could not find the data source: " + dataSourceName);
         return createEnvironment(ds);
     }
+    
+    @Override
+    public SQLEnvironment createEnvironmentBySchema(String schemName) throws SQLException
+    {
+        DataSource ds = jdbcServ.getDataSourceBySchema(schemName);
+        if(ds == null) throw new SQLException("Could not find the data source for the schema: " + schemName);
+        return createEnvironment(ds);
+    }
 
     private SQLDialect findDialect(Connection connection)
     {
