@@ -50,6 +50,7 @@ class JdbcServiceImpl implements JdbcService
         try
         {
             dsMap = new ConcurrentHashMap<>();
+            schemaMap = new ConcurrentHashMap<>();
             initConfig();
             config.getDataSources().forEach(cfg -> dsMap.put(cfg.getName(), new DataSourceImpl(cfg)) );
             config.getSchemas().forEach(cfg -> schemaMap.put(cfg.getName(), dsMap.get(cfg.getDataSource())));
