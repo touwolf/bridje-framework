@@ -63,15 +63,16 @@ class ControllerBridlet implements HttpBridlet
 
     private synchronized void initMethods(IocContext<WebScope> wrsCtx)
     {
-        if(methodsData == null)
+        if(this.methodsData == null)
         {
-            methodsData = new ArrayList<>();
+            List<WebMethodData> methodsData = new ArrayList<>();
             wrsCtx.getClassRepository().forEachMethod(WebMethod.class, 
                     (Method method, Class component, WebMethod annotation) ->
                     {
                         methodsData.add(new WebMethodData(
                                             annotation.value(), component, method));
                     });
+            this.methodsData = methodsData;
         }
     }
 
