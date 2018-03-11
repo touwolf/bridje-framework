@@ -16,20 +16,36 @@
 
 (function()
 {
-    if( !window.__bridje ) window.__bridje = {};
-    window.__bridje.callbacks = [];
+    window.__bridje = window.__bridje || {};
+
+    const ajaxEvents = {
+        beforeSend: [],
+        complete: []
+    };
     window.__bridje.callback = function(callbackFunc)
     {
-        window.__bridje.callbacks.push(callbackFunc);
+        ajaxEvents.complete.push(callbackFunc);
     };
+    window.__bridje.ajax = {
+        beforeSend: function(callbackFunc)
+        {
+            ajaxEvents.beforeSend.push(callbackFunc);
+        },
+        complete: function(callbackFunc)
+        {
+            ajaxEvents.complete.push(callbackFunc);
+        }
+    };
+
     window.__bridje.initialize = function()
     {
-        for (i = 0; i < window.__bridje.callbacks.length; i++)
+        for (i = 0; i < ajaxEvents.complete.length; i++)
         {
-            let func = window.__bridje.callbacks[i];
+            let func = ajaxEvents.complete[i];
             func(document, {});
         }
     };
+
     const findForm = function(element)
     {
         let node = element;
@@ -57,6 +73,13 @@
         window.console && console.log('      container: ' + data.containerId);
         window.console && console.log('      state: ' + window.__bridje.info.currState);
 
+        let renderEl = document.getElementById(data.containerId);
+        for (i = 0; i < ajaxEvents.beforeSend.length; i++)
+        {
+            let func = beforeSend.complete[i];
+            func(renderEl, data);
+        }
+
         try
         {
             let xhr = new XMLHttpRequest();
@@ -78,20 +101,16 @@
                     {
                         window.location = location;
                     }
-                    else
+                    else if (renderEl)
                     {
-                        let renderEl = document.getElementById(data.containerId);
-                        if (renderEl) renderEl.outerHTML = xhr.responseText;
-                        renderEl = document.getElementById(data.containerId);
-                        if (renderEl) 
+                        renderEl.outerHTML = xhr.responseText;
+
+                        initializeActions(renderEl);
+                        window.__bridje.inAction = false;
+                        for (i = 0; i < ajaxEvents.complete.length; i++)
                         {
-                            initializeActions(renderEl);
-                            window.__bridje.inAction = false;
-                            for (i = 0; i < window.__bridje.callbacks.length; i++)
-                            {
-                                let func = window.__bridje.callbacks[i];
-                                func(renderEl, data);
-                            }
+                            let func = ajaxEvents.complete[i];
+                            func(renderEl, data);
                         }
                     }
                 }
