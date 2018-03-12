@@ -73,7 +73,7 @@
         window.console && console.log('      container: ' + data.containerId);
         window.console && console.log('      state: ' + window.__bridje.info.currState);
 
-        let renderEl = document.getElementById(data.containerId);
+        var renderEl = document.getElementById(data.containerId);
         for (i = 0; i < ajaxEvents.beforeSend.length; i++)
         {
             let func = ajaxEvents.beforeSend[i];
@@ -104,7 +104,7 @@
                     else if (renderEl)
                     {
                         renderEl.outerHTML = xhr.responseText;
-
+                        renderEl = document.getElementById(data.containerId);
                         initializeActions(renderEl);
                         window.__bridje.inAction = false;
                         for (i = 0; i < ajaxEvents.complete.length; i++)
