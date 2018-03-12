@@ -76,7 +76,7 @@
         let renderEl = document.getElementById(data.containerId);
         for (i = 0; i < ajaxEvents.beforeSend.length; i++)
         {
-            let func = beforeSend.complete[i];
+            let func = ajaxEvents.beforeSend[i];
             func(renderEl, data);
         }
 
