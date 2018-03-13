@@ -312,6 +312,11 @@ public class SQLFactory
         return new LiteralImpl<>(value);
     }
 
+    public <T, E> DateExpr<T, E> date(T value)
+    {
+        return new LiteralImpl<>(value);
+    }
+
     public <T, E> Expression<T, E> custom(T value)
     {
         return new LiteralImpl<>(value);

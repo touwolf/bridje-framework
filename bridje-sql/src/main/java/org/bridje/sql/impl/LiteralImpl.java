@@ -25,7 +25,6 @@ import org.bridje.sql.Literal;
 
 class LiteralImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>, Literal<T, E>
 {
-
     private final T value;
 
     public LiteralImpl(T value)

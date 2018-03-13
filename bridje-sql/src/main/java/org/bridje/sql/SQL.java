@@ -750,6 +750,19 @@ public class SQL
      * 
      * @return The new created literal.
      */
+    public static final <T> DateExpr<T, T> date(T value)
+    {
+        return FACT.date(value);
+    }
+
+    /**
+     * Creates a new literal.
+     * 
+     * @param <T>   The final java type of the expression.
+     * @param value The value for the literal.
+     * 
+     * @return The new created literal.
+     */
     public static final <T> Expression<T, T> custom(T value)
     {
         return FACT.custom(value);

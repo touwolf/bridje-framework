@@ -33,6 +33,16 @@ public interface DateExpr<T, E> extends Expression<T, E>
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> gt(DateExpr<T, E> operand);
+    
+    /**
+     * Creates a new boolean expression that performs the grether than comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> gt(T operand);
 
     /**
      * Creates a new boolean expression that performs the grather or equals to comparation
@@ -45,6 +55,16 @@ public interface DateExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> ge(DateExpr<T, E> operand);
 
     /**
+     * Creates a new boolean expression that performs the grather or equals to comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> ge(T operand);
+
+    /**
      * Creates a new boolean expression that performs the less than comparation
      * of this expresion with the given one.
      *
@@ -55,6 +75,16 @@ public interface DateExpr<T, E> extends Expression<T, E>
     BooleanExpr<Boolean, Boolean> lt(DateExpr<T, E> operand);
 
     /**
+     * Creates a new boolean expression that performs the less than comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> lt(T operand);
+
+    /**
      * Creates a new boolean expression that performs the less or equals to comparation
      * of this expresion with the given one.
      *
@@ -63,6 +93,16 @@ public interface DateExpr<T, E> extends Expression<T, E>
      * @return The new boolean expression.
      */
     BooleanExpr<Boolean, Boolean> le(DateExpr<T, E> operand);
+
+    /**
+     * Creates a new boolean expression that performs the less or equals to comparation
+     * of this expresion with the given one.
+     *
+     * @param operand The second operand.
+     *
+     * @return The new boolean expression.
+     */
+    BooleanExpr<Boolean, Boolean> le(T operand);
 
     /**
      * Gets an arithmetic expression that represents the year of the date field.
