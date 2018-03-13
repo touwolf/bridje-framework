@@ -22,6 +22,7 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpHeaders;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
@@ -34,6 +35,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.CONTINUE;
+import io.netty.handler.codec.http.HttpUtil;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -94,7 +96,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws IOException
     {
-        if(!msg.getDecoderResult().isSuccess())
+        if(!msg.decoderResult().isSuccess())
         {
             sendBadRequest(ctx);
             return;
@@ -102,7 +104,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         if(msg instanceof HttpRequest)
         {
             HttpRequest httpReq = (HttpRequest)msg;
-            if(HttpHeaders.is100ContinueExpected(httpReq))
+            if(HttpUtil.is100ContinueExpected(httpReq))
             {
                 ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
             }
@@ -135,7 +137,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         resp.setHeader(SERVER, server.getServerName());
         resp.setHeader(CONTENT_TYPE, resp.getContentType());
         resp.setHeader(CONTENT_LENGTH, length);
-        resp.setHeader(CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
+        resp.setHeader(CONNECTION, HttpHeaderValues.KEEP_ALIVE);
         Map<String, Object> headers = resp.getHeadersMap();
         for (Map.Entry<String, Object> entry : headers.entrySet())
         {
@@ -162,8 +164,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     private void sendBadRequest(ChannelHandlerContext ctx)
     {
         LOG.log(Level.WARNING, "Bad Request Received....");
-        DefaultHttpResponse response =
-                new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST);
+        DefaultHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST);
         response.headers().set(SERVER, server.getServerName());
         response.headers().set(CONTENT_TYPE, "text/html");
         response.headers().set(CONTENT_LENGTH, 0);
@@ -240,18 +241,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         while (decoder.hasNext())
         {
             InterfaceHttpData data = decoder.next();
-            if (data != null)
-            {
-                try
-                {
-                    // new value
-                    writeHttpData(data);
-                }
-                finally
-                {
-                    data.release();
-                }
-            }
+            if (data != null) writeHttpData(data);
         }
     }
 
@@ -280,10 +270,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
     private void handleRequest(ChannelHandlerContext ctx) throws IOException
     {
-        if(resp == null)
-        {
-            resp = new HttpBridletResponseImpl(ctx.alloc().buffer());
-        }
+        if(resp == null) resp = new HttpBridletResponseImpl(ctx.alloc().buffer());
         RootHttpBridlet rootHandler = Ioc.context().find(RootHttpBridlet.class);
         context.set(HttpBridletRequest.class, req);
         context.set(HttpBridletResponse.class, resp);
@@ -293,14 +280,8 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
 
     private void closeAll()
     {
-        if(resp != null)
-        {
-            resp.release();
-        }
-        if(req != null)
-        {
-            req.release();
-        }
+        if(resp != null) resp.release();
+        if(req != null) req.release();
         context = null;
         req = null;
         resp = null;
@@ -311,8 +292,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if (decoder != null)
         {
-            decoder.destroy();
-            decoder = null;
+            decoder.cleanFiles();
         }
     }
 
