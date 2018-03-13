@@ -311,7 +311,8 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if (decoder != null)
         {
-            decoder.cleanFiles();
+            decoder.destroy();
+            decoder = null;
         }
     }
 
