@@ -127,20 +127,16 @@
 
     const toFormData = function(sendData)
     {
-        if(isUrlEncoded)
+        let params = "";
+        for(let pair of sendData.entries())
         {
-            let params = "";
-            for(let pair of sendData.entries())
+            if(typeof(pair[1]) === 'string')
             {
-                if(typeof(pair[1]) === 'string')
-                {
-                    if (params.length > 0) { params += "&"; }
-                    params += encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
-                }
+                if (params.length > 0) { params += "&"; }
+                params += encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
             }
-            return params;
         }
-        return sendData;
+        return params;
     }
 
     const execute = function(eventEl)
