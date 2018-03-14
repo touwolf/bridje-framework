@@ -62,13 +62,7 @@
         window.console && console.log('      view: ' + data.view);
         window.console && console.log('      enctype: ' + data.enctype);
         window.console && console.log('      event: ' + data.event);
-        let dataStr = data.sendData;
-        if (typeof(dataStr) !== 'string' && typeof(dataStr.entries) === 'function')
-        {
-            dataStr = [...dataStr.entries()]
-                      .map(e => encodeURIComponent(e[0]) + "=" + encodeURIComponent(e[1]));
-        }
-        window.console && console.log('      data: ' + dataStr);
+        window.console && console.log('      data: ' + data.sendData);
         window.console && console.log('      form: ' + data.formId);
         window.console && console.log('      container: ' + data.containerId);
         window.console && console.log('      state: ' + window.__bridje.info.currState);
@@ -131,6 +125,24 @@
         }
     };
 
+    const toFormData = function(sendData)
+    {
+        if(isUrlEncoded)
+        {
+            let params = "";
+            for(let pair of sendData.entries())
+            {
+                if(typeof(pair[1]) === 'string')
+                {
+                    if (params.length > 0) { params += "&"; }
+                    params += encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
+                }
+            }
+            return params;
+        }
+        return sendData;
+    }
+
     const execute = function(eventEl)
     {
         if (window.__bridje.inAction)
@@ -158,24 +170,10 @@
         let sendData = new FormData(form);
         let method = form.getAttribute('method') || 'post';
 
-        if(typeof(sendData.entries) !== 'function')
-        {
-            enctype = 'multipart/form-data';
-        }
+        if(typeof(sendData.entries) !== 'function') enctype = 'multipart/form-data';
         let isUrlEncoded = enctype === 'application/x-www-form-urlencoded';
-        if(isUrlEncoded)
-        {
-            let params = "";
-            for(let pair of sendData.entries())
-            {
-                if(typeof(pair[1]) === 'string')
-                {
-                    if (params.length > 0) { params += "&"; }
-                    params += pair[0] + "=" + pair[1];
-                }
-            }
-            sendData = params;
-        }
+        if(isUrlEncoded) sendData = toFormData(sendData);
+
         let containerId = form.getAttribute('data-container')
         if(!containerId) containerId = form.id;
         ajax({
