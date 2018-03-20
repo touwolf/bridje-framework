@@ -31,7 +31,6 @@ class EnumConverter implements ElAdvanceConverter
                 || (to == String.class && isEnum(from))
                 || (isOrdinal(from) && isEnum(to))
                 || (isOrdinal(to) && isEnum(from));
-
     }
 
     @Override
@@ -66,6 +65,7 @@ class EnumConverter implements ElAdvanceConverter
 
     private Enum fromString(String string, Class<Enum> enumCls)
     {
+        if(string.trim().isEmpty()) return null;
         return Enum.valueOf(enumCls, string);
     }
 
