@@ -50,6 +50,34 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.samaxes.maven</groupId>
+                <artifactId>minify-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                <configuration>
+                    <webappSourceDir>${basedir}/src/main/resources</webappSourceDir>
+                    <webappTargetDir>${project.build.directory}/classes</webappTargetDir>
+                    <jsSourceDir>BRIDJE-INF/web/themes/bridje/resources</jsSourceDir>
+                    <jsEngine>CLOSURE</jsEngine>
+                    <cssSourceDir>BRIDJE-INF/web/themes/bridje/resources</cssSourceDir>
+                    <cssEngine>CLOSURE</cssEngine>
+                    <closureCreateSourceMap>true</closureCreateSourceMap>                    
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-minify</id>
+                        <configuration>
+                            <jsSourceFiles>
+                                <jsSourceFile>bridje-ajax.js</jsSourceFile>
+                            </jsSourceFiles>
+                            <jsFinalFile>bridje-ajax.js</jsFinalFile>
+                        </configuration>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
