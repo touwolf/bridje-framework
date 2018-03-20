@@ -100,7 +100,7 @@
         <!DOCTYPE html>
         <html>
             <@renderHead>
-                <@renderScript "bridje" "bridje-ajax.js" />
+                <@renderScript "bridje" "bridje-ajax.min.js" />
                 <@renderMetaTag />
                 <@renderThemeStyles themeName />
             </@renderHead>
