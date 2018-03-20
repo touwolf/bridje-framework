@@ -90,7 +90,8 @@ public class Paging
         }
         Page[] section = new Page[sectionSize];
         getPages();
-        int start = Math.max(0, current - sectionSize);
+        int halfSectionSize = sectionSize / 2;
+        int start = Math.max(0, current - halfSectionSize);
         for (int i = 0; i < sectionSize; i++)
         {
             section[i] = pages[start + i];
