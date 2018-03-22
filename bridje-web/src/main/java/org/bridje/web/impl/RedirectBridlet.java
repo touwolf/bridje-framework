@@ -42,7 +42,7 @@ class RedirectBridlet implements HttpBridlet
             HttpBridletResponse resp = context.getResponse();
             resp.setHeader("Location", r.getResource());
             resp.setStatusCode(r.getStatus());
-            return false;
+            return true;
         }
         if(nextHandler != null)
         {
