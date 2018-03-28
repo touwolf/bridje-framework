@@ -22,6 +22,14 @@ public interface VfsService
     void mount(Path path, VfsSource source) throws FileNotFoundException;
 
     /**
+     * Unmounts the last source mounted into the given path.
+     *
+     * @param path   The path to mount the source.
+     * @throws java.io.FileNotFoundException If the underlying file does not exists.
+     */
+    void unmount(Path path) throws FileNotFoundException;
+
+    /**
      * Check if the node is a directory
      * <p>
      * @param path The path attribute

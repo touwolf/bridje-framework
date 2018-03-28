@@ -24,6 +24,16 @@ class VfsSourceNodeProxy extends VfsNode
         node.setParent(getParent());
         nodes.add(node);
     }
+    
+    public void removeLast()
+    {
+        if(!nodes.isEmpty()) nodes.remove(nodes.size() - 1);
+    }
+    
+    public boolean isEmpty()
+    {
+        return nodes.isEmpty();
+    }
 
     @Override
     public VFile[] search(GlobExpr globExpr, Path path)

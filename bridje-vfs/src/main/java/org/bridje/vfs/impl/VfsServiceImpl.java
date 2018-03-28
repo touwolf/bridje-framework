@@ -73,6 +73,12 @@ class VfsServiceImpl implements VfsService
     {
         root.mount(path, source);
     }
+    
+    @Override
+    public synchronized void unmount(Path path) throws FileNotFoundException
+    {
+        root.unmount(path);
+    }
 
     @Override
     public boolean isDirectory(Path path)

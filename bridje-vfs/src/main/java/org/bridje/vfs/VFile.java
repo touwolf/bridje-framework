@@ -189,6 +189,16 @@ public class VFile
     }
 
     /**
+     * Unmount the las source mounted (if any) in this file off the VFS tree. 
+     * 
+     * @throws java.io.FileNotFoundException If the underlying file does not exists.
+     */
+    public void unmount() throws FileNotFoundException
+    {
+        getVfs().unmount(path);
+    }
+    
+    /**
      * Return String Array with the names of files and folder that they exist in
      * this path attribute.
      * <p>

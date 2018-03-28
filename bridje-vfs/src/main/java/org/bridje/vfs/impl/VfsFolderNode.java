@@ -61,6 +61,19 @@ class VfsFolderNode extends VfsNode
             mountFirst(path, source);
         }
     }
+    
+    public void unmount(Path path) throws FileNotFoundException
+    {
+        if(path == null || path.isRoot()) throw new FileNotFoundException("Could not mount the source in this folder.");
+        if(path.isLast())
+        {
+            unmountLast(path);
+        }
+        else
+        {
+            unmountFirst(path);
+        }
+    }
 
     private void mountLast(Path path, VfsSource source) throws FileNotFoundException
     {
@@ -113,6 +126,47 @@ class VfsFolderNode extends VfsNode
             {
                 throw new FileNotFoundException("Could not find the folder.");
             }
+        }
+    }
+
+    private void unmountLast(Path path) throws FileNotFoundException
+    {
+        VfsNode child = getChild(path.getName());
+        if(child == null) throw new FileNotFoundException("Could not find the folder.");
+        if(child instanceof VfsSourceNodeProxy)
+        {
+            VfsSourceNodeProxy proxy = (VfsSourceNodeProxy) child;
+            proxy.removeLast();
+            if(proxy.isEmpty()) removeChild(child);
+        }
+        else if(child instanceof VfsSourceNode)
+        {
+            removeChild(child);
+        }
+        else
+        {
+            throw new FileNotFoundException("Could not unmount the source in " + getPath() + " folder.");
+        }
+    }
+
+    private void unmountFirst(Path path) throws FileNotFoundException
+    {
+        String first = path.getFirstElement();
+        VfsNode child = getChild(first);
+        if(child == null) throw new FileNotFoundException("Could not find the folder.");
+        if(child instanceof VfsFolderNode)
+        {
+            ((VfsFolderNode)child).unmount(path.getNext());
+        }
+        else if(child instanceof VfsSourceNodeProxy)
+        {
+            VfsSourceNodeProxy proxy = (VfsSourceNodeProxy) child;
+            proxy.removeLast();
+            if(proxy.isEmpty()) removeChild(child);
+        }
+        else
+        {
+            throw new FileNotFoundException("Could not find the folder.");
         }
     }
 
