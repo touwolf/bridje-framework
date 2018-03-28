@@ -199,6 +199,6 @@ public class FileSource implements VfsSource
     public boolean delete(Path path)
     {
         File pathFile = findFile(path);
-        return !pathFile.exists() && pathFile.delete();
+        return pathFile.exists() && pathFile.delete();
     }
 }
