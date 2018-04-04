@@ -134,10 +134,7 @@ public class WebViewsManager
         if (viewName != null)
         {
             WebView view = findView(viewName);
-            if (view == null)
-            {
-                throw new HttpException(400, "Bad Request");
-            }
+            if (view == null) throw new HttpException(400, "Bad Request");
             return view;
         }
         return null;
@@ -181,10 +178,7 @@ public class WebViewsManager
     {
         HttpBridletRequest req = context.getRequest();
         String viewUpdate = req.getHeader("Bridje-View");
-        if (viewUpdate != null && !viewUpdate.isEmpty())
-        {
-            return viewUpdate;
-        }
+        if (viewUpdate != null && !viewUpdate.isEmpty()) return viewUpdate;
         return null;
     }
 
@@ -289,59 +283,31 @@ public class WebViewsManager
         WebScope scope = context.get(WebScope.class);
         HttpBridletRequest req = context.getRequest();
         ElEnvironment elEnv = elServ.createElEnvironment(scope.getIocContext());
-        Thls.doAs(() ->
-        {
-            String containerId = req.getHeader("Bridje-Container");
-            String formId = req.getHeader("Bridje-Form");
-            EventResult evResult = EventResult.none();
-            if(formId != null && !formId.trim().isEmpty())
-            {
-                evResult = view.getRoot()
-                        .findById(elEnv, formId, (Control ctrl) ->
-                        {
-                            ctrl.readInput(new ControlInputReader(req), elEnv);
-                            EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
-                            if(result == null) result = EventResult.none();
-                            return result;
-                        });
-                if(evResult == null)
-                {
-                    LOG.log(Level.SEVERE, String.format("Error could not find form element %s in the view %s.", req.getHeader("Bridje-Form"), view.getName()));
-                    evResult = EventResult.error("The action could not be execute.");
-                }
-            }
+        Thls.doAs(() -> updateViewWithEnv(view, context, scope, req, elEnv), ElEnvironment.class, elEnv);
+    }
 
-            final EventResult eventResult = evResult;
-            view.getRoot()
-                    .findById(elEnv, containerId, (Control ctrl) ->
-                    {
-                        if(eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
-                        {
-                            RedirectTo redirectTo = (RedirectTo)eventResult.getData();
-                            context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
-                        }
-                        else
-                        {
-                            elEnv.pushVar("view", view);
-                            elEnv.pushVar("i18n", webI18nServ.getI18nMap());
-                            elEnv.pushVar("eventResult", eventResult);
-                            elEnv.pushVar("control", ctrl);
-                            HttpBridletResponse resp = context.getResponse();
-                            try (OutputStream os = resp.getOutputStream())
-                            {
-                                themesMang.render(ctrl, view, os, eventResult, () -> stateManag.createStringViewState(scope.getIocContext()));
-                                os.flush();
-                            }
-                            catch (IOException ex)
-                            {
-                                LOG.log(Level.SEVERE, ex.getMessage(), ex);
-                            }
-                            context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(scope.getIocContext()));
-                        }
-                        return true;
-                    });
-            return null;
-        }, ElEnvironment.class, elEnv);
+    private Object updateViewWithEnv(WebView view, HttpBridletContext context, WebScope scope, HttpBridletRequest req, ElEnvironment elEnv)
+    {
+        String containerId = req.getHeader("Bridje-Container");
+        String formId = req.getHeader("Bridje-Form");
+        EventResult evResult = EventResult.none();
+        if(formId != null && !formId.trim().isEmpty())
+        {
+            evResult = view.getRoot().findById(elEnv, formId, ctrl -> doReadInput(ctrl, req, elEnv));
+            evResult = errorIfNull(view, evResult, req);
+        }
+
+        final EventResult eventResult = evResult;
+        if(eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
+        {
+            RedirectTo redirectTo = (RedirectTo)eventResult.getData();
+            context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());
+        }
+        else
+        {
+            view.getRoot().findById(elEnv, containerId, ctrl -> doRenderView(elEnv, view, eventResult, ctrl, context, scope));
+        }
+        return null;
     }
     
     /**
@@ -424,5 +390,40 @@ public class WebViewsManager
         {
             LOG.log(Level.SEVERE, "Could not parse " + f.getPath() + ". " + e.getMessage(), e);
         }
+    }
+
+    private EventResult doReadInput(Control ctrl, HttpBridletRequest req, ElEnvironment elEnv)
+    {
+        ctrl.readInput(new ControlInputReader(req), elEnv);
+        EventResult result = ctrl.executeEvent(new ControlInputReader(req), elEnv);
+        if(result == null) result = EventResult.none();
+        return result;
+    }
+
+    private boolean doRenderView(ElEnvironment elEnv, WebView view, EventResult eventResult, Control ctrl, HttpBridletContext context, WebScope scope)
+    {
+        elEnv.pushVar("view", view);
+        elEnv.pushVar("i18n", webI18nServ.getI18nMap());
+        elEnv.pushVar("eventResult", eventResult);
+        elEnv.pushVar("control", ctrl);
+        HttpBridletResponse resp = context.getResponse();
+        try (OutputStream os = resp.getOutputStream())
+        {
+            themesMang.render(ctrl, view, os, eventResult, () -> stateManag.createStringViewState(scope.getIocContext()));
+            os.flush();
+        }
+        catch (IOException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        context.getResponse().setHeader("Bridje-State", stateManag.createStringViewState(scope.getIocContext()));
+        return true;
+    }
+
+    private EventResult errorIfNull(WebView view, EventResult evResult, HttpBridletRequest req)
+    {
+        if(evResult != null) return evResult;
+        LOG.log(Level.SEVERE, String.format("Error could not find form element %s in the view %s.", req.getHeader("Bridje-Form"), view.getName()));
+        return EventResult.error("The action could not be execute.");
     }
 }

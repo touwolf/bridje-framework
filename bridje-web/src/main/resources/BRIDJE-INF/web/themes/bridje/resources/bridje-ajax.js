@@ -242,6 +242,7 @@
 
     const initializeActions = function(element)
     {
+        if(!element) return;
         let actions = element.getElementsByClassName('bridje-action-click');
         for (let i = 0; i < actions.length; i++)
         {
