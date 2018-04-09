@@ -18,6 +18,8 @@ package org.bridje.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
@@ -26,6 +28,7 @@ import io.netty.handler.codec.http.multipart.FileUpload;
 import io.netty.util.ReferenceCounted;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -98,25 +101,27 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(content.isReadable())
         {
-            if(this.buffer != null)
+            if(this.buffer != null) 
             {
-                this.buffer.release();
+                this.buffer = Unpooled.copiedBuffer(this.buffer, content);
             }
-            this.buffer = content;
-            this.buffer.retain();
+            else
+            {
+                this.buffer = Unpooled.copiedBuffer(content);
+            }
         }
     }
 
     @Override
     public String getMethod()
     {
-        return this.headers.getMethod().name();
+        return this.headers.method().name();
     }
 
     @Override
     public String getProtocol()
     {
-        return this.headers.getProtocolVersion().text();
+        return this.headers.protocolVersion().text();
     }
 
     @Override
@@ -246,14 +251,14 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     public boolean isWwwForm()
     {
         String ctType = getContentType();
-        return HttpHeaders.Values.APPLICATION_X_WWW_FORM_URLENCODED.equalsIgnoreCase(ctType);
+        return HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString().equalsIgnoreCase(ctType);
     }
 
     @Override
     public boolean isMultipartForm()
     {
         String ctType = getContentType();
-        return HttpHeaders.Values.MULTIPART_FORM_DATA.equalsIgnoreCase(ctType);
+        return HttpHeaderValues.MULTIPART_FORM_DATA.toString().equalsIgnoreCase(ctType);
     }
 
     protected void addFileUpload(FileUpload fileUpload)
@@ -264,10 +269,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     protected void addPostParameter(String name, String value)
     {
-        if(postParameters == null)
-        {
-            postParameters = new HashMap<>();
-        }
+        if(postParameters == null) postParameters = new HashMap<>();
         HttpReqParamImpl param = postParameters.computeIfAbsent(name, k -> new HttpReqParamImpl(name));
         param.addValue(value);
     }
@@ -275,10 +277,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     @Override
     public Map<String, HttpReqParam> getPostParameters()
     {
-        if(postParameters == null)
-        {
-            return Collections.emptyMap();
-        }
+        if(postParameters == null) return Collections.emptyMap();
         return Collections.unmodifiableMap(postParameters);
     }
 
@@ -320,10 +319,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     @Override
     public Map<String, HttpReqParam> getGetParameters()
     {
-        if(getParameters == null)
-        {
-            return Collections.emptyMap();
-        }
+        if(getParameters == null) return Collections.emptyMap();
         return Collections.unmodifiableMap(getParameters);
     }
 
@@ -364,10 +360,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     @Override
     public Map<String, HttpCookie> getCookies()
     {
-        if(getParameters == null)
-        {
-            return Collections.emptyMap();
-        }
+        if(getParameters == null) return Collections.emptyMap();
         return Collections.unmodifiableMap(cookies);
     }
 
