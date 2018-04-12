@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.bridje.sql.Column;
 import org.bridje.sql.ForeignKey;
 import org.bridje.sql.Index;
@@ -101,6 +102,7 @@ class SchemaFixer
         {
             createTable(connection, table);
         }
+        logMissingColumns(connection, table);
         fixIndexes(connection, table.getIndexes());
     }
 
@@ -268,10 +270,32 @@ class SchemaFixer
 
     private int executeStmt(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
-        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
+        LOG.log(Level.INFO, sqlStmt.getSQL());
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
             return stmt.executeUpdate();
         }
+    }
+
+    private void logMissingColumns(Connection connection, Table table) throws SQLException
+    {
+        List<String> columns = findColumns(connection, table);
+        columns.stream()
+                .filter( c -> table.getColumn(c) != null )
+                .forEach( c -> LOG.log(Level.INFO, String.format("Column %s no longer exists in table %s.", c, table.getName())) );
+    }
+
+    private List<String> findColumns(Connection connection, Table table) throws SQLException
+    {
+        List<String> columns = new ArrayList<>();
+        DatabaseMetaData metadata = connection.getMetaData();
+        try (ResultSet resultSet = metadata.getColumns(null, null, table.getName(), null))
+        {
+            while(resultSet.next())
+            {
+                columns.add(resultSet.getString("COLUMN_NAME"));
+            }
+        }
+        return columns;
     }
 }
