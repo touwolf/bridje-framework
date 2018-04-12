@@ -152,31 +152,52 @@ class SchemaFixer
         {
             if(!columnExists(metadata, column))
             {
-                List<Object> params = new ArrayList<>();
-                String sql = dialect.addColumn(column, params);
-                SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-                executeStmt(connection, sqlStmt);
+                try
+                {
+                    List<Object> params = new ArrayList<>();
+                    String sql = dialect.addColumn(column, params);
+                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+                    executeStmt(connection, sqlStmt);
+                }
+                catch (SQLException e)
+                {
+                    LOG.log(Level.SEVERE, String.format("Could not create column %s on table %s.", column.getName(), table.getName()), e);
+                }
             }
             else
             {
                 Boolean isNullable = isNullable(metadata, column);
                 if(isNullable != null && isNullable != column.isAllowNull())
                 {
-                    List<Object> params = new ArrayList<>();
-                    String sql = dialect.changeColumn(column.getName(), column, params);
-                    SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-                    executeStmt(connection, sqlStmt);
+                    try
+                    {
+                        List<Object> params = new ArrayList<>();
+                        String sql = dialect.changeColumn(column.getName(), column, params);
+                        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+                        executeStmt(connection, sqlStmt);
+                    }
+                    catch (SQLException e)
+                    {
+                        LOG.log(Level.SEVERE, String.format("Could not change column %s on table %s.", column.getName(), table.getName()), e);
+                    }
                 }
             }
         }
     }
-    
+
     private void createTable(Connection connection, Table table) throws SQLException
     {
-        List<Object> params = new ArrayList<>();
-        String sql = dialect.createTable(table, params);
-        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-        executeStmt(connection, sqlStmt);
+        try
+        {
+            List<Object> params = new ArrayList<>();
+            String sql = dialect.createTable(table, params);
+            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+            executeStmt(connection, sqlStmt);
+        }
+        catch (SQLException e)
+        {
+            LOG.log(Level.SEVERE, String.format("Could not create table %s.", table.getName()), e);
+        }
     }
 
     private void fixIndex(Connection connection, Index index) throws SQLException
@@ -184,10 +205,17 @@ class SchemaFixer
         DatabaseMetaData metadata = connection.getMetaData();
         if(!indexExists(metadata, index))
         {
-            List<Object> params = new ArrayList<>();
-            String sql = dialect.createIndex(index, params);
-            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
-            executeStmt(connection, sqlStmt);
+            try
+            {
+                List<Object> params = new ArrayList<>();
+                String sql = dialect.createIndex(index, params);
+                SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
+                executeStmt(connection, sqlStmt);
+            }
+            catch (SQLException e)
+            {
+                LOG.log(Level.SEVERE, String.format("Could not create index %s on table %s.", index.getName(), index.getTable().getName()), e);
+            }
         }
     }
 
@@ -225,10 +253,17 @@ class SchemaFixer
         DatabaseMetaData metadata = connection.getMetaData();
         if(!foreignKeyExists(metadata, fk))
         {
-            List<Object> params = new ArrayList<>();
-            String sql = dialect.createForeignKey(fk, params);
-            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
-            executeStmt(connection, sqlStmt);
+            try
+            {
+                List<Object> params = new ArrayList<>();
+                String sql = dialect.createForeignKey(fk, params);
+                SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
+                executeStmt(connection, sqlStmt);
+            }
+            catch (SQLException e)
+            {
+                LOG.log(Level.SEVERE, String.format("Could not create foreign key %s on table %s.", fk.getName(), fk.getTable().getName()), e);
+            }
         }
     }
 
@@ -281,8 +316,8 @@ class SchemaFixer
     {
         List<String> columns = findColumns(connection, table);
         columns.stream()
-                .filter( c -> table.getColumn(c) != null )
-                .forEach( c -> LOG.log(Level.INFO, String.format("Column %s no longer exists in table %s.", c, table.getName())) );
+                .filter( c -> table.getColumn(c) == null )
+                .forEach( c -> LOG.log(Level.WARNING, String.format("Column %s no longer exists in table %s.", c, table.getName())) );
     }
 
     private List<String> findColumns(Connection connection, Table table) throws SQLException
