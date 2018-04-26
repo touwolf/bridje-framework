@@ -46,9 +46,9 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
 
     private BooleanExpr<?, ?> where;
 
-    private OrderExpr[] orderBys;
-
     private OrderExpr[] groupBys;
+
+    private OrderExpr[] orderBys;
 
     private BooleanExpr<?, ?> having;
 
@@ -101,16 +101,16 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public OrderByStep orderBy(OrderExpr... orderBys)
+    public GroupByStep groupBy(OrderExpr... groupBys)
     {
-        this.orderBys = orderBys;
+        this.groupBys = groupBys;
         return this;
     }
 
     @Override
-    public GroupByStep groupBy(OrderExpr... groupBys)
+    public OrderByStep orderBy(OrderExpr... orderBys)
     {
-        this.groupBys = groupBys;
+        this.orderBys = orderBys;
         return this;
     }
 
@@ -178,15 +178,15 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
             builder.append(" WHERE ");
             builder.append(where);
         }
-        if(orderBys != null)
-        {
-            builder.append(" ORDER BY ");
-            builder.appendAll(orderBys, ", ");
-        }
         if(groupBys != null)
         {
             builder.append(" GROUP BY ");
             builder.appendAll(groupBys, ", ");
+        }
+        if(orderBys != null)
+        {
+            builder.append(" ORDER BY ");
+            builder.appendAll(orderBys, ", ");
         }
         if(having != null)
         {

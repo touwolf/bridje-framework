@@ -19,15 +19,14 @@ package org.bridje.sql;
 /**
  * The group by step.
  */
-public interface GroupByStep extends SelectLimitStep
+public interface GroupByStep extends OrderByStep
 {
     /**
-     * Adds a having statement to this query.
-     * 
-     * @param condition The condition of the having statement.
+     * Adds the order bys statements for this query.
+     *
+     * @param orderBys The order bys statements for this query.
      *
      * @return The next step.
      */
-    SelectLimitStep having(BooleanExpr<?, ?> condition);
-
+    OrderByStep orderBy(OrderExpr... orderBys);
 }

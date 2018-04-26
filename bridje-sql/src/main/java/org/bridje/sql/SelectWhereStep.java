@@ -19,15 +19,15 @@ package org.bridje.sql;
 /**
  * The select where step.
  */
-public interface SelectWhereStep extends OrderByStep
+public interface SelectWhereStep extends GroupByStep
 {
     /**
-     * Adds the order bys statements for this query.
+     * Adds group by expresions to this query.
      *
-     * @param orderBys The order bys statements for this query.
+     * @param groupBys The group by expressions.
      *
      * @return The next step.
      */
-    OrderByStep orderBy(OrderExpr... orderBys);
+    GroupByStep groupBy(OrderExpr... groupBys);
 
 }
