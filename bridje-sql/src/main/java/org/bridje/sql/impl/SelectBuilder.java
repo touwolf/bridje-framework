@@ -122,9 +122,9 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public SelectExpr asTable()
+    public SelectExpr asTable(String alias)
     {
-        return this;
+        return new QueryAsTable(this, alias);
     }
 
     @Override

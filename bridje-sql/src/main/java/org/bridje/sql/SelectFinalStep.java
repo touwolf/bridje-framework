@@ -24,7 +24,8 @@ public interface SelectFinalStep extends FinalStep
     /**
      * Gets the query as a select expression.
      * 
+     * @param alias The alias to use for the query.
      * @return This query as a select expression.
      */
-    SelectExpr asTable();
+    SelectExpr asTable(String alias);
 }
