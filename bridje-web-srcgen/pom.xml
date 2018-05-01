@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.5.0-rc11-SNAPSHOT</version>
+        <version>0.5.0-rc11</version>
     </parent>
 
     <artifactId>bridje-web-srcgen</artifactId>
