@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.bridje</groupId>
         <artifactId>bridje-parent</artifactId>
-        <version>0.5.0-rc11</version>
+        <version>0.5.0-rc12-SNAPSHOT</version>
     </parent>
 
     <artifactId>bridje-vfs</artifactId>
