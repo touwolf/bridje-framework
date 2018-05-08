@@ -143,7 +143,7 @@ public abstract class ${model.name}Base
     {
         if(entity.get${entity.key.name?cap_first}() == null)
         {
-            entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, (rs) -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>));
+            entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, rs -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>));
         }
         else
         {
@@ -155,7 +155,7 @@ public abstract class ${model.name}Base
     protected void doInsert${entity.name}(${entity.name} entity) throws SQLException
     {
         <#if entity.key.autoIncrement>
-        entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, (rs) -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>));
+        entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}.INSERT_QUERY, rs -> rs.get(${entity.name}.${entity.key.column?upper_case}), <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>));
         <#else>
         env.update(${entity.name}.INSERT_QUERY, <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>);
         </#if>
@@ -172,6 +172,24 @@ public abstract class ${model.name}Base
     }
 
     </#if>
+    protected void doInsert${entity.name}(List<${entity.name}> entities) throws SQLException
+    {
+        if(entities.isEmpty()) return;
+        ColumnsStep step = SQL.insertInto(User.TABLE)
+                        .columns(<#list entity.nonAiFields as field>${entity.name}.${field.column?upper_case}<#sep>, </#sep></#list>);
+        entities.forEach( entity -> step.values(<#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>) );
+        Query query = step.toQuery();
+        <#if entity.key.autoIncrement>
+        List<${entity.key.javaType}> keys = env.fetchAll(query, rs -> rs.get(${entity.name}.${entity.key.column?upper_case}));
+        for (int i = 0; i < keys.size(); i++)
+        {
+            entities.get(i).set${entity.key.name?cap_first}(keys.get(i));
+        }
+        <#else>
+        env.update(query);
+        </#if>
+    }
+
     protected void doDelete${entity.name}(${entity.name} entity) throws SQLException
     {
         doDelete${entity.name}(entity.get${entity.key.name?cap_first}());
@@ -229,7 +247,7 @@ public abstract class ${model.name}Base
                         </#if>
                         .toQuery();
         <#if query.fetchField??>
-        return env.fetchAll(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
+        return env.fetchAll(query, rs -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
         <#else>
         return env.fetchAll(query, this::parse${entity.name});
         </#if>
@@ -254,7 +272,7 @@ public abstract class ${model.name}Base
                         )</#compress></@compress>
                         </#if>
                         .toQuery();
-        return Paging.of(env.fetchOne(query, (rs) -> rs.get(SQL.count())), pageSize);
+        return Paging.of(env.fetchOne(query, rs -> rs.get(SQL.count())), pageSize);
     }
 
     </#if>
@@ -277,7 +295,7 @@ public abstract class ${model.name}Base
                         )</#compress></@compress>
                         </#if>
                         .toQuery();
-        return env.fetchOne(query, (rs) -> rs.get(SQL.count()));
+        return env.fetchOne(query, rs -> rs.get(SQL.count()));
     }
 
     </#if>
@@ -300,7 +318,7 @@ public abstract class ${model.name}Base
                         </#if>
                         .toQuery();
         <#if query.fetchField??>
-        return env.fetchOne(query, (rs) -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
+        return env.fetchOne(query, rs -> rs.get(${entity.name}.${query.fetchField.column?upper_case}<#if query.fetchField.with??>, (key) -> find${query.fetchField.with.name}(${entity.key.type.parserCode("key")})</#if>));
         <#else>
         return env.fetchOne(query, this::parse${entity.name});
         </#if>
