@@ -175,7 +175,7 @@ public abstract class ${model.name}Base
     protected void doInsert${entity.name}(List<${entity.name}> entities) throws SQLException
     {
         if(entities.isEmpty()) return;
-        ColumnsStep step = SQL.insertInto(User.TABLE)
+        ColumnsStep step = SQL.insertInto(${entity.name}.TABLE)
                         .columns(<#list entity.nonAiFields as field>${entity.name}.${field.column?upper_case}<#sep>, </#sep></#list>);
         entities.forEach( entity -> step.values(<#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>) );
         Query query = step.toQuery();
