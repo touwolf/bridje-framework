@@ -80,7 +80,7 @@ public class Paging
      */
     public Page[] getPagesSection(int sectionSize)
     {
-        if (sectionSize >= pages.length)
+        if (sectionSize >= getPages().length)
         {
             return getPages();
         }
@@ -89,9 +89,10 @@ public class Paging
             return new Page[0];
         }
         Page[] section = new Page[sectionSize];
-        getPages();
         int halfSectionSize = sectionSize / 2;
-        int start = Math.max(0, current - halfSectionSize);
+        int start = 0;
+        start = Math.max(start, current - halfSectionSize);
+        start = Math.min(start, pages.length - sectionSize);
         for (int i = 0; i < sectionSize; i++)
         {
             int idx = start + i;

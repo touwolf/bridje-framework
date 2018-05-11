@@ -62,7 +62,7 @@ public class ORMTest
     {
     }
 
-    @Test
+    //@Test
     public void test1() throws SQLException
     {
         ORMService ormServ = Ioc.context().find(ORMService.class);
@@ -107,4 +107,22 @@ public class ORMTest
         userGroup.setUser(user);
         model.saveUserGroup(userGroup);
     }
+    
+    @Test
+    public void pagingTest1() throws SQLException
+    {
+        Paging paging = Paging.of(100, 10);
+        paging.setCurrent(10);
+        Page[] pagesSection = paging.getPagesSection(9);
+        Assert.assertEquals(pagesSection.length, 9);
+        Assert.assertEquals(pagesSection[0].getValue(), 2);
+        paging.setCurrent(4);
+        pagesSection = paging.getPagesSection(9);
+        Assert.assertEquals(pagesSection[0].getValue(), 1);
+        Assert.assertEquals(pagesSection.length, 9);
+        paging.setCurrent(2);
+        pagesSection = paging.getPagesSection(9);
+        Assert.assertEquals(pagesSection.length, 9);
+        Assert.assertEquals(pagesSection[0].getValue(), 1);
+    }    
 }
