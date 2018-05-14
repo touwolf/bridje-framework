@@ -493,6 +493,7 @@ public final class WebScope implements Scope
         try
         {
             String key = getSession().find("stateEncryptKey");
+            if(key == null || key.isEmpty()) return "";
             StateEncryptation encryptation = new StateEncryptation(key);
             return encryptation.decryptBase64(encStateString);
         }
