@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;

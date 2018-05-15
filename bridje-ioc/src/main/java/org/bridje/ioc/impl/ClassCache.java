@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 

@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.ContextListener;
 import org.bridje.ioc.Inject;

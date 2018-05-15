@@ -19,7 +19,7 @@ package org.bridje.el.impl;
 import de.odysseus.el.misc.TypeConverter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import javax.el.ELException;
 import org.bridje.el.ElAdvanceConverter;
 import org.bridje.el.ElSimpleConvertMap;

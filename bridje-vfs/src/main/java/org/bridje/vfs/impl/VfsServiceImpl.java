@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.vfs.*;
 

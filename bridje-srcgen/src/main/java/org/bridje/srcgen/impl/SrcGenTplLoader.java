@@ -24,7 +24,7 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.CpSource;

@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.thls.Thls;

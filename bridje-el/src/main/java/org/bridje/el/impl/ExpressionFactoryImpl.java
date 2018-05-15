@@ -18,7 +18,7 @@ package org.bridje.el.impl;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.util.Properties;
-import javax.annotation.PostConstruct;
+import org.bridje.ioc.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
