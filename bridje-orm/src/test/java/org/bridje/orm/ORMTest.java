@@ -62,7 +62,7 @@ public class ORMTest
     {
     }
 
-    //@Test
+    @Test
     public void test1() throws SQLException
     {
         ORMService ormServ = Ioc.context().find(ORMService.class);
