@@ -31,6 +31,7 @@
         <module>bridje-sql</module>
         <module>bridje-orm</module>
         <module>bridje-orm-srcgen</module>
+        <module>bridje-dql</module>
         <module>bridje-web</module>
         <module>bridje-web-srcgen</module>
         <module>bridje-el</module>
@@ -225,11 +226,6 @@
                 <groupId>org.apache.derby</groupId>
                 <artifactId>derby</artifactId>
                 <version>10.14.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>1.4.197</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
