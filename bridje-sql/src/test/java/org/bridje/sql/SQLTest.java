@@ -61,7 +61,7 @@ public class SQLTest
     public void test1CreateTables() throws SQLException
     {
         SQLService sqlServ = Ioc.context().find(SQLService.class);
-        SQLEnvironment sqlEnv = sqlServ.createEnvironment("Derby-DB");
+        SQLEnvironment sqlEnv = sqlServ.createEnvironment("H2-DB");
         sqlEnv.fixSchema(TestDB.SCHEMA);
 
         sqlEnv.update(SQL.delete().from(User.TABLE).toQuery());

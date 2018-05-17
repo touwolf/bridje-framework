@@ -25,14 +25,30 @@ limitations under the License.
             <driver>com.mysql.jdbc.Driver</driver>
             <url>jdbc:mysql://localhost:3306/bridjesql?zeroDateTimeBehavior=convertToNull</url>
             <user>root</user>
-            <password>root</password>
+            <password>somepass</password>
+            <reconnectTime>10</reconnectTime>
+        </datasource>
+        <datasource>
+            <name>Postgres-DB</name>
+            <driver>org.postgresql.Driver</driver>
+            <url>jdbc:postgresql://localhost:5432/bridjesql</url>
+            <user>postgres</user>
+            <password>somepass</password>
             <reconnectTime>10</reconnectTime>
         </datasource>
         <datasource>
             <name>Derby-DB</name>
             <driver>org.apache.derby.jdbc.EmbeddedDriver</driver>
-            <url>jdbc:derby:target/bridjesql;create=true</url>
+            <url>jdbc:derby:target/derbybridjesql;create=true</url>
             <user>APP</user>
+            <password/>
+            <reconnectTime>10</reconnectTime>
+        </datasource>
+        <datasource>
+            <name>H2-DB</name>
+            <driver>org.h2.Driver</driver>
+            <url>jdbc:h2:target/./h2bridjesql</url>
+            <user>sa</user>
             <password/>
             <reconnectTime>10</reconnectTime>
         </datasource>
