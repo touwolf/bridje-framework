@@ -22,5 +22,68 @@ public class DQL
 {
     private static final DQLFactory FACT = DQLFactory.getInstance();
 
+    public static DQLCollection collection(String collectionName)
+    {
+        return FACT.collection(collectionName);
+    }
 
+    public static DQLField field(String name)
+    {
+        return FACT.field(name);
+    }
+
+    public static DQLFilter exists(DQLFieldExpr field)
+    {
+        return FACT.exists(field);
+    }
+
+    public static DQLFilter in(DQLFieldExpr field, Object... values)
+    {
+        return FACT.in(field, values);
+    }
+
+    public static DQLFilter eq(DQLFieldExpr field, Object value)
+    {
+        return FACT.eq(field, value);
+    }
+
+    public static DQLFilter gt(DQLFieldExpr field, Object value)
+    {
+        return FACT.gt(field, value);
+    }
+
+    public static DQLFilter ge(DQLFieldExpr field, Object value)
+    {
+        return FACT.ge(field, value);
+    }
+
+    public static DQLFilter lt(DQLFieldExpr field, Object value)
+    {
+        return FACT.lt(field, value);
+    }
+
+    public static DQLFilter le(DQLFieldExpr field, Object value)
+    {
+        return FACT.le(field, value);
+    }
+
+    public static DQLFilter ne(DQLFieldExpr field, Object value)
+    {
+        return FACT.ne(field, value);
+    }
+
+    public static DQLFilter and(DQLFilter... elements)
+    {
+        return null;
+    }
+
+    public static DQLFilter or(DQLFilter... elements)
+    {
+        return null;
+    }
+
+    public static DQLFilter not(DQLFilter elements)
+    {
+        return null;
+    }
 }

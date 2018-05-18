@@ -16,29 +16,7 @@
 
 package org.bridje.dql;
 
-public interface DQLCollection
+public interface DQLFieldExpr
 {
-    DQLQuery delete(DQLFilter filter);
-
-    DQLQuery distinct(String field, DQLFilter filter);
-
-    DQLQuery find(DQLFilter query, DQLDocument fields);
-
-    DQLQuery findOne(DQLFilter query, DQLDocument fields);
-
-    DQLQuery insertOne(DQLDocument document);
-
-    DQLQuery insertMany(DQLDocument[] documents);
-
-    DQLQuery updateOne(DQLFilter filter, DQLDocument update);
-
-    DQLQuery updateMany(DQLFilter filter, DQLDocument update);
-
-    DQLQuery createIndex(DQLDocument keys);
-
-    DQLQuery drop();
-
-    DQLQuery dropIndex(String index);
-
-    DQLQuery dropIndexes();
+    
 }

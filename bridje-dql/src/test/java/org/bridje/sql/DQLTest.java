@@ -19,15 +19,20 @@ package org.bridje.sql;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import org.bridje.dql.DQL;
+import org.bridje.dql.DQLCollection;
+import org.bridje.dql.DQLField;
+import org.bridje.dql.DQLQuery;
+import org.bridje.dql.dialects.MongoDBDialect;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SQLTest
+public class DQLTest
 {
-    public SQLTest()
+    public DQLTest()
     {
     }
 
@@ -52,8 +57,11 @@ public class SQLTest
     }
 
     @Test
-    public void test1CreateTables() throws SQLException
+    public void test1DQL() throws SQLException
     {
-
+        DQLCollection products = DQL.collection("products");
+        DQLField name = DQL.field("name");
+        DQLQuery query = products.delete(DQL.in(name, "gilbert", "others"));
+        System.out.println(query.toStatement(new MongoDBDialect()));
     }
 }

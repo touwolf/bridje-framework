@@ -16,10 +16,43 @@
 
 package org.bridje.dql.dialects;
 
+import org.bridje.dql.DQLDialect;
+import org.bridje.dql.DQLFieldExpr;
+import org.bridje.dql.impl.DQLOperators;
 import org.bridje.ioc.Component;
 
 @Component
-class MongoDBDialect
+public class MongoDBDialect implements DQLDialect
 {
+    @Override
+    public void writeFieldArrFilter(StringBuilder sb, DQLOperators operator, DQLFieldExpr field, Object[] values)
+    {
+        sb.append("{ ");
+        sb.append(field);
+        sb.append(": { ");
+        sb.append(findOperator(operator));
+        sb.append(": [ ");
+        boolean first = true;
+        for (Object val : values)
+        {
+            if(!first) sb.append(", ");
+            sb.append("\"");
+            sb.append(val);
+            sb.append("\"");
+            first = false;
+        }
+        sb.append(" ]");
+        sb.append(" }");
+        sb.append(" }");
+    }
 
+    private String findOperator(DQLOperators operator)
+    {
+        switch(operator)
+        {
+            case IN:
+                return "$in";
+        }
+        return "";
+    }
 }

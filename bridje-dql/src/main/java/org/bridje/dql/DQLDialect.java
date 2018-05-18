@@ -16,7 +16,9 @@
 
 package org.bridje.dql;
 
-public class DQLCollation
+import org.bridje.dql.impl.DQLOperators;
+
+public interface DQLDialect
 {
-    
+    void writeFieldArrFilter(StringBuilder sb, DQLOperators operator, DQLFieldExpr field, Object[] value);
 }

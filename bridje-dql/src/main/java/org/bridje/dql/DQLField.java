@@ -16,7 +16,7 @@
 
 package org.bridje.dql;
 
-public interface DQLResult
+public interface DQLField extends DQLFieldExpr
 {
     
 }
