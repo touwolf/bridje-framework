@@ -31,7 +31,6 @@
         <module>bridje-sql</module>
         <module>bridje-orm</module>
         <module>bridje-orm-srcgen</module>
-        <module>bridje-dql</module>
         <module>bridje-web</module>
         <module>bridje-web-srcgen</module>
         <module>bridje-el</module>
