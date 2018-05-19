@@ -26,8 +26,8 @@ public class UsersModel extends UsersModelBase
 {
     public List<User> findUsers() throws SQLException
     {
-        Query query = SQL.select(User.TABLE.getColumns())
-                        .from(User.TABLE)
+        Query query = SQL.select(User_.TABLE.getColumns())
+                        .from(User_.TABLE)
                         .toQuery();
         return env.fetchAll(query, this::parseUser);
     }
@@ -50,8 +50,8 @@ public class UsersModel extends UsersModelBase
     @Override
     public Coordinates parseUserCoordinates(SQLResultSet rs) throws SQLException
     {
-        Float lat = rs.get(User.LATITUDE);
-        Float lng = rs.get(User.LONGITUDE);
+        Float lat = rs.get(User_.LATITUDE);
+        Float lng = rs.get(User_.LONGITUDE);
         if(lat == null || lng == null) return null;
         return new Coordinates(lat, lng);
     }

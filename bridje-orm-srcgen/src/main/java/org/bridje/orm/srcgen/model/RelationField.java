@@ -54,7 +54,7 @@ public class RelationField extends FieldInf
     {
         return getEntity().getModel().findEntity(referencesName);
     }
-    
+
     public boolean getIsWithItSelf()
     {
         return getEntity().equals(getWith());
@@ -119,7 +119,7 @@ public class RelationField extends FieldInf
     @Override
     public String getFullTypeName()
     {
-        return getWith().getName() + "." + getType().getName();
+        return getWith().getName() + "_." + getType().getName();
     }
 
     @Override

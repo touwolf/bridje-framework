@@ -73,6 +73,7 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
         {
             data.put("entity", entity);
             srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
+            srcGen.createClass(entity.getFullName() + "_", "orm/Entity_.ftl", data);
         }
 
         data = new HashMap<>();
