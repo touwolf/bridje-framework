@@ -66,11 +66,13 @@ public class UIExpression
         }
         catch (javax.el.PropertyNotFoundException e)
         {
-            LOG.log(Level.WARNING, "The expression {0} is not valid: {1}", new Object[]{expression, e.getMessage()});
+            String msg = String.format("The expression %s is not valid: %s", expression, e.getMessage());
+            LOG.log(Level.WARNING, msg);
         }
         catch (Exception e)
         {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
+            String msg = String.format("The expression %s is not valid: %s", expression, e.getMessage());
+            LOG.log(Level.SEVERE, msg, e);
         }
         return null;
     }
