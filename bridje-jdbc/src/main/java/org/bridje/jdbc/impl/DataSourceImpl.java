@@ -128,7 +128,7 @@ class DataSourceImpl implements DataSource
         {
             try
             {
-                wait();
+                wait(20 * 1000);
             }
             catch (InterruptedException ex)
             {
