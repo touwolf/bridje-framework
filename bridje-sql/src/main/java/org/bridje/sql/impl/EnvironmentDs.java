@@ -87,10 +87,7 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
         }
         else
         {
-            try(Connection connection = dataSource.getConnection())
-            {
-                return update(connection, stmt);
-            }
+            return update(dataSource, stmt);
         }
     }
 
@@ -103,10 +100,7 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
         }
         else
         {
-            try(Connection connection = dataSource.getConnection())
-            {
-                return fetchAll(connection, stmt, parser);
-            }
+            return fetchAll(dataSource, stmt, parser);
         }
     }
 
@@ -119,10 +113,7 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
         }
         else
         {
-            try(Connection connection = dataSource.getConnection())
-            {
-                return fetchOne(connection, stmt, parser);
-            }
+            return fetchOne(dataSource, stmt, parser);
         }
     }
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 import org.bridje.sql.SQLDialect;
 import org.bridje.sql.SQLEnvironment;
 import org.bridje.sql.SQLResultParser;
@@ -72,6 +73,7 @@ abstract class EnvironmentBase implements SQLEnvironment
         return fetchOne(query.toStatement(getDialect(), parameters), parser);
     }
 
+
     protected int update(Connection cnn, SQLStatement sqlStmt) throws SQLException
     {
         if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
@@ -81,42 +83,98 @@ abstract class EnvironmentBase implements SQLEnvironment
         }
     }
 
+    protected <T> List<T> fetchAll(DataSource ds, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
+    {
+        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
+        SQLResultSet rs;
+        try(Connection cnn = ds.getConnection())
+        {
+            try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
+            {
+                if(sqlStmt.isWithGeneratedKeys())
+                {
+                    stmt.executeUpdate();
+                    rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
+                }
+                else
+                {
+                    rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
+                }
+            }
+        }
+        return fetchAll(rs, parser);
+    }
+
+    protected <T> T fetchOne(DataSource ds, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
+    {
+        LOG.log(Level.FINE, sqlStmt.getSQL());
+        SQLResultSet rs;
+        try(Connection cnn = ds.getConnection())
+        {
+            try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
+            {
+                if(sqlStmt.isWithGeneratedKeys())
+                {
+                    stmt.executeUpdate();
+                    rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
+                }
+                else
+                {
+                    rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
+                }
+            }
+        }
+        return fetchOne(rs, parser);
+    }
+    
+    protected int update(DataSource ds, SQLStatement sqlStmt) throws SQLException
+    {
+        if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
+        try(Connection cnn = ds.getConnection())
+        {
+            try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
+            {
+                return stmt.executeUpdate();
+            }
+        }
+    }
+
     protected <T> List<T> fetchAll(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
         if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());
+        SQLResultSet rs;
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
-            SQLResultSet rs;
             if(sqlStmt.isWithGeneratedKeys())
             {
-                int value = stmt.executeUpdate();
+                stmt.executeUpdate();
                 rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
             }
             else
             {
                 rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
             }
-            return fetchAll(rs, parser);
         }
+        return fetchAll(rs, parser);
     }
 
     protected <T> T fetchOne(Connection cnn, SQLStatement sqlStmt, SQLResultParser<T> parser) throws SQLException
     {
         LOG.log(Level.FINE, sqlStmt.getSQL());
+        SQLResultSet rs;
         try(PreparedStatement stmt = prepareStatement(cnn, sqlStmt))
         {
-            SQLResultSet rs;
             if(sqlStmt.isWithGeneratedKeys())
             {
-                int value = stmt.executeUpdate();
+                stmt.executeUpdate();
                 rs = new SQLResultSetImpl(stmt.getGeneratedKeys(), sqlStmt.getResultFields());
             }
             else
             {
                 rs = new SQLResultSetImpl(stmt.executeQuery(), sqlStmt.getResultFields());
             }
-            return fetchOne(rs, parser);
         }
+        return fetchOne(rs, parser);
     }
 
     protected PreparedStatement prepareStatement(Connection cnn, SQLStatement sqlStmt) throws SQLException
@@ -141,10 +199,7 @@ abstract class EnvironmentBase implements SQLEnvironment
 
     private <T> T fetchOne(SQLResultSet rs, SQLResultParser<T> parser) throws SQLException
     {
-        if(rs.next())
-        {
-            return parser.parse(rs);
-        }
+        if(rs.next()) return parser.parse(rs);
         return null;
     }
 

@@ -18,7 +18,10 @@ package org.bridje.sql.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLResultSet;
@@ -27,13 +30,18 @@ import org.bridje.sql.SQLValueParser;
 
 class SQLResultSetImpl implements SQLResultSet
 {
-    private final ResultSet rs;
+    private final Iterator<Object[]> it;
+
+    private Object[] current;
+
+    private final List<Object[]> data;
 
     private final Map<Expression<?, ?>, Integer> fieldsMap;
 
-    public SQLResultSetImpl(ResultSet rs, Expression<?, ?>[] fields)
+    public SQLResultSetImpl(ResultSet rs, Expression<?, ?>[] fields) throws SQLException
     {
-        this.rs = rs;
+        this.current = null;
+        this.data = new ArrayList<>();
         this.fieldsMap = new HashMap<>();
         if(fields != null)
         {
@@ -44,12 +52,20 @@ class SQLResultSetImpl implements SQLResultSet
                 index++;
             }
         }
+        while (rs.next())
+        {
+            this.data.add(read(rs, fields.length));
+        }
+        rs.close();
+        it = this.data.iterator();
     }
 
     @Override
     public boolean next() throws SQLException
     {
-        return rs.next();
+        this.current = null;
+        if(it.hasNext()) this.current = it.next();
+        return this.current != null;
     }
 
     @Override
@@ -64,7 +80,7 @@ class SQLResultSetImpl implements SQLResultSet
     @Override
     public <T, E> T get(int index, SQLType<T, E> sqlType) throws SQLException
     {
-        Object value = rs.getObject(index);
+        Object value = current[index-1];
         E readed = sqlType.read(value);
         return sqlType.parse(readed);
     }
@@ -80,7 +96,7 @@ class SQLResultSetImpl implements SQLResultSet
     @Override
     public <T, E> T get(int index, SQLType<T, E> sqlType, SQLValueParser<T, E> parser) throws SQLException
     {
-        Object value = rs.getObject(index);
+        Object value = current[index-1];
         if(sqlType != null)
         {
             E readed = sqlType.read(value);
@@ -95,12 +111,21 @@ class SQLResultSetImpl implements SQLResultSet
     @Override
     public void close() throws Exception
     {
-        rs.close();
     }
 
     private <T, E> Integer getIndex(Expression<T, E> expr)
     {
         if(fieldsMap == null) return null;
         return fieldsMap.get(expr);
+    }
+
+    private Object[] read(ResultSet rs, int cols) throws SQLException
+    {
+        Object[] result = new Object[cols];
+        for (int i = 0; i < cols; i++)
+        {
+            result[i] = rs.getObject(i+1);
+        }
+        return result;
     }
 }
