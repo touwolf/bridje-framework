@@ -100,7 +100,7 @@ class DataSourceImpl implements DataSource
             }
             nextConnection.open();
             usedConnections.add(nextConnection);
-            LOG.log(Level.INFO, "Current free connections in {0}: {1}", 
+            LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
                         new Object[]{ config.getName(), freeConnections.size() });
             return nextConnection;
         }
@@ -129,7 +129,7 @@ class DataSourceImpl implements DataSource
         {
             try
             {
-                wait(30 * 1000);
+                wait(10 * 1000);
             }
             catch (InterruptedException ex)
             {
@@ -222,7 +222,7 @@ class DataSourceImpl implements DataSource
         freeConnections.add(closedConnection);
         LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
                     new Object[]{ config.getName(), freeConnections.size() });
-        notify();
+        notifyAll();
     }
 
     protected synchronized void close() throws SQLException
