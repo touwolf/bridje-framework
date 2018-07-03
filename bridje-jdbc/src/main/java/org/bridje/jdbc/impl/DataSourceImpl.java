@@ -100,7 +100,7 @@ class DataSourceImpl implements DataSource
             }
             nextConnection.open();
             usedConnections.add(nextConnection);
-            LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
+            LOG.log(Level.INFO, "Current free connections in {0}: {1}", 
                         new Object[]{ config.getName(), freeConnections.size() });
             return nextConnection;
         }
@@ -124,17 +124,24 @@ class DataSourceImpl implements DataSource
     private synchronized Connection waitFreeConnection() throws SQLException
     {
         Connection cnn = null;
+        int count = 0;
         while(cnn == null)
         {
             try
             {
-                wait(20 * 1000);
+                wait(30 * 1000);
             }
             catch (InterruptedException ex)
             {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
             cnn = getFreeConnection();
+            if(cnn == null)
+            {
+                LOG.log(Level.WARNING, "Not connections availables.");
+                count++;
+                if(count >= 3) throw  new SQLException("Could not get a connection with the database.");
+            }
         }
         return cnn;
     }
