@@ -255,14 +255,11 @@ public class DerbyDialect implements SQLDialect
             case BIT:
                 return "BOOLEAN";
             case TINYINT:
+                return "SMALLINT";
             case SMALLINT:
             case INTEGER:
             case BIGINT:
-                if(column.getSQLType().getLength() > 0)
-                {
-                    return column.getSQLType().getJDBCType().getName() + "(" + column.getSQLType().getLength() + ")";
-                }
-                break;
+                return column.getSQLType().getJDBCType().getName();
             case FLOAT:
             case DOUBLE:
             case DECIMAL:
