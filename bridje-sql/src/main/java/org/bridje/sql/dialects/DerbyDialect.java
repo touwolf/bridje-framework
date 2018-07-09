@@ -262,8 +262,13 @@ public class DerbyDialect implements SQLDialect
                 return column.getSQLType().getJDBCType().getName();
             case FLOAT:
             case DOUBLE:
-            case DECIMAL:
                 return column.getSQLType().getJDBCType().getName();
+            case DECIMAL:
+                if(column.getSQLType().getLength() > 0 && column.getSQLType().getPrecision() > 0)
+                {
+                    return column.getSQLType().getJDBCType().getName() + "(" + column.getSQLType().getLength() + ", " + column.getSQLType().getPrecision() + ")";
+                }
+                break;
             case VARCHAR:
             case NVARCHAR:
                 if(column.getSQLType().getLength() > 21844)
