@@ -105,12 +105,12 @@ public class H2SQLDialect implements SQLDialect
     }
 
     @Override
-    public String changeColumn(String oldName, Column<?, ?> column, List<Object> params)
+    public String[] changeColumn(String oldName, Column<?, ?> column, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
         alterTable(builder, column.getTable());
         changeColumn(builder, params, column, oldName, true);
-        return builder.toString();
+        return new String[]{builder.toString()};
     }
 
     @Override

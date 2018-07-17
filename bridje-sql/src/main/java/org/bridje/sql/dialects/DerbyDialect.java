@@ -106,12 +106,24 @@ public class DerbyDialect implements SQLDialect
     }
 
     @Override
-    public String changeColumn(String oldName, Column<?, ?> column, List<Object> params)
+    public String[] changeColumn(String oldName, Column<?, ?> column, List<Object> params)
     {
-        StringBuilder builder = new StringBuilder();
-        alterTable(builder, column.getTable());
-        changeColumn(builder, params, column, oldName, true);
-        return builder.toString();
+        StringBuilder builder2 = new StringBuilder();
+        alterTable(builder2, column.getTable());
+        setColumnNull(builder2, params, column);
+
+        if(column.getSQLType().getJDBCType() == JDBCType.VARCHAR
+                || column.getSQLType().getJDBCType() == JDBCType.NVARCHAR)
+        {
+            StringBuilder builder1 = new StringBuilder();
+            alterTable(builder1, column.getTable());
+            setColumnDataType(builder1, params, column);
+            return new String[] {builder1.toString(), builder2.toString()};
+        }
+        else
+        {
+            return new String[]{builder2.toString()};
+        }
     }
 
     @Override
@@ -225,18 +237,20 @@ public class DerbyDialect implements SQLDialect
         builder.append("\n");
     }
 
-    public void changeColumn(StringBuilder builder, List<Object> params, Column<?, ?> column, String oldColumn, boolean isLast)
+    public void setColumnDataType(StringBuilder builder, List<Object> params, Column<?, ?> column)
     {
-        builder.append(" CHANGE COLUMN ");
-        writeObjectName(builder, oldColumn);
-        builder.append(" ");
+        builder.append(" ALTER COLUMN ");
         writeObjectName(builder, column.getName());
-        builder.append(" ");
+        builder.append(" SET DATA TYPE ");
         builder.append(createType(column));
-        builder.append(createIsNull(column));
-        builder.append(createDefault(column, params));
-        builder.append(createAutoIncrement(column));
-        if(!isLast) builder.append(",");
+        builder.append("\n");
+    }
+    
+    public void setColumnNull(StringBuilder builder, List<Object> params, Column<?, ?> column)
+    {
+        builder.append(" ALTER COLUMN ");
+        writeObjectName(builder, column.getName());
+        builder.append(alterIsNull(column));
         builder.append("\n");
     }
 
@@ -307,6 +321,12 @@ public class DerbyDialect implements SQLDialect
     private String createIsNull(Column<?, ?> column)
     {
         if(column.isAllowNull() && !column.isKey()) return "";
+        return " NOT NULL";
+    }
+    
+    private String alterIsNull(Column<?, ?> column)
+    {
+        if(column.isAllowNull() && !column.isKey()) return " NULL";
         return " NOT NULL";
     }
 

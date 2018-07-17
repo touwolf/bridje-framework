@@ -97,7 +97,7 @@ public interface SQLDialect
      * 
      * @return The DDL statement.
      */
-    String changeColumn(String oldName, Column<?, ?> column, List<Object> params);
+    String[] changeColumn(String oldName, Column<?, ?> column, List<Object> params);
 
     /**
      * Creates the given index DDLs.

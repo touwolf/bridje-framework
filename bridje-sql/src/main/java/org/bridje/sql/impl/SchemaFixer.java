@@ -172,9 +172,12 @@ class SchemaFixer
                     try
                     {
                         List<Object> params = new ArrayList<>();
-                        String sql = dialect.changeColumn(column.getName(), column, params);
-                        SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
-                        executeStmt(connection, sqlStmt);
+                        String[] sqls = dialect.changeColumn(column.getName(), column, params);
+                        for (String sql : sqls)
+                        {
+                            SQLStatement sqlStmt = new SQLStatementImpl(null, sql, params.toArray(), false);
+                            executeStmt(connection, sqlStmt);
+                        }
                     }
                     catch (SQLException e)
                     {
