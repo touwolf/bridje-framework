@@ -15,9 +15,11 @@
  */
 package org.bridje.jdbc;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.bridje.jdbc.config.DataSourceConfig;
+import org.bridje.jdbc.config.JdbcConfig;
 
 /**
  * Provides services for JDBC data sources. {@link javax.sql.DataSource} This
@@ -72,4 +74,17 @@ public interface JdbcService
      */
     void closeAllDataSource();
 
+    /**
+     * Close all the datasources and reconnects.
+     * @param config The new configuration to use, or null to use the same.
+     */
+    void reconnectAll(JdbcConfig config);
+    
+    /**
+     * Loads the default configuration for this service.
+     * 
+     * @return The default configuration for this service.
+     * @throws IOException If the configuraion cannot be readed.
+     */
+    JdbcConfig loadDefConfig() throws IOException;
 }

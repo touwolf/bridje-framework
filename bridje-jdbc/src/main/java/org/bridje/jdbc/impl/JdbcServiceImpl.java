@@ -51,7 +51,7 @@ class JdbcServiceImpl implements JdbcService
         {
             dsMap = new ConcurrentHashMap<>();
             schemaMap = new ConcurrentHashMap<>();
-            initConfig();
+            config = loadDefConfig();
             config.getDataSources().forEach(cfg -> dsMap.put(cfg.getName(), new DataSourceImpl(cfg)) );
             config.getSchemas().forEach(cfg -> schemaMap.put(cfg.getName(), dsMap.get(cfg.getDataSource())));
         }
@@ -114,23 +114,28 @@ class JdbcServiceImpl implements JdbcService
         dsMap.clear();
     }
 
-    private void initConfig() throws IOException
+    @Override
+    public JdbcConfig loadDefConfig() throws IOException
     {
         VFile configFile = new VFile("/etc/jdbc.xml");
         if(configFile.exists())
         {
             try(InputStream is = new VFileInputStream(configFile))
             {
-                config = JdbcConfig.load(is);
+                return JdbcConfig.load(is);
             }
             catch (JAXBException ex)
             {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
-        if(config == null)
-        {
-            config = new JdbcConfig();
-        }
+        return new JdbcConfig();
+    }
+    
+    @Override
+    public void reconnectAll(JdbcConfig config)
+    {
+        if(config != null) this.config = config;
+        this.config.getDataSources().forEach(cfg -> dsMap.get(cfg.getName()).reconnect(cfg) );
     }
 }

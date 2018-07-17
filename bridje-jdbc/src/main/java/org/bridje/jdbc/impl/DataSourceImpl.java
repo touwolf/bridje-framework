@@ -38,7 +38,7 @@ class DataSourceImpl implements DataSource
 
     private final Deque<ConnectionImpl> usedConnections = new ConcurrentLinkedDeque<>();
 
-    private final DataSourceConfig config;
+    private DataSourceConfig config;
     
     private PrintWriter logWriter;
     
@@ -242,6 +242,22 @@ class DataSourceImpl implements DataSource
         for (ConnectionImpl freeConnection : freeConnections)
         {
             freeConnection.realClose();
+        }
+        freeConnections.clear();
+        usedConnections.clear();
+    }
+    
+    protected synchronized void reconnect(DataSourceConfig config)
+    {
+        try
+        {
+            close();
+            this.config = config;
+            closed = false;
+        }
+        catch (SQLException e)
+        {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
