@@ -1,5 +1,0 @@
-org.bridje.ioc.impl.ComponentProcessor
-org.bridje.orm.impl.EntityProcessor
-org.bridje.orm.impl.SQLCustomTypeProcessor
-org.bridje.web.WebComponentProcessor
-org.bridje.web.view.controls.ControlProcessor
