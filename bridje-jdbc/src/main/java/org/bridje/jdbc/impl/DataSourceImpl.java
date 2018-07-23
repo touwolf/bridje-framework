@@ -100,8 +100,7 @@ class DataSourceImpl implements DataSource
             }
             nextConnection.open();
             usedConnections.add(nextConnection);
-            LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
-                        new Object[]{ config.getName(), freeConnections.size() });
+            LOG.log(Level.FINE, String.format("Current free connections in %s: %s", config.getName(), freeConnections.size()) );
             return nextConnection;
         }
         return null;
