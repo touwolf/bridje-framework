@@ -358,8 +358,6 @@
                 <module>bridje-el</module>
                 <module>bridje-maven-plugin</module>
                 <module>bridje-srcgen</module>
-                <module>bridje-jfx</module>
-                <module>bridje-jfx-srcgen</module>
             </modules>
         </profile>
     </profiles>

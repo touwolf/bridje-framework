@@ -234,7 +234,7 @@ class DataSourceImpl implements DataSource
             }
             catch (InterruptedException e)
             {
-                LOG.log(Level.FINE, e.getMessage(), e);
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
         for (ConnectionImpl freeConnection : freeConnections)

@@ -90,11 +90,6 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
             <artifactId>bridje-orm</artifactId>
             <version>${bridje.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.bridje</groupId>
-            <artifactId>bridje-jfx</artifactId>
-            <version>${bridje.version}</version>
-        </dependency>
 	....
     </dependencies>
 
@@ -123,11 +118,6 @@ Bridje libraries are available on the [Maven Central Repository](https://maven-b
 			<dependency>
 			    <groupId>org.bridje</groupId>
 			    <artifactId>bridje-orm-srcgen</artifactId>
-			    <version>${bridje.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.bridje</groupId>
-			    <artifactId>bridje-jfx-srcgen</artifactId>
 			    <version>${bridje.version}</version>
 			</dependency>
 		</dependencies>
