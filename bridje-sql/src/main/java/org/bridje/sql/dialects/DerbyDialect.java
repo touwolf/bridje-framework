@@ -64,13 +64,11 @@ public class DerbyDialect implements SQLDialect
     @Override
     public void writeLimit(StringBuilder builder, int offset, int count)
     {
-        builder.append(" LIMIT ");
+        builder.append(" OFFSET ");
         builder.append(offset);
-        if(count > 0)
-        {
-            builder.append(", ");
-            builder.append(count);
-        }
+        builder.append(" ROWS FETCH NEXT ");
+        builder.append(count);
+        builder.append(" ROWS ONLY ");
     }
 
     @Override
@@ -388,7 +386,8 @@ public class DerbyDialect implements SQLDialect
     @Override
     public void writeLimit(StringBuilder builder, int count)
     {
-        builder.append(" LIMIT ");
+        builder.append(" OFFSET 0 ROWS FETCH NEXT ");
         builder.append(count);
+        builder.append(" ROWS ONLY ");
     }
 }
