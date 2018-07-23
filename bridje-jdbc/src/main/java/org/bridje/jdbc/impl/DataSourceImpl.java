@@ -114,8 +114,7 @@ class DataSourceImpl implements DataSource
             ConnectionImpl newConnection = createNewConnection();
             newConnection.open();
             usedConnections.add(newConnection);
-            LOG.log(Level.FINE, "Current used connections in {0}: {1}", 
-                        new Object[]{ config.getName(), usedConnections.size() });
+            LOG.log(Level.FINE, String.format("Current used connections in %s: %s, of %s", config.getName(), usedConnections.size(), config.getMaxConnections()));
             return newConnection;
         }
         return null;
@@ -190,7 +189,7 @@ class DataSourceImpl implements DataSource
 
     private ConnectionImpl createNewConnection() throws SQLException
     {
-        LOG.log(Level.INFO, "Creating new connection for {0}.", config.getName());
+        LOG.log(Level.INFO, String.format("Creating new connection for %s.", config.getName()));
         try
         {
             Class.forName(config.getDriver());
@@ -220,8 +219,7 @@ class DataSourceImpl implements DataSource
     {
         usedConnections.remove(closedConnection);
         freeConnections.add(closedConnection);
-        LOG.log(Level.FINE, "Current free connections in {0}: {1}", 
-                    new Object[]{ config.getName(), freeConnections.size() });
+        LOG.log(Level.FINE, String.format("Current free connections in %s: %s", config.getName(), freeConnections.size() ));
         notifyAll();
     }
 
@@ -290,11 +288,9 @@ class DataSourceImpl implements DataSource
                         }
                     }
                 }
-                LOG.log(Level.FINE, "Removing {0} connections for {1}.", 
-                            new Object[]{ toRemove.size(), config.getName() });
+                LOG.log(Level.FINE, String.format("Removing %s connections for %s.", toRemove.size(), config.getName()) );
                 freeConnections.removeAll(toRemove);
-                LOG.log(Level.FINE, "Current total connections in {0}: {1}", 
-                            new Object[]{ config.getName(), freeConnections.size() + usedConnections.size() });
+                LOG.log(Level.FINE, String.format("Current total connections in %s: %s", config.getName(), freeConnections.size() + usedConnections.size()));
             }
         }
     }
