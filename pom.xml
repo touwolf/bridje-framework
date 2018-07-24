@@ -202,12 +202,12 @@
             <dependency>
                 <groupId>com.github.javaparser</groupId>
                 <artifactId>javaparser-core</artifactId>
-                <version>3.6.2</version>
+                <version>3.6.13</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.45</version>
+                <version>5.1.46</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>
@@ -252,7 +252,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.24.Final</version>
+                <version>4.1.27.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
