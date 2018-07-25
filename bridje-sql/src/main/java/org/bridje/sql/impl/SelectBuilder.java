@@ -46,7 +46,7 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
 
     private BooleanExpr<?, ?> where;
 
-    private OrderExpr[] groupBys;
+    private GroupBy[] groupBys;
 
     private OrderExpr[] orderBys;
 
@@ -101,9 +101,13 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     }
 
     @Override
-    public GroupByStep groupBy(OrderExpr... groupBys)
+    public GroupByStep groupBy(OrderExpr... orderBys)
     {
-        this.groupBys = groupBys;
+        this.groupBys = new GroupBy[orderBys.length];
+        for (int i = 0; i < orderBys.length; i++)
+        {
+            this.groupBys[i] = new GroupBy(orderBys[i]);
+        }
         return this;
     }
 

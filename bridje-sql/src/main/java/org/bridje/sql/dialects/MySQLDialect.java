@@ -364,4 +364,10 @@ public class MySQLDialect implements SQLDialect
         builder.append(" LIMIT ");
         builder.append(count);
     }
+
+    @Override
+    public boolean groupByWithType()
+    {
+        return false;
+    }
 }

@@ -390,4 +390,10 @@ public class DerbyDialect implements SQLDialect
         builder.append(count);
         builder.append(" ROWS ONLY ");
     }
+
+    @Override
+    public boolean groupByWithType()
+    {
+        return false;
+    }
 }

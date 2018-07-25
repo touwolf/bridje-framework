@@ -138,4 +138,11 @@ public interface SQLDialect
      * @return The DDL statement.
      */
     String dropForeignKey(ForeignKey fk, List<Object> params);
+    
+    /**
+     * If the group by stmt needs the order type.
+     * 
+     * @return true If the group by stmt needs the order type.
+     */
+    boolean groupByWithType();
 }
