@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import org.bridje.sql.Column;
 import org.bridje.sql.ForeignKey;
 import org.bridje.sql.Index;

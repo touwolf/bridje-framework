@@ -336,11 +336,6 @@ public class DerbyDialect implements SQLDialect
             params.add(column.getDefValue());
             return "DEFAULT ?";
         }
-        if(column.getSQLType().getJDBCType()== JDBCType.TIMESTAMP
-                || column.getSQLType().getJDBCType() == JDBCType.TIMESTAMP_WITH_TIMEZONE)
-        {
-            return " DEFAULT '0000-00-00 00:00:00'";
-        }
         return "";
     }
 
