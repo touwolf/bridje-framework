@@ -64,7 +64,7 @@ class VfsFolderNode extends VfsNode
     
     public void unmount(Path path) throws FileNotFoundException
     {
-        if(path == null || path.isRoot()) throw new FileNotFoundException("Could not mount the source in this folder.");
+        if(path == null || path.isRoot()) return;
         if(path.isLast())
         {
             unmountLast(path);
@@ -153,7 +153,7 @@ class VfsFolderNode extends VfsNode
     {
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
-        if(child == null) throw new FileNotFoundException("Could not find the folder.");
+        if(child == null) return;
         if(child instanceof VfsFolderNode)
         {
             ((VfsFolderNode)child).unmount(path.getNext());
@@ -163,10 +163,6 @@ class VfsFolderNode extends VfsNode
             VfsSourceNodeProxy proxy = (VfsSourceNodeProxy) child;
             proxy.removeLast();
             if(proxy.isEmpty()) removeChild(child);
-        }
-        else
-        {
-            throw new FileNotFoundException("Could not find the folder.");
         }
     }
 

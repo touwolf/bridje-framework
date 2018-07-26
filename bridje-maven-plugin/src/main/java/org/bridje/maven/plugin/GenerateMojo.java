@@ -83,6 +83,12 @@ public class GenerateMojo extends AbstractMojo
             {
                 targetResFolder.mkdirs();
             }
+
+            new VFile(SrcGenService.DATA_PATH).unmount();
+            new VFile(SrcGenService.SUPL_PATH).unmount();
+            new VFile(SrcGenService.CLASSES_PATH).unmount();
+            new VFile(SrcGenService.RESOURCE_PATH).unmount();
+
             new VFile(SrcGenService.DATA_PATH).mount(new FileSource(dataFolder));
             new VFile(SrcGenService.SUPL_PATH).mount(new CpSource("/BRIDJE-INF/srcgen/data", createClassLoader()));
             if (sourcesFolder.exists())
