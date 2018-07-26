@@ -294,15 +294,15 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     }
 
     @Override
-    public ArithmeticExpr<Long, Long> sum()
+    public ArithmeticExpr<T, E> sum()
     {
-         return new FunctionImpl("SUM", SQLType.LONG, this);
+         return new FunctionImpl("SUM", getSQLType(), this);
     }
 
     @Override
-    public ArithmeticExpr<Long, Long> avg()
+    public ArithmeticExpr<T, E> avg()
     {
-        return new FunctionImpl("AVG", SQLType.LONG, this);
+        return new FunctionImpl("AVG", getSQLType(), this);
     }
 
     @Override

@@ -210,7 +210,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<Long, Long> sum();
+    ArithmeticExpr<T, E> sum();
 
     /**
      * Creates a new arithmetic expression that performs the average of this
@@ -218,7 +218,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<Long, Long> avg();
+    ArithmeticExpr<T, E> avg();
 
     /**
      * Creates a new arithmetic expression that performs the count of this
