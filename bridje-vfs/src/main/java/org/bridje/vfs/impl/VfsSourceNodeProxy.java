@@ -65,15 +65,46 @@ class VfsSourceNodeProxy extends VfsNode
     @Override
     public boolean isDirectory(Path path)
     {
-        VfsSourceNode last = last();
-        return last != null && last.isDirectory(path);
+        if(!isFile(path))
+        {
+            if (nodes.isEmpty())
+            {
+                return false;
+            }
+            for (int i = nodes.size() - 1; i >= 0; i--)
+            {
+                if (nodes.get(i).isFile(path))
+                {
+                    return false;
+                }
+                if (nodes.get(i).isDirectory(path))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean isFile(Path path)
     {
-        VfsSourceNode last = last();
-        return last != null && last.isFile(path);
+        if (nodes.isEmpty())
+        {
+            return false;
+        }
+        for (int i = nodes.size() - 1; i >= 0; i--)
+        {
+            if (nodes.get(i).isFile(path))
+            {
+                return true;
+            }
+            if (nodes.get(i).isDirectory(path))
+            {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
