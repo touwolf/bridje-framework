@@ -86,6 +86,7 @@ public class GenerateMojo extends AbstractMojo
 
             new VFile(SrcGenService.DATA_PATH).unmount();
             new VFile(SrcGenService.SUPL_PATH).unmount();
+            new VFile(SrcGenService.SOURCES_PATH).unmount();
             new VFile(SrcGenService.CLASSES_PATH).unmount();
             new VFile(SrcGenService.RESOURCE_PATH).unmount();
 
