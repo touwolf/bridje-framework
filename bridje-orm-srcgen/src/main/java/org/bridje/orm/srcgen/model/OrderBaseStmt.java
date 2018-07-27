@@ -23,18 +23,27 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class OrderBaseStmt
 {
-    @XmlAttribute
-    private String field;
+    @XmlAttribute(name = "field")
+    private String fieldStr;
 
-    public String getField()
+    public FieldInf getField()
     {
-        return field;
+        return getParent().getQuery()
+                            .getEntity()
+                            .findField(fieldStr);
     }
 
-    public void setField(String field)
+    public String getFieldStr()
     {
-        this.field = field;
+        return fieldStr;
     }
 
+    public void setFieldStr(String fieldStr)
+    {
+        this.fieldStr = fieldStr;
+    }
+
+    public abstract OrderStmt getParent();
+    
     public abstract String getSortFunction();
 }

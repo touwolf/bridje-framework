@@ -245,7 +245,7 @@ abstract class ${model.name}Base
                         <#if query.orderBy??>
                         <@compress single_line=true><#compress>.orderBy(
                             <#list query.orderBy.statements as stmt>
-                            ${entity.name}_.${stmt.field?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
+                            ${entity.name}_.${stmt.field.column?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
                             </#list>
                         )</#compress></@compress>
                         </#if>
@@ -326,7 +326,7 @@ abstract class ${model.name}Base
                         <#if query.orderBy??>
                         <@compress single_line=true><#compress>.orderBy(
                             <#list query.orderBy.statements as stmt>
-                            ${entity.name}_.${stmt.field?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
+                            ${entity.name}_.${stmt.field.column?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
                             </#list>
                         )</#compress></@compress>
                         </#if>

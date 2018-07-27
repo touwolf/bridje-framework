@@ -16,15 +16,29 @@
 
 package org.bridje.orm.srcgen.model;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrderDescStmt extends OrderBaseStmt
 {
+    private OrderStmt parent;
+
     @Override
     public String getSortFunction()
     {
         return "desc";
+    }
+
+    void afterUnmarshal(Unmarshaller u, Object parent)
+    {
+        this.parent = (OrderStmt)parent;
+    }  
+
+    @Override
+    public OrderStmt getParent()
+    {
+        return parent;
     }
 }
