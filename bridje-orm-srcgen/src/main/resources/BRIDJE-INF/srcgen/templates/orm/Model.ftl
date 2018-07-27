@@ -242,6 +242,13 @@ abstract class ${model.name}Base
                             <@renderCondition entity query.where />
                         )</#compress></@compress>
                         </#if>
+                        <#if query.orderBy??>
+                        <@compress single_line=true><#compress>.orderBy(
+                            <#list query.orderBy.statements as stmt>
+                            ${entity.name}_.${stmt.field?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
+                            </#list>
+                        )</#compress></@compress>
+                        </#if>
                         <#if query.withPaging>
                         .limit(paging.toLimit())
                         </#if>
@@ -314,6 +321,13 @@ abstract class ${model.name}Base
                         <#if query.where??>
                         <@compress single_line=true><#compress>.where(
                             <@renderCondition entity query.where />
+                        )</#compress></@compress>
+                        </#if>
+                        <#if query.orderBy??>
+                        <@compress single_line=true><#compress>.orderBy(
+                            <#list query.orderBy.statements as stmt>
+                            ${entity.name}_.${stmt.field?upper_case}.${stmt.sortFunction}()<#sep>, </#sep>
+                            </#list>
                         )</#compress></@compress>
                         </#if>
                         .toQuery();

@@ -188,6 +188,9 @@ public abstract class ConditionStmt
         if(operator.equals("!=")) return "ne";
         if(operator.equals("<")) return "lt";
         if(operator.equals(">")) return "gt";
+        if(operator.equals("<=")) return "le";
+        if(operator.equals(">=")) return "ge";
+        if(operator.equals("LIKE")) return "like";
         return "eq";
     }
 
@@ -208,6 +211,9 @@ public abstract class ConditionStmt
         if(operator == null) readCondition("=");
         if(operator == null) readCondition("<");
         if(operator == null) readCondition(">");
+        if(operator == null) readCondition("<=");
+        if(operator == null) readCondition(">=");
+        if(operator == null) readCondition(" LIKE ");
     }
 
     private void readCondition(String op)
@@ -216,7 +222,7 @@ public abstract class ConditionStmt
         if(split.length == 2)
         {
             operand1 = split[0].trim();
-            operator = op;
+            operator = op.trim();
             operand2 = split[1].trim();
         }
     }

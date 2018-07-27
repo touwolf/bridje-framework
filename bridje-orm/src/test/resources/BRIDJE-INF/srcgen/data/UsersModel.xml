@@ -55,6 +55,9 @@ limitations under the License.
                 </select>
                 <select name="findGroups" withPaging="true">
                 </select>
+                <select name="findGroups">
+                    <where condition="title LIKE $title" />
+                </select>
             </queries>
         </entity>
 

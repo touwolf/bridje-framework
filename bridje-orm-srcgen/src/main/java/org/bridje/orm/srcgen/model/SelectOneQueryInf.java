@@ -27,9 +27,11 @@ public class SelectOneQueryInf extends QueryInf
 {
     private WhereStmt where;
 
+    private OrderStmt orderBy;
+
     @XmlTransient
     private EntityInf entity;
-    
+
     @XmlAttribute
     private String fetch;
 
@@ -47,6 +49,16 @@ public class SelectOneQueryInf extends QueryInf
     public void setWhere(WhereStmt where)
     {
         this.where = where;
+    }
+
+    public OrderStmt getOrderBy()
+    {
+        return orderBy;
+    }
+
+    public void setOrderBy(OrderStmt orderBy)
+    {
+        this.orderBy = orderBy;
     }
 
     @Override

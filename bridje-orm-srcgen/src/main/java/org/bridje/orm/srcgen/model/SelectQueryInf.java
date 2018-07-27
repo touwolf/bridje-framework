@@ -29,6 +29,8 @@ public class SelectQueryInf extends QueryInf
     private boolean withPaging;
 
     private WhereStmt where;
+    
+    private OrderStmt orderBy;
 
     @XmlTransient
     private EntityInf entity;
@@ -60,6 +62,16 @@ public class SelectQueryInf extends QueryInf
     public void setWhere(WhereStmt where)
     {
         this.where = where;
+    }
+
+    public OrderStmt getOrderBy()
+    {
+        return orderBy;
+    }
+
+    public void setOrderBy(OrderStmt orderBy)
+    {
+        this.orderBy = orderBy;
     }
 
     public FieldInf getFetchField()
