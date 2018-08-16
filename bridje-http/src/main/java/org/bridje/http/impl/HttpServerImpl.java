@@ -19,6 +19,7 @@ package org.bridje.http.impl;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -35,6 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.PostConstruct;
@@ -55,6 +57,8 @@ class HttpServerImpl implements HttpServer
 {
     private static final Logger LOG = Logger.getLogger(HttpServerImpl.class.getName());
 
+    private EventLoopGroup acceptor;
+    
     private EventLoopGroup group;
 
     private HttpServerConfig config;
@@ -96,10 +100,12 @@ class HttpServerImpl implements HttpServer
                 LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
                 logBridlets();
                 group = new NioEventLoopGroup();
+                acceptor = new NioEventLoopGroup(1);
                 try
                 {
                     ServerBootstrap b = new ServerBootstrap();
-                    b.group(group)
+                    b.group(acceptor, group)
+                            .option(ChannelOption.SO_BACKLOG, 128)
                             .channel(NioServerSocketChannel.class)
                             .localAddress(this.config.createInetSocketAddress())
                             .childHandler(new ChannelInitializer<SocketChannel>()
@@ -124,7 +130,8 @@ class HttpServerImpl implements HttpServer
                 }
                 finally
                 {
-                    group.shutdownGracefully().sync();
+                    acceptor.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+                    group.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
                 }
             }
             catch (InterruptedException e)
@@ -140,7 +147,8 @@ class HttpServerImpl implements HttpServer
     {
         try
         {
-            group.shutdownGracefully().sync();
+            acceptor.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+            group.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
         }
         catch (InterruptedException ex)
         {
