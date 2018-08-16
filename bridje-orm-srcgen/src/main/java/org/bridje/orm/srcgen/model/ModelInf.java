@@ -65,6 +65,13 @@ public class ModelInf
     })
     private List<SQLTypeInf> types;
 
+    @XmlElementWrapper(name = "abstracts")
+    @XmlElements(
+    {
+        @XmlElement(name = "abstract", type = AbstractEntityInf.class)
+    })
+    private List<AbstractEntityInf> abstracts;
+
     @XmlElementWrapper(name = "entities")
     @XmlElements(
     {
@@ -132,6 +139,16 @@ public class ModelInf
         this.types = types;
     }
 
+    public List<AbstractEntityInf> getAbstracts()
+    {
+        return abstracts;
+    }
+
+    public void setAbstracts(List<AbstractEntityInf> abstracts)
+    {
+        this.abstracts = abstracts;
+    }
+    
     public List<EntityInf> getEntities()
     {
         return entities;
@@ -218,6 +235,14 @@ public class ModelInf
     public EntityInf findEntity(String referencesName)
     {
         return entities.stream()
+                .filter(t -> t.getName().equalsIgnoreCase(referencesName))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public AbstractEntityInf findAbstractEntity(String referencesName)
+    {
+        return abstracts.stream()
                 .filter(t -> t.getName().equalsIgnoreCase(referencesName))
                 .findFirst()
                 .orElse(null);

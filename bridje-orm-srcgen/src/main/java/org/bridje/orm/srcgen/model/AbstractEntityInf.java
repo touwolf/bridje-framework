@@ -32,22 +32,16 @@ import javax.xml.bind.annotation.XmlTransient;
  * Information for an entity of the model.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EntityInf
+public class AbstractEntityInf
 {
     @XmlAttribute
     private String name;
-
-    @XmlAttribute
-    private String table;
 
     @XmlTransient
     private ModelInf model;
 
     @XmlAttribute(name = "description")
     private String description;
-
-    @XmlAttribute
-    private String base;
 
     private EntityInfKey key;
 
@@ -87,7 +81,7 @@ public class EntityInf
 
     @XmlTransient
     private List<FieldInf> allFields;
-    
+
     @XmlTransient
     private List<FieldInfBase> allWrappedFields;
 
@@ -109,30 +103,6 @@ public class EntityInf
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    /**
-     * The name of the table for this entity.
-     *
-     * @return The name of the table for this entity.
-     */
-    public String getTable()
-    {
-        if (table == null)
-        {
-            table = Utils.toSQLName(name);
-        }
-        return table;
-    }
-
-    /**
-     * The name of the table for this entity.
-     *
-     * @param table The name of the table for this entity.
-     */
-    public void setTable(String table)
-    {
-        this.table = table;
     }
 
     /**
@@ -186,50 +156,12 @@ public class EntityInf
     }
 
     /**
-     * The name of the base entity.
-     * 
-     * @return The name of the base entity.
-     */
-    public String getBase()
-    {
-        return base;
-    }
-
-    /**
-     * The name of the base entity.
-     * 
-     * @param base The name of the base entity.
-     */
-    public void setBase(String base)
-    {
-        this.base = base;
-    }
-
-    /**
-     * The base entity for this entity.
-     * 
-     * @return The base entity for this entity.
-     */
-    public AbstractEntityInf getBaseEntity()
-    {
-        if(base != null && !base.trim().isEmpty())
-        {
-            return this.model.findAbstractEntity(base);
-        }
-        return null;
-    }
-
-    /**
      * The key field for this entity.
      *
      * @return The key field for this entity.
      */
     public FieldInf getKey()
     {
-        if(key == null && getBaseEntity() != null)
-        {
-            return getBaseEntity().getKey();
-        }
         return key.getField();
     }
 
