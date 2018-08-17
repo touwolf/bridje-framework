@@ -107,6 +107,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             if(HttpUtil.is100ContinueExpected(httpReq))
             {
                 ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
+                ctx.flush();
             }
             readHeaders(ctx, httpReq);
         }
