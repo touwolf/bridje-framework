@@ -100,7 +100,7 @@ class HttpServerImpl implements HttpServer
                 LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
                 logBridlets();
                 group = new NioEventLoopGroup();
-                acceptor = new NioEventLoopGroup(1);
+                acceptor = new NioEventLoopGroup(3);
                 try
                 {
                     ServerBootstrap b = new ServerBootstrap();

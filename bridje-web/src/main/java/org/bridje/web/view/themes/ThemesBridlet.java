@@ -38,14 +38,15 @@ class ThemesBridlet implements HttpBridlet
 
     @InjectNext
     private HttpBridlet nextHandler;
-
+    
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         HttpBridletRequest req = context.getRequest();
         if(req.getPath().startsWith("/__themes"))
         {
-            String[] arrPath = ReqPathRef.findCurrentPath(context).split("[//]");
+            String currPath = ReqPathRef.findCurrentPath(context);
+            String[] arrPath = currPath.split("[//]");
             if(arrPath.length > 3)
             {
                 String themeName = arrPath[2];

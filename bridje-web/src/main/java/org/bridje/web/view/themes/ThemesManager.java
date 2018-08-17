@@ -22,8 +22,10 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.PostConstruct;
@@ -66,6 +68,8 @@ public class ThemesManager
     @Inject
     private WebI18nServices webI18nServ;
 
+    private Map<String, Map<String, ThemeResourceData>> resourcesMap;
+
     /**
      * Component Initializer
      */
@@ -80,6 +84,7 @@ public class ThemesManager
         ftlCfg.setDefaultEncoding("UTF-8");
         ftlCfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
         ftlCfg.setLogTemplateExceptions(false);
+        resourcesMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -213,24 +218,25 @@ public class ThemesManager
      */
     public boolean serveResource(String themeName, String resPath, HttpBridletResponse resp) throws IOException
     {
-        Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
-        GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
-        if (globExpr.globMatches(path.getCanonicalPath()))
+        ThemeResourceData currResource = findResource(themeName, resPath);
+        if(currResource != null)
         {
-            VFile f = new VFile(path);
-            if (f.isFile())
+            currResource.serve(resp);
+            return true;
+        }
+        else
+        {
+            Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
+            GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
+            if (globExpr.globMatches(path.getCanonicalPath()))
             {
-                String contentType = f.getMimeType();
-                resp.setContentType(contentType);
-                try (OutputStream os = resp.getOutputStream())
+                VFile f = new VFile(path);
+                if (f.isFile())
                 {
-                    try (InputStream is = findInputStream(f))
-                    {
-                        copy(is, os);
-                        os.flush();
-                    }
+                    currResource = createResource(themeName, resPath, f);
+                    currResource.serve(resp);
+                    return true;
                 }
-                return true;
             }
         }
         return false;
@@ -247,25 +253,29 @@ public class ThemesManager
      */
     public String getResourceContent(String themeName, String resPath)
     {
-        Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
-        GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
-        if (globExpr.globMatches(path.getCanonicalPath()))
+        ThemeResourceData currResource = findResource(themeName, resPath);
+        if(currResource != null)
         {
-            VFile f = new VFile(path);
-            if (f.isFile())
+            return new String(currResource.getData(), StandardCharsets.UTF_8);
+        }
+        else
+        {
+            Path path = new Path("/web/themes/" + themeName + "/resources/" + resPath);
+            GlobExpr globExpr = new GlobExpr("/web/themes/**/resources/**");
+            if (globExpr.globMatches(path.getCanonicalPath()))
             {
-                try (ByteArrayOutputStream os = new ByteArrayOutputStream())
+                VFile f = new VFile(path);
+                if (f.isFile())
                 {
-                    try (InputStream is = findInputStream(f))
+                    try
                     {
-                        copy(is, os);
-                        os.flush();
+                        currResource = createResource(themeName, resPath, f);
+                        return new String(currResource.getData(), StandardCharsets.UTF_8);
                     }
-                    return os.toString("UTF-8");
-                }
-                catch(IOException ex)
-                {
-                    LOG.log(Level.SEVERE, ex.getMessage(), ex);
+                    catch (IOException e)
+                    {
+                        LOG.log(Level.SEVERE, e.getMessage(), e);
+                    }
                 }
             }
         }
@@ -280,31 +290,18 @@ public class ThemesManager
             String content = compressedContent(file);
             if (content != null)
             {
-                byte[] compressedBytes = content.getBytes(Charset.defaultCharset());
+                byte[] compressedBytes = content.getBytes(StandardCharsets.UTF_8);
                 return new ByteArrayInputStream(compressedBytes);
             }
         }
         return new VFileInputStream(file);
     }
 
-    private final Map<String, String> compressedStreams = new HashMap<>();
-
     private String compressedContent(VFile file)
     {
         AssetCompressor compressor = findCompressor(file);
-        if (compressor == null)
-        {
-            return null;
-        }
-
-        String fileStr = file.getPath().toString();
-        String content = compressedStreams.get(fileStr);
-        if (content == null)
-        {
-            content = compressor.compress(file);
-            compressedStreams.put(fileStr, content);
-        }
-        return content;
+        if (compressor == null) return null;
+        return compressor.compress(file);
     }
 
     private AssetCompressor findCompressor(VFile file)
@@ -319,15 +316,24 @@ public class ThemesManager
         return null;
     }
 
-    private void copy(InputStream is, OutputStream os) throws IOException
+    private ThemeResourceData findResource(String themeName, String resPath)
     {
-        byte[] buffer = new byte[1024];
-        int bytesCount = is.read(buffer);
-        while (bytesCount > -1)
+        Map<String, ThemeResourceData> themeMap = resourcesMap.get(themeName);
+        if(themeMap != null) return themeMap.get(resPath);
+        return null;
+    }
+
+    private ThemeResourceData createResource(String themeName, String resPath, VFile f) throws IOException
+    {
+        ThemeResourceData res = new ThemeResourceData(f.getMimeType(), findInputStream(f));
+        Map<String, ThemeResourceData> themeMap = resourcesMap.get(themeName);
+        if(themeMap == null)
         {
-            os.write(buffer, 0, bytesCount);
-            bytesCount = is.read(buffer);
+            themeMap = new ConcurrentHashMap<>();
+            resourcesMap.put(themeName, themeMap);
         }
+        themeMap.put(resPath, res);
+        return res;
     }
 
 }

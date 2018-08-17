@@ -372,6 +372,7 @@ public class WebViewsManager
             GlobExpr exp = new GlobExpr("**.view.xml");
             VFile[] files = publicFolder.search(exp);
             Arrays.asList(files).forEach(this::readView);
+            views.forEach( (n, v) -> v.getRoot());
         }
     }
 
