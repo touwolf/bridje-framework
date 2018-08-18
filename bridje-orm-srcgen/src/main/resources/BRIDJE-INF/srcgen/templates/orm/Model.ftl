@@ -216,8 +216,9 @@ abstract class ${model.name}Base
         </#compress></@compress>
     </#macro>
     <#list entity.queries as query>
+    <#assign queryNameTpl = query.name?interpret>
     <#if query.queryType == "select">
-    public List<<#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if>> ${query.name}<@compress single_line=true><#compress>
+    public List<<#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if>> <@queryNameTpl /><@compress single_line=true><#compress>
                                     (
                                         <#if query.withPaging>
                                         <#if query.where??>
@@ -261,7 +262,7 @@ abstract class ${model.name}Base
     }
 
     <#if query.withPaging>
-    public Paging ${query.name}Paging<@compress single_line=true><#compress>
+    public Paging <@queryNameTpl />Paging<@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>
@@ -285,7 +286,7 @@ abstract class ${model.name}Base
     </#if>
     </#if>
     <#if query.queryType == "count">
-    public int ${query.name}<@compress single_line=true><#compress>
+    public int <@queryNameTpl /><@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>
@@ -307,7 +308,7 @@ abstract class ${model.name}Base
 
     </#if>
     <#if query.queryType == "selectOne">
-    public <#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if> ${query.name}<@compress single_line=true><#compress>
+    public <#if query.fetchField??>${query.fetchField.type.javaType}<#else>${entity.name}</#if> <@queryNameTpl /><@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>
@@ -340,7 +341,7 @@ abstract class ${model.name}Base
 
     </#if>
     <#if query.queryType == "update">
-    public int ${query.name}<@compress single_line=true><#compress>
+    public int <@queryNameTpl /><@compress single_line=true><#compress>
                                     (
                                         <#list query.params?keys as p>
                                         ${query.params[p].type.javaType} ${p}<#sep>, </#sep>
@@ -362,7 +363,7 @@ abstract class ${model.name}Base
 
     </#if>
     <#if query.queryType == "delete">
-    public int ${query.name}<@compress single_line=true><#compress>
+    public int <@queryNameTpl /><@compress single_line=true><#compress>
                                     (
                                         <#if query.where??>
                                         <#list query.where.params?keys as p>

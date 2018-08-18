@@ -73,6 +73,7 @@ public class CountQueryInf extends QueryInf
     public QueryInf clone(EntityInf entity)
     {
         CountQueryInf result = new CountQueryInf();
+        super.clone(result, entity);
         result.entity = entity;
         result.where = this.where;
         return result;

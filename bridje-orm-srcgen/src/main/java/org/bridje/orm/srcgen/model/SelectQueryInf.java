@@ -105,6 +105,7 @@ public class SelectQueryInf extends QueryInf
     public QueryInf clone(EntityInf entity)
     {
         SelectQueryInf result = new SelectQueryInf();
+        super.clone(result, entity);
         result.entity = entity;
         result.where = this.where;
         result.orderBy = this.orderBy;

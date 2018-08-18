@@ -115,6 +115,7 @@ public class UpdateQueryInf extends QueryInf
     public QueryInf clone(EntityInf entity)
     {
         UpdateQueryInf result = new UpdateQueryInf();
+        super.clone(result, entity);
         result.entity = entity;
         result.where = this.where;
         result.sets = this.sets;

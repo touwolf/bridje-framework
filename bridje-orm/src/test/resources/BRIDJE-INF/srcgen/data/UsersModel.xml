@@ -35,6 +35,10 @@ limitations under the License.
             <key>
                 <ai name="id" type="LONGID" />
             </key>
+            <queries>
+                <count name="count${entity.name}All">
+                </count>
+            </queries>
         </entity>
         <entity name="Group" >
             <key>

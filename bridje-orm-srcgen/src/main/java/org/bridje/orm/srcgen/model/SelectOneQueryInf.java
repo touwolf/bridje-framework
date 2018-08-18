@@ -92,6 +92,7 @@ public class SelectOneQueryInf extends QueryInf
     public QueryInf clone(EntityInf entity)
     {
         SelectOneQueryInf result = new SelectOneQueryInf();
+        super.clone(result, entity);
         result.entity = entity;
         result.where = this.where;
         result.orderBy = this.orderBy;
