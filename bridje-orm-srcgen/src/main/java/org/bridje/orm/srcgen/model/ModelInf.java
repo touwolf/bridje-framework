@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -65,13 +66,6 @@ public class ModelInf
     })
     private List<SQLTypeInf> types;
 
-    @XmlElementWrapper(name = "abstracts")
-    @XmlElements(
-    {
-        @XmlElement(name = "abstract", type = AbstractEntityInf.class)
-    })
-    private List<AbstractEntityInf> abstracts;
-
     @XmlElementWrapper(name = "entities")
     @XmlElements(
     {
@@ -89,6 +83,9 @@ public class ModelInf
 
     @XmlTransient
     private List<ModelInf> includeModels;
+    
+    @XmlTransient
+    private List<EntityInf> concreteEntities;
 
     public String getName()
     {
@@ -139,16 +136,6 @@ public class ModelInf
         this.types = types;
     }
 
-    public List<AbstractEntityInf> getAbstracts()
-    {
-        return abstracts;
-    }
-
-    public void setAbstracts(List<AbstractEntityInf> abstracts)
-    {
-        this.abstracts = abstracts;
-    }
-    
     public List<EntityInf> getEntities()
     {
         return entities;
@@ -240,11 +227,14 @@ public class ModelInf
                 .orElse(null);
     }
 
-    public AbstractEntityInf findAbstractEntity(String referencesName)
+    public List<EntityInf> getConcreteEntities()
     {
-        return abstracts.stream()
-                .filter(t -> t.getName().equalsIgnoreCase(referencesName))
-                .findFirst()
-                .orElse(null);
+        if(concreteEntities == null)
+        {
+            concreteEntities = entities.stream()
+                                        .filter(e -> !e.getIsAbstract())
+                                        .collect(Collectors.toList());
+        }
+        return concreteEntities;
     }
 }

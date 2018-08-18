@@ -60,4 +60,14 @@ public class DateField extends FieldInf
     {
         return false;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        DateField result = new DateField();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }

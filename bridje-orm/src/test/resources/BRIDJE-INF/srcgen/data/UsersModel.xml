@@ -31,7 +31,12 @@ limitations under the License.
     </types>
 
     <entities>
-        <entity name="Group">
+        <entity name="BaseEntity" isAbstract="true" >
+            <key>
+                <ai name="id" type="LONGID" />
+            </key>
+        </entity>
+        <entity name="Group" >
             <key>
                 <string name="code" type="CODE" />
             </key>
@@ -61,10 +66,7 @@ limitations under the License.
             </queries>
         </entity>
 
-        <entity name="User">
-            <key>
-                <ai name="id" type="LONGID" />
-            </key>
+        <entity name="User" base="BaseEntity">
             <fields>
                 <string name="email" type="STRING150" />
                 <string name="password" type="PASSWORD" />

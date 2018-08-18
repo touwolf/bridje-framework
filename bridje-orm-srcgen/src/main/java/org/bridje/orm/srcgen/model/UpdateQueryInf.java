@@ -110,4 +110,15 @@ public class UpdateQueryInf extends QueryInf
     {
         entity = (EntityInf)parent;
     }
+
+    @Override
+    public QueryInf clone(EntityInf entity)
+    {
+        UpdateQueryInf result = new UpdateQueryInf();
+        result.entity = entity;
+        result.where = this.where;
+        result.sets = this.sets;
+        result.mapParams = this.mapParams;
+        return result;
+    }
 }

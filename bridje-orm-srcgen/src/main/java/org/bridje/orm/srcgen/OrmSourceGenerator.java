@@ -61,6 +61,11 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
     @Override
     public void generateSources(ModelInf modelInf, VFile file) throws IOException
     {
+        for (EntityInf entity : modelInf.getEntities())
+        {
+            entity.doExtendsBase();
+        }
+
         Map<String, Object> data;
         data = new HashMap<>();
         data.put("model", modelInf);
@@ -72,8 +77,15 @@ public class OrmSourceGenerator implements SourceGenerator<ModelInf>
         for (EntityInf entity : modelInf.getEntities())
         {
             data.put("entity", entity);
-            srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
-            srcGen.createClass(entity.getFullName() + "_", "orm/Entity_.ftl", data);
+            if(entity.getIsAbstract())
+            {
+                srcGen.createClass(entity.getFullName(), "orm/AbstractEntity.ftl", data);
+            }
+            else
+            {
+                srcGen.createClass(entity.getFullName(), "orm/Entity.ftl", data);
+                srcGen.createClass(entity.getFullName() + "_", "orm/Entity_.ftl", data);
+            }
         }
 
         data = new HashMap<>();

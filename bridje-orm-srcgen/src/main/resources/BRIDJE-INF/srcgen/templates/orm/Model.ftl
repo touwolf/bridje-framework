@@ -19,7 +19,7 @@ import javax.annotation.Generated;
  * it must be use to read and write ${model.name} entities.
  * The full list of ${model.name} entities is the following.
  * <ul>
-<#list model.entities as entity >
+<#list model.concreteEntities as entity >
  * <li>${entity.name}<br></li>
 </#list>
  * </ul>
@@ -37,10 +37,10 @@ abstract class ${model.name}Base
 
     static {
         SCHEMA = SQL.buildSchema("${model.schema}")
-                    <#list model.entities as entity>
+                    <#list model.concreteEntities as entity>
                     .table(${entity.name}_.TABLE)
                     </#list>
-                    <#list model.entities as entity>
+                    <#list model.concreteEntities as entity>
                     <#list entity.foreignKeys![] as key>
                     <#if key.isWithItSelf || key.fkOnModel>
                     .foreignKey(SQL.buildForeignKey(${entity.name}_.TABLE, ${entity.name}_.${key.column?upper_case})
@@ -53,17 +53,17 @@ abstract class ${model.name}Base
                     .build();
 
         ENTITIES = new HashSet<>();
-        <#list model.entities as entity>
+        <#list model.concreteEntities as entity>
         ENTITIES.add(${entity.name}.class);
         </#list>
 
         TO_KEYS = new HashMap<>();
-        <#list model.entities as entity>
+        <#list model.concreteEntities as entity>
         TO_KEYS.put(${entity.name}.class, (v) -> ((${entity.name})v).get${entity.key.name?cap_first}());
         </#list>
 
         TO_ENTITIES = new HashMap<>();
-        <#list model.entities as entity>
+        <#list model.concreteEntities as entity>
         TO_ENTITIES.put(${entity.name}.class, (v) -> get().find${entity.name}(((${entity.key.type.javaType})v)));
         </#list>
         
@@ -99,7 +99,7 @@ abstract class ${model.name}Base
         return finder.find(entity);
     }
 
-    <#list model.entities as entity>
+    <#list model.concreteEntities as entity>
     protected ${entity.name} parse${entity.name}(SQLResultSet rs) throws SQLException
     {
         ${entity.name} entity = new ${entity.name}();

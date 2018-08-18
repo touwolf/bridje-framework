@@ -68,4 +68,13 @@ public class CountQueryInf extends QueryInf
     {
         entity = (EntityInf)parent;
     }
+
+    @Override
+    public QueryInf clone(EntityInf entity)
+    {
+        CountQueryInf result = new CountQueryInf();
+        result.entity = entity;
+        result.where = this.where;
+        return result;
+    }
 }

@@ -18,6 +18,8 @@ package org.bridje.orm.srcgen.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -34,11 +36,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EntityInf
 {
+    private static final Logger LOG = Logger.getLogger(EntityInf.class.getName());
+
     @XmlAttribute
     private String name;
 
     @XmlAttribute
     private String table;
+
+    @XmlAttribute
+    private boolean isAbstract;
 
     @XmlTransient
     private ModelInf model;
@@ -91,6 +98,8 @@ public class EntityInf
     @XmlTransient
     private List<FieldInfBase> allWrappedFields;
 
+    private boolean needToExtends = true;
+
     /**
      * The name for the entity.
      *
@@ -135,6 +144,26 @@ public class EntityInf
         this.table = table;
     }
 
+    /**
+     * If the entity is abstract and will not exists in the database.
+     * 
+     * @return If the entity is abstract and will not exists in the database.
+     */
+    public boolean getIsAbstract()
+    {
+        return isAbstract;
+    }
+
+    /**
+     * If the entity is abstract and will not exists in the database.
+     * 
+     * @param isAbstract If the entity is abstract and will not exists in the database.
+     */
+    public void setIsAbstract(boolean isAbstract)
+    {
+        this.isAbstract = isAbstract;
+    }
+    
     /**
      * The full java name for this entity.
      *
@@ -210,11 +239,11 @@ public class EntityInf
      * 
      * @return The base entity for this entity.
      */
-    public AbstractEntityInf getBaseEntity()
+    public EntityInf getBaseEntity()
     {
         if(base != null && !base.trim().isEmpty())
         {
-            return this.model.findAbstractEntity(base);
+            return this.model.findEntity(base);
         }
         return null;
     }
@@ -226,10 +255,6 @@ public class EntityInf
      */
     public FieldInf getKey()
     {
-        if(key == null && getBaseEntity() != null)
-        {
-            return getBaseEntity().getKey();
-        }
         return key.getField();
     }
 
@@ -263,6 +288,10 @@ public class EntityInf
 
     public List<FieldInfBase> getWrappedFields()
     {
+        if(wrappedFields == null)
+        {
+            wrappedFields = new ArrayList<>();
+        }
         return wrappedFields;
     }
 
@@ -297,7 +326,7 @@ public class EntityInf
         if (allWrappedFields == null)
         {
             allWrappedFields = new ArrayList<>();
-            allWrappedFields.add(key.getField());
+            if(key != null && key.getField() != null) allWrappedFields.add(key.getField());
             allWrappedFields.addAll(getWrappedFields());
         }
         return allWrappedFields;
@@ -415,11 +444,16 @@ public class EntityInf
                 .findFirst()
                 .orElse(null);
     }
+    
+    public boolean hasField(String fieldName)
+    {
+        return findField(fieldName) != null;
+    }
 
     private List<FieldInf> unwrapFields()
     {
         List<FieldInf> result = new ArrayList<>();
-
+        if(wrappedFields == null) wrappedFields = new ArrayList<>();
         for (FieldInfBase fieldInfBase : wrappedFields)
         {
             if(fieldInfBase instanceof WrapperFieldInf)
@@ -434,5 +468,35 @@ public class EntityInf
 
         return result;
     }
-
+    
+    public void doExtendsBase()
+    {
+        if(needToExtends)
+        {
+            try
+            {
+                EntityInf baseEntity = getBaseEntity();
+                if(baseEntity != null)
+                {
+                    baseEntity.doExtendsBase();
+                    if(key == null)
+                    {
+                        key = new EntityInfKey();
+                        key.setField(baseEntity.key.getField().clone(this));
+                    }
+                    if(wrappedFields == null) wrappedFields = new ArrayList<>();
+                    if(baseEntity.wrappedFields != null) wrappedFields.addAll(FieldInfBase.cloneFieldsBase(baseEntity.wrappedFields, this));
+                    if(indexes == null) indexes = new ArrayList<>();
+                    if(baseEntity.indexes != null) indexes.addAll(EntityIndexInf.clone(baseEntity.indexes, this));
+                    if(queries == null) queries = new ArrayList<>();
+                    if(baseEntity.queries != null) queries.addAll(QueryInf.clone(baseEntity.queries, this));
+                }                
+            }
+            catch (Exception e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
+        }
+        needToExtends = false;
+    }
 }

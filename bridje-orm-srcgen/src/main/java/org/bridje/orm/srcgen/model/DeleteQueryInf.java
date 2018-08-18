@@ -68,4 +68,13 @@ public class DeleteQueryInf extends QueryInf
     {
         entity = (EntityInf)parent;
     }
+
+    @Override
+    public QueryInf clone(EntityInf entity)
+    {
+        DeleteQueryInf result = new DeleteQueryInf();
+        result.entity = entity;
+        result.where = this.where;
+        return result;
+    }
 }

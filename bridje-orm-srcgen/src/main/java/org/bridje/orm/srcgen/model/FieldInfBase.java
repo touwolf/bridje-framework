@@ -16,6 +16,8 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -119,5 +121,40 @@ public abstract class FieldInfBase
     public void setParent(Object parent)
     {
         this.parent = parent;
+    }
+    
+    /**
+     * Clones this field into a new one.
+     * 
+     * @param parent The parent of the new field.
+     * @return The new cloned field.
+     */
+    public abstract FieldInfBase clone(Object parent);
+
+    /**
+     * Clones the given field with the new parent.
+     * 
+     * @param fieldInf The field to clone.
+     * @param parent The parent for the new field.
+     */
+    public void clone(FieldInfBase fieldInf, Object parent)
+    {
+        fieldInf.description = this.description;
+        fieldInf.name = this.name;
+        fieldInf.parent = parent;
+    }
+
+    /**
+     * Clones a list of fields into new ones.
+     * 
+     * @param lst The list to clone.
+     * @param parent The new parent of the new objects.
+     * @return The cloned list.
+     */
+    public static List<FieldInfBase> cloneFieldsBase(List<FieldInfBase> lst, Object parent)
+    {
+        return lst.stream()
+                    .map(f -> f.clone(parent))
+                    .collect(Collectors.toList());
     }
 }

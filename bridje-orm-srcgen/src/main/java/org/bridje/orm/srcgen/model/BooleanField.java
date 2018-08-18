@@ -60,4 +60,14 @@ public class BooleanField extends FieldInf
     {
         return false;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        BooleanField result = new BooleanField();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }

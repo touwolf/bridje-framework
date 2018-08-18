@@ -60,4 +60,14 @@ public class AiField extends FieldInf
     {
         return true;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        AiField result = new AiField();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }

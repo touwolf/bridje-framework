@@ -100,4 +100,15 @@ public class SelectQueryInf extends QueryInf
     {
         entity = (EntityInf)parent;
     }
+
+    @Override
+    public QueryInf clone(EntityInf entity)
+    {
+        SelectQueryInf result = new SelectQueryInf();
+        result.entity = entity;
+        result.where = this.where;
+        result.orderBy = this.orderBy;
+        result.fetch = this.fetch;
+        return result;
+    }
 }

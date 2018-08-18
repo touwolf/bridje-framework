@@ -57,4 +57,14 @@ public class StringField extends FieldInf
     {
         return false;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        StringField result = new StringField();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }

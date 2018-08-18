@@ -16,6 +16,7 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -66,5 +67,15 @@ public class WrapperFieldInf extends FieldInfBase
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         setParent(parent);
+    }
+
+    @Override
+    public FieldInfBase clone(Object parent)
+    {
+        WrapperFieldInf result = new WrapperFieldInf();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.fields = FieldInf.clonesFields(this.fields, result);
+        return result;
     }
 }

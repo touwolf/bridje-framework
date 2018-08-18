@@ -16,6 +16,8 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,7 +34,7 @@ public class EntityIndexInf
     private String name;
 
     @XmlTransient
-    private final Boolean unique;
+    private Boolean unique;
 
     @XmlAttribute
     private String fields;
@@ -123,5 +125,22 @@ public class EntityIndexInf
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         entity = (EntityInf)parent;
+    }
+
+    public EntityIndexInf clone(EntityInf entity)
+    {
+        EntityIndexInf result = new EntityIndexInf();
+        result.entity = entity;
+        result.fields = this.fields;
+        result.name = this.name;
+        result.unique = this.unique;
+        return result;
+    }
+
+    public static List<EntityIndexInf> clone(List<EntityIndexInf> lst, EntityInf entity)
+    {
+        return lst.stream()
+                    .map(f -> f.clone(entity))
+                    .collect(Collectors.toList());
     }
 }

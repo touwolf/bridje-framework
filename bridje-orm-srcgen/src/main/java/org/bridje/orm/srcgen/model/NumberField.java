@@ -57,4 +57,14 @@ public class NumberField extends FieldInf
     {
         return false;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        NumberField result = new NumberField();
+        super.clone(result, parent);
+        result.type = this.type;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }

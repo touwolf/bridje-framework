@@ -16,6 +16,8 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -131,5 +133,34 @@ public abstract class FieldInf extends FieldInfBase
     public boolean getNeedCustomGetter()
     {
         return getParent() instanceof WrapperFieldInf;
+    }
+
+    @Override
+    public abstract FieldInf clone(Object parent);
+
+    /**
+     * 
+     * @param fieldInf
+     * @param parent 
+     */
+    public void clone(FieldInf fieldInf, Object parent)
+    {
+        super.clone(fieldInf, parent);
+        fieldInf.column = this.column;
+        fieldInf.required = this.required;
+    }
+
+    /**
+     * Clones a list of fields into new ones.
+     * 
+     * @param lst The list to clone.
+     * @param parent The new parent of the new objects.
+     * @return The cloned list.
+     */
+    public static List<FieldInf> clonesFields(List<FieldInf> lst, Object parent)
+    {
+        return lst.stream()
+                    .map(f -> f.clone(parent))
+                    .collect(Collectors.toList());
     }
 }

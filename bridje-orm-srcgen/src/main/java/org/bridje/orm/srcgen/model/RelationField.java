@@ -141,4 +141,17 @@ public class RelationField extends FieldInf
     {
         this.fkOnModel = fkOnModel;
     }
+
+    @Override
+    public FieldInf clone(Object parent)
+    {
+        RelationField result = new RelationField();
+        super.clone(result, parent);
+        result.fkOnModel = this.fkOnModel;
+        result.onDelete = this.onDelete;
+        result.onUpdate = this.onUpdate;
+        result.referencesName = this.referencesName;
+        result.typeInf = this.typeInf;
+        return result;
+    }
 }
