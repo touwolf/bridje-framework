@@ -311,4 +311,6 @@
     {
         initializeActions(document);
     };
+
+    window.__bridje.initializeActions = initializeActions;
 })();
