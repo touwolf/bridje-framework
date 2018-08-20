@@ -98,6 +98,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
     {
         if(!msg.decoderResult().isSuccess())
         {
+            LOG.log(Level.WARNING, "Decode result was not success.");
             sendBadRequest(ctx);
             return;
         }
@@ -106,6 +107,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             HttpRequest httpReq = (HttpRequest)msg;
             if(HttpUtil.is100ContinueExpected(httpReq))
             {
+                LOG.log(Level.INFO, "Sending 100 Continue.");
                 ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
                 ctx.flush();
             }
@@ -181,18 +183,16 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         {
             context = new HttpBridletContextImpl();
             req = new HttpBridletRequestImpl( msg );
-            QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.getUri());
+            LOG.log(Level.INFO, String.format("Reading HTTP headers for %s %s", req.getMethod(), req.getPath()));
+            QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.uri());
             req.setQueryString(decoderQuery.parameters());
             req.setCookies(parseCookies(msg.headers().get(COOKIE)));
-            // new getMethod
 
-            if(req.isForm())
-            {
-                decoder = new HttpPostRequestDecoder(FACTORY, msg);
-            }
+            if(req.isForm()) decoder = new HttpPostRequestDecoder(FACTORY, msg);
         }
         else
         {
+            LOG.log(Level.WARNING, "Request headers where alrready readed, sending bad request.");
             sendBadRequest(ctx);
         }
     }
@@ -215,7 +215,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
                 }
                 catch (DecoderException e)
                 {
-                    LOG.log(Level.WARNING, e.getMessage());
+                    LOG.log(Level.WARNING, String.format("Decoder Exception: %s sending bad request.", e.getMessage()));
                     sendBadRequest(ctx);
                     return;
                 }
@@ -233,6 +233,7 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         }
         else
         {
+            LOG.log(Level.WARNING, "The header was not readed, sending bad request.");
             sendBadRequest(ctx);
         }
     }
