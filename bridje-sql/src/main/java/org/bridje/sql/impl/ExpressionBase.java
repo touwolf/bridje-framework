@@ -110,7 +110,19 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     @Override
     public StringExpr<T, E> trim()
     {
-        return new FunctionImpl("trim", getSQLType(), this);
+        return new FunctionImpl("TRIM", getSQLType(), this);
+    }
+    
+    @Override
+    public StringExpr<T, E> upper()
+    {
+        return new FunctionImpl("UPPER", getSQLType(), this);
+    }
+    
+    @Override
+    public StringExpr<T, E> lower()
+    {
+        return new FunctionImpl("LOWER", getSQLType(), this);
     }
 
     @Override

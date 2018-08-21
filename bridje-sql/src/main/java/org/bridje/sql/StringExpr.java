@@ -34,6 +34,24 @@ public interface StringExpr<T, E> extends Expression<T, E>
     StringExpr<T, E> trim();
 
     /**
+     * Create a new string expression that is the upper case version of this 
+     * string expression.
+     *
+     * @return A new string expression that is the upper case version of this 
+     *         string expression.
+     */
+    StringExpr<T, E> upper();
+
+    /**
+     * Create a new string expression that is the lower case version of this 
+     * string expression.
+     *
+     * @return A new string expression that is the lower case version of this 
+     *         string expression.
+     */
+    StringExpr<T, E> lower();
+
+    /**
      * Gets the length of the string as a number expression.
      *
      * @return The length of the string as a number expression.
