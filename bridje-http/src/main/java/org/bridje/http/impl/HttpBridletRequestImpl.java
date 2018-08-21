@@ -153,7 +153,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(path == null)
         {
-            path = this.headers.getUri();
+            path = this.headers.uri();
             if(path.contains("?"))
             {
                 path = path.substring(0, path.indexOf("?"));
