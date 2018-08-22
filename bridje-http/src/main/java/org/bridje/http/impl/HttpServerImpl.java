@@ -119,7 +119,7 @@ class HttpServerImpl implements HttpServer
                                         engine.setUseClientMode(false);
                                         ch.pipeline().addLast("ssl", new SslHandler(engine));
                                     }
-                                    ch.pipeline().addLast("codec", new HttpServerCodec());
+                                    ch.pipeline().addLast("codec", new HttpServerCodecProxy());
                                     ch.pipeline().addLast("switch", new HttpWsSwitch(handlers));
                                     ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
                                     ch.pipeline().addLast("compressor", new HttpContentCompressor());
