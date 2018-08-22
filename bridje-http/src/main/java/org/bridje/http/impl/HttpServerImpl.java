@@ -25,7 +25,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -130,8 +129,7 @@ class HttpServerImpl implements HttpServer
                 }
                 finally
                 {
-                    acceptor.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
-                    group.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+                    shutdownGroups();
                 }
             }
             catch (InterruptedException e)
@@ -147,8 +145,7 @@ class HttpServerImpl implements HttpServer
     {
         try
         {
-            acceptor.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
-            group.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+            shutdownGroups();
         }
         catch (InterruptedException ex)
         {
@@ -209,5 +206,26 @@ class HttpServerImpl implements HttpServer
         pw.println("HTTP Bridlets Chain:");
         printBridlets(pw);
         LOG.log(Level.INFO, sw.toString());
+    }
+
+    private void shutdownGroups() throws InterruptedException
+    {
+        boolean wereRunning = false;
+        if(!acceptor.isShutdown())
+        {
+            wereRunning = true;
+            LOG.log(Level.INFO, "Stoping HTTP server acceptor group.");
+            acceptor.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+        }
+        if(!group.isShutdown())
+        {
+            wereRunning = true;
+            LOG.log(Level.INFO, "Stoping HTTP server worker group.");
+            group.shutdownGracefully(0, 20, TimeUnit.SECONDS).sync();
+        }
+        if(wereRunning && acceptor.isShutdown() && group.isShutdown())
+        {
+            LOG.log(Level.INFO, "HTTP server groups have been shutdown.");
+        }
     }
 }
