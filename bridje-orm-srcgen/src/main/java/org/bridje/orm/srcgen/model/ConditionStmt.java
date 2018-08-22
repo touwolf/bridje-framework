@@ -152,7 +152,11 @@ public abstract class ConditionStmt
     {
         if(operand1 == null) readCondition();
         FieldInf result = getQuery().getEntity().findField(operand1);
-        if(result == null) LOG.log(Level.WARNING, "Could not find field {0} of entity {1}", new Object[]{operand1, getQuery().getEntity().getName()});
+        if(result == null)
+        {
+            LOG.log(Level.WARNING, "Could not find field {0} of entity {1}", new Object[]{operand1, getQuery().getEntity().getName()});
+            result = getQuery().getEntity().findField(operand1);
+        }
         return result;
     }
 

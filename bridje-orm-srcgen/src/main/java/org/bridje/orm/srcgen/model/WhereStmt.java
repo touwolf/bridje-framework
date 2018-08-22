@@ -79,7 +79,8 @@ public class WhereStmt extends ConditionStmt
     {
         WhereStmt result = new WhereStmt();
         super.clone(result, query);
-        result.query = this.query;
+        result.not = this.not;
+        result.query = query;
         return result;
     }
 }
