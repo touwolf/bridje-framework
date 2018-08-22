@@ -75,7 +75,7 @@ public class DeleteQueryInf extends QueryInf
         DeleteQueryInf result = new DeleteQueryInf();
         super.clone(result, entity);
         result.entity = entity;
-        result.where = this.where;
+        if(this.where != null) result.where = (WhereStmt)this.where.clone(result, null);
         return result;
     }
 }

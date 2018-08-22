@@ -73,4 +73,13 @@ public class WhereStmt extends ConditionStmt
     {
         query = (QueryInf)parent;
     }
+
+    @Override
+    public ConditionStmt clone(QueryInf query, ConditionStmt parent)
+    {
+        WhereStmt result = new WhereStmt();
+        super.clone(result, query);
+        result.query = this.query;
+        return result;
+    }
 }

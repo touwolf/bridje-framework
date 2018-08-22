@@ -54,4 +54,13 @@ public class OrStmt extends ConditionStmt
     {
         return getParent().getQuery();
     }
+
+    @Override
+    public ConditionStmt clone(QueryInf query, ConditionStmt parent)
+    {
+        OrStmt result = new OrStmt();
+        super.clone(result, query);
+        result.parent = parent;
+        return result;
+    }
 }

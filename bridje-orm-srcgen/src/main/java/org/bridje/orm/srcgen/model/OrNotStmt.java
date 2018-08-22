@@ -54,4 +54,13 @@ public class OrNotStmt extends ConditionStmt
     {
         return getParent().getQuery();
     }
+
+    @Override
+    public ConditionStmt clone(QueryInf query, ConditionStmt parent)
+    {
+        OrNotStmt result = new OrNotStmt();
+        super.clone(result, query);
+        result.parent = parent;
+        return result;
+    }
 }

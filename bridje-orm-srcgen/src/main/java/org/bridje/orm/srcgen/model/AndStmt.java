@@ -62,4 +62,13 @@ public class AndStmt extends ConditionStmt
     {
         return getParent().getQuery();
     }
+
+    @Override
+    public ConditionStmt clone(QueryInf query, ConditionStmt parent)
+    {
+        AndStmt result = new AndStmt();
+        super.clone(result, query);
+        result.parent = parent;
+        return result;
+    }
 }

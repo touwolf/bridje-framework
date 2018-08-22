@@ -43,14 +43,14 @@ public abstract class QueryInf
     public abstract String getQueryType();
 
     public abstract EntityInf getEntity();
-    
+
     public abstract QueryInf clone(EntityInf entity);
 
     public void clone(QueryInf query, EntityInf entity)
     {
         query.name = this.name;
     }
-    
+
     public static List<QueryInf> clone(List<QueryInf> lst, EntityInf entity)
     {
         return lst.stream()

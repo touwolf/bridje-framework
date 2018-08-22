@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -150,7 +151,9 @@ public abstract class ConditionStmt
     public FieldInf getField()
     {
         if(operand1 == null) readCondition();
-        return getQuery().getEntity().findField(operand1);
+        FieldInf result = getQuery().getEntity().findField(operand1);
+        if(result == null) LOG.log(Level.WARNING, "Could not find field {0} of entity {1}", new Object[]{operand1, getQuery().getEntity().getName()});
+        return result;
     }
 
     /**
@@ -225,5 +228,21 @@ public abstract class ConditionStmt
             operator = op.trim();
             operand2 = split[1].trim();
         }
+    }
+
+    public abstract ConditionStmt clone(QueryInf query, ConditionStmt parent);
+
+    public void clone(ConditionStmt stmt, QueryInf query)
+    {
+        stmt.condition = this.condition;
+        stmt.content = clone(this.content, query, stmt);
+    }
+
+    public static List<ConditionStmt> clone(List<ConditionStmt> lst, QueryInf query, ConditionStmt parent)
+    {
+        if(lst == null) return null;
+        return lst.stream()
+                    .map(f -> f.clone(query, parent))
+                    .collect(Collectors.toList());
     }
 }

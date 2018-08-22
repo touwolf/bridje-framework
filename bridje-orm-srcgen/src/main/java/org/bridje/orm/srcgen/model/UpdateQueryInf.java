@@ -117,9 +117,8 @@ public class UpdateQueryInf extends QueryInf
         UpdateQueryInf result = new UpdateQueryInf();
         super.clone(result, entity);
         result.entity = entity;
-        result.where = this.where;
-        result.sets = this.sets;
-        result.mapParams = this.mapParams;
+        if(this.where != null) result.where = (WhereStmt)this.where.clone(result, null);
+        if(this.sets != null) result.sets = SetFieldStmt.clone(this.sets, result);
         return result;
     }
 }

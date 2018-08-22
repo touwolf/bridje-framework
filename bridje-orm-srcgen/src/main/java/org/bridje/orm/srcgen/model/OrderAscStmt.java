@@ -41,4 +41,13 @@ public class OrderAscStmt extends OrderBaseStmt
     {
         return parent;
     }
+
+    @Override
+    public OrderBaseStmt clone(OrderStmt parent)
+    {
+        OrderAscStmt result = new OrderAscStmt();
+        super.clone(result, parent);
+        result.parent = parent;
+        return result;
+    }
 }

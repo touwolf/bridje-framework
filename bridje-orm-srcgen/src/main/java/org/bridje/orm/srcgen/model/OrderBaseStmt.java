@@ -16,6 +16,8 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -46,4 +48,18 @@ public abstract class OrderBaseStmt
     public abstract OrderStmt getParent();
     
     public abstract String getSortFunction();
+
+    public abstract OrderBaseStmt clone(OrderStmt parent);
+
+    public void clone(OrderBaseStmt stmt, OrderStmt parent)
+    {
+        stmt.fieldStr = this.fieldStr;
+    }
+
+    public static List<OrderBaseStmt> clone(List<OrderBaseStmt> lst, OrderStmt parent)
+    {
+        return lst.stream()
+                    .map(f -> f.clone(parent))
+                    .collect(Collectors.toList());
+    }
 }

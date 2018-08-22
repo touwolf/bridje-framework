@@ -16,6 +16,8 @@
 
 package org.bridje.orm.srcgen.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -64,5 +66,21 @@ public class SetFieldStmt
     {
         if(value.startsWith("$")) return value.substring(1);
         return null;
+    }
+
+    public SetFieldStmt clone(QueryInf query)
+    {
+        SetFieldStmt stmt = new SetFieldStmt();
+        stmt.query = query;
+        stmt.field = this.field;
+        stmt.value = this.value;
+        return stmt;
+    }
+
+    public static List<SetFieldStmt> clone(List<SetFieldStmt> lst, QueryInf query)
+    {
+        return lst.stream()
+                    .map(f -> f.clone(query))
+                    .collect(Collectors.toList());
     }
 }
