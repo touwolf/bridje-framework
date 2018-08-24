@@ -112,6 +112,7 @@ class HttpServerImpl implements HttpServer
                                 @Override
                                 public void initChannel(SocketChannel ch)
                                 {
+                                    ch.pipeline().addFirst("tracer", new HttpServerTracer());
                                     if(sslContext != null)
                                     {
                                         SSLEngine engine = sslContext.createSSLEngine();

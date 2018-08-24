@@ -42,7 +42,7 @@ class HttpWsSwitch extends MessageToMessageDecoder<HttpObject>
     {
         if(!added && msg instanceof HttpRequest)
         {
-            String path = ((HttpRequest)msg).getUri();
+            String path = ((HttpRequest)msg).uri();
             WsServerHandler handler = findHandler(path);
             if(handler != null)
             {
