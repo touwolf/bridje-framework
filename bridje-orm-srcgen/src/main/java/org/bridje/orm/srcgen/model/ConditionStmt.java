@@ -215,11 +215,11 @@ public abstract class ConditionStmt
     private void readCondition()
     {
         if(operator == null) readCondition("!=");
+        if(operator == null) readCondition("<=");
+        if(operator == null) readCondition(">=");
         if(operator == null) readCondition("=");
         if(operator == null) readCondition("<");
         if(operator == null) readCondition(">");
-        if(operator == null) readCondition("<=");
-        if(operator == null) readCondition(">=");
         if(operator == null) readCondition(" LIKE ");
     }
 
