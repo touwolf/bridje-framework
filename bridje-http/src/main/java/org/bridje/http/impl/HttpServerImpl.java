@@ -25,6 +25,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -112,14 +113,13 @@ class HttpServerImpl implements HttpServer
                                 @Override
                                 public void initChannel(SocketChannel ch)
                                 {
-                                    ch.pipeline().addFirst("tracer", new HttpServerTracer());
                                     if(sslContext != null)
                                     {
                                         SSLEngine engine = sslContext.createSSLEngine();
                                         engine.setUseClientMode(false);
                                         ch.pipeline().addLast("ssl", new SslHandler(engine));
                                     }
-                                    ch.pipeline().addLast("codec", new HttpServerCodecProxy());
+                                    ch.pipeline().addLast("codec", new HttpServerCodec());
                                     ch.pipeline().addLast("switch", new HttpWsSwitch(handlers));
                                     ch.pipeline().addLast("handler", new HttpServerChannelHandler(HttpServerImpl.this));
                                     ch.pipeline().addLast("compressor", new HttpContentCompressor());
