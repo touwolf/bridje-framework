@@ -73,6 +73,12 @@
                                     <exclude>org.bridje:bridje-vfs</exclude>
                                 </excludes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>io</pattern>
+                                    <shadedPattern>shaded.io</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
