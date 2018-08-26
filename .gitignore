@@ -63,3 +63,4 @@ nbproject
 /bridje-ajax/dist
 /bridje-sql/derby.log
 /bridje-orm/derby.log
+/bridje-http/dependency-reduced-pom.xml
