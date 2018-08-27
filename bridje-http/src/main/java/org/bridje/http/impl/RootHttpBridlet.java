@@ -18,6 +18,13 @@ package org.bridje.http.impl;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.http.HttpBridlet;
@@ -35,25 +42,60 @@ class RootHttpBridlet implements HttpBridlet
 {
     private static final Logger LOG = Logger.getLogger(RootHttpBridlet.class.getName());
 
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+
     @InjectNext
     private HttpBridlet handler;
-    
+
     @Override
     public boolean handle(HttpBridletContext context) throws IOException
     {
-        HttpBridletRequest req = context.getRequest();
-        HttpBridletResponse resp = context.getResponse();
-        if(LOG.isLoggable(Level.INFO)) LOG.log(Level.INFO, String.format("%s %s %s", req.getMethod(), req.getPath(), req.getProtocol()));
+        Callable<Boolean> task = new Callable<Boolean>()
+        {
+            @Override
+            public Boolean call() throws IOException
+            {
+                return doHandle(context);
+            }
+        };
+        Future<Boolean> future = executor.submit(task);
         try
         {
-            if(handler == null || !handler.handle(context))
+            return future.get(60, TimeUnit.SECONDS);
+        }
+        catch(InterruptedException | ExecutionException ex)
+        {
+            LOG.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        catch (TimeoutException ex)
+        {
+            HttpBridletRequest req = context.getRequest();
+            LOG.log(Level.SEVERE, String.format("IMPORTANT!!!!!!! Execution of %s %s %s took too much time to conclude, so it was cancelled, this could be a problem.", req.getMethod(), req.getPath(), req.getProtocol()));
+        }
+        finally
+        {
+            future.cancel(true);
+        }
+        return true;
+    }
+
+    private boolean doHandle(HttpBridletContext context) throws IOException
+    {
+        HttpBridletRequest req = context.getRequest();
+        HttpBridletResponse resp = context.getResponse();
+        if (LOG.isLoggable(Level.INFO))
+            LOG.log(Level.INFO, String.format("%s %s %s", req.getMethod(), req.getPath(), req.getProtocol()));
+        try
+        {
+            if (handler == null || !handler.handle(context))
             {
                 throw new HttpException(404, "Not Found");
             }
         }
         catch (HttpException e)
         {
-            if(LOG.isLoggable(Level.INFO)) LOG.log(Level.WARNING, String.format("%s %s - %s %s", req.getMethod(), req.getPath(), req.getProtocol(), e.getStatus(), e.getMessage()));
+            if (LOG.isLoggable(Level.INFO))
+                LOG.log(Level.WARNING, String.format("%s %s - %s %s", req.getMethod(), req.getPath(), req.getProtocol(), e.getStatus(), e.getMessage()));
             resp.setStatusCode(e.getStatus());
             try (OutputStreamWriter writer = new OutputStreamWriter(resp.getOutputStream()))
             {
@@ -61,8 +103,7 @@ class RootHttpBridlet implements HttpBridlet
                 writer.flush();
             }
         }
-
-        return true;            
+        return true;
     }
-    
+
 }
