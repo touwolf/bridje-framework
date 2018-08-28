@@ -67,6 +67,8 @@
                         </goals>
                         <configuration>
                             <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
                             <artifactSet>
                                 <excludes>
                                     <exclude>org.bridje:bridje-ioc</exclude>
@@ -76,7 +78,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>io</pattern>
-                                    <shadedPattern>shaded.io</shadedPattern>
+                                    <shadedPattern>org.bridje.http.internal.io</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -95,12 +97,12 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
-            <version>4.1.30.Touwolf-SNAPSHOT</version>
+            <version>4.1.29.Final</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.30.Touwolf-SNAPSHOT</version>
+            <version>4.1.29.Final</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
