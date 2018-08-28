@@ -107,7 +107,6 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
             HttpRequest httpReq = (HttpRequest)msg;
             if(HttpUtil.is100ContinueExpected(httpReq))
             {
-                LOG.log(Level.INFO, "Sending 100 Continue.");
                 ctx.write(new DefaultFullHttpResponse(HTTP_1_1, CONTINUE));
                 ctx.flush();
             }
