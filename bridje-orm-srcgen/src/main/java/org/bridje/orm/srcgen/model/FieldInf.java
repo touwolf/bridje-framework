@@ -139,9 +139,10 @@ public abstract class FieldInf extends FieldInfBase
     public abstract FieldInf clone(Object parent);
 
     /**
+     * Clones the given field.
      * 
-     * @param fieldInf
-     * @param parent 
+     * @param fieldInf The field to clone.
+     * @param parent The parent for the new cloned object.
      */
     public void clone(FieldInf fieldInf, Object parent)
     {
