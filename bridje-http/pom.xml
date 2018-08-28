@@ -67,8 +67,6 @@
                         </goals>
                         <configuration>
                             <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
                             <artifactSet>
                                 <excludes>
                                     <exclude>org.bridje:bridje-ioc</exclude>
