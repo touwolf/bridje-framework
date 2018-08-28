@@ -183,7 +183,6 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         {
             context = new HttpBridletContextImpl();
             req = new HttpBridletRequestImpl( msg );
-            LOG.log(Level.INFO, String.format("Reading HTTP headers for %s %s", req.getMethod(), req.getPath()));
             QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.uri());
             req.setQueryString(decoderQuery.parameters());
             req.setCookies(parseCookies(msg.headers().get(COOKIE)));

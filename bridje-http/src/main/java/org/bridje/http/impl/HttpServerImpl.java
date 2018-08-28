@@ -19,7 +19,6 @@ package org.bridje.http.impl;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -100,12 +99,11 @@ class HttpServerImpl implements HttpServer
                 LOG.log(Level.INFO, "Starting {0}, Listen: {1} Port: {2} {3}", new Object[]{config.getName(), config.getListen(), String.valueOf(config.getPort()), (config.isSsl() ? "SSL: " + config.getSslAlgo() : "") });
                 logBridlets();
                 group = new NioEventLoopGroup();
-                acceptor = new NioEventLoopGroup(3);
+                acceptor = new NioEventLoopGroup(1);
                 try
                 {
                     ServerBootstrap b = new ServerBootstrap();
                     b.group(acceptor, group)
-                            .option(ChannelOption.SO_BACKLOG, 128)
                             .channel(NioServerSocketChannel.class)
                             .localAddress(this.config.createInetSocketAddress())
                             .childHandler(new ChannelInitializer<SocketChannel>()
