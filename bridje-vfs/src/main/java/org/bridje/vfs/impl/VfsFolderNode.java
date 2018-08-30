@@ -132,7 +132,7 @@ class VfsFolderNode extends VfsNode
     private void unmountLast(Path path) throws FileNotFoundException
     {
         VfsNode child = getChild(path.getName());
-        if(child == null) throw new FileNotFoundException("Could not find the folder.");
+        if(child == null) return;
         if(child instanceof VfsSourceNodeProxy)
         {
             VfsSourceNodeProxy proxy = (VfsSourceNodeProxy) child;
