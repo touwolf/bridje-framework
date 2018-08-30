@@ -32,7 +32,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand);
+    ArithmeticExpr<T, E> plus(ArithmeticExpr<?, ?> operand);
 
     /**
      * Creates a new arithmetic expression that performs the substraction of
@@ -42,7 +42,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand);
+    ArithmeticExpr<T, E> minus(ArithmeticExpr<?, ?> operand);
 
     /**
      * Creates a new arithmetic expression that performs the multiplication of
@@ -52,7 +52,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand);
+    ArithmeticExpr<T, E> mul(ArithmeticExpr<?, ?> operand);
 
     /**
      * Creates a new arithmetic expression that performs the division of this
@@ -62,7 +62,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand);
+    ArithmeticExpr<T, E> div(ArithmeticExpr<?, ?> operand);
 
     /**
      * Creates a new arithmetic expression that performs the modulus of this
@@ -72,7 +72,7 @@ public interface ArithmeticExpr<T, E> extends Expression<T, E>
      *
      * @return The new arithmetic expression.
      */
-    ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand);
+    ArithmeticExpr<T, E> mod(ArithmeticExpr<?, ?> operand);
 
     /**
      * Creates a new arithmetic expression that performs the addition of this

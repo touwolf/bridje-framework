@@ -174,31 +174,31 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     }
 
     @Override
-    public ArithmeticExpr<T, E> plus(ArithmeticExpr<T, E> operand)
+    public ArithmeticExpr<T, E> plus(ArithmeticExpr<?, ?> operand)
     {
         return new BinaryExpr<>(this, Operators.PLUS, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T, E> minus(ArithmeticExpr<T, E> operand)
+    public ArithmeticExpr<T, E> minus(ArithmeticExpr<?, ?> operand)
     {
         return new BinaryExpr<>(this, Operators.MINUS, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T, E> mul(ArithmeticExpr<T, E> operand)
+    public ArithmeticExpr<T, E> mul(ArithmeticExpr<?, ?> operand)
     {
         return new BinaryExpr<>(this, Operators.MULT, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T, E> div(ArithmeticExpr<T, E> operand)
+    public ArithmeticExpr<T, E> div(ArithmeticExpr<?, ?> operand)
     {
         return new BinaryExpr<>(this, Operators.DIV, operand, getSQLType());
     }
 
     @Override
-    public ArithmeticExpr<T, E> mod(ArithmeticExpr<T, E> operand)
+    public ArithmeticExpr<T, E> mod(ArithmeticExpr<?, ?> operand)
     {
         return new BinaryExpr<>(this, Operators.MOD, operand, getSQLType());
     }
