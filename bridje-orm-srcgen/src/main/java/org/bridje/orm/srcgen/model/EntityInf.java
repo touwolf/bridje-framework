@@ -485,7 +485,12 @@ public class EntityInf
                         key.setField(baseEntity.key.getField().clone(this));
                     }
                     if(wrappedFields == null) wrappedFields = new ArrayList<>();
-                    if(baseEntity.wrappedFields != null) wrappedFields.addAll(FieldInfBase.cloneFieldsBase(baseEntity.wrappedFields, this));
+                    List<String> names = wrappedFields.stream().map(w -> w.getName()).collect(Collectors.toList());
+                    if(baseEntity.wrappedFields != null)
+                    {
+                        List<FieldInfBase> baseFields = baseEntity.wrappedFields.stream().filter(f -> !names.contains(f.getName())).collect(Collectors.toList());
+                        wrappedFields.addAll(FieldInfBase.cloneFieldsBase(baseFields, this));
+                    }
                     if(indexes == null) indexes = new ArrayList<>();
                     if(baseEntity.indexes != null) indexes.addAll(EntityIndexInf.clone(baseEntity.indexes, this));
                     if(queries == null) queries = new ArrayList<>();
