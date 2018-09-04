@@ -255,6 +255,11 @@ public class EntityInf
      */
     public FieldInf getKey()
     {
+        if(key == null)
+        {
+            key = new EntityInfKey();
+            key.setField( getBaseEntity().getKey().clone(this) );
+        }
         return key.getField();
     }
 
