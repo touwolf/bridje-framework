@@ -33,6 +33,7 @@ import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpBridletResponse;
 import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
 
@@ -47,6 +48,9 @@ class RootHttpBridlet implements HttpBridlet
     @InjectNext
     private HttpBridlet handler;
 
+    @Inject
+    private HttpServerImpl server;
+    
     @Override
     public boolean handle(HttpBridletContext context) throws IOException
     {
@@ -61,7 +65,7 @@ class RootHttpBridlet implements HttpBridlet
         Future<Boolean> future = executor.submit(task);
         try
         {
-            return future.get(60, TimeUnit.SECONDS);
+            return future.get(server.getConfig().getRequestTimeout(), TimeUnit.SECONDS);
         }
         catch(InterruptedException | ExecutionException ex)
         {

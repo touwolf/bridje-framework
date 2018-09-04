@@ -227,4 +227,9 @@ class HttpServerImpl implements HttpServer
             LOG.log(Level.INFO, "HTTP server groups have been shutdown.");
         }
     }
+
+    public HttpServerConfig getConfig()
+    {
+        return config;
+    }
 }

@@ -60,6 +60,8 @@ public class HttpServerConfig
     private String keyStoreAlgo = KeyManagerFactory.getDefaultAlgorithm();
 
     private String sslAlgo = "TLS";
+    
+    private int requestTimeout = 60;
 
     /**
      * The listen IP on witch to start the HTTP server, can be null witch means
@@ -263,6 +265,16 @@ public class HttpServerConfig
     public void setKeyStoreAlgo(String keyStoreAlgo)
     {
         this.keyStoreAlgo = keyStoreAlgo;
+    }
+
+    public int getRequestTimeout()
+    {
+        return requestTimeout;
+    }
+
+    public void setRequestTimeout(int requestTimeout)
+    {
+        this.requestTimeout = requestTimeout;
     }
 
     /**
