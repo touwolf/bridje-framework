@@ -36,6 +36,8 @@ import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
 import org.bridje.ioc.Priority;
+import org.bridje.ioc.thls.Thls;
+import org.bridje.ioc.thls.ThlsActionException;
 
 @Component
 @Priority(Integer.MIN_VALUE)
@@ -84,6 +86,18 @@ class RootHttpBridlet implements HttpBridlet
     }
 
     private boolean doHandle(HttpBridletContext context) throws IOException
+    {
+        return Thls.doAsEx(new ThlsActionException<Boolean, IOException>()
+        {
+            @Override
+            public Boolean execute() throws IOException
+            {
+                return performHandle(context);
+            }
+        }, HttpBridletRequest.class, context.getRequest());
+    }
+    
+    private boolean performHandle(HttpBridletContext context) throws IOException
     {
         HttpBridletRequest req = context.getRequest();
         HttpBridletResponse resp = context.getResponse();
