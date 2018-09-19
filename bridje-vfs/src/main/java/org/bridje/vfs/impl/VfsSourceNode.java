@@ -17,6 +17,7 @@ class VfsSourceNode extends VfsNode
     public VfsSourceNode(String name, VfsSource source)
     {
         super(name);
+        if(source == null) throw new IllegalArgumentException("Invalid source.");
         this.source = source;
     }
 
