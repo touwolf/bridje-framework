@@ -24,7 +24,7 @@ public class VFileInputStream extends InputStream
     {
         this.vfile = vfile;
         this.is = this.vfile.openForRead();
-        if(is == null) throw new FileNotFoundException("Cannot open the file for read.");
+        if(is == null) throw new FileNotFoundException("Cannot open the file " + vfile.getPath() + " for read.");
     }
 
     /**

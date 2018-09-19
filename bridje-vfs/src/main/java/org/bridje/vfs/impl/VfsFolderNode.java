@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
@@ -250,10 +253,31 @@ class VfsFolderNode extends VfsNode
     @Override
     public VFile[] search(GlobExpr globExpr, Path path)
     {
-        if(path == null || path.isRoot()) return null;
+        if(path == null || path.isRoot()) 
+        {
+            if(globExpr.getValue().startsWith("**/"))
+            {
+                return searchAll(globExpr, path);
+            }
+            return null;
+        }
         VfsNode child = getChild(path.getFirstElement());
         if(child == null) return null;
         return child.search(globExpr, path.getNext());
+    }
+    
+    public VFile[] searchAll(GlobExpr globExpr, Path path)
+    {
+        GlobExpr globExpr2 = new GlobExpr(globExpr.toString().substring(3));
+        Set<VFile> result = new LinkedHashSet<>();
+        for (VfsNode child : getChilds())
+        {
+            VFile[] files = child.search(globExpr, path);
+            result.addAll(Arrays.asList(files));
+            VFile[] files2 = child.search(globExpr2, path);
+            result.addAll(Arrays.asList(files2));
+        }
+        return result.toArray(new VFile[0]);
     }
 
     @Override
