@@ -54,7 +54,12 @@ abstract class EnvironmentBase implements SQLEnvironment
     {
         new SchemaFixer(connection, getDialect(), schema).doFix();
     }
-    
+
+    protected void clearSchema(Connection connection, Schema schema) throws SQLException
+    {
+        new SchemaClearer(connection, getDialect(), schema).doClear();
+    }
+
     @Override
     public int update(Query query, Object... parameters) throws SQLException
     {

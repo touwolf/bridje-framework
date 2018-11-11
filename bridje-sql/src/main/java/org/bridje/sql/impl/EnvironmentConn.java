@@ -42,6 +42,12 @@ class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
     }
 
     @Override
+    public void clearSchema(Schema schema) throws SQLException
+    {
+        clearSchema(connection, schema);
+    }
+
+    @Override
     public void begin() throws SQLException
     {
         connection.setAutoCommit(false);

@@ -86,6 +86,14 @@ public class DerbyDialect implements SQLDialect
     }
 
     @Override
+    public String dropTable(Table table, List<Object> params)
+    {
+        StringBuilder builder = new StringBuilder();
+        dropTable(builder, table);
+        return builder.toString();
+    }
+
+    @Override
     public String addColumn(Column<?, ?> column, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
@@ -205,6 +213,13 @@ public class DerbyDialect implements SQLDialect
         builder.append(" PRIMARY KEY (");
         writeColumnsNames(builder, columns, ", ");
         builder.append(")\n)");
+    }
+
+    public void dropTable(StringBuilder builder, Table table)
+    {
+        builder.append("DROP TABLE ");
+        writeObjectName(builder, table.getName());
+        builder.append(" \n");
     }
 
     public void alterTable(StringBuilder builder, Table table)

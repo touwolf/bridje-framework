@@ -55,6 +55,22 @@ class EnvironmentDs extends EnvironmentBase implements SQLEnvironment
     }
 
     @Override
+    public void clearSchema(Schema schema) throws SQLException
+    {
+        if(connEnv != null)
+        {
+            connEnv.clearSchema(schema);
+        }
+        else
+        {
+            try(Connection connection = dataSource.getConnection())
+            {
+                clearSchema(connection, schema);
+            }
+        }
+    }
+
+    @Override
     public void begin() throws SQLException
     {
         if(connEnv == null) connEnv = new EnvironmentConn(dataSource.getConnection(), getDialect());

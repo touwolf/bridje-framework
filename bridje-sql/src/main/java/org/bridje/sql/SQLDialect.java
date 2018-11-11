@@ -67,6 +67,16 @@ public interface SQLDialect
      * @return The DDL statement.
      */
     String createTable(Table table, List<Object> params);
+    
+    /**
+     * Creates the given table drop DDLs.
+     *
+     * @param table  The table to drop.
+     * @param params The params
+     *
+     * @return The DDL statement.
+     */
+    String dropTable(Table table, List<Object> params);
 
     /**
      * Creates the given column add DDLs.

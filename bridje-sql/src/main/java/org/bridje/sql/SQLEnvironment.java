@@ -42,6 +42,15 @@ public interface SQLEnvironment extends AutoCloseable
     void fixSchema(Schema schema) throws SQLException;
 
     /**
+     * Drops all the objects of the schema in the database.
+     *
+     * @param schema The schema to clear.
+     *
+     * @throws SQLException If any SQL error occurs.
+     */
+    void clearSchema(Schema schema) throws SQLException;
+
+    /**
      * Performs an update query in the database.
      *
      * @param query      The query to execute.
