@@ -269,8 +269,6 @@ public class DerbyDialect implements SQLDialect
 
     public void dropIndex(StringBuilder builder, String name, Table table)
     {
-        builder.append(" ALTER TABLE ");
-        writeObjectName(builder, table.getName());
         builder.append(" DROP INDEX ");
         writeObjectName(builder, name);
     }
