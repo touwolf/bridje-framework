@@ -51,6 +51,10 @@ import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.Map;
@@ -183,7 +187,9 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         {
             context = new HttpBridletContextImpl();
             SocketAddress socketAddr = ctx.channel().remoteAddress();
-            req = new HttpBridletRequestImpl( msg, socketAddr.toString() );
+            String clientIp = findIp(socketAddr);
+            int clientPort = findPort(socketAddr);
+            req = new HttpBridletRequestImpl( msg, clientIp, clientPort);
             QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.uri());
             req.setQueryString(decoderQuery.parameters());
             req.setCookies(parseCookies(msg.headers().get(COOKIE)));
@@ -323,5 +329,29 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
                         .add(SET_COOKIE, ServerCookieEncoder.STRICT.encode(cookie.getInternalCookie()));
             });
         }
+    }
+
+    private String findIp(SocketAddress socketAddress)
+    {
+        if (socketAddress instanceof InetSocketAddress)
+        {
+            InetAddress inetAddress = ((InetSocketAddress)socketAddress).getAddress();
+            if (inetAddress instanceof Inet4Address)
+                return inetAddress.getHostAddress();
+            else if (inetAddress instanceof Inet6Address)
+                return inetAddress.getHostAddress();
+            else
+                System.err.println("Not an IP address.");
+        }
+        return null;
+    }
+
+    private int findPort(SocketAddress socketAddress)
+    {
+        if (socketAddress instanceof InetSocketAddress)
+        {
+            return ((InetSocketAddress)socketAddress).getPort();
+        }
+        return 0;
     }
 }

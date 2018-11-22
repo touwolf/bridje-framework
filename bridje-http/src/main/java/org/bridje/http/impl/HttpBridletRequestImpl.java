@@ -70,11 +70,14 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     
     private final String clientIp;
 
-    public HttpBridletRequestImpl(HttpRequest headers, String clientIp)
+    private final int clientPort;
+
+    public HttpBridletRequestImpl(HttpRequest headers, String clientIp, int clientPort)
     {
         this.headers = headers;
         this.uploadedFiles = new ArrayList<>();
         this.clientIp = clientIp;
+        this.clientPort = clientPort;
     }
 
     @Override
@@ -387,5 +390,10 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     public String getClientIp()
     {
         return clientIp;
+    }
+
+    public int getClientPort()
+    {
+        return clientPort;
     }
 }
