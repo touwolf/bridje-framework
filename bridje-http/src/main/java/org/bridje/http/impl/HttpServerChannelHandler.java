@@ -51,6 +51,7 @@ import io.netty.handler.codec.http.multipart.HttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -181,7 +182,8 @@ class HttpServerChannelHandler extends SimpleChannelInboundHandler<HttpObject>
         if(req == null && context == null)
         {
             context = new HttpBridletContextImpl();
-            req = new HttpBridletRequestImpl( msg );
+            SocketAddress socketAddr = ctx.channel().remoteAddress();
+            req = new HttpBridletRequestImpl( msg, socketAddr.toString() );
             QueryStringDecoder decoderQuery = new QueryStringDecoder(msg.uri());
             req.setQueryString(decoderQuery.parameters());
             req.setCookies(parseCookies(msg.headers().get(COOKIE)));

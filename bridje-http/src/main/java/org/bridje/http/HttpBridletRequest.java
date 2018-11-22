@@ -254,5 +254,11 @@ public interface HttpBridletRequest
      * @return An array of String representing the cookies names.
      */
     String[] getCookiesNames();
+    
+    /**
+     * 
+     * @return 
+     */
+    String getClientIp();
 
 }

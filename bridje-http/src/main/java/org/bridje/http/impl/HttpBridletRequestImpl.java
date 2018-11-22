@@ -28,7 +28,6 @@ import io.netty.handler.codec.http.multipart.FileUpload;
 import io.netty.util.ReferenceCounted;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,11 +67,14 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     private String[] cookiesNames;
 
     private String path;
+    
+    private String clientIp;
 
-    public HttpBridletRequestImpl(HttpRequest headers)
+    public HttpBridletRequestImpl(HttpRequest headers, String clientIp)
     {
         this.headers = headers;
         this.uploadedFiles = new ArrayList<>();
+        this.clientIp = clientIp;
     }
 
     @Override
@@ -379,5 +381,11 @@ class HttpBridletRequestImpl implements HttpBridletRequest
             cookies.keySet().toArray(cookiesNames);
         }
         return cookiesNames;
+    }
+
+    @Override
+    public String getClientIp()
+    {
+        return clientIp;
     }
 }
