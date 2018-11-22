@@ -68,7 +68,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
 
     private String path;
     
-    private String clientIp;
+    private final String clientIp;
 
     public HttpBridletRequestImpl(HttpRequest headers, String clientIp)
     {
