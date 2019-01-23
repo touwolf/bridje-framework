@@ -18,7 +18,9 @@ package org.bridje.vfs;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -107,11 +109,24 @@ public class VFileTest
         new VFile("/merged2/somefolder/other/folder2").mount(new FileSource(new File("./target/test-classes/merged/folder2")));
         new VFile("/merged2/somefolder/other/merged1").mount(new FileSource(new File("./target/test-classes/merged1")));
 
-        Assert.assertArrayEquals(new String[]{"somefolder", "merged.txt", "vfs"}, new VFile("/merged2").list());
-        Assert.assertArrayEquals(new String[]{"other"}, new VFile("/merged2/vfs").list());
-        Assert.assertArrayEquals(new String[]{"merged1", "folder2", "folder1"}, new VFile("/merged2/somefolder/other").list());
-        Assert.assertArrayEquals(new String[]{"common.txt", "document1.txt"}, new VFile("/merged2/somefolder/other/folder1").list());
-        Assert.assertArrayEquals(new String[]{"other-common.txt"}, new VFile("/merged2/somefolder/other/merged1/vfs/other").list());
+        String[] list = Arrays.stream(new VFile("/merged2").list())
+            .sorted(Comparator.naturalOrder())
+            .toArray(String[]::new);
+        Assert.assertArrayEquals(new String[] { "merged.txt", "somefolder", "vfs" }, list);
+
+        Assert.assertArrayEquals(new String[] { "other" }, new VFile("/merged2/vfs").list());
+
+        list = Arrays.stream(new VFile("/merged2/somefolder/other").list())
+            .sorted(Comparator.naturalOrder())
+            .toArray(String[]::new);
+        Assert.assertArrayEquals(new String[] { "folder1", "folder2", "merged1" }, list);
+
+        list = Arrays.stream(new VFile("/merged2/somefolder/other/folder1").list())
+            .sorted(Comparator.naturalOrder())
+            .toArray(String[]::new);
+        Assert.assertArrayEquals(new String[] { "common.txt", "document1.txt" }, list);
+
+        Assert.assertArrayEquals(new String[] { "other-common.txt" }, new VFile("/merged2/somefolder/other/merged1/vfs/other").list());
     }
 
     private String readFirstLine(VFile file) throws IOException
