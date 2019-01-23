@@ -28,12 +28,10 @@ import javax.annotation.Generated;
 abstract class ${model.name}Base
 {
     public static final Schema SCHEMA;
-
     static final Set<Class<?>> ENTITIES;
-
     static final Map<Class<?>, EntityValueFinder> TO_KEYS;
-
     static final Map<Class<?>, EntityValueFinder> TO_ENTITIES;
+    static final ORMActionListener[] listeners;
 
     static {
         SCHEMA = SQL.buildSchema("${model.schema}")
@@ -66,7 +64,8 @@ abstract class ${model.name}Base
         <#list model.concreteEntities as entity>
         TO_ENTITIES.put(${entity.name}.class, (v) -> get().find${entity.name}(((${entity.key.type.javaType})v)));
         </#list>
-        
+
+        listeners = Ioc.context().findAll(ORMActionListener.class);
     }
 
     public static ${model.name} get()
@@ -144,10 +143,14 @@ abstract class ${model.name}Base
         if(entity.get${entity.key.name?cap_first}() == null)
         {
             entity.set${entity.key.name?cap_first}(env.fetchOne(${entity.name}_.INSERT_QUERY, rs -> rs.get(${entity.name}_.${entity.key.column?upper_case}), <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>));
+            for (ORMActionListener listener : listeners)
+                listener.entityAdded(${entity.name}_.TABLE, ${entity.name}.class, entity);
         }
         else
         {
             env.update(${entity.name}_.UPDATE_QUERY, <#list entity.nonAiFields as field><#if field.needCustomGetter>get${entity.name}${field.name?cap_first}(entity)<#else>entity.get${field.name?cap_first}()</#if><#sep>, </#sep></#list>, entity.get${entity.key.name?cap_first}());
+            for (ORMActionListener listener : listeners)
+                listener.entityUpdated(${entity.name}_.TABLE, ${entity.name}.class, entity);
         }
     }
 
@@ -198,6 +201,8 @@ abstract class ${model.name}Base
     protected void doDelete${entity.name}(${entity.key.type.javaType} key) throws SQLException
     {
         env.update(${entity.name}_.DELETE_QUERY, key);
+        for (ORMActionListener listener : listeners)
+            listener.entityRemoved(${entity.name}_.TABLE, ${entity.name}.class, key);
     }
 
     <#macro renderConditionContent entity condition >

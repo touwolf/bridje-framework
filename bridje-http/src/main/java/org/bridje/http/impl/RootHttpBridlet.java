@@ -27,11 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletRequest;
-import org.bridje.http.HttpBridletResponse;
-import org.bridje.http.HttpException;
+import org.bridje.http.*;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
@@ -52,6 +48,9 @@ class RootHttpBridlet implements HttpBridlet
 
     @Inject
     private HttpServerImpl server;
+
+    @Inject
+    private HttpTimeoutProvider[] timeoutProviders;
     
     @Override
     public boolean handle(HttpBridletContext context) throws IOException
@@ -65,9 +64,21 @@ class RootHttpBridlet implements HttpBridlet
             }
         };
         Future<Boolean> future = executor.submit(task);
+        HttpBridletRequest req = context.getRequest();
         try
         {
-            return future.get(server.getConfig().getRequestTimeout(), TimeUnit.SECONDS);
+            Integer timeout = null;
+            int minTimeout = 5;
+            if (timeoutProviders != null)
+                for (HttpTimeoutProvider provider : timeoutProviders)
+                {
+                    timeout = provider.timeoutForPath(req.getPath());
+                    if (timeout != null && timeout >= minTimeout)
+                        break;
+                }
+            if (timeout == null || timeout < minTimeout)
+                timeout = server.getConfig().getRequestTimeout();
+            return future.get(timeout, TimeUnit.SECONDS);
         }
         catch(InterruptedException | ExecutionException ex)
         {
@@ -75,8 +86,8 @@ class RootHttpBridlet implements HttpBridlet
         }
         catch (TimeoutException ex)
         {
-            HttpBridletRequest req = context.getRequest();
-            LOG.log(Level.SEVERE, String.format("IMPORTANT!!!!!!! Execution of %s %s %s took too much time to conclude, so it was cancelled, this could be a problem.", req.getMethod(), req.getPath(), req.getProtocol()));
+            String message = "IMPORTANT! Execution of %s %s %s took too much time to conclude, so it was cancelled, this could be a problem.";
+            LOG.log(Level.SEVERE, String.format(message, req.getMethod(), req.getPath(), req.getProtocol()));
         }
         finally
         {
