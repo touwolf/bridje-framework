@@ -48,4 +48,11 @@ public interface Index
      * @return true the index is unique, false otherwise.
      */
     boolean isUnique();
+
+    /**
+     * If index must be removed.
+     *
+     * @return true if index must be removed.
+     */
+    boolean mustRemove();
 }

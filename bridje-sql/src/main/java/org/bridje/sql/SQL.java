@@ -310,6 +310,32 @@ public class SQL
     }
 
     /**
+     * Remove an index.
+     *
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The index to be removed.
+     */
+    public static final Index removeIndex(Column<?, ?>... columns)
+    {
+        return FACT.removeIndex(columns);
+    }
+
+    /**
+     * Remove a unique index.
+     *
+     * @param table   The table that the index belongs to.
+     * @param columns The columns for the index.
+     *
+     * @return The index to be removed.
+     */
+    public static final Index removeUnique(Column<?, ?>... columns)
+    {
+        return FACT.removeUnique(columns);
+    }
+
+    /**
      * Create a new unique index.
      *
      * @param name    The name of the index.

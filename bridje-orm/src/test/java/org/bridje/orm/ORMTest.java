@@ -112,6 +112,7 @@ public class ORMTest
     public void pagingTest1() throws SQLException
     {
         Paging paging = Paging.of(100, 10);
+        Assert.assertNotNull(paging);
         paging.setCurrent(10);
         Page[] pagesSection = paging.getPagesSection(9);
         Assert.assertEquals(pagesSection.length, 9);

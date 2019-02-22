@@ -129,22 +129,32 @@ public class SQLFactory
 
     public Index buildIndex(String name, Table table, Column<?, ?>[] columns)
     {
-        return new IndexImpl(name, table, columns, false);
+        return new IndexImpl(name, table, columns, false, false);
     }
 
     public Index buildIndex(Table table, Column<?, ?>... columns)
     {
-        return new IndexImpl(null, table, columns, false);
+        return new IndexImpl(null, table, columns, false, false);
+    }
+
+    public Index removeIndex(Column<?, ?>... columns)
+    {
+        return new IndexImpl(null, null, columns, false, true);
+    }
+
+    public Index removeUnique(Column<?, ?>... columns)
+    {
+        return new IndexImpl(null, null, columns, true, true);
     }
 
     public Index buildUnique(String name, Table table, Column<?, ?>... columns)
     {
-        return new IndexImpl(name, table, columns, true);
+        return new IndexImpl(name, table, columns, true, false);
     }
 
     public Index buildUnique(Table table, Column<?, ?>... columns)
     {
-        return new IndexImpl(null, table, columns, true);
+        return new IndexImpl(null, table, columns, true, false);
     }
 
     public BuildForeignKeyStep buildForeignKey(String name, Table table, Column<?, ?>[] columns)
@@ -159,22 +169,22 @@ public class SQLFactory
 
     public Index buildIndex(String name, Column<?, ?>[] columns)
     {
-        return new IndexImpl(name, null, columns, false);
+        return new IndexImpl(name, null, columns, false, false);
     }
 
     public Index buildIndex(Column<?, ?>... columns)
     {
-        return new IndexImpl(null, null, columns, false);
+        return new IndexImpl(null, null, columns, false, false);
     }
 
     public Index buildUnique(String name, Column<?, ?>... columns)
     {
-        return new IndexImpl(name, null, columns, true);
+        return new IndexImpl(name, null, columns, true, false);
     }
 
     public Index buildUnique(Column<?, ?>... columns)
     {
-        return new IndexImpl(null, null, columns, true);
+        return new IndexImpl(null, null, columns, true, false);
     }
 
     public BuildForeignKeyStep buildForeignKey(String name, Column<?, ?>[] columns)

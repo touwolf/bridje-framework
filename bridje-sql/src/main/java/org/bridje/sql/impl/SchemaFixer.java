@@ -205,20 +205,33 @@ class SchemaFixer
     private void fixIndex(Connection connection, Index index) throws SQLException
     {
         DatabaseMetaData metadata = connection.getMetaData();
-        if(!indexExists(metadata, index))
+
+        boolean indexExists = indexExists(metadata, index);
+        String sql = null;
+        String action = "";
+        List<Object> params = new ArrayList<>();
+        if (index.mustRemove() && indexExists)
         {
+            action = "remove";
+            sql = dialect.dropIndex(index, params);
+        }
+        else if (!indexExists)
+        {
+            action = "create";
+            sql = dialect.createIndex(index, params);
+        }
+
+        if (sql != null)
             try
             {
-                List<Object> params = new ArrayList<>();
-                String sql = dialect.createIndex(index, params);
                 SQLStatement sqlStmt = new SQLStatementImpl(null, sql, new Object[0], false);
                 executeStmt(connection, sqlStmt);
             }
             catch (SQLException e)
             {
-                LOG.log(Level.SEVERE, String.format("Could not create index %s on table %s.", index.getName(), index.getTable().getName()), e);
+                LOG.log(Level.SEVERE, String.format("Could not %s index %s on table %s.",
+                    action, index.getName(), index.getTable().getName()), e);
             }
-        }
     }
 
     private boolean indexExists(DatabaseMetaData metadata, Index index) throws SQLException

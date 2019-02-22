@@ -73,7 +73,11 @@ class ${entity.name}_
                     .column(${field.column?upper_case})
                     </#list>
                     <#list entity.indexes![] as index>
-                    <#if index.unique>
+                    <#if index.unique && index.mustRemove>
+                    .index(SQL.removeUnique(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))
+                    <#elseif index.mustRemove>
+                    .index(SQL.removeIndex(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))
+                    <#elseif index.unique>
                     .index(SQL.buildUnique(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))
                     <#else>
                     .index(SQL.buildIndex(<#if index.name??>"${index.name}", </#if><#list index.fields![] as f>${f.column?upper_case}<#sep>, </#sep></#list>))

@@ -30,12 +30,16 @@ class IndexImpl implements Index
 
     private final boolean unique;
 
-    public IndexImpl(String name, Table table, Column<?, ?>[] columns, boolean unique)
+    private final boolean mustRemove;
+
+    public IndexImpl(String name, Table table, Column<?, ?>[] columns,
+                     boolean unique, boolean mustRemove)
     {
         this.name = name;
         this.table = table;
         this.columns = columns;
         this.unique = unique;
+        this.mustRemove = mustRemove;
     }
     
     @Override
@@ -66,6 +70,12 @@ class IndexImpl implements Index
     public boolean isUnique()
     {
         return unique;
+    }
+
+    @Override
+    public boolean mustRemove()
+    {
+        return mustRemove;
     }
 
     private String createName()

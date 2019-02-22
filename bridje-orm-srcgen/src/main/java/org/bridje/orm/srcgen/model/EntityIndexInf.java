@@ -42,6 +42,9 @@ public class EntityIndexInf
     @XmlTransient
     private EntityInf entity;
 
+    @XmlAttribute
+    private Boolean mustRemove;
+
     /**
      * Default constructor.
      */
@@ -111,6 +114,26 @@ public class EntityIndexInf
     }
 
     /**
+     * If index must be removed.
+     *
+     * @return
+     */
+    public Boolean getMustRemove()
+    {
+        return Boolean.TRUE.equals(mustRemove);
+    }
+
+    /**
+     * If index must be removed.
+     *
+     * @param mustRemove
+     */
+    public void setMustRemove(Boolean mustRemove)
+    {
+        this.mustRemove = mustRemove;
+    }
+
+    /**
      * The array of fields for this index.
      * 
      * @return The array of fields for this index.
@@ -134,6 +157,7 @@ public class EntityIndexInf
         result.fields = this.fields;
         result.name = this.name;
         result.unique = this.unique;
+        result.mustRemove = this.mustRemove;
         return result;
     }
 
