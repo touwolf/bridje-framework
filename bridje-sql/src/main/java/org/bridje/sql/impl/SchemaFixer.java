@@ -215,7 +215,7 @@ class SchemaFixer
             action = "remove";
             sql = dialect.dropIndex(index, params);
         }
-        else if (!indexExists)
+        else if (!index.mustRemove() && !indexExists)
         {
             action = "create";
             sql = dialect.createIndex(index, params);
