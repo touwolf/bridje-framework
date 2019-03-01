@@ -99,6 +99,14 @@ class TableAliasImpl implements Table
     public void writeSQL(SQLBuilder builder)
     {
         this.table.writeSQL(builder);
+        builder.append(" AS ");
+        builder.appendObjectName(alias);
+    }
+
+    @Override
+    public String getAlias()
+    {
+        return this.alias;
     }
 
 

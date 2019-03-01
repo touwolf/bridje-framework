@@ -140,4 +140,10 @@ class TableImpl implements Table
     {
         return new TableAliasImpl(this, alias);
     }
+
+    @Override
+    public String getAlias()
+    {
+        return this.name;
+    }
 }

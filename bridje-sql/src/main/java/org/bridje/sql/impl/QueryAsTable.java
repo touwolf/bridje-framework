@@ -46,5 +46,11 @@ class QueryAsTable implements SelectExpr
         this.alias = alias;
         return this;
     }
+
+    @Override
+    public String getAlias()
+    {
+        return this.alias;
+    }
     
 }
