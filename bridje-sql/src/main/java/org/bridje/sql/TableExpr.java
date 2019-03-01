@@ -21,4 +21,5 @@ package org.bridje.sql;
  */
 public interface TableExpr extends SQLWritable
 {
+    TableExpr as(String alias);
 }
