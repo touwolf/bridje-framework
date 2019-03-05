@@ -73,4 +73,5 @@ public interface Column<T, E> extends Expression<T, E>
      */
     Expression<T, E> asParam();
 
+    Column<T, E> forAlias(TableExpr tableAlias);
 }

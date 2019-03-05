@@ -17,10 +17,11 @@ package org.bridje.sql.impl;
 
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.SelectExpr;
+import org.bridje.sql.TableExpr;
 
 class QueryAsTable implements SelectExpr
 {
-    private final String alias;
+    private String alias;
     
     private final SelectBuilder query;
 
@@ -37,6 +38,19 @@ class QueryAsTable implements SelectExpr
         builder.append(query);
         builder.append(" )");
         builder.append(alias);
+    }
+
+    @Override
+    public TableExpr as(String alias)
+    {
+        this.alias = alias;
+        return this;
+    }
+
+    @Override
+    public String getAlias()
+    {
+        return this.alias;
     }
     
 }

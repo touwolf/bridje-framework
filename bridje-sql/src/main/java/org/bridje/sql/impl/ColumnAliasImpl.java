@@ -27,102 +27,78 @@ import org.bridje.sql.StringColumn;
 import org.bridje.sql.Table;
 import org.bridje.sql.TableExpr;
 
-class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, NumberColumn<T, E>, StringColumn<T, E>, BooleanColumn<T, E>, DateColumn<T, E>
+class ColumnAliasImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, NumberColumn<T, E>, StringColumn<T, E>, BooleanColumn<T, E>, DateColumn<T, E>
 {
-    private Table table;
+    private TableExpr tableAlias;
+    
+    private final ColumnImpl<T, E> column;
 
-    private final String name;
-
-    private boolean key;
-
-    private final boolean allowNull;
-
-    private boolean autoIncrement;
-
-    private final T defValue;
-
-    public ColumnImpl(String name, SQLType<T, E> sqlType, boolean allowNull, T defValue)
+    public ColumnAliasImpl(TableExpr tableAlias, ColumnImpl<T, E> column, SQLType<T, E> sqlType)
     {
         super(sqlType);
-        this.name = name;
-        this.key = false;
-        this.allowNull = allowNull;
-        this.defValue = defValue;
-        this.autoIncrement = false;
+        this.tableAlias = tableAlias;
+        this.column = column;
+    }
+
+    public ColumnImpl<T, E> getColumn()
+    {
+        return column;
+    }
+    
+    @Override
+    public void writeSQL(SQLBuilder builder)
+    {
+        builder.appendObjectName(tableAlias.getAlias());
+        builder.append(".");
+        builder.appendObjectName(this.getName());
     }
 
     @Override
     public Table getTable()
     {
-        return table;
-    }
-
-    void setTable(Table table)
-    {
-        this.table = table;
+        return this.column.getTable();
     }
 
     @Override
     public String getName()
     {
-        return name;
+        return this.column.getName();
     }
 
     @Override
     public boolean isKey()
     {
-        return key;
-    }
-
-    void setKey(boolean key)
-    {
-        this.key = key;
+        return this.column.isKey();
     }
 
     @Override
     public boolean isAllowNull()
     {
-        if(isKey()) return false;
-        return allowNull;
+        return this.column.isAllowNull();
     }
 
     @Override
     public boolean isAutoIncrement()
     {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(boolean autoIncrement)
-    {
-        this.autoIncrement = autoIncrement;
+        return this.column.isAutoIncrement();
     }
 
     @Override
     public T getDefValue()
     {
-        return defValue;
-    }
-
-    @Override
-    public void writeSQL(SQLBuilder builder)
-    {
-        if(table != null && !builder.isSimpleColumnNames())
-        {
-            builder.appendObjectName(table.getName());
-            builder.append('.');
-        }
-        builder.appendObjectName(name);
+        return this.column.getDefValue();
     }
 
     @Override
     public Expression<T, E> asParam()
     {
-        return getSQLType().asParam();
+        return this.column.asParam();
     }
 
     @Override
     public Column<T, E> forAlias(TableExpr tableAlias)
     {
-        return new ColumnAliasImpl<>(tableAlias, this, this.getSQLType());
+        this.tableAlias = tableAlias;
+        return this;
     }
 }

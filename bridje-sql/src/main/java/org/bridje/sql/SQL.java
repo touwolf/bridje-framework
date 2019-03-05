@@ -312,7 +312,6 @@ public class SQL
     /**
      * Remove an index.
      *
-     * @param table   The table that the index belongs to.
      * @param columns The columns for the index.
      *
      * @return The index to be removed.
@@ -325,7 +324,6 @@ public class SQL
     /**
      * Remove a unique index.
      *
-     * @param table   The table that the index belongs to.
      * @param columns The columns for the index.
      *
      * @return The index to be removed.

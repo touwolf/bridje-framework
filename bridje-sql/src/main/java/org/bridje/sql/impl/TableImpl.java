@@ -26,6 +26,7 @@ import org.bridje.sql.Index;
 import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.Schema;
 import org.bridje.sql.Table;
+import org.bridje.sql.TableExpr;
 
 class TableImpl implements Table
 {
@@ -132,5 +133,17 @@ class TableImpl implements Table
     public ForeignKey[] getForeignKeys()
     {
         return foreignKeys;
+    }
+
+    @Override
+    public TableExpr as(String alias)
+    {
+        return new TableAliasImpl(this, alias);
+    }
+
+    @Override
+    public String getAlias()
+    {
+        return this.name;
     }
 }

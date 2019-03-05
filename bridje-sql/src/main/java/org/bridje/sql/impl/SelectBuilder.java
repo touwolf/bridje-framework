@@ -125,7 +125,6 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
         return this;
     }
 
-    @Override
     public SelectExpr asTable(String alias)
     {
         return new QueryAsTable(this, alias);
@@ -207,5 +206,17 @@ class SelectBuilder extends BuilderBase implements SelectStep, FromStep, SelectW
     public boolean isWithGeneratedKeys()
     {
         return false;
+    }
+
+    @Override
+    public SelectExpr as(String alias)
+    {
+        return asTable(alias);
+    }
+
+    @Override
+    public String getAlias()
+    {
+        return null;
     }
 }
