@@ -55,7 +55,7 @@ class IocEnviromentImpl implements ElEnvironment
     public <T> void set(String expression, T value)
     {
         Class<?> cls = Object.class;
-        if(value != null)
+        if (value != null)
         {
             cls = value.getClass();
         }

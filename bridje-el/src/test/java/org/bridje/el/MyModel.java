@@ -28,7 +28,7 @@ public class MyModel
     {
         return "Some Name";
     }
-    
+
     public List getList()
     {
         List arr = new ArrayList();

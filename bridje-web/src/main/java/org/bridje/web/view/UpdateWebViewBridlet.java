@@ -41,13 +41,13 @@ class UpdateWebViewBridlet implements HttpBridlet
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {
         WebView view = viewsMang.findUpdateView(context);
-        if(view != null)
+        if (view != null)
         {
             viewsMang.updateView(view, context);
             return true;
         }
 
-        if(nextHandler != null)
+        if (nextHandler != null)
         {
             return nextHandler.handle(context);
         }

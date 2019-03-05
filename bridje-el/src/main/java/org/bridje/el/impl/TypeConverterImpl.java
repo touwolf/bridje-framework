@@ -56,19 +56,15 @@ class TypeConverterImpl implements TypeConverter
     @Override
     public <T> T convert(Object value, Class<T> type) throws ELException
     {
-        if(value == null)
+        if (value == null)
         {
             return null;
         }
-        
-        if(type == value.getClass())
-        {
-            return (T)value;
-        }
 
-        if(type.isAssignableFrom(value.getClass()))
+        if (type == value.getClass() ||
+            type.isAssignableFrom(value.getClass()))
         {
-            return (T)value;
+            return type.cast(value);
         }
 
         ElSimpleConverter<Object, T> simpleConv = simpleConverMap.get((Class<Object>)value.getClass(), type);
@@ -78,7 +74,7 @@ class TypeConverterImpl implements TypeConverter
         }
         
         Map<Class<?>, ElAdvanceConverter> map = advanceConvertMap.get(value.getClass());
-        if(map != null)
+        if (map != null)
         {
             ElAdvanceConverter converter = map.get(type);
             if(converter != null)

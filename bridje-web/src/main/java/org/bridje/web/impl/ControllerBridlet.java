@@ -68,10 +68,8 @@ class ControllerBridlet implements HttpBridlet
             List<WebMethodData> methodsData = new ArrayList<>();
             wrsCtx.getClassRepository().forEachMethod(WebMethod.class, 
                     (Method method, Class component, WebMethod annotation) ->
-                    {
                         methodsData.add(new WebMethodData(
-                                            annotation.value(), component, method));
-                    });
+                                            annotation.value(), component, method)));
             this.methodsData = methodsData;
         }
     }
@@ -116,7 +114,7 @@ class ControllerBridlet implements HttpBridlet
         for (Field field : fields)
         {
             WebParameter param = field.getAnnotation(WebParameter.class);
-            if(param != null)
+            if (param != null)
             {
                 injectParameter(wrsCtx, cmp, field, param);
             }
@@ -135,22 +133,18 @@ class ControllerBridlet implements HttpBridlet
     {
         String name = param.value();
         HttpReqParam paramVal = wrsCtx.getScope().getPostParameter(name);
-        if(paramVal == null)
-        {
+        if (paramVal == null)
             paramVal = wrsCtx.getScope().getGetParameter(name);
-            if(paramVal != null)
+        if (paramVal != null)
+            try
             {
-                try
-                {
-                    field.setAccessible(true);
-                    field.set(cmp,paramVal);
-                }
-                catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
-                {
-                    LOG.log(Level.SEVERE, e.getMessage(), e);
-                }
+                field.setAccessible(true);
+                field.set(cmp, paramVal);
             }
-        }
+            catch (SecurityException | IllegalArgumentException | IllegalAccessException e)
+            {
+                LOG.log(Level.SEVERE, e.getMessage(), e);
+            }
     }
 
     private void injectCookie(IocContext<WebScope> wrsCtx, Object cmp, Field field, WebCookie cookie)

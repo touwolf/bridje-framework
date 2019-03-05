@@ -291,14 +291,14 @@ public class WebViewsManager
         String containerId = req.getHeader("Bridje-Container");
         String formId = req.getHeader("Bridje-Form");
         EventResult evResult = EventResult.none();
-        if(formId != null && !formId.trim().isEmpty())
+        if (formId != null && !formId.trim().isEmpty())
         {
             evResult = view.getRoot().findById(elEnv, formId, ctrl -> doReadInput(ctrl, req, elEnv));
             evResult = errorIfNull(view, evResult, req);
         }
 
         final EventResult eventResult = evResult;
-        if(eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
+        if (eventResult.getData() != null && eventResult.getData() instanceof RedirectTo)
         {
             RedirectTo redirectTo = (RedirectTo)eventResult.getData();
             context.getResponse().setHeader("Bridje-Location", redirectTo.getResource());

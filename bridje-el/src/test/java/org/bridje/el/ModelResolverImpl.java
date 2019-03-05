@@ -29,5 +29,4 @@ public class ModelResolverImpl implements ModelResolver
         ctx.getClassRepository()
                 .forEachClass(ElModel.class, (c, a) -> result.put(a.value(), c) );
     }
-    
 }
