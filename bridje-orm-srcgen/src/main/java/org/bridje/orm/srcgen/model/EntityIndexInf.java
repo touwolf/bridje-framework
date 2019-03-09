@@ -114,9 +114,9 @@ public class EntityIndexInf
     }
 
     /**
-     * If index must be removed.
+     * If if the index must be removed.
      *
-     * @return
+     * @return true the index must be removed, false otherwise.
      */
     public Boolean getMustRemove()
     {
@@ -124,9 +124,9 @@ public class EntityIndexInf
     }
 
     /**
-     * If index must be removed.
+     * If the index must be removed.
      *
-     * @param mustRemove
+     * @param mustRemove true the index must be removed, false otherwise.
      */
     public void setMustRemove(Boolean mustRemove)
     {
@@ -150,6 +150,12 @@ public class EntityIndexInf
         entity = (EntityInf)parent;
     }
 
+    /**
+     * Clones this object.
+     * 
+     * @param entity The entity to base the clone on.
+     * @return The cloned object.
+     */
     public EntityIndexInf clone(EntityInf entity)
     {
         EntityIndexInf result = new EntityIndexInf();
@@ -161,6 +167,13 @@ public class EntityIndexInf
         return result;
     }
 
+    /**
+     * Clone helper.
+     * 
+     * @param lst A list to clone.
+     * @param entity The entity to base the clones on.
+     * @return The cloned list.
+     */
     public static List<EntityIndexInf> clone(List<EntityIndexInf> lst, EntityInf entity)
     {
         return lst.stream()

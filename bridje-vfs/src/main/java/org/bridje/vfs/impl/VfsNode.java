@@ -1,6 +1,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import org.bridje.vfs.GlobExpr;
@@ -77,4 +78,6 @@ abstract class VfsNode
     protected abstract boolean delete(Path path);
 
     protected abstract boolean mkdir(Path path);
+
+    protected abstract File getRawFile(Path path);
 }

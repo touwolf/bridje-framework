@@ -201,4 +201,11 @@ public class FileSource implements VfsSource
         File pathFile = findFile(path);
         return pathFile.exists() && pathFile.delete();
     }
+
+    @Override
+    public File getRawFile(Path path)
+    {
+        File pathFile = findFile(path);
+        return pathFile;
+    }
 }

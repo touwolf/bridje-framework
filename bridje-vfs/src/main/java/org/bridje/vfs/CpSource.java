@@ -236,11 +236,11 @@ public class CpSource implements VfsSource
     @Override
     public List<Path> search(GlobExpr globExpr, Path path)
     {
-        CpSource resource = findResource(path);
-        if(resource.isDirectory(null))
+        CpSource cpResource = findResource(path);
+        if(cpResource.isDirectory(null))
         {
             List<Path> files = new ArrayList<>();
-            resource.search(globExpr, path, files);
+            cpResource.search(globExpr, path, files);
             return files;
         }
         return null;
@@ -302,5 +302,11 @@ public class CpSource implements VfsSource
     public boolean delete(Path path)
     {
         return false;
+    }
+
+    @Override
+    public File getRawFile(Path path)
+    {
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -172,7 +173,7 @@ class VfsFolderNode extends VfsNode
     @Override
     public boolean isDirectory(Path path)
     {
-        if(path == null || path.isRoot())return true;
+        if(path == null || path.isRoot()) return true;
         VfsNode child = getChild(path.getFirstElement());
         return child != null && child.isDirectory(path.getNext());
     }
@@ -189,7 +190,8 @@ class VfsFolderNode extends VfsNode
     @Override
     public boolean exists(Path path)
     {
-        if(path == null || path.isLast()) return getChild(path.getName()) != null;
+        if(path == null) return false;
+        if(path.isLast()) return getChild(path.getName()) != null;
         String first = path.getFirstElement();
         VfsNode child = getChild(first);
         return child != null && child.exists(path.getNext());
@@ -302,5 +304,18 @@ class VfsFolderNode extends VfsNode
         if(path == null || path.isRoot()) return false;
         VfsNode child = getChild(path.getFirstElement());
         return child != null && child.mkdir(path.getNext());
+    }
+
+    @Override
+    protected File getRawFile(Path path)
+    {
+        if(path == null || path.isLast()) return null;
+        String first = path.getFirstElement();
+        VfsNode child = getChild(first);
+        if(child != null)
+        {
+            return child.getRawFile(path.getNext());
+        }
+        return null;
     }
 }

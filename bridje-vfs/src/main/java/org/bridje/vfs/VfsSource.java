@@ -1,6 +1,7 @@
 
 package org.bridje.vfs;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -129,4 +130,12 @@ public interface VfsSource
      *         otherwise.
      */
     boolean delete(Path path);
+    
+    /**
+     * Gets the raw file for the given path.
+     * 
+     * @param path The path
+     * @return The raw file for the given path.
+     */
+    File getRawFile(Path path);
 }

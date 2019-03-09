@@ -1,6 +1,7 @@
 
 package org.bridje.vfs;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -155,4 +156,13 @@ public interface VfsService
      * @return String object, return String object with name of the file type.
      */
     String getMimeType(String extension);
+
+    /**
+     * Gets the raw file that match the given virtual file path if any. 
+     * or null if no raw file is attached to this virtual file.
+     * 
+     * @param path The path of the virtual file.
+     * @return The raw file for the given path.
+     */
+    File getRawFile(Path path);
 }

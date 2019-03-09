@@ -1,6 +1,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +36,8 @@ class VfsServiceImpl implements VfsService
     {
         VFile vfsBridje = new VFile("/vfs/bridje");
         vfsBridje.mount(new CpSource("/BRIDJE-INF/vfs"));
-        VFile mimeTypes = new VFile(vfsBridje.getPath().join("mime-types.properties"));
-        try(VFileInputStream is = new VFileInputStream(mimeTypes))
+        VFile mimeTypesFile = new VFile(vfsBridje.getPath().join("mime-types.properties"));
+        try(VFileInputStream is = new VFileInputStream(mimeTypesFile))
         {
             this.mimeTypes.load(is);
         }
@@ -156,5 +157,11 @@ class VfsServiceImpl implements VfsService
     public String getMimeType(String extension)
     {
         return (String)mimeTypes.get(extension);
+    }
+
+    @Override
+    public File getRawFile(Path path)
+    {
+        return root.getRawFile(path);
     }
 }

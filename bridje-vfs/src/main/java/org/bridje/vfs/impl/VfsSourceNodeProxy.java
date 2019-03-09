@@ -1,5 +1,6 @@
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.*;
@@ -225,6 +226,24 @@ class VfsSourceNodeProxy extends VfsNode
         if (!nodes.isEmpty())
         {
             return nodes.get(nodes.size() - 1);
+        }
+        return null;
+    }
+
+    @Override
+    protected File getRawFile(Path path)
+    {
+        if (nodes.isEmpty())
+        {
+            return null;
+        }
+        for (int i = nodes.size() - 1; i >= 0; i--)
+        {
+            File rawFile = nodes.get(i).getRawFile(path);
+            if (rawFile != null)
+            {
+                return rawFile;
+            }
         }
         return null;
     }

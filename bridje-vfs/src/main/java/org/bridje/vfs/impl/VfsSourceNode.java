@@ -1,6 +1,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -107,5 +108,11 @@ class VfsSourceNode extends VfsNode
     public boolean delete(Path path)
     {
         return source.delete(path);
+    }
+
+    @Override
+    protected File getRawFile(Path path)
+    {
+        return source.getRawFile(path);
     }
 }

@@ -1,6 +1,7 @@
 
 package org.bridje.vfs;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -276,6 +277,17 @@ public class VFile
         String ext = path.getExtension();
         if (ext == null || ext.trim().isEmpty()) return null;
         return getVfs().getMimeType(ext);
+    }
+    
+    /**
+     * Gets the raw file that macth this virtual file if any. or null if no raw 
+     * file is attached to this virtual file.
+     * 
+     * @return The raw file for this virtula file.
+     */
+    public File getRawFile()
+    {
+        return getVfs().getRawFile(path);
     }
 
     /**

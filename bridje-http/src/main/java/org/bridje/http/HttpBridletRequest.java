@@ -256,14 +256,16 @@ public interface HttpBridletRequest
     String[] getCookiesNames();
 
     /**
+     * The current client IP for the request.
      * 
-     * @return 
+     * @return The current client IP for the request.
      */
     String getClientIp();
 
     /**
+     * The current client port fot the request.
      * 
-     * @return 
+     * @return The current client port fot the request.
      */
     int getClientPort();
 }

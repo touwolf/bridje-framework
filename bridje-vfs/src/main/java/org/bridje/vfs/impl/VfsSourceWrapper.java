@@ -16,6 +16,7 @@
 
 package org.bridje.vfs.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -23,11 +24,7 @@ import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VfsSource;
 
-/**
- *
- * @author gilbe
- */
-public class VfsSourceWrapper implements VfsSource
+class VfsSourceWrapper implements VfsSource
 {
     private final Path path;
     
@@ -233,5 +230,20 @@ public class VfsSourceWrapper implements VfsSource
         }
         return false;
     }
+
+    @Override
+    public File getRawFile(Path path)
+    {
+        Path leftTrim = this.path.leftTrim(path);
+        if(leftTrim != null)
+        {
+            if(leftTrim.isRoot()) return this.source.getRawFile(leftTrim);
+        }
+        else
+        {
+            leftTrim = path.leftTrim(this.path);
+            if(leftTrim != null) return this.source.getRawFile(leftTrim);
+        }
+        return null;    }
     
 }
