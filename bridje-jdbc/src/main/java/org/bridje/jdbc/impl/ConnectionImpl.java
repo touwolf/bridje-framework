@@ -128,7 +128,7 @@ class ConnectionImpl implements Connection
     @Override
     public boolean isClosed() throws SQLException
     {
-        return closed;
+        return closed || connection.isClosed();
     }
 
     @Override

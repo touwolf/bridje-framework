@@ -294,10 +294,10 @@ class DataSourceImpl implements DataSource
         }
     }
 
-    private boolean needToReconnect(ConnectionImpl connection)
+    private boolean needToReconnect(ConnectionImpl connection) throws SQLException
     {
         long reTime = config.getReconnectTime() * 1000;
         long timePass = System.currentTimeMillis() - connection.getLastUse();
-        return reTime < timePass;
+        return reTime < timePass || connection.isClosed();
     }
 }
