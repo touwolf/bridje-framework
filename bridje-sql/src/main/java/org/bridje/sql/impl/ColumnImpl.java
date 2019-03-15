@@ -125,4 +125,14 @@ class ColumnImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, Num
     {
         return new ColumnAliasImpl<>(tableAlias, this, this.getSQLType());
     }
+
+    @Override
+    public Column<?, ?> copyWithName(String name)
+    {
+        ColumnImpl column = new ColumnImpl<>(name, getSQLType(), allowNull, defValue);
+        column.setTable(table);
+        column.setAutoIncrement(autoIncrement);
+        column.setKey(key);
+        return column;
+    }
 }

@@ -101,4 +101,15 @@ class ColumnAliasImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>
         this.tableAlias = tableAlias;
         return this;
     }
+
+    @Override
+    public Column<?, ?> copyWithName(String name)
+    {
+        ColumnImpl col = getColumn();
+        ColumnImpl<?, ?> column = new ColumnImpl(name, col.getSQLType(), col.isAllowNull(), col.getDefValue());
+        column.setTable(col.getTable());
+        column.setAutoIncrement(col.isAutoIncrement());
+        column.setKey(col.isKey());
+        return new ColumnAliasImpl(tableAlias, column, getSQLType());
+    }
 }

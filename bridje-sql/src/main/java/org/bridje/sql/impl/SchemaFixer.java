@@ -16,12 +16,7 @@
 
 package org.bridje.sql.impl;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -144,12 +139,50 @@ class SchemaFixer
         return null;
     }
 
+    private boolean isSameType(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
+    {
+        try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
+        {
+            if (resultSet.next())
+            {
+                int existingType = resultSet.getInt("DATA_TYPE");
+                int columnType = column.getSQLType().getJDBCType().getVendorTypeNumber();
+                return areSimilarType(existingType, columnType, false);
+            }
+        }
+        return true;
+    }
+
+    private boolean areSimilarType(int type1, int type2, boolean internal)
+    {
+        if (type1 == type2) return true;
+        if (type1 == Types.BOOLEAN)
+        {
+            if (type2 == Types.SMALLINT ||
+                type2 == Types.TINYINT)
+                return true;
+        }
+        if (type1 == Types.TINYINT)
+        {
+            if (type2 == Types.SMALLINT)
+                return true;
+        }
+        if (type1 == Types.DOUBLE)
+        {
+            if (type2 == Types.FLOAT)
+                return true;
+        }
+        if (!internal)
+            return areSimilarType(type2, type1, true);
+        return false;
+    }
+
     private void fixColumns(Connection connection, Table table) throws SQLException
     {
         DatabaseMetaData metadata = connection.getMetaData();
         for (Column<?, ?> column : table.getColumns())
         {
-            if(!columnExists(metadata, column))
+            if (!columnExists(metadata, column))
             {
                 try
                 {
@@ -165,8 +198,8 @@ class SchemaFixer
             }
             else
             {
-                Boolean isNullable = isNullable(metadata, column);
-                if(isNullable != null && isNullable != column.isAllowNull())
+                boolean isNullable = Boolean.TRUE.equals(isNullable(metadata, column));
+                if (isNullable != column.isAllowNull() || !isSameType(metadata, column))
                 {
                     try
                     {

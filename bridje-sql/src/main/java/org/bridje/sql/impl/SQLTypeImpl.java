@@ -18,6 +18,7 @@ package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
 import java.sql.SQLException;
+import java.sql.Types;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQL;
 import org.bridje.sql.SQLType;

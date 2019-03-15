@@ -114,22 +114,28 @@ public class DerbyDialect implements SQLDialect
     @Override
     public String[] changeColumn(String oldName, Column<?, ?> column, List<Object> params)
     {
-        StringBuilder builder2 = new StringBuilder();
-        alterTable(builder2, column.getTable());
-        setColumnNull(builder2, params, column);
+        StringBuilder builder = new StringBuilder();
 
-        if(column.getSQLType().getJDBCType() == JDBCType.VARCHAR
-                || column.getSQLType().getJDBCType() == JDBCType.NVARCHAR)
-        {
-            StringBuilder builder1 = new StringBuilder();
-            alterTable(builder1, column.getTable());
-            setColumnDataType(builder1, params, column);
-            return new String[] {builder1.toString(), builder2.toString()};
-        }
-        else
-        {
-            return new String[]{builder2.toString()};
-        }
+        Column<?, ?> tempColumn = column.copyWithName(column.getName() + "_temp");
+        builder
+            .append(addColumn(tempColumn, params))
+            .append(";UPDATE ");
+        writeObjectName(builder, column.getTable().getName());
+        builder.append(" SET ");
+        writeObjectName(builder, tempColumn.getName());
+        builder.append("=");
+        writeObjectName(builder, column.getName());
+        builder.append(";");
+        alterTable(builder, column.getTable());
+        dropColumn(builder, column, true);
+        builder.append(";RENAME COLUMN ");
+        writeObjectName(builder, column.getTable().getName());
+        builder.append(".");
+        writeObjectName(builder, tempColumn.getName());
+        builder.append(" TO ");
+        writeObjectName(builder, column.getName());
+
+        return builder.toString().split(";");
     }
 
     @Override
