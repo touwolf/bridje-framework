@@ -123,7 +123,7 @@ class SchemaFixer
         return false;
     }
     
-    private Boolean isNullable(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
+    private boolean isNullable(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
     {
         try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
         {
@@ -136,7 +136,7 @@ class SchemaFixer
                 }
             }
         }
-        return null;
+        return false;
     }
 
     private boolean isSameType(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
@@ -156,21 +156,42 @@ class SchemaFixer
     private boolean areSimilarType(int type1, int type2, boolean internal)
     {
         if (type1 == type2) return true;
-        if (type1 == Types.BOOLEAN)
+        if (type1 == Types.BOOLEAN ||
+                type1 == Types.TINYINT ||
+                type1 == Types.SMALLINT ||
+                type1 == Types.BIT)
         {
-            if (type2 == Types.SMALLINT ||
-                type2 == Types.TINYINT)
+            if (type2 == Types.BOOLEAN ||
+                type2 == Types.TINYINT  ||
+                type2 == Types.SMALLINT ||
+                type2 == Types.BIT)
+            {
                 return true;
+            }
         }
-        if (type1 == Types.TINYINT)
+        if (type1 == Types.DOUBLE ||
+                type1 == Types.FLOAT ||
+                type1 == Types.REAL ||
+                type1 == Types.DECIMAL ||
+                type1 == Types.NUMERIC)
         {
-            if (type2 == Types.SMALLINT)
+            if (type2 == Types.DOUBLE ||
+                    type2 == Types.FLOAT ||
+                    type2 == Types.REAL || 
+                    type2 == Types.DECIMAL ||
+                    type2 == Types.NUMERIC)
+            {
                 return true;
+            }
         }
-        if (type1 == Types.DOUBLE)
+        if (type1 == Types.LONGVARCHAR ||
+                type1 == Types.VARCHAR)
         {
-            if (type2 == Types.FLOAT)
+            if (type2 == Types.LONGVARCHAR ||
+                    type2 == Types.VARCHAR)
+            {
                 return true;
+            }
         }
         if (!internal)
             return areSimilarType(type2, type1, true);
@@ -198,9 +219,13 @@ class SchemaFixer
             }
             else
             {
-                boolean isNullable = Boolean.TRUE.equals(isNullable(metadata, column));
+                boolean isNullable = isNullable(metadata, column);
                 if (isNullable != column.isAllowNull() || !isSameType(metadata, column))
                 {
+                    if(!isSameType(metadata, column))
+                    {
+                        LOG.log(Level.INFO, "Changing column " + column.getName());
+                    }
                     try
                     {
                         List<Object> params = new ArrayList<>();
