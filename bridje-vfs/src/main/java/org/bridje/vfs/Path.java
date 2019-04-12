@@ -378,7 +378,7 @@ public class Path implements Iterable<Path>
     public boolean startsWith(Path path)
     {
         if(path.pathElements == null || path.pathElements.length == 0) return true;
-        if(this.pathElements == null || this.pathElements.length == 0) return true;
+        if(this.pathElements == null || this.pathElements.length == 0) return false;
         if(path.pathElements.length > this.pathElements.length) return false;
         for(int i = 0; i < path.pathElements.length; i++)
         {
