@@ -109,6 +109,7 @@ public class SelectQueryInf extends QueryInf
         result.entity = entity;
         if(this.where != null) result.where = (WhereStmt)this.where.clone(result, null);
         if(this.orderBy != null) result.orderBy = this.orderBy.clone(result);
+        result.withPaging = this.withPaging;
         result.fetch = this.fetch;
         return result;
     }
