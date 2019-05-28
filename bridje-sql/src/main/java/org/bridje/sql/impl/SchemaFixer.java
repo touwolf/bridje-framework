@@ -147,7 +147,19 @@ class SchemaFixer
             {
                 int existingType = resultSet.getInt("DATA_TYPE");
                 int columnType = column.getSQLType().getJDBCType().getVendorTypeNumber();
-                return areSimilarType(existingType, columnType, false);
+                if(areSimilarType(existingType, columnType, false))
+                {
+                    if (existingType == Types.LONGVARCHAR ||
+                            existingType == Types.VARCHAR)
+                    {
+                        int length = resultSet.getInt("COLUMN_SIZE");
+                        if(length != column.getSQLType().getLength())
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             }
         }
         return true;
@@ -224,7 +236,7 @@ class SchemaFixer
                 {
                     if(!isSameType(metadata, column))
                     {
-                        LOG.log(Level.INFO, "Changing column " + column.getName());
+                        LOG.log(Level.INFO, "Changing column {0}", column.getName());
                     }
                     try
                     {
