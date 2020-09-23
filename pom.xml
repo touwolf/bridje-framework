@@ -85,6 +85,18 @@
         </license>
     </licenses>
 
+    <distributionManagement>
+        <repository>
+            <id>touwolf-releases</id>
+            <url>https://maven.touwolf.com/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>touwolf-snapshots</id>
+            <url>https://maven.touwolf.com/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -288,12 +300,12 @@
 
     <repositories>
         <repository>
-            <id>touwolf-snapshots</id>
-            <url>https://maven.touwolf.com/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
             <id>touwolf-releases</id>
             <url>https://maven.touwolf.com/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>touwolf-snapshots</id>
+            <url>https://maven.touwolf.com/content/repositories/snapshots/</url>
         </repository>
     </repositories>
     
