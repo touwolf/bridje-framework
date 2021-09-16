@@ -19,12 +19,9 @@ package org.bridje.el;
 import java.util.ArrayList;
 import java.util.List;
 import org.bridje.ioc.Ioc;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ElServiceTest
 {
@@ -32,17 +29,17 @@ public class ElServiceTest
     public static void setUpClass()
     {
     }
-    
+
     @AfterClass
     public static void tearDownClass()
     {
     }
-    
+
     @Before
     public void setUp()
     {
     }
-    
+
     @After
     public void tearDown()
     {

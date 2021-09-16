@@ -18,11 +18,7 @@ package org.bridje.web.view.themes;
 
 import java.io.IOException;
 import java.util.Arrays;
-import org.bridje.http.HttpBridlet;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletRequest;
-import org.bridje.http.HttpBridletResponse;
-import org.bridje.http.HttpException;
+import org.bridje.http.*;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.InjectNext;
@@ -38,7 +34,7 @@ class ThemesBridlet implements HttpBridlet
 
     @InjectNext
     private HttpBridlet nextHandler;
-    
+
     @Override
     public boolean handle(HttpBridletContext context) throws IOException, HttpException
     {

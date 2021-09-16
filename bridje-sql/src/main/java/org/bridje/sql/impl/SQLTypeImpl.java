@@ -18,12 +18,7 @@ package org.bridje.sql.impl;
 
 import java.sql.JDBCType;
 import java.sql.SQLException;
-import java.sql.Types;
-import org.bridje.sql.Expression;
-import org.bridje.sql.SQL;
-import org.bridje.sql.SQLType;
-import org.bridje.sql.SQLValueParser;
-import org.bridje.sql.SQLValueWriter;
+import org.bridje.sql.*;
 
 class SQLTypeImpl<T, E> implements SQLType<T, E>
 {
@@ -100,7 +95,7 @@ class SQLTypeImpl<T, E> implements SQLType<T, E>
     {
         return writer;
     }
-    
+
     @Override
     public E read(Object value) throws SQLException
     {

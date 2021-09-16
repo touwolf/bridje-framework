@@ -25,13 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLEnvironment;
-import org.bridje.sql.SQLResultParser;
-import org.bridje.sql.SQLResultSet;
-import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Query;
-import org.bridje.sql.Schema;
+import org.bridje.sql.*;
 
 abstract class EnvironmentBase implements SQLEnvironment
 {
@@ -131,7 +125,7 @@ abstract class EnvironmentBase implements SQLEnvironment
         }
         return fetchOne(rs, parser);
     }
-    
+
     protected int update(DataSource ds, SQLStatement sqlStmt) throws SQLException
     {
         if(LOG.isLoggable(Level.FINE)) LOG.log(Level.FINE, sqlStmt.getSQL());

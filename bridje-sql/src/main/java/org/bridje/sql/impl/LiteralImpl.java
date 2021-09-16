@@ -15,13 +15,7 @@
  */
 package org.bridje.sql.impl;
 
-import org.bridje.sql.ArithmeticExpr;
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.DateExpr;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.SQLType;
-import org.bridje.sql.StringExpr;
-import org.bridje.sql.Literal;
+import org.bridje.sql.*;
 
 class LiteralImpl<T, E> extends ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>, Literal<T, E>
 {

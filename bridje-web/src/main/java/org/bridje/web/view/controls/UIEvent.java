@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.view.ViewUtils;
 
 /**
  * The data for the events of the control that can be render in a WebView.
@@ -30,7 +29,7 @@ import org.bridje.web.view.ViewUtils;
 public class UIEvent
 {
     private final String expression;
-    
+
     private final String parameter;
 
     UIEvent(String expression)
@@ -41,7 +40,7 @@ public class UIEvent
 
     /**
      * Gets the event´s expression.
-     * 
+     *
      * @return The event´s expression.
      */
     public String getExpression()
@@ -51,17 +50,17 @@ public class UIEvent
 
     /**
      * The parameter for the event.
-     * 
+     *
      * @return The parameter for the event.
      */
     public String getParameter()
     {
         return parameter;
     }
-    
+
     /**
      * Invokes the method defined by this event.
-     * 
+     *
      * @return The object returned when invoking the method of the event.
      */
     public Object invoke()

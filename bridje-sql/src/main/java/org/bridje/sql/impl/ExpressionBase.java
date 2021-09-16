@@ -16,15 +16,7 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.ArithmeticExpr;
-import org.bridje.sql.ArrayExpr;
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.DateExpr;
-import org.bridje.sql.Expression;
-import org.bridje.sql.OrderExpr;
-import org.bridje.sql.SQLType;
-import org.bridje.sql.SortType;
-import org.bridje.sql.StringExpr;
+import org.bridje.sql.*;
 
 abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, E>, ArithmeticExpr<T, E>, DateExpr<T, E>
 {
@@ -112,13 +104,13 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         return new FunctionImpl("TRIM", getSQLType(), this);
     }
-    
+
     @Override
     public StringExpr<T, E> upper()
     {
         return new FunctionImpl("UPPER", getSQLType(), this);
     }
-    
+
     @Override
     public StringExpr<T, E> lower()
     {
@@ -334,7 +326,7 @@ abstract class ExpressionBase<T, E> implements BooleanExpr<T, E>, StringExpr<T, 
     {
         return new FunctionImpl("MAX", getSQLType(), this);
     }
-    
+
     @Override
     public OrderExpr asc()
     {

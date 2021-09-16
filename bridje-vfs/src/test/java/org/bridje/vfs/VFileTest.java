@@ -20,7 +20,6 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -92,7 +91,7 @@ public class VFileTest
         Assert.assertTrue(Arrays.asList(new VFile("/merged1").list()).contains("merged.txt"));
 
         Assert.assertArrayEquals(new String[]{"other"}, new VFile("/merged1/vfs").list());
-        
+
         Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("other-common.txt"));
         Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("folder1"));
         Assert.assertTrue(Arrays.asList(new VFile("/merged1/vfs/other").list()).contains("folder2"));

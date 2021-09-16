@@ -16,18 +16,9 @@
 
 package org.bridje.http.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
+import java.security.*;
 import java.security.cert.CertificateException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -60,7 +51,7 @@ public class HttpServerConfig
     private String keyStoreAlgo = KeyManagerFactory.getDefaultAlgorithm();
 
     private String sslAlgo = "TLS";
-    
+
     private int requestTimeout = 60;
 
     /**
@@ -325,7 +316,7 @@ public class HttpServerConfig
 
     /**
      * Loads a HttpServerConfig from a file.
-     * 
+     *
      * @param xmlFile The file to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -342,7 +333,7 @@ public class HttpServerConfig
 
     /**
      * Loads a HttpServerConfig from an input stream.
-     * 
+     *
      * @param is The input stream to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -355,7 +346,7 @@ public class HttpServerConfig
 
     /**
      * Save a SipServerConfig to an output stream.
-     * 
+     *
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.

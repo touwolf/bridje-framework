@@ -23,21 +23,10 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.bridje.vfs.VFile;
@@ -45,13 +34,13 @@ import org.bridje.vfs.VFileInputStream;
 import org.w3c.dom.Document;
 
 /**
- * An UI suite definition that can be use to generate the controls and templates 
+ * An UI suite definition that can be use to generate the controls and templates
  * to be use by the web API to render the view of an application.
  */
 @XmlRootElement(name = "uisuite")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder={
-    "name", 
+    "name",
     "packageName",
     "namespace",
     "renderView",
@@ -75,10 +64,10 @@ public class UISuite extends UISuiteBase
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute(name = "package")
     private String packageName;
-    
+
     @XmlAttribute
     private String namespace;
 
@@ -87,9 +76,9 @@ public class UISuite extends UISuiteBase
     private String renderBody;
 
     private String renderHead;
-    
+
     private StandaloneDef standalone;
-    
+
     private StandaloneDef defines;
 
     private Resource defaultResources;
@@ -107,10 +96,10 @@ public class UISuite extends UISuiteBase
         @XmlElement(name = "children", type = ChildrenField.class)
     })
     private List<FieldDef> fields;
-    
+
     /**
      * The name of the suite.
-     * 
+     *
      * @return The name of the suite.
      */
     public String getName()
@@ -120,7 +109,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The name of the suite.
-     * 
+     *
      * @param name The name of the suite.
      */
     public void setName(String name)
@@ -130,7 +119,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The java package for the controls.
-     * 
+     *
      * @return The java package for the controls.
      */
     public String getPackage()
@@ -140,7 +129,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The java package for the controls.
-     * 
+     *
      * @param packageName The java package for the controls.
      */
     public void setPackage(String packageName)
@@ -150,7 +139,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The xsd namespace.
-     * 
+     *
      * @return The xsd namespace.
      */
     public String getNamespace()
@@ -160,7 +149,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The xsd namespace.
-     * 
+     *
      * @param namespace The xsd namespace.
      */
     public void setNamespace(String namespace)
@@ -170,7 +159,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The HTML to render for the view container.
-     * 
+     *
      * @return The HTML to render for the view container.
      */
     public String getRenderView()
@@ -180,7 +169,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The HTML to render for the view container.
-     * 
+     *
      * @param renderView The HTML to render for the view container.
      */
     public void setRenderView(String renderView)
@@ -190,7 +179,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The HTML to render for the body.
-     * 
+     *
      * @return The HTML to render for the body.
      */
     public String getRenderBody()
@@ -200,17 +189,17 @@ public class UISuite extends UISuiteBase
 
     /**
      * The HTML to render for the body.
-     * 
+     *
      * @param renderBody The HTML to render for the body.
      */
     public void setRenderBody(String renderBody)
     {
         this.renderBody = renderBody;
     }
-    
+
     /**
      * The HTML to render for the head.
-     * 
+     *
      * @return The HTML to render for the head.
      */
     public String getRenderHead()
@@ -220,7 +209,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The HTML to render for the head.
-     * 
+     *
      * @param renderHead The HTML to render for the head.
      */
     public void setRenderHead(String renderHead)
@@ -230,7 +219,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The default resources to render for each view of this suite.
-     * 
+     *
      * @return The default resources to render for each view of this suite.
      */
     public Resource getDefaultResources()
@@ -241,7 +230,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The default resources to render for each view of this suite.
-     * 
+     *
      * @param defaultResources The default resources to render for each view of this suite.
      */
     public void setDefaultResources(Resource defaultResources)
@@ -251,7 +240,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The definition of the standalone children.
-     * 
+     *
      * @return The definition of the standalone children.
      */
     public StandaloneDef getStandalone()
@@ -261,7 +250,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The definition of the standalone children.
-     * 
+     *
      * @param standalone The definition of the standalone children.
      */
     public void setStandalone(StandaloneDef standalone)
@@ -271,7 +260,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The defines for this UI suite.
-     * 
+     *
      * @return The defines for this UI suite.
      */
     public StandaloneDef getDefines()
@@ -281,7 +270,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * The defines for this UI suite.
-     * 
+     *
      * @param defines The defines for this UI suite.
      */
     public void setDefines(StandaloneDef defines)
@@ -291,7 +280,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * Loads an UISuite from a file.
-     * 
+     *
      * @param xmlFile The file to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -308,7 +297,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * Loads an UISuite from an input stream.
-     * 
+     *
      * @param is The input stream to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -321,7 +310,7 @@ public class UISuite extends UISuiteBase
 
     /**
      * Save a UISuite to an output stream.
-     * 
+     *
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -355,7 +344,7 @@ public class UISuite extends UISuiteBase
     {
         this.fields = fields;
     }
-    
+
     @Override
     public String toString()
     {

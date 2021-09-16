@@ -16,17 +16,13 @@
 
 package org.bridje.web.view.themes;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import org.bridje.http.HttpBridletResponse;
 
 public class ThemeResourceData
 {
     private String contentType;
-    
+
     private byte[] data;
 
     public ThemeResourceData(String contentType, InputStream dataIs) throws IOException

@@ -19,30 +19,7 @@ package org.bridje.sql.impl;
 import java.sql.JDBCType;
 import java.time.LocalDateTime;
 import java.util.Date;
-import org.bridje.sql.ArithmeticExpr;
-import org.bridje.sql.ArrayExpr;
-import org.bridje.sql.BooleanColumn;
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.BuildForeignKeyStep;
-import org.bridje.sql.BuildSchemaStep;
-import org.bridje.sql.BuildTableStep;
-import org.bridje.sql.Column;
-import org.bridje.sql.DateColumn;
-import org.bridje.sql.DateExpr;
-import org.bridje.sql.DeleteStep;
-import org.bridje.sql.Expression;
-import org.bridje.sql.Index;
-import org.bridje.sql.InsertIntoStep;
-import org.bridje.sql.Limit;
-import org.bridje.sql.NumberColumn;
-import org.bridje.sql.SQLType;
-import org.bridje.sql.SQLValueParser;
-import org.bridje.sql.SQLValueWriter;
-import org.bridje.sql.SelectStep;
-import org.bridje.sql.StringColumn;
-import org.bridje.sql.StringExpr;
-import org.bridje.sql.Table;
-import org.bridje.sql.UpdateStep;
+import org.bridje.sql.*;
 
 public class SQLFactory
 {
@@ -82,12 +59,12 @@ public class SQLFactory
     {
         return new SchemaBuilder(name);
     }
-    
+
     public BuildTableStep buildTable(String name)
     {
         return new TableBuilder(name);
     }
-    
+
     public <T, E> Column<T, E> buildColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, allowNull, null);
@@ -111,7 +88,7 @@ public class SQLFactory
     {
         return new ColumnImpl<>(name, type, allowNull, defValue);
     }
-    
+
     public <T, E> DateColumn<T, E> buildDateColumn(String name, SQLType<T, E> type, boolean allowNull, T defValue)
     {
         return new ColumnImpl<>(name, type, allowNull, defValue);
@@ -161,7 +138,7 @@ public class SQLFactory
     {
         return new ForeignKeyBuilder(name, table, columns);
     }
-    
+
     public BuildForeignKeyStep buildForeignKey(Table table, Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(null, table, columns);
@@ -191,12 +168,12 @@ public class SQLFactory
     {
         return new ForeignKeyBuilder(name, null, columns);
     }
-    
+
     public BuildForeignKeyStep buildForeignKey(Column<?, ?>[] columns)
     {
         return new ForeignKeyBuilder(null, null, columns);
     }
-    
+
     public SelectStep select(Expression<?, ?>... columns)
     {
         return new SelectBuilder(columns);
@@ -261,7 +238,7 @@ public class SQLFactory
     {
         return new LiteralImpl<>(value);
     }
-    
+
     public ArithmeticExpr<Float, Float> val(float value)
     {
         return new LiteralImpl<>(value);

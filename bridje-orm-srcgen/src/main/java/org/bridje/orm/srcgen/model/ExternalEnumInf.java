@@ -16,7 +16,9 @@
 
 package org.bridje.orm.srcgen.model;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * This class defines an external enumerator, the source code generator will not
@@ -41,7 +43,7 @@ public class ExternalEnumInf extends EnumBaseInf
 
     /**
      * The package that this enumerator belongs to.
-     * 
+     *
      * @param packageName The package that this enumerator belongs to.
      */
     public void setPackage(String packageName)

@@ -17,27 +17,17 @@
 package org.bridje.sql.impl;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.Index;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Schema;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 class SchemaFixer
 {
     private static final Logger LOG = Logger.getLogger(SchemaFixer.class.getName());
 
     private final Connection connection;
-    
+
     private final Schema schema;
 
     private final SQLDialect dialect;
@@ -104,7 +94,7 @@ class SchemaFixer
     {
         fixForeignKeys(connection, table.getForeignKeys());
     }
-    
+
     private boolean tableExists(DatabaseMetaData metadata, Table table) throws SQLException
     {
         try (ResultSet resultSet = metadata.getTables(null, null, table.getName(), null))
@@ -122,7 +112,7 @@ class SchemaFixer
         }
         return false;
     }
-    
+
     private boolean isNullable(DatabaseMetaData metadata, Column<?, ?> column) throws SQLException
     {
         try (ResultSet resultSet = metadata.getColumns(null, null, column.getTable().getName(), column.getName()))
@@ -189,7 +179,7 @@ class SchemaFixer
         {
             if (type2 == Types.DOUBLE ||
                     type2 == Types.FLOAT ||
-                    type2 == Types.REAL || 
+                    type2 == Types.REAL ||
                     type2 == Types.DECIMAL ||
                     type2 == Types.NUMERIC)
             {

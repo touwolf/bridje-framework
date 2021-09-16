@@ -20,13 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.Index;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.Schema;
-import org.bridje.sql.Table;
-import org.bridje.sql.TableExpr;
+import org.bridje.sql.*;
 
 class TableImpl implements Table
 {
@@ -43,7 +37,7 @@ class TableImpl implements Table
     private final ForeignKey[] foreignKeys;
 
     private final Index[] indexes;
-    
+
     private final Map<String, Column<?, ?>> columnsMap;
 
     public TableImpl(String name, Column<?, ?>[] columns, Index[] indexes, ForeignKey[] foreignKeys)
@@ -98,7 +92,7 @@ class TableImpl implements Table
     {
         return keys;
     }
-    
+
     @Override
     public Column<?, ?>[] getAutoIncrement()
     {

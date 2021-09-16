@@ -1,19 +1,15 @@
 
 package org.bridje.vfs.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.vfs.*;
 
 @Component
@@ -22,7 +18,7 @@ class VfsServiceImpl implements VfsService
     private static final Logger LOG = Logger.getLogger(VfsServiceImpl.class.getName());
 
     private final VfsFolderNode root;
-    
+
     private final Properties mimeTypes;
 
     public VfsServiceImpl()
@@ -74,7 +70,7 @@ class VfsServiceImpl implements VfsService
     {
         root.mount(path, source);
     }
-    
+
     @Override
     public synchronized void unmount(Path path) throws FileNotFoundException
     {
@@ -152,7 +148,7 @@ class VfsServiceImpl implements VfsService
     {
         return root.mkdir(path);
     }
-    
+
     @Override
     public String getMimeType(String extension)
     {

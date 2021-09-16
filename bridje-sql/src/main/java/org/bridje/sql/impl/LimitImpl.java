@@ -16,8 +16,8 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.SQLBuilder;
 import org.bridje.sql.Limit;
+import org.bridje.sql.SQLBuilder;
 
 class LimitImpl implements Limit
 {

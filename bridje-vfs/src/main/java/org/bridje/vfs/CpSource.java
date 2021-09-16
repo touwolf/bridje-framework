@@ -8,16 +8,8 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -38,7 +30,7 @@ public class CpSource implements VfsSource
 
     /**
      * The primary constructor for this object, the resource path needs to be specified.
-     * 
+     *
      * @param resource The path to the resource folder to be mount.
      * @throws IOException If any IO exception occurs scanning the resource.
      * @throws URISyntaxException If the specified resource has an invalid URI.
@@ -47,10 +39,10 @@ public class CpSource implements VfsSource
     {
         this(resource, CpSource.class.getClassLoader());
     }
-    
+
     /**
      * Constructor that receive a classLoader for this object, the resource path needs to be specified.
-     * 
+     *
      * @param resource The path to the resource folder to be mount.
      * @param classLoader The class loader.
      * @throws IOException If any IO exception occurs scanning the resource.
@@ -245,10 +237,10 @@ public class CpSource implements VfsSource
         }
         return null;
     }
-    
+
     /**
      * Finds a Class Path source associated with the given path.
-     * 
+     *
      * @param path The path of the resource.
      * @return The Class Path source associated with the given path.
      */
@@ -262,7 +254,7 @@ public class CpSource implements VfsSource
 
     /**
      * Search for all the files that match the globExpr provided.
-     * 
+     *
      * @param globExpr The glob expr provided.
      * @param path The path that needs to prefix all paths resulting from this search.
      * @param files The resulting paths for the search.

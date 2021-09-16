@@ -20,11 +20,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.bridje.ioc.PostConstruct;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.ContextListener;
-import org.bridje.ioc.Inject;
-import org.bridje.ioc.IocContext;
+import org.bridje.ioc.*;
 import org.bridje.web.WebScope;
 
 @Component(scope = WebScope.class)
@@ -35,12 +31,12 @@ class WebSessionListener implements ContextListener<Object>
 
     @Inject
     private WebScope scope;
-    
+
     @Inject
     private WebSessionManager sessionMang;
-    
+
     private Map<Class<?>, Set<Field>> injectedClasses;
-    
+
     @PostConstruct
     public void init()
     {

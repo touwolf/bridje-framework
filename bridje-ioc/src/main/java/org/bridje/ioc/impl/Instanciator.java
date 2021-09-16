@@ -16,12 +16,7 @@
 
 package org.bridje.ioc.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -152,7 +147,7 @@ class Instanciator
         {
             for (ContextListener contextListener : contextListeners)
             {
-                //find the generic parameter type of ContextListener, 
+                //find the generic parameter type of ContextListener,
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
                 if (type.equals(Object.class))
@@ -190,7 +185,7 @@ class Instanciator
         {
             for (ContextListener contextListener : contextListeners)
             {
-                //find the generic parameter type of ContextListener, 
+                //find the generic parameter type of ContextListener,
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
                 if (type.equals(Object.class))
@@ -228,7 +223,7 @@ class Instanciator
         {
             for (ContextListener contextListener : contextListeners)
             {
-                //find the generic parameter type of ContextListener, 
+                //find the generic parameter type of ContextListener,
                 //example ContexListener<Integer> -> type = java.lang.Integer
                 Type type = findGenericType(contextListener.getClass());
                 if (type.equals(Object.class))

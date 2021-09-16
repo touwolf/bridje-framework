@@ -18,26 +18,12 @@ package org.bridje.sql.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.BooleanExpr;
-import org.bridje.sql.DeleteFromStep;
-import org.bridje.sql.DeleteLimitStep;
-import org.bridje.sql.DeleteStep;
-import org.bridje.sql.DeleteWhereStep;
-import org.bridje.sql.Expression;
-import org.bridje.sql.FinalStep;
-import org.bridje.sql.OrderExpr;
-import org.bridje.sql.Query;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Table;
-import org.bridje.sql.TableExpr;
-import org.bridje.sql.Limit;
+import org.bridje.sql.*;
 
 class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Query
 {
     private final Table[] tables;
-    
+
     private TableExpr from;
 
     private List<Join> joinsLst;
@@ -111,7 +97,7 @@ class DeleteBuilder extends BuilderBase implements DeleteStep, DeleteFromStep, Q
         SQLBuilder builder = new SQLBuilderImpl(dialect);
         writeSQL(builder);
         String sql = builder.toString();
-        return new SQLStatementImpl(null, sql, 
+        return new SQLStatementImpl(null, sql,
                     createParams(builder, parameters), false);
     }
 

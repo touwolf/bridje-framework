@@ -16,13 +16,7 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.BuildFkFinalStep;
-import org.bridje.sql.BuildFkReferencesStep;
-import org.bridje.sql.BuildForeignKeyStep;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.ForeignKeyStrategy;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, BuildFkFinalStep
 {
@@ -59,7 +53,7 @@ class ForeignKeyBuilder implements BuildForeignKeyStep, BuildFkReferencesStep, B
         this.onDelete = onDelete;
         return this;
     }
-    
+
     @Override
     public BuildFkFinalStep strategy(ForeignKeyStrategy stategy)
     {

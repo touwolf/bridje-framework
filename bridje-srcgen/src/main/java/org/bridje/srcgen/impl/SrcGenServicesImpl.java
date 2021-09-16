@@ -22,11 +22,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,17 +31,13 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.srcgen.SrcGenService;
-import org.bridje.vfs.GlobExpr;
-import org.bridje.vfs.Path;
-import org.bridje.vfs.VFile;
-import org.bridje.vfs.VFileInputStream;
-import org.bridje.vfs.VFileOutputStream;
+import org.bridje.vfs.*;
 
 @Component
 class SrcGenServicesImpl implements SrcGenService

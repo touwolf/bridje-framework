@@ -18,11 +18,7 @@ package org.bridje.sql.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.bridje.sql.Expression;
 import org.bridje.sql.SQLResultSet;
 import org.bridje.sql.SQLType;

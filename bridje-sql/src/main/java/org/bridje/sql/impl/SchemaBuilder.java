@@ -18,22 +18,16 @@ package org.bridje.sql.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.BuildSchemaFKsStep;
-import org.bridje.sql.BuildSchemaIndexesStep;
-import org.bridje.sql.BuildSchemaStep;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.Index;
-import org.bridje.sql.Schema;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 class SchemaBuilder implements BuildSchemaStep
 {
     private final String name;
 
     private final List<Table> tables;
-    
+
     private final List<Index> indexes;
-    
+
     private final List<ForeignKey> foreignKeys;
 
     public SchemaBuilder(String name)
@@ -43,7 +37,7 @@ class SchemaBuilder implements BuildSchemaStep
         this.indexes = new ArrayList<>();
         this.foreignKeys = new ArrayList<>();
     }
-    
+
     @Override
     public BuildSchemaStep table(Table table)
     {
@@ -77,5 +71,5 @@ class SchemaBuilder implements BuildSchemaStep
 
         return new SchemaImpl(name, tableArr, indexesArr, foreignKeysArr);
     }
-    
+
 }

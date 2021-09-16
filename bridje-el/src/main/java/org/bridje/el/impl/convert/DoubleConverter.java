@@ -31,7 +31,6 @@ import org.bridje.ioc.Priority;
 class DoubleConverter implements ElAdvanceConverter
 {
     private static final Logger LOG = Logger.getLogger(DoubleConverter.class.getName());
-
     private static final DecimalFormat FORMAT;
 
     static
@@ -74,25 +73,23 @@ class DoubleConverter implements ElAdvanceConverter
         }
     }
 
-    private Double toDouble(Object value)
-    {
-        if (value != null)
-            try
-            {
+    public static Double toDouble(Object value) {
+        if (value != null) {
+            try {
                 String string = value.toString().trim();
-                if (!string.isEmpty())
-                {
+                if (!string.isEmpty()) {
+                    string = string
+                        .replaceAll("[^-?\\d+(,.\\d+)?]", "");
                     int lastComma = string.lastIndexOf(",");
                     if (lastComma > 0)
                         string = value.toString().substring(0, lastComma) + "." + value.toString().substring(lastComma + 1);
                     Number number = FORMAT.parse(string);
                     return number.doubleValue();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 LOG.log(Level.SEVERE, ex.getMessage(), ex);
             }
+        }
         return null;
     }
 }

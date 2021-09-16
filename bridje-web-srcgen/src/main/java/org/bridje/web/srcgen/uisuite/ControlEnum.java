@@ -18,12 +18,7 @@ package org.bridje.web.srcgen.uisuite;
 
 import java.util.List;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 /**
  * An enumerator for a control attribute.
@@ -33,13 +28,13 @@ public class ControlEnum
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlTransient
     private UISuiteBase uiSuite;
 
     @XmlAttribute
     private String description;
-    
+
     @XmlElements(
     {
         @XmlElement(name = "constant", type = ControlEnumConstant.class)
@@ -55,7 +50,7 @@ public class ControlEnum
     {
         this.name = name;
     }
-    
+
     public List<ControlEnumConstant> getConstants()
     {
         return constants;
@@ -68,7 +63,7 @@ public class ControlEnum
 
     /**
      * The java class package for this control. This is taken from the UISuite.
-     * 
+     *
      * @return The java class package for this control.
      */
     public String getPackage()
@@ -79,7 +74,7 @@ public class ControlEnum
 
     /**
      * The full name of the java class for this control.
-     * 
+     *
      * @return The full name of the java class for this control.
      */
     public String getFullName()
@@ -90,7 +85,7 @@ public class ControlEnum
 
     /**
      * This method is called by JAXB after the unmarshal has happend.
-     * 
+     *
      * @param u The unmarshaller.
      * @param parent The parent.
      */
@@ -104,7 +99,7 @@ public class ControlEnum
 
     /**
      * Description for this enum.
-     * 
+     *
      * @return Description for this enum.
      */
     public String getDescription()
@@ -114,7 +109,7 @@ public class ControlEnum
 
     /**
      * Description for this enum.
-     * 
+     *
      * @param description Description for this enum.
      */
     public void setDescription(String description)
@@ -124,7 +119,7 @@ public class ControlEnum
 
     /**
      * Gets the parent UISuite object.
-     * 
+     *
      * @return The parent UISuite object.
      */
     public UISuiteBase getUISuite()
@@ -134,7 +129,7 @@ public class ControlEnum
 
     /**
      * Sets the parent UISuite object.
-     * 
+     *
      * @param uiSuite The parent UISuite object.
      */
     void setUiSuite(UISuiteBase uiSuite)

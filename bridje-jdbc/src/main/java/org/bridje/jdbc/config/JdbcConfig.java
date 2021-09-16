@@ -22,12 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 
@@ -46,7 +41,7 @@ public class JdbcConfig
                 @XmlElement(name = "datasource", type = DataSourceConfig.class)
             })
     private List<DataSourceConfig> dataSources;
-    
+
     @XmlElementWrapper(name = "schemas")
     @XmlElements(
             {
@@ -97,7 +92,7 @@ public class JdbcConfig
 
     /**
      * Loads a JdbcConfig from a file.
-     * 
+     *
      * @param xmlFile The file to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -114,7 +109,7 @@ public class JdbcConfig
 
     /**
      * Loads a JdbcConfig from an input stream.
-     * 
+     *
      * @param is The input stream to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -127,7 +122,7 @@ public class JdbcConfig
 
     /**
      * Save a JdbcConfig to an output stream.
-     * 
+     *
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.

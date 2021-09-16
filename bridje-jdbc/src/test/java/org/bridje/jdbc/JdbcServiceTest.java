@@ -35,7 +35,8 @@ import javax.sql.DataSource;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -121,7 +122,7 @@ public class JdbcServiceTest
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
     private void createTable()
     {
         JdbcService jdbcServ = Ioc.context().find(JdbcService.class);
@@ -137,7 +138,7 @@ public class JdbcServiceTest
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
     private void runSomeQuerys(int minId, int maxId)
     {
         JdbcService jdbcServ = Ioc.context().find(JdbcService.class);

@@ -1,10 +1,10 @@
 
 package org.bridje.web.view.tools;
 
-import org.bridje.web.view.themes.ThemeTool;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.web.WebScope;
+import org.bridje.web.view.themes.ThemeTool;
 
 @Component
 @ThemeTool(name = "bridje")

@@ -21,11 +21,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
@@ -51,7 +47,7 @@ public class StateManager
     private ElService elServ;
 
     private Map<Class<?>, Map<Field, String>> stateFields;
-    
+
     private Random random;
 
     private final String[] letters = new String[]
@@ -242,7 +238,7 @@ public class StateManager
                 scope.getSession().save("stateEncryptKey", key);
             }
             StateEncryptation encryptation = new StateEncryptation(key);
-            return encryptation.encryptBase64(stateString);            
+            return encryptation.encryptBase64(stateString);
         }
         catch (InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e)
         {
@@ -250,7 +246,7 @@ public class StateManager
             return "";
         }
     }
-    
+
     private String generateRandomKey(int size)
     {
         random = new Random();

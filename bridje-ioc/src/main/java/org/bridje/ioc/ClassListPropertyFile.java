@@ -20,11 +20,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.*;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -43,7 +39,7 @@ public abstract class ClassListPropertyFile extends AbstractProcessor
 
     /**
      * Gets the name for the file that will be written by this annotation processor.
-     * 
+     *
      * @return The name of the file for this annotation processor.
      */
     public abstract String getFileName();
@@ -52,7 +48,7 @@ public abstract class ClassListPropertyFile extends AbstractProcessor
      * This method will be called for each component class found by this processor.
      * the implementation of this method must call the appendClass method to write
      * the component reference to de file.
-     * 
+     *
      * @param element The element representing the current component class.
      * @throws IOException If the component cannot be written to the file.
      */

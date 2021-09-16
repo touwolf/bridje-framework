@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.bridje.el.ElEnvironment;
 import org.bridje.http.UploadedFile;
 import org.bridje.ioc.thls.Thls;
-import org.bridje.web.view.ViewUtils;
 
 /**
  * Represents an input expression for a control.
@@ -76,7 +75,7 @@ public class UIFileExpression
         }
         return fieldName;
     }
-    
+
     /**
      * Gets the name of the parameter that must be send to the server.
      *

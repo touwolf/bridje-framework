@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.xml.bind.JAXBException;
@@ -46,10 +45,7 @@ import org.bridje.http.HttpBridlet;
 import org.bridje.http.HttpServer;
 import org.bridje.http.WsServerHandler;
 import org.bridje.http.config.HttpServerConfig;
-import org.bridje.ioc.Application;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
-import org.bridje.ioc.IocContext;
+import org.bridje.ioc.*;
 
 @Component
 class HttpServerImpl implements HttpServer
@@ -57,7 +53,7 @@ class HttpServerImpl implements HttpServer
     private static final Logger LOG = Logger.getLogger(HttpServerImpl.class.getName());
 
     private EventLoopGroup acceptor;
-    
+
     private EventLoopGroup group;
 
     private HttpServerConfig config;
@@ -157,13 +153,13 @@ class HttpServerImpl implements HttpServer
         return config.getName();
     }
 
-    private void initConfig() 
+    private void initConfig()
     {
         config = loadConfigFile();
         if(config == null) config = new HttpServerConfig();
     }
-    
-    private HttpServerConfig loadConfigFile() 
+
+    private HttpServerConfig loadConfigFile()
     {
         try
         {

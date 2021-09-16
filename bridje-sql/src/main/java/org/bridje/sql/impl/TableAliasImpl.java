@@ -16,22 +16,12 @@
 
 package org.bridje.sql.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.Index;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.Schema;
-import org.bridje.sql.Table;
-import org.bridje.sql.TableExpr;
+import org.bridje.sql.*;
 
 class TableAliasImpl implements Table
 {
     private TableImpl table;
-    
+
     private String alias;
 
     public TableAliasImpl(TableImpl table, String alias)
@@ -39,7 +29,7 @@ class TableAliasImpl implements Table
         this.table = table;
         this.alias = alias;
     }
-    
+
     @Override
     public String getName()
     {

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpReqParam;
 import org.bridje.http.UploadedFile;
@@ -36,7 +35,7 @@ public class ControlInputReader
 
     /**
      * Default constructor.
-     * 
+     *
      * @param req The HTTP request.
      */
     public ControlInputReader(HttpBridletRequest req)
@@ -59,7 +58,7 @@ public class ControlInputReader
 
     /**
      * Reads and remove an uploaded file parameter.
-     * 
+     *
      * @param parameter The name of the uploaded file.
      * @return The uploaded file or null if it does not exists.
      */
@@ -78,7 +77,7 @@ public class ControlInputReader
 
     /**
      * Reads the given parameter from the request.
-     * 
+     *
      * @param parameter The name of the parameter.
      * @return The read parameter.
      */

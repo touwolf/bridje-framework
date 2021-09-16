@@ -15,8 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <jdbc:jdbc
-    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-    xmlns:jdbc='http://www.bridje.org/schemas/jdbc/config'>
+        xmlns:jdbc='http://www.bridje.org/schemas/jdbc/config'>
     <jdbc:datasources>
         <jdbc:datasource>
             <jdbc:name>H2TestDataSource</jdbc:name>

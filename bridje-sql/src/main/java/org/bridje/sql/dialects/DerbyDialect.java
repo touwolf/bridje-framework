@@ -17,18 +17,12 @@
 package org.bridje.sql.dialects;
 
 import java.sql.Connection;
-import java.sql.JDBCType;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.ForeignKeyStrategy;
-import org.bridje.sql.Index;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 /**
  * A dialect for DERBY database.
@@ -167,7 +161,7 @@ public class DerbyDialect implements SQLDialect
     public String dropForeignKey(ForeignKey fk, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
-        
+
         return builder.toString();
     }
 
@@ -264,7 +258,7 @@ public class DerbyDialect implements SQLDialect
         builder.append(createType(column));
         builder.append("\n");
     }
-    
+
     public void setColumnNull(StringBuilder builder, List<Object> params, Column<?, ?> column)
     {
         builder.append(" ALTER COLUMN ");
@@ -340,7 +334,7 @@ public class DerbyDialect implements SQLDialect
         if(column.isAllowNull() && !column.isKey()) return "";
         return " NOT NULL";
     }
-    
+
     private String alterIsNull(Column<?, ?> column)
     {
         if(column.isAllowNull() && !column.isKey()) return " NULL";
@@ -394,7 +388,7 @@ public class DerbyDialect implements SQLDialect
             if(!isFirst) builder.append(sep);
             writeObjectName(builder, column.getName());
             isFirst = false;
-        }        
+        }
     }
 
     @Override

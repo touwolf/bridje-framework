@@ -21,15 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.el.CompositeELResolver;
-import javax.el.ELContext;
-import javax.el.ELResolver;
-import javax.el.ExpressionFactory;
-import javax.el.FunctionMapper;
-import javax.el.MapELResolver;
-import javax.el.ResourceBundleELResolver;
-import javax.el.ValueExpression;
-import javax.el.VariableMapper;
+import javax.el.*;
 import org.bridje.el.ModelResolver;
 import org.bridje.ioc.IocContext;
 
@@ -55,7 +47,7 @@ class IocElContext extends ELContext
         }
         return MODELS;
     }
-    
+
     private static synchronized void initModels(IocContext<?> ctx)
     {
         if(MODELS == null)
@@ -67,7 +59,7 @@ class IocElContext extends ELContext
                 if(resolver != null)
                 {
                     resolver.resolveAllModels(ctx, result);
-                }                
+                }
             }
             MODELS = result;
         }
@@ -147,7 +139,7 @@ class IocElContext extends ELContext
         {
             this.factory = factory;
         }
-        
+
         @Override
         public Method resolveFunction(String prefix, String localName)
         {
@@ -169,7 +161,7 @@ class IocElContext extends ELContext
         private final ExpressionFactory factory;
 
         private final Map<String, ValueExpression> map = new HashMap<>();
-        
+
         private final IocContext<?> context;
 
         public Variables(IocContext<?> context, ExpressionFactory factory)
@@ -177,7 +169,7 @@ class IocElContext extends ELContext
             this.context = context;
             this.factory = factory;
         }
-        
+
         @Override
         public ValueExpression resolveVariable(String variable)
         {

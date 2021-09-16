@@ -1,13 +1,7 @@
 
 package org.bridje.vfs;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +18,7 @@ public class FileSource implements VfsSource
 
     /**
      * Default constructor for this object.
-     * 
+     *
      * @param file The file for this VFS source object.
      * @throws IOException If any IO occurs.
      */
@@ -135,7 +129,7 @@ public class FileSource implements VfsSource
 
     /**
      * Search for all the files that match the globExpr provided.
-     * 
+     *
      * @param globExpr The glob expr provided.
      * @param pathFile The path under witch the search must start.
      * @param path The path that needs to prefix all paths resulting from this search.

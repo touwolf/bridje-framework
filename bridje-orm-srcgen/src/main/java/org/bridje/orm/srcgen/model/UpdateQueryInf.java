@@ -22,11 +22,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UpdateQueryInf extends QueryInf
@@ -37,13 +33,13 @@ public class UpdateQueryInf extends QueryInf
 
     @XmlTransient
     private EntityInf entity;
-    
+
     @XmlElements(
     {
         @XmlElement(name = "set", type = SetFieldStmt.class)
     })
     private List<SetFieldStmt> sets;
-    
+
     @XmlTransient
     private Map<String, FieldInf> mapParams;
 
@@ -73,7 +69,7 @@ public class UpdateQueryInf extends QueryInf
     {
         return sets;
     }
-    
+
     public Map<String, FieldInf> getParams()
     {
         if(mapParams == null)
@@ -105,7 +101,7 @@ public class UpdateQueryInf extends QueryInf
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
     void afterUnmarshal(Unmarshaller u, Object parent)
     {
         entity = (EntityInf)parent;

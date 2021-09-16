@@ -23,12 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.ioc.Component;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.ForeignKeyStrategy;
-import org.bridje.sql.Index;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 /**
  * A dialect for DERBY database.
@@ -150,7 +145,7 @@ public class PostgreSQLDialect implements SQLDialect
     public String dropForeignKey(ForeignKey fk, List<Object> params)
     {
         StringBuilder builder = new StringBuilder();
-        
+
         return builder.toString();
     }
 
@@ -370,7 +365,7 @@ public class PostgreSQLDialect implements SQLDialect
             if(!isFirst) builder.append(sep);
             writeObjectName(builder, column.getName());
             isFirst = false;
-        }        
+        }
     }
 
     @Override

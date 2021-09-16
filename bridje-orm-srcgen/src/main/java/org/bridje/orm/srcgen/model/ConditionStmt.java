@@ -21,12 +21,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 /**
  * Information about a condition.
@@ -60,28 +55,28 @@ public abstract class ConditionStmt
 
     /**
      * If the condition is negated.
-     * 
+     *
      * @return true the condition has a not befor.
      */
     public abstract boolean isNot();
 
     /**
      * Gets the boolean operator used to join this condition with a previous one.
-     * 
+     *
      * @return The boolean operator used to join this condition with a previous one.
      */
     public abstract String getBooleanOperator();
 
     /**
      * The query that this condition belongs to.
-     * 
+     *
      * @return The query that this condition belongs to.
      */
     public abstract QueryInf getQuery();
 
     /**
      * This method adds the params of this condition and its children recursively.
-     * 
+     *
      * @param fillParams The map to fill the params.
      */
     public void fillParams(Map<String, FieldInf> fillParams)
@@ -105,7 +100,7 @@ public abstract class ConditionStmt
 
     /**
      * Gets the text of the condition.
-     * 
+     *
      * @return Gets the text of the condition.
      */
     public String getCondition()
@@ -115,7 +110,7 @@ public abstract class ConditionStmt
 
     /**
      * Gets the text of the condition.
-     * 
+     *
      * @param condition Gets the text of the condition.
      */
     public void setCondition(String condition)
@@ -125,7 +120,7 @@ public abstract class ConditionStmt
 
     /**
      * Gets the children conditions of this one.
-     * 
+     *
      * @return The children conditions of this one.
      */
     public List<ConditionStmt> getContent()
@@ -135,17 +130,17 @@ public abstract class ConditionStmt
 
     /**
      * Sets the children conditions of this one.
-     * 
+     *
      * @param content The children conditions of this one.
      */
     public void setContent(List<ConditionStmt> content)
     {
         this.content = content;
     }
-    
+
     /**
      * The field that this conditions test.
-     * 
+     *
      * @return The field that this conditions test.
      */
     public FieldInf getField()
@@ -162,7 +157,7 @@ public abstract class ConditionStmt
 
     /**
      * The name of the parameter for this condition.
-     * 
+     *
      * @return The name of the parameter for this condition.
      */
     public String getParam()
@@ -174,7 +169,7 @@ public abstract class ConditionStmt
 
     /**
      * The value of the condition.
-     * 
+     *
      * @return The value of the condition.
      */
     public String getValue()
@@ -186,7 +181,7 @@ public abstract class ConditionStmt
 
     /**
      * The name of the method operator of the condition.
-     * 
+     *
      * @return The name of the method operator of the condition.
      */
     public String getOperatorMethod()
@@ -203,7 +198,7 @@ public abstract class ConditionStmt
 
     /**
      * The actual text of the operator for this condition.
-     * 
+     *
      * @return The actual text of the operator for this condition.
      */
     public String getCompareOperator()

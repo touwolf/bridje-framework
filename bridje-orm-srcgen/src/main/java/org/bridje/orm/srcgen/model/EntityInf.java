@@ -22,13 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 
 /**
  * Information for an entity of the model.
@@ -69,7 +63,7 @@ public class EntityInf
         @XmlElement(name = "wrapper", type = WrapperFieldInf.class)
     })
     private List<FieldInfBase> wrappedFields;
-    
+
     @XmlTransient
     private List<FieldInf> fields;
 
@@ -94,7 +88,7 @@ public class EntityInf
 
     @XmlTransient
     private List<FieldInf> allFields;
-    
+
     @XmlTransient
     private List<FieldInfBase> allWrappedFields;
 
@@ -146,7 +140,7 @@ public class EntityInf
 
     /**
      * If the entity is abstract and will not exists in the database.
-     * 
+     *
      * @return If the entity is abstract and will not exists in the database.
      */
     public boolean getIsAbstract()
@@ -156,14 +150,14 @@ public class EntityInf
 
     /**
      * If the entity is abstract and will not exists in the database.
-     * 
+     *
      * @param isAbstract If the entity is abstract and will not exists in the database.
      */
     public void setIsAbstract(boolean isAbstract)
     {
         this.isAbstract = isAbstract;
     }
-    
+
     /**
      * The full java name for this entity.
      *
@@ -216,7 +210,7 @@ public class EntityInf
 
     /**
      * The name of the base entity.
-     * 
+     *
      * @return The name of the base entity.
      */
     public String getBase()
@@ -226,7 +220,7 @@ public class EntityInf
 
     /**
      * The name of the base entity.
-     * 
+     *
      * @param base The name of the base entity.
      */
     public void setBase(String base)
@@ -236,7 +230,7 @@ public class EntityInf
 
     /**
      * The base entity for this entity.
-     * 
+     *
      * @return The base entity for this entity.
      */
     public EntityInf getBaseEntity()
@@ -449,7 +443,7 @@ public class EntityInf
                 .findFirst()
                 .orElse(null);
     }
-    
+
     public boolean hasField(String fieldName)
     {
         return findField(fieldName) != null;
@@ -473,7 +467,7 @@ public class EntityInf
 
         return result;
     }
-    
+
     public void doExtendsBase()
     {
         if(needToExtends)
@@ -500,7 +494,7 @@ public class EntityInf
                     if(baseEntity.indexes != null) indexes.addAll(EntityIndexInf.clone(baseEntity.indexes, this));
                     if(queries == null) queries = new ArrayList<>();
                     if(baseEntity.queries != null) queries.addAll(QueryInf.clone(baseEntity.queries, this));
-                }                
+                }
             }
             catch (Exception e)
             {

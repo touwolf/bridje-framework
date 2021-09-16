@@ -25,12 +25,7 @@ import java.util.logging.Logger;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class ORMTest
 {
@@ -89,7 +84,7 @@ public class ORMTest
         user.setActive(true);
         user.setCoordinates(new Coordinates(45.1f, 67.2f));
         model.saveUser(user);
-        
+
         lst = model.findUsers();
         Assert.assertNotNull(lst);
         Assert.assertEquals(1, lst.size());
@@ -107,7 +102,7 @@ public class ORMTest
         userGroup.setUser(user);
         model.saveUserGroup(userGroup);
     }
-    
+
     @Test
     public void pagingTest1() throws SQLException
     {
@@ -125,5 +120,5 @@ public class ORMTest
         pagesSection = paging.getPagesSection(9);
         Assert.assertEquals(pagesSection.length, 9);
         Assert.assertEquals(pagesSection[0].getValue(), 1);
-    }    
+    }
 }

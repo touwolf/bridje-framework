@@ -16,7 +16,7 @@
 
 package org.bridje.web.view;
 
-import java.util.*;
+import java.util.Set;
 import org.bridje.web.view.controls.UIEvent;
 import org.bridje.web.view.controls.UIFileExpression;
 import org.bridje.web.view.controls.UIInputExpression;
@@ -43,7 +43,7 @@ public interface WebView extends AbstractView
     String getName();
 
     /**
-     * Finds the set of resources used in this view by all the controls defined 
+     * Finds the set of resources used in this view by all the controls defined
      * in it.
      *
      * @return A set with all the names of the resources.
@@ -59,11 +59,11 @@ public interface WebView extends AbstractView
 
     /**
      * Determines if this view has any file input field.
-     * 
+     *
      * @return true this view has any file input field, false this view has none.
      */
     boolean hasFileInput();
-    
+
     /**
      * Finds the file upload input expression that match the given string.
      *

@@ -18,14 +18,10 @@ package org.bridje.web.srcgen.uisuite;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.*;
 
 /**
- * this class represents a children field, a field that can hold 
+ * this class represents a children field, a field that can hold
  * several controls as children of the parent control.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -33,10 +29,10 @@ public class ChildrenField implements FieldDef
 {
     @XmlAttribute
     private String name;
-    
+
     @XmlAttribute
     private Boolean allowPlaceHolder;
-    
+
     @XmlAttribute
     private String wrapper;
 
@@ -51,7 +47,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * The name of the field.
-     * 
+     *
      * @return The name of the field.
      */
     @Override
@@ -62,7 +58,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * The name of the field.
-     * 
+     *
      * @param name The name of the field.
      */
     public void setName(String name)
@@ -72,7 +68,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If this field allows placeholders as a child.
-     * 
+     *
      * @return If this field allows placeholders as a child.
      */
     public boolean getAllowPlaceHolder()
@@ -83,7 +79,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If this field allows placeholders as a child.
-     * 
+     *
      * @param allowPlaceHolder If this field allows placeholders as a child.
      */
     public void setAllowPlaceHolder(boolean allowPlaceHolder)
@@ -93,7 +89,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If the xml declaration of this children need to be wrapped by an element.
-     * 
+     *
      * @return The name of the wrapper element.
      */
     public String getWrapper()
@@ -103,7 +99,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If the xml declaration of this children need to be wrapped by an element.
-     * 
+     *
      * @param wrapper The name of the wrapper element.
      */
     public void setWrapper(String wrapper)
@@ -113,7 +109,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If only one of the children can be declared.
-     * 
+     *
      * @return If only one of the children can be declared.
      */
     public boolean getIsSingle()
@@ -124,7 +120,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * If only one of the children can be declared.
-     * 
+     *
      * @param single If only one of the children can be declared.
      */
     public void setSingle(boolean single)
@@ -134,7 +130,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * The list of children.
-     * 
+     *
      * @return The list of children.
      */
     public List<ChildField> getContent()
@@ -144,7 +140,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * The list of children.
-     * 
+     *
      * @param content The list of children.
      */
     public void setContent(List<ChildField> content)
@@ -167,7 +163,7 @@ public class ChildrenField implements FieldDef
 
     /**
      * The default value for this field.
-     * 
+     *
      * @return The default value for this field.
      */
     public String getDefaultValue()
@@ -199,7 +195,7 @@ public class ChildrenField implements FieldDef
     {
         return false;
     }
-    
+
     public ChildrenField merge(ChildrenField base)
     {
         ChildrenField result = new ChildrenField();
@@ -219,7 +215,7 @@ public class ChildrenField implements FieldDef
         }
         return result;
     }
-    
+
     private boolean hasChild(String childName)
     {
         return content.stream().anyMatch(c -> c.getName().equals(childName));

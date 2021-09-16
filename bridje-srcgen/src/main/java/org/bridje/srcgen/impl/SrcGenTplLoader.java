@@ -24,8 +24,8 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.srcgen.SrcGenService;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
@@ -51,7 +51,7 @@ class SrcGenTplLoader implements TemplateLoader
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-    
+
     @Override
     public Object findTemplateSource(String name) throws IOException
     {

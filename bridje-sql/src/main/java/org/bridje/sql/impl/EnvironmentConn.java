@@ -19,11 +19,7 @@ package org.bridje.sql.impl;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLEnvironment;
-import org.bridje.sql.SQLResultParser;
-import org.bridje.sql.SQLStatement;
-import org.bridje.sql.Schema;
+import org.bridje.sql.*;
 
 class EnvironmentConn extends EnvironmentBase implements SQLEnvironment
 {

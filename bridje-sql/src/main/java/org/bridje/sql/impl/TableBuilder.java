@@ -18,23 +18,16 @@ package org.bridje.sql.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.BuildTableColumnsStep;
-import org.bridje.sql.BuildTableFKsStep;
-import org.bridje.sql.BuildTableIndexesStep;
-import org.bridje.sql.BuildTableStep;
-import org.bridje.sql.Column;
-import org.bridje.sql.ForeignKey;
-import org.bridje.sql.Index;
-import org.bridje.sql.Table;
+import org.bridje.sql.*;
 
 class TableBuilder implements BuildTableStep
 {
     private final String name;
 
     private final List<Column<?, ?>> columns;
-    
+
     private final List<Index> indexes;
-    
+
     private final List<ForeignKey> foreignKeys;
 
     public TableBuilder(String name)
@@ -44,7 +37,7 @@ class TableBuilder implements BuildTableStep
         this.indexes = new ArrayList<>();
         this.foreignKeys = new ArrayList<>();
     }
-    
+
     @Override
     public BuildTableStep key(Column<?, ?> column)
     {
@@ -87,5 +80,5 @@ class TableBuilder implements BuildTableStep
 
         return new TableImpl(name, columnsArr, indexesArr, foreignKeysArr);
     }
-    
+
 }

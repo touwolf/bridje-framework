@@ -16,15 +16,11 @@
 
 package org.bridje.web.i18n;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.thls.Thls;
 
 /**
@@ -34,7 +30,7 @@ import org.bridje.ioc.thls.Thls;
 public class WebI18nServices
 {
     private Map<String,ResourceBundle> i18nMap;
-    
+
     private Map<Locale, Map<String,ResourceBundle>> i18nLocaleMap;
 
     @Inject
@@ -59,7 +55,7 @@ public class WebI18nServices
 
     /**
      * All the i18n resources.
-     * 
+     *
      * @return All the i18n resources.
      */
     public Map<String, ResourceBundle> getI18nMap()
@@ -68,7 +64,7 @@ public class WebI18nServices
         if(locale == null) return i18nMap;
         return getI18nMap(locale);
     }
-    
+
     private Map<String, ResourceBundle> getI18nMap(Locale locale)
     {
         if(i18nLocaleMap == null) i18nLocaleMap = new ConcurrentHashMap<>();

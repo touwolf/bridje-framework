@@ -28,14 +28,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import org.bridje.el.ElEnvironment;
 import org.bridje.http.HttpBridletResponse;
-import org.bridje.ioc.Application;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.Inject;
-import org.bridje.ioc.Ioc;
-import org.bridje.ioc.IocContext;
+import org.bridje.ioc.*;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
@@ -149,7 +144,7 @@ public class ThemesManager
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Renders the full web view to the given OutputStream.
      *
@@ -281,7 +276,7 @@ public class ThemesManager
         }
         return "";
     }
-    
+
     private InputStream findInputStream(VFile file) throws FileNotFoundException
     {
         boolean canCompress = true;//fixme: check for configuration to enable compression

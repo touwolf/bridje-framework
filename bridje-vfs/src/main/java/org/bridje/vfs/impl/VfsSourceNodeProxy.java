@@ -3,7 +3,10 @@ package org.bridje.vfs.impl;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
 import org.bridje.vfs.VFile;
@@ -25,12 +28,12 @@ class VfsSourceNodeProxy extends VfsNode
         node.setParent(getParent());
         nodes.add(node);
     }
-    
+
     public void removeLast()
     {
         if(!nodes.isEmpty()) nodes.remove(nodes.size() - 1);
     }
-    
+
     public boolean isEmpty()
     {
         return nodes.isEmpty();

@@ -18,13 +18,7 @@ package org.bridje.http.impl;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bridje.http.*;
@@ -51,7 +45,7 @@ class RootHttpBridlet implements HttpBridlet
 
     @Inject
     private HttpTimeoutProvider[] timeoutProviders;
-    
+
     @Override
     public boolean handle(HttpBridletContext context) throws IOException
     {
@@ -107,7 +101,7 @@ class RootHttpBridlet implements HttpBridlet
             }
         }, HttpBridletRequest.class, context.getRequest());
     }
-    
+
     private boolean performHandle(HttpBridletContext context) throws IOException
     {
         HttpBridletRequest req = context.getRequest();

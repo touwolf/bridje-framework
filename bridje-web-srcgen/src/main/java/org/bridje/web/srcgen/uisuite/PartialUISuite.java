@@ -28,11 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.bridje.vfs.VFile;
@@ -59,7 +55,7 @@ public class PartialUISuite extends UISuiteBase
 {
     /**
      * Loads a PartialUISuite from a file.
-     * 
+     *
      * @param xmlFile The file to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -76,7 +72,7 @@ public class PartialUISuite extends UISuiteBase
 
     /**
      * Loads a PartialUISuite from an input stream.
-     * 
+     *
      * @param is The input stream to load the object from.
      * @return The loaded object.
      * @throws JAXBException If any JAXB Exception occurs.
@@ -89,7 +85,7 @@ public class PartialUISuite extends UISuiteBase
 
     /**
      * Save a PartialUISuite to an output stream.
-     * 
+     *
      * @param os The output stream to write the object to.
      * @param object The object to write.
      * @throws JAXBException If any JAXB Exception occurs.

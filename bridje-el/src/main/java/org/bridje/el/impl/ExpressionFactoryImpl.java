@@ -18,20 +18,20 @@ package org.bridje.el.impl;
 
 import de.odysseus.el.misc.TypeConverter;
 import java.util.Properties;
-import org.bridje.ioc.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
+import org.bridje.ioc.PostConstruct;
 
 @Component
 class ExpressionFactoryImpl extends ExpressionFactory
 {
     @Inject
     private TypeConverter typeConverter;
-    
+
     private ExpressionFactory factory;
 
     @PostConstruct
@@ -41,7 +41,7 @@ class ExpressionFactoryImpl extends ExpressionFactory
         prop.setProperty("javax.el.methodInvocations", "true");
         factory = new de.odysseus.el.ExpressionFactoryImpl(de.odysseus.el.ExpressionFactoryImpl.Profile.JEE6, prop, typeConverter);
     }
-    
+
     @Override
     public Object coerceToType(Object obj, Class<?> targetType)
     {

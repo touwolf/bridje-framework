@@ -27,11 +27,7 @@ import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.bridje.http.HttpBridletContext;
-import org.bridje.http.HttpBridletRequest;
-import org.bridje.http.HttpBridletResponse;
-import org.bridje.http.HttpCookie;
-import org.bridje.http.HttpReqParam;
+import org.bridje.http.*;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.IocContext;
 import org.bridje.ioc.Scope;
@@ -440,7 +436,7 @@ public final class WebScope implements Scope
 
     /**
      * Gets the view state map.
-     * 
+     *
      * @return The view state map.
      */
     public Map<String, String> getStateMap()
@@ -451,7 +447,7 @@ public final class WebScope implements Scope
 
     /**
      * Gets the value of the given state field.
-     * 
+     *
      * @param name The reduce id of the state field.
      * @return The value of the state field if it exists.
      */

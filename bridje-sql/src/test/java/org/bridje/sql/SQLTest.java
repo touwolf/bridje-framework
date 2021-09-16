@@ -22,12 +22,7 @@ import java.sql.SQLException;
 import org.bridje.ioc.Ioc;
 import org.bridje.vfs.CpSource;
 import org.bridje.vfs.VFile;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 public class SQLTest
 {

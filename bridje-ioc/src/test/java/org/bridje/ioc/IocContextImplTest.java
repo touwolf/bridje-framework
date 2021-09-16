@@ -2,23 +2,10 @@
 package org.bridje.ioc;
 
 import java.io.IOException;
-import org.bridje.ioc.test.ComplexInjectComponent;
-import org.bridje.ioc.test.ComponentBaseInterface;
-import org.bridje.ioc.test.ComponentChild;
-import org.bridje.ioc.test.ConcreteComponent;
-import org.bridje.ioc.test.DummyComponent;
-import org.bridje.ioc.test.DummyServiceProvider;
-import org.bridje.ioc.test.DummyServiceProvider2;
-import org.bridje.ioc.test.GenericComponent;
-import org.bridje.ioc.test.GenericInjectComponent;
-import org.bridje.ioc.test.SomeService;
+import org.bridje.ioc.test.*;
 import org.bridje.ioc.test.chain.ChainTest;
 import org.bridje.ioc.test.context.ContextInject;
-import org.bridje.ioc.test.priority.PriorityComp1;
-import org.bridje.ioc.test.priority.PriorityComp2;
-import org.bridje.ioc.test.priority.PriorityComp3;
-import org.bridje.ioc.test.priority.PriorityComp4;
-import org.bridje.ioc.test.priority.PriorityService;
+import org.bridje.ioc.test.priority.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -101,11 +88,11 @@ public class IocContextImplTest
         IocContext<Application> instance = Ioc.context();
 
         ComponentBaseInterface childTest = instance.find(ComponentBaseInterface.class);
-        
+
         assertNotNull(childTest);
         assertTrue(childTest instanceof ComponentChild);
     }
-    
+
     @Test
     public void testInjectContext()
     {

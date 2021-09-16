@@ -27,19 +27,19 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.bridje.ioc.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.VFile;
 import org.bridje.vfs.VFileInputStream;
 import org.bridje.vfs.VFileOutputStream;
-import org.bridje.web.view.WebView;
 import org.bridje.web.view.AbstractView;
+import org.bridje.web.view.WebView;
 
 /**
  * A service for reading web views, and keep track of all controls classes
@@ -68,7 +68,7 @@ public class ControlManager
 
     /**
      * Reads the given web view class from the given file.
-     * 
+     *
      * @param <T> The web view type.
      * @param vf The file to read from.
      * @param resultCls The web view class.
@@ -89,7 +89,7 @@ public class ControlManager
 
     /**
      * Writes the given web view object to the given file.
-     * 
+     *
      * @param <T> The type of the web view class.
      * @param vf The file to write to.
      * @param contentObj The view to write.
@@ -142,7 +142,7 @@ public class ControlManager
 
     private void readClasses(List<Class<?>> result, Properties prop)
     {
-        prop.forEach((Object k, Object v) -> 
+        prop.forEach((Object k, Object v) ->
         {
             try
             {

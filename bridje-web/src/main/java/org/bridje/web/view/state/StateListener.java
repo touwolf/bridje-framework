@@ -18,11 +18,7 @@ package org.bridje.web.view.state;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.bridje.ioc.PostConstruct;
-import org.bridje.ioc.Component;
-import org.bridje.ioc.ContextListener;
-import org.bridje.ioc.Inject;
-import org.bridje.ioc.IocContext;
+import org.bridje.ioc.*;
 import org.bridje.web.WebScope;
 
 @Component(scope = WebScope.class)

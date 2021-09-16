@@ -28,12 +28,7 @@ import io.netty.handler.codec.http.multipart.FileUpload;
 import io.netty.util.ReferenceCounted;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.bridje.http.HttpBridletRequest;
 import org.bridje.http.HttpCookie;
@@ -67,7 +62,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     private String[] cookiesNames;
 
     private String path;
-    
+
     private final String clientIp;
 
     private final int clientPort;
@@ -106,7 +101,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         if(content.isReadable())
         {
-            if(this.buffer != null) 
+            if(this.buffer != null)
             {
                 this.buffer = Unpooled.copiedBuffer(this.buffer, content);
             }
@@ -311,7 +306,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
                 .map(UploadedFileImpl::new)
                 .collect(Collectors.toList()).toArray(result);
     }
-    
+
     @Override
     public UploadedFile getUploadedFile(String name)
     {
@@ -333,7 +328,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     {
         return getGetParameters().get(parameter);
     }
-    
+
     @Override
     public String[] getGetParametersNames()
     {
@@ -348,7 +343,7 @@ class HttpBridletRequestImpl implements HttpBridletRequest
     protected void setQueryString(Map<String, List<String>> parameters)
     {
         this.getParameters = new HashMap<>();
-        parameters.forEach((name, values) -> 
+        parameters.forEach((name, values) ->
         {
             HttpReqParamImpl par = new HttpReqParamImpl(name, values);
             this.getParameters.put(name, par);

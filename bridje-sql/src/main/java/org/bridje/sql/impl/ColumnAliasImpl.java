@@ -16,21 +16,12 @@
 
 package org.bridje.sql.impl;
 
-import org.bridje.sql.BooleanColumn;
-import org.bridje.sql.Column;
-import org.bridje.sql.DateColumn;
-import org.bridje.sql.Expression;
-import org.bridje.sql.NumberColumn;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.SQLType;
-import org.bridje.sql.StringColumn;
-import org.bridje.sql.Table;
-import org.bridje.sql.TableExpr;
+import org.bridje.sql.*;
 
 class ColumnAliasImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>, NumberColumn<T, E>, StringColumn<T, E>, BooleanColumn<T, E>, DateColumn<T, E>
 {
     private TableExpr tableAlias;
-    
+
     private final ColumnImpl<T, E> column;
 
     public ColumnAliasImpl(TableExpr tableAlias, ColumnImpl<T, E> column, SQLType<T, E> sqlType)
@@ -44,7 +35,7 @@ class ColumnAliasImpl<T, E> extends ExpressionBase<T, E> implements Column<T, E>
     {
         return column;
     }
-    
+
     @Override
     public void writeSQL(SQLBuilder builder)
     {

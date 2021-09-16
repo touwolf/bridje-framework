@@ -18,20 +18,7 @@ package org.bridje.sql.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bridje.sql.Column;
-import org.bridje.sql.ColumnsStep;
-import org.bridje.sql.Expression;
-import org.bridje.sql.FinalStep;
-import org.bridje.sql.InsertIntoStep;
-import org.bridje.sql.SQLBuilder;
-import org.bridje.sql.SQLDialect;
-import org.bridje.sql.SQLStatement;
-import org.bridje.sql.SQLWritable;
-import org.bridje.sql.SelectExpr;
-import org.bridje.sql.Table;
-import org.bridje.sql.ValuesStep;
-import org.bridje.sql.Query;
-import org.bridje.sql.Literal;
+import org.bridje.sql.*;
 
 class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, ValuesStep, FinalStep, Query
 {
@@ -76,7 +63,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
         SQLBuilder builder = new SQLBuilderImpl(dialect);
         writeSQL(builder);
         String sql = builder.toString();
-        return new SQLStatementImpl(table.getAutoIncrement(), 
+        return new SQLStatementImpl(table.getAutoIncrement(),
                             sql, createParams(builder, parameters), true);
     }
 
@@ -132,7 +119,7 @@ class InsertBuilder extends BuilderBase implements InsertIntoStep, ColumnsStep, 
             Object object = row[i];
             if(object instanceof SQLWritable)
             {
-                if(object instanceof Param 
+                if(object instanceof Param
                         || object instanceof Literal)
                 {
                     result[i] = (Param<?, ?>)object;

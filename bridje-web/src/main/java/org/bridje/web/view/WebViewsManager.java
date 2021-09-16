@@ -16,7 +16,6 @@
 
 package org.bridje.web.view;
 
-import org.bridje.web.i18n.WebI18nServices;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -25,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import javax.xml.bind.annotation.XmlTransient;
 import org.bridje.el.ElEnvironment;
 import org.bridje.el.ElService;
@@ -36,6 +34,7 @@ import org.bridje.http.HttpException;
 import org.bridje.ioc.Component;
 import org.bridje.ioc.Inject;
 import org.bridje.ioc.Ioc;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.ioc.thls.Thls;
 import org.bridje.vfs.GlobExpr;
 import org.bridje.vfs.Path;
@@ -43,6 +42,7 @@ import org.bridje.vfs.VFile;
 import org.bridje.web.RedirectTo;
 import org.bridje.web.ReqPathRef;
 import org.bridje.web.WebScope;
+import org.bridje.web.i18n.WebI18nServices;
 import org.bridje.web.view.controls.Control;
 import org.bridje.web.view.controls.ControlInputReader;
 import org.bridje.web.view.controls.ControlManager;
@@ -71,7 +71,7 @@ public class WebViewsManager
 
     @Inject
     private StateManager stateManag;
-    
+
     @Inject
     private WebI18nServices webI18nServ;
 
@@ -156,7 +156,7 @@ public class WebViewsManager
 
     /**
      * Base path for all views.
-     * 
+     *
      * @return The base path for all views.
      */
     public Path getBasePath()
@@ -309,7 +309,7 @@ public class WebViewsManager
         }
         return null;
     }
-    
+
     /**
      * Renders the given web view partially, (as the result of an update) to the response output stream.
      *

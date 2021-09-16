@@ -23,10 +23,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bridje.ioc.PostConstruct;
 import javax.sql.DataSource;
 import javax.xml.bind.JAXBException;
 import org.bridje.ioc.Component;
+import org.bridje.ioc.PostConstruct;
 import org.bridje.jdbc.JdbcService;
 import org.bridje.jdbc.config.DataSourceConfig;
 import org.bridje.jdbc.config.JdbcConfig;
@@ -37,13 +37,13 @@ import org.bridje.vfs.VFileInputStream;
 class JdbcServiceImpl implements JdbcService
 {
     private static final Logger LOG = Logger.getLogger(JdbcServiceImpl.class.getName());
-    
+
     private Map<String, DataSourceImpl> dsMap;
-    
+
     private Map<String, DataSourceImpl> schemaMap;
-    
+
     private JdbcConfig config;
-    
+
     @PostConstruct
     public void init()
     {
@@ -60,7 +60,7 @@ class JdbcServiceImpl implements JdbcService
             LOG.log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
     @Override
     public DataSource getDataSourceBySchema(String schemaName)
     {
@@ -131,7 +131,7 @@ class JdbcServiceImpl implements JdbcService
         }
         return new JdbcConfig();
     }
-    
+
     @Override
     public void reconnectAll(JdbcConfig config)
     {
